@@ -3,7 +3,7 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/screen/menu/menu_controller.dart';
 import 'package:gais/screen/menu/submenu_screen.dart';
-import 'package:gais/screen/request_trip/request_trip_list/request_trip_list_screen.dart';
+import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

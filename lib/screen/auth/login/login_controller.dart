@@ -1,5 +1,6 @@
 import 'package:gais/base/base_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:gais/screen/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -31,35 +32,35 @@ class LoginController extends BaseController {
     super.dispose();
   }
 
-  // Future<void> doLogin() async {
-  //   try {
-  //     await repository
-  //         .postLogin(emailLoginController.text, passwordLoginController.text)
-  //         .then((value) => storage.saveToken(value.data?.token ?? ""))
-  //         .then(
-  //           (_) => Get.showSnackbar(
-  //         const GetSnackBar(
-  //           message: 'Login Berhasil',
-  //           isDismissible: true,
-  //           duration: Duration(seconds: 3),
-  //           backgroundColor: Colors.green,
-  //         ),
-  //       ),
-  //     )
-  //         .then((value) => Get.offAll(() => const MenuScreen()));
-  //   } catch (e) {
-  //     Get.showSnackbar(
-  //       const GetSnackBar(
-  //         icon: Icon(
-  //           Icons.error,
-  //           color: Colors.white,
-  //         ),
-  //         message: 'Login Gagal',
-  //         isDismissible: true,
-  //         duration: Duration(seconds: 3),
-  //         backgroundColor: Colors.red,
-  //       ),
-  //     );
-  //   }
-  // }
+  Future<void> doLogin() async {
+    try {
+      await repository
+          .postLogin(usernameLoginController.text, passwordLoginController.text)
+          .then((value) => storage.saveToken(value.data?.accessToken ?? ""))
+          .then(
+            (_) => Get.showSnackbar(
+          const GetSnackBar(
+            message: 'Login Berhasil',
+            isDismissible: true,
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.green,
+          ),
+        ),
+      )
+          .then((value) => Get.offAll(() => const HomeScreen()));
+    } catch (e) {
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Login Gagal',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 }

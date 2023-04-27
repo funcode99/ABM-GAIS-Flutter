@@ -1,3 +1,3 @@
 class AppConst {
-  static const baseUrl = 'https://cek-wa.com/presensi/public/api';
+  static const baseUrl = 'http://103.165.130.157:8086';
 }

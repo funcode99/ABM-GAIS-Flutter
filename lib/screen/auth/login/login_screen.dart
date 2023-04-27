@@ -43,9 +43,12 @@ class LoginScreen extends StatelessWidget {
                             SizedBox(height: 25),
                             RichText(
                               text: TextSpan(
-                                text: 'Username ',style: listTitleTextStyle,
+                                text: 'Username ',
+                                style: listTitleTextStyle,
                                 children: const <TextSpan>[
-                                  TextSpan(text: '*', style: TextStyle(color: Colors.red)),
+                                  TextSpan(
+                                      text: '*',
+                                      style: TextStyle(color: Colors.red)),
                                 ],
                               ),
                             ),
@@ -58,9 +61,12 @@ class LoginScreen extends StatelessWidget {
                             SizedBox(height: 8),
                             RichText(
                               text: TextSpan(
-                                text: 'Password ',style: listTitleTextStyle,
+                                text: 'Password ',
+                                style: listTitleTextStyle,
                                 children: const <TextSpan>[
-                                  TextSpan(text: '*', style: TextStyle(color: Colors.red)),
+                                  TextSpan(
+                                      text: '*',
+                                      style: TextStyle(color: Colors.red)),
                                 ],
                               ),
                             ),
@@ -73,29 +79,45 @@ class LoginScreen extends StatelessWidget {
                                   suffixIcon: IconButton(
                                     icon: controller.showIcon,
                                     onPressed: () {
-                                      controller.isObscurePasswordLogin ?
-                                      controller.isObscurePasswordLogin = false
-                                          : controller.isObscurePasswordLogin = true;
-                                      controller.isObscurePasswordLogin!= false ?
-                                          controller.showIcon = Icon(IconlyBold.show, color: Colors.black,)
-                                          : controller.showIcon = Icon(IconlyBold.hide, color: Colors.black,);
+                                      controller.isObscurePasswordLogin
+                                          ? controller.isObscurePasswordLogin =
+                                              false
+                                          : controller.isObscurePasswordLogin =
+                                              true;
+                                      controller.isObscurePasswordLogin != false
+                                          ? controller.showIcon = Icon(
+                                              IconlyBold.show,
+                                              color: Colors.black,
+                                            )
+                                          : controller.showIcon = Icon(
+                                              IconlyBold.hide,
+                                              color: Colors.black,
+                                            );
                                       controller.update();
                                     },
                                   )),
                             ),
                             Container(
-                                alignment: Alignment.centerRight,
-                                child: TextButton(
-                                    onPressed: ()=> Get.to(ForgotPasswordScreen()),
-                                    child: Text("Forgot Password?", style: listTitleTextStyle.copyWith(color: infoColor, decoration: TextDecoration.underline)),
-                                ),
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () => Get.to(ForgotPasswordScreen()),
+                                child: Text("Forgot Password?",
+                                    style: listTitleTextStyle.copyWith(
+                                        color: infoColor,
+                                        decoration: TextDecoration.underline)),
+                              ),
                             ),
-                            CustomFilledButton(color: infoColor, title: 'Login', onPressed: ()=>Get.offAll(HomeScreen())),
+                            CustomFilledButton(
+                              color: infoColor,
+                              title: 'Login',
+                              onPressed: () => controller.doLogin(),
+                            ),
                             Container(
-                                alignment: Alignment.center,
-                                child: Text("OR", style: listTitleTextStyle),
+                              alignment: Alignment.center,
+                              child: Text("OR", style: listTitleTextStyle),
                             ),
-                            CustomFilledButton(color: infoColor, title: "Login via Falcon"),
+                            CustomFilledButton(
+                                color: infoColor, title: "Login via Falcon"),
                             SizedBox(height: 10),
                           ],
                         ),
