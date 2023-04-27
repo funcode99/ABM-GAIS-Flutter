@@ -153,6 +153,50 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
                   onChanged: (string) {},
                 ),
                 Text("Date Range", style: listTitleTextStyle),
+                const SizedBox(
+                  height: 6,
+                ),
+                TextField(
+                  readOnly: true,
+                  controller: controller.dateRange,
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      suffixIcon: Icon(Icons.calendar_month)),
+                  onTap: () {
+                    showCustomDateRangePicker(
+                      context,
+                      dismissible: true,
+                      minimumDate: DateTime.now().subtract(const Duration(days: 365)),
+                      maximumDate: DateTime.now().add(const Duration(days: 365)),
+                      endDate: controller.endDate,
+                      startDate: controller.startDate,
+                      backgroundColor: Colors.white,
+                      primaryColor: Colors.green,
+                      onApplyClick: (start, end) {
+                        controller.endDate = end;
+                        controller.startDate = start;
+                        controller.dateRange.text =
+                        "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                        controller.update();
+                      },
+                      onCancelClick: () {
+                        controller.endDate = null;
+                        controller.startDate = null;
+                        controller.update();
+                      },
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Container(
+                  height: 50,
+                  width: double.infinity,
+                  child: const Placeholder(
+                    child: Text("Pagination"),
+                  ),
+                ),
                 Container(
                     margin: const EdgeInsets.symmetric(vertical: 6),
                     child: const SizedBox()),
