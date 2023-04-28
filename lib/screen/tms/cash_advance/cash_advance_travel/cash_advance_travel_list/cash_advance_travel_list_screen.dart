@@ -10,6 +10,7 @@ import 'package:gais/reusable/customalertcontainer.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_detail/cash_advance_travel_detail_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_list/cash_advance_travel_list_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/requester_info/requester_info_screen.dart';
 import 'package:get/get.dart';
@@ -123,7 +124,9 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
               CustomIconButton(
                 title: "View",
                 iconData: IconlyBold.show,
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(const CashAdvanceTravelDetailScreen());
+                },
               )
             ],
             status: "Submitted",
