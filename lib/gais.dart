@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/screen/auth/login/login_screen.dart';
+import 'package:get/get.dart';
 
 class gais extends StatelessWidget {
   const gais({Key? key}) : super(key: key);
@@ -28,6 +28,13 @@ class gais extends StatelessWidget {
               color: neutralColor,
               width: 1,
               // style: BorderStyle.solid,
+            ),
+          ),
+          disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(
+              color: neutralColor,
+              width: 1,
             ),
           ),
           errorBorder: OutlineInputBorder(
