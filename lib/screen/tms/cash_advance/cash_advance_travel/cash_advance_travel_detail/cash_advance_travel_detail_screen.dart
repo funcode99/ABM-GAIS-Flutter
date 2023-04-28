@@ -31,7 +31,7 @@ class _CashAdvanceTravelDetailScreenState
             appBar: AppBar(
               leading: const CustomBackButton(),
               backgroundColor: whiteColor,
-              title: Text("Cash Advance Travel", style: appTitle),
+              title: Text("cash_advance_travel".tr, style: appTitle),
               centerTitle: true,
               flexibleSpace: const TopBar(),
             ),
@@ -70,7 +70,7 @@ class _CashAdvanceTravelDetailScreenState
                                 readOnly: true,
                                 isRequired: true,
                                 controller: controller.createdDateController,
-                                label: "Created Date"),
+                                label: "Created Date".tr),
                             const SizedBox(
                               height: 8,
                             ),
@@ -78,7 +78,7 @@ class _CashAdvanceTravelDetailScreenState
                                 readOnly: true,
                                 isRequired: true,
                                 controller: controller.requestorController,
-                                label: "Requestor"),
+                                label: "Requestor".tr),
                             const SizedBox(
                               height: 8,
                             ),
@@ -86,7 +86,7 @@ class _CashAdvanceTravelDetailScreenState
                                 readOnly: true,
                                 isRequired: false,
                                 controller: controller.referenceController,
-                                label: "Reference"),
+                                label: "Reference".tr),
                             const SizedBox(
                               height: 8,
                             ),
@@ -103,42 +103,42 @@ class _CashAdvanceTravelDetailScreenState
                             CustomTextFormField(
                                 readOnly: true,
                                 controller: controller.itemController,
-                                label: "Item"),
+                                label: "Item".tr),
                             const SizedBox(
                               height: 8,
                             ),
                             CustomTextFormField(
                                 readOnly: true,
                                 controller: controller.frequencyController,
-                                label: "Frequency"),
+                                label: "Frequency".tr),
                             const SizedBox(
                               height: 8,
                             ),
                             CustomTextFormField(
                                 readOnly: true,
                                 controller: controller.currencyController,
-                                label: "Currency"),
+                                label: "Currency".tr),
                             const SizedBox(
                               height: 8,
                             ),
                             CustomTextFormField(
                                 readOnly: true,
                                 controller: controller.amountController,
-                                label: "Amount"),
+                                label: "Amount".tr),
                             const SizedBox(
                               height: 8,
                             ),
                             CustomTextFormField(
                                 readOnly: true,
                                 controller: controller.totalController,
-                                label: "Total"),
+                                label: "Total".tr),
                             const SizedBox(
                               height: 8,
                             ),
                             CustomTextFormField(
                                 readOnly: true,
                                 controller: controller.remarksController,
-                                label: "Remarks")
+                                label: "Remarks".tr)
                           ],
                         ),
                       ),

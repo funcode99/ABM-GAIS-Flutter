@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/screen/auth/login/login_screen.dart';
+import 'package:gais/util/lang/app_translation.dart';
 import 'package:get/get.dart';
 
 class gais extends StatelessWidget {
@@ -9,6 +10,9 @@ class gais extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      translations: AppTranslation(),
+      locale: Get.deviceLocale,
+      fallbackLocale: const Locale("en", "US"),
       debugShowCheckedModeBanner: false,
       title: 'GAIS ABM',
       theme: ThemeData(

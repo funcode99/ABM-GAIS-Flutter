@@ -3,16 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
-import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/customalertcontainer.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
-import 'package:gais/reusable/customalertcontainer.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
-import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_detail/cash_advance_travel_detail_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_list/cash_advance_travel_list_controller.dart';
-import 'package:gais/screen/tms/request_trip/add/requester_info/requester_info_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -40,7 +37,7 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
                   Column(
                     children: [
                       Text(
-                        "Item",
+                        "Item".tr,
                         style: Theme.of(context).textTheme.bodyText1?.copyWith(
                             fontSize: 14,
                             color: Colors.black,
@@ -60,7 +57,7 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
                   Column(
                     children: [
                       Text(
-                        "Frequency",
+                        "Frequency".tr,
                         style: Theme.of(context).textTheme.bodyText1?.copyWith(
                             fontSize: 14,
                             color: Colors.black,
@@ -80,7 +77,7 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
                   Column(
                     children: [
                       Text(
-                        "Currency",
+                        "Currency".tr,
                         style: Theme.of(context).textTheme.bodyText1?.copyWith(
                             fontSize: 14,
                             color: Colors.black,
@@ -100,7 +97,7 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
                   Column(
                     children: [
                       Text(
-                        "Nominal",
+                        "Nominal".tr,
                         style: Theme.of(context).textTheme.bodyText1?.copyWith(
                             fontSize: 14,
                             color: Colors.black,
@@ -122,14 +119,14 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
             ),
             action: [
               CustomIconButton(
-                title: "View",
+                title: "View".tr,
                 iconData: IconlyBold.show,
                 onPressed: () {
                   Get.to(const CashAdvanceTravelDetailScreen());
                 },
               )
             ],
-            status: "Submitted",
+            status: "Submitted".tr,
           )
       );
     }
@@ -145,7 +142,7 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
             backgroundColor: baseColor,
             appBar: AppBar(
               backgroundColor: whiteColor,
-              title: Text("Cash Advance Travel", style: appTitle),
+              title: Text("cash_advance_travel".tr, style: appTitle),
               centerTitle: true,
               flexibleSpace: const TopBar(),
             ),
@@ -155,7 +152,7 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
                 CustomSearchBar(
                   onChanged: (string) {},
                 ),
-                Text("Date Range", style: listTitleTextStyle),
+                Text("Date Range".tr, style: listTitleTextStyle),
                 const SizedBox(
                   height: 6,
                 ),
