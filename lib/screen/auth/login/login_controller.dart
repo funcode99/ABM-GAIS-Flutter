@@ -11,8 +11,10 @@ class LoginController extends BaseController {
   bool isObscurePasswordLogin = true;
   bool isRemember = false;
 
-  Widget showIcon = Icon(IconlyBold.show, color: Colors.black,);
-
+  Widget showIcon = Icon(
+    IconlyBold.show,
+    color: Colors.black,
+  );
 
   final formKey = GlobalKey<FormState>();
   final usernameLoginController = TextEditingController();
@@ -37,16 +39,17 @@ class LoginController extends BaseController {
       await repository
           .postLogin(usernameLoginController.text, passwordLoginController.text)
           .then((value) => storage.saveToken(value.data?.accessToken ?? ""))
+          .then((value) => storage.saveRole("admin"))
           .then(
             (_) => Get.showSnackbar(
-          const GetSnackBar(
-            message: 'Login Berhasil',
-            isDismissible: true,
-            duration: Duration(seconds: 3),
-            backgroundColor: Colors.green,
-          ),
-        ),
-      )
+              const GetSnackBar(
+                message: 'Login Berhasil',
+                isDismissible: true,
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.green,
+              ),
+            ),
+          )
           .then((value) => Get.offAll(() => const HomeScreen()));
     } catch (e) {
       Get.showSnackbar(

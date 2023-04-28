@@ -13,9 +13,12 @@ class AddAccommodationController extends BaseController {
 
   String? traveller;
   DateTime? selectedDate;
+  String? gender;
   String? transportType;
   String? departure;
   String? arrival;
+  bool? isSharing;
+  bool? createGL;
 
   @override
   void onInit() {
@@ -24,6 +27,8 @@ class AddAccommodationController extends BaseController {
     amount.text;
     voucher.text;
     remarks.text;
+    isSharing = false;
+    createGL = false;
   }
 
   @override

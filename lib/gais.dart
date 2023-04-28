@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gais/screen/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/screen/auth/login/login_screen.dart';
@@ -14,7 +15,7 @@ class gais extends StatelessWidget {
       theme: ThemeData(
         // useMaterial3: true,
         fontFamily: 'plus jakarta sans',
-        // backgroundColor: whiteColor,
+        backgroundColor: baseColor,
         appBarTheme: AppBarTheme(
           backgroundColor: whiteColor,
           elevation: 0,
@@ -42,7 +43,7 @@ class gais extends StatelessWidget {
           ),
         ),
       ),
-      home: const LoginScreen(),
+      home: const HomeScreen(),
     );
   }
 }

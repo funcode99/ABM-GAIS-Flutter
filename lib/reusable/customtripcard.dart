@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:iconly/iconly.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
@@ -15,6 +16,10 @@ class CustomTripCard extends StatelessWidget {
   final bool? isDelete;
   final VoidCallback? editAction;
   final VoidCallback? deleteAction;
+  final VoidCallback? onTap;
+  final bool? approval;
+  final VoidCallback? approveAction;
+  final VoidCallback? rejectAction;
 
   const CustomTripCard({
     Key? key,
@@ -28,113 +33,139 @@ class CustomTripCard extends StatelessWidget {
     this.isDelete = false,
     this.editAction,
     this.deleteAction,
+    this.onTap,
+    this.approval = false,
+    this.approveAction,
+    this.rejectAction,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: status != null
-                  ? MainAxisAlignment.spaceBetween
-                  : MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      margin: EdgeInsets.only(right: status != null ? 0 : 10),
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(4)),
-                      child: Text("No\n$listNumber",
-                          style: listTitleTextStyle.copyWith(color: whiteColor),
-                          textAlign: TextAlign.center),
-                    ),
-                    const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(title, style: listTitleTextStyle),
-                        Text(
-                          subtitle ?? "",
-                          style: listSubTitleTextStyle,
-                          textAlign: TextAlign.start,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                status != null
-                    ? CustomFilledButton(
-                        color: greenColor,
-                        width: 100,
-                        height: 30,
-                        fontSize: 14,
-                        title: status ?? "",
-                      )
-                    : Container()
-              ],
-            ),
-            const Divider(
-              height: 20,
-              color: greyColor,
-            ),
-            content,
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: infoColor, borderRadius: BorderRadius.circular(4)),
-                  child: Text(info,
-                      style: listSubTitleTextStyle.copyWith(
-                          color: whiteColor, fontSize: 14),
-                      textAlign: TextAlign.center),
-                ),
-                Row(
-                  children: [
-                    isDelete! && isEdit!
-                        ? CustomFilledButton(
-                            width: 80,
-                            height: 40,
-                            color: successColor,
-                            title: "Edit",
-                            fontSize: 14,
-                            icon: IconlyBold.edit,
-                            onPressed: editAction,
-                          )
-                        : const SizedBox(),
-                    const SizedBox(width: 5),
-                    isEdit!
-                        ? CustomFilledButton(
-                            width: 80,
-                            height: 40,
-                            fontSize: 14,
-                            color: isDelete! ? redColor : successColor,
-                            title: isDelete! ? "Delete" : "Edit",
-                            icon:
-                                isDelete! ? IconlyBold.delete : IconlyBold.edit,
-                            onPressed: isDelete! ? deleteAction : editAction,
-                          )
-                        : const SizedBox()
-                  ],
-                ),
-              ],
-            )
-          ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: status != null
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 50,
+                        height: 50,
+                        margin: EdgeInsets.only(right: status != null ? 0 : 10),
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            color: infoColor,
+                            borderRadius: BorderRadius.circular(4)),
+                        child: Text("No\n$listNumber",
+                            style:
+                                listTitleTextStyle.copyWith(color: whiteColor),
+                            textAlign: TextAlign.center),
+                      ),
+                      const SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(title, style: listTitleTextStyle),
+                          Text(
+                            subtitle ?? "",
+                            style: listSubTitleTextStyle,
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  status != null
+                      ? CustomFilledButton(
+                          color: greenColor,
+                          width: 100,
+                          height: 30,
+                          fontSize: 14,
+                          title: status ?? "",
+                        )
+                      : Container()
+                ],
+              ),
+              const Divider(
+                height: 20,
+                color: greyColor,
+              ),
+              content,
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: infoColor,
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Text(info,
+                        style: listSubTitleTextStyle.copyWith(
+                            color: whiteColor, fontSize: 14),
+                        textAlign: TextAlign.center),
+                  ),
+                  Row(
+                    children: [
+                      isDelete! && isEdit!
+                          ? CustomFilledButton(
+                              width: 80,
+                              height: 40,
+                              color: successColor,
+                              title: approval! ? "approve" : "Edit",
+                              fontSize: 14,
+                              icon: approval! ? Icons.check : IconlyBold.edit,
+                              onPressed: approval! ? approveAction : editAction,
+                            )
+                          : const SizedBox(),
+                      const SizedBox(width: 5),
+                      isEdit!
+                          ? CustomFilledButton(
+                              width: 80,
+                              height: 40,
+                              fontSize: 14,
+                              color: isDelete! ? redColor : successColor,
+                              title: approval!
+                                  ? "reject"
+                                  : isDelete!
+                                      ? "Delete"
+                                      : approval!
+                                          ? "approve"
+                                          : "Edit",
+                              icon: approval!
+                                  ? Icons.close
+                                  : isDelete!
+                                      ? IconlyBold.delete
+                                      : approval!
+                                          ? Icons.check
+                                          : IconlyBold.edit,
+                              onPressed: approval!
+                                  ? rejectAction
+                                  : isDelete!
+                                      ? deleteAction
+                                      : approval!
+                                          ? approveAction
+                                          : editAction,
+                            )
+                          : const SizedBox()
+                    ],
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

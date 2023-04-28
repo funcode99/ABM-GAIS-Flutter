@@ -213,6 +213,103 @@ class MenuScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              Card(
+                elevation: 5,
+                margin: const EdgeInsets.all(10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding:
+                  const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Approval",
+                          style: listTitleTextStyle),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 18),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: infoColor,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    padding: const EdgeInsets.all(10),
+                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                    height: 50,
+                                    width: 50,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/location-tick.svg",
+                                      height: 25,
+                                    ),
+                                  ),
+                                  const Text("Request Trip"),
+                                ],
+                              ),
+                              onTap: () => Get.off(const RequestTripListScreen()),
+                            ),
+                            GestureDetector(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: infoColor,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    padding: const EdgeInsets.all(10),
+                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                    height: 50,
+                                    width: 50,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/empty-wallet-time.svg",
+                                      height: 25,
+                                    ),
+                                  ),
+                                  const Text("Cash Advance"),
+                                ],
+                              ),
+                              onTap: ()=> Get.off(const SubmenuScreen()),
+                            ),
+                            GestureDetector(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: infoColor,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    padding: const EdgeInsets.all(10),
+                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                    height: 50,
+                                    width: 50,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/ruler&pen.svg",
+                                      height: 25,
+                                    ),
+                                  ),
+                                  const Text(
+                                    "Request ATK",
+                                    textAlign: TextAlign.center,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           );
         });
