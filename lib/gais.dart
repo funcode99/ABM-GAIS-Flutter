@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gais/screen/home/home_screen.dart';
-import 'package:get/get.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/screen/auth/login/login_screen.dart';
+import 'package:gais/util/lang/app_translation.dart';
+import 'package:get/get.dart';
 
 class gais extends StatelessWidget {
   const gais({Key? key}) : super(key: key);
@@ -10,12 +10,15 @@ class gais extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      translations: AppTranslation(),
+      locale: Get.deviceLocale,
+      fallbackLocale: const Locale("en", "US"),
       debugShowCheckedModeBanner: false,
       title: 'GAIS ABM',
       theme: ThemeData(
         // useMaterial3: true,
         fontFamily: 'plus jakarta sans',
-        backgroundColor: baseColor,
+        // backgroundColor: whiteColor,
         appBarTheme: AppBarTheme(
           backgroundColor: whiteColor,
           elevation: 0,
@@ -31,6 +34,13 @@ class gais extends StatelessWidget {
               // style: BorderStyle.solid,
             ),
           ),
+          disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(
+              color: neutralColor,
+              width: 1,
+            ),
+          ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(
               8,
@@ -43,7 +53,7 @@ class gais extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomeScreen(),
+      home: const LoginScreen(),
     );
   }
 }
