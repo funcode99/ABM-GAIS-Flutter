@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gais/const/textstyle.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -10,7 +11,9 @@ class CustomTextFormField extends StatelessWidget {
       this.readOnly = false,
       this.onChanged,
       this.isRequired = false,
-      this.validator
+      this.validator,
+      this.inputFormatters,
+      this.inputType
       });
 
   final TextEditingController controller;
@@ -20,7 +23,8 @@ class CustomTextFormField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final bool isRequired;
   final FormFieldValidator<String>? validator;
-
+  final List<TextInputFormatter>? inputFormatters;
+  final TextInputType? inputType;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -47,6 +51,8 @@ class CustomTextFormField extends StatelessWidget {
             readOnly: readOnly,
             onChanged: onChanged,
             validator: validator,
+            keyboardType: inputType,
+            inputFormatters: inputFormatters,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             style: Theme.of(context).textTheme.bodyText1?.copyWith(
                 fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),

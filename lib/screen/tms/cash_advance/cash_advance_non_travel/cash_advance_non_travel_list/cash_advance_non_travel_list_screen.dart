@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
-import 'package:gais/reusable/customalertcontainer.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
-import 'package:gais/reusable/customstatuscontainer.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_list/cash_advance_travel_list_controller.dart';
 import 'package:gais/screen/tms/cash_advance/widget/cash_advance_item_list.dart';
 import 'package:get/get.dart';
@@ -84,7 +83,7 @@ class _CashAdvanceNonTravelListScreenState extends State<CashAdvanceNonTravelLis
                 iconData: IconlyBold.edit,
                 backgroundColor: successColor,
                 onPressed: () {
-                  Get.showSnackbar(const GetSnackBar(title: "Not Implented Yet",));
+                  Get.showSnackbar(const GetSnackBar(message: "Not Implented Yet",));
                 },
               ),
               const SizedBox(
@@ -95,7 +94,7 @@ class _CashAdvanceNonTravelListScreenState extends State<CashAdvanceNonTravelLis
                 iconData: IconlyBold.delete,
                 backgroundColor: redColor,
                 onPressed: () {
-                  Get.showSnackbar(const GetSnackBar(title: "Not Implented Yet",));
+                  Get.showSnackbar(const GetSnackBar(message: "Not Implented Yet",));
                 },
               )
             ],
@@ -173,6 +172,11 @@ class _CashAdvanceNonTravelListScreenState extends State<CashAdvanceNonTravelLis
                     child: const SizedBox()),
                 ..._getData(),
               ],
+            ),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: successColor,
+              onPressed: () => Get.to(const AddCashAdvanceNonTravelScreen()),
+              child: const Icon(Icons.add_rounded, size: 45),
             ),
             bottomNavigationBar: const BottomBar(menu: 1),
           );

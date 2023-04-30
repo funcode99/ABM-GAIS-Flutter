@@ -19,6 +19,10 @@ class LanguageEN{
       "Total" : "Total",
       "Amount" : "Amount",
       "Remarks" : "Remarks",
+      "Date" : "Date",
+      "Cost Center" : "Cost Center",
+      "Cancel" : "Cancel",
+      "Save" : "Save",
     };
   }
 }
