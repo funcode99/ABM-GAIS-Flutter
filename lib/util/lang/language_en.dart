@@ -2,6 +2,7 @@ class LanguageEN{
   static Map<String, String> getLanguage(){
     return {
       "cash_advance_travel" : "Cash Advance Travel",
+      "cash_advance_non_travel" : "Cash Advance Non Travel",
       "Date Range" : "Date Range",
       "Item" : "Date Range",
       "Frequency" : "Frequency",
@@ -9,6 +10,9 @@ class LanguageEN{
       "Nominal" : "Nominal",
       "Submitted" : "Submitted",
       "View" : "View",
+      "Delete" : "Delete",
+      "Edit" : "Edit",
+      "Event" : "Event",
       "Reference" : "Reference",
       "Requestor" : "Requestor",
       "Created Date" : "Created Date",
