@@ -7,8 +7,10 @@ import 'package:gais/reusable/customalertcontainer.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
+import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_list/cash_advance_travel_list_controller.dart';
+import 'package:gais/screen/tms/cash_advance/widget/cash_advance_item_list.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -161,12 +163,10 @@ class _CashAdvanceNonTravelListScreenState extends State<CashAdvanceNonTravelLis
                 const SizedBox(
                   height: 12,
                 ),
-                Container(
-                  height: 50,
-                  width: double.infinity,
-                  child: const Placeholder(
-                    child: Text("Pagination"),
-                  ),
+                CustomPagination(
+                  onPageChanged: (int ) {  },
+                  pageTotal: 5,
+                  margin: EdgeInsets.zero,
                 ),
                 Container(
                     margin: const EdgeInsets.symmetric(vertical: 6),
@@ -177,100 +177,5 @@ class _CashAdvanceNonTravelListScreenState extends State<CashAdvanceNonTravelLis
             bottomNavigationBar: const BottomBar(menu: 1),
           );
         });
-  }
-}
-
-class CashAdvanceListItem extends StatelessWidget {
-  const CashAdvanceListItem(
-      {super.key,
-        required this.number,
-        required this.title,
-        required this.subtitle,
-        required this.status,
-        required this.content,
-        required this.action});
-
-  final String number;
-  final String title;
-  final String subtitle;
-  final String status;
-  final Widget content;
-  final List<Widget> action;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    minHeight: 50,
-                    minWidth: 50,
-                  ),
-                  child: CustomAlertContainer(
-                    backgroundColor: infoColor,
-                    content: Text("No\n$number",
-                        style: listTitleTextStyle.copyWith(color: whiteColor),
-                        textAlign: TextAlign.center),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(title, style: listTitleTextStyle),
-                      Text(
-                        subtitle,
-                        style: listSubTitleTextStyle,
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
-                  ),
-                ),
-                CustomStatusContainer(
-                  backgroundColor: greenColor,
-                  status: status,
-                )
-              ],
-            ),
-            const Divider(
-              height: 20,
-              color: greyColor,
-            ),
-            content,
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomAlertContainer(
-                  backgroundColor: infoColor,
-                  content: Text("120.000",
-                      style: listSubTitleTextStyle.copyWith(
-                          color: whiteColor, fontSize: 14),
-                      textAlign: TextAlign.center),
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 32),
-                ),
-                Row(
-                  children: action,
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
   }
 }

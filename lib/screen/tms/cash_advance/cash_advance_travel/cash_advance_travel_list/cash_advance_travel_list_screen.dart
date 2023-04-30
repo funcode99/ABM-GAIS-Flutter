@@ -5,9 +5,11 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
+import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_detail/cash_advance_travel_detail_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_list/cash_advance_travel_list_controller.dart';
+import 'package:gais/screen/tms/cash_advance/widget/cash_advance_item_list.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -188,12 +190,10 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
                 const SizedBox(
                   height: 12,
                 ),
-                Container(
-                  height: 50,
-                  width: double.infinity,
-                  child: const Placeholder(
-                    child: Text("Pagination"),
-                  ),
+                CustomPagination(
+                  onPageChanged: (int ) {  },
+                  pageTotal: 5,
+                  margin: EdgeInsets.zero,
                 ),
                 Container(
                     margin: const EdgeInsets.symmetric(vertical: 6),
