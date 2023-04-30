@@ -7,9 +7,9 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_controller.dart';
 import 'package:get/get.dart';
-import 'package:iconly/iconly.dart';
 
 class CashAdvanceScreen extends StatelessWidget {
   const CashAdvanceScreen({Key? key}) : super(key: key);
@@ -108,6 +108,7 @@ class CashAdvanceScreen extends StatelessWidget {
                         color: infoColor,
                         title: "Add Cash Advance",
                         icon: Icons.add,
+                        onPressed: ()=> Get.to(AddCashAdvanceScreen()),
                       ),
                     ),
                     Row(

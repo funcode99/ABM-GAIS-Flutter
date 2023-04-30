@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
+import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/menu/submenu_controller.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/cash_advance_non_travel_list/cash_advance_non_travel_list_screen.dart';
@@ -21,6 +22,7 @@ class SubmenuScreen extends StatelessWidget {
           appBar: AppBar(
             title: Text("Menu", style: appTitle),
             centerTitle: true,
+            leading: CustomBackButton(),
             flexibleSpace: const TopBar(),
           ),
           body: ListView(

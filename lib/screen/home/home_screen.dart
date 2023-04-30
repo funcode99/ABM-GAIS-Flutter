@@ -21,6 +21,7 @@ class HomeScreen extends StatelessWidget {
         init: HomeController(),
         builder: (controller) {
           return Scaffold(
+            backgroundColor: baseColor,
             appBar: AppBar(
               centerTitle: true,
               title: Text(
@@ -31,249 +32,255 @@ class HomeScreen extends StatelessWidget {
             body: controller.selectedIndex != 0
                 ? HomeController.widgetOptions
                     .elementAt(controller.selectedIndex)
-                : SingleChildScrollView(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Text(
-                            "Dashboard",
-                            style: appTitle.copyWith(
-                                decoration: TextDecoration.underline),
+                : Container(
+                    margin: EdgeInsets.only(top: 8, left: 6, right: 6),
+                    decoration: BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: BorderRadius.circular(8)),
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Text(
+                              "Dashboard",
+                              style: appTitle.copyWith(
+                                  decoration: TextDecoration.underline),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: 250,
-                              height: 60,
-                              child: DropdownDatePicker(
-                                showDay: false,
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: 230,
+                                height: 60,
+                                child: DropdownDatePicker(
+                                  showDay: false,
+                                ),
+                              ),
+                              CustomFilledButton(
+                                color: redColor,
+                                title: "Reset",
+                                width: 100,
+                                height: 57,
+                                icon: Icons.restart_alt,
+                              )
+                            ],
+                          ),
+                          Text("My Trip Status", style: listTitleTextStyle),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: SizedBox(
+                              height: 100,
+                              child: Row(
+                                children: [
+                                  Card(
+                                    elevation: 5,
+                                    color: successColor,
+                                    child: Container(
+                                      width: Get.width / 3,
+                                      height: 70,
+                                      padding: EdgeInsets.all(10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Icon(IconlyBold.tick_square,
+                                              size: 30, color: whiteColor),
+                                          Text("Approved\n10",
+                                              style:
+                                                  listTitleTextStyle.copyWith(
+                                                      fontFamily: 'Poppins',
+                                                      color: whiteColor))
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Card(
+                                    elevation: 5,
+                                    color: warningColor,
+                                    child: Container(
+                                      width: Get.width / 3,
+                                      height: 70,
+                                      padding: EdgeInsets.all(10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Icon(IconlyBold.time_circle,
+                                              size: 30),
+                                          Text("Waiting\n5",
+                                              style:
+                                                  listTitleTextStyle.copyWith(
+                                                      fontFamily: 'Poppins'))
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Card(
+                                    elevation: 5,
+                                    color: errorColor,
+                                    child: Container(
+                                      width: Get.width / 3,
+                                      height: 70,
+                                      padding: EdgeInsets.all(10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Icon(IconlyBold.close_square,
+                                              size: 30, color: whiteColor),
+                                          Text("Rejected\n3",
+                                              style:
+                                                  listTitleTextStyle.copyWith(
+                                                      fontFamily: 'Poppins',
+                                                      color: whiteColor))
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            CustomFilledButton(
-                              color: redColor,
-                              title: "Reset",
-                              width: 100,
-                              height: 57,
-                              icon: Icons.restart_alt,
-                            )
-                          ],
-                        ),
-                        Text("My Trip Status", style: listTitleTextStyle),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: SizedBox(
-                            height: 100,
-                            child: Row(
-                              children: [
-                                Card(
-                                  elevation: 5,
-                                  color: successColor,
-                                  child: Container(
-                                    width: Get.width / 3,
-                                    height: 70,
-                                    padding: EdgeInsets.all(10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Icon(IconlyBold.tick_square,
-                                            size: 30, color: whiteColor),
-                                        Text("Approved\n10",
-                                            style:
-                                                listTitleTextStyle.copyWith(
-                                                    fontFamily: 'Poppins',
-                                                    color: whiteColor))
-                                      ],
-                                    ),
+                          ),
+                          Card(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Container(
+                              margin: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("TRIP PURPOSE",
+                                      style: listTitleTextStyle.copyWith(
+                                          fontSize: 18)),
+                                  SfCartesianChart(
+                                    primaryXAxis: CategoryAxis(),
+                                    isTransposed: true,
+                                    series: <
+                                        CartesianSeries<TripPurposeModel,
+                                            String>>[
+                                      BarSeries<TripPurposeModel, String>(
+                                        dataSource: controller.tpData,
+                                        xValueMapper:
+                                            (TripPurposeModel tp, _) =>
+                                                tp.requestTrip,
+                                        yValueMapper:
+                                            (TripPurposeModel tp, _) => tp.trip,
+                                        pointColorMapper:
+                                            (TripPurposeModel tp, _) =>
+                                                tp.color,
+                                        dataLabelSettings: DataLabelSettings(
+                                            isVisible: true,
+                                            useSeriesColor: true,
+                                            color: whiteColor,
+                                            textStyle: TextStyle(fontSize: 10),
+                                            showZeroValue: true,
+                                            labelAlignment:
+                                                ChartDataLabelAlignment.top),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                Card(
-                                  elevation: 5,
-                                  color: warningColor,
-                                  child: Container(
-                                    width: Get.width / 3,
-                                    height: 70,
-                                    padding: EdgeInsets.all(10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Icon(IconlyBold.time_circle,
-                                            size: 30),
-                                        Text("Waiting\n5",
-                                            style:
-                                                listTitleTextStyle.copyWith(
-                                                    fontFamily: 'Poppins'))
-                                      ],
-                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Card(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Container(
+                              margin: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("MEETING ROOM USED",
+                                      style: listTitleTextStyle.copyWith(
+                                          fontSize: 18)),
+                                  SfCartesianChart(
+                                    primaryXAxis: CategoryAxis(),
+                                    series: <
+                                        CartesianSeries<MeetRoomUsedModel,
+                                            String>>[
+                                      BarSeries<MeetRoomUsedModel, String>(
+                                        dataSource: controller.mrData,
+                                        xValueMapper:
+                                            (MeetRoomUsedModel tp, _) =>
+                                                tp.room,
+                                        yValueMapper:
+                                            (MeetRoomUsedModel tp, _) =>
+                                                tp.used,
+                                        pointColorMapper:
+                                            (MeetRoomUsedModel tp, _) =>
+                                                tp.color,
+                                        dataLabelSettings: DataLabelSettings(
+                                            isVisible: true,
+                                            useSeriesColor: true,
+                                            color: whiteColor,
+                                            textStyle: TextStyle(fontSize: 10),
+                                            showZeroValue: true,
+                                            labelAlignment:
+                                                ChartDataLabelAlignment.top),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                Card(
-                                  elevation: 5,
-                                  color: errorColor,
-                                  child: Container(
-                                    width: Get.width / 3,
-                                    height: 70,
-                                    padding: EdgeInsets.all(10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Icon(IconlyBold.close_square,
-                                            size: 30, color: whiteColor),
-                                        Text("Rejected\n3",
-                                            style:
-                                                listTitleTextStyle.copyWith(
-                                                    fontFamily: 'Poppins',
-                                                    color: whiteColor))
-                                      ],
-                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Card(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Container(
+                              margin: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("TOTAL OFFICE SUPPLIES OUT",
+                                      style: listTitleTextStyle.copyWith(
+                                          fontSize: 18)),
+                                  SfCircularChart(
+                                    legend: Legend(isVisible: true),
+                                    series: <
+                                        CircularSeries<SuppliesOutModel,
+                                            String>>[
+                                      PieSeries<SuppliesOutModel, String>(
+                                        dataSource: controller.soData,
+                                        radius: '100%',
+                                        xValueMapper:
+                                            (SuppliesOutModel tp, _) =>
+                                                tp.supply,
+                                        yValueMapper:
+                                            (SuppliesOutModel tp, _) => tp.out,
+                                        pointColorMapper:
+                                            (SuppliesOutModel tp, _) =>
+                                                tp.color,
+                                        strokeColor: blackColor,
+                                        strokeWidth: 2,
+                                        dataLabelSettings: DataLabelSettings(
+                                            isVisible: true,
+                                            useSeriesColor: true,
+                                            color: whiteColor,
+                                            textStyle: TextStyle(fontSize: 10),
+                                            showZeroValue: true,
+                                            labelAlignment:
+                                                ChartDataLabelAlignment.top),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Container(
-                            margin: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("TRIP PURPOSE",
-                                    style: listTitleTextStyle.copyWith(
-                                        fontSize: 18)),
-                                SfCartesianChart(
-                                  primaryXAxis: CategoryAxis(),
-                                  isTransposed: true,
-                                  series: <
-                                      CartesianSeries<TripPurposeModel,
-                                          String>>[
-                                    BarSeries<TripPurposeModel, String>(
-                                      dataSource: controller.tpData,
-                                      xValueMapper:
-                                          (TripPurposeModel tp, _) =>
-                                              tp.requestTrip,
-                                      yValueMapper:
-                                          (TripPurposeModel tp, _) => tp.trip,
-                                      pointColorMapper:
-                                          (TripPurposeModel tp, _) =>
-                                              tp.color,
-                                      dataLabelSettings: DataLabelSettings(
-                                          isVisible: true,
-                                          useSeriesColor: true,
-                                          color: whiteColor,
-                                          textStyle: TextStyle(fontSize: 10),
-                                          showZeroValue: true,
-                                          labelAlignment:
-                                              ChartDataLabelAlignment.top),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Container(
-                            margin: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("MEETING ROOM USED",
-                                    style: listTitleTextStyle.copyWith(
-                                        fontSize: 18)),
-                                SfCartesianChart(
-                                  primaryXAxis: CategoryAxis(),
-                                  series: <
-                                      CartesianSeries<MeetRoomUsedModel,
-                                          String>>[
-                                    BarSeries<MeetRoomUsedModel, String>(
-                                      dataSource: controller.mrData,
-                                      xValueMapper:
-                                          (MeetRoomUsedModel tp, _) =>
-                                              tp.room,
-                                      yValueMapper:
-                                          (MeetRoomUsedModel tp, _) =>
-                                              tp.used,
-                                      pointColorMapper:
-                                          (MeetRoomUsedModel tp, _) =>
-                                              tp.color,
-                                      dataLabelSettings: DataLabelSettings(
-                                          isVisible: true,
-                                          useSeriesColor: true,
-                                          color: whiteColor,
-                                          textStyle: TextStyle(fontSize: 10),
-                                          showZeroValue: true,
-                                          labelAlignment:
-                                              ChartDataLabelAlignment.top),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Container(
-                            margin: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("TOTAL OFFICE SUPPLIES OUT",
-                                    style: listTitleTextStyle.copyWith(
-                                        fontSize: 18)),
-                                SfCircularChart(
-                                  legend: Legend(isVisible: true),
-                                  series: <
-                                      CircularSeries<SuppliesOutModel,
-                                          String>>[
-                                    PieSeries<SuppliesOutModel, String>(
-                                      dataSource: controller.soData,
-                                      radius: '100%',
-                                      xValueMapper:
-                                          (SuppliesOutModel tp, _) =>
-                                              tp.supply,
-                                      yValueMapper:
-                                          (SuppliesOutModel tp, _) => tp.out,
-                                      pointColorMapper:
-                                          (SuppliesOutModel tp, _) =>
-                                              tp.color,
-                                      strokeColor: blackColor,
-                                      strokeWidth: 2,
-                                      dataLabelSettings: DataLabelSettings(
-                                          isVisible: true,
-                                          useSeriesColor: true,
-                                          color: whiteColor,
-                                          textStyle: TextStyle(fontSize: 10),
-                                          showZeroValue: true,
-                                          labelAlignment:
-                                              ChartDataLabelAlignment.top),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
             bottomNavigationBar: BottomNavigationBar(
