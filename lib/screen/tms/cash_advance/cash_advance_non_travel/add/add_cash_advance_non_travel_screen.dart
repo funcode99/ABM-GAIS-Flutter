@@ -123,6 +123,9 @@ class _AddCashAdvanceNonTravelScreenState
 
                               } : null,
                               child: Text("Save".tr),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: infoColor
+                              ),
                             ),
                           ],
                         ),
