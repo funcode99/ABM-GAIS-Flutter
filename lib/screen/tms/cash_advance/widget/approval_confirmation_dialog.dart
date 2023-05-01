@@ -100,12 +100,12 @@ class _ApprovalConfirmationDialogState
                     // underline: SizedBox(),
                     items: const [
                       DropdownMenuItem(
-                        child: Text("Name One"),
                         value: "1",
+                        child: Text("Name One"),
                       ),
                       DropdownMenuItem(
-                        child: Text("Name Two"),
                         value: "2",
+                        child: Text("Name Two"),
                       ),
                     ],
                     onChanged: (value) {},
@@ -173,8 +173,8 @@ class _ApprovalConfirmationDialogState
                     onPressed: () {
                       Get.back();
                     },
-                    child: Text("Approve".tr),
                     style: ElevatedButton.styleFrom(backgroundColor: infoColor),
+                    child: Text("Approve".tr),
                   ),
                 )
               ],

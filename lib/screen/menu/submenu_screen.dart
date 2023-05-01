@@ -8,6 +8,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/menu/submenu_controller.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/approval/list/approval_cash_advance_non_travel_list_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/cash_advance_non_travel_list/cash_advance_non_travel_list_screen.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_travel/approval/list/approval_cash_advance_travel_list_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_list/cash_advance_travel_list_screen.dart';
 import 'package:get/get.dart';
 
@@ -112,7 +113,7 @@ class SubmenuScreen extends StatelessWidget {
                                   const Text("Travel")
                                 ],
                               ),
-                              onTap: () => Get.off(const CashAdvanceTravelListScreen()),
+                              onTap: () => Get.off(const ApprovalCashAdvanceTravelListScreen()),
                             ),
                             GestureDetector(
                               child: Column(
