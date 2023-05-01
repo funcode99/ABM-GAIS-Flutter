@@ -12,7 +12,9 @@ class CashAdvanceListItem extends StatelessWidget {
         required this.subtitle,
         required this.status,
         required this.content,
-        required this.action});
+        required this.action,
+        this.onTap
+      });
 
   final String number;
   final String title;
@@ -20,79 +22,83 @@ class CashAdvanceListItem extends StatelessWidget {
   final String status;
   final Widget content;
   final List<Widget> action;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    minHeight: 50,
-                    minWidth: 50,
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      minHeight: 50,
+                      minWidth: 50,
+                    ),
+                    child: CustomAlertContainer(
+                      backgroundColor: infoColor,
+                      content: Text("No\n$number",
+                          style: listTitleTextStyle.copyWith(color: whiteColor),
+                          textAlign: TextAlign.center),
+                    ),
                   ),
-                  child: CustomAlertContainer(
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(title, style: listTitleTextStyle),
+                        Text(
+                          subtitle,
+                          style: listSubTitleTextStyle,
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                  ),
+                  CustomStatusContainer(
+                    backgroundColor: greenColor,
+                    status: status,
+                  )
+                ],
+              ),
+              const Divider(
+                height: 20,
+                color: greyColor,
+              ),
+              content,
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomAlertContainer(
                     backgroundColor: infoColor,
-                    content: Text("No\n$number",
-                        style: listTitleTextStyle.copyWith(color: whiteColor),
+                    content: Text("120.000",
+                        style: listSubTitleTextStyle.copyWith(
+                            color: whiteColor, fontSize: 14),
                         textAlign: TextAlign.center),
+                    padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 32),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(title, style: listTitleTextStyle),
-                      Text(
-                        subtitle,
-                        style: listSubTitleTextStyle,
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
+                  Row(
+                    children: action,
                   ),
-                ),
-                CustomStatusContainer(
-                  backgroundColor: greenColor,
-                  status: status,
-                )
-              ],
-            ),
-            const Divider(
-              height: 20,
-              color: greyColor,
-            ),
-            content,
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomAlertContainer(
-                  backgroundColor: infoColor,
-                  content: Text("120.000",
-                      style: listSubTitleTextStyle.copyWith(
-                          color: whiteColor, fontSize: 14),
-                      textAlign: TextAlign.center),
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 32),
-                ),
-                Row(
-                  children: action,
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

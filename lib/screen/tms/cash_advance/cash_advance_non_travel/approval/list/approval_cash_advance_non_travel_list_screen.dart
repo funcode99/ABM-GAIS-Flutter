@@ -8,25 +8,27 @@ import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_screen.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/cash_advance_non_travel_list/cash_advance_non_travel_list_controller.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_screen.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/approval/detail/approval_cash_advance_non_travel_detail_screen.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/approval/list/approval_cash_advance_non_travel_list_controller.dart';
 import 'package:gais/screen/tms/cash_advance/widget/cash_advance_item_list.dart';
 import 'package:get/get.dart';
-import 'package:iconly/iconly.dart';
 
-class CashAdvanceNonTravelListScreen extends StatefulWidget {
-  const CashAdvanceNonTravelListScreen({Key? key}) : super(key: key);
+class ApprovalCashAdvanceNonTravelListScreen extends StatefulWidget {
+  const ApprovalCashAdvanceNonTravelListScreen({Key? key}) : super(key: key);
 
   @override
-  State<CashAdvanceNonTravelListScreen> createState() => _CashAdvanceNonTravelListScreenState();
+  State<ApprovalCashAdvanceNonTravelListScreen> createState() => _ApprovalCashAdvanceNonTravelListScreenState();
 }
 
-class _CashAdvanceNonTravelListScreenState extends State<CashAdvanceNonTravelListScreen> {
+class _ApprovalCashAdvanceNonTravelListScreenState extends State<ApprovalCashAdvanceNonTravelListScreen> {
   List<Widget> _getData(){
     List<Widget> list = [];
     for(int i = 1; i < 10; i++){
       list.add(
           CashAdvanceListItem(
+            onTap: (){
+              Get.to(const ApprovalCashAdvanceNonTravelDetailScreen(approvalActionEnum: ApprovalActionEnum.none,));
+            },
             number: "$i",
             title: "TCA-ABM/1232/23.0$i",
             subtitle: "12/05/23",
@@ -80,26 +82,26 @@ class _CashAdvanceNonTravelListScreenState extends State<CashAdvanceNonTravelLis
             ),
             action: [
               CustomIconButton(
-                title: "Edit".tr,
-                iconData: IconlyBold.edit,
+                title: "Approve".tr,
+                iconData: Icons.check,
                 backgroundColor: successColor,
                 onPressed: () {
-                  Get.to(const EditCashAdvanceNonTravelScreen());
+                  Get.to(const ApprovalCashAdvanceNonTravelDetailScreen(approvalActionEnum: ApprovalActionEnum.approve,));
                 },
               ),
               const SizedBox(
                 width: 4,
               ),
               CustomIconButton(
-                title: "Delete".tr,
-                iconData: IconlyBold.delete,
+                title: "Reject".tr,
+                iconData: Icons.close,
                 backgroundColor: redColor,
                 onPressed: () {
-                  Get.showSnackbar(const GetSnackBar(message: "Not Implented Yet",));
+                  Get.to(const ApprovalCashAdvanceNonTravelDetailScreen(approvalActionEnum: ApprovalActionEnum.reject,));
                 },
               )
             ],
-            status: "Submitted".tr,
+            status: "Waiting Approval".tr,
           )
       );
     }
@@ -108,14 +110,14 @@ class _CashAdvanceNonTravelListScreenState extends State<CashAdvanceNonTravelLis
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CashAdvanceNonTravelListController>(
-        init: CashAdvanceNonTravelListController(),
+    return GetBuilder<ApprovalCashAdvanceNonTravelListController>(
+        init: ApprovalCashAdvanceNonTravelListController(),
         builder: (controller) {
           return Scaffold(
             backgroundColor: baseColor,
             appBar: AppBar(
               backgroundColor: whiteColor,
-              title: Text("cash_advance_non_travel".tr, style: appTitle),
+              title: Text("approval_cash_advance_non_travel".tr, style: appTitle),
               centerTitle: true,
               flexibleSpace: const TopBar(),
             ),
