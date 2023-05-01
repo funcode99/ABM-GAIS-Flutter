@@ -8,14 +8,16 @@ class AddCashAdvanceNonTravelController extends BaseController{
   final TextEditingController costCenterController = TextEditingController();
   final TextEditingController nominalController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  DateFormat dateFormat = DateFormat("dd/MM/yy");
 
   @override
   void onInit() {
-    dateController.text = "23/02/23";
-    eventController.text = "Event Name";
-    costCenterController.text = "1233212332";
-    nominalController.text = "100000";
-    remarksController.text = "Remarks";
+    dateController.text = "";
+    eventController.text = "";
+    costCenterController.text = "";
+    nominalController.text = "";
+    remarksController.text = "";
     super.onInit();
   }
 }
