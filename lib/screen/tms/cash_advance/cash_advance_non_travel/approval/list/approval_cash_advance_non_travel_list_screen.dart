@@ -8,11 +8,10 @@ import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_screen.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/approval/detail/approval_cash_advance_non_travel_detail_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/approval/list/approval_cash_advance_non_travel_list_controller.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/widget/cash_advance_item_list.dart';
 import 'package:get/get.dart';
-import 'package:iconly/iconly.dart';
 
 class ApprovalCashAdvanceNonTravelListScreen extends StatefulWidget {
   const ApprovalCashAdvanceNonTravelListScreen({Key? key}) : super(key: key);
@@ -27,6 +26,9 @@ class _ApprovalCashAdvanceNonTravelListScreenState extends State<ApprovalCashAdv
     for(int i = 1; i < 10; i++){
       list.add(
           CashAdvanceListItem(
+            onTap: (){
+              Get.to(const ApprovalCashAdvanceNonTravelDetailScreen(approvalActionEnum: ApprovalActionEnum.none,));
+            },
             number: "$i",
             title: "TCA-ABM/1232/23.0$i",
             subtitle: "12/05/23",
@@ -84,7 +86,7 @@ class _ApprovalCashAdvanceNonTravelListScreenState extends State<ApprovalCashAdv
                 iconData: Icons.check,
                 backgroundColor: successColor,
                 onPressed: () {
-                  Get.to(const EditCashAdvanceNonTravelScreen());
+                  Get.to(const ApprovalCashAdvanceNonTravelDetailScreen(approvalActionEnum: ApprovalActionEnum.approve,));
                 },
               ),
               const SizedBox(
@@ -95,7 +97,7 @@ class _ApprovalCashAdvanceNonTravelListScreenState extends State<ApprovalCashAdv
                 iconData: Icons.close,
                 backgroundColor: redColor,
                 onPressed: () {
-                  Get.showSnackbar(const GetSnackBar(message: "Not Implented Yet",));
+                  Get.to(const ApprovalCashAdvanceNonTravelDetailScreen(approvalActionEnum: ApprovalActionEnum.reject,));
                 },
               )
             ],
