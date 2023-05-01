@@ -18,6 +18,7 @@ class CustomPagination extends StatefulWidget {
     this.iconToLast,
     this.fontSize = 15,
     this.fontFamily,
+    this.margin
   });
 
   final Function(int) onPageChanged;
@@ -45,6 +46,8 @@ class CustomPagination extends StatefulWidget {
   final double fontSize;
 
   final String? fontFamily;
+
+  final EdgeInsets? margin;
 
   @override
   _CustomPaginationState createState() => _CustomPaginationState();
@@ -116,7 +119,7 @@ class _CustomPaginationState extends State<CustomPagination> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8.0),
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      margin: widget.margin ?? EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       decoration: BoxDecoration(
           color: whiteColor, borderRadius: BorderRadius.circular(8)),
       child: Row(

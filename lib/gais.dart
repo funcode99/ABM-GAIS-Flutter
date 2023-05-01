@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/screen/auth/login/login_screen.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_screen.dart';
 import 'package:gais/util/lang/app_translation.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +20,7 @@ class gais extends StatelessWidget {
         // useMaterial3: true,
         fontFamily: 'plus jakarta sans',
         // backgroundColor: whiteColor,
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: whiteColor,
           elevation: 0,
         ),
@@ -52,6 +53,37 @@ class gais extends StatelessWidget {
             ),
           ),
         ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(100, 40),
+            side: const BorderSide(color: infoColor),
+            foregroundColor: infoColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8)
+            ),
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 16
+            )
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+              minimumSize: MaterialStateProperty.all<Size>(Size(100, 40)),
+              shape: MaterialStateProperty.all<OutlinedBorder>(
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+              elevation: MaterialStateProperty.resolveWith<double>(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    return 0;
+                  }
+                  return 0; // Defer to the widget's default.
+                },
+              ),
+              textStyle: MaterialStateProperty.all<TextStyle>(
+                  const TextStyle(fontWeight: FontWeight.w700, fontSize: 16))),
+
+        )
       ),
       home: const LoginScreen(),
     );

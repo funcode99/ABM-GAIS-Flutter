@@ -6,6 +6,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/menu/submenu_controller.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/cash_advance_non_travel_list/cash_advance_non_travel_list_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_list/cash_advance_travel_list_screen.dart';
 import 'package:get/get.dart';
 
@@ -80,6 +81,7 @@ class SubmenuScreen extends StatelessWidget {
                                   const Text("Non Travel")
                                 ],
                               ),
+                              onTap: () => Get.off(const CashAdvanceNonTravelListScreen()),
                             ),
                           ],
                         ),
