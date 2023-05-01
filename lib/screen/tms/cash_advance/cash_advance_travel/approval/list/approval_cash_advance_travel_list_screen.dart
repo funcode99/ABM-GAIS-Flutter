@@ -7,141 +7,133 @@ import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/topbar.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/approval/detail/approval_cash_advance_non_travel_detail_screen.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_travel/approval/detail/approval_cash_advance_travel_detail_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/approval/list/approval_cash_advance_travel_list_controller.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_detail/cash_advance_travel_detail_screen.dart';
+import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
 import 'package:gais/screen/tms/cash_advance/widget/cash_advance_item_list.dart';
 import 'package:get/get.dart';
-import 'package:iconly/iconly.dart';
 
 class ApprovalCashAdvanceTravelListScreen extends StatefulWidget {
   const ApprovalCashAdvanceTravelListScreen({Key? key}) : super(key: key);
 
   @override
-  State<ApprovalCashAdvanceTravelListScreen> createState() => _ApprovalCashAdvanceTravelListScreenState();
+  State<ApprovalCashAdvanceTravelListScreen> createState() =>
+      _ApprovalCashAdvanceTravelListScreenState();
 }
 
-class _ApprovalCashAdvanceTravelListScreenState extends State<ApprovalCashAdvanceTravelListScreen> {
-  List<Widget> _getData(){
+class _ApprovalCashAdvanceTravelListScreenState
+    extends State<ApprovalCashAdvanceTravelListScreen> {
+  List<Widget> _getData() {
     List<Widget> list = [];
-    for(int i = 1; i < 10; i++){
-      list.add(
-        CashAdvanceListItem(
-            number: "$i",
-            title: "TCA-ABM/1232/23.0$i",
-            subtitle: "John Smith - $i",
-            content: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    for (int i = 1; i < 10; i++) {
+      list.add(CashAdvanceListItem(
+        onTap: () {
+          Get.to(const ApprovalCashAdvanceTravelDetailScreen(
+            approvalActionEnum: ApprovalActionEnum.none,
+          ));
+        },
+        number: "$i",
+        title: "TCA-ABM/1232/23.0$i",
+        subtitle: "John Smith - $i",
+        content: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
                 children: [
-                  Column(
-                    children: [
-                      Text(
-                        "Item".tr,
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: Colors.black,
-                            height: 1.5
-                        ),
-                      ),
-                      Text(
-                        "Bensin",
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: greyColor,
-                            height: 1.5
-                        ),
-                      ),
-                    ],
+                  Text(
+                    "Item".tr,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        fontSize: 14, color: Colors.black, height: 1.5),
                   ),
-                  Column(
-                    children: [
-                      Text(
-                        "Frequency".tr,
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: Colors.black,
-                            height: 1.5
-                        ),
-                      ),
-                      Text(
-                        "1",
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: greyColor,
-                            height: 1.5
-                        ),
-                      ),
-                    ],
+                  Text(
+                    "Bensin",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
                   ),
-                  Column(
-                    children: [
-                      Text(
-                        "Currency".tr,
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: Colors.black,
-                            height: 1.5
-                        ),
-                      ),
-                      Text(
-                        "Rupiah",
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: greyColor,
-                            height: 1.5
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        "Nominal".tr,
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: Colors.black,
-                            height: 1.5
-                        ),
-                      ),
-                      Text(
-                        "250.000",
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: greyColor,
-                            height: 1.5
-                        ),
-                      ),
-                    ],
-                  )
                 ],
               ),
-            ),
-          action: [
-            CustomIconButton(
-              title: "Approve".tr,
-              iconData: Icons.check,
-              backgroundColor: successColor,
-              onPressed: () {
-                Get.to(const ApprovalCashAdvanceNonTravelDetailScreen(approvalActionEnum: ApprovalActionEnum.approve,));
-              },
-            ),
-            const SizedBox(
-              width: 4,
-            ),
-            CustomIconButton(
-              title: "Reject".tr,
-              iconData: Icons.close,
-              backgroundColor: redColor,
-              onPressed: () {
-                Get.to(const ApprovalCashAdvanceNonTravelDetailScreen(approvalActionEnum: ApprovalActionEnum.reject,));
-              },
-            )
-          ],
-          status: "Pending".tr,
+              Column(
+                children: [
+                  Text(
+                    "Frequency".tr,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        fontSize: 14, color: Colors.black, height: 1.5),
+                  ),
+                  Text(
+                    "1",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    "Currency".tr,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        fontSize: 14, color: Colors.black, height: 1.5),
+                  ),
+                  Text(
+                    "Rupiah",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    "Nominal".tr,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        fontSize: 14, color: Colors.black, height: 1.5),
+                  ),
+                  Text(
+                    "250.000",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+        action: [
+          CustomIconButton(
+            title: "Approve".tr,
+            iconData: Icons.check,
+            backgroundColor: successColor,
+            onPressed: () {
+              Get.to(const ApprovalCashAdvanceTravelDetailScreen(
+                approvalActionEnum: ApprovalActionEnum.approve,
+              ));
+            },
+          ),
+          const SizedBox(
+            width: 4,
+          ),
+          CustomIconButton(
+            title: "Reject".tr,
+            iconData: Icons.close,
+            backgroundColor: redColor,
+            onPressed: () {
+              Get.to(const ApprovalCashAdvanceTravelDetailScreen(
+                approvalActionEnum: ApprovalActionEnum.reject,
+              ));
+            },
           )
-      );
+        ],
+        status: "Pending".tr,
+      ));
     }
     return list;
   }
@@ -172,25 +164,23 @@ class _ApprovalCashAdvanceTravelListScreenState extends State<ApprovalCashAdvanc
                 DropdownButtonFormField(
                   decoration: const InputDecoration(
                       contentPadding:
-                      EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
-                  icon: Icon(Icons.keyboard_arrow_down),
-                  hint: Text("Item"),
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  hint: const Text("Item"),
                   value: "Bensin",
                   isExpanded: true,
                   // underline: SizedBox(),
                   items: [
-                    DropdownMenuItem(
+                    const DropdownMenuItem(
                       child: Text("Bensin"),
                       value: "Bensin",
                     ),
-                    DropdownMenuItem(
+                    const DropdownMenuItem(
                       child: Text("Transport"),
                       value: "Transport",
                     ),
                   ],
-                  onChanged: (value) {
-
-                  },
+                  onChanged: (value) {},
                 ),
                 const SizedBox(
                   height: 12,
@@ -203,14 +193,16 @@ class _ApprovalCashAdvanceTravelListScreenState extends State<ApprovalCashAdvanc
                   readOnly: true,
                   controller: controller.dateRange,
                   decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
                       suffixIcon: Icon(Icons.calendar_month)),
                   onTap: () {
                     showCustomDateRangePicker(
                       context,
                       dismissible: true,
-                      minimumDate: DateTime.now().subtract(const Duration(days: 365)),
-                      maximumDate: DateTime.now().add(const Duration(days: 365)),
+                      minimumDate:
+                          DateTime.now().subtract(const Duration(days: 365)),
+                      maximumDate:
+                          DateTime.now().add(const Duration(days: 365)),
                       endDate: controller.endDate,
                       startDate: controller.startDate,
                       backgroundColor: Colors.white,
@@ -219,7 +211,7 @@ class _ApprovalCashAdvanceTravelListScreenState extends State<ApprovalCashAdvanc
                         controller.endDate = end;
                         controller.startDate = start;
                         controller.dateRange.text =
-                        "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                            "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                         controller.update();
                       },
                       onCancelClick: () {
@@ -234,7 +226,7 @@ class _ApprovalCashAdvanceTravelListScreenState extends State<ApprovalCashAdvanc
                   height: 12,
                 ),
                 CustomPagination(
-                  onPageChanged: (int ) {  },
+                  onPageChanged: (int) {},
                   pageTotal: 5,
                   margin: EdgeInsets.zero,
                 ),
