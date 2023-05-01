@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:form_validator/form_validator.dart';
-import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
-import 'package:gais/reusable/customdefaultbutton.dart';
-import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_controller.dart';
@@ -118,12 +114,15 @@ class _AddCashAdvanceNonTravelScreenState
                             OutlinedButton(
                               onPressed: () {},
                               child: Text("Cancel".tr),
+                              style: OutlinedButton.styleFrom(
+                                minimumSize: const Size(100, 40),
+                              ),
                             ),
-                            CustomDefaultButton(
+                            ElevatedButton(
                               onPressed: _isButtonEnabled ? (){
 
                               } : null,
-                              title: "Save".tr,
+                              child: Text("Save".tr),
                             ),
                           ],
                         ),

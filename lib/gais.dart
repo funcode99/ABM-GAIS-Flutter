@@ -67,6 +67,23 @@ class gais extends StatelessWidget {
             )
           ),
         ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+              minimumSize: MaterialStateProperty.all<Size>(Size(100, 40)),
+              shape: MaterialStateProperty.all<OutlinedBorder>(
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+              elevation: MaterialStateProperty.resolveWith<double>(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    return 0;
+                  }
+                  return 0; // Defer to the widget's default.
+                },
+              ),
+              textStyle: MaterialStateProperty.all<TextStyle>(
+                  const TextStyle(fontWeight: FontWeight.w700, fontSize: 16))),
+
+        )
       ),
       home: const LoginScreen(),
     );

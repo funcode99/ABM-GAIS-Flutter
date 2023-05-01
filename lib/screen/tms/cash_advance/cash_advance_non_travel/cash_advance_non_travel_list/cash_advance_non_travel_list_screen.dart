@@ -8,6 +8,7 @@ import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_screen.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_list/cash_advance_travel_list_controller.dart';
 import 'package:gais/screen/tms/cash_advance/widget/cash_advance_item_list.dart';
 import 'package:get/get.dart';
@@ -83,7 +84,7 @@ class _CashAdvanceNonTravelListScreenState extends State<CashAdvanceNonTravelLis
                 iconData: IconlyBold.edit,
                 backgroundColor: successColor,
                 onPressed: () {
-                  Get.showSnackbar(const GetSnackBar(message: "Not Implented Yet",));
+                  Get.to(const EditCashAdvanceNonTravelScreen());
                 },
               ),
               const SizedBox(
