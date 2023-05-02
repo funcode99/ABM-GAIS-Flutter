@@ -1,3 +1,5 @@
+import 'package:flutter_flavor/flutter_flavor.dart';
+
 class AppConst {
-  static const baseUrl = 'http://103.165.130.157:8086';
+  static final String baseUrl = FlavorConfig.instance.variables["base_url"];
 }

@@ -6,9 +6,10 @@ import 'package:gais/gais.dart';
 
 void main() {
   FlavorConfig(
-      name: "PROD",
+      name: "STG",
+      color: Colors.blue,
       location: BannerLocation.topEnd,
-      variables: prodEnvironment
+      variables: stgEnvironment
   );
 
   WidgetsFlutterBinding.ensureInitialized();
