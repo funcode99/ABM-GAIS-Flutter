@@ -11,6 +11,7 @@ import 'package:gais/reusable/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_controller.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_screen.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/widget/item_cash_advance_non_travel.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -115,9 +116,7 @@ class _AddCashAdvanceNonTravelScreenState
                                       iconData: IconlyBold.edit,
                                       backgroundColor: successColor,
                                       onPressed: () {
-                                        Get.showSnackbar(const GetSnackBar(
-                                          message: "Not Implented Yet",
-                                        ));
+                                        Get.to(const AddItemCashAdvanceNonTravelScreen());
                                       },
                                     ),
                                     const SizedBox(
@@ -170,14 +169,18 @@ class _AddCashAdvanceNonTravelScreenState
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             OutlinedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.back();
+                              },
                               style: OutlinedButton.styleFrom(
                                 minimumSize: const Size(100, 40),
                               ),
                               child: Text("Cancel".tr),
                             ),
                             ElevatedButton(
-                              onPressed: _isButtonEnabled ? () {} : null,
+                              onPressed: _isButtonEnabled ? () {
+                                Get.off(const EditCashAdvanceNonTravelScreen());
+                              } : null,
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: infoColor),
                               child: Text("Save".tr),
