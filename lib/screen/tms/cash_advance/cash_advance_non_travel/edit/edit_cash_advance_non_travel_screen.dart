@@ -7,6 +7,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customtextformfield.dart';
+import 'package:gais/reusable/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_controller.dart';
@@ -184,8 +185,10 @@ class _EditCashAdvanceNonTravelScreenState
                                   backgroundColor: successColor,
                                   onPressed: () async{
                                     final addedItem = await Get.to(const AddItemCashAdvanceNonTravelScreen());
-                                    controller.listItem.add(addedItem);
-                                    controller.update();
+                                    if (addedItem != null) {
+                                      controller.listItem.add(addedItem);
+                                      controller.update();
+                                    }
                                   },
                                 ) : const SizedBox(),
                               ],
@@ -217,8 +220,11 @@ class _EditCashAdvanceNonTravelScreenState
                                 iconData: IconlyBold.delete,
                                 backgroundColor: redColor,
                                 onPressed: () {
-                                  Get.showSnackbar(const GetSnackBar(
-                                    message: "Not Implented Yet",
+                                  Get.dialog(DeleteConfirmationDialog(
+                                    onDeletePressed: (){
+                                      print("deleted");
+                                      Get.back();
+                                    },
                                   ));
                                 },
                               )

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
-import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customtextformfield.dart';
+import 'package:gais/reusable/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_controller.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_screen.dart';
@@ -127,8 +127,11 @@ class _AddCashAdvanceNonTravelScreenState
                                       iconData: IconlyBold.delete,
                                       backgroundColor: redColor,
                                       onPressed: () {
-                                        Get.showSnackbar(const GetSnackBar(
-                                          message: "Not Implented Yet",
+                                        Get.dialog(DeleteConfirmationDialog(
+                                          onDeletePressed: (){
+                                            print("deleted");
+                                            Get.back();
+                                          },
                                         ));
                                       },
                                     )
@@ -141,8 +144,10 @@ class _AddCashAdvanceNonTravelScreenState
                             onPressed: () async {
                               final addedItem = await Get.to(
                                   const AddItemCashAdvanceNonTravelScreen());
-                              controller.listItem.add(addedItem);
-                              controller.update();
+                              if (addedItem != null) {
+                                controller.listItem.add(addedItem);
+                                controller.update();
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: infoColor),
