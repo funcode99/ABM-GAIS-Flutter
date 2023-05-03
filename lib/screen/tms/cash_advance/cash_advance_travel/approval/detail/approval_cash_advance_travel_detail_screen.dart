@@ -9,6 +9,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/approval/detail/approval_cash_advance_travel_detail_controller.dart';
 import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
 import 'package:gais/screen/tms/cash_advance/widget/approval_confirmation_dialog.dart';
+import 'package:gais/screen/tms/cash_advance/widget/cash_advance_item_list.dart';
 import 'package:gais/screen/tms/cash_advance/widget/reject_dialog.dart';
 import 'package:get/get.dart';
 
@@ -138,44 +139,6 @@ class _ApprovalCashAdvanceTravelDetailScreenState
                             const SizedBox(
                               height: 8,
                             ),
-                            const Text(
-                              "1"
-                            ),
-                            const Divider(
-                              height: 20,
-                              color: greyColor,
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            CustomTextFormField(
-                                readOnly: true,
-                                controller: controller.itemController,
-                                label: "Item".tr),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            CustomTextFormField(
-                                readOnly: true,
-                                controller: controller.frequencyController,
-                                label: "Frequency".tr),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            CustomTextFormField(
-                                readOnly: true,
-                                controller: controller.currencyController,
-                                label: "Currency".tr),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            CustomTextFormField(
-                                readOnly: true,
-                                controller: controller.amountController,
-                                label: "Amount".tr),
-                            const SizedBox(
-                              height: 8,
-                            ),
                             CustomTextFormField(
                                 readOnly: true,
                                 controller: controller.totalController,
@@ -183,11 +146,122 @@ class _ApprovalCashAdvanceTravelDetailScreenState
                             const SizedBox(
                               height: 8,
                             ),
-                            CustomTextFormField(
-                                readOnly: true,
-                                controller: controller.remarksController,
-                                label: "Remarks".tr)
+                            Text(
+                              "Details".tr,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.copyWith(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            const Divider(
+                              height: 20,
+                              color: greyColor,
+                            ),
+
                           ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: CashAdvanceListItem(
+                          number: "1",
+                          subtitle: "John Smith - 1",
+                          total: "250.000",
+                          content: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    Text(
+                                      "Item".tr,
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                    Text(
+                                      "Bensin",
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: greyColor,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "Frequency".tr,
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                    Text(
+                                      "1",
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: greyColor,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "Currency".tr,
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                    Text(
+                                      "Rupiah",
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: greyColor,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "Nominal".tr,
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                    Text(
+                                      "250.000",
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: greyColor,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          action: const [
+
+                          ],
+                          status: "Pending".tr,
                         ),
                       ),
                       const SizedBox(

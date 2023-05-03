@@ -100,11 +100,8 @@ class _CashAdvanceTravelDetailScreenState
                             const SizedBox(
                               height: 8,
                             ),
-                            const SizedBox(
-                              height: 8,
-                            ),
                             Text(
-                              "Details Item",
+                              "Details".tr,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1
@@ -117,106 +114,107 @@ class _CashAdvanceTravelDetailScreenState
                               height: 20,
                               color: greyColor,
                             ),
-
-                            CashAdvanceListItem(
-                              number: "1",
-                              title: "TCA-ABM/1232/23.01",
-                              subtitle: "John Smith - 1",
-                              total: "250.000",
-                              content: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: CashAdvanceListItem(
+                          number: "1",
+                          subtitle: "John Smith - 1",
+                          total: "250.000",
+                          content: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
                                   children: [
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Item".tr,
-                                          style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              height: 1.5
-                                          ),
-                                        ),
-                                        Text(
-                                          "Bensin",
-                                          style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                                              fontSize: 14,
-                                              color: greyColor,
-                                              height: 1.5
-                                          ),
-                                        ),
-                                      ],
+                                    Text(
+                                      "Item".tr,
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          height: 1.5
+                                      ),
                                     ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Frequency".tr,
-                                          style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              height: 1.5
-                                          ),
-                                        ),
-                                        Text(
-                                          "1",
-                                          style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                                              fontSize: 14,
-                                              color: greyColor,
-                                              height: 1.5
-                                          ),
-                                        ),
-                                      ],
+                                    Text(
+                                      "Bensin",
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: greyColor,
+                                          height: 1.5
+                                      ),
                                     ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Currency".tr,
-                                          style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              height: 1.5
-                                          ),
-                                        ),
-                                        Text(
-                                          "Rupiah",
-                                          style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                                              fontSize: 14,
-                                              color: greyColor,
-                                              height: 1.5
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Nominal".tr,
-                                          style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              height: 1.5
-                                          ),
-                                        ),
-                                        Text(
-                                          "250.000",
-                                          style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                                              fontSize: 14,
-                                              color: greyColor,
-                                              height: 1.5
-                                          ),
-                                        ),
-                                      ],
-                                    )
                                   ],
                                 ),
-                              ),
-                              action: const [
-
+                                Column(
+                                  children: [
+                                    Text(
+                                      "Frequency".tr,
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                    Text(
+                                      "1",
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: greyColor,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "Currency".tr,
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                    Text(
+                                      "Rupiah",
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: greyColor,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "Nominal".tr,
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                    Text(
+                                      "250.000",
+                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                          fontSize: 14,
+                                          color: greyColor,
+                                          height: 1.5
+                                      ),
+                                    ),
+                                  ],
+                                )
                               ],
-                              status: "Pending".tr,
                             ),
+                          ),
+                          action: const [
+
                           ],
+                          status: "Pending".tr,
                         ),
                       ),
                       const SizedBox(

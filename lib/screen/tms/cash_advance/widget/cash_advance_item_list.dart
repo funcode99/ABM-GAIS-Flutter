@@ -8,7 +8,7 @@ class CashAdvanceListItem extends StatelessWidget {
   const CashAdvanceListItem(
       {super.key,
         required this.number,
-        required this.title,
+        this.title,
         required this.subtitle,
         required this.status,
         required this.content,
@@ -18,7 +18,7 @@ class CashAdvanceListItem extends StatelessWidget {
       });
 
   final String number;
-  final String title;
+  final String? title;
   final String subtitle;
   final String status;
   final Widget content;
@@ -60,8 +60,10 @@ class CashAdvanceListItem extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(title, style: listTitleTextStyle),
+                        title != null ? Text(title ?? "", style: listTitleTextStyle) :
+                            const SizedBox(height: 6,),
                         Text(
                           subtitle,
                           style: listSubTitleTextStyle,
