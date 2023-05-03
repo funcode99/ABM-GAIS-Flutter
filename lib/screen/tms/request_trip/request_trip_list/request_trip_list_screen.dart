@@ -35,183 +35,215 @@ class RequestTripListScreen extends StatelessWidget {
                 SliverPersistentHeader(
                   pinned: true,
                   delegate: SliverAppBarDelegate(
-                    minHeight: 100,
+                    minHeight: 110,
                     maxHeight: 32,
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: whiteColor,
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: Get.width - 112,
-                            margin: EdgeInsets.only(right: 10),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: "Search",
-                                prefixIcon: Icon(IconlyLight.search),
-                              ),
-                            ),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 10,
+                          color: baseColor,
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 16,
+                            // vertical: 5,
                           ),
-                          CustomFilledButton(
-                            color: successColor,
-                            icon: IconlyBold.filter_2,
-                            width: 50,
-                            onPressed: () {
-                              controller.showFilter =
-                                  controller.showFilter! ? false : true;
-                              controller.update();
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    scrollable: true,
-                                    titlePadding: EdgeInsets.zero,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8))),
-                                    title: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 5),
-                                      decoration: BoxDecoration(
-                                          color: lightBlueColor,
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(8),
-                                              topLeft: Radius.circular(8))),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Filter"),
-                                          IconButton(
-                                              onPressed: () => Get.back(),
-                                              icon: Icon(Icons.close))
-                                        ],
-                                      ),
-                                    ),
-                                    content: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Purpose of trip",
-                                            style: listTitleTextStyle),
-                                        Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 6),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: whiteColor,
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: Get.width - 112,
+                                margin: EdgeInsets.only(right: 10),
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    hintText: "Search",
+                                    prefixIcon: Icon(IconlyLight.search),
+                                  ),
+                                ),
+                              ),
+                              CustomFilledButton(
+                                color: successColor,
+                                icon: IconlyBold.filter_2,
+                                width: 50,
+                                onPressed: () {
+                                  controller.showFilter =
+                                      controller.showFilter! ? false : true;
+                                  controller.update();
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        scrollable: true,
+                                        titlePadding: EdgeInsets.zero,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8))),
+                                        title: Container(
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 3),
-                                          width: Get.width,
+                                              horizontal: 20, vertical: 5),
                                           decoration: BoxDecoration(
-                                              color: whiteColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              border: Border.all(
-                                                  color: blackColor)),
-                                          child: DropdownButton(
-                                            icon:
-                                                Icon(Icons.keyboard_arrow_down),
-                                            hint: Text("Company Business"),
-                                            value: controller.purposeValue,
-                                            isExpanded: true,
-                                            underline: SizedBox(),
-                                            items: [
-                                              DropdownMenuItem(
-                                                child: Text("Company Business"),
-                                                value: "Company Business",
-                                              ),
-                                              DropdownMenuItem(
-                                                child: Text("Field Break"),
-                                                value: "Field Break",
-                                              ),
-                                              DropdownMenuItem(
-                                                child: Text("Site Visit"),
-                                                value: "Site Visit",
-                                              ),
-                                              DropdownMenuItem(
-                                                child:
-                                                    Text("Taxi Voucher Only"),
-                                                value: "Taxi Voucher",
-                                              ),
+                                              color: lightBlueColor,
+                                              borderRadius: BorderRadius.only(
+                                                  topRight: Radius.circular(8),
+                                                  topLeft: Radius.circular(8))),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text("Filter"),
+                                              IconButton(
+                                                  onPressed: () => Get.back(),
+                                                  icon: Icon(Icons.close))
                                             ],
-                                            onChanged: (value) {
-                                              controller.purposeValue = value;
-                                              controller.update();
-                                            },
                                           ),
                                         ),
-                                        Text("Date Range",
-                                            style: listTitleTextStyle),
-                                        Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 6),
-                                          child: TextField(
-                                            readOnly: true,
-                                            controller: controller.dateRange,
-                                            decoration: InputDecoration(
-                                                suffixIcon:
-                                                    Icon(Icons.calendar_month)),
-                                            onTap: () {
-                                              showCustomDateRangePicker(
-                                                context,
-                                                dismissible: true,
-                                                minimumDate: DateTime.now()
-                                                    .subtract(const Duration(
-                                                        days: 365)),
-                                                maximumDate: DateTime.now().add(
-                                                    const Duration(days: 365)),
-                                                endDate: controller.endDate,
-                                                startDate: controller.startDate,
-                                                backgroundColor: Colors.white,
-                                                primaryColor: Colors.green,
-                                                onApplyClick: (start, end) {
-                                                  controller.endDate = end;
-                                                  controller.startDate = start;
-                                                  controller.dateRange.text =
-                                                      "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                        content: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Purpose of trip",
+                                                style: listTitleTextStyle),
+                                            Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 6),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10, vertical: 3),
+                                              width: Get.width,
+                                              decoration: BoxDecoration(
+                                                  color: whiteColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  border: Border.all(
+                                                      color: blackColor)),
+                                              child: DropdownButton(
+                                                icon: Icon(
+                                                    Icons.keyboard_arrow_down),
+                                                hint: Text("Company Business"),
+                                                value: controller.purposeValue,
+                                                isExpanded: true,
+                                                underline: SizedBox(),
+                                                items: [
+                                                  DropdownMenuItem(
+                                                    child: Text(
+                                                        "Company Business"),
+                                                    value: "Company Business",
+                                                  ),
+                                                  DropdownMenuItem(
+                                                    child: Text("Field Break"),
+                                                    value: "Field Break",
+                                                  ),
+                                                  DropdownMenuItem(
+                                                    child: Text("Site Visit"),
+                                                    value: "Site Visit",
+                                                  ),
+                                                  DropdownMenuItem(
+                                                    child: Text(
+                                                        "Taxi Voucher Only"),
+                                                    value: "Taxi Voucher",
+                                                  ),
+                                                ],
+                                                onChanged: (value) {
+                                                  controller.purposeValue =
+                                                      value;
                                                   controller.update();
                                                 },
-                                                onCancelClick: () {
-                                                  controller.endDate = null;
-                                                  controller.startDate = null;
-                                                  controller.update();
+                                              ),
+                                            ),
+                                            Text("Date Range",
+                                                style: listTitleTextStyle),
+                                            Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 6),
+                                              child: TextField(
+                                                readOnly: true,
+                                                controller:
+                                                    controller.dateRange,
+                                                decoration: InputDecoration(
+                                                    suffixIcon: Icon(
+                                                        Icons.calendar_month)),
+                                                onTap: () {
+                                                  showCustomDateRangePicker(
+                                                    context,
+                                                    dismissible: true,
+                                                    minimumDate: DateTime.now()
+                                                        .subtract(
+                                                            const Duration(
+                                                                days: 365)),
+                                                    maximumDate: DateTime.now()
+                                                        .add(const Duration(
+                                                            days: 365)),
+                                                    endDate: controller.endDate,
+                                                    startDate:
+                                                        controller.startDate,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    primaryColor: Colors.green,
+                                                    onApplyClick: (start, end) {
+                                                      controller.endDate = end;
+                                                      controller.startDate =
+                                                          start;
+                                                      controller
+                                                              .dateRange.text =
+                                                          "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                                      controller.update();
+                                                    },
+                                                    onCancelClick: () {
+                                                      controller.endDate = null;
+                                                      controller.startDate =
+                                                          null;
+                                                      controller.update();
+                                                    },
+                                                  );
                                                 },
-                                              );
-                                            },
-                                          ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                    actionsAlignment: MainAxisAlignment.center,
-                                    actions: [
-                                      CustomFilledButton(
-                                        color: successColor,
-                                        title: "Filter",
-                                        width: 120,
-                                      )
-                                    ],
+                                        actionsAlignment:
+                                            MainAxisAlignment.center,
+                                        actions: [
+                                          CustomFilledButton(
+                                            color: successColor,
+                                            title: "Filter",
+                                            width: 120,
+                                          )
+                                        ],
+                                      );
+                                    },
                                   );
                                 },
-                              );
-                            },
-                          )
-                        ],
-                      ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 10,
+                          color: baseColor,
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 SliverPersistentHeader(
                   pinned: true,
                   delegate: SliverAppBarDelegate(
-                    minHeight: 60,
+                    minHeight: 70,
                     maxHeight: 32,
-                    child: CustomPagination(
-                      onPageChanged: (int pageNumber) {
-                        controller.currentPage = pageNumber;
-                      },
-                      pageTotal: 10,
-                      pageInit: controller.currentPage,
+                    child: Column(
+                      children: [
+                        CustomPagination(
+                          margin: EdgeInsets.symmetric(horizontal: 16),
+                          onPageChanged: (int pageNumber) {
+                            controller.currentPage = pageNumber;
+                          },
+                          pageTotal: 10,
+                          pageInit: controller.currentPage,
+                        ),
+                        Container(height: 10, color: baseColor),
+                      ],
                     ),
                   ),
                 ),

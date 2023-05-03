@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/screen/home/home_screen.dart';
@@ -22,6 +23,7 @@ class LoginController extends BaseController {
 
   @override
   void onInit() {
+    cekToken();
     usernameLoginController.text;
     passwordLoginController.text;
     super.onInit();
@@ -32,6 +34,14 @@ class LoginController extends BaseController {
     usernameLoginController.dispose();
     passwordLoginController.dispose();
     super.dispose();
+  }
+
+  Future cekToken() async {
+    print("token : ${await FlutterSecureStorage().read(key: "token")}");
+    print("role : ${await FlutterSecureStorage().read(key: "role")}");
+    if (await storage.readToken()!=null) {
+      Get.offAll(HomeScreen());
+    }
   }
 
   Future<void> doLogin() async {

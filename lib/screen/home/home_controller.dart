@@ -57,14 +57,7 @@ class HomeController extends BaseController {
     super.onInit();
     if (currentIndex != null) selectedIndex = currentIndex ?? 0;
     update();
-    cekToken();
+
   }
 
-  Future cekToken() async {
-    print("token : ${await FlutterSecureStorage().read(key: "token")}");
-    print("role : ${await FlutterSecureStorage().read(key: "role")}");
-    if (await storage.readToken()==null) {
-      Get.offAll(LoginScreen());
-    }
-  }
 }

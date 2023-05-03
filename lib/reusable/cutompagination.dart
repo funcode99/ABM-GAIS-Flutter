@@ -4,22 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 
 class CustomPagination extends StatefulWidget {
-  const CustomPagination({
-    required this.onPageChanged,
-    required this.pageTotal,
-    this.threshold = 4,
-    this.pageInit = 1,
-    this.colorPrimary = infoColor,
-    this.colorSub = Colors.white,
-    this.controlButton,
-    this.iconToFirst,
-    this.iconPrevious,
-    this.iconNext,
-    this.iconToLast,
-    this.fontSize = 15,
-    this.fontFamily,
-    this.margin
-  });
+  const CustomPagination(
+      {required this.onPageChanged,
+      required this.pageTotal,
+      this.threshold = 4,
+      this.pageInit = 1,
+      this.colorPrimary = infoColor,
+      this.colorSub = Colors.white,
+      this.controlButton,
+      this.iconToFirst ,
+      this.iconPrevious,
+      this.iconNext,
+      this.iconToLast,
+      this.fontSize = 15,
+      this.fontFamily,
+      this.margin});
 
   final Function(int) onPageChanged;
 
@@ -66,13 +65,13 @@ class _CustomPaginationState extends State<CustomPagination> {
   void initState() {
     this.currentPage = widget.pageInit;
     this.iconToFirst = widget.iconToFirst ??
-        Icon(Icons.keyboard_double_arrow_left, color: infoColor);
+        Icon(Icons.keyboard_double_arrow_left, color: widget.colorPrimary);
     this.iconPrevious = widget.iconPrevious ??
-        Icon(Icons.keyboard_arrow_left, color: infoColor);
+        Icon(Icons.keyboard_arrow_left, color: widget.colorPrimary);
     this.iconNext =
-        widget.iconNext ?? Icon(Icons.keyboard_arrow_right, color: infoColor);
+        widget.iconNext ?? Icon(Icons.keyboard_arrow_right, color: widget.colorPrimary);
     this.iconToLast = widget.iconToLast ??
-        Icon(Icons.keyboard_double_arrow_right, color: infoColor);
+        Icon(Icons.keyboard_double_arrow_right, color: widget.colorPrimary);
 
     _rangeSet();
 
@@ -119,9 +118,10 @@ class _CustomPaginationState extends State<CustomPagination> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8.0),
-      margin: widget.margin ?? EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      margin:
+          widget.margin ?? EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       decoration: BoxDecoration(
-          color: whiteColor, borderRadius: BorderRadius.circular(8)),
+          color: widget.colorSub, borderRadius: BorderRadius.circular(8)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

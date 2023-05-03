@@ -88,12 +88,20 @@ class CustomTripCard extends StatelessWidget {
                     ],
                   ),
                   status != null
-                      ? CustomFilledButton(
-                          color: greenColor,
-                          width: 100,
-                          height: 30,
-                          fontSize: 14,
-                          title: status ?? "",
+                      ? Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: greenColor,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Text(
+                            status ?? "",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: whiteColor,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
                         )
                       : Container()
                 ],

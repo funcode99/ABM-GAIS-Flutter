@@ -18,6 +18,9 @@ class ForgotPasswordScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
+              // backgroundColor: Color(0xffEFF1F3),
+              title: Image.asset("assets/img/ABM.png", height: 50),
+              centerTitle: true,
               flexibleSpace: const TopBar(),
               leading: CustomBackButton(),
             ),
