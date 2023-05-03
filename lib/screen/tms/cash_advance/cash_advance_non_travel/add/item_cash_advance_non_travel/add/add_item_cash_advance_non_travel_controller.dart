@@ -2,23 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
-class AddCashAdvanceNonTravelController extends BaseController{
-  final TextEditingController dateController = TextEditingController();
-  final TextEditingController eventController = TextEditingController();
+class AddItemCashAdvanceNonTravelController extends BaseController{
+  final TextEditingController itemCenterController = TextEditingController();
   final TextEditingController costCenterController = TextEditingController();
   final TextEditingController nominalController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  DateFormat dateFormat = DateFormat("dd/MM/yy");
-
-  List<ItemCashAdvanceNonTravelModel> listItem = <ItemCashAdvanceNonTravelModel>[].obs;
 
   @override
   void onInit() {
-    dateController.text = "";
-    eventController.text = "";
+    itemCenterController.text = "";
     costCenterController.text = "";
     nominalController.text = "";
     remarksController.text = "";

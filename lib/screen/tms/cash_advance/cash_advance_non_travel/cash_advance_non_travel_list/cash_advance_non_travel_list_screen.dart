@@ -6,6 +6,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
+import 'package:gais/reusable/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/cash_advance_non_travel_list/cash_advance_non_travel_list_controller.dart';
@@ -95,7 +96,12 @@ class _CashAdvanceNonTravelListScreenState extends State<CashAdvanceNonTravelLis
                 iconData: IconlyBold.delete,
                 backgroundColor: redColor,
                 onPressed: () {
-                  Get.showSnackbar(const GetSnackBar(message: "Not Implented Yet",));
+                  Get.dialog(DeleteConfirmationDialog(
+                    onDeletePressed: (){
+                      print("deleted");
+                      Get.back();
+                    },
+                  ));
                 },
               )
             ],
