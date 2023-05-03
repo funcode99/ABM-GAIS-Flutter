@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AddCashAdvanceNonTravelController extends BaseController{
@@ -10,6 +12,8 @@ class AddCashAdvanceNonTravelController extends BaseController{
   final TextEditingController remarksController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   DateFormat dateFormat = DateFormat("dd/MM/yy");
+
+  List<ItemCashAdvanceNonTravelModel> listItem = <ItemCashAdvanceNonTravelModel>[].obs;
 
   @override
   void onInit() {

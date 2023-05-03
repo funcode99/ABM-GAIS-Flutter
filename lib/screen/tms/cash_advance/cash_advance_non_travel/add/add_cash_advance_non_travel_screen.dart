@@ -1,14 +1,19 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
+import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_controller.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_screen.dart';
+import 'package:gais/screen/tms/cash_advance/widget/item_cash_advance_non_travel.dart';
 import 'package:get/get.dart';
+import 'package:iconly/iconly.dart';
 
 class AddCashAdvanceNonTravelScreen extends StatefulWidget {
   const AddCashAdvanceNonTravelScreen({Key? key}) : super(key: key);
@@ -82,7 +87,7 @@ class _AddCashAdvanceNonTravelScreenState
                             },
                             label: "Date".tr),
                         const SizedBox(
-                          height: 8,
+                          height: 32,
                         ),
                         Text(
                           "Details Item",
@@ -98,11 +103,47 @@ class _AddCashAdvanceNonTravelScreenState
                           height: 20,
                           color: greyColor,
                         ),
+                        ...controller.listItem
+                            .mapIndexed((index, element) => ItemCashAdvanceNonTravel(
+                                  number: "${index+1}",
+                                  title: element.item,
+                                  subtitle: element.costCenter,
+                                  nominal: element.nominal,
+                                  action: [
+                                    CustomIconButton(
+                                      title: "Edit".tr,
+                                      iconData: IconlyBold.edit,
+                                      backgroundColor: successColor,
+                                      onPressed: () {
+                                        Get.showSnackbar(const GetSnackBar(
+                                          message: "Not Implented Yet",
+                                        ));
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    CustomIconButton(
+                                      title: "Delete".tr,
+                                      iconData: IconlyBold.delete,
+                                      backgroundColor: redColor,
+                                      onPressed: () {
+                                        Get.showSnackbar(const GetSnackBar(
+                                          message: "Not Implented Yet",
+                                        ));
+                                      },
+                                    )
+                                  ],
+                                ))
+                            .toList(),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: () {
-                              Get.to(const AddItemCashAdvanceNonTravelScreen());
+                            onPressed: () async {
+                              final addedItem = await Get.to(
+                                  const AddItemCashAdvanceNonTravelScreen());
+                              controller.listItem.add(addedItem);
+                              controller.update();
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: infoColor),

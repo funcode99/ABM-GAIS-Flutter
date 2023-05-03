@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customformlabel.dart';
 import 'package:gais/reusable/customtextformfield.dart';
@@ -95,7 +96,9 @@ class _AddItemCashAdvanceNonTravelScreenState extends State<AddItemCashAdvanceNo
                               value: "Transport",
                             ),
                           ],
-                          onChanged: (value) {},
+                          onChanged: (value) {
+                            controller.costCenterController.text = value!;
+                          },
                         ),
                         const SizedBox(
                           height: 8,
@@ -122,14 +125,20 @@ class _AddItemCashAdvanceNonTravelScreenState extends State<AddItemCashAdvanceNo
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             OutlinedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.back();
+                              },
                               style: OutlinedButton.styleFrom(
                                 minimumSize: const Size(100, 40),
                               ),
                               child: Text("Cancel".tr),
                             ),
                             ElevatedButton(
-                              onPressed: _isButtonEnabled ? () {} : null,
+                              onPressed: _isButtonEnabled ? () {
+                                Get.back(result: ItemCashAdvanceNonTravelModel(
+                                    controller.itemCenterController.text, controller.costCenterController.text, controller.nominalController.text, controller.remarksController.text
+                                ));
+                              } : null,
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: infoColor),
                               child: Text("Save".tr),
