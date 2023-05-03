@@ -7,7 +7,7 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_controller.dart';
-import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_screen.dart';
 import 'package:get/get.dart';
 
 class AddCashAdvanceNonTravelScreen extends StatefulWidget {
@@ -20,7 +20,6 @@ class AddCashAdvanceNonTravelScreen extends StatefulWidget {
 
 class _AddCashAdvanceNonTravelScreenState
     extends State<AddCashAdvanceNonTravelScreen> {
-
   bool _isButtonEnabled = false;
 
   @override
@@ -43,15 +42,16 @@ class _AddCashAdvanceNonTravelScreenState
                 child: Form(
                   key: controller.formKey,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  onChanged: (){
+                  onChanged: () {
                     setState(() {
-                      _isButtonEnabled = controller.formKey.currentState!.validate();
+                      _isButtonEnabled =
+                          controller.formKey.currentState!.validate();
                     });
                   },
                   child: Container(
                     width: double.infinity,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 16),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,62 +70,76 @@ class _AddCashAdvanceNonTravelScreenState
                             isRequired: true,
                             readOnly: true,
                             controller: controller.dateController,
-                            onTap: ()async{
+                            onTap: () async {
                               DateTime? dateTime = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(DateTime.now().year),
-                                  lastDate: DateTime(DateTime.now().year + 1),
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(DateTime.now().year),
+                                lastDate: DateTime(DateTime.now().year + 1),
                               );
-                              controller.dateController.text = controller.dateFormat.format(dateTime!);
+                              controller.dateController.text =
+                                  controller.dateFormat.format(dateTime!);
                             },
                             label: "Date".tr),
                         const SizedBox(
                           height: 8,
                         ),
-                        CustomTextFormField(
-                            isRequired: true,
-                            controller: controller.costCenterController,
-                            label: "Cost Center".tr),
-                        const SizedBox(
-                          height: 8,
+                        Text(
+                          "Details Item",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              ?.copyWith(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600),
                         ),
-                        CustomTextFormField(
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              ThousandsSeparatorInputFormatter()
-                            ],
-                            inputType: TextInputType.number,
-                            isRequired: true,
-                            controller: controller.nominalController,
-                            label: "Nominal".tr),
-                        const SizedBox(
-                          height: 8,
+                        const Divider(
+                          height: 20,
+                          color: greyColor,
                         ),
-                        CustomTextFormField(
-                            controller: controller.remarksController,
-                            label: "Remarks".tr),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Get.to(const AddItemCashAdvanceNonTravelScreen());
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: infoColor),
+                            child: RichText(
+                              text: TextSpan(
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      ?.copyWith(
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700),
+                                  children: [
+                                    const TextSpan(text: "+ "),
+                                    TextSpan(text: "Add Item".tr)
+                                  ]),
+                            ),
+                          ),
+                        ),
                         const SizedBox(
-                          height: 32,
+                          height: 64,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             OutlinedButton(
                               onPressed: () {},
-                              child: Text("Cancel".tr),
                               style: OutlinedButton.styleFrom(
                                 minimumSize: const Size(100, 40),
                               ),
+                              child: Text("Cancel".tr),
                             ),
                             ElevatedButton(
-                              onPressed: _isButtonEnabled ? (){
-
-                              } : null,
-                              child: Text("Save".tr),
+                              onPressed: _isButtonEnabled ? () {} : null,
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: infoColor
-                              ),
+                                  backgroundColor: infoColor),
+                              child: Text("Save".tr),
                             ),
                           ],
                         ),

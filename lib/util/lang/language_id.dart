@@ -37,6 +37,8 @@ class LanguageID{
       "Approval Confirmation" : "Approval Confirmation",
       "Reject Reason" : "Reject Reason",
       "Are you sure want to approve this document?" : "Are you sure want to approve this document?",
+      "Add Item" : "Add Item",
+      "Details Item" : "Details Item",
     };
   }
 }
