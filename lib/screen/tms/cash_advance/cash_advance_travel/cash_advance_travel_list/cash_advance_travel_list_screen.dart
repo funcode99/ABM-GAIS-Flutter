@@ -159,9 +159,6 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
                     );
                   },
                 ),
-                const SizedBox(
-                  height: 12,
-                ),
                 CustomPagination(
                   onPageChanged: (int ) {  },
                   pageTotal: 5,
