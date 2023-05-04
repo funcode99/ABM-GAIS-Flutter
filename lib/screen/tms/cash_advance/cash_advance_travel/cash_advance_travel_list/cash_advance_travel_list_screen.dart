@@ -5,7 +5,9 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
+import 'package:gais/reusable/customtextformfield.dart';
 import 'package:gais/reusable/cutompagination.dart';
+import 'package:gais/reusable/dialog/filterdialog.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_detail/cash_advance_travel_detail_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_list/cash_advance_travel_list_controller.dart';
@@ -113,39 +115,48 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
                   onChanged: (string) {
                     print("test $string");
                   },
-                ),
-                Text("Date Range".tr, style: listTitleTextStyle),
-                const SizedBox(
-                  height: 6,
-                ),
-                TextField(
-                  readOnly: true,
-                  controller: controller.dateRange,
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                      suffixIcon: Icon(Icons.calendar_month)),
-                  onTap: () {
-                    showCustomDateRangePicker(
-                      context,
-                      dismissible: true,
-                      minimumDate: DateTime.now().subtract(const Duration(days: 365)),
-                      maximumDate: DateTime.now().add(const Duration(days: 365)),
-                      endDate: controller.endDate,
-                      startDate: controller.startDate,
-                      backgroundColor: Colors.white,
-                      primaryColor: Colors.green,
-                      onApplyClick: (start, end) {
-                        controller.endDate = end;
-                        controller.startDate = start;
-                        controller.dateRange.text =
-                        "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
-                        controller.update();
-                      },
-                      onCancelClick: () {
-                        controller.endDate = null;
-                        controller.startDate = null;
-                        controller.update();
-                      },
+                  onPressedFilter: (){
+                    Get.dialog(
+                      FilterDialog(
+                        onApplyFilter: () {
+                          Get.back();
+                        },
+                        children: [
+                          CustomTextFormField(
+                              readOnly: true,
+                              controller: controller.dateRange,
+                              suffixIcon: const Icon(
+                                  Icons.calendar_month),
+                              onTap: (){
+                                showCustomDateRangePicker(
+                                  context,
+                                  dismissible: true,
+                                  minimumDate: DateTime.now().subtract(const Duration(days: 365)),
+                                  maximumDate: DateTime.now().add(const Duration(days: 365)),
+                                  endDate: controller.endDate,
+                                  startDate: controller.startDate,
+                                  backgroundColor: Colors.white,
+                                  primaryColor: Colors.green,
+                                  onApplyClick: (start, end) {
+                                    controller.endDate = end;
+                                    controller.startDate = start;
+                                    controller.dateRange.text =
+                                    "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                    controller.update();
+                                  },
+                                  onCancelClick: () {
+                                    controller.endDate = null;
+                                    controller.startDate = null;
+                                    controller.update();
+                                  },
+                                );
+                              },
+                              label: "Date Range".tr),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                        ],
+                      )
                     );
                   },
                 ),

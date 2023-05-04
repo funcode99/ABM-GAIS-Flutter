@@ -14,6 +14,7 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.inputFormatters,
     this.onTap,
+    this.suffixIcon,
     this.inputType}) {
     if (isRequired) {
       validator ??= ValidationBuilder().required().build();
@@ -30,6 +31,7 @@ class CustomTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? inputType;
   final GestureTapCallback? onTap;
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +76,7 @@ class CustomTextFormField extends StatelessWidget {
                 ?.copyWith(
                 fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
             decoration: InputDecoration(
+              suffixIcon: suffixIcon,
                 contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 hintText: hintText ?? label,

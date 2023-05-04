@@ -43,7 +43,9 @@ class LanguageEN{
       "Add" : "Add",
       "Yes" : "Yes",
       "Are you sure want to delete this?" : "Are you sure want to delete this?",
-      "This will delete this data permanently, You cannot undo this action." : "This will delete this data permanently, You cannot undo this action."
+      "This will delete this data permanently, You cannot undo this action." : "This will delete this data permanently, You cannot undo this action.",
+      "Search" : "Search",
+      "Filter" : "Filter",
     };
   }
 }
