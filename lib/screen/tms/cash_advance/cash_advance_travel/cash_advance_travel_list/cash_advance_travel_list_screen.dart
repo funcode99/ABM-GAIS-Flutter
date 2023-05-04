@@ -110,7 +110,9 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
               padding: const EdgeInsets.symmetric(horizontal: 16),
               children: [
                 CustomSearchBar(
-                  onChanged: (string) {},
+                  onChanged: (string) {
+                    print("test $string");
+                  },
                 ),
                 Text("Date Range".tr, style: listTitleTextStyle),
                 const SizedBox(
