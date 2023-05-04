@@ -8,21 +8,23 @@ class CashAdvanceListItem extends StatelessWidget {
   const CashAdvanceListItem(
       {super.key,
         required this.number,
-        required this.title,
+        this.title,
         required this.subtitle,
         required this.status,
         required this.content,
         required this.action,
+        this.total = "120.000",
         this.onTap
       });
 
   final String number;
-  final String title;
+  final String? title;
   final String subtitle;
   final String status;
   final Widget content;
   final List<Widget> action;
   final VoidCallback? onTap;
+  final String? total;
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +60,10 @@ class CashAdvanceListItem extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(title, style: listTitleTextStyle),
+                        title != null ? Text(title ?? "", style: listTitleTextStyle) :
+                            const SizedBox(height: 6,),
                         Text(
                           subtitle,
                           style: listSubTitleTextStyle,
@@ -83,15 +87,15 @@ class CashAdvanceListItem extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomAlertContainer(
+                  total != null ? CustomAlertContainer(
                     backgroundColor: infoColor,
-                    content: Text("120.000",
+                    content: Text(total!,
                         style: listSubTitleTextStyle.copyWith(
                             color: whiteColor, fontSize: 14),
                         textAlign: TextAlign.center),
                     padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 32),
-                  ),
+                  ) : const SizedBox(),
                   Row(
                     children: action,
                   ),

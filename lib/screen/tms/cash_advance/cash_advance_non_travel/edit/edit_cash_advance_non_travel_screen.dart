@@ -129,6 +129,7 @@ class _EditCashAdvanceNonTravelScreenState
                             ),
                             CustomTextFormField(
                                 isRequired: true,
+                                readOnly: true,
                                 controller: controller.requestorController,
                                 label: "Requestor".tr),
                             const SizedBox(
@@ -136,6 +137,7 @@ class _EditCashAdvanceNonTravelScreenState
                             ),
                             CustomTextFormField(
                                 isRequired: true,
+                                readOnly: !_isOnEdit,
                                 controller: controller.eventController,
                                 label: "Event".tr),
                             const SizedBox(
@@ -145,7 +147,7 @@ class _EditCashAdvanceNonTravelScreenState
                                 isRequired: true,
                                 readOnly: true,
                                 controller: controller.dateController,
-                                onTap: () async {
+                                onTap: _isOnEdit ? () async {
                                   DateTime? dateTime = await showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
@@ -154,15 +156,15 @@ class _EditCashAdvanceNonTravelScreenState
                                   );
                                   controller.dateController.text =
                                       controller.dateFormat.format(dateTime!);
-                                },
+                                } : null,
                                 label: "Date".tr),
                             const SizedBox(
                               height: 8,
                             ),
                             CustomTextFormField(
-                                isRequired: true,
-                                controller: controller.costCenterController,
-                                label: "Cost Center".tr),
+                                readOnly: true,
+                                controller: controller.totalController,
+                                label: "Total".tr),
                             const SizedBox(
                               height: 16,
                             ),

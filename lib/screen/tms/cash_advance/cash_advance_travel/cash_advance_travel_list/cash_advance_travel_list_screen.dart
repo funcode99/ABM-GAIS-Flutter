@@ -32,48 +32,8 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
             content: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Column(
-                    children: [
-                      Text(
-                        "Item".tr,
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: Colors.black,
-                            height: 1.5
-                        ),
-                      ),
-                      Text(
-                        "Bensin",
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: greyColor,
-                            height: 1.5
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        "Frequency".tr,
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: Colors.black,
-                            height: 1.5
-                        ),
-                      ),
-                      Text(
-                        "1",
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: greyColor,
-                            height: 1.5
-                        ),
-                      ),
-                    ],
-                  ),
                   Column(
                     children: [
                       Text(
@@ -97,7 +57,7 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
                   Column(
                     children: [
                       Text(
-                        "Nominal".tr,
+                        "Reference".tr,
                         style: Theme.of(context).textTheme.bodyText1?.copyWith(
                             fontSize: 14,
                             color: Colors.black,
@@ -105,7 +65,7 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
                         ),
                       ),
                       Text(
-                        "250.000",
+                        "TRV-ABM/1232/23.04",
                         style: Theme.of(context).textTheme.bodyText1?.copyWith(
                             fontSize: 14,
                             color: greyColor,

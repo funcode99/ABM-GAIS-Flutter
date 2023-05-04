@@ -56,26 +56,6 @@ class _CashAdvanceNonTravelListScreenState extends State<CashAdvanceNonTravelLis
                       ),
                     ],
                   ),
-                  Column(
-                    children: [
-                      Text(
-                        "Cost Center".tr,
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: Colors.black,
-                            height: 1.5
-                        ),
-                      ),
-                      Text(
-                        "10000000994036",
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            fontSize: 14,
-                            color: greyColor,
-                            height: 1.5
-                        ),
-                      ),
-                    ],
-                  )
                 ],
               ),
             ),

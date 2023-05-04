@@ -40,67 +40,44 @@ class _ApprovalCashAdvanceTravelListScreenState
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                children: [
-                  Text(
-                    "Item".tr,
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        fontSize: 14, color: Colors.black, height: 1.5),
-                  ),
-                  Text(
-                    "Bensin",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    "Frequency".tr,
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        fontSize: 14, color: Colors.black, height: 1.5),
-                  ),
-                  Text(
-                    "1",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
-                  ),
-                ],
-              ),
+
               Column(
                 children: [
                   Text(
                     "Currency".tr,
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        fontSize: 14, color: Colors.black, height: 1.5),
+                        fontSize: 14,
+                        color: Colors.black,
+                        height: 1.5
+                    ),
                   ),
                   Text(
                     "Rupiah",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        fontSize: 14,
+                        color: greyColor,
+                        height: 1.5
+                    ),
                   ),
                 ],
               ),
               Column(
                 children: [
                   Text(
-                    "Nominal".tr,
+                    "Reference".tr,
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        fontSize: 14, color: Colors.black, height: 1.5),
+                        fontSize: 14,
+                        color: Colors.black,
+                        height: 1.5
+                    ),
                   ),
                   Text(
-                    "250.000",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                    "TRV-ABM/1232/23.04",
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        fontSize: 14,
+                        color: greyColor,
+                        height: 1.5
+                    ),
                   ),
                 ],
               )
@@ -157,33 +134,8 @@ class _ApprovalCashAdvanceTravelListScreenState
                 CustomSearchBar(
                   onChanged: (string) {},
                 ),
-                Text("Item".tr, style: listTitleTextStyle),
                 const SizedBox(
                   height: 6,
-                ),
-                DropdownButtonFormField(
-                  decoration: const InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
-                  icon: const Icon(Icons.keyboard_arrow_down),
-                  hint: const Text("Item"),
-                  value: "Bensin",
-                  isExpanded: true,
-                  // underline: SizedBox(),
-                  items: [
-                    const DropdownMenuItem(
-                      child: Text("Bensin"),
-                      value: "Bensin",
-                    ),
-                    const DropdownMenuItem(
-                      child: Text("Transport"),
-                      value: "Transport",
-                    ),
-                  ],
-                  onChanged: (value) {},
-                ),
-                const SizedBox(
-                  height: 12,
                 ),
                 Text("Date Range".tr, style: listTitleTextStyle),
                 const SizedBox(
