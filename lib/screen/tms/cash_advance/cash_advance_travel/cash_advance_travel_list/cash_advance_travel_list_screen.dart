@@ -113,7 +113,6 @@ class _CashAdvanceTravelListScreenState extends State<CashAdvanceTravelListScree
               children: [
                 CustomSearchBar(
                   onChanged: (string) {
-                    print("test $string");
                   },
                   onPressedFilter: (){
                     Get.dialog(
