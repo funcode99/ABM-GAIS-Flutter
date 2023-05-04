@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
@@ -10,6 +11,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/approval/detail/approval_cash_advance_non_travel_detail_controller.dart';
 import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
 import 'package:gais/screen/tms/cash_advance/widget/approval_confirmation_dialog.dart';
+import 'package:gais/screen/tms/cash_advance/widget/item_cash_advance_non_travel.dart';
 import 'package:gais/screen/tms/cash_advance/widget/reject_dialog.dart';
 import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
 import 'package:get/get.dart';
@@ -124,6 +126,7 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
                             ),
                             CustomTextFormField(
                                 isRequired: true,
+                                readOnly: true,
                                 controller: controller.requestorController,
                                 label: "Requestor".tr),
                             const SizedBox(
@@ -131,6 +134,7 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
                             ),
                             CustomTextFormField(
                                 isRequired: true,
+                                readOnly: true,
                                 controller: controller.eventController,
                                 label: "Event".tr),
                             const SizedBox(
@@ -140,42 +144,45 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
                                 isRequired: true,
                                 readOnly: true,
                                 controller: controller.dateController,
-                                onTap: () async {
-                                  DateTime? dateTime = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(DateTime.now().year),
-                                    lastDate: DateTime(DateTime.now().year + 1),
-                                  );
-                                  controller.dateController.text =
-                                      controller.dateFormat.format(dateTime!);
-                                },
                                 label: "Date".tr),
                             const SizedBox(
                               height: 8,
                             ),
                             CustomTextFormField(
-                                isRequired: true,
-                                controller: controller.costCenterController,
-                                label: "Cost Center".tr),
+                                readOnly: true,
+                                controller: controller.totalController,
+                                label: "Total".tr),
                             const SizedBox(
-                              height: 8,
+                              height: 16,
                             ),
-                            CustomTextFormField(
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  ThousandsSeparatorInputFormatter()
-                                ],
-                                inputType: TextInputType.number,
-                                isRequired: true,
-                                controller: controller.nominalController,
-                                label: "Nominal".tr),
-                            const SizedBox(
-                              height: 8,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Details Item",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      ?.copyWith(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
+                                )
+                              ],
                             ),
-                            CustomTextFormField(
-                                controller: controller.remarksController,
-                                label: "Remarks".tr),
+                            const Divider(
+                              height: 20,
+                              color: greyColor,
+                            ),
+                            ...controller.listItem
+                                .mapIndexed((index, element) => ItemCashAdvanceNonTravel(
+                              number: "${index+1}",
+                              title: element.item,
+                              subtitle: element.costCenter,
+                              nominal: element.nominal,
+                              action: [],
+                            ))
+                                .toList(),
                             const SizedBox(
                               height: 32,
                             )
