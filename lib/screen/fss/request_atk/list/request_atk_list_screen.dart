@@ -146,6 +146,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                   onPressedFilter: () {
                     Get.dialog(FilterDialog(
                       onApplyFilter: () {
+                        controller.applyFilter();
                         Get.back();
                       },
                       children: [
@@ -168,7 +169,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                             ),
                           ],
                           onChanged: (value) {
-                            controller.selectedValue = value!;
+                            controller.tempSelectedValue = value!;
                           },
                           label: "Item Name".tr,
                           value: controller.selectedValue,

@@ -8,7 +8,12 @@ class RequestATKListController extends BaseController{
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateTime? startDate;
   DateTime? endDate;
+  String tempSelectedValue = "";
   String selectedValue = "";
+
+  void applyFilter(){
+    selectedValue = tempSelectedValue;
+  }
 
   @override
   void onInit() {
