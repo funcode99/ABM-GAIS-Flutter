@@ -48,7 +48,7 @@ class LoginController extends BaseController {
     try {
       await repository
           .postLogin(usernameLoginController.text, passwordLoginController.text)
-          .then((value) => storage.saveToken(value.data?.accessToken ?? ""))
+          .then((value) => storage.saveToken(value.token?.data?.accessToken ?? ""))
           .then((value) => storage.saveRole("admin"))
           .then(
             (_) => Get.showSnackbar(

@@ -60,7 +60,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                             RichText(
                               text: TextSpan(
                                 text: 'Purpose of Trip ',
-                                style: listTitleTextStyle,
+                                style: formlabelTextStyle,
                                 children: const <TextSpan>[
                                   TextSpan(
                                       text: '*',
@@ -70,9 +70,13 @@ class PurposeOfTripScreen extends StatelessWidget {
                             ),
                             DropdownButtonFormField(
                               icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Company Business"),
+                              hint: Text(
+                                "Company Business",
+                                style: hintTextStyle,
+                              ),
                               value: controller.purposeValue,
                               isExpanded: true,
+                              style: TextStyle(fontSize: 14, color: blackColor),
                               // underline: SizedBox(),
                               items: [
                                 DropdownMenuItem(
@@ -105,7 +109,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                                 ? RichText(
                                     text: TextSpan(
                                       text: 'File Attachment ',
-                                      style: listTitleTextStyle,
+                                      style: formlabelTextStyle,
                                       children: const <TextSpan>[
                                         TextSpan(
                                             text: '*',
@@ -132,7 +136,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                             RichText(
                               text: TextSpan(
                                 text: 'Notes to Purpose of Trip ',
-                                style: listTitleTextStyle,
+                                style: formlabelTextStyle,
                                 children: const <TextSpan>[
                                   TextSpan(
                                       text: '',
@@ -144,6 +148,113 @@ class PurposeOfTripScreen extends StatelessWidget {
                               controller: controller.notesPurpose,
                               decoration: InputDecoration(
                                   hintText: "Notes", hintStyle: hintTextStyle),
+                            ),
+                            SizedBox(height: 10),
+                            Text("Itinerary", style: formlabelTextStyle),
+                            SizedBox(height: 10),
+                            RichText(
+                              text: TextSpan(
+                                text: 'From ',
+                                style: formlabelTextStyle,
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                      text: '*',
+                                      style: TextStyle(color: Colors.red)),
+                                ],
+                              ),
+                            ),
+                            DropdownButtonFormField(
+                              icon: Icon(Icons.keyboard_arrow_down),
+                              hint: Text(
+                                "City",
+                                style: hintTextStyle,
+                              ),
+                              value: controller.purposeValue,
+                              isExpanded: true,
+                              style: TextStyle(fontSize: 14, color: blackColor),
+                              // underline: SizedBox(),
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text("City"),
+                                  value: "Company Business",
+                                ),
+                              ],
+                              onChanged: (value) {
+                                controller.purposeValue = value;
+                                value == "Field Break" || value == "Site Visit"
+                                    ? controller.isAttachment = true
+                                    : controller.isAttachment = false;
+                                controller.update();
+                              },
+                            ),
+                            SizedBox(height: 8),
+                            RichText(
+                              text: TextSpan(
+                                text: 'To ',
+                                style: formlabelTextStyle,
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                      text: '*',
+                                      style: TextStyle(color: Colors.red)),
+                                ],
+                              ),
+                            ),
+                            DropdownButtonFormField(
+                              icon: Icon(Icons.keyboard_arrow_down),
+                              hint: Text(
+                                "City",
+                                style: hintTextStyle,
+                              ),
+                              value: controller.purposeValue,
+                              isExpanded: true,
+                              style: TextStyle(fontSize: 14, color: blackColor),
+                              // underline: SizedBox(),
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text("City"),
+                                  value: "Company Business",
+                                ),
+                              ],
+                              onChanged: (value) {
+                                controller.purposeValue = value;
+                                value == "Field Break" || value == "Site Visit"
+                                    ? controller.isAttachment = true
+                                    : controller.isAttachment = false;
+                                controller.update();
+                              },
+                            ),
+                            SizedBox(height: 8),
+                            RichText(
+                              text: TextSpan(
+                                text: 'Departure Date ',
+                                style: formlabelTextStyle,
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                      text: '*',
+                                      style: TextStyle(color: Colors.red)),
+                                ],
+                              ),
+                            ),
+                            TextFormField(
+                              readOnly: true,
+                              controller: controller.departureDate,
+                              decoration: InputDecoration(
+                                hintText: "Date",
+                                suffixIcon: Icon(Icons.calendar_month),
+
+                              ),
+                              onTap: () => showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(DateTime.now().year),
+                                      lastDate: DateTime.now()
+                                          .add(const Duration(days: 30)))
+                                  .then((date) {
+                                controller.selectedDate = date!;
+                                controller.departureDate.text =
+                                    controller.dateFormat.format(date);
+                                controller.update();
+                              }),
                             ),
                             SizedBox(height: 8),
                             Row(

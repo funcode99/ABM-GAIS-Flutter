@@ -1,15 +1,22 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:intl/intl.dart';
 
 class PurposeOfTripController extends BaseController{
+  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+
   final formKey = GlobalKey<FormState>();
   final notesPurpose = TextEditingController();
   final fileName = TextEditingController();
+  final departureDate = TextEditingController();
+  final zona = TextEditingController();
+  final tlkDay = TextEditingController();
+  final totalTLK = TextEditingController();
 
   String? purposeValue;
+  DateTime? selectedDate;
   bool? isAttachment = false;
 
   getSingleFile() async{
@@ -32,6 +39,11 @@ class PurposeOfTripController extends BaseController{
     super.onInit();
     notesPurpose.text;
     fileName.text;
+    departureDate.text;
+    zona.text;
+    tlkDay.text;
+    totalTLK.text;
+
   }
 
   @override
@@ -39,6 +51,10 @@ class PurposeOfTripController extends BaseController{
     super.dispose();
     notesPurpose.dispose();
     fileName.dispose();
+    departureDate.dispose();
+    zona.dispose();
+    tlkDay.dispose();
+    totalTLK.dispose();
   }
 
 }

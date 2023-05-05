@@ -12,7 +12,7 @@ class CustomPagination extends StatefulWidget {
       this.colorPrimary = infoColor,
       this.colorSub = Colors.white,
       this.controlButton,
-      this.iconToFirst ,
+      this.iconToFirst,
       this.iconPrevious,
       this.iconNext,
       this.iconToLast,
@@ -68,8 +68,8 @@ class _CustomPaginationState extends State<CustomPagination> {
         Icon(Icons.keyboard_double_arrow_left, color: widget.colorPrimary);
     this.iconPrevious = widget.iconPrevious ??
         Icon(Icons.keyboard_arrow_left, color: widget.colorPrimary);
-    this.iconNext =
-        widget.iconNext ?? Icon(Icons.keyboard_arrow_right, color: widget.colorPrimary);
+    this.iconNext = widget.iconNext ??
+        Icon(Icons.keyboard_arrow_right, color: widget.colorPrimary);
     this.iconToLast = widget.iconToLast ??
         Icon(Icons.keyboard_double_arrow_right, color: widget.colorPrimary);
 
