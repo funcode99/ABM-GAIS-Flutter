@@ -13,9 +13,7 @@ import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
 import 'package:gais/screen/tms/cash_advance/widget/approval_confirmation_dialog.dart';
 import 'package:gais/screen/tms/cash_advance/widget/item_cash_advance_non_travel.dart';
 import 'package:gais/screen/tms/cash_advance/widget/reject_dialog.dart';
-import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
 import 'package:get/get.dart';
-import 'package:iconly/iconly.dart';
 
 class ApprovalCashAdvanceNonTravelDetailScreen extends StatefulWidget {
   const ApprovalCashAdvanceNonTravelDetailScreen({Key? key, this.approvalActionEnum = ApprovalActionEnum.none}) : super(key: key);
