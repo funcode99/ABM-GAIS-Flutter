@@ -5,7 +5,7 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
-import 'package:gais/reusable/customtextformfield.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filterdialog.dart';
