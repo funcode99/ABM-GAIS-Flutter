@@ -47,6 +47,10 @@ class LanguageEN{
       "Search" : "Search",
       "Filter" : "Filter",
       "ATK Request" : "ATK Request",
+      "Item Name" : "Item Name",
+      "Qty" : "Qty",
+      "Pcs" : "Pcs",
+      "Completed" : "Completed",
     };
   }
 }

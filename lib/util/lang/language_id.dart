@@ -46,6 +46,11 @@ class LanguageID{
       "This will delete this data permanently, You cannot undo this action." : "This will delete this data permanently, You cannot undo this action.",
       "Search" : "Search",
       "Filter" : "Filter",
+      "ATK Request" : "ATK Request",
+      "Item Name" : "Item Name",
+      "Qty" : "Qty",
+      "Pcs" : "Pcs",
+      "Completed" : "Completed",
     };
   }
 }
