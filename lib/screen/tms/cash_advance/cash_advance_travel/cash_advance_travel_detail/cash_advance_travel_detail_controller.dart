@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
-import 'package:intl/intl.dart';
 
 class CashAdvanceTravelDetailController extends BaseController{
   final TextEditingController createdDateController = TextEditingController();

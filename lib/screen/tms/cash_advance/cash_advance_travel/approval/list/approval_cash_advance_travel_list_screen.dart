@@ -5,14 +5,14 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
-import 'package:gais/reusable/customtextformfield.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dialog/filterdialog.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/approval/detail/approval_cash_advance_travel_detail_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/approval/list/approval_cash_advance_travel_list_controller.dart';
 import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
-import 'package:gais/screen/tms/cash_advance/widget/cash_advance_item_list.dart';
 import 'package:get/get.dart';
 
 class ApprovalCashAdvanceTravelListScreen extends StatefulWidget {
@@ -28,7 +28,7 @@ class _ApprovalCashAdvanceTravelListScreenState
   List<Widget> _getData() {
     List<Widget> list = [];
     for (int i = 1; i < 10; i++) {
-      list.add(CashAdvanceListItem(
+      list.add(CommonListItem(
         onTap: () {
           Get.to(const ApprovalCashAdvanceTravelDetailScreen(
             approvalActionEnum: ApprovalActionEnum.none,
@@ -37,6 +37,7 @@ class _ApprovalCashAdvanceTravelListScreenState
         number: "$i",
         title: "TCA-ABM/1232/23.0$i",
         subtitle: "John Smith - $i",
+        total: "120.000",
         content: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           child: Row(

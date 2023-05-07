@@ -46,6 +46,21 @@ class LanguageID{
       "This will delete this data permanently, You cannot undo this action." : "This will delete this data permanently, You cannot undo this action.",
       "Search" : "Search",
       "Filter" : "Filter",
+      "ATK Request" : "ATK Request",
+      "Item Name" : "Item Name",
+      "Qty" : "Qty",
+      "Pcs" : "Pcs",
+      "Completed" : "Completed",
+      "Brand" : "Brand",
+      "Quantity" : "Quantity",
+      "UOM" : "UOM",
+      "Site" : "Site",
+      "Warehouse" : "Warehouse",
+      "form_min_value" : "The field should be greater or equal to @min",
+      "form_max_value" : "The field should be less or equal to @max",
+      "Book" : "Book",
+      "ATK Info" : "ATK Info",
+      "Created By" : "Created By",
     };
   }
 }

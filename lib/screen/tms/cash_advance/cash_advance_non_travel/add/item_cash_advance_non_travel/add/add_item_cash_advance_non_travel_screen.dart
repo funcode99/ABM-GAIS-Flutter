@@ -6,7 +6,7 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customformlabel.dart';
-import 'package:gais/reusable/customtextformfield.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_controller.dart';
 import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
@@ -116,6 +116,7 @@ class _AddItemCashAdvanceNonTravelScreenState extends State<AddItemCashAdvanceNo
                           height: 8,
                         ),
                         CustomTextFormField(
+                          multiLine: true,
                             controller: controller.remarksController,
                             label: "Remarks".tr),
                         const SizedBox(

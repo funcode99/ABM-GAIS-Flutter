@@ -5,15 +5,15 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
-import 'package:gais/reusable/customtextformfield.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dialog/filterdialog.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/approval/detail/approval_cash_advance_non_travel_detail_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/approval/list/approval_cash_advance_non_travel_list_controller.dart';
 import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
-import 'package:gais/screen/tms/cash_advance/widget/cash_advance_item_list.dart';
 import 'package:get/get.dart';
 
 class ApprovalCashAdvanceNonTravelListScreen extends StatefulWidget {
@@ -28,13 +28,14 @@ class _ApprovalCashAdvanceNonTravelListScreenState extends State<ApprovalCashAdv
     List<Widget> list = [];
     for(int i = 1; i < 10; i++){
       list.add(
-          CashAdvanceListItem(
+          CommonListItem(
             onTap: (){
               Get.to(const ApprovalCashAdvanceNonTravelDetailScreen(approvalActionEnum: ApprovalActionEnum.none,));
             },
             number: "$i",
             title: "TCA-ABM/1232/23.0$i",
             subtitle: "12/05/23",
+            total: "120.000",
             content: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               child: Row(
@@ -185,11 +186,6 @@ class _ApprovalCashAdvanceNonTravelListScreenState extends State<ApprovalCashAdv
                     child: const SizedBox()),
                 ..._getData(),
               ],
-            ),
-            floatingActionButton: FloatingActionButton(
-              backgroundColor: successColor,
-              onPressed: () => Get.to(const AddCashAdvanceNonTravelScreen()),
-              child: const Icon(Icons.add_rounded, size: 45),
             ),
             bottomNavigationBar: const BottomBar(menu: 1),
           );

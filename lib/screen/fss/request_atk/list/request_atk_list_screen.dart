@@ -3,52 +3,99 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
+import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filterdialog.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_screen.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/cash_advance_non_travel_list/cash_advance_non_travel_list_controller.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_screen.dart';
+import 'package:gais/screen/fss/request_atk/add/add_request_atk_screen.dart';
+import 'package:gais/screen/fss/request_atk/list/request_atk_list_controller.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-class CashAdvanceNonTravelListScreen extends StatefulWidget {
-  const CashAdvanceNonTravelListScreen({Key? key}) : super(key: key);
+class RequestATKListScreen extends StatefulWidget {
+  const RequestATKListScreen({Key? key}) : super(key: key);
 
   @override
-  State<CashAdvanceNonTravelListScreen> createState() =>
-      _CashAdvanceNonTravelListScreenState();
+  State<RequestATKListScreen> createState() => _RequestATKListScreenState();
 }
 
-class _CashAdvanceNonTravelListScreenState
-    extends State<CashAdvanceNonTravelListScreen> {
+class _RequestATKListScreenState extends State<RequestATKListScreen> {
   List<Widget> _getData() {
     List<Widget> list = [];
     for (int i = 1; i < 10; i++) {
       list.add(CommonListItem(
+        onTap: () {},
         number: "$i",
         title: "TCA-ABM/1232/23.0$i",
-        subtitle: "12/05/23",
-        total: "120.000",
+        subtitle: "John Smith - $i",
         content: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Column(
                 children: [
                   Text(
-                    "Event".tr,
+                    "Requestor".tr,
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
                         fontSize: 14, color: Colors.black, height: 1.5),
                   ),
                   Text(
-                    "Transport",
+                    "Kia B",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    "Item".tr,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        fontSize: 14, color: Colors.black, height: 1.5),
+                  ),
+                  Text(
+                    "Pensil",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    "Qty".tr,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        fontSize: 14, color: Colors.black, height: 1.5),
+                  ),
+                  Text(
+                    "2",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    "UOM".tr,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        fontSize: 14, color: Colors.black, height: 1.5),
+                  ),
+                  Text(
+                    "Pcs",
                     style: Theme.of(context)
                         .textTheme
                         .bodyText1
@@ -61,31 +108,19 @@ class _CashAdvanceNonTravelListScreenState
         ),
         action: [
           CustomIconButton(
-            title: "Edit".tr,
-            iconData: IconlyBold.edit,
-            backgroundColor: successColor,
-            onPressed: () {
-              Get.to(const EditCashAdvanceNonTravelScreen());
-            },
-          ),
-          const SizedBox(
-            width: 4,
-          ),
-          CustomIconButton(
+            backgroundColor: redColor,
             title: "Delete".tr,
             iconData: IconlyBold.delete,
-            backgroundColor: redColor,
             onPressed: () {
               Get.dialog(DeleteConfirmationDialog(
                 onDeletePressed: () {
-                  print("deleted");
                   Get.back();
                 },
               ));
             },
           )
         ],
-        status: "Submitted".tr,
+        status: "Completed".tr,
       ));
     }
     return list;
@@ -93,14 +128,15 @@ class _CashAdvanceNonTravelListScreenState
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CashAdvanceNonTravelListController>(
-        init: CashAdvanceNonTravelListController(),
+    return GetBuilder<RequestATKListController>(
+        init: RequestATKListController(),
         builder: (controller) {
           return Scaffold(
             backgroundColor: baseColor,
             appBar: AppBar(
+              leading: const CustomBackButton(),
               backgroundColor: whiteColor,
-              title: Text("cash_advance_non_travel".tr, style: appTitle),
+              title: Text("ATK Request".tr, style: appTitle),
               centerTitle: true,
               flexibleSpace: const TopBar(),
             ),
@@ -112,9 +148,38 @@ class _CashAdvanceNonTravelListScreenState
                   onPressedFilter: () {
                     Get.dialog(FilterDialog(
                       onApplyFilter: () {
+                        controller.applyFilter();
                         Get.back();
                       },
                       children: [
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        CustomDropDownFormField(
+                          isRequired: true,
+                          items: [
+                            DropdownMenuItem(
+                              value: "",
+                              child: Text("Item Name".tr),
+                            ),
+                            const DropdownMenuItem(
+                              value: "Bensin",
+                              child: Text("Bensin"),
+                            ),
+                            const DropdownMenuItem(
+                              value: "Transport",
+                              child: Text("Transport"),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            controller.tempSelectedValue = value!;
+                          },
+                          label: "Item Name".tr,
+                          value: controller.selectedValue,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
                         CustomTextFormField(
                             readOnly: true,
                             controller: controller.dateRange,
@@ -166,7 +231,7 @@ class _CashAdvanceNonTravelListScreenState
             ),
             floatingActionButton: FloatingActionButton(
               backgroundColor: successColor,
-              onPressed: () => Get.to(const AddCashAdvanceNonTravelScreen()),
+              onPressed: () => Get.to(const AddRequestATKScreen()),
               child: const Icon(Icons.add_rounded, size: 45),
             ),
             bottomNavigationBar: const BottomBar(menu: 1),

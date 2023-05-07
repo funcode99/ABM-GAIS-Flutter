@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -15,8 +16,9 @@ class CustomTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.onTap,
     this.suffixIcon,
+    this.multiLine = false,
     this.inputType}) {
-    if (isRequired) {
+    if (isRequired && !readOnly) {
       validator ??= ValidationBuilder().required().build();
     }
   }
@@ -32,6 +34,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? inputType;
   final GestureTapCallback? onTap;
   final Widget? suffixIcon;
+  final bool multiLine;
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +44,7 @@ class CustomTextFormField extends StatelessWidget {
         RichText(
           text: TextSpan(
             text: label,
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodyText1
-                ?.copyWith(
-                fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600),
+            style: formlabelTextStyle,
             children: <TextSpan>[
               TextSpan(
                   text: isRequired ? "*" : "",
@@ -60,6 +58,8 @@ class CustomTextFormField extends StatelessWidget {
         Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
           child: TextFormField(
+            minLines: multiLine ? 3 : 1,
+            maxLines: multiLine ? null : 3,
             onTap:onTap,
             enabled: onTap != null ? true : !readOnly,
             controller: controller,
@@ -76,6 +76,7 @@ class CustomTextFormField extends StatelessWidget {
                 ?.copyWith(
                 fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
             decoration: InputDecoration(
+              fillColor: readOnly ? neutralColor : whiteColor,
               suffixIcon: suffixIcon,
                 contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

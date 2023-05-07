@@ -4,8 +4,8 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/customalertcontainer.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
 
-class CashAdvanceListItem extends StatelessWidget {
-  const CashAdvanceListItem(
+class CommonListItem extends StatelessWidget {
+  const CommonListItem(
       {super.key,
         required this.number,
         this.title,
@@ -13,7 +13,7 @@ class CashAdvanceListItem extends StatelessWidget {
         required this.status,
         required this.content,
         required this.action,
-        this.total = "120.000",
+        this.total,
         this.onTap
       });
 
@@ -63,7 +63,7 @@ class CashAdvanceListItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         title != null ? Text(title ?? "", style: listTitleTextStyle) :
-                            const SizedBox(height: 6,),
+                        const SizedBox(height: 6,),
                         Text(
                           subtitle,
                           style: listSubTitleTextStyle,

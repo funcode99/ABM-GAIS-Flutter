@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
-import 'package:gais/reusable/customalertcontainer.dart';
 import 'package:gais/reusable/custombackbutton.dart';
-import 'package:gais/reusable/customstatuscontainer.dart';
-import 'package:gais/reusable/customtextformfield.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_detail/cash_advance_travel_detail_controller.dart';
-import 'package:gais/screen/tms/cash_advance/widget/cash_advance_item_list.dart';
 import 'package:get/get.dart';
 
 class CashAdvanceTravelDetailScreen extends StatefulWidget {
@@ -119,7 +116,7 @@ class _CashAdvanceTravelDetailScreenState
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: CashAdvanceListItem(
+                        child: CommonListItem(
                           number: "1",
                           subtitle: "John Smith - 1",
                           total: "250.000",
