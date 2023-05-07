@@ -105,7 +105,7 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                           height: 8,
                         ),
                         CustomTextFormField(
-                          validator: ValidationBuilder().required().min(controller.selectedItem.quantity).build(),
+                          validator: ValidationBuilder().required().max(controller.selectedItem.quantity).build(),
                             isRequired: true,
                             inputType: TextInputType.number,
                             inputFormatters: [

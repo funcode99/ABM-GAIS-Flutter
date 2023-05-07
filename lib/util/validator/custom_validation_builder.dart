@@ -11,4 +11,14 @@ extension CustomValidationBuilder on ValidationBuilder {
 
     return null;
   });
+
+  max(int maxValue) => add((value) {
+    if(int.parse(value!) > maxValue){
+      return "form_max_value".trParams({
+        "max" : maxValue.toString()
+      });
+    }
+
+    return null;
+  });
 }
