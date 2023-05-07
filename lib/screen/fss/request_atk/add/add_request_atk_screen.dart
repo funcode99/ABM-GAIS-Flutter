@@ -89,6 +89,10 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                         CustomTextFormField(
                           validator: ValidationBuilder().required().min(controller.selectedItem.quantity).build(),
                             isRequired: true,
+                            inputType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
                             controller: controller.quantityController,
                             label: "Quantity".tr),
                         const SizedBox(

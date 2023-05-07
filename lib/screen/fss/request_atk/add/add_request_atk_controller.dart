@@ -52,9 +52,9 @@ class AddRequestATKController extends BaseController {
     for (int i = 0; i < 10; i++) {
       listItem.add(TempModel(
           id: i,
-          quantity: 10,
-          itemName: "Item Name ${i}",
-          brandName: "Brand Name $i",
+          quantity: 10 + i,
+          itemName: "Item Name ${i+1}",
+          brandName: "Brand Name ${i+1}",
           uom: "pcs"));
       listWarehouse.add(
         WarehouseModel(id: i.toString(), name: "Warehouse $i")
@@ -74,6 +74,9 @@ class AddRequestATKController extends BaseController {
     if (selected != null) {
       brandController.text = selected.brandName;
       uomController.text = selected.uom;
+
+      selectedItem = selected;
+      update();
     }
   }
 
