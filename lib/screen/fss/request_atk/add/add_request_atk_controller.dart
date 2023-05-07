@@ -25,7 +25,7 @@ class WarehouseModel {
 }
 
 class AddRequestATKController extends BaseController {
-  final TextEditingController itemCenterController = TextEditingController();
+  final TextEditingController itemController = TextEditingController();
   final TextEditingController brandController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
   final TextEditingController uomController = TextEditingController();
@@ -41,7 +41,7 @@ class AddRequestATKController extends BaseController {
 
   @override
   void onInit() {
-    itemCenterController.text = "";
+    itemController.text = "";
     brandController.text = "";
     quantityController.text = "";
     uomController.text = "";

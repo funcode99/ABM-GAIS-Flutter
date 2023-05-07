@@ -3,16 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
-import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
 import 'package:gais/reusable/custombackbutton.dart';
-import 'package:gais/reusable/customformlabel.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/request_atk/add/add_request_atk_controller.dart';
-import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
+import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_screen.dart';
 import 'package:gais/util/validator/custom_validation_builder.dart';
 import 'package:get/get.dart';
+import 'package:iconly/iconly.dart';
 
 class AddRequestATKScreen extends StatefulWidget {
   const AddRequestATKScreen({super.key});
@@ -59,7 +58,26 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(
-                          height: 16,
+                          height: 8,
+                        ),
+                        Center(
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: const BoxDecoration(
+                                color: infoColor,
+                                shape: BoxShape.circle
+                            ),
+                            child: const Icon(IconlyBold.info_square, color: Colors.white,),
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            "ATK Info".tr,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 32,
                         ),
                         CustomDropDownFormField(
                           isRequired: true,
@@ -82,7 +100,7 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                             isRequired: true,
                             readOnly: true,
                             controller: controller.brandController,
-                            label: "Brand Name".tr),
+                            label: "Brand".tr),
                         const SizedBox(
                           height: 8,
                         ),
@@ -138,26 +156,17 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                           height: 32,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            OutlinedButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              style: OutlinedButton.styleFrom(
-                                minimumSize: const Size(100, 40),
-                              ),
-                              child: Text("Cancel".tr),
-                            ),
                             ElevatedButton(
                               onPressed: _isButtonEnabled
                                   ? () {
-                                      // Get.off();
-                                    }
+                                Get.off(const RequestATKDetailScreen());
+                              }
                                   : null,
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: infoColor),
-                              child: Text("Save".tr),
+                                  backgroundColor: successColor),
+                              child: Text("Book".tr),
                             ),
                           ],
                         ),
