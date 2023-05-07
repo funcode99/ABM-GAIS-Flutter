@@ -116,6 +116,7 @@ class _AddItemCashAdvanceNonTravelScreenState extends State<AddItemCashAdvanceNo
                           height: 8,
                         ),
                         CustomTextFormField(
+                          multiLine: true,
                             controller: controller.remarksController,
                             label: "Remarks".tr),
                         const SizedBox(
