@@ -187,11 +187,6 @@ class _ApprovalCashAdvanceNonTravelListScreenState extends State<ApprovalCashAdv
                 ..._getData(),
               ],
             ),
-            floatingActionButton: FloatingActionButton(
-              backgroundColor: successColor,
-              onPressed: () => Get.to(const AddCashAdvanceNonTravelScreen()),
-              child: const Icon(Icons.add_rounded, size: 45),
-            ),
             bottomNavigationBar: const BottomBar(menu: 1),
           );
         });
