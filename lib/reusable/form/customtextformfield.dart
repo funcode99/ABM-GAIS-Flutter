@@ -15,8 +15,9 @@ class CustomTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.onTap,
     this.suffixIcon,
+    this.multiLine = false,
     this.inputType}) {
-    if (isRequired) {
+    if (isRequired && !readOnly) {
       validator ??= ValidationBuilder().required().build();
     }
   }
@@ -32,6 +33,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? inputType;
   final GestureTapCallback? onTap;
   final Widget? suffixIcon;
+  final bool multiLine;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +62,8 @@ class CustomTextFormField extends StatelessWidget {
         Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
           child: TextFormField(
+            minLines: multiLine ? 3 : 1,
+            maxLines: multiLine ? null : 3,
             onTap:onTap,
             enabled: onTap != null ? true : !readOnly,
             controller: controller,

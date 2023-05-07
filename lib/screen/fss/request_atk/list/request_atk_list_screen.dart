@@ -13,6 +13,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/fss/request_atk/add/add_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/list/request_atk_list_controller.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -29,6 +30,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
     List<Widget> list = [];
     for (int i = 1; i < 10; i++) {
       list.add(CommonListItem(
+        onTap: () {},
         number: "$i",
         title: "TCA-ABM/1232/23.0$i",
         subtitle: "John Smith - $i",
@@ -111,7 +113,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
             iconData: IconlyBold.delete,
             onPressed: () {
               Get.dialog(DeleteConfirmationDialog(
-                onDeletePressed: (){
+                onDeletePressed: () {
                   Get.back();
                 },
               ));
@@ -154,6 +156,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                           height: 8,
                         ),
                         CustomDropDownFormField(
+                          isRequired: true,
                           items: [
                             DropdownMenuItem(
                               value: "",
@@ -225,6 +228,11 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                     child: const SizedBox()),
                 ..._getData(),
               ],
+            ),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: successColor,
+              onPressed: () => Get.to(const AddRequestATKScreen()),
+              child: const Icon(Icons.add_rounded, size: 45),
             ),
             bottomNavigationBar: const BottomBar(menu: 1),
           );

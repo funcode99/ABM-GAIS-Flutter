@@ -51,6 +51,12 @@ class LanguageEN{
       "Qty" : "Qty",
       "Pcs" : "Pcs",
       "Completed" : "Completed",
+      "Brand Name" : "Brand Name",
+      "Quantity" : "Quantity",
+      "UOM" : "UOM",
+      "Site" : "Site",
+      "Warehouse" : "Warehouse",
+      "form_min_value" : "The field should be greater or equal to @min",
     };
   }
 }
