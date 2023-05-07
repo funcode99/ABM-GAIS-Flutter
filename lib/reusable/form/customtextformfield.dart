@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -43,12 +44,7 @@ class CustomTextFormField extends StatelessWidget {
         RichText(
           text: TextSpan(
             text: label,
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodyText1
-                ?.copyWith(
-                fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600),
+            style: formlabelTextStyle,
             children: <TextSpan>[
               TextSpan(
                   text: isRequired ? "*" : "",
@@ -80,6 +76,7 @@ class CustomTextFormField extends StatelessWidget {
                 ?.copyWith(
                 fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
             decoration: InputDecoration(
+              fillColor: readOnly ? neutralColor : whiteColor,
               suffixIcon: suffixIcon,
                 contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

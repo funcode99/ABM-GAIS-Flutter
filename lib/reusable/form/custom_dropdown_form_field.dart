@@ -35,12 +35,7 @@ class CustomDropDownFormField<T> extends StatelessWidget {
         RichText(
           text: TextSpan(
             text: label,
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodyText1
-                ?.copyWith(
-                fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600),
+            style: formlabelTextStyle,
             children: <TextSpan>[
               TextSpan(
                   text: isRequired ? "*" : "",

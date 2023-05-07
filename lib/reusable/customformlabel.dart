@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gais/const/textstyle.dart';
 
 class CustomFormLabel extends StatelessWidget{
   const CustomFormLabel({super.key, required this.label, this.showRequired = false});
@@ -10,12 +11,7 @@ class CustomFormLabel extends StatelessWidget{
     return RichText(
       text: TextSpan(
         text: label,
-        style: Theme
-            .of(context)
-            .textTheme
-            .bodyText1
-            ?.copyWith(
-            fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600),
+        style: formlabelTextStyle,
         children: <TextSpan>[
           TextSpan(
               text: showRequired ? "*" : "",
