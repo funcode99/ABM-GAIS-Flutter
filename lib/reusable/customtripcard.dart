@@ -10,7 +10,7 @@ class CustomTripCard extends StatelessWidget {
   final String title;
   final String? subtitle;
   final String? status;
-  final String info;
+  final String? info;
   final Widget content;
   final bool? isEdit;
   final bool? isDelete;
@@ -28,7 +28,7 @@ class CustomTripCard extends StatelessWidget {
     this.subtitle,
     this.status,
     required this.content,
-    required this.info,
+    this.info,
     this.isEdit = false,
     this.isDelete = false,
     this.editAction,
@@ -115,16 +115,18 @@ class CustomTripCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: infoColor,
-                        borderRadius: BorderRadius.circular(4)),
-                    child: Text(info,
-                        style: listSubTitleTextStyle.copyWith(
-                            color: whiteColor, fontSize: 14),
-                        textAlign: TextAlign.center),
-                  ),
+                  info != null
+                      ? Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: infoColor,
+                              borderRadius: BorderRadius.circular(4)),
+                          child: Text(info ?? "",
+                              style: listSubTitleTextStyle.copyWith(
+                                  color: whiteColor, fontSize: 14),
+                              textAlign: TextAlign.center),
+                        )
+                      : Container(),
                   Row(
                     children: [
                       isDelete! && isEdit!

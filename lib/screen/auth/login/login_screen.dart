@@ -4,7 +4,6 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/auth/forgotpassword/forgot_password_screen.dart';
-import 'package:gais/screen/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:gais/screen/auth/login/login_controller.dart';
 import 'package:iconly/iconly.dart';
@@ -21,7 +20,7 @@ class LoginScreen extends StatelessWidget {
             backgroundColor: Colors.white,
             appBar: AppBar(
               // backgroundColor: Color(0xffEFF1F3),
-              title: Image.asset("assets/img/ABM.png", height: 50),
+              title: Image.asset("assets/img/abm.png"),
               centerTitle: true,
               flexibleSpace: TopBar(),
             ),
@@ -47,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                             RichText(
                               text: TextSpan(
                                 text: 'Username ',
-                                style: listTitleTextStyle,
+                                style: formlabelTextStyle,
                                 children: const <TextSpan>[
                                   TextSpan(
                                       text: '*',
@@ -65,7 +64,7 @@ class LoginScreen extends StatelessWidget {
                             RichText(
                               text: TextSpan(
                                 text: 'Password ',
-                                style: listTitleTextStyle,
+                                style: formlabelTextStyle,
                                 children: const <TextSpan>[
                                   TextSpan(
                                       text: '*',

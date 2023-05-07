@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/const/textstyle.dart';
 import 'package:gais/screen/auth/login/login_screen.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_screen.dart';
 import 'package:gais/util/lang/app_translation.dart';
 import 'package:get/get.dart';
 
@@ -37,7 +37,7 @@ class App extends StatelessWidget{
       theme: ThemeData(
         // useMaterial3: true,
           fontFamily: 'plus jakarta sans',
-          // backgroundColor: whiteColor,
+          backgroundColor: baseColor,
           appBarTheme: const AppBarTheme(
             backgroundColor: whiteColor,
             elevation: 0,
@@ -45,6 +45,9 @@ class App extends StatelessWidget{
           inputDecorationTheme: InputDecorationTheme(
             filled: true,
             fillColor: whiteColor,
+            labelStyle: hintTextStyle.copyWith(color: blackColor),
+            hintStyle: hintTextStyle,
+            contentPadding: EdgeInsets.symmetric(vertical: 1, horizontal: 10),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(

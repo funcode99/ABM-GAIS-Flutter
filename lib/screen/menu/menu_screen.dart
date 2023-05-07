@@ -3,6 +3,7 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_list_screen.dart';
 import 'package:gais/screen/fss/request_atk/list/request_atk_list_screen.dart';
+import 'package:gais/screen/fss/document_delivery/document_delivery_list/document_delivery_list_screen.dart';
 import 'package:gais/screen/menu/menu_controller.dart';
 import 'package:gais/screen/menu/submenu_screen.dart';
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
@@ -105,7 +106,7 @@ class MenuScreen extends StatelessWidget {
                                   const Text("Cash Advance"),
                                 ],
                               ),
-                              onTap: ()=> Get.off(const SubmenuScreen()),
+                              onTap: ()=> Get.off(const SubmenuScreen(), arguments: false),
                             ),
                           ],
                         ),
@@ -210,6 +211,7 @@ class MenuScreen extends StatelessWidget {
                                   )
                                 ],
                               ),
+                              onTap: ()=> Get.to(DocumentDeliveryListScreen()),
                             ),
                           ],
                         ),
@@ -281,7 +283,7 @@ class MenuScreen extends StatelessWidget {
                                   const Text("Cash Advance"),
                                 ],
                               ),
-                              onTap: ()=> Get.off(const SubmenuScreen()),
+                              onTap: ()=> Get.off(const SubmenuScreen(), arguments: true),
                             ),
                             GestureDetector(
                               child: Column(

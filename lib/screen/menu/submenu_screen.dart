@@ -78,8 +78,10 @@ class SubmenuScreen extends StatelessWidget {
                                     const Text("Travel")
                                   ],
                                 ),
-                                onTap: () => Get.off(
-                                    const CashAdvanceTravelListScreen()),
+                                onTap: () => controller.approval
+                                    ? Get.off(
+                                        const ApprovalCashAdvanceTravelListScreen())
+                                    : Get.off(CashAdvanceTravelListScreen()),
                               ),
                               GestureDetector(
                                 child: Column(
@@ -101,8 +103,11 @@ class SubmenuScreen extends StatelessWidget {
                                     const Text("Non Travel")
                                   ],
                                 ),
-                                onTap: () => Get.off(
-                                    const CashAdvanceNonTravelListScreen()),
+                                onTap: () => controller.approval
+                                    ? Get.off(
+                                        ApprovalCashAdvanceNonTravelListScreen())
+                                    : Get.off(
+                                        const CashAdvanceNonTravelListScreen()),
                               ),
                             ],
                           ),

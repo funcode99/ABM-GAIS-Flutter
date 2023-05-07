@@ -59,7 +59,7 @@ class RequesterInfoScreen extends StatelessWidget {
                             RichText(
                               text: TextSpan(
                                 text: 'Requestor ',
-                                style: listTitleTextStyle,
+                                style: formlabelTextStyle,
                                 children: const <TextSpan>[
                                   TextSpan(
                                       text: '*',
@@ -76,7 +76,7 @@ class RequesterInfoScreen extends StatelessWidget {
                             RichText(
                               text: TextSpan(
                                 text: 'SN ',
-                                style: listTitleTextStyle,
+                                style: formlabelTextStyle,
                                 children: const <TextSpan>[
                                   TextSpan(
                                       text: '*',
@@ -93,7 +93,7 @@ class RequesterInfoScreen extends StatelessWidget {
                             RichText(
                               text: TextSpan(
                                 text: 'Location ',
-                                style: listTitleTextStyle,
+                                style: formlabelTextStyle,
                                 children: const <TextSpan>[
                                   TextSpan(
                                       text: '*',
@@ -110,7 +110,7 @@ class RequesterInfoScreen extends StatelessWidget {
                             RichText(
                               text: TextSpan(
                                 text: 'Phone ',
-                                style: listTitleTextStyle,
+                                style: formlabelTextStyle,
                                 children: const <TextSpan>[
                                   TextSpan(
                                       text: '*',

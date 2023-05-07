@@ -19,7 +19,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             backgroundColor: Colors.white,
             appBar: AppBar(
               // backgroundColor: Color(0xffEFF1F3),
-              title: Image.asset("assets/img/ABM.png", height: 50),
+              title: Image.asset("assets/img/abm.png", height: 50),
               centerTitle: true,
               flexibleSpace: const TopBar(),
               leading: CustomBackButton(),
@@ -42,7 +42,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                             SizedBox(height: 25),
                             RichText(
                               text: TextSpan(
-                                text: 'Email ',style: listTitleTextStyle,
+                                text: 'Email ',style: formlabelTextStyle,
                                 children: const <TextSpan>[
                                   TextSpan(text: '*', style: TextStyle(color: Colors.red)),
                                 ],
