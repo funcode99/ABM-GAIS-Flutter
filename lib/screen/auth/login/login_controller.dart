@@ -1,6 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:gais/data/model/login_model.dart';
 import 'package:gais/screen/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -21,6 +22,8 @@ class LoginController extends BaseController {
   final usernameLoginController = TextEditingController();
   final passwordLoginController = TextEditingController();
 
+  LoginModel? loginModel;
+
   @override
   void onInit() {
     cekToken();
@@ -39,17 +42,26 @@ class LoginController extends BaseController {
   Future cekToken() async {
     print("token : ${await FlutterSecureStorage().read(key: "token")}");
     print("role : ${await FlutterSecureStorage().read(key: "role")}");
-    if (await storage.readToken()!=null) {
+    if (await storage.readToken() != null) {
       Get.offAll(HomeScreen());
     }
   }
 
   Future<void> doLogin() async {
     try {
+    //   var response = await repository.postLogin(
+    //       usernameLoginController.text, passwordLoginController.text);
+    //   loginModel = response;
+    //
+    //   loginModel?.token?.success == true
+    //       ? storage.saveToken(response.token?.data?.accessToken ?? "")
+    //       : printError();
+    //
+    //   print(response);
+
       await repository
           .postLogin(usernameLoginController.text, passwordLoginController.text)
-          .then((value) => storage.saveToken(value.token?.data?.accessToken ?? ""))
-          .then((value) => storage.saveRole("admin"))
+          .then((value) => storage.saveToken(value.token?.data?.accessToken ?? "token null"))
           .then(
             (_) => Get.showSnackbar(
               const GetSnackBar(
@@ -62,6 +74,7 @@ class LoginController extends BaseController {
           )
           .then((value) => Get.offAll(() => const HomeScreen()));
     } catch (e) {
+      print(e);
       Get.showSnackbar(
         const GetSnackBar(
           icon: Icon(

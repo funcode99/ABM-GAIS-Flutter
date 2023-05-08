@@ -24,7 +24,8 @@ class RepositoryImpl implements Repository {
       );
       return LoginModel.fromJson(response.data);
     } on DioError catch (e) {
-      throw Exception(e.response?.data);
+      // debugPrint("error login : ${LoginModel.fromJson(e?.response?.data)}");
+      return e.response?.data!;
     }
   }
 

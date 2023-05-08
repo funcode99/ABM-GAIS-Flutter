@@ -1,37 +1,32 @@
-/// users : [{"id":1,"username":"admin","email":"admin@mail.com","is_employee":null,"id_role":null,"id_approval_auth":null,"id_company":null,"id_site":null,"created_at":"2023-05-05T04:38:08.000000Z","created_by":null,"updated_at":"2023-05-05T04:38:08.000000Z","updated_by":null}]
-/// token : {"success":true,"message":"Success","data":{"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsInVzZXJzIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlzX2VtcGxveWVlIjpudWxsLCJpZF9yb2xlIjpudWxsLCJpZF9hcHByb3ZhbF9hdXRoIjpudWxsLCJpZF9jb21wYW55IjpudWxsLCJpZF9zaXRlIjpudWxsLCJjcmVhdGVkX2F0IjoiMjAyMy0wNS0wNVQwNDozODowOC4wMDAwMDBaIiwiY3JlYXRlZF9ieSI6bnVsbCwidXBkYXRlZF9hdCI6IjIwMjMtMDUtMDVUMDQ6Mzg6MDguMDAwMDAwWiIsInVwZGF0ZWRfYnkiOm51bGx9LCJpc3MiOiJodHRwOlwvXC8xMDMuMTY1LjEzMC4xNTc6ODA4NlwvYXBpXC9sb2dpbiIsImlhdCI6MTY4MzI2MTU3MiwibmJmIjoxNjgzMjYxNTcyLCJqdGkiOiIyUDB5eUx2RTFaSWtEN2lMIn0.IpM4CgUc0GQBjKMDfDCuUmWkOYNQiZO247wS3M092AA","token_type":"bearer","expires_in":0}}
+/// users : {"id":1,"username":"admin","email":"admin@mail.com","is_employee":0,"id_role":0,"id_approval_auth":0,"id_company":0,"id_site":0,"created_at":null,"created_by":null,"updated_at":null,"updated_by":null}
+/// token : {"success":true,"message":"Success","data":{"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsInVzZXJzIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlzX2VtcGxveWVlIjowLCJpZF9yb2xlIjowLCJpZF9hcHByb3ZhbF9hdXRoIjowLCJpZF9jb21wYW55IjowLCJpZF9zaXRlIjowLCJjcmVhdGVkX2F0IjpudWxsLCJjcmVhdGVkX2J5IjpudWxsLCJ1cGRhdGVkX2F0IjpudWxsLCJ1cGRhdGVkX2J5IjpudWxsfSwiaXNzIjoiaHR0cDpcL1wvMTAzLjE2NS4xMzAuMTU3OjgwODZcL2FwaVwvbG9naW4iLCJpYXQiOjE2ODM1MjgxNDIsIm5iZiI6MTY4MzUyODE0MiwianRpIjoiUGNQZDAweTVnUDBiek1QQiJ9.MaRhUmQYTMQSepTPcHLpXCYvS0i2YhCcxLgsMLCcRro","token_type":"bearer","expires_in":0}}
 
 class LoginModel {
   LoginModel({
-      List<Users>? users, 
+      Users? users, 
       Token? token,}){
     _users = users;
     _token = token;
 }
 
   LoginModel.fromJson(dynamic json) {
-    if (json['users'] != null) {
-      _users = [];
-      json['users'].forEach((v) {
-        _users?.add(Users.fromJson(v));
-      });
-    }
+    _users = json['users'] != null ? Users.fromJson(json['users']) : null;
     _token = json['token'] != null ? Token.fromJson(json['token']) : null;
   }
-  List<Users>? _users;
+  Users? _users;
   Token? _token;
-LoginModel copyWith({  List<Users>? users,
+LoginModel copyWith({  Users? users,
   Token? token,
 }) => LoginModel(  users: users ?? _users,
   token: token ?? _token,
 );
-  List<Users>? get users => _users;
+  Users? get users => _users;
   Token? get token => _token;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (_users != null) {
-      map['users'] = _users?.map((v) => v.toJson()).toList();
+      map['users'] = _users?.toJson();
     }
     if (_token != null) {
       map['token'] = _token?.toJson();
@@ -43,7 +38,7 @@ LoginModel copyWith({  List<Users>? users,
 
 /// success : true
 /// message : "Success"
-/// data : {"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsInVzZXJzIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlzX2VtcGxveWVlIjpudWxsLCJpZF9yb2xlIjpudWxsLCJpZF9hcHByb3ZhbF9hdXRoIjpudWxsLCJpZF9jb21wYW55IjpudWxsLCJpZF9zaXRlIjpudWxsLCJjcmVhdGVkX2F0IjoiMjAyMy0wNS0wNVQwNDozODowOC4wMDAwMDBaIiwiY3JlYXRlZF9ieSI6bnVsbCwidXBkYXRlZF9hdCI6IjIwMjMtMDUtMDVUMDQ6Mzg6MDguMDAwMDAwWiIsInVwZGF0ZWRfYnkiOm51bGx9LCJpc3MiOiJodHRwOlwvXC8xMDMuMTY1LjEzMC4xNTc6ODA4NlwvYXBpXC9sb2dpbiIsImlhdCI6MTY4MzI2MTU3MiwibmJmIjoxNjgzMjYxNTcyLCJqdGkiOiIyUDB5eUx2RTFaSWtEN2lMIn0.IpM4CgUc0GQBjKMDfDCuUmWkOYNQiZO247wS3M092AA","token_type":"bearer","expires_in":0}
+/// data : {"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsInVzZXJzIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlzX2VtcGxveWVlIjowLCJpZF9yb2xlIjowLCJpZF9hcHByb3ZhbF9hdXRoIjowLCJpZF9jb21wYW55IjowLCJpZF9zaXRlIjowLCJjcmVhdGVkX2F0IjpudWxsLCJjcmVhdGVkX2J5IjpudWxsLCJ1cGRhdGVkX2F0IjpudWxsLCJ1cGRhdGVkX2J5IjpudWxsfSwiaXNzIjoiaHR0cDpcL1wvMTAzLjE2NS4xMzAuMTU3OjgwODZcL2FwaVwvbG9naW4iLCJpYXQiOjE2ODM1MjgxNDIsIm5iZiI6MTY4MzUyODE0MiwianRpIjoiUGNQZDAweTVnUDBiek1QQiJ9.MaRhUmQYTMQSepTPcHLpXCYvS0i2YhCcxLgsMLCcRro","token_type":"bearer","expires_in":0}
 
 class Token {
   Token({
@@ -86,7 +81,7 @@ Token copyWith({  bool? success,
 
 }
 
-/// access_token : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsInVzZXJzIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlzX2VtcGxveWVlIjpudWxsLCJpZF9yb2xlIjpudWxsLCJpZF9hcHByb3ZhbF9hdXRoIjpudWxsLCJpZF9jb21wYW55IjpudWxsLCJpZF9zaXRlIjpudWxsLCJjcmVhdGVkX2F0IjoiMjAyMy0wNS0wNVQwNDozODowOC4wMDAwMDBaIiwiY3JlYXRlZF9ieSI6bnVsbCwidXBkYXRlZF9hdCI6IjIwMjMtMDUtMDVUMDQ6Mzg6MDguMDAwMDAwWiIsInVwZGF0ZWRfYnkiOm51bGx9LCJpc3MiOiJodHRwOlwvXC8xMDMuMTY1LjEzMC4xNTc6ODA4NlwvYXBpXC9sb2dpbiIsImlhdCI6MTY4MzI2MTU3MiwibmJmIjoxNjgzMjYxNTcyLCJqdGkiOiIyUDB5eUx2RTFaSWtEN2lMIn0.IpM4CgUc0GQBjKMDfDCuUmWkOYNQiZO247wS3M092AA"
+/// access_token : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsInVzZXJzIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlzX2VtcGxveWVlIjowLCJpZF9yb2xlIjowLCJpZF9hcHByb3ZhbF9hdXRoIjowLCJpZF9jb21wYW55IjowLCJpZF9zaXRlIjowLCJjcmVhdGVkX2F0IjpudWxsLCJjcmVhdGVkX2J5IjpudWxsLCJ1cGRhdGVkX2F0IjpudWxsLCJ1cGRhdGVkX2J5IjpudWxsfSwiaXNzIjoiaHR0cDpcL1wvMTAzLjE2NS4xMzAuMTU3OjgwODZcL2FwaVwvbG9naW4iLCJpYXQiOjE2ODM1MjgxNDIsIm5iZiI6MTY4MzUyODE0MiwianRpIjoiUGNQZDAweTVnUDBiek1QQiJ9.MaRhUmQYTMQSepTPcHLpXCYvS0i2YhCcxLgsMLCcRro"
 /// token_type : "bearer"
 /// expires_in : 0
 
@@ -132,14 +127,14 @@ Data copyWith({  String? accessToken,
 /// id : 1
 /// username : "admin"
 /// email : "admin@mail.com"
-/// is_employee : null
-/// id_role : null
-/// id_approval_auth : null
-/// id_company : null
-/// id_site : null
-/// created_at : "2023-05-05T04:38:08.000000Z"
+/// is_employee : 0
+/// id_role : 0
+/// id_approval_auth : 0
+/// id_company : 0
+/// id_site : 0
+/// created_at : null
 /// created_by : null
-/// updated_at : "2023-05-05T04:38:08.000000Z"
+/// updated_at : null
 /// updated_by : null
 
 class Users {
@@ -147,14 +142,14 @@ class Users {
       num? id, 
       String? username, 
       String? email, 
-      dynamic isEmployee, 
-      dynamic idRole, 
-      dynamic idApprovalAuth, 
-      dynamic idCompany, 
-      dynamic idSite, 
-      String? createdAt, 
+      num? isEmployee, 
+      num? idRole, 
+      num? idApprovalAuth, 
+      num? idCompany, 
+      num? idSite, 
+      dynamic createdAt, 
       dynamic createdBy, 
-      String? updatedAt, 
+      dynamic updatedAt, 
       dynamic updatedBy,}){
     _id = id;
     _username = username;
@@ -187,26 +182,26 @@ class Users {
   num? _id;
   String? _username;
   String? _email;
-  dynamic _isEmployee;
-  dynamic _idRole;
-  dynamic _idApprovalAuth;
-  dynamic _idCompany;
-  dynamic _idSite;
-  String? _createdAt;
+  num? _isEmployee;
+  num? _idRole;
+  num? _idApprovalAuth;
+  num? _idCompany;
+  num? _idSite;
+  dynamic _createdAt;
   dynamic _createdBy;
-  String? _updatedAt;
+  dynamic _updatedAt;
   dynamic _updatedBy;
 Users copyWith({  num? id,
   String? username,
   String? email,
-  dynamic isEmployee,
-  dynamic idRole,
-  dynamic idApprovalAuth,
-  dynamic idCompany,
-  dynamic idSite,
-  String? createdAt,
+  num? isEmployee,
+  num? idRole,
+  num? idApprovalAuth,
+  num? idCompany,
+  num? idSite,
+  dynamic createdAt,
   dynamic createdBy,
-  String? updatedAt,
+  dynamic updatedAt,
   dynamic updatedBy,
 }) => Users(  id: id ?? _id,
   username: username ?? _username,
@@ -224,14 +219,14 @@ Users copyWith({  num? id,
   num? get id => _id;
   String? get username => _username;
   String? get email => _email;
-  dynamic get isEmployee => _isEmployee;
-  dynamic get idRole => _idRole;
-  dynamic get idApprovalAuth => _idApprovalAuth;
-  dynamic get idCompany => _idCompany;
-  dynamic get idSite => _idSite;
-  String? get createdAt => _createdAt;
+  num? get isEmployee => _isEmployee;
+  num? get idRole => _idRole;
+  num? get idApprovalAuth => _idApprovalAuth;
+  num? get idCompany => _idCompany;
+  num? get idSite => _idSite;
+  dynamic get createdAt => _createdAt;
   dynamic get createdBy => _createdBy;
-  String? get updatedAt => _updatedAt;
+  dynamic get updatedAt => _updatedAt;
   dynamic get updatedBy => _updatedBy;
 
   Map<String, dynamic> toJson() {

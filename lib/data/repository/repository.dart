@@ -7,5 +7,4 @@ abstract class Repository {
   Future<LoginModel> postLogin(String username, String password);
 
   FutureOr<RequestTripListModel> getRequestTripList();
-
 }

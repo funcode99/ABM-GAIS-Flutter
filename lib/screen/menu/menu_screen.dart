@@ -15,8 +15,8 @@ class MenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<MenuController>(
-        init: MenuController(),
+    return GetBuilder<MenuGaisController>(
+        init: MenuGaisController(),
         builder: (controller) {
           return ListView(
             children: [
