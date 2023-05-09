@@ -59,7 +59,7 @@ class App extends StatelessWidget{
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
-                color: neutralColor,
+                color: Colors.black,
                 width: 1,
               ),
             ),
