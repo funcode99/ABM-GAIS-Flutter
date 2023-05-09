@@ -8,6 +8,7 @@ import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
+import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/dialog/filterdialog.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
@@ -147,7 +148,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                   CustomSearchBar(
                     onChanged: (string) {},
                     onPressedFilter: () {
-                      Get.dialog(FilterDialog(
+                      Get.bottomSheet(FilterBottomSheet(
                         onApplyFilter: () {
                           controller.applyFilter();
                           Get.back();
@@ -157,25 +158,24 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                             height: 8,
                           ),
                           CustomDropDownFormField(
-                            isRequired: true,
                             items: [
                               DropdownMenuItem(
                                 value: "",
-                                child: Text("Item Name".tr),
+                                child: Text("Status".tr),
                               ),
                               const DropdownMenuItem(
-                                value: "Bensin",
-                                child: Text("Bensin"),
+                                value: "Completed",
+                                child: Text("Completed"),
                               ),
                               const DropdownMenuItem(
-                                value: "Transport",
-                                child: Text("Transport"),
+                                value: "Pending",
+                                child: Text("Pending"),
                               ),
                             ],
                             onChanged: (value) {
                               controller.tempSelectedValue = value!;
                             },
-                            label: "Item Name".tr,
+                            label: "Status".tr,
                             value: controller.selectedValue,
                           ),
                           const SizedBox(

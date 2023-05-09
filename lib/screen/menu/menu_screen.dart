@@ -181,7 +181,7 @@ class MenuScreen extends StatelessWidget {
                                     ),
                                   ),
                                   const Text(
-                                    "Request ATK\n",
+                                    "ATK Request\n",
                                     textAlign: TextAlign.center,
                                   )
                                 ],
@@ -304,7 +304,7 @@ class MenuScreen extends StatelessWidget {
                                     ),
                                   ),
                                   const Text(
-                                    "Request ATK",
+                                    "ATK Request",
                                     textAlign: TextAlign.center,
                                   )
                                 ],
