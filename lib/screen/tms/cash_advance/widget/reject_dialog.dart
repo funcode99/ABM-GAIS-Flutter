@@ -157,7 +157,7 @@ class _RejectDialogState
                       onPressed: _isButtonEnabled ? () {
                         Get.back();
                       } : null,
-                      child: Text("Approve".tr),
+                      child: Text("Reject".tr),
                       style: ElevatedButton.styleFrom(backgroundColor: infoColor),
                     ),
                   )
