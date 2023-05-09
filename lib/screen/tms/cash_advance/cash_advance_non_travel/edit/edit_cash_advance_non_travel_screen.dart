@@ -10,6 +10,7 @@ import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_screen.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/detail/detail_item_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_controller.dart';
 import 'package:gais/screen/tms/cash_advance/widget/item_cash_advance_non_travel.dart';
 import 'package:get/get.dart';
@@ -88,29 +89,27 @@ class _EditCashAdvanceNonTravelScreenState
                           const SizedBox(
                             width: 16,
                           ),
-                          _isOnEdit ?
-                          ElevatedButton(
-                            onPressed: _isButtonEnabled ? (){
-                              setState(() {
-                                _isOnEdit = !_isOnEdit;
-                              });
-                            } : null,
-                            child: Text("Save".tr),
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(75, 30),
-                                backgroundColor: successColor
-                            ),
-                          ) :
-                          ElevatedButton(
-                            onPressed: (){
-
-                            },
-                            child: Text("Submit".tr),
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(75, 30),
-                                backgroundColor: successColor
-                            ),
-                          ),
+                          _isOnEdit
+                              ? ElevatedButton(
+                                  onPressed: _isButtonEnabled
+                                      ? () {
+                                          setState(() {
+                                            _isOnEdit = !_isOnEdit;
+                                          });
+                                        }
+                                      : null,
+                                  child: Text("Save".tr),
+                                  style: ElevatedButton.styleFrom(
+                                      minimumSize: const Size(75, 30),
+                                      backgroundColor: successColor),
+                                )
+                              : ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text("Submit".tr),
+                                  style: ElevatedButton.styleFrom(
+                                      minimumSize: const Size(75, 30),
+                                      backgroundColor: successColor),
+                                ),
                         ],
                       ),
                       const Divider(
@@ -146,16 +145,22 @@ class _EditCashAdvanceNonTravelScreenState
                                 isRequired: true,
                                 readOnly: true,
                                 controller: controller.dateController,
-                                onTap: _isOnEdit ? () async {
-                                  DateTime? dateTime = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(DateTime.now().year),
-                                    lastDate: DateTime(DateTime.now().year + 1),
-                                  );
-                                  controller.dateController.text =
-                                      controller.dateFormat.format(dateTime!);
-                                } : null,
+                                onTap: _isOnEdit
+                                    ? () async {
+                                        DateTime? dateTime =
+                                            await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate:
+                                              DateTime(DateTime.now().year),
+                                          lastDate:
+                                              DateTime(DateTime.now().year + 1),
+                                        );
+                                        controller.dateController.text =
+                                            controller.dateFormat
+                                                .format(dateTime!);
+                                      }
+                                    : null,
                                 label: "Date".tr),
                             const SizedBox(
                               height: 8,
@@ -176,22 +181,25 @@ class _EditCashAdvanceNonTravelScreenState
                                       .textTheme
                                       .bodyText1
                                       ?.copyWith(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600),
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600),
                                 ),
-                                _isOnEdit ? CustomIconButton(
-                                  title: "Add".tr,
-                                  iconData: IconlyBold.plus,
-                                  backgroundColor: successColor,
-                                  onPressed: () async{
-                                    final addedItem = await Get.to(const AddItemCashAdvanceNonTravelScreen());
-                                    if (addedItem != null) {
-                                      controller.listItem.add(addedItem);
-                                      controller.update();
-                                    }
-                                  },
-                                ) : const SizedBox(),
+                                _isOnEdit
+                                    ? CustomIconButton(
+                                        title: "Add".tr,
+                                        iconData: IconlyBold.plus,
+                                        backgroundColor: successColor,
+                                        onPressed: () async {
+                                          final addedItem = await Get.to(
+                                              const AddItemCashAdvanceNonTravelScreen());
+                                          if (addedItem != null) {
+                                            controller.listItem.add(addedItem);
+                                            controller.update();
+                                          }
+                                        },
+                                      )
+                                    : const SizedBox(),
                               ],
                             ),
                             const Divider(
@@ -199,38 +207,52 @@ class _EditCashAdvanceNonTravelScreenState
                               color: greyColor,
                             ),
                             ...controller.listItem
-                                .mapIndexed((index, element) => ItemCashAdvanceNonTravel(
-                              number: "${index+1}",
-                              title: element.item,
-                              subtitle: element.costCenter,
-                              nominal: element.nominal,
-                              action: _isOnEdit ? [
-                              CustomIconButton(
-                                title: "Edit".tr,
-                                iconData: IconlyBold.edit,
-                                backgroundColor: successColor,
-                                onPressed: () {
-                                  Get.to(const AddItemCashAdvanceNonTravelScreen());
-                                },
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              CustomIconButton(
-                                title: "Delete".tr,
-                                iconData: IconlyBold.delete,
-                                backgroundColor: redColor,
-                                onPressed: () {
-                                  Get.dialog(DeleteConfirmationDialog(
-                                    onDeletePressed: (){
-                                      print("deleted");
-                                      Get.back();
-                                    },
-                                  ));
-                                },
-                              )
-                              ] : [],
-                            ))
+                                .mapIndexed((index, element) =>
+                                    ItemCashAdvanceNonTravel(
+                                      number: "${index + 1}",
+                                      title: element.item,
+                                      subtitle: element.costCenter,
+                                      nominal: element.nominal,
+                                      onTap: !_isOnEdit
+                                          ? () {
+                                              Get.dialog(Dialog(
+                                                child:
+                                                    DetailItemCashAdvanceNonTravelScreen(
+                                                        item: element),
+                                              ));
+                                            }
+                                          : null,
+                                      action: _isOnEdit
+                                          ? [
+                                              CustomIconButton(
+                                                title: "Edit".tr,
+                                                iconData: IconlyBold.edit,
+                                                backgroundColor: successColor,
+                                                onPressed: () {
+                                                  Get.to(
+                                                      const AddItemCashAdvanceNonTravelScreen());
+                                                },
+                                              ),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              CustomIconButton(
+                                                title: "Delete".tr,
+                                                iconData: IconlyBold.delete,
+                                                backgroundColor: redColor,
+                                                onPressed: () {
+                                                  Get.dialog(
+                                                      DeleteConfirmationDialog(
+                                                    onDeletePressed: () {
+                                                      print("deleted");
+                                                      Get.back();
+                                                    },
+                                                  ));
+                                                },
+                                              )
+                                            ]
+                                          : [],
+                                    ))
                                 .toList(),
                             const SizedBox(
                               height: 32,
