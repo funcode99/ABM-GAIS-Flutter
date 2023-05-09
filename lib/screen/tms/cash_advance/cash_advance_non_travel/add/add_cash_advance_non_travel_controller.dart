@@ -7,21 +7,25 @@ import 'package:intl/intl.dart';
 class AddCashAdvanceNonTravelController extends BaseController{
   final TextEditingController dateController = TextEditingController();
   final TextEditingController eventController = TextEditingController();
-  final TextEditingController costCenterController = TextEditingController();
-  final TextEditingController nominalController = TextEditingController();
-  final TextEditingController remarksController = TextEditingController();
+  final TextEditingController totalController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   DateFormat dateFormat = DateFormat("dd/MM/yy");
 
-  List<ItemCashAdvanceNonTravelModel> listItem = <ItemCashAdvanceNonTravelModel>[].obs;
+  List<ItemCashAdvanceNonTravelModel> listItem = <ItemCashAdvanceNonTravelModel>[];
 
   @override
   void onInit() {
     dateController.text = "";
     eventController.text = "";
-    costCenterController.text = "";
-    nominalController.text = "";
-    remarksController.text = "";
+    totalController.text = listItem.length.toString();
     super.onInit();
   }
+
+  void addItem(ItemCashAdvanceNonTravelModel item){
+    listItem.add(item);
+
+    totalController.text = listItem.length.toString();
+    update();
+  }
+
 }
