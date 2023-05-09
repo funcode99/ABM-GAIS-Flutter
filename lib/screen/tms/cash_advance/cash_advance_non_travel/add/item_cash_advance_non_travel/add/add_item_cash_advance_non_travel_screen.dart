@@ -137,7 +137,7 @@ class _AddItemCashAdvanceNonTravelScreenState extends State<AddItemCashAdvanceNo
                             ElevatedButton(
                               onPressed: _isButtonEnabled ? () {
                                 Get.back(result: ItemCashAdvanceNonTravelModel(
-                                    controller.itemCenterController.text, controller.costCenterController.text, controller.nominalController.text, controller.remarksController.text
+                                    DateTime.now().microsecondsSinceEpoch.toString(), controller.itemCenterController.text, controller.costCenterController.text, controller.nominalController.text, controller.remarksController.text
                                 ));
                               } : null,
                               style: ElevatedButton.styleFrom(

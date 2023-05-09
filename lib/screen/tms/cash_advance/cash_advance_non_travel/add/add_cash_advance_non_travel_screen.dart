@@ -88,6 +88,13 @@ class _AddCashAdvanceNonTravelScreenState
                             },
                             label: "Date".tr),
                         const SizedBox(
+                          height: 8,
+                        ),
+                        CustomTextFormField(
+                            readOnly: true,
+                            controller: controller.totalController,
+                            label: "Total".tr),
+                        const SizedBox(
                           height: 32,
                         ),
                         Text(
@@ -129,7 +136,7 @@ class _AddCashAdvanceNonTravelScreenState
                                       onPressed: () {
                                         Get.dialog(DeleteConfirmationDialog(
                                           onDeletePressed: (){
-                                            print("deleted");
+                                            controller.removeItem(element);
                                             Get.back();
                                           },
                                         ));
@@ -145,8 +152,7 @@ class _AddCashAdvanceNonTravelScreenState
                               final addedItem = await Get.to(
                                   const AddItemCashAdvanceNonTravelScreen());
                               if (addedItem != null) {
-                                controller.listItem.add(addedItem);
-                                controller.update();
+                                controller.addItem(addedItem);
                               }
                             },
                             style: ElevatedButton.styleFrom(

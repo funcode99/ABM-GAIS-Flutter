@@ -22,7 +22,7 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController{
     totalController.text = "250.000";
 
     listItem.add(
-        ItemCashAdvanceNonTravelModel("Item Satu", "123321", "12000", "Remarks")
+        ItemCashAdvanceNonTravelModel("1", "Item Satu", "123321", "12000", "Remarks")
     );
     super.onInit();
   }

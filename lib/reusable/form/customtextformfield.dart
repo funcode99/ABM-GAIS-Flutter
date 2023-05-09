@@ -76,7 +76,7 @@ class CustomTextFormField extends StatelessWidget {
                 ?.copyWith(
                 fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
             decoration: InputDecoration(
-              fillColor: readOnly ? neutralColor : whiteColor,
+              fillColor: onTap != null || !readOnly ? whiteColor : neutralColor, //jika ontap!=null, maka state "active". jika bukan readyonly, maka state "active". Jika readonly dan ontap == null maka state "inactive"
               suffixIcon: suffixIcon,
                 contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
