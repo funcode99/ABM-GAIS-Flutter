@@ -140,94 +140,101 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
               centerTitle: true,
               flexibleSpace: const TopBar(),
             ),
-            body: ListView(
+            body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                CustomSearchBar(
-                  onChanged: (string) {},
-                  onPressedFilter: () {
-                    Get.dialog(FilterDialog(
-                      onApplyFilter: () {
-                        controller.applyFilter();
-                        Get.back();
-                      },
-                      children: [
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CustomDropDownFormField(
-                          isRequired: true,
-                          items: [
-                            DropdownMenuItem(
-                              value: "",
-                              child: Text("Item Name".tr),
-                            ),
-                            const DropdownMenuItem(
-                              value: "Bensin",
-                              child: Text("Bensin"),
-                            ),
-                            const DropdownMenuItem(
-                              value: "Transport",
-                              child: Text("Transport"),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            controller.tempSelectedValue = value!;
-                          },
-                          label: "Item Name".tr,
-                          value: controller.selectedValue,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CustomTextFormField(
-                            readOnly: true,
-                            controller: controller.dateRange,
-                            suffixIcon: const Icon(Icons.calendar_month),
-                            onTap: () {
-                              showCustomDateRangePicker(
-                                context,
-                                dismissible: true,
-                                minimumDate: DateTime.now()
-                                    .subtract(const Duration(days: 365)),
-                                maximumDate: DateTime.now()
-                                    .add(const Duration(days: 365)),
-                                endDate: controller.endDate,
-                                startDate: controller.startDate,
-                                backgroundColor: Colors.white,
-                                primaryColor: Colors.green,
-                                onApplyClick: (start, end) {
-                                  controller.endDate = end;
-                                  controller.startDate = start;
-                                  controller.dateRange.text =
-                                      "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
-                                  controller.update();
-                                },
-                                onCancelClick: () {
-                                  controller.endDate = null;
-                                  controller.startDate = null;
-                                  controller.update();
-                                },
-                              );
+              child: Column(
+                children: [
+                  CustomSearchBar(
+                    onChanged: (string) {},
+                    onPressedFilter: () {
+                      Get.dialog(FilterDialog(
+                        onApplyFilter: () {
+                          controller.applyFilter();
+                          Get.back();
+                        },
+                        children: [
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          CustomDropDownFormField(
+                            isRequired: true,
+                            items: [
+                              DropdownMenuItem(
+                                value: "",
+                                child: Text("Item Name".tr),
+                              ),
+                              const DropdownMenuItem(
+                                value: "Bensin",
+                                child: Text("Bensin"),
+                              ),
+                              const DropdownMenuItem(
+                                value: "Transport",
+                                child: Text("Transport"),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              controller.tempSelectedValue = value!;
                             },
-                            label: "Date Range".tr),
-                        const SizedBox(
-                          height: 8,
+                            label: "Item Name".tr,
+                            value: controller.selectedValue,
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          CustomTextFormField(
+                              readOnly: true,
+                              controller: controller.dateRange,
+                              suffixIcon: const Icon(Icons.calendar_month),
+                              onTap: () {
+                                showCustomDateRangePicker(
+                                  context,
+                                  dismissible: true,
+                                  minimumDate: DateTime.now()
+                                      .subtract(const Duration(days: 365)),
+                                  maximumDate: DateTime.now()
+                                      .add(const Duration(days: 365)),
+                                  endDate: controller.endDate,
+                                  startDate: controller.startDate,
+                                  backgroundColor: Colors.white,
+                                  primaryColor: Colors.green,
+                                  onApplyClick: (start, end) {
+                                    controller.endDate = end;
+                                    controller.startDate = start;
+                                    controller.dateRange.text =
+                                        "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                    controller.update();
+                                  },
+                                  onCancelClick: () {
+                                    controller.endDate = null;
+                                    controller.startDate = null;
+                                    controller.update();
+                                  },
+                                );
+                              },
+                              label: "Date Range".tr),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                        ],
+                      ));
+                    },
+                  ),
+                  CustomPagination(
+                    onPageChanged: (int) {},
+                    pageTotal: 5,
+                    margin: EdgeInsets.zero,
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [..._getData()],
                         ),
-                      ],
-                    ));
-                  },
-                ),
-                CustomPagination(
-                  onPageChanged: (int) {},
-                  pageTotal: 5,
-                  margin: EdgeInsets.zero,
-                ),
-                Container(
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                    child: const SizedBox()),
-                ..._getData(),
-              ],
+                      ))
+                ],
+              ),
             ),
             floatingActionButton: FloatingActionButton(
               backgroundColor: successColor,
