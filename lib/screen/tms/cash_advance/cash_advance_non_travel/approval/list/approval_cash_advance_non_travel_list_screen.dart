@@ -6,6 +6,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
+import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/dialog/filterdialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
@@ -125,67 +126,76 @@ class _ApprovalCashAdvanceNonTravelListScreenState extends State<ApprovalCashAdv
               centerTitle: true,
               flexibleSpace: const TopBar(),
             ),
-            body: ListView(
+            body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                CustomSearchBar(
-                  onChanged: (string) {
-                  },
-                  onPressedFilter: (){
-                    Get.dialog(
-                        FilterDialog(
-                          onApplyFilter: () {
-                            Get.back();
-                          },
-                          children: [
-                            CustomTextFormField(
-                                readOnly: true,
-                                controller: controller.dateRange,
-                                suffixIcon: const Icon(
-                                    Icons.calendar_month),
-                                onTap: (){
-                                  showCustomDateRangePicker(
-                                    context,
-                                    dismissible: true,
-                                    minimumDate: DateTime.now().subtract(const Duration(days: 365)),
-                                    maximumDate: DateTime.now().add(const Duration(days: 365)),
-                                    endDate: controller.endDate,
-                                    startDate: controller.startDate,
-                                    backgroundColor: Colors.white,
-                                    primaryColor: Colors.green,
-                                    onApplyClick: (start, end) {
-                                      controller.endDate = end;
-                                      controller.startDate = start;
-                                      controller.dateRange.text =
-                                      "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
-                                      controller.update();
-                                    },
-                                    onCancelClick: () {
-                                      controller.endDate = null;
-                                      controller.startDate = null;
-                                      controller.update();
-                                    },
-                                  );
-                                },
-                                label: "Date Range".tr),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                          ],
-                        )
-                    );
-                  },
-                ),
-                CustomPagination(
-                  onPageChanged: (int ) {  },
-                  pageTotal: 5,
-                  margin: EdgeInsets.zero,
-                ),
-                Container(
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                    child: const SizedBox()),
-                ..._getData(),
-              ],
+              child: Column(
+                children: [
+                  CustomSearchBar(
+                    onChanged: (string) {
+                    },
+                    onPressedFilter: (){
+                      Get.bottomSheet(
+                          FilterBottomSheet(
+                            onApplyFilter: () {
+                              Get.back();
+                            },
+                            children: [
+                              CustomTextFormField(
+                                  readOnly: true,
+                                  controller: controller.dateRange,
+                                  suffixIcon: const Icon(
+                                      Icons.calendar_month),
+                                  onTap: (){
+                                    showCustomDateRangePicker(
+                                      context,
+                                      dismissible: true,
+                                      minimumDate: DateTime.now().subtract(const Duration(days: 365)),
+                                      maximumDate: DateTime.now().add(const Duration(days: 365)),
+                                      endDate: controller.endDate,
+                                      startDate: controller.startDate,
+                                      backgroundColor: Colors.white,
+                                      primaryColor: Colors.green,
+                                      onApplyClick: (start, end) {
+                                        controller.endDate = end;
+                                        controller.startDate = start;
+                                        controller.dateRange.text =
+                                        "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                        controller.update();
+                                      },
+                                      onCancelClick: () {
+                                        controller.endDate = null;
+                                        controller.startDate = null;
+                                        controller.update();
+                                      },
+                                    );
+                                  },
+                                  label: "Date Range".tr),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                            ],
+                          )
+                      );
+                    },
+                  ),
+                  CustomPagination(
+                    onPageChanged: (int ) {  },
+                    pageTotal: 5,
+                    margin: EdgeInsets.zero,
+                    colorSub: infoColor,
+                    colorPrimary: whiteColor,
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [..._getData()],
+                        ),
+                      ))
+                ],
+              ),
             ),
             bottomNavigationBar: const BottomBar(menu: 1),
           );
