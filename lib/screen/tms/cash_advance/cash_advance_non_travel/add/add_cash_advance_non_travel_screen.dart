@@ -136,7 +136,7 @@ class _AddCashAdvanceNonTravelScreenState
                                       onPressed: () {
                                         Get.dialog(DeleteConfirmationDialog(
                                           onDeletePressed: (){
-                                            print("deleted");
+                                            controller.removeItem(element);
                                             Get.back();
                                           },
                                         ));
