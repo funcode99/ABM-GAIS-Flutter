@@ -1,13 +1,19 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/custombackbutton.dart';
+import 'package:gais/reusable/customiconbutton.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/list_item/common_add_item.dart';
+import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/request_atk/add/add_request_atk_controller.dart';
+import 'package:gais/screen/fss/request_atk/add/item_request_atk/add/add_item_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_screen.dart';
 import 'package:gais/util/validator/custom_validation_builder.dart';
 import 'package:get/get.dart';
@@ -60,112 +66,132 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                         const SizedBox(
                           height: 8,
                         ),
-                        Center(
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: const BoxDecoration(
-                                color: infoColor,
-                                shape: BoxShape.circle
+                        CustomTextFormField(
+                            isRequired: true,
+                            readOnly: true,
+                            controller: controller.requestorController,
+                            label: "Requestor".tr),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        CustomTextFormField(
+                            isRequired: true,
+                            readOnly: true,
+                            controller: controller.dateController,
+                            onTap: () async {
+                              DateTime? dateTime = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(DateTime.now().year),
+                                lastDate: DateTime(DateTime.now().year + 1),
+                              );
+                              controller.dateController.text =
+                                  controller.dateFormat.format(dateTime!);
+                            },
+                            label: "Date".tr),
+                        const SizedBox(
+                          height: 32,
+                        ),
+                        const SizedBox(
+                          height: 32,
+                        ),
+                        Text(
+                          "Details Item",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              ?.copyWith(
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const Divider(
+                          height: 20,
+                          color: greyColor,
+                        ),
+                        ...controller.listItem
+                            .mapIndexed((index, element) => CommonAddItem(
+                          number: "${index+1}",
+                          title: element.item,
+                          subtitle: element.brand,
+                          nominal: element.quantity.toString(),
+                          action: [
+                            CustomIconButton(
+                              title: "Edit".tr,
+                              iconData: IconlyBold.edit,
+                              backgroundColor: successColor,
+                              onPressed: () {
+                                // Get.to(const AddItemCashAdvanceNonTravelScreen());
+                              },
                             ),
-                            child: const Icon(IconlyBold.info_square, color: Colors.white,),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            CustomIconButton(
+                              title: "Delete".tr,
+                              iconData: IconlyBold.delete,
+                              backgroundColor: redColor,
+                              onPressed: () {
+                                Get.dialog(DeleteConfirmationDialog(
+                                  onDeletePressed: (){
+                                    controller.removeItem(element);
+                                    Get.back();
+                                  },
+                                ));
+                              },
+                            )
+                          ],
+                        ))
+                            .toList(),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              final addedItem = await Get.to(
+                                  const AddItemRequestATKScreen());
+                              if (addedItem != null) {
+                                controller.addItem(addedItem);
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: infoColor),
+                            child: RichText(
+                              text: TextSpan(
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      ?.copyWith(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700),
+                                  children: [
+                                    const TextSpan(text: "+ "),
+                                    TextSpan(text: "Add Item".tr)
+                                  ]),
+                            ),
                           ),
                         ),
-                        Center(
-                          child: Text(
-                            "ATK Info".tr,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
                         const SizedBox(
-                          height: 32,
-                        ),
-                        CustomDropDownFormField(
-                          isRequired: true,
-                          items: controller.listItem
-                              .map((e) => DropdownMenuItem(
-                                    value: e.id.toString(),
-                                    child: Text(e.itemName),
-                                  ))
-                              .toList(),
-                          onChanged: (item) {
-                            controller.onChangeSelectedItemId(item!);
-                          },
-                          label: "Item ".tr,
-                          value: controller.selectedItem.id.toString(),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CustomTextFormField(
-                            isRequired: true,
-                            readOnly: true,
-                            controller: controller.brandController,
-                            label: "Brand".tr),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CustomTextFormField(
-                          validator: ValidationBuilder().required().max(controller.selectedItem.quantity).build(),
-                            isRequired: true,
-                            inputType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            controller: controller.quantityController,
-                            label: "Quantity".tr),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CustomTextFormField(
-                            isRequired: true,
-                            readOnly: true,
-                            controller: controller.uomController,
-                            label: "UOM".tr),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CustomTextFormField(
-                            isRequired: true,
-                            controller: controller.siteController,
-                            label: "Site".tr),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CustomDropDownFormField(
-                          isRequired: true,
-                          items: controller.listWarehouse
-                              .map((e) => DropdownMenuItem(
-                                    value: e.id,
-                                    child: Text(e.name),
-                                  ))
-                              .toList(),
-                          onChanged: (item) {
-                            controller.onChangeSelectedWarehouse(item!);
-                          },
-                          label: "Warehouse ".tr,
-                          value: controller.selectedWarehouse.id,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CustomTextFormField(
-                            multiLine: true,
-                            controller: controller.remarksController,
-                            label: "Remarks".tr),
-                        const SizedBox(
-                          height: 32,
+                          height: 64,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            OutlinedButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              style: OutlinedButton.styleFrom(
+                                minimumSize: const Size(100, 40),
+                              ),
+                              child: Text("Cancel".tr),
+                            ),
                             ElevatedButton(
-                              onPressed: _isButtonEnabled
-                                  ? () {
+                              onPressed: _isButtonEnabled ? () {
                                 Get.off(const RequestATKDetailScreen());
-                              }
-                                  : null,
+                              } : null,
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: successColor),
+                                  backgroundColor: infoColor),
                               child: Text("Book".tr),
                             ),
                           ],
