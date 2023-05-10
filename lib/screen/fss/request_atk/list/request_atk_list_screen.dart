@@ -14,6 +14,8 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/request_atk/add/add_request_atk_screen.dart';
+import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
+import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/list/request_atk_list_controller.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -30,7 +32,9 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
     List<Widget> list = [];
     for (int i = 1; i < 10; i++) {
       list.add(CommonListItem(
-        onTap: () {},
+        onTap: () {
+          Get.to(RequestATKDetailScreen());
+        },
         number: "$i",
         title: "TCA-ABM/1232/23.0$i",
         subtitle: "John Smith - $i",
