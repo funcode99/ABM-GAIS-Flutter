@@ -54,7 +54,7 @@ class CustomDropDownFormField<T> extends StatelessWidget {
                 contentPadding:
                 EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
             icon: const Icon(Icons.keyboard_arrow_down),
-            hint: Text(hintText ?? ""),
+            hint: Text(hintText ?? "", style: hintTextStyle,),
             value: value,
             isExpanded: true,
             items: items,

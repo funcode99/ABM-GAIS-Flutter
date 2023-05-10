@@ -40,8 +40,8 @@ class LoginController extends BaseController {
   }
 
   Future cekToken() async {
-    print("token : ${await FlutterSecureStorage().read(key: "token")}");
-    print("role : ${await FlutterSecureStorage().read(key: "role")}");
+    print("token : ${await storage.readToken()}");
+    print("role : ${await storage.readRole()}");
     if (await storage.readToken() != null) {
       Get.offAll(HomeScreen());
     }
@@ -49,19 +49,17 @@ class LoginController extends BaseController {
 
   Future<void> doLogin() async {
     try {
-    //   var response = await repository.postLogin(
-    //       usernameLoginController.text, passwordLoginController.text);
-    //   loginModel = response;
-    //
-    //   loginModel?.token?.success == true
-    //       ? storage.saveToken(response.token?.data?.accessToken ?? "")
-    //       : printError();
-    //
-    //   print(response);
-
       await repository
           .postLogin(usernameLoginController.text, passwordLoginController.text)
-          .then((value) => storage.saveToken(value.token?.data?.accessToken ?? "token null"))
+          .then((value) {
+            storage.saveToken(value.token?.data?.accessToken ?? "token null");
+            storage.saveId(value.users?.id.toString() ?? "");
+            storage.saveRole(
+              value.users?.idRole.toString() ?? "",
+              value.users?.isEmployee.toString() ?? "",
+              value.users?.idApprovalAuth.toString() ?? "",
+            );
+          })
           .then(
             (_) => Get.showSnackbar(
               const GetSnackBar(
@@ -73,6 +71,12 @@ class LoginController extends BaseController {
             ),
           )
           .then((value) => Get.offAll(() => const HomeScreen()));
+      print("role : ${await storage.readRole()}");
+      if (await storage.readRole() == "1") {
+        // await repository.getEmployeeInfo();
+        saveEmployeeInfo();
+      }
+      print("site : ${await FlutterSecureStorage().read(key: 'site')}");
     } catch (e) {
       print(e);
       Get.showSnackbar(
@@ -82,6 +86,43 @@ class LoginController extends BaseController {
             color: Colors.white,
           ),
           message: 'Login Gagal',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> saveEmployeeInfo() async {
+    try {
+      await repository.getEmployeeInfo().then(
+            (value) => storage.saveUser(
+                value.data?.first.id.toString() ?? "",
+                value.data?.first.employeeName ?? "",
+                value.data?.first.phoneNumber ?? "",
+                value.data?.first.snEmployee ?? "",
+                value.data?.first.email ?? "",
+                value.data?.first.nik ?? "",
+                value.data?.first.dob ?? "",
+                value.data?.first.startDate ?? "",
+                value.data?.first.endDate ?? "",
+                value.data?.first.jenkel ?? "",
+                value.data?.first.idDepartment.toString() ?? "",
+                value.data?.first.idCompany.toString() ?? "",
+                value.data?.first.idSite.toString() ?? "",
+                value.data?.first.siteName.toString() ?? "",
+            ),
+          );
+    } catch (e) {
+      print(e);
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'gagal load data employee',
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: Colors.red,

@@ -4,9 +4,10 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/purpose_of_trip/purpose_of_trip_controller.dart';
-import 'package:gais/screen/tms/request_trip/add/traveller/traveller_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -20,16 +21,14 @@ class PurposeOfTripScreen extends StatelessWidget {
         builder: (controller) {
           return Scaffold(
             backgroundColor: baseColor,
-            appBar: AppBar(
+            appBar: TopBar(
               title: Text("Request Trip", style: appTitle),
-              centerTitle: true,
-              leading: CustomBackButton(),
-              flexibleSpace: TopBar(),
+              leading: const CustomBackButton(),
             ),
             body: Container(
               alignment: Alignment.topCenter,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.all(7),
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(7),
               decoration: BoxDecoration(
                 color: whiteColor,
                 borderRadius: BorderRadius.circular(8),
@@ -46,10 +45,10 @@ class PurposeOfTripScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: infoColor,
                           borderRadius: BorderRadius.circular(50)),
-                      child: Icon(IconlyBold.work, color: whiteColor),
+                      child: const Icon(IconlyBold.work, color: whiteColor),
                     ),
                     Text("Purpose Of Trip", style: appTitle),
-                    SizedBox(height: 39),
+                    const SizedBox(height: 39),
                     Form(
                       key: controller.formKey,
                       child: Padding(
@@ -57,206 +56,146 @@ class PurposeOfTripScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            RichText(
-                              text: TextSpan(
-                                text: 'Purpose of Trip ',
-                                style: formlabelTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text(
-                                "Company Business",
-                                style: hintTextStyle,
-                              ),
-                              value: controller.purposeValue,
-                              isExpanded: true,
-                              style: TextStyle(fontSize: 14, color: blackColor),
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("Company Business"),
-                                  value: "Company Business",
-                                ),
-                                DropdownMenuItem(
-                                  child: Text("Field Break"),
-                                  value: "Field Break",
-                                ),
-                                DropdownMenuItem(
-                                  child: Text("Site Visit"),
-                                  value: "Site Visit",
-                                ),
-                                DropdownMenuItem(
-                                  child: Text("Taxi Voucher Only"),
-                                  value: "Taxi Voucher",
-                                ),
-                              ],
-                              onChanged: (value) {
-                                controller.purposeValue = value;
-                                value == "Field Break" || value == "Site Visit"
-                                    ? controller.isAttachment = true
-                                    : controller.isAttachment = false;
-                                controller.update();
-                              },
-                            ),
-                            SizedBox(height: 8),
+                            CustomDropDownFormField(
+                                label: 'Purpose of Trip',
+                                isRequired: true,
+                                hintText: "Company Business",
+                                items: controller.purposeList
+                                    .map(
+                                      (e) => DropdownMenuItem(
+                                        value: e.codeDocument.toString(),
+                                        child: Text(e.documentName.toString()),
+                                      )
+                                    )
+                                    .toList(),
+                                onChanged: (value) {
+                                  controller.selectedPurpose = value;
+                                  value == "FB" || value == "SV"
+                                      ? controller.isAttachment = true
+                                      : controller.isAttachment = false;
+                                  controller.update();
+                                  // print(controller.selectedPurpose);
+                                }),
+                            const SizedBox(height: 8),
                             controller.isAttachment!
-                                ? RichText(
-                                    text: TextSpan(
-                                      text: 'File Attachment ',
-                                      style: formlabelTextStyle,
-                                      children: const <TextSpan>[
-                                        TextSpan(
-                                            text: '*',
-                                            style:
-                                                TextStyle(color: Colors.red)),
-                                      ],
-                                    ),
-                                  )
-                                : Container(),
-                            controller.isAttachment!
-                                ? TextFormField(
+                                ? CustomTextFormField(
                                     controller: controller.fileName,
+                                    label: 'File Attachment',
+                                    isRequired: true,
                                     readOnly: true,
-                                    decoration: InputDecoration(
-                                      hintText:
-                                          "Upload Form ${controller.purposeValue}",
-                                      hintStyle: hintTextStyle,
-                                      suffixIcon: Icon(Icons.upload),
-                                    ),
+                                    hintText:
+                                        "Upload Form ${controller.selectedPurpose}",
+                                    suffixIcon: const Icon(Icons.upload),
                                     onTap: () => controller.getSingleFile(),
                                   )
                                 : Container(),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Notes to Purpose of Trip ',
-                                style: formlabelTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            TextFormField(
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
                               controller: controller.notesPurpose,
-                              decoration: InputDecoration(
-                                  hintText: "Notes", hintStyle: hintTextStyle),
+                              label: "Notes to Purpose of Trip",
+                              hintText: "Notes",
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Text("Itinerary", style: formlabelTextStyle),
-                            SizedBox(height: 10),
-                            RichText(
-                              text: TextSpan(
-                                text: 'From ',
-                                style: formlabelTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text(
-                                "City",
-                                style: hintTextStyle,
-                              ),
-                              value: controller.purposeValue,
-                              isExpanded: true,
-                              style: TextStyle(fontSize: 14, color: blackColor),
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("City"),
-                                  value: "Company Business",
-                                ),
-                              ],
+                            const SizedBox(height: 10),
+                            CustomDropDownFormField(
+                              label: "From",
+                              isRequired: true,
+                              hintText: "City",
+                              items: controller.cityList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.cityName.toString()),
+                                      ))
+                                  .toList(),
                               onChanged: (value) {
-                                controller.purposeValue = value;
-                                value == "Field Break" || value == "Site Visit"
-                                    ? controller.isAttachment = true
-                                    : controller.isAttachment = false;
+                                controller.fromCity = value;
                                 controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'To ',
-                                style: formlabelTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text(
-                                "City",
-                                style: hintTextStyle,
-                              ),
-                              value: controller.purposeValue,
-                              isExpanded: true,
-                              style: TextStyle(fontSize: 14, color: blackColor),
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("City"),
-                                  value: "Company Business",
-                                ),
-                              ],
+                            const SizedBox(height: 8),
+                            CustomDropDownFormField(
+                              label: "To",
+                              isRequired: true,
+                              hintText: "City",
+                              items: controller.cityList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.cityName.toString()),
+                                      ))
+                                  .toList(),
                               onChanged: (value) {
-                                controller.purposeValue = value;
-                                value == "Field Break" || value == "Site Visit"
-                                    ? controller.isAttachment = true
-                                    : controller.isAttachment = false;
+                                controller.toCity = value;
                                 controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Departure Date ',
-                                style: formlabelTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            TextFormField(
-                              readOnly: true,
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
                               controller: controller.departureDate,
-                              decoration: InputDecoration(
-                                hintText: "Date",
-                                suffixIcon: Icon(Icons.calendar_month),
-
-                              ),
+                              label: "Departure Date",
+                              isRequired: true,
+                              suffixIcon: const Icon(Icons.calendar_month),
+                              readOnly: true,
                               onTap: () => showDatePicker(
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime(DateTime.now().year),
                                       lastDate: DateTime.now()
                                           .add(const Duration(days: 30)))
-                                  .then((date) {
-                                controller.selectedDate = date!;
-                                controller.departureDate.text =
-                                    controller.dateFormat.format(date);
-                                controller.update();
-                              }),
+                                  .then(
+                                (date) {
+                                  controller.selectedDate = date!;
+                                  controller.departureDate.text =
+                                      controller.dateFormat.format(date);
+                                  controller.update();
+                                },
+                              ),
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.arrivalDate,
+                              label: "Date Arrival",
+                              isRequired: true,
+                              readOnly: true,
+                              suffixIcon: const Icon(Icons.calendar_month),
+                              onTap: () => showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime.now()
+                                          .add(const Duration(days: 30)))
+                                  .then(
+                                (date) {
+                                  controller.selectedDate = date!;
+                                  controller.arrivalDate.text =
+                                      controller.dateFormat.format(date);
+                                  controller.update();
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.zona,
+                              label: "Zona",
+                              isRequired: true,
+                              readOnly: true,
+                              hintText: "Zona",
+                            ),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.tlkDay,
+                              label: "TLK / Day",
+                              isRequired: true,
+                              hintText: "TLK / Day",
+                            ),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.totalTLK,
+                              label: "Total TLK",
+                              isRequired: true,
+                              hintText: "Total TLK",
+                            ),
+                            const SizedBox(height: 8),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -272,10 +211,12 @@ class PurposeOfTripScreen extends StatelessWidget {
                                   width: 100,
                                   color: infoColor,
                                   title: "Next",
-                                  onPressed: () => Get.to(TravellerScreen()),
+                                  onPressed: () =>
+                                      controller.postPurposeOfTrip(),
                                 ),
                               ],
-                            )
+                            ),
+                            const SizedBox(height: 50)
                           ],
                         ),
                       ),
@@ -284,7 +225,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                 ),
               ),
             ),
-            bottomSheet: BottomBar(menu: 1),
+            bottomSheet: const BottomBar(menu: 1),
           );
         });
   }

@@ -49,7 +49,8 @@ class MenuScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(50),
                                     ),
                                     padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                    margin: const EdgeInsets.only(
+                                        top: 25, bottom: 5),
                                     height: 50,
                                     width: 50,
                                     child: SvgPicture.asset(
@@ -60,7 +61,8 @@ class MenuScreen extends StatelessWidget {
                                   const Text("Request Trip"),
                                 ],
                               ),
-                              onTap: () => Get.off(const RequestTripListScreen()),
+                              onTap: () =>
+                                  Get.off(const RequestTripListScreen()),
                             ),
                             GestureDetector(
                               child: Column(
@@ -72,7 +74,8 @@ class MenuScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(50),
                                     ),
                                     padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                    margin: const EdgeInsets.only(
+                                        top: 25, bottom: 5),
                                     height: 50,
                                     width: 50,
                                     child: SvgPicture.asset(
@@ -83,7 +86,7 @@ class MenuScreen extends StatelessWidget {
                                   const Text("Pool Car"),
                                 ],
                               ),
-                              onTap: (){},
+                              onTap: () {},
                             ),
                             GestureDetector(
                               child: Column(
@@ -95,7 +98,8 @@ class MenuScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(50),
                                     ),
                                     padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                    margin: const EdgeInsets.only(
+                                        top: 25, bottom: 5),
                                     height: 50,
                                     width: 50,
                                     child: SvgPicture.asset(
@@ -106,7 +110,8 @@ class MenuScreen extends StatelessWidget {
                                   const Text("Cash Advance"),
                                 ],
                               ),
-                              onTap: ()=> Get.off(const SubmenuScreen(), arguments: false),
+                              onTap: () => Get.off(const SubmenuScreen(),
+                                  arguments: false),
                             ),
                           ],
                         ),
@@ -144,7 +149,8 @@ class MenuScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(50),
                                     ),
                                     padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                    margin: const EdgeInsets.only(
+                                        top: 25, bottom: 5),
                                     height: 50,
                                     width: 50,
                                     child: SvgPicture.asset(
@@ -160,7 +166,7 @@ class MenuScreen extends StatelessWidget {
                               ),
                             ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 Get.to(const RequestATKListScreen());
                               },
                               child: Column(
@@ -172,7 +178,8 @@ class MenuScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(50),
                                     ),
                                     padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                    margin: const EdgeInsets.only(
+                                        top: 25, bottom: 5),
                                     height: 50,
                                     width: 50,
                                     child: SvgPicture.asset(
@@ -197,7 +204,8 @@ class MenuScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(50),
                                     ),
                                     padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                    margin: const EdgeInsets.only(
+                                        top: 25, bottom: 5),
                                     height: 50,
                                     width: 50,
                                     child: SvgPicture.asset(
@@ -211,7 +219,7 @@ class MenuScreen extends StatelessWidget {
                                   )
                                 ],
                               ),
-                              onTap: ()=> Get.to(DocumentDeliveryListScreen()),
+                              onTap: () => Get.to(DocumentDeliveryListScreen()),
                             ),
                           ],
                         ),
@@ -220,103 +228,117 @@ class MenuScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Card(
-                elevation: 5,
-                margin: const EdgeInsets.all(10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Approval",
-                          style: listTitleTextStyle),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 18),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              controller.approvalAuth
+                  ? Card(
+                      elevation: 5,
+                      margin: const EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 24, horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            GestureDetector(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                            Text("Approval", style: listTitleTextStyle),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 18),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: infoColor,
-                                      borderRadius: BorderRadius.circular(50),
+                                  GestureDetector(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: infoColor,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                          margin: const EdgeInsets.only(
+                                              top: 25, bottom: 5),
+                                          height: 50,
+                                          width: 50,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/location-tick.svg",
+                                            height: 25,
+                                          ),
+                                        ),
+                                        const Text("Request Trip"),
+                                      ],
                                     ),
-                                    padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
-                                    height: 50,
-                                    width: 50,
-                                    child: SvgPicture.asset(
-                                      "assets/icons/location-tick.svg",
-                                      height: 25,
+                                    onTap: () => Get.off(
+                                        const ApprovalRequestTripListScreen()),
+                                  ),
+                                  GestureDetector(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: infoColor,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                          margin: const EdgeInsets.only(
+                                              top: 25, bottom: 5),
+                                          height: 50,
+                                          width: 50,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/empty-wallet-time.svg",
+                                            height: 25,
+                                          ),
+                                        ),
+                                        const Text("Cash Advance"),
+                                      ],
+                                    ),
+                                    onTap: () => Get.off(const SubmenuScreen(),
+                                        arguments: true),
+                                  ),
+                                  GestureDetector(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: infoColor,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                          margin: const EdgeInsets.only(
+                                              top: 25, bottom: 5),
+                                          height: 50,
+                                          width: 50,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/ruler&pen.svg",
+                                            height: 25,
+                                          ),
+                                        ),
+                                        const Text(
+                                          "Request ATK",
+                                          textAlign: TextAlign.center,
+                                        )
+                                      ],
                                     ),
                                   ),
-                                  const Text("Request Trip"),
-                                ],
-                              ),
-                              onTap: () => Get.off(const ApprovalRequestTripListScreen()),
-                            ),
-                            GestureDetector(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: infoColor,
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
-                                    height: 50,
-                                    width: 50,
-                                    child: SvgPicture.asset(
-                                      "assets/icons/empty-wallet-time.svg",
-                                      height: 25,
-                                    ),
-                                  ),
-                                  const Text("Cash Advance"),
-                                ],
-                              ),
-                              onTap: ()=> Get.off(const SubmenuScreen(), arguments: true),
-                            ),
-                            GestureDetector(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: infoColor,
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
-                                    height: 50,
-                                    width: 50,
-                                    child: SvgPicture.asset(
-                                      "assets/icons/ruler&pen.svg",
-                                      height: 25,
-                                    ),
-                                  ),
-                                  const Text(
-                                    "Request ATK",
-                                    textAlign: TextAlign.center,
-                                  )
                                 ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    )
+                  : Container(),
             ],
           );
         });

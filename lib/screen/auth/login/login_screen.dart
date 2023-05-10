@@ -18,11 +18,8 @@ class LoginScreen extends StatelessWidget {
         builder: (controller) {
           return Scaffold(
             backgroundColor: Colors.white,
-            appBar: AppBar(
-              // backgroundColor: Color(0xffEFF1F3),
+            appBar: TopBar(
               title: Image.asset("assets/img/abm.png"),
-              centerTitle: true,
-              flexibleSpace: TopBar(),
             ),
             body: Padding(
               padding: const EdgeInsets.all(15.0),
@@ -112,7 +109,9 @@ class LoginScreen extends StatelessWidget {
                             CustomFilledButton(
                               color: infoColor,
                               title: 'Login',
-                              onPressed: () => controller.doLogin(),
+                              onPressed: () async{
+                                controller.doLogin();
+                              },
                             ),
                             Container(
                               alignment: Alignment.center,

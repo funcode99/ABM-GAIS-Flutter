@@ -167,13 +167,10 @@ class EditDocumentDeliveryScreen extends StatelessWidget {
                             ),
                             TextFormField(
                               controller: controller.subjectDocument,
-                              readOnly: true,
                               decoration: InputDecoration(
                                 hintText: "Subject Document",
                                 hintStyle: hintTextStyle,
-                                suffixIcon: Icon(Icons.upload),
                               ),
-                              onTap: () => controller.getSubjectDocument(),
                             ),
                             SizedBox(height: 8),
                             Text("Attachment (Optional)",

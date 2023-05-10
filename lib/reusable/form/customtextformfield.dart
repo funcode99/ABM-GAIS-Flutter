@@ -5,19 +5,20 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  CustomTextFormField({super.key,
-    required this.controller,
-    required this.label,
-    this.hintText,
-    this.readOnly = false,
-    this.onChanged,
-    this.isRequired = false,
-    this.validator,
-    this.inputFormatters,
-    this.onTap,
-    this.suffixIcon,
-    this.multiLine = false,
-    this.inputType}) {
+  CustomTextFormField(
+      {super.key,
+      required this.controller,
+      required this.label,
+      this.hintText,
+      this.readOnly = false,
+      this.onChanged,
+      this.isRequired = false,
+      this.validator,
+      this.inputFormatters,
+      this.onTap,
+      this.suffixIcon,
+      this.multiLine = false,
+      this.inputType}) {
     if (isRequired && !readOnly) {
       validator ??= ValidationBuilder().required().build();
     }
@@ -60,7 +61,7 @@ class CustomTextFormField extends StatelessWidget {
           child: TextFormField(
             minLines: multiLine ? 3 : 1,
             maxLines: multiLine ? null : 3,
-            onTap:onTap,
+            onTap: onTap,
             enabled: onTap != null ? true : !readOnly,
             controller: controller,
             readOnly: readOnly,
@@ -69,17 +70,18 @@ class CustomTextFormField extends StatelessWidget {
             keyboardType: inputType,
             inputFormatters: inputFormatters,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodyText1
-                ?.copyWith(
-                fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
+            style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                  fontSize: 16,
+                  color: Colors.black,
+                  // fontWeight: FontWeight.w600,
+                ),
             decoration: InputDecoration(
-              fillColor: onTap != null || !readOnly ? whiteColor : neutralColor, //jika ontap!=null, maka state "active". jika bukan readyonly, maka state "active". Jika readonly dan ontap == null maka state "inactive"
-              suffixIcon: suffixIcon,
+                fillColor:
+                    onTap != null || !readOnly ? whiteColor : neutralColor,
+                //jika ontap!=null, maka state "active". jika bukan readyonly, maka state "active". Jika readonly dan ontap == null maka state "inactive"
+                suffixIcon: suffixIcon,
                 contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 hintText: hintText ?? label,
                 hintStyle: hintTextStyle),
           ),

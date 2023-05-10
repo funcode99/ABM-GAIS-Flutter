@@ -59,8 +59,8 @@ class TravellerScreen extends StatelessWidget {
                     ),
                     CustomTripCard(
                       listNumber: 1,
-                      title: "Jack H",
-                      subtitle: "2132132",
+                      title: controller.travellerName ?? "",
+                      subtitle: controller.travellerSN ?? "",
                       info: "Requestor",
                       isEdit: true,
                       content: Row(
@@ -70,7 +70,11 @@ class TravellerScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("Gender", style: listTitleTextStyle),
-                              Text("Male", style: listSubTitleTextStyle),
+                              Text(
+                                  controller.travellerGender == "L"
+                                      ? "Male"
+                                      : "Female",
+                                  style: listSubTitleTextStyle),
                             ],
                           ),
                           Column(
@@ -140,7 +144,7 @@ class TravellerScreen extends StatelessWidget {
                         color: infoColor,
                         title: "Add Guest",
                         icon: Icons.add,
-                        onPressed: ()=> Get.to(AddGuestScreen()),
+                        onPressed: () => Get.to(AddGuestScreen()),
                       ),
                     ),
                     Row(

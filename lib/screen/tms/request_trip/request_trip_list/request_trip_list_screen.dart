@@ -156,22 +156,22 @@ class RequestTripListScreen extends StatelessWidget {
                                                           child: Text(
                                                               "Company Business"),
                                                           value:
-                                                              "Company Business",
+                                                              "CB",
                                                         ),
                                                         DropdownMenuItem(
                                                           child: Text(
                                                               "Field Break"),
-                                                          value: "Field Break",
+                                                          value: "FB",
                                                         ),
                                                         DropdownMenuItem(
                                                           child: Text(
                                                               "Site Visit"),
-                                                          value: "Site Visit",
+                                                          value: "SV",
                                                         ),
                                                         DropdownMenuItem(
                                                           child: Text(
                                                               "Taxi Voucher Only"),
-                                                          value: "Taxi Voucher",
+                                                          value: "TV",
                                                         ),
                                                       ],
                                                       onChanged: (value) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
@@ -167,13 +166,10 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                             ),
                             TextFormField(
                               controller: controller.subjectDocument,
-                              readOnly: true,
                               decoration: InputDecoration(
                                 hintText: "Subject Document",
                                 hintStyle: hintTextStyle,
-                                suffixIcon: Icon(Icons.upload),
                               ),
-                              onTap: () => controller.getSubjectDocument(),
                             ),
                             SizedBox(height: 8),
                             Text("Attachment (Optional)",

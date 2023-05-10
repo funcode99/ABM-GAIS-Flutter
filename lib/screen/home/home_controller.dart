@@ -57,7 +57,11 @@ class HomeController extends BaseController {
     super.onInit();
     if (currentIndex != null) selectedIndex = currentIndex ?? 0;
     update();
+    cekRole();
+  }
 
+  void cekRole() async{
+    print("role : ${await storage.readRole()}");
   }
 
 }
