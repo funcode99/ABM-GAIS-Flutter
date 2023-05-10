@@ -10,7 +10,7 @@ class CommonListItem extends StatelessWidget {
         required this.number,
         this.title,
         required this.subtitle,
-        required this.status,
+        this.status,
         required this.content,
         required this.action,
         this.total,
@@ -20,7 +20,7 @@ class CommonListItem extends StatelessWidget {
   final String number;
   final String? title;
   final String subtitle;
-  final String status;
+  final String? status;
   final Widget content;
   final List<Widget> action;
   final VoidCallback? onTap;
@@ -72,10 +72,10 @@ class CommonListItem extends StatelessWidget {
                       ],
                     ),
                   ),
-                  CustomStatusContainer(
+                  status != null ? CustomStatusContainer(
                     backgroundColor: greenColor,
-                    status: status,
-                  )
+                    status: status ?? "",
+                  ) : const SizedBox()
                 ],
               ),
               const Divider(

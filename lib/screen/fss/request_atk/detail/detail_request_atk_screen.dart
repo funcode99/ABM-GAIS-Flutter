@@ -1,12 +1,15 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
+import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_controller.dart';
 import 'package:get/get.dart';
 
@@ -87,6 +90,13 @@ class RequestATKDetailScreen extends StatelessWidget {
                                 controller: controller.createdByController,
                                 label: "Created By".tr),
                             const SizedBox(
+                              height: 8,
+                            ),
+                            CustomTextFormField(
+                                readOnly: true,
+                                controller: controller.rejectNoteController,
+                                label: "Reject Note".tr),
+                            const SizedBox(
                               height: 64,
                             ),
 
@@ -134,62 +144,79 @@ class RequestATKDetailScreen extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 32, vertical: 16),
-                            child: Column(
-                              children: [
-                                CustomTextFormField(
-                                    readOnly: true,
-                                    controller: controller.itemController,
-                                    label: "Item".tr),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                CustomTextFormField(
-                                    readOnly: true,
-                                    controller: controller.brandController,
-                                    label: "Brand".tr),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                CustomTextFormField(
-                                    readOnly: true,
-                                    controller: controller.quantityController,
-                                    label: "Quantity".tr),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                CustomTextFormField(
-                                    readOnly: true,
-                                    controller: controller.uomController,
-                                    label: "UOM".tr),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                CustomTextFormField(
-                                    readOnly: true,
-                                    controller: controller.siteController,
-                                    label: "Site".tr),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                CustomTextFormField(
-                                    readOnly: true,
-                                    controller: controller.warehouseController,
-                                    label: "Warehouse".tr),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                CustomTextFormField(
-                                    readOnly: true,
-                                    multiLine: true,
-                                    controller: controller.remarksController,
-                                    label: "Remarks".tr),
-                              ],
-                            ),
-                          ),
+                        child: Column(
+                          children: [
+                            ...controller.listItem
+                                .mapIndexed((index, element) =>
+                                CommonListItem(
+                                  number: "${index + 1}",
+                                  title: element.item,
+                                  subtitle: element.brand,
+                                  action: [],
+                                  content: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "Quantity".tr,
+                                              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                                  fontSize: 14, color: Colors.black, height: 1.5),
+                                            ),
+                                            Text(
+                                              "${element.quantity}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1
+                                                  ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "UOM".tr,
+                                              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                                  fontSize: 14, color: Colors.black, height: 1.5),
+                                            ),
+                                            Text(
+                                              element.uom,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1
+                                                  ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "Warehouse".tr,
+                                              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                                  fontSize: 14, color: Colors.black, height: 1.5),
+                                            ),
+                                            Text(
+                                              element.warehouse,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1
+                                                  ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  onTap: (){
+                                    Get.dialog(
+                                      DetailItemRequestATKScreen(item: element)
+                                    );
+                                  },
+                                ))
+                                .toList(),
+                          ],
                         ),
                       ),
 
