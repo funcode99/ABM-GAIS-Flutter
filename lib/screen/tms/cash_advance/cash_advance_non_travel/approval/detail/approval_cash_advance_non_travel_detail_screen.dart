@@ -7,18 +7,22 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/list_item/common_add_item.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/detail/detail_item_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/approval/detail/approval_cash_advance_non_travel_detail_controller.dart';
 import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
 import 'package:gais/screen/tms/cash_advance/widget/approval_confirmation_dialog.dart';
-import 'package:gais/screen/tms/cash_advance/widget/item_cash_advance_non_travel.dart';
 import 'package:gais/screen/tms/cash_advance/widget/reject_dialog.dart';
 import 'package:get/get.dart';
 
 class ApprovalCashAdvanceNonTravelDetailScreen extends StatefulWidget {
-  const ApprovalCashAdvanceNonTravelDetailScreen({Key? key, this.approvalActionEnum = ApprovalActionEnum.none}) : super(key: key);
+  const ApprovalCashAdvanceNonTravelDetailScreen(
+      {Key? key, this.approvalActionEnum = ApprovalActionEnum.none})
+      : super(key: key);
 
   final ApprovalActionEnum approvalActionEnum;
+
   @override
   State<ApprovalCashAdvanceNonTravelDetailScreen> createState() =>
       _ApprovalCashAdvanceNonTravelDetailScreenState();
@@ -26,22 +30,21 @@ class ApprovalCashAdvanceNonTravelDetailScreen extends StatefulWidget {
 
 class _ApprovalCashAdvanceNonTravelDetailScreenState
     extends State<ApprovalCashAdvanceNonTravelDetailScreen> {
-
-  _openApproveDialog(){
+  _openApproveDialog() {
     Get.dialog(const ApprovalConfirmationDialog());
   }
 
-  _openRejectDialog(){
+  _openRejectDialog() {
     Get.dialog(const RejectDialog());
   }
 
   @override
   void initState() {
-    Future.delayed(Duration.zero, (){
-      if(widget.approvalActionEnum == ApprovalActionEnum.approve){
+    Future.delayed(Duration.zero, () {
+      if (widget.approvalActionEnum == ApprovalActionEnum.approve) {
         _openApproveDialog();
-      }else if(widget.approvalActionEnum == ApprovalActionEnum.reject){
-       _openRejectDialog();
+      } else if (widget.approvalActionEnum == ApprovalActionEnum.reject) {
+        _openRejectDialog();
       }
     });
     super.initState();
@@ -162,9 +165,9 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
                                       .textTheme
                                       .bodyText1
                                       ?.copyWith(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600),
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600),
                                 )
                               ],
                             ),
@@ -173,13 +176,21 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
                               color: greyColor,
                             ),
                             ...controller.listItem
-                                .mapIndexed((index, element) => ItemCashAdvanceNonTravel(
-                              number: "${index+1}",
-                              title: element.item,
-                              subtitle: element.costCenter,
-                              nominal: element.nominal,
-                              action: [],
-                            ))
+                                .mapIndexed((index, element) =>
+                                    CommonAddItem(
+                                      number: "${index + 1}",
+                                      title: element.item,
+                                      subtitle: element.costCenter,
+                                      nominal: element.nominal,
+                                      action: [],
+                                      onTap: () {
+                                        Get.dialog(Dialog(
+                                          child:
+                                              DetailItemCashAdvanceNonTravelScreen(
+                                                  item: element),
+                                        ));
+                                      },
+                                    ))
                                 .toList(),
                             const SizedBox(
                               height: 32,

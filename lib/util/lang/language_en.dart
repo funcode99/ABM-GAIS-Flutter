@@ -61,6 +61,7 @@ class LanguageEN{
       "Book" : "Book",
       "ATK Info" : "ATK Info",
       "Created By" : "Created By",
+      "Status" : "Status",
     };
   }
 }

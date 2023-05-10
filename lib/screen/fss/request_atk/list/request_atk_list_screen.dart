@@ -8,12 +8,14 @@ import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
-import 'package:gais/reusable/dialog/filterdialog.dart';
+import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/request_atk/add/add_request_atk_screen.dart';
+import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
+import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/list/request_atk_list_controller.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -30,7 +32,9 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
     List<Widget> list = [];
     for (int i = 1; i < 10; i++) {
       list.add(CommonListItem(
-        onTap: () {},
+        onTap: () {
+          Get.to(RequestATKDetailScreen());
+        },
         number: "$i",
         title: "TCA-ABM/1232/23.0$i",
         subtitle: "John Smith - $i",
@@ -140,94 +144,100 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
               centerTitle: true,
               flexibleSpace: const TopBar(),
             ),
-            body: ListView(
+            body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                CustomSearchBar(
-                  onChanged: (string) {},
-                  onPressedFilter: () {
-                    Get.dialog(FilterDialog(
-                      onApplyFilter: () {
-                        controller.applyFilter();
-                        Get.back();
-                      },
-                      children: [
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CustomDropDownFormField(
-                          isRequired: true,
-                          items: [
-                            DropdownMenuItem(
-                              value: "",
-                              child: Text("Item Name".tr),
-                            ),
-                            const DropdownMenuItem(
-                              value: "Bensin",
-                              child: Text("Bensin"),
-                            ),
-                            const DropdownMenuItem(
-                              value: "Transport",
-                              child: Text("Transport"),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            controller.tempSelectedValue = value!;
-                          },
-                          label: "Item Name".tr,
-                          value: controller.selectedValue,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CustomTextFormField(
-                            readOnly: true,
-                            controller: controller.dateRange,
-                            suffixIcon: const Icon(Icons.calendar_month),
-                            onTap: () {
-                              showCustomDateRangePicker(
-                                context,
-                                dismissible: true,
-                                minimumDate: DateTime.now()
-                                    .subtract(const Duration(days: 365)),
-                                maximumDate: DateTime.now()
-                                    .add(const Duration(days: 365)),
-                                endDate: controller.endDate,
-                                startDate: controller.startDate,
-                                backgroundColor: Colors.white,
-                                primaryColor: Colors.green,
-                                onApplyClick: (start, end) {
-                                  controller.endDate = end;
-                                  controller.startDate = start;
-                                  controller.dateRange.text =
-                                      "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
-                                  controller.update();
-                                },
-                                onCancelClick: () {
-                                  controller.endDate = null;
-                                  controller.startDate = null;
-                                  controller.update();
-                                },
-                              );
+              child: Column(
+                children: [
+                  CustomSearchBar(
+                    onChanged: (string) {},
+                    onPressedFilter: () {
+                      Get.bottomSheet(FilterBottomSheet(
+                        onApplyFilter: () {
+                          controller.applyFilter();
+                          Get.back();
+                        },
+                        children: [
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          CustomDropDownFormField(
+                            items: [
+                              DropdownMenuItem(
+                                value: "",
+                                child: Text("Status".tr),
+                              ),
+                              const DropdownMenuItem(
+                                value: "Completed",
+                                child: Text("Completed"),
+                              ),
+                              const DropdownMenuItem(
+                                value: "Pending",
+                                child: Text("Pending"),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              controller.tempSelectedValue = value!;
                             },
-                            label: "Date Range".tr),
-                        const SizedBox(
-                          height: 8,
+                            label: "Status".tr,
+                            value: controller.selectedValue,
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          CustomTextFormField(
+                              readOnly: true,
+                              controller: controller.dateRange,
+                              suffixIcon: const Icon(Icons.calendar_month),
+                              onTap: () {
+                                showCustomDateRangePicker(
+                                  context,
+                                  dismissible: true,
+                                  minimumDate: DateTime.now()
+                                      .subtract(const Duration(days: 365)),
+                                  maximumDate: DateTime.now()
+                                      .add(const Duration(days: 365)),
+                                  endDate: controller.endDate,
+                                  startDate: controller.startDate,
+                                  backgroundColor: Colors.white,
+                                  primaryColor: Colors.green,
+                                  onApplyClick: (start, end) {
+                                    controller.endDate = end;
+                                    controller.startDate = start;
+                                    controller.dateRange.text =
+                                        "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                    controller.update();
+                                  },
+                                  onCancelClick: () {
+                                    controller.endDate = null;
+                                    controller.startDate = null;
+                                    controller.update();
+                                  },
+                                );
+                              },
+                              label: "Date Range".tr),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                        ],
+                      ));
+                    },
+                  ),
+                  CustomPagination(
+                    onPageChanged: (int) {},
+                    pageTotal: 5,
+                    margin: EdgeInsets.zero,
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [..._getData()],
                         ),
-                      ],
-                    ));
-                  },
-                ),
-                CustomPagination(
-                  onPageChanged: (int) {},
-                  pageTotal: 5,
-                  margin: EdgeInsets.zero,
-                ),
-                Container(
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                    child: const SizedBox()),
-                ..._getData(),
-              ],
+                      ))
+                ],
+              ),
             ),
             floatingActionButton: FloatingActionButton(
               backgroundColor: successColor,
