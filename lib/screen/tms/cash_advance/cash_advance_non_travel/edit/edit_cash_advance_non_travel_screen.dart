@@ -8,11 +8,11 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/list_item/common_add_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/detail/detail_item_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_controller.dart';
-import 'package:gais/screen/tms/cash_advance/widget/item_cash_advance_non_travel.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -208,7 +208,7 @@ class _EditCashAdvanceNonTravelScreenState
                             ),
                             ...controller.listItem
                                 .mapIndexed((index, element) =>
-                                    ItemCashAdvanceNonTravel(
+                                    CommonAddItem(
                                       number: "${index + 1}",
                                       title: element.item,
                                       subtitle: element.costCenter,
