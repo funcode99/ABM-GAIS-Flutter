@@ -62,6 +62,13 @@ class LanguageEN{
       "ATK Info" : "ATK Info",
       "Created By" : "Created By",
       "Status" : "Status",
+      "ATK Supplies" : "ATK Supplies",
+      "Management Item" : "Management Item",
+      "Stock In" : "Stock In",
+      "Facility Service System" : "Facility Service System",
+      "Management Item ATK" : "Management Item ATK",
+      "Company" : "Company",
+      "Alert Quantity" : "Alert Quantity",
     };
   }
 }
