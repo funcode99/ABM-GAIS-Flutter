@@ -69,6 +69,11 @@ class LanguageEN{
       "Management Item ATK" : "Management Item ATK",
       "Company" : "Company",
       "Alert Quantity" : "Alert Quantity",
+      "Approval ATK Request" : "Approval ATK Request",
+      "Booked" : "Booked",
+      "Item Count" : "Item Count",
+      "Reject Notes" : "Reject Notes",
+      "Confirm" : "Confirm",
     };
   }
 }
