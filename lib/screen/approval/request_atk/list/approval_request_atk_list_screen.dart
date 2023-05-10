@@ -10,7 +10,9 @@ import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/approval/request_atk/detail/detail_approval_request_atk_screen.dart';
 import 'package:gais/screen/approval/request_atk/list/approval_request_atk_list_controller.dart';
+import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
 import 'package:get/get.dart';
 
 class ApprovalRequestATKListScreen extends StatelessWidget {
@@ -22,7 +24,7 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
       list.add(
           CommonListItem(
             onTap: (){
-              // Get.to(const ApprovalCashAdvanceNonTravelDetailScreen(approvalActionEnum: ApprovalActionEnum.none,));
+              Get.to(const DetailApprovalRequestATKScreen(approvalActionEnum: ApprovalActionEnum.none,));
             },
             number: "$i",
             title: "OUT-ABM/1859/23.0$i",
@@ -73,11 +75,11 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
             ),
             action: [
               CustomIconButton(
-                title: "Approve".tr,
+                title: "Confirm".tr,
                 iconData: Icons.check,
                 backgroundColor: successColor,
                 onPressed: () {
-                  // Get.to(const ApprovalCashAdvanceNonTravelDetailScreen(approvalActionEnum: ApprovalActionEnum.approve,));
+                  Get.to(const DetailApprovalRequestATKScreen(approvalActionEnum: ApprovalActionEnum.approve,));
                 },
               ),
               const SizedBox(
@@ -88,7 +90,7 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
                 iconData: Icons.close,
                 backgroundColor: redColor,
                 onPressed: () {
-                  // Get.to(const ApprovalCashAdvanceNonTravelDetailScreen(approvalActionEnum: ApprovalActionEnum.reject,));
+                  Get.to(const DetailApprovalRequestATKScreen(approvalActionEnum: ApprovalActionEnum.reject,));
                 },
               )
             ],

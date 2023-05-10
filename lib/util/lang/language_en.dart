@@ -72,6 +72,8 @@ class LanguageEN{
       "Approval ATK Request" : "Approval ATK Request",
       "Booked" : "Booked",
       "Item Count" : "Item Count",
+      "Reject Notes" : "Reject Notes",
+      "Confirm" : "Confirm",
     };
   }
 }
