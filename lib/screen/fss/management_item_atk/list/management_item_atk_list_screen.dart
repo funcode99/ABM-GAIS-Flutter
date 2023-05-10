@@ -117,6 +117,7 @@ class ManagementItemATKListScreen extends StatelessWidget {
                           number: "${index+1}",
                           subtitle: element.id,
                           title: element.itemName,
+                          total: "${element.alertQuantity + 100}",
                           content: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                             child: Row(
