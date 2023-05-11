@@ -3,14 +3,15 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/customalertcontainer.dart';
 
-class ItemCashAdvanceNonTravel extends StatelessWidget {
-  const ItemCashAdvanceNonTravel(
+class CommonAddItem extends StatelessWidget {
+  const CommonAddItem(
       {super.key,
         required this.number,
         required this.title,
         required this.subtitle,
         required this.nominal,
         required this.action,
+        this.content,
         this.onTap
       });
 
@@ -20,6 +21,7 @@ class ItemCashAdvanceNonTravel extends StatelessWidget {
   final String nominal;
   final List<Widget> action;
   final VoidCallback? onTap;
+  final Widget? content;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class ItemCashAdvanceNonTravel extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(title, style: listSubTitleTextStyle),
+                        Text(title, style: listTitleTextStyle),
                         Text(
                           subtitle,
                           style: listSubTitleTextStyle,
@@ -66,11 +68,13 @@ class ItemCashAdvanceNonTravel extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    nominal
+                      nominal
                   ),
                 ],
               ),
               const SizedBox(height: 16),
+              content ?? const SizedBox(),
+              SizedBox(height: content != null ? 16 : 0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: action,

@@ -61,6 +61,19 @@ class LanguageEN{
       "Book" : "Book",
       "ATK Info" : "ATK Info",
       "Created By" : "Created By",
+      "Status" : "Status",
+      "ATK Supplies" : "ATK Supplies",
+      "Management Item" : "Management Item",
+      "Stock In" : "Stock In",
+      "Facility Service System" : "Facility Service System",
+      "Management Item ATK" : "Management Item ATK",
+      "Company" : "Company",
+      "Alert Quantity" : "Alert Quantity",
+      "Approval ATK Request" : "Approval ATK Request",
+      "Booked" : "Booked",
+      "Item Count" : "Item Count",
+      "Reject Notes" : "Reject Notes",
+      "Confirm" : "Confirm",
     };
   }
 }

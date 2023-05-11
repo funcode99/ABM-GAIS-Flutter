@@ -5,28 +5,56 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
-import 'package:gais/reusable/customstatuscontainer.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/approval/request_atk/detail/detail_approval_request_atk_controller.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
-import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_controller.dart';
+import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
+import 'package:gais/screen/tms/cash_advance/widget/approval_confirmation_dialog.dart';
+import 'package:gais/screen/tms/cash_advance/widget/reject_dialog.dart';
 import 'package:get/get.dart';
 
-class RequestATKDetailScreen extends StatelessWidget {
-  const RequestATKDetailScreen({Key? key}) : super(key: key);
+class DetailApprovalRequestATKScreen extends StatefulWidget {
+  const DetailApprovalRequestATKScreen({Key? key, this.approvalActionEnum = ApprovalActionEnum.none}) : super(key: key);
+
+  final ApprovalActionEnum approvalActionEnum;
 
   @override
+  State<DetailApprovalRequestATKScreen> createState() => _DetailApprovalRequestATKScreenState();
+}
+
+class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestATKScreen> {
+  _openApproveDialog(){
+    Get.dialog(const ApprovalConfirmationDialog());
+  }
+
+  _openRejectDialog(){
+    Get.dialog(const RejectDialog(rejectFormEnum: RejectFormEnum.onlyFullReject));
+  }
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, (){
+      if(widget.approvalActionEnum == ApprovalActionEnum.approve){
+        _openApproveDialog();
+      }else if(widget.approvalActionEnum == ApprovalActionEnum.reject){
+        _openRejectDialog();
+      }
+    });
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    return GetBuilder<RequestATKDetailController>(
-        init: RequestATKDetailController(),
+    return GetBuilder<DetailApprovalRequestATKController>(
+        init: DetailApprovalRequestATKController(),
         builder: (controller) {
           return Scaffold(
             backgroundColor: baseColor,
             appBar: AppBar(
               leading: const CustomBackButton(),
               backgroundColor: whiteColor,
-              title: Text("ATK Request".tr, style: appTitle),
+              title: Text("Approval ATK Request".tr, style: appTitle),
               centerTitle: true,
               flexibleSpace: const TopBar(),
             ),
@@ -39,17 +67,8 @@ class RequestATKDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            CustomStatusContainer(
-                              backgroundColor: greenColor,
-                              status: "Completed".tr,
-                            )
-                          ],
-                        ),
+                      const SizedBox(
+                        height: 16,
                       ),
                       SizedBox(
                         width: double.infinity,
@@ -59,12 +78,36 @@ class RequestATKDetailScreen extends StatelessWidget {
                               .textTheme
                               .bodyText1
                               ?.copyWith(
-                                  fontSize: 16, fontWeight: FontWeight.w400),
+                              fontSize: 16, fontWeight: FontWeight.w400),
                           textAlign: TextAlign.center,
                         ),
                       ),
                       const SizedBox(
                         height: 16,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomIconButton(
+                            title: "Confirm".tr,
+                            iconData: Icons.check,
+                            backgroundColor: successColor,
+                            onPressed: () {
+                              _openApproveDialog();
+                            },
+                          ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          CustomIconButton(
+                            title: "Reject".tr,
+                            iconData: Icons.close,
+                            backgroundColor: redColor,
+                            onPressed: () {
+                              _openRejectDialog();
+                            },
+                          )
+                        ],
                       ),
                       const Divider(
                         height: 20,
@@ -90,13 +133,6 @@ class RequestATKDetailScreen extends StatelessWidget {
                                 controller: controller.createdByController,
                                 label: "Created By".tr),
                             const SizedBox(
-                              height: 8,
-                            ),
-                            CustomTextFormField(
-                                readOnly: true,
-                                controller: controller.rejectNoteController,
-                                label: "Reject Notes".tr),
-                            const SizedBox(
                               height: 64,
                             ),
 
@@ -107,10 +143,10 @@ class RequestATKDetailScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                blurRadius: 7,
-                                spreadRadius: 1,
-                                offset: const Offset(0, 4),
+                              color: Colors.grey.withOpacity(0.5),
+                              blurRadius: 7,
+                              spreadRadius: 1,
+                              offset: const Offset(0, 4),
                             )
                           ],
                           color: infoColor,
@@ -211,7 +247,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                                   ),
                                   onTap: (){
                                     Get.dialog(
-                                      DetailItemRequestATKScreen(item: element)
+                                        DetailItemRequestATKScreen(item: element)
                                     );
                                   },
                                 ))

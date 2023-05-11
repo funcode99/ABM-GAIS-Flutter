@@ -6,10 +6,12 @@ import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
 enum RejectEnum { rejectWithNote, fullReject }
+enum RejectFormEnum { onlyRejectWithNote, onlyFullReject, both }
 
 class RejectDialog extends StatefulWidget {
-  const RejectDialog({super.key});
+  const RejectDialog({super.key, this.rejectFormEnum = RejectFormEnum.both});
 
+  final RejectFormEnum rejectFormEnum;
   @override
   State<RejectDialog> createState() =>
       _RejectDialogState();
@@ -26,6 +28,17 @@ class _RejectDialogState
   @override
   void dispose() {
     _noteController.dispose();
+    Future.delayed(Duration.zero, (){
+      if(widget.rejectFormEnum == RejectFormEnum.onlyFullReject){
+        setState(() {
+          _selectedRejectEnum = RejectEnum.fullReject;
+        });
+      }else{
+        setState(() {
+          _selectedRejectEnum = RejectEnum.rejectWithNote;
+        });
+      }
+    });
     super.dispose();
   }
   @override
@@ -69,7 +82,7 @@ class _RejectDialogState
               const SizedBox(
                 height: 24,
               ),
-              Row(
+              widget.rejectFormEnum != RejectFormEnum.onlyFullReject ? Row(
                 children: [
                   Container(
                     height: 30,
@@ -95,11 +108,11 @@ class _RejectDialogState
                     child: Text("Reject With Notes ".tr),
                   ),
                 ],
-              ),
+              ) : const SizedBox(),
               const SizedBox(
                 height: 16,
               ),
-              Row(
+              widget.rejectFormEnum != RejectFormEnum.onlyRejectWithNote ? Row(
                 children: [
                   Container(
                     height: 30,
@@ -128,7 +141,7 @@ class _RejectDialogState
                     width: 12,
                   )
                 ],
-              ),
+              ) : const SizedBox(),
               const SizedBox(
                 height: 16,
               ),

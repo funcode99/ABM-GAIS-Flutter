@@ -4,7 +4,7 @@ import 'package:gais/data/model/request_atk/item_request_atk_model.dart';
 import 'package:gais/data/model/request_atk/item_request_atk_model.dart';
 import 'package:gais/data/model/request_atk/item_request_atk_model.dart';
 
-class RequestATKDetailController extends BaseController {
+class DetailApprovalRequestATKController extends BaseController {
   final TextEditingController createdDateController = TextEditingController();
   final TextEditingController createdByController = TextEditingController();
   final TextEditingController rejectNoteController = TextEditingController();
