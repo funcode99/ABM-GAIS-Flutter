@@ -74,6 +74,7 @@ class LanguageID{
       "Item Count" : "Item Count",
       "Reject Notes" : "Reject Notes",
       "Confirm" : "Confirm",
+      "Stock In ATK" : "Stock In ATK",
     };
   }
 }
