@@ -11,6 +11,7 @@ import 'package:gais/reusable/list_item/common_add_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/stock_in/add/add_stock_in_controller.dart';
 import 'package:gais/screen/fss/stock_in/add/item_stock_in/add/add_item_stock_in_screen.dart';
+import 'package:gais/screen/fss/stock_in/detail/detail_stock_in_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -127,14 +128,13 @@ class AddStockInATKScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          nominal: element.quantity.toString(),
                           action: [
                             CustomIconButton(
                               title: "Edit".tr,
                               iconData: IconlyBold.edit,
                               backgroundColor: successColor,
                               onPressed: () {
-                                // Get.to(const AddItemCashAdvanceNonTravelScreen());
+                                Get.to(const AddItemStockInATKScreen());
                               },
                             ),
                             const SizedBox(
@@ -153,7 +153,7 @@ class AddStockInATKScreen extends StatelessWidget {
                                 ));
                               },
                             )
-                          ],
+                          ], nominal: '',
                         ))
                             .toList()
                       ],
@@ -206,7 +206,7 @@ class AddStockInATKScreen extends StatelessWidget {
                         () => ElevatedButton(
                           onPressed: controller.enableButton.value
                               ? () {
-                                  // Get.off(const RequestATKDetailScreen());
+                                  Get.off(const DetailStockInScreen());
                                 }
                               : null,
                           style: ElevatedButton.styleFrom(

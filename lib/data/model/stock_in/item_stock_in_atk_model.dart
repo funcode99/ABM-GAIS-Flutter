@@ -7,7 +7,7 @@ class ItemStockInATKModel {
   final String brand;
   final String uom;
   final int quantity;
-  final String remarks;
+  final String? remarks;
 
   ItemStockInATKModel(
       {required this.company,
@@ -18,5 +18,5 @@ class ItemStockInATKModel {
         required this.brand,
         required this.uom,
         required this.quantity,
-        required this.remarks});
+        this.remarks});
 }
