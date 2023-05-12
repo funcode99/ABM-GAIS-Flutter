@@ -13,7 +13,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
-import 'package:gais/screen/fss/management_item_atk/add/add_management_item_atk_screen.dart';
+import 'package:gais/screen/fss/stock_in/add/add_stock_in_screen.dart';
 import 'package:gais/screen/fss/stock_in/list/stock_in_list_controller.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -191,7 +191,7 @@ class StockInListScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
-        onPressed: () => Get.to(const AddManagementItemATKScreen()),
+        onPressed: () => Get.to(const AddStockInATKScreen()),
         child: const Icon(Icons.add_rounded, size: 45),
       ),
       bottomNavigationBar: const BottomBar(menu: 1),
