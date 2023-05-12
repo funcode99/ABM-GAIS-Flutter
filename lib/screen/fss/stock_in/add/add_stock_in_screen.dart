@@ -10,6 +10,7 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_add_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/stock_in/add/add_stock_in_controller.dart';
+import 'package:gais/screen/fss/stock_in/add/item_stock_in/add/add_item_stock_in_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -64,7 +65,7 @@ class AddStockInATKScreen extends StatelessWidget {
                     height: 32,
                   ),
                   Text(
-                    "Details Item",
+                    "Details Item".tr,
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
                         fontSize: 14,
                         color: Colors.black,
@@ -74,49 +75,99 @@ class AddStockInATKScreen extends StatelessWidget {
                     height: 20,
                     color: greyColor,
                   ),
-                  ...controller.listItem
-                      .mapIndexed((index, element) => CommonAddItem(
-                            number: "${index + 1}",
-                            title: "",
-                            subtitle: element.brand,
-                            nominal: element.quantity.toString(),
-                            action: [
-                              CustomIconButton(
-                                title: "Edit".tr,
-                                iconData: IconlyBold.edit,
-                                backgroundColor: successColor,
-                                onPressed: () {
-                                  // Get.to(const AddItemCashAdvanceNonTravelScreen());
-                                },
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              CustomIconButton(
-                                title: "Delete".tr,
-                                iconData: IconlyBold.delete,
-                                backgroundColor: redColor,
-                                onPressed: () {
-                                  Get.dialog(DeleteConfirmationDialog(
-                                    onDeletePressed: () {
-                                      controller.removeItem(element);
-                                      Get.back();
-                                    },
-                                  ));
-                                },
-                              )
-                            ],
-                          ))
-                      .toList(),
+                  Obx(
+                      () => Column(
+                      children: [
+                        ...controller.listItem
+                            .mapIndexed((index, element) => CommonAddItem(
+                          number: "${index + 1}",
+                          title: element.itemName,
+                          subtitle: element.brand,
+                          content: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Column(
+                                  children: [
+                                    Text(
+                                      "Quantity".tr,
+                                      style: listTitleTextStyle,
+                                    ),
+                                    Text(
+                                      "${element.quantity}",
+                                      style: listSubTitleTextStyle,
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "UOM".tr,
+                                      style: listTitleTextStyle,
+                                    ),
+                                    Text(
+                                      element.uom,
+                                      style: listSubTitleTextStyle,
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "Warehouse".tr,
+                                      style: listTitleTextStyle,
+                                    ),
+                                    Text(
+                                      element.warehouse,
+                                      style: listSubTitleTextStyle,
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          nominal: element.quantity.toString(),
+                          action: [
+                            CustomIconButton(
+                              title: "Edit".tr,
+                              iconData: IconlyBold.edit,
+                              backgroundColor: successColor,
+                              onPressed: () {
+                                // Get.to(const AddItemCashAdvanceNonTravelScreen());
+                              },
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            CustomIconButton(
+                              title: "Delete".tr,
+                              iconData: IconlyBold.delete,
+                              backgroundColor: redColor,
+                              onPressed: () {
+                                Get.dialog(DeleteConfirmationDialog(
+                                  onDeletePressed: () {
+                                    controller.removeItem(element);
+                                    Get.back();
+                                  },
+                                ));
+                              },
+                            )
+                          ],
+                        ))
+                            .toList()
+                      ],
+                    ),
+                  ),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-                        /*final addedItem = await Get.to(
-                            const AddItemRequestATKScreen());
+                        final addedItem = await Get.to(
+                            const AddItemStockInATKScreen());
                         if (addedItem != null) {
                           controller.addItem(addedItem);
-                        }*/
+                        }
                       },
                       style:
                           ElevatedButton.styleFrom(backgroundColor: infoColor),

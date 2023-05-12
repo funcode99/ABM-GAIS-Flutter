@@ -9,7 +9,7 @@ class AddStockInATKController extends BaseController {
   final TextEditingController siteController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  List<ItemStockInATKModel> listItem = [];
+  final listItem = <ItemStockInATKModel>[].obs;
   final enableButton = false.obs;
 
   @override
@@ -28,5 +28,10 @@ class AddStockInATKController extends BaseController {
     listItem.removeWhere((element) => element.id == item.id);
 
     update();
+  }
+
+  void addItem(ItemStockInATKModel item){
+    listItem.add(item);
+    listItem.refresh();
   }
 }
