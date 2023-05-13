@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
@@ -188,6 +189,7 @@ class AddItemStockInATKScreen extends StatelessWidget{
           ),
         ),
       ),
+      bottomNavigationBar: const BottomBar(menu: 1),
     );
   }
 }
