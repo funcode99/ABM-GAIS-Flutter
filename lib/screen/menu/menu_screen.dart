@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/screen/approval/request_atk/list/approval_request_atk_list_screen.dart';
 import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_list_screen.dart';
 import 'package:gais/screen/fss/management_item_atk/list/management_item_atk_list_screen.dart';
 import 'package:gais/screen/fss/request_atk/list/request_atk_list_screen.dart';
@@ -190,8 +191,8 @@ class MenuScreen extends StatelessWidget {
                                       height: 25,
                                     ),
                                   ),
-                                  const Text(
-                                    "Request ATK\n",
+                                  Text(
+                                    "${"ATK Request".tr}\n",
                                     textAlign: TextAlign.center,
                                   )
                                 ],
@@ -307,6 +308,11 @@ class MenuScreen extends StatelessWidget {
                                         arguments: true),
                                   ),
                                   GestureDetector(
+                                    onTap: (){
+                                      Get.off(
+                                        const ApprovalRequestATKListScreen()
+                                      );
+                                    },
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
@@ -327,8 +333,8 @@ class MenuScreen extends StatelessWidget {
                                             height: 25,
                                           ),
                                         ),
-                                        const Text(
-                                          "Request ATK",
+                                        Text(
+                                          "ATK Request".tr,
                                           textAlign: TextAlign.center,
                                         )
                                       ],
