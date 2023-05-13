@@ -180,7 +180,7 @@ class ManagementItemATKListScreen extends StatelessWidget {
                               iconData: IconlyBold.edit,
                               backgroundColor: successColor,
                               onPressed: () {
-                                // Get.to(const AddItemCashAdvanceNonTravelScreen());
+                                Get.to(const AddManagementItemATKScreen());
                               },
                             ),
                             const SizedBox(
