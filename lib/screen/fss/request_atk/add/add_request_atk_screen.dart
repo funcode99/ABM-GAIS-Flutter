@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
@@ -117,7 +118,7 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                               iconData: IconlyBold.edit,
                               backgroundColor: successColor,
                               onPressed: () {
-                                // Get.to(const AddItemCashAdvanceNonTravelScreen());
+                                Get.to(const AddItemRequestATKScreen());
                               },
                             ),
                             const SizedBox(
@@ -201,6 +202,7 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                 ),
               ),
             ),
+            bottomNavigationBar: const BottomBar(menu: 1),
           );
         });
   }

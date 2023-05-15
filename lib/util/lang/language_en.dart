@@ -29,7 +29,7 @@ class LanguageEN{
       "Save" : "Save",
       "Approve" : "Approve",
       "Reject" : "Reject",
-      "Reject With Notes " : "Reject With Notes ",
+      "Rejected With Notes" : "Rejected With Notes",
       "Approve on Behalf of: " : "Approve on Behalf of: ",
       "Fully approve" : "Fully approve",
       "Fully Rejected" : "Fully Rejected",

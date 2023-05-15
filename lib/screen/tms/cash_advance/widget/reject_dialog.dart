@@ -26,8 +26,8 @@ class _RejectDialogState
   final _noteController = TextEditingController();
 
   @override
-  void dispose() {
-    _noteController.dispose();
+  void initState() {
+    super.initState();
     Future.delayed(Duration.zero, (){
       if(widget.rejectFormEnum == RejectFormEnum.onlyFullReject){
         setState(() {
@@ -39,6 +39,10 @@ class _RejectDialogState
         });
       }
     });
+  }
+  @override
+  void dispose() {
+    _noteController.dispose();
     super.dispose();
   }
   @override
@@ -105,7 +109,7 @@ class _RejectDialogState
                     width: 16,
                   ),
                   Expanded(
-                    child: Text("Reject With Notes ".tr),
+                    child: Text("Rejected With Notes".tr),
                   ),
                 ],
               ) : const SizedBox(),

@@ -79,7 +79,7 @@ class AddItemStockInATKController extends BaseController {
         site: siteController.text,
         brand: selectedBrang,
         itemName: itemController.text,
-        warehouse: warehousController.text,
+        warehouse: selectedWarehouse.name,
         quantity: quantityController.text.toInt(),
         uom: companyController.text,
         remarks: remarksController.text
