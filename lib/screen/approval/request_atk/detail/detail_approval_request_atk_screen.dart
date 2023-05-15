@@ -93,7 +93,6 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                             iconData: Icons.check,
                             backgroundColor: successColor,
                             onPressed: () {
-                              _openApproveDialog();
                             },
                           ),
                           const SizedBox(
