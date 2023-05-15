@@ -78,8 +78,8 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
                 title: "Confirm".tr,
                 iconData: Icons.check,
                 backgroundColor: successColor,
-                onPressed: () {
-                  Get.to(const DetailApprovalRequestATKScreen(approvalActionEnum: ApprovalActionEnum.approve,));
+                onPressed: (){
+
                 },
               ),
               const SizedBox(

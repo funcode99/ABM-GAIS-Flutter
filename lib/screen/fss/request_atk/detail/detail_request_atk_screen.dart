@@ -89,13 +89,13 @@ class RequestATKDetailScreen extends StatelessWidget {
                                 isRequired: true,
                                 controller: controller.createdByController,
                                 label: "Created By".tr),
-                            const SizedBox(
+                            /*const SizedBox(
                               height: 8,
                             ),
                             CustomTextFormField(
                                 readOnly: true,
                                 controller: controller.rejectNoteController,
-                                label: "Reject Notes".tr),
+                                label: "Reject Notes".tr),*/
                             const SizedBox(
                               height: 64,
                             ),
