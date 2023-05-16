@@ -89,13 +89,18 @@ class CommonListItem extends StatelessWidget {
                 children: [
                   total != null ? CustomAlertContainer(
                     backgroundColor: infoColor,
-                    content: Text(total!,
-                        style: listSubTitleTextStyle.copyWith(
-                            color: whiteColor, fontSize: 14),
-                        textAlign: TextAlign.center),
+                    content: Expanded(
+                      child: Text(total!,
+                          style: listSubTitleTextStyle.copyWith(
+                              color: whiteColor, fontSize: 14),
+                          textAlign: TextAlign.center),
+                    ),
                     padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 32),
                   ) : const SizedBox(),
+                  const SizedBox(
+                    width: 8,
+                  ),
                   Row(
                     children: action,
                   ),

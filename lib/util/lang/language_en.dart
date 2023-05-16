@@ -75,6 +75,7 @@ class LanguageEN{
       "Reject Notes" : "Reject Notes",
       "Confirm" : "Confirm",
       "Stock In ATK" : "Stock In ATK",
+      "Booking Meeting Room" : "Booking Meeting Room",
     };
   }
 }
