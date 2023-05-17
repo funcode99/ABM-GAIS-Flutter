@@ -1,4 +1,6 @@
+import 'package:gais/base/base_repository.dart';
 import 'package:gais/data/network_core.dart';
+import 'package:gais/data/repository/cash_advance/cash_advance_travel_repository.dart';
 import 'package:gais/data/repository/repository.dart';
 import 'package:gais/data/repository/repository_impl.dart';
 import 'package:gais/data/storage_core.dart';
@@ -11,5 +13,7 @@ class GlobalBinding extends Bindings {
     Get.put<NetworkCore>(NetworkCore(), permanent: true);
     Get.put<StorageCore>(StorageCore(), permanent: true);
     Get.put<Repository>(RepositoryImpl(), permanent: true);
+
+    Get.put<CashAdvanceTravelRepository>(CashAdvanceTravelRepository(), permanent: true);
   }
 }
