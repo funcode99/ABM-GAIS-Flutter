@@ -5,6 +5,7 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
+import 'package:gais/reusable/customstatuscontainer.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -28,8 +29,8 @@ class _CashAdvanceTravelDetailScreenState
     CashAdvanceModel selectedItem = Get.arguments["item"];
 
     final CashAdvanceTravelDetailController controller =
-        Get.put(CashAdvanceTravelDetailController())
-          ..selectedItem(selectedItem);
+    Get.put(CashAdvanceTravelDetailController())
+      ..selectedItem(selectedItem);
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -49,13 +50,27 @@ class _CashAdvanceTravelDetailScreenState
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Obx(() {
+                        return CustomStatusContainer(
+                          backgroundColor: greenColor,
+                          status: "${controller.selectedItem.value.status}",
+                        );
+                      })
+                    ],
+                  ),
+                ),
+                SizedBox(
                   width: double.infinity,
                   child: Obx(() {
                     return Text(
                       controller.selectedItem.value.noCa ?? "-",
-                      style: Theme.of(context)
+                      style: Theme
+                          .of(context)
                           .textTheme
                           .bodyText1
                           ?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
@@ -63,13 +78,16 @@ class _CashAdvanceTravelDetailScreenState
                     );
                   }),
                 ),
+                const SizedBox(
+                  height: 16,
+                ),
                 const Divider(
                   height: 20,
                   color: greyColor,
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -106,7 +124,11 @@ class _CashAdvanceTravelDetailScreenState
                       ),
                       Text(
                         "Details".tr,
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText1
+                            ?.copyWith(
                             fontSize: 14,
                             color: Colors.black,
                             fontWeight: FontWeight.w600),
@@ -124,125 +146,136 @@ class _CashAdvanceTravelDetailScreenState
                     return controller.listDetail.isEmpty
                         ? const SizedBox()
                         : ListView(
-                            shrinkWrap: true,
-                            physics: const ScrollPhysics(),
-                            children: [
-                              ...controller.listDetail
-                                  .mapIndexed((index, item) => CommonListItem(
-                                        number: "${index+1}",
-                                        subtitle: controller.selectedItem.value.employeeName ?? "-",
-                                        total: item.total?.toInt().toCurrency(),
-                                        content: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8, vertical: 8),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    "Item".tr,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        ?.copyWith(
-                                                            fontSize: 14,
-                                                            color: Colors.black,
-                                                            height: 1.5),
-                                                  ),
-                                                  Text(
-                                                    "${item.idItemCa}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        ?.copyWith(
-                                                            fontSize: 14,
-                                                            color: greyColor,
-                                                            height: 1.5),
-                                                  ),
-                                                ],
-                                              ),
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    "Frequency".tr,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        ?.copyWith(
-                                                            fontSize: 14,
-                                                            color: Colors.black,
-                                                            height: 1.5),
-                                                  ),
-                                                  Text(
-                                                    "${item.frequency}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        ?.copyWith(
-                                                            fontSize: 14,
-                                                            color: greyColor,
-                                                            height: 1.5),
-                                                  ),
-                                                ],
-                                              ),
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    "Currency".tr,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        ?.copyWith(
-                                                            fontSize: 14,
-                                                            color: Colors.black,
-                                                            height: 1.5),
-                                                  ),
-                                                  Text(
-                                                    "${controller.selectedItem.value.currencyName}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        ?.copyWith(
-                                                            fontSize: 14,
-                                                            color: greyColor,
-                                                            height: 1.5),
-                                                  ),
-                                                ],
-                                              ),
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    "Nominal".tr,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        ?.copyWith(
-                                                            fontSize: 14,
-                                                            color: Colors.black,
-                                                            height: 1.5),
-                                                  ),
-                                                  Text(
-                                                    "${item.nominal?.toInt().toCurrency()}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        ?.copyWith(
-                                                            fontSize: 14,
-                                                            color: greyColor,
-                                                            height: 1.5),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
+                      shrinkWrap: true,
+                      physics: const ScrollPhysics(),
+                      children: [
+                        ...controller.listDetail
+                            .mapIndexed((index, item) =>
+                            CommonListItem(
+                              number: "${index + 1}",
+                              subtitle: controller.selectedItem.value
+                                  .employeeName ?? "-",
+                              total: item.total?.toInt().toCurrency(),
+                              content: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 8),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Text(
+                                          "Item".tr,
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              ?.copyWith(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              height: 1.5),
                                         ),
-                                        action: const [],
-                                        status: "${controller.selectedItem.value.status}",
-                                      ))
-                            ],
-                          );
+                                        Text(
+                                          "${item.idItemCa}",
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              ?.copyWith(
+                                              fontSize: 14,
+                                              color: greyColor,
+                                              height: 1.5),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          "Frequency".tr,
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              ?.copyWith(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              height: 1.5),
+                                        ),
+                                        Text(
+                                          "${item.frequency}",
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              ?.copyWith(
+                                              fontSize: 14,
+                                              color: greyColor,
+                                              height: 1.5),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          "Currency".tr,
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              ?.copyWith(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              height: 1.5),
+                                        ),
+                                        Text(
+                                          "${controller.selectedItem.value
+                                              .currencyName}",
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              ?.copyWith(
+                                              fontSize: 14,
+                                              color: greyColor,
+                                              height: 1.5),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          "Nominal".tr,
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              ?.copyWith(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              height: 1.5),
+                                        ),
+                                        Text(
+                                          "${item.nominal?.toInt()
+                                              .toCurrency()}",
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              ?.copyWith(
+                                              fontSize: 14,
+                                              color: greyColor,
+                                              height: 1.5),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                              action: const [],
+                            ))
+                      ],
+                    );
                   }),
                 ),
                 const SizedBox(
