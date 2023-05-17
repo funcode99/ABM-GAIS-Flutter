@@ -22,6 +22,10 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
       return right(apiResponseModel.data);
     } on DioError catch (e) {
       return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    }catch (e){
+      return left(BaseError(message: "General error occurred"));
     }
   }
 
@@ -35,8 +39,11 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
       return right(apiResponseModel.data);
     } on DioError catch (e) {
       return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      return left(BaseError(message: "General error occurred"));
     }
   }
-
 
 }

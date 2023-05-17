@@ -3,11 +3,12 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_travel_repository.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
-class CashAdvanceTravelDetailController extends BaseController{
+class CashAdvanceTravelDetailController extends BaseController {
   final TextEditingController createdDateController = TextEditingController();
   final TextEditingController requestorController = TextEditingController();
   final TextEditingController referenceController = TextEditingController();
@@ -25,7 +26,6 @@ class CashAdvanceTravelDetailController extends BaseController{
     referenceController.text = "TCA-ABM/1232/23.04";
     totalController.text = "250.000";
     super.onInit();
-
   }
 
   @override
@@ -34,29 +34,23 @@ class CashAdvanceTravelDetailController extends BaseController{
     initData();
   }
 
-  void initData(){
-    createdDateController.text = selectedItem.value.createdAt?.toDateFormat() ?? "-";
+  void initData() {
+    createdDateController.text =
+        selectedItem.value.createdAt?.toDateFormat() ?? "-";
     requestorController.text = selectedItem.value.employeeName ?? "-";
     referenceController.text = selectedItem.value.noRequestTrip ?? "-";
-    totalController.text = selectedItem.value.grandTotal?.toInt().toCurrency() ?? "-";
+    totalController.text =
+        selectedItem.value.grandTotal?.toInt().toCurrency() ?? "-";
 
     getData();
   }
 
   void getData() async {
     final result = await _cashAdvanceTravelRepository.getDataDetails(2);
-    result.fold(
-            (l) => Get.showSnackbar(GetSnackBar(
-          message: l.message,
-        )), (r) {
+    result.fold((l) => Get.showSnackbar(CustomGetSnackBar(message: l.message)),
+        (r) {
       listDetail.value = r;
       listDetail.refresh();
     });
   }
-
-
-
-
-
-
 }
