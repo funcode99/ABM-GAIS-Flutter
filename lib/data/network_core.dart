@@ -1,5 +1,6 @@
 import 'package:gais/const/app_const.dart';
 import 'package:dio/dio.dart';
+import 'package:gais/data/interceptor/token_header_interceptor.dart';
 
 class NetworkCore {
   Dio dio = Dio();
@@ -15,5 +16,6 @@ class NetworkCore {
         }
     );
     dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true));
+    dio.interceptors.add(TokenHeaderInterceptor());
   }
 }
