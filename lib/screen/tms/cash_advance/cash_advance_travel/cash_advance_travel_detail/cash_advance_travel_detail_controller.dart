@@ -47,7 +47,9 @@ class CashAdvanceTravelDetailController extends BaseController {
 
   void getData() async {
     final result = await _cashAdvanceTravelRepository.getDataDetails(2);
-    result.fold((l) => Get.showSnackbar(CustomGetSnackBar(message: l.message)),
+    result.fold(
+        (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (r) {
       listDetail.value = r;
       listDetail.refresh();

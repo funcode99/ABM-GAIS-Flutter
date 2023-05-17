@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_travel_repository.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -25,8 +26,9 @@ class CashAdvanceTravelListController extends BaseController {
   void getData() async {
     final result = await _cashAdvanceTravelRepository.getData();
     result.fold(
-        (l) => Get.showSnackbar(GetSnackBar(
+        (l) => Get.showSnackbar(CustomGetSnackBar(
               message: l.message,
+              backgroundColor: Colors.red
             )), (r) {
       listHeader.value = r;
       listHeader.refresh();
