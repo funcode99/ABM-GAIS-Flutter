@@ -29,103 +29,100 @@ class CashAdvanceTravelListScreen extends StatefulWidget {
 
 class _CashAdvanceTravelListScreenState
     extends State<CashAdvanceTravelListScreen> {
-
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CashAdvanceTravelListController>(
-        init: CashAdvanceTravelListController(),
-        builder: (controller) {
-          return Scaffold(
-            backgroundColor: baseColor,
-            appBar: AppBar(
-              backgroundColor: whiteColor,
-              title: Text("cash_advance_travel".tr, style: appTitle),
-              centerTitle: true,
-              flexibleSpace: const TopBar(),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-                  CustomSearchBar(
-                    onChanged: (string) {},
-                    onPressedFilter: () {
-                      Get.bottomSheet(FilterBottomSheet(
-                        onApplyFilter: () {},
-                        children: [
-                          CustomTextFormField(
-                              readOnly: true,
-                              controller: controller.dateRange,
-                              suffixIcon: const Icon(Icons.calendar_month),
-                              onTap: () {
-                                showCustomDateRangePicker(
-                                  context,
-                                  dismissible: true,
-                                  minimumDate: DateTime.now()
-                                      .subtract(const Duration(days: 365)),
-                                  maximumDate: DateTime.now()
-                                      .add(const Duration(days: 365)),
-                                  endDate: controller.endDate,
-                                  startDate: controller.startDate,
-                                  backgroundColor: Colors.white,
-                                  primaryColor: Colors.green,
-                                  onApplyClick: (start, end) {
-                                    controller.endDate = end;
-                                    controller.startDate = start;
-                                    controller.dateRange.text =
-                                    "${controller.dateFormat.format(
-                                        start)} - ${controller.dateFormat
-                                        .format(end)}";
-                                    controller.update();
-                                  },
-                                  onCancelClick: () {
-                                    controller.endDate = null;
-                                    controller.startDate = null;
-                                    controller.update();
-                                  },
-                                );
-                              },
-                              label: "Date Range".tr),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                        ],
-                      ));
-                    },
-                  ),
-                  CustomPagination(
-                    onPageChanged: (int) {},
-                    pageTotal: 5,
-                    margin: EdgeInsets.zero,
-                    colorSub: infoColor,
-                    colorPrimary: whiteColor,
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: ()async{
-                          controller.getData();
+    final CashAdvanceTravelListController controller =
+        Get.put(CashAdvanceTravelListController());
+
+    return Scaffold(
+      backgroundColor: baseColor,
+      appBar: AppBar(
+        backgroundColor: whiteColor,
+        title: Text("cash_advance_travel".tr, style: appTitle),
+        centerTitle: true,
+        flexibleSpace: const TopBar(),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            CustomSearchBar(
+              onChanged: (string) {},
+              onPressedFilter: () {
+                Get.bottomSheet(FilterBottomSheet(
+                  onApplyFilter: () {},
+                  children: [
+                    CustomTextFormField(
+                        readOnly: true,
+                        controller: controller.dateRange,
+                        suffixIcon: const Icon(Icons.calendar_month),
+                        onTap: () {
+                          showCustomDateRangePicker(
+                            context,
+                            dismissible: true,
+                            minimumDate: DateTime.now()
+                                .subtract(const Duration(days: 365)),
+                            maximumDate:
+                                DateTime.now().add(const Duration(days: 365)),
+                            endDate: controller.endDate,
+                            startDate: controller.startDate,
+                            backgroundColor: Colors.white,
+                            primaryColor: Colors.green,
+                            onApplyClick: (start, end) {
+                              controller.endDate = end;
+                              controller.startDate = start;
+                              controller.dateRange.text =
+                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                              controller.update();
+                            },
+                            onCancelClick: () {
+                              controller.endDate = null;
+                              controller.startDate = null;
+                              controller.update();
+                            },
+                          );
                         },
-                        child: Obx(() {
-                          return controller.listHeader.isEmpty ?
-                          const EmptyListError() :
-                          ListView(
-                            children: [
-                              ...controller.listHeader.mapIndexed((index,
-                                  element) =>
-                                  CommonListItem(
+                        label: "Date Range".tr),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                  ],
+                ));
+              },
+            ),
+            CustomPagination(
+              onPageChanged: (int) {},
+              pageTotal: 5,
+              margin: EdgeInsets.zero,
+              colorSub: infoColor,
+              colorPrimary: whiteColor,
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Expanded(
+                child: RefreshIndicator(
+              onRefresh: () async {
+                controller.getData();
+              },
+              child: Obx(() {
+                return controller.listHeader.isEmpty
+                    ? const EmptyListError()
+                    : ListView(
+                        children: [
+                          ...controller.listHeader
+                              .mapIndexed((index, item) => CommonListItem(
                                     number: "${index + 1}",
-                                    title: element.noCa ?? "-",
-                                    subtitle: element.employeeName ?? "-",
-                                    total: element.grandTotal?.toInt().toCurrency(),
+                                    title: item.noCa ?? "-",
+                                    subtitle: item.employeeName ?? "-",
+                                    total:
+                                        item.grandTotal?.toInt().toCurrency(),
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 8),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceAround,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
                                         children: [
                                           Column(
                                             children: [
@@ -134,7 +131,7 @@ class _CashAdvanceTravelListScreenState
                                                 style: listTitleTextStyle,
                                               ),
                                               Text(
-                                                element.currencyName ?? "",
+                                                item.currencyName ?? "",
                                                 style: listSubTitleTextStyle,
                                               ),
                                             ],
@@ -146,7 +143,7 @@ class _CashAdvanceTravelListScreenState
                                                 style: listTitleTextStyle,
                                               ),
                                               Text(
-                                                element.noRequestTrip ?? "-",
+                                                item.noRequestTrip ?? "-",
                                                 style: listSubTitleTextStyle,
                                               ),
                                             ],
@@ -160,23 +157,22 @@ class _CashAdvanceTravelListScreenState
                                         iconData: IconlyBold.show,
                                         onPressed: () {
                                           Get.to(
-                                              const CashAdvanceTravelDetailScreen());
+                                              () =>
+                                                  const CashAdvanceTravelDetailScreen(),
+                                              arguments: {"item": item});
                                         },
                                       )
                                     ],
-                                    status: element.status,
-                                  )
-                              )
-                            ],
-                          );
-                        }),
-                      )
-                  )
-                ],
-              ),
-            ),
-            bottomNavigationBar: const BottomBar(menu: 1),
-          );
-        });
+                                    status: item.status,
+                                  ))
+                        ],
+                      );
+              }),
+            ))
+          ],
+        ),
+      ),
+      bottomNavigationBar: const BottomBar(menu: 1),
+    );
   }
 }

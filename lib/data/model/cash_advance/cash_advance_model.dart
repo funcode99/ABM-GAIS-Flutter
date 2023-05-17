@@ -25,6 +25,7 @@ class CashAdvanceModel {
   int? code;
   String? status;
   int? itemCount;
+  String? createdAt;
   List<CashAdvanceDetailModel>? arrayDetail;
 
   CashAdvanceModel(
@@ -48,9 +49,9 @@ class CashAdvanceModel {
       this.code,
       this.status,
       this.itemCount,
+      this.createdAt,
       this.arrayDetail});
 
-  /// Helper methods for genericArgumentFactories
   static CashAdvanceModel fromJsonModel(Object? json) =>
       CashAdvanceModel.fromJson(json as Map<String, dynamic>);
 
@@ -78,7 +79,6 @@ class CashAdvanceModel {
             'helper method.');
   }
 
-  /// Not at all comprehensive, but you get the idea
   static List<Map<String, dynamic>> toJsonModelList(Object list) {
     if (list is List<CashAdvanceModel>) {
       return list.map((item) => item.toJson()).toList();
@@ -86,7 +86,6 @@ class CashAdvanceModel {
     return [];
   }
 
-  /// Usual json_serializable stub methods
   factory CashAdvanceModel.fromJson(Map<String, dynamic> json) =>
       _$CashAdvanceModelFromJson(json);
 

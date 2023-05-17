@@ -23,7 +23,6 @@ class CashAdvanceTravelListController extends BaseController {
   }
 
   void getData() async {
-    print("getData");
     final result = await _cashAdvanceTravelRepository.getData();
     result.fold(
         (l) => Get.showSnackbar(GetSnackBar(

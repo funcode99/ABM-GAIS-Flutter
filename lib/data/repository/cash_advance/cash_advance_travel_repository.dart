@@ -25,5 +25,18 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
     }
   }
 
+  @override
+  Future<Either<BaseError, List<CashAdvanceDetailModel>>> getDataDetails(int id) async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/cash_advance/get_by_cash_id/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceDetailModel.fromJsonModelList);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }
+  }
+
 
 }
