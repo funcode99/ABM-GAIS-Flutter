@@ -21,10 +21,6 @@ class CashAdvanceTravelDetailController extends BaseController {
 
   @override
   void onInit() {
-    createdDateController.text = "23/02/23";
-    requestorController.text = "John Smith";
-    referenceController.text = "TCA-ABM/1232/23.04";
-    totalController.text = "250.000";
     super.onInit();
   }
 
@@ -36,7 +32,7 @@ class CashAdvanceTravelDetailController extends BaseController {
 
   void initData() {
     createdDateController.text =
-        selectedItem.value.createdAt?.toDateFormat() ?? "-";
+        selectedItem.value.createdAt?.toDateFormat(format: "dd/MM/yy") ?? "-";
     requestorController.text = selectedItem.value.employeeName ?? "-";
     referenceController.text = selectedItem.value.noRequestTrip ?? "-";
     totalController.text =
