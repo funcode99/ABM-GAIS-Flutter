@@ -20,6 +20,8 @@ class CashAdvanceNonTravelListController extends BaseController{
   void onInit() {
     super.onInit();
     dateRange.text = "10/03/2023 - 17/03/2023";
+
+    getData();
   }
 
   void getData() async {
