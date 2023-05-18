@@ -26,6 +26,8 @@ class CashAdvanceModel {
   String? status;
   int? itemCount;
   String? createdAt;
+  String? date;
+  String? event;
   List<CashAdvanceDetailModel>? arrayDetail;
 
   CashAdvanceModel(
@@ -50,6 +52,8 @@ class CashAdvanceModel {
       this.status,
       this.itemCount,
       this.createdAt,
+      this.event,
+      this.date,
       this.arrayDetail});
 
   static CashAdvanceModel fromJsonModel(Object? json) =>

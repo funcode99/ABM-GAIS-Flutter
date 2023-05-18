@@ -29,6 +29,8 @@ CashAdvanceModel _$CashAdvanceModelFromJson(Map<String, dynamic> json) =>
       status: json['status'] as String?,
       itemCount: json['item_count'] as int?,
       createdAt: json['created_at'] as String?,
+      event: json['event'] as String?,
+      date: json['date'] as String?,
       arrayDetail: (json['array_detail'] as List<dynamic>?)
           ?.map(
               (e) => CashAdvanceDetailModel.fromJson(e as Map<String, dynamic>))
@@ -58,5 +60,7 @@ Map<String, dynamic> _$CashAdvanceModelToJson(CashAdvanceModel instance) =>
       'status': instance.status,
       'item_count': instance.itemCount,
       'created_at': instance.createdAt,
+      'date': instance.date,
+      'event': instance.event,
       'array_detail': instance.arrayDetail,
     };

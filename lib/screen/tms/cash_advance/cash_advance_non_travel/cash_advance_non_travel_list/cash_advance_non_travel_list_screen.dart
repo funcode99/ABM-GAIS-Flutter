@@ -16,6 +16,8 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/cash_advance_non_travel_list/cash_advance_non_travel_list_controller.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_screen.dart';
+import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -114,10 +116,10 @@ class _CashAdvanceNonTravelListScreenState
                         children: [
                           ...controller.listHeader
                               .mapIndexed((index, item) => CommonListItem(
-                                    number: "$index",
-                                    title: "TCA-ABM/1232/23.0$index",
-                                    subtitle: "12/05/23",
-                                    total: "120.000",
+                                    number: "${index+1}",
+                                    title: "${item.noCa}",
+                                    subtitle: "${item.createdAt?.toDateFormat(format: "dd/MM/yy")}",
+                                    total: "${item.grandTotal?.toInt().toCurrency()}",
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 8),
@@ -129,23 +131,11 @@ class _CashAdvanceNonTravelListScreenState
                                             children: [
                                               Text(
                                                 "Event".tr,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1
-                                                    ?.copyWith(
-                                                        fontSize: 14,
-                                                        color: Colors.black,
-                                                        height: 1.5),
+                                                style: listTitleTextStyle,
                                               ),
                                               Text(
-                                                "Transport",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1
-                                                    ?.copyWith(
-                                                        fontSize: 14,
-                                                        color: greyColor,
-                                                        height: 1.5),
+                                                "${item.event}",
+                                                style: listSubTitleTextStyle,
                                               ),
                                             ],
                                           ),
@@ -179,7 +169,7 @@ class _CashAdvanceNonTravelListScreenState
                                         },
                                       )
                                     ],
-                                    status: "Submitted".tr,
+                                    status: item.status,
                                   ))
                         ],
                       );
