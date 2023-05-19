@@ -1,6 +1,8 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class StorageCore {
+  static const String userID = "userID";
+
   final storage = const FlutterSecureStorage();
 
   void saveToken(String token) async {
@@ -85,5 +87,9 @@ class StorageCore {
 
   Future<bool> ensureStorageReady() async {
     return await storage.read(key: 'token') != null;
+  }
+
+  Future<String> readString(String key)async{
+    return await storage.read(key: key) ?? "";
   }
 }

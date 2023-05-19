@@ -46,4 +46,10 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
     }
   }
 
+  @override
+  Future<Either<BaseError, CashAdvanceModel>> saveData(dynamic data) {
+    // TODO: implement saveData
+    throw UnimplementedError();
+  }
+
 }

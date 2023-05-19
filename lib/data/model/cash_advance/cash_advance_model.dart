@@ -7,15 +7,15 @@ part 'cash_advance_model.g.dart';
 class CashAdvanceModel {
   int? id;
   int? idEmployee;
-  int? typeCa;
+  String? typeCa;
   String? noCa;
   int? idRequestTrip;
   int? idCurrency;
   String? grandTotal;
   int? isPaid;
   int? isJournal;
-  int? codeStatusDoc;
-  int? codeStatus;
+  String? codeStatusDoc;
+  String? codeStatus;
   String? noRequestTrip;
   String? employeeName;
   String? snEmployee;

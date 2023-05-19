@@ -4,19 +4,29 @@ part 'cash_advance_detail_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class CashAdvanceDetailModel {
+  String? key;
   int? id;
   int? idCa;
   int? idItemCa;
+  int? idCostCenter;
   int? frequency;
   String? nominal;
   String? total;
+  String? itemName;
+  String? remarks;
+  String? costCenterName;
 
   CashAdvanceDetailModel(
       {this.id,
+        this.key,
         this.idCa,
         this.idItemCa,
         this.frequency,
         this.nominal,
+        this.itemName,
+        this.remarks,
+        this.idCostCenter,
+        this.costCenterName,
         this.total})
   ;
 

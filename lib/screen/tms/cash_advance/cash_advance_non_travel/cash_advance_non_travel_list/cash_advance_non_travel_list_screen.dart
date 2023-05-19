@@ -118,7 +118,7 @@ class _CashAdvanceNonTravelListScreenState
                               .mapIndexed((index, item) => CommonListItem(
                                     number: "${index+1}",
                                     title: "${item.noCa}",
-                                    subtitle: "${item.createdAt?.toDateFormat(format: "dd/MM/yy")}",
+                                    subtitle: "${item.createdAt?.toDateFormat(targetFormat: "dd/MM/yy")}",
                                     total: "${item.grandTotal?.toInt().toCurrency()}",
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(
