@@ -12,7 +12,6 @@ import 'package:gais/reusable/list_item/common_add_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_controller.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_screen.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -115,17 +114,19 @@ class _AddCashAdvanceNonTravelScreenState
                         ),
                         ...controller.listDetail
                             .mapIndexed((index, element) => CommonAddItem(
-                                  number: "${index+1}",
+                                  number: "${index + 1}",
                                   title: "${element.itemName}",
                                   subtitle: element.idCostCenter.toString(),
-                                  nominal: "${element.nominal?.toInt().toCurrency()}",
+                                  nominal:
+                                      "${element.nominal?.toInt().toCurrency()}",
                                   action: [
                                     CustomIconButton(
                                       title: "Edit".tr,
                                       iconData: IconlyBold.edit,
                                       backgroundColor: successColor,
                                       onPressed: () {
-                                        Get.to(const AddItemCashAdvanceNonTravelScreen());
+                                        Get.to(
+                                            const AddItemCashAdvanceNonTravelScreen());
                                       },
                                     ),
                                     const SizedBox(
@@ -137,7 +138,7 @@ class _AddCashAdvanceNonTravelScreenState
                                       backgroundColor: redColor,
                                       onPressed: () {
                                         Get.dialog(DeleteConfirmationDialog(
-                                          onDeletePressed: (){
+                                          onDeletePressed: () {
                                             controller.removeItem(element);
                                             Get.back();
                                           },
@@ -191,9 +192,11 @@ class _AddCashAdvanceNonTravelScreenState
                               child: Text("Cancel".tr),
                             ),
                             ElevatedButton(
-                              onPressed: _isButtonEnabled ? () {
-                                controller.saveData();
-                              } : null,
+                              onPressed: _isButtonEnabled
+                                  ? () {
+                                      controller.saveData();
+                                    }
+                                  : null,
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: infoColor),
                               child: Text("Save".tr),

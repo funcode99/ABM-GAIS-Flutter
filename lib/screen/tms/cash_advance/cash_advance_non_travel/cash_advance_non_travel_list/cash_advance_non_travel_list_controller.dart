@@ -13,7 +13,7 @@ class CashAdvanceNonTravelListController extends BaseController{
   DateTime? startDate;
   DateTime? endDate;
 
-  final CashAdvanceTravelNonRepository _cashAdvanceTravelNonRepository = Get.find();
+  final CashAdvanceNonTravelRepository _cashAdvanceTravelNonRepository = Get.find();
   final listHeader = <CashAdvanceModel>[].obs;
 
   @override

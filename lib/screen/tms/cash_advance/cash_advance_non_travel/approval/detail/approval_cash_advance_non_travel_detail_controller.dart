@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
+import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
+import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +15,7 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController{
   final formKey = GlobalKey<FormState>();
   DateFormat dateFormat = DateFormat("dd/MM/yy");
 
-  List<ItemCashAdvanceNonTravelModel> listItem = <ItemCashAdvanceNonTravelModel>[].obs;
+  List<CashAdvanceDetailModel> listItem = <CashAdvanceDetailModel>[].obs;
 
   @override
   void onInit() {
@@ -22,7 +25,7 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController{
     totalController.text = "250.000";
 
     listItem.add(
-        ItemCashAdvanceNonTravelModel("1", "Item Satu", "123321", "12000", "Remarks")
+        CashAdvanceDetailModel(key:  "1",itemName: "Item Satu", costCenterName: "123321", nominal: "12000", remarks:"Remarks")
     );
     super.onInit();
   }

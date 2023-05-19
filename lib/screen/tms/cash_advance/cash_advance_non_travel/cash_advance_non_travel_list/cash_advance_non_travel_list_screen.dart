@@ -118,7 +118,7 @@ class _CashAdvanceNonTravelListScreenState
                               .mapIndexed((index, item) => CommonListItem(
                                     number: "${index+1}",
                                     title: "${item.noCa}",
-                                    subtitle: "${item.createdAt?.toDateFormat(targetFormat: "dd/MM/yy")}",
+                                    subtitle: "${item.createdAt?.toDateFormat( originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                     total: "${item.grandTotal?.toInt().toCurrency()}",
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -148,8 +148,7 @@ class _CashAdvanceNonTravelListScreenState
                                         iconData: IconlyBold.edit,
                                         backgroundColor: successColor,
                                         onPressed: () {
-                                          Get.to(
-                                              const EditCashAdvanceNonTravelScreen());
+                                          Get.to(()=>const EditCashAdvanceNonTravelScreen(), arguments: {"item" : item});
                                         },
                                       ),
                                       const SizedBox(

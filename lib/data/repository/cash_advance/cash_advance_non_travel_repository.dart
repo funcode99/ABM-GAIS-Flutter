@@ -9,7 +9,7 @@ import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:get/get.dart';
 
-class CashAdvanceTravelNonRepository implements BaseRepository<CashAdvanceModel, CashAdvanceDetailModel>{
+class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel, CashAdvanceDetailModel>{
   final network = Get.find<NetworkCore>();
 
   @override
@@ -21,10 +21,13 @@ class CashAdvanceTravelNonRepository implements BaseRepository<CashAdvanceModel,
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceModel.fromJsonModelList);
       return right(apiResponseModel.data);
     } on DioError catch (e) {
+      print("DioError $e");
       return left(BaseError(message: e.response!.data['message'] ?? e.message));
     } on FormatException catch (e){
+      print("FormatException $e");
       return left(BaseError(message: e.message));
     }catch (e){
+      print("catch error $e");
       return left(BaseError(message: "General error occurred"));
     }
   }
@@ -66,6 +69,27 @@ class CashAdvanceTravelNonRepository implements BaseRepository<CashAdvanceModel,
       return left(BaseError(message: "General error occurred"));
     }
 
+  }
+
+  @override
+  Future<Either<BaseError, CashAdvanceModel>> updateData(model, id) async{
+    final cashAdvanceModel = model as CashAdvanceModel;
+
+    try {
+      Dio.Response response = await network.dio.post(
+          '/api/cash_advance/update_data/$id',
+          data: cashAdvanceModel.toJson()
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
 }

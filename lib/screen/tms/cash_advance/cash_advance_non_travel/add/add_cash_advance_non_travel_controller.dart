@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
-import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
@@ -25,7 +20,7 @@ class AddCashAdvanceNonTravelController extends BaseController{
 
   List<CashAdvanceDetailModel> listDetail = <CashAdvanceDetailModel>[];
 
-  final CashAdvanceTravelNonRepository _cashAdvanceTravelNonRepository = Get.find();
+  final CashAdvanceNonTravelRepository _cashAdvanceTravelNonRepository = Get.find();
 
   @override
   void onInit() {
@@ -60,13 +55,14 @@ class AddCashAdvanceNonTravelController extends BaseController{
 
   void saveData()async{
     String userId = await storage.readString(StorageCore.userID);
+    // String userId = "2";
     CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
       idEmployee: userId.toInt(),
       typeCa: "2",
       event: eventController.text,
       date: dateController.text.toDateFormat(targetFormat: "yyyy/MM/dd", originFormat: "dd/MM/yyyy"),
-      grandTotal: "1000000",
-      arrayDetail: listDetail
+      arrayDetail: listDetail,
+      grandTotal: totalController.text.digitOnly(),
     );
 
     final result = await _cashAdvanceTravelNonRepository.saveData(cashAdvanceModel);
@@ -74,8 +70,11 @@ class AddCashAdvanceNonTravelController extends BaseController{
             (l) => Get.showSnackbar(CustomGetSnackBar(
             message: l.message,
             backgroundColor: Colors.red
-        )), (r) {
-      Get.off(const EditCashAdvanceNonTravelScreen());
+        )), (cashAdvanceModel) {
+      Get.to(
+              () =>
+          const EditCashAdvanceNonTravelScreen(),
+          arguments: {"item": cashAdvanceModel});
     });
   }
 
