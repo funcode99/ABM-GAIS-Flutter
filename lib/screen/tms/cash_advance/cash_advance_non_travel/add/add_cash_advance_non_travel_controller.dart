@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
+import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
+import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
+import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
+import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
+import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
+import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
+import 'package:gais/data/storage_core.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AddCashAdvanceNonTravelController extends BaseController{
@@ -10,9 +21,11 @@ class AddCashAdvanceNonTravelController extends BaseController{
   final TextEditingController eventController = TextEditingController();
   final TextEditingController totalController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  DateFormat dateFormat = DateFormat("dd/MM/yy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
-  List<ItemCashAdvanceNonTravelModel> listItem = <ItemCashAdvanceNonTravelModel>[];
+  List<CashAdvanceDetailModel> listDetail = <CashAdvanceDetailModel>[];
+
+  final CashAdvanceTravelNonRepository _cashAdvanceTravelNonRepository = Get.find();
 
   @override
   void onInit() {
@@ -22,15 +35,15 @@ class AddCashAdvanceNonTravelController extends BaseController{
     super.onInit();
   }
 
-  void addItem(ItemCashAdvanceNonTravelModel item){
-    listItem.add(item);
+  void addItem(CashAdvanceDetailModel item){
+    listDetail.add(item);
 
     totalController.text = _getTotal();
     update();
   }
 
-  void removeItem(ItemCashAdvanceNonTravelModel item){
-    listItem.removeWhere((element) => element.id == item.id);
+  void removeItem(CashAdvanceDetailModel item){
+    listDetail.removeWhere((element) => element.id == item.id);
 
     totalController.text = _getTotal();
     update();
@@ -38,12 +51,32 @@ class AddCashAdvanceNonTravelController extends BaseController{
 
   String _getTotal(){
     int total = 0;
-    for (ItemCashAdvanceNonTravelModel element in listItem) {
-      total += element.nominal.toInt();
+    for (CashAdvanceDetailModel element in listDetail) {
+      total += element.nominal!.toInt();
     }
 
     return total.toCurrency();
   }
 
+  void saveData()async{
+    String userId = await storage.readString(StorageCore.userID);
+    CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
+      idEmployee: userId.toInt(),
+      typeCa: "2",
+      event: eventController.text,
+      date: dateController.text.toDateFormat(targetFormat: "yyyy/MM/dd", originFormat: "dd/MM/yyyy"),
+      grandTotal: "1000000",
+      arrayDetail: listDetail
+    );
+
+    final result = await _cashAdvanceTravelNonRepository.saveData(cashAdvanceModel);
+    result.fold(
+            (l) => Get.showSnackbar(CustomGetSnackBar(
+            message: l.message,
+            backgroundColor: Colors.red
+        )), (r) {
+      Get.off(const EditCashAdvanceNonTravelScreen());
+    });
+  }
 
 }

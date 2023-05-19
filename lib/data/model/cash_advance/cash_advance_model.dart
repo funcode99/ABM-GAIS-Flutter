@@ -7,15 +7,15 @@ part 'cash_advance_model.g.dart';
 class CashAdvanceModel {
   int? id;
   int? idEmployee;
-  int? typeCa;
+  String? typeCa;
   String? noCa;
   int? idRequestTrip;
   int? idCurrency;
   String? grandTotal;
   int? isPaid;
   int? isJournal;
-  int? codeStatusDoc;
-  int? codeStatus;
+  String? codeStatusDoc;
+  String? codeStatus;
   String? noRequestTrip;
   String? employeeName;
   String? snEmployee;
@@ -26,6 +26,8 @@ class CashAdvanceModel {
   String? status;
   int? itemCount;
   String? createdAt;
+  String? date;
+  String? event;
   List<CashAdvanceDetailModel>? arrayDetail;
 
   CashAdvanceModel(
@@ -50,6 +52,8 @@ class CashAdvanceModel {
       this.status,
       this.itemCount,
       this.createdAt,
+      this.event,
+      this.date,
       this.arrayDetail});
 
   static CashAdvanceModel fromJsonModel(Object? json) =>

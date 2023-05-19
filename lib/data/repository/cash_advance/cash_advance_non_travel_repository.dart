@@ -9,14 +9,14 @@ import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:get/get.dart';
 
-class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, CashAdvanceDetailModel>{
+class CashAdvanceTravelNonRepository implements BaseRepository<CashAdvanceModel, CashAdvanceDetailModel>{
   final network = Get.find<NetworkCore>();
 
   @override
   Future<Either<BaseError, List<CashAdvanceModel>>> getData({Map<String, dynamic>? data}) async{
     try {
       Dio.Response response = await network.dio.get(
-        '/api/cash_advance/travel/',
+        '/api/cash_advance/non_travel/',
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceModel.fromJsonModelList);
       return right(apiResponseModel.data);
@@ -47,9 +47,25 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
   }
 
   @override
-  Future<Either<BaseError, CashAdvanceModel>> saveData(dynamic data) {
-    // TODO: implement saveData
-    throw UnimplementedError();
+  Future<Either<BaseError, CashAdvanceModel>> saveData(model) async{
+    final cashAdvanceModel = model as CashAdvanceModel;
+
+    try {
+      Dio.Response response = await network.dio.post(
+        '/api/cash_advance/store',
+        data: cashAdvanceModel.toJson()
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+
   }
 
 }

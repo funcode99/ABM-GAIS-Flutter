@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
@@ -62,7 +63,7 @@ class _AddItemCashAdvanceNonTravelScreenState extends State<AddItemCashAdvanceNo
                         ),
                         CustomTextFormField(
                             isRequired: true,
-                            controller: controller.itemCenterController,
+                            controller: controller.itemNameController,
                             label: "Item".tr),
                         const SizedBox(
                           height: 8,
@@ -137,9 +138,7 @@ class _AddItemCashAdvanceNonTravelScreenState extends State<AddItemCashAdvanceNo
                             ),
                             ElevatedButton(
                               onPressed: _isButtonEnabled ? () {
-                                Get.back(result: ItemCashAdvanceNonTravelModel(
-                                    DateTime.now().microsecondsSinceEpoch.toString(), controller.itemCenterController.text, controller.costCenterController.text, controller.nominalController.text, controller.remarksController.text
-                                ));
+                                Get.back(result: controller.getAddedItem());
                               } : null,
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: infoColor),

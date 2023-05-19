@@ -13,6 +13,8 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_controller.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_screen.dart';
+import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -111,12 +113,12 @@ class _AddCashAdvanceNonTravelScreenState
                           height: 20,
                           color: greyColor,
                         ),
-                        ...controller.listItem
+                        ...controller.listDetail
                             .mapIndexed((index, element) => CommonAddItem(
                                   number: "${index+1}",
-                                  title: element.item,
-                                  subtitle: element.costCenter,
-                                  nominal: element.nominal,
+                                  title: "${element.itemName}",
+                                  subtitle: element.idCostCenter.toString(),
+                                  nominal: "${element.nominal?.toInt().toCurrency()}",
                                   action: [
                                     CustomIconButton(
                                       title: "Edit".tr,
@@ -190,7 +192,7 @@ class _AddCashAdvanceNonTravelScreenState
                             ),
                             ElevatedButton(
                               onPressed: _isButtonEnabled ? () {
-                                Get.off(const EditCashAdvanceNonTravelScreen());
+                                controller.saveData();
                               } : null,
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: infoColor),
