@@ -244,8 +244,7 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                                       iconData: IconlyBold.edit,
                                       backgroundColor: successColor,
                                       onPressed: () {
-                                        Get.to(
-                                            const AddItemCashAdvanceNonTravelScreen());
+                                        Get.to(()=>AddItemCashAdvanceNonTravelScreen(item: item));
                                       },
                                     ),
                                     const SizedBox(

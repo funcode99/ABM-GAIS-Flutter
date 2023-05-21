@@ -116,7 +116,7 @@ class _AddCashAdvanceNonTravelScreenState
                             .mapIndexed((index, element) => CommonAddItem(
                                   number: "${index + 1}",
                                   title: "${element.itemName}",
-                                  subtitle: element.idCostCenter.toString(),
+                                  subtitle: "${element.costCenterName}",
                                   nominal:
                                       "${element.nominal?.toInt().toCurrency()}",
                                   action: [
@@ -124,9 +124,9 @@ class _AddCashAdvanceNonTravelScreenState
                                       title: "Edit".tr,
                                       iconData: IconlyBold.edit,
                                       backgroundColor: successColor,
-                                      onPressed: () {
-                                        Get.to(
-                                            const AddItemCashAdvanceNonTravelScreen());
+                                      onPressed: () async{
+                                        final editedItem = await Get.to(()=>AddItemCashAdvanceNonTravelScreen(item: element));
+                                        controller.editItem(editedItem);
                                       },
                                     ),
                                     const SizedBox(
