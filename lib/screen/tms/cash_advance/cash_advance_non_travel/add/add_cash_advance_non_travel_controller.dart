@@ -38,7 +38,7 @@ class AddCashAdvanceNonTravelController extends BaseController{
   }
 
   void removeItem(CashAdvanceDetailModel item){
-    listDetail.removeWhere((element) => element.id == item.id);
+    listDetail.removeWhere((element) => element.key == item.key);
 
     totalController.text = _getTotal();
     update();

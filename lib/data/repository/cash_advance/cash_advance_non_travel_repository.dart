@@ -131,4 +131,22 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
     }
   }
 
+  @override
+  Future<Either<BaseError, bool>> deleteData(int id) async{
+    try {
+      Dio.Response response = await network.dio.delete(
+        '/api/cash_advance/delete_data/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceModel.fromJsonModel);
+      return right(apiResponseModel.success!);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
 }

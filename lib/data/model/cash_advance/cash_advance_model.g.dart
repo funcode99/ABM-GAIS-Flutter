@@ -62,5 +62,5 @@ Map<String, dynamic> _$CashAdvanceModelToJson(CashAdvanceModel instance) =>
       'created_at': instance.createdAt,
       'date': instance.date,
       'event': instance.event,
-      'array_detail': instance.arrayDetail,
+      'array_detail': instance.arrayDetail?.map((e) => e.toJson()).toList(),
     };

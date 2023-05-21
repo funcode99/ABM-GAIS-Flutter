@@ -5,7 +5,7 @@ GetSnackBar CustomGetSnackBar({required String message, Duration? duration, Colo
   return GetSnackBar(
     message: message,
     isDismissible: true,
-    duration: duration ?? const Duration(seconds: 3),
+    duration: duration ?? const Duration(milliseconds: 1500),
     backgroundColor: backgroundColor ?? Colors.green,
   );
 }

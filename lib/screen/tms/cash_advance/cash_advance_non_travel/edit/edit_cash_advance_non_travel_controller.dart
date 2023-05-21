@@ -17,7 +17,7 @@ class EditCashAdvanceNonTravelController extends BaseController{
   final TextEditingController requestorController = TextEditingController();
   final TextEditingController totalController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  DateFormat dateFormat = DateFormat("dd/MM/yy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   final CashAdvanceNonTravelRepository _repository = Get.find();
 
   final selectedItem = CashAdvanceModel().obs;
@@ -82,6 +82,7 @@ class EditCashAdvanceNonTravelController extends BaseController{
     String userId = await storage.readString(StorageCore.userID);
     CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
         id: selectedItem.value.id,
+        noCa: selectedItem.value.noCa,
         idEmployee: userId.toInt(),
         typeCa: "2",
         event: eventController.text,
@@ -111,6 +112,9 @@ class EditCashAdvanceNonTravelController extends BaseController{
               message: l.message,
               backgroundColor: Colors.red
           )), (cashAdvanceModel) {
+        Get.showSnackbar(CustomGetSnackBar(
+          message: "Success Delete Data".tr,
+        ));
         //update state
         listDetail.remove(item);
 
@@ -118,6 +122,10 @@ class EditCashAdvanceNonTravelController extends BaseController{
         updateHeader();
       });
     }else{
+      Get.showSnackbar(CustomGetSnackBar(
+        message: "Success Delete Data".tr,
+      ));
+
       listDetail.remove(item);
       totalController.text = _getTotal();
     }

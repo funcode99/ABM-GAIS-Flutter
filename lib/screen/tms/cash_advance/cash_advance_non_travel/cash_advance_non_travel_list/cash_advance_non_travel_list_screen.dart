@@ -21,16 +21,9 @@ import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-class CashAdvanceNonTravelListScreen extends StatefulWidget {
+class CashAdvanceNonTravelListScreen extends StatelessWidget {
   const CashAdvanceNonTravelListScreen({Key? key}) : super(key: key);
 
-  @override
-  State<CashAdvanceNonTravelListScreen> createState() =>
-      _CashAdvanceNonTravelListScreenState();
-}
-
-class _CashAdvanceNonTravelListScreenState
-    extends State<CashAdvanceNonTravelListScreen> {
   @override
   Widget build(BuildContext context) {
     final CashAdvanceNonTravelListController controller =
@@ -107,7 +100,7 @@ class _CashAdvanceNonTravelListScreenState
             Expanded(
                 child: RefreshIndicator(
               onRefresh: () async {
-                controller.getData();
+                controller.getHeader();
               },
               child: Obx(() {
                 return controller.listHeader.isEmpty
@@ -119,7 +112,7 @@ class _CashAdvanceNonTravelListScreenState
                                     number: "${index + 1}",
                                     title: "${item.noCa}",
                                     subtitle:
-                                        "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                        "${item.date?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                     total:
                                         "${item.grandTotal?.toInt().toCurrency()}",
                                     content: Padding(
@@ -155,7 +148,7 @@ class _CashAdvanceNonTravelListScreenState
                                                   const EditCashAdvanceNonTravelScreen(),
                                               arguments: {"item": item});
                                           if (result) {
-                                            controller.getData();
+                                            controller.getHeader();
                                           }
                                         },
                                       ),
@@ -169,6 +162,7 @@ class _CashAdvanceNonTravelListScreenState
                                         onPressed: () {
                                           Get.dialog(DeleteConfirmationDialog(
                                             onDeletePressed: () {
+                                              controller.deleteHeader(item);
                                               Get.back();
                                             },
                                           ));
@@ -186,7 +180,14 @@ class _CashAdvanceNonTravelListScreenState
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
-        onPressed: () => Get.to(const AddCashAdvanceNonTravelScreen()),
+        onPressed: () async {
+          final result = await Get.to(
+                  () =>
+              const AddCashAdvanceNonTravelScreen());
+          if (result) {
+            controller.getHeader();
+          }
+        },
         child: const Icon(Icons.add_rounded, size: 45),
       ),
       bottomNavigationBar: const BottomBar(menu: 1),

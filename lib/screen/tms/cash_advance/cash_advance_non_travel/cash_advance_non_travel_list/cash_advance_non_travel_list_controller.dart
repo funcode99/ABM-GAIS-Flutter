@@ -6,14 +6,14 @@ import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class CashAdvanceNonTravelListController extends BaseController{
-
+class CashAdvanceNonTravelListController extends BaseController {
   final TextEditingController dateRange = TextEditingController();
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateTime? startDate;
   DateTime? endDate;
 
-  final CashAdvanceNonTravelRepository _cashAdvanceTravelNonRepository = Get.find();
+  final CashAdvanceNonTravelRepository _cashAdvanceTravelNonRepository =
+      Get.find();
   final listHeader = <CashAdvanceModel>[].obs;
 
   @override
@@ -21,19 +21,30 @@ class CashAdvanceNonTravelListController extends BaseController{
     super.onInit();
     dateRange.text = "10/03/2023 - 17/03/2023";
 
-    getData();
+    getHeader();
   }
 
-  void getData() async {
+  void getHeader() async {
     final result = await _cashAdvanceTravelNonRepository.getData();
     result.fold(
-            (l) => Get.showSnackbar(CustomGetSnackBar(
-            message: l.message,
-            backgroundColor: Colors.red
-        )), (r) {
+        (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (r) {
       listHeader.value = r;
       listHeader.refresh();
     });
   }
 
+  void deleteHeader(CashAdvanceModel item) async {
+    final result = await _cashAdvanceTravelNonRepository.deleteData(item.id!);
+    result.fold(
+        (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (r) {
+      Get.showSnackbar(CustomGetSnackBar(
+        message: "Success Delete Data".tr,
+      ));
+      getHeader();
+    });
+  }
 }
