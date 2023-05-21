@@ -58,4 +58,10 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
     throw UnimplementedError();
   }
 
+  @override
+  Future<Either<BaseError, bool>> deleteDetail(int id) {
+    // TODO: implement deleteDetail
+    throw UnimplementedError();
+  }
+
 }

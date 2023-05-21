@@ -110,5 +110,20 @@ class EditCashAdvanceNonTravelController extends BaseController{
     });
   }
 
+  void deleteDetail(int idDetail) async{
+
+    final result = await _repository.deleteDetail(idDetail);
+    result.fold(
+            (l) => Get.showSnackbar(CustomGetSnackBar(
+            message: l.message,
+            backgroundColor: Colors.red
+        )), (cashAdvanceModel) {
+      //update state
+      _getTotal();
+      updateData();
+      getDataDetails();
+    });
+  }
+
 
 }

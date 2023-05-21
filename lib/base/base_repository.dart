@@ -7,4 +7,6 @@ abstract class BaseRepository<T, S>{
   Future<Either<BaseError, List<S>>> getDataDetails(int id);
   Future<Either<BaseError, T>> saveData(dynamic model);
   Future<Either<BaseError, T>> updateData(dynamic model, int id);
+
+  Future<Either<BaseError, bool>> deleteDetail(int id);
 }
