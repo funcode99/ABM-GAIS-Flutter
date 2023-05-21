@@ -58,12 +58,6 @@ class EditCashAdvanceNonTravelController extends BaseController{
     onEdit(!onEdit.value);
   }
 
-  void removeItem(CashAdvanceDetailModel item){
-    listDetail.remove(item);
-    totalController.text = _getTotal();
-    update();
-  }
-
   String _getTotal(){
     int total = 0;
     for (CashAdvanceDetailModel element in listDetail) {
@@ -103,27 +97,48 @@ class EditCashAdvanceNonTravelController extends BaseController{
             backgroundColor: Colors.red
         )), (cashAdvanceModel) {
               //update state
-              onEdit(false);
               selectedItem(cashAdvanceModel);
               getDataDetails();
-
     });
   }
 
-  void deleteDetail(int idDetail) async{
+  void deleteDetail(CashAdvanceDetailModel item) async{
+    if(item.id!=null){
+      final result = await _repository.deleteDetail(item.id!);
+      result.fold(
+              (l) => Get.showSnackbar(CustomGetSnackBar(
+              message: l.message,
+              backgroundColor: Colors.red
+          )), (cashAdvanceModel) {
+        //update state
+        listDetail.remove(item);
 
-    final result = await _repository.deleteDetail(idDetail);
+        totalController.text = _getTotal();
+        updateData();
+      });
+    }else{
+      listDetail.remove(item);
+      totalController.text = _getTotal();
+    }
+  }
+
+  void addDetail(CashAdvanceDetailModel item)async{
+    item.idCa = selectedItem.value.id;
+    final result = await _repository.addDetail(item);
     result.fold(
             (l) => Get.showSnackbar(CustomGetSnackBar(
             message: l.message,
             backgroundColor: Colors.red
-        )), (cashAdvanceModel) {
-      //update state
-      _getTotal();
+        )), (cashAdvanceDetailModel) {
+
+      listDetail.add(cashAdvanceDetailModel);
+
+      totalController.text = _getTotal();
       updateData();
-      getDataDetails();
     });
   }
+
+
 
 
 }

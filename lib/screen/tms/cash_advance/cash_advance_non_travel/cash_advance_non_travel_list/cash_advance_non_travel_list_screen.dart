@@ -116,10 +116,12 @@ class _CashAdvanceNonTravelListScreenState
                         children: [
                           ...controller.listHeader
                               .mapIndexed((index, item) => CommonListItem(
-                                    number: "${index+1}",
+                                    number: "${index + 1}",
                                     title: "${item.noCa}",
-                                    subtitle: "${item.createdAt?.toDateFormat( originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
-                                    total: "${item.grandTotal?.toInt().toCurrency()}",
+                                    subtitle:
+                                        "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                    total:
+                                        "${item.grandTotal?.toInt().toCurrency()}",
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 8),
@@ -147,8 +149,14 @@ class _CashAdvanceNonTravelListScreenState
                                         title: "Edit".tr,
                                         iconData: IconlyBold.edit,
                                         backgroundColor: successColor,
-                                        onPressed: () {
-                                          Get.to(()=>const EditCashAdvanceNonTravelScreen(), arguments: {"item" : item});
+                                        onPressed: () async {
+                                          final result = await Get.to(
+                                              () =>
+                                                  const EditCashAdvanceNonTravelScreen(),
+                                              arguments: {"item": item});
+                                          if (result) {
+                                            controller.getData();
+                                          }
                                         },
                                       ),
                                       const SizedBox(

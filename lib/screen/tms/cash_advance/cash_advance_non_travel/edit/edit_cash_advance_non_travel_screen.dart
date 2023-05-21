@@ -33,7 +33,9 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: baseColor,
       appBar: AppBar(
-        leading: const CustomBackButton(),
+        leading: const CustomBackButton(
+          result: true,
+        ),
         backgroundColor: whiteColor,
         title: Text("cash_advance_non_travel".tr, style: appTitle),
         centerTitle: true,
@@ -198,8 +200,8 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                                 final addedItem = await Get.to(
                                     const AddItemCashAdvanceNonTravelScreen());
                                 if (addedItem != null) {
-                                  controller.listDetail.add(addedItem);
-                                  controller.update();
+                                  //add item
+                                  controller.addDetail(addedItem);
                                 }
                               },
                             )
@@ -257,7 +259,7 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                                         Get.dialog(
                                             DeleteConfirmationDialog(
                                               onDeletePressed: () {
-                                                controller.removeItem(item);
+                                                controller.deleteDetail(item);
                                                 Get.back();
                                               },
                                             ));

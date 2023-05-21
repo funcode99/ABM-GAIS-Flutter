@@ -71,7 +71,7 @@ class AddCashAdvanceNonTravelController extends BaseController{
             message: l.message,
             backgroundColor: Colors.red
         )), (cashAdvanceModel) {
-      Get.to(
+      Get.off(
               () =>
           const EditCashAdvanceNonTravelScreen(),
           arguments: {"item": cashAdvanceModel});
