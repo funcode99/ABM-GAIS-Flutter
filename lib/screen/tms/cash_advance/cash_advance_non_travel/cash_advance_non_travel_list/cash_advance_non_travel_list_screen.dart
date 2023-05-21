@@ -169,7 +169,6 @@ class _CashAdvanceNonTravelListScreenState
                                         onPressed: () {
                                           Get.dialog(DeleteConfirmationDialog(
                                             onDeletePressed: () {
-                                              print("deleted");
                                               Get.back();
                                             },
                                           ));

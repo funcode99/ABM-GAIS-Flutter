@@ -55,7 +55,6 @@ class AddCashAdvanceNonTravelController extends BaseController{
 
   void saveData()async{
     String userId = await storage.readString(StorageCore.userID);
-    // String userId = "2";
     CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
       idEmployee: userId.toInt(),
       typeCa: "2",

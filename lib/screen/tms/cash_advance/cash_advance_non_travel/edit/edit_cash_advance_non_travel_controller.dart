@@ -47,7 +47,7 @@ class EditCashAdvanceNonTravelController extends BaseController{
     totalController.text =
         selectedItem.value.grandTotal?.toInt().toCurrency() ?? "-";
 
-    getDataDetails();
+    getDataDetail();
   }
 
   void updateEnableButton(){
@@ -67,7 +67,7 @@ class EditCashAdvanceNonTravelController extends BaseController{
     return total.toCurrency();
   }
 
-  void getDataDetails() async {
+  void getDataDetail() async {
     final result = await _repository.getDataDetails(selectedItem.value.id!);
     result.fold(
             (l) => Get.showSnackbar(
@@ -78,9 +78,8 @@ class EditCashAdvanceNonTravelController extends BaseController{
         });
   }
 
-  void updateData()async{
-    // String userId = await storage.readString(StorageCore.userID);
-    String userId = "2";
+  void updateHeader()async{
+    String userId = await storage.readString(StorageCore.userID);
     CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
         id: selectedItem.value.id,
         idEmployee: userId.toInt(),
@@ -97,8 +96,10 @@ class EditCashAdvanceNonTravelController extends BaseController{
             backgroundColor: Colors.red
         )), (cashAdvanceModel) {
               //update state
+              onEdit(false);
+
               selectedItem(cashAdvanceModel);
-              getDataDetails();
+              getDataDetail();
     });
   }
 
@@ -114,7 +115,7 @@ class EditCashAdvanceNonTravelController extends BaseController{
         listDetail.remove(item);
 
         totalController.text = _getTotal();
-        updateData();
+        updateHeader();
       });
     }else{
       listDetail.remove(item);
@@ -134,7 +135,7 @@ class EditCashAdvanceNonTravelController extends BaseController{
       listDetail.add(cashAdvanceDetailModel);
 
       totalController.text = _getTotal();
-      updateData();
+      updateHeader();
     });
   }
 
