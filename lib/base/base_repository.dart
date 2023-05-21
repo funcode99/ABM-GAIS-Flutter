@@ -11,4 +11,5 @@ abstract class BaseRepository<T, S>{
 
   Future<Either<BaseError, bool>> deleteDetail(int id);
   Future<Either<BaseError, S>> addDetail(dynamic model);
+  Future<Either<BaseError, S>> updateDetail(dynamic model, int id);
 }

@@ -147,7 +147,22 @@ class EditCashAdvanceNonTravelController extends BaseController{
     });
   }
 
+  void updateDetail(CashAdvanceDetailModel item)async{
+    item.idCa = selectedItem.value.id;
+    final result = await _repository.updateDetail(item, item.id!);
+    result.fold(
+            (l) => Get.showSnackbar(CustomGetSnackBar(
+            message: l.message,
+            backgroundColor: Colors.red
+        )), (cashAdvanceDetailModel) {
 
+      int index = listDetail.indexWhere((element) => element.id == item.id);
+      listDetail[index] = item;
+
+      totalController.text = _getTotal();
+      updateHeader();
+    });
+  }
 
 
 }

@@ -149,4 +149,25 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
     }
   }
 
+  @override
+  Future<Either<BaseError, CashAdvanceDetailModel>> updateDetail(model, int id) async{
+    final cashAdvanceDetailModel = model as CashAdvanceDetailModel;
+
+    try {
+      Dio.Response response = await network.dio.post(
+          '/api/cash_advance/update_data_detail/$id',
+          data: cashAdvanceDetailModel.toJson()
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceDetailModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
 }
