@@ -5,7 +5,7 @@ import 'package:gais/const/color.dart';
 
 class CustomPagination extends StatefulWidget {
   const CustomPagination(
-      {required this.onPageChanged,
+      {super.key, required this.onPageChanged,
       required this.pageTotal,
       this.threshold = 4,
       this.pageInit = 1,
