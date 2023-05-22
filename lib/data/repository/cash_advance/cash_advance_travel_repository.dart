@@ -82,4 +82,10 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
     throw UnimplementedError();
   }
 
+  @override
+  Future<Either<BaseError, CashAdvanceModel>> submitData(int id) {
+    // TODO: implement submitData
+    throw UnimplementedError();
+  }
+
 }
