@@ -4,6 +4,7 @@ import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_reposi
 import 'package:gais/data/repository/cash_advance/cash_advance_travel_repository.dart';
 import 'package:gais/data/repository/repository.dart';
 import 'package:gais/data/repository/repository_impl.dart';
+import 'package:gais/data/repository/request_atk/request_atk_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:get/get.dart';
 
@@ -17,5 +18,6 @@ class GlobalBinding extends Bindings {
 
     Get.put(CashAdvanceTravelRepository(), permanent: true);
     Get.put(CashAdvanceNonTravelRepository(), permanent: true);
+    Get.put(RequestATKRepository(), permanent: true);
   }
 }
