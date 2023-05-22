@@ -50,7 +50,10 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {},
+              onChanged: (string) {
+                controller.keyword(string);
+                controller.getHeader();
+              },
               onPressedFilter: () {
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {
@@ -126,9 +129,10 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
               },
             ),
             Obx(() {
+              print("total page ${controller.totalPage.value}");
               return CustomPagination(
                 onPageChanged: (page) {
-                  controller.getHeader(page);
+                  controller.getHeader(page: page);
                 },
                 pageTotal: controller.totalPage.value,
                 margin: EdgeInsets.zero,

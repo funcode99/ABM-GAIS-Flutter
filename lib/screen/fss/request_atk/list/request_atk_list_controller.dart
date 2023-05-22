@@ -15,6 +15,8 @@ class RequestATKListController extends BaseController {
   String tempSelectedValue = "";
   String selectedValue = "";
 
+  final keyword = "".obs;
+
   final listHeader = <RequestAtkModel>[].obs;
   final RequestATKRepository _repository = Get.find();
   late PaginationModel? paginationModel;
@@ -34,17 +36,23 @@ class RequestATKListController extends BaseController {
     getHeader();
   }
 
-  void getHeader([int page = 1]) async {
+  void getHeader({int page = 1}) async {
+    listHeader.clear(); //clear first, because when not found its not [] but error 404 :)
     final result = await _repository.getPaginationData(
       data: {
         "page" : page,
-        "perPage" : limit
+        "perPage" : limit,
+        "search" : keyword.value
       }
     );
 
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          Get.showSnackbar(
+              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+          totalPage(1);
+          currentPage(1);
+        },
         (r) {
       paginationModel = r;
       int tempTotalPage = (paginationModel!.total!/limit).ceil();
