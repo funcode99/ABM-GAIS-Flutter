@@ -16,6 +16,6 @@ class GlobalBinding extends Bindings {
     Get.put<Repository>(RepositoryImpl(), permanent: true);
 
     Get.put(CashAdvanceTravelRepository(), permanent: true);
-    Get.put(CashAdvanceTravelNonRepository(), permanent: true);
+    Get.put(CashAdvanceNonTravelRepository(), permanent: true);
   }
 }

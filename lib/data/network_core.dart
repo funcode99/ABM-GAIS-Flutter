@@ -1,3 +1,4 @@
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:gais/const/app_const.dart';
 import 'package:dio/dio.dart';
 import 'package:gais/data/interceptor/response_error_interceptor.dart';
@@ -16,7 +17,11 @@ class NetworkCore {
           'accept' : 'application/json',
         }
     );
-    dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true));
+
+    String env = FlavorConfig.instance.name ?? "PROD";
+    if (env != "PROD") {
+      dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true));
+    }
     dio.interceptors.add(TokenHeaderInterceptor());
     dio.interceptors.add(ResponseErrorInterceptor());
   }

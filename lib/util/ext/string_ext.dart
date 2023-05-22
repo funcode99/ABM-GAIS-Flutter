@@ -10,7 +10,6 @@ extension StringExt on String{
   }
 
   String toDateFormat({String targetFormat = "dd-MM-yyyy", String originFormat = "dd/MM/yyyy"}){
-    print("THIS $this");
     try{
       DateTime dateTimeOrigin = DateFormat(originFormat).parse(this);
       DateFormat dateFormat = DateFormat(targetFormat);

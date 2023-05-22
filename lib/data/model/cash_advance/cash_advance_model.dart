@@ -3,19 +3,19 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'cash_advance_model.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class CashAdvanceModel {
   int? id;
   int? idEmployee;
-  String? typeCa;
+  dynamic typeCa;
   String? noCa;
   int? idRequestTrip;
   int? idCurrency;
   String? grandTotal;
   int? isPaid;
   int? isJournal;
-  String? codeStatusDoc;
-  String? codeStatus;
+  dynamic codeStatusDoc;
+  dynamic codeStatus;
   String? noRequestTrip;
   String? employeeName;
   String? snEmployee;

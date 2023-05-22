@@ -6,10 +6,10 @@ class TokenHeaderInterceptor extends Interceptor{
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async{
-    super.onRequest(options, handler);
 
     var token = await storageSecure.read(key: "token");
-    options.headers.putIfAbsent("Authorization", () => "Bearer $token");
 
+    options.headers.putIfAbsent("Authorization", () => "Bearer $token");
+    super.onRequest(options, handler);
   }
 }

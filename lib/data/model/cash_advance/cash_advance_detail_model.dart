@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'cash_advance_detail_model.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
-class CashAdvanceDetailModel {
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+class CashAdvanceDetailModel extends Equatable {
   String? key;
   int? id;
   int? idCa;
@@ -18,17 +19,16 @@ class CashAdvanceDetailModel {
 
   CashAdvanceDetailModel(
       {this.id,
-        this.key,
-        this.idCa,
-        this.idItemCa,
-        this.frequency,
-        this.nominal,
-        this.itemName,
-        this.remarks,
-        this.idCostCenter,
-        this.costCenterName,
-        this.total})
-  ;
+      this.key,
+      this.idCa,
+      this.idItemCa,
+      this.frequency,
+      this.nominal,
+      this.itemName,
+      this.remarks,
+      this.idCostCenter,
+      this.costCenterName,
+      this.total});
 
   factory CashAdvanceDetailModel.fromJson(Map<String, dynamic> json) =>
       _$CashAdvanceDetailModelFromJson(json);
@@ -45,7 +45,9 @@ class CashAdvanceDetailModel {
     if (jsonList == null) return [];
 
     if (jsonList is List) {
-      return jsonList.map((json) => CashAdvanceDetailModel.fromJson(json)).toList();
+      return jsonList
+          .map((json) => CashAdvanceDetailModel.fromJson(json))
+          .toList();
     }
 
     // We shouldn't be here
@@ -68,4 +70,20 @@ class CashAdvanceDetailModel {
     }
     return [];
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        key,
+        id,
+        idCa,
+        idItemCa,
+        idCostCenter,
+        frequency,
+        nominal,
+        total,
+        itemName,
+        remarks,
+        costCenterName,
+      ];
 }

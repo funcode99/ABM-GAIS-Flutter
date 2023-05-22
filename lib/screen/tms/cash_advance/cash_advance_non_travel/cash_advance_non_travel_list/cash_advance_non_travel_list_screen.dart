@@ -21,16 +21,9 @@ import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-class CashAdvanceNonTravelListScreen extends StatefulWidget {
+class CashAdvanceNonTravelListScreen extends StatelessWidget {
   const CashAdvanceNonTravelListScreen({Key? key}) : super(key: key);
 
-  @override
-  State<CashAdvanceNonTravelListScreen> createState() =>
-      _CashAdvanceNonTravelListScreenState();
-}
-
-class _CashAdvanceNonTravelListScreenState
-    extends State<CashAdvanceNonTravelListScreen> {
   @override
   Widget build(BuildContext context) {
     final CashAdvanceNonTravelListController controller =
@@ -107,7 +100,7 @@ class _CashAdvanceNonTravelListScreenState
             Expanded(
                 child: RefreshIndicator(
               onRefresh: () async {
-                controller.getData();
+                controller.getHeader();
               },
               child: Obx(() {
                 return controller.listHeader.isEmpty
@@ -116,10 +109,12 @@ class _CashAdvanceNonTravelListScreenState
                         children: [
                           ...controller.listHeader
                               .mapIndexed((index, item) => CommonListItem(
-                                    number: "${index+1}",
+                                    number: "${index + 1}",
                                     title: "${item.noCa}",
-                                    subtitle: "${item.createdAt?.toDateFormat(targetFormat: "dd/MM/yy")}",
-                                    total: "${item.grandTotal?.toInt().toCurrency()}",
+                                    subtitle:
+                                        "${item.date?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                    total:
+                                        "${item.grandTotal?.toInt().toCurrency()}",
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 8),
@@ -147,9 +142,14 @@ class _CashAdvanceNonTravelListScreenState
                                         title: "Edit".tr,
                                         iconData: IconlyBold.edit,
                                         backgroundColor: successColor,
-                                        onPressed: () {
+                                        onPressed: () async {
                                           Get.to(
-                                              const EditCashAdvanceNonTravelScreen());
+                                              () =>
+                                                  const EditCashAdvanceNonTravelScreen(),
+                                              arguments: {
+                                                "item": item
+                                              })?.then((value) =>
+                                              controller.getHeader());
                                         },
                                       ),
                                       const SizedBox(
@@ -162,7 +162,7 @@ class _CashAdvanceNonTravelListScreenState
                                         onPressed: () {
                                           Get.dialog(DeleteConfirmationDialog(
                                             onDeletePressed: () {
-                                              print("deleted");
+                                              controller.deleteHeader(item);
                                               Get.back();
                                             },
                                           ));
@@ -180,7 +180,9 @@ class _CashAdvanceNonTravelListScreenState
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
-        onPressed: () => Get.to(const AddCashAdvanceNonTravelScreen()),
+        onPressed: () async {
+          Get.to(() => const AddCashAdvanceNonTravelScreen())?.then((value) => controller.getHeader());
+        },
         child: const Icon(Icons.add_rounded, size: 45),
       ),
       bottomNavigationBar: const BottomBar(menu: 1),

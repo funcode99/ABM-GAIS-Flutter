@@ -76,6 +76,7 @@ class LanguageEN{
       "Confirm" : "Confirm",
       "Stock In ATK" : "Stock In ATK",
       "Empty List" : "Empty List",
+      "Success Delete Data" : "Success Delete Data",
     };
   }
 }

@@ -47,8 +47,38 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
   }
 
   @override
-  Future<Either<BaseError, CashAdvanceModel>> saveData(dynamic data) {
+  Future<Either<BaseError, CashAdvanceModel>> saveData(data) {
     // TODO: implement saveData
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<BaseError, CashAdvanceModel>> updateData(data, id) {
+    // TODO: implement updateData
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<BaseError, bool>> deleteDetail(int id) {
+    // TODO: implement deleteDetail
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<BaseError, CashAdvanceDetailModel>> addDetail(model) {
+    // TODO: implement addDetail
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<BaseError, bool>> deleteData(int id) {
+    // TODO: implement deleteData
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<BaseError, CashAdvanceDetailModel>> updateDetail(model, int id) {
+    // TODO: implement updateDetail
     throw UnimplementedError();
   }
 

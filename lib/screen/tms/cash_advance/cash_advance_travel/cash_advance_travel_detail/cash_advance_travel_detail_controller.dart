@@ -38,11 +38,11 @@ class CashAdvanceTravelDetailController extends BaseController {
     totalController.text =
         selectedItem.value.grandTotal?.toInt().toCurrency() ?? "-";
 
-    getData();
+    getDetailData();
   }
 
-  void getData() async {
-    final result = await _cashAdvanceTravelRepository.getDataDetails(2);
+  void getDetailData() async {
+    final result = await _cashAdvanceTravelRepository.getDataDetails(selectedItem.value.id!);
     result.fold(
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
