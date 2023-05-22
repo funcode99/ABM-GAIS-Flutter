@@ -41,7 +41,7 @@ class EditCashAdvanceNonTravelController extends BaseController{
 
   void initData() {
     dateController.text =
-        selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "-";
+        selectedItem.value.date?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "-";
     requestorController.text = selectedItem.value.employeeName ?? "-";
     eventController.text = selectedItem.value.event ?? "-";
     totalController.text =
@@ -70,8 +70,7 @@ class EditCashAdvanceNonTravelController extends BaseController{
   void getDataDetail() async {
     final result = await _repository.getDataDetails(selectedItem.value.id!);
     result.fold(
-            (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (l) => null,
             (r) {
           listDetail.value = r;
           listDetail.refresh();
@@ -97,7 +96,7 @@ class EditCashAdvanceNonTravelController extends BaseController{
             backgroundColor: Colors.red
         )), (cashAdvanceModel) {
               //update state
-              onEdit(false);
+              // onEdit(false);
 
               selectedItem(cashAdvanceModel);
               getDataDetail();

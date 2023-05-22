@@ -74,7 +74,7 @@ class AddCashAdvanceNonTravelController extends BaseController {
       typeCa: "2",
       event: eventController.text,
       date: dateController.text
-          .toDateFormat(targetFormat: "yyyy/MM/dd", originFormat: "dd/MM/yyyy"),
+          .toDateFormat(targetFormat: "yyyy-MM-dd", originFormat: "dd/MM/yyyy"),
       arrayDetail: listDetail,
       grandTotal: totalController.text.digitOnly(),
     );
