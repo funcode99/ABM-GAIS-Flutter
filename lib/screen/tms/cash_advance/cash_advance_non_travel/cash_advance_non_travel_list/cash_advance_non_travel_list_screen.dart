@@ -143,13 +143,13 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                                         iconData: IconlyBold.edit,
                                         backgroundColor: successColor,
                                         onPressed: () async {
-                                          final result = await Get.to(
+                                          Get.to(
                                               () =>
                                                   const EditCashAdvanceNonTravelScreen(),
-                                              arguments: {"item": item});
-                                          if (result) {
-                                            controller.getHeader();
-                                          }
+                                              arguments: {
+                                                "item": item
+                                              })?.then((value) =>
+                                              controller.getHeader());
                                         },
                                       ),
                                       const SizedBox(
@@ -181,12 +181,7 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
         onPressed: () async {
-          final result = await Get.to(
-                  () =>
-              const AddCashAdvanceNonTravelScreen());
-          if (result) {
-            controller.getHeader();
-          }
+          Get.to(() => const AddCashAdvanceNonTravelScreen())?.then((value) => controller.getHeader());
         },
         child: const Icon(Icons.add_rounded, size: 45),
       ),

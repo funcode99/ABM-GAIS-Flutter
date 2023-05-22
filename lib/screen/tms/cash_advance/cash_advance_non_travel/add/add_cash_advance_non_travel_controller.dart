@@ -86,7 +86,6 @@ class AddCashAdvanceNonTravelController extends BaseController {
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (cashAdvanceModel) {
           //update list
-      Get.find<CashAdvanceNonTravelListController>().getHeader();
       Get.off(() => const EditCashAdvanceNonTravelScreen(),
           arguments: {"item": cashAdvanceModel});
     });
