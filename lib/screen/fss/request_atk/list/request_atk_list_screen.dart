@@ -16,7 +16,6 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/request_atk/add/add_request_atk_screen.dart';
-import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/list/request_atk_list_controller.dart';
 import 'package:get/get.dart';
