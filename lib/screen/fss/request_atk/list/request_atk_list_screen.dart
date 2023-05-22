@@ -128,13 +128,14 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
               },
             ),
             Obx(() {
-              print("total page ${controller.totalPage.value}");
               return CustomPagination(
+                key: UniqueKey(),
                 onPageChanged: (page) {
                   controller.getHeader(page: page);
                 },
                 pageTotal: controller.totalPage.value,
                 margin: EdgeInsets.zero,
+                pageInit: controller.currentPage.value,
               );
             }),
             const SizedBox(
