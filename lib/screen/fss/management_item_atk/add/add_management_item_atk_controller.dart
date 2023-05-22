@@ -70,4 +70,11 @@ class AddManagementItemATKController extends BaseController {
   void updateButton(){
     enableButton(formKey.currentState!.validate());
   }
+
+  void generateRandom(){
+    int random = DateTime.now().microsecondsSinceEpoch;
+    String randomString = "$random".substring(random.toString().length - 9);
+
+    idController.text = randomString;
+  }
 }

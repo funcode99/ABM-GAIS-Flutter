@@ -100,7 +100,12 @@ class AddManagementItemATKScreen extends StatelessWidget{
                     height: 8,
                   ),
               CustomTextFormField(
+                  suffixIcon: const Icon(Icons.add_box_outlined),
                   isRequired: true,
+                  readOnly: true,
+                  onTap: (){
+                    controller.generateRandom();
+                  },
                   controller: controller.idController,
                   label: "ID Item".tr),
                   const SizedBox(
