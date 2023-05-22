@@ -202,6 +202,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                                   onPressed: () {
                                     Get.dialog(DeleteConfirmationDialog(
                                       onDeletePressed: () {
+                                        controller.deleteHeader(item);
                                         Get.back();
                                       },
                                     ));
