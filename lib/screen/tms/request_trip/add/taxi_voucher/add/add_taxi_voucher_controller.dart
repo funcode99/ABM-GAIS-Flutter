@@ -1,38 +1,99 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:gais/data/model/reference/get_city_model.dart' as city;
 
-class AddTaxiVoucherController extends BaseController{
+class AddTaxiVoucherController extends BaseController {
+  int purposeID = Get.arguments['purposeID'] ?? 1;
+
+  DateFormat dateFormat = DateFormat("dd-MM-yyyy");
+  DateFormat saveDateFormat = DateFormat("yyyy/MM/dd");
+
   final formKey = GlobalKey<FormState>();
-  final departureDate = TextEditingController();
+  final traveller = TextEditingController();
+  final date = TextEditingController();
   final amount = TextEditingController();
-  final voucher = TextEditingController();
+  final accountName = TextEditingController();
   final remarks = TextEditingController();
 
-  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-
-  String? traveller;
+  int? travellerID;
   DateTime? selectedDate;
-  String? flightClass;
   String? departure;
   String? arrival;
 
+  city.GetCityModel? cityModel;
+  List<city.Data> cityList = [];
 
   @override
   void onInit() {
     super.onInit();
-    departureDate.text;
+    traveller.text;
+    date.text;
     amount.text;
-    voucher.text;
+    accountName.text;
     remarks.text;
+    Future.wait([fetchList()]);
   }
 
   @override
   void dispose() {
     super.dispose();
-    departureDate.dispose();
+    traveller.dispose();
+    date.dispose();
     amount.dispose();
-    voucher.dispose();
+    accountName.dispose();
     remarks.dispose();
+  }
+
+  Future<void> fetchList() async {
+    await storage.readEmployeeInfo().then((value) {
+      print(value.isNotEmpty);
+      travellerID = int.parse(value.first.id.toString());
+      traveller.text = value.first.employeeName.toString();
+    });
+
+    cityList = [];
+    var dataCity = await repository.getCityList();
+    cityModel = dataCity;
+    cityList.addAll(dataCity.data?.toSet().toList() ?? []);
+    update();
+  }
+
+  Future<void> save() async {
+    try {
+      await repository
+          .saveTaxiVoucher(
+        purposeID.toString(),
+        amount.text,
+        accountName.text,
+        departure.toString(),
+        arrival.toString(),
+        remarks.text,
+        saveDateFormat.format(selectedDate!).toString(),
+        accountName.text,
+      )
+          .then(
+        (value) {
+          print(value.success);
+          print(purposeID);
+          // Get.off(TravellerScreen(), arguments: {'purposeID': purposeID});
+          Get.back(result: value.success);
+        },
+      );
+    } catch (e) {
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Failed To Save',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }

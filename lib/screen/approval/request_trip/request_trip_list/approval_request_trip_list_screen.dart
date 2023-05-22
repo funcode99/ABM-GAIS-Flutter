@@ -65,7 +65,7 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                 width: 50,
                                 onPressed: () {
                                   controller.showFilter =
-                                      controller.showFilter! ? false : true;
+                                      controller.showFilter ? false : true;
                                   controller.update();
                                   showDialog(
                                     context: context,

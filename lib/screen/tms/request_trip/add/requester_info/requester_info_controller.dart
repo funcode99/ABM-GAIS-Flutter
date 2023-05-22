@@ -35,16 +35,19 @@ class RequesterInfoController extends BaseController {
 
   Future<void> getRequesterInfo() async {
     await storage.readEmployeeInfo().then((value) {
-      print(value);
-      requestorID = int.parse(value[0]);
-      requester.text = value[1];
-      phone.text = value[2];
-      sn.text = value[3];
-      siteID = int.parse(value[12]);
-      location.text = value[13];
+      print(value.isNotEmpty);
+      requestorID = int.parse(value.first.id.toString());
+      requester.text = value.first.employeeName.toString();
+      phone.text = value.first.phoneNumber.toString();
+      sn.text = value.first.snEmployee.toString();
+      siteID = int.parse(value.first.idSite.toString());
+      location.text = value.first.siteName.toString();
     });
 
-    // requester.text;
+    var site = await repository.getSiteList();
+    location.text =
+        site.data?.where((e) => e.id == siteID).first.siteName ?? "";
+
     update();
   }
 }

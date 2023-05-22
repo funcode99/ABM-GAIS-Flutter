@@ -1,5 +1,5 @@
-/// users : {"id":1,"username":"admin","email":"admin@mail.com","is_employee":0,"id_role":0,"id_approval_auth":0,"id_company":0,"id_site":0,"created_at":null,"created_by":null,"updated_at":null,"updated_by":null}
-/// token : {"success":true,"message":"Success","data":{"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsInVzZXJzIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlzX2VtcGxveWVlIjowLCJpZF9yb2xlIjowLCJpZF9hcHByb3ZhbF9hdXRoIjowLCJpZF9jb21wYW55IjowLCJpZF9zaXRlIjowLCJjcmVhdGVkX2F0IjpudWxsLCJjcmVhdGVkX2J5IjpudWxsLCJ1cGRhdGVkX2F0IjpudWxsLCJ1cGRhdGVkX2J5IjpudWxsfSwiaXNzIjoiaHR0cDpcL1wvMTAzLjE2NS4xMzAuMTU3OjgwODZcL2FwaVwvbG9naW4iLCJpYXQiOjE2ODM1MjgxNDIsIm5iZiI6MTY4MzUyODE0MiwianRpIjoiUGNQZDAweTVnUDBiek1QQiJ9.MaRhUmQYTMQSepTPcHLpXCYvS0i2YhCcxLgsMLCcRro","token_type":"bearer","expires_in":0}}
+/// users : {"id":2,"name":"John Doe","is_employee":1,"id_company":1,"id_site":1,"id_role":1,"id_approval_auth":1,"company_name":"PT. Testing","company_code":"1234","site_name":"Surabaya","site_code":"SBY","id_employee":1,"employee_name":"Jhon Doe","sn_employee":"12345"}
+/// token : {"success":true,"message":"Success","data":{"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInVzZXJzIjp7ImlkIjoyLCJ1c2VybmFtZSI6IjEyMzQ1IiwiZW1haWwiOiIxMjM0NUBtYWlsLmNvbSIsIm5hbWUiOiJKb2huIERvZSIsImlzX2VtcGxveWVlIjoxLCJpZF9yb2xlIjoxLCJpZF9hcHByb3ZhbF9hdXRoIjoxLCJpZF9jb21wYW55IjoxLCJpZF9zaXRlIjoxLCJjcmVhdGVkX2F0IjpudWxsLCJjcmVhdGVkX2J5IjpudWxsLCJ1cGRhdGVkX2F0IjpudWxsLCJ1cGRhdGVkX2J5IjpudWxsfSwiaXNzIjoiaHR0cDpcL1wvMTAzLjE2NS4xMzAuMTU3OjgwODZcL2FwaVwvbG9naW4iLCJpYXQiOjE2ODQ3ODMyODQsIm5iZiI6MTY4NDc4MzI4NCwianRpIjoiYXRLRWVVbk9MdWtxNENjdiJ9.w_Y-n-QqlnVPBFIrQuklQayujk373TT-ZHjyXWWgiis","token_type":"bearer","expires_in":0}}
 
 class LoginModel {
   LoginModel({
@@ -38,7 +38,7 @@ LoginModel copyWith({  Users? users,
 
 /// success : true
 /// message : "Success"
-/// data : {"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsInVzZXJzIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlzX2VtcGxveWVlIjowLCJpZF9yb2xlIjowLCJpZF9hcHByb3ZhbF9hdXRoIjowLCJpZF9jb21wYW55IjowLCJpZF9zaXRlIjowLCJjcmVhdGVkX2F0IjpudWxsLCJjcmVhdGVkX2J5IjpudWxsLCJ1cGRhdGVkX2F0IjpudWxsLCJ1cGRhdGVkX2J5IjpudWxsfSwiaXNzIjoiaHR0cDpcL1wvMTAzLjE2NS4xMzAuMTU3OjgwODZcL2FwaVwvbG9naW4iLCJpYXQiOjE2ODM1MjgxNDIsIm5iZiI6MTY4MzUyODE0MiwianRpIjoiUGNQZDAweTVnUDBiek1QQiJ9.MaRhUmQYTMQSepTPcHLpXCYvS0i2YhCcxLgsMLCcRro","token_type":"bearer","expires_in":0}
+/// data : {"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInVzZXJzIjp7ImlkIjoyLCJ1c2VybmFtZSI6IjEyMzQ1IiwiZW1haWwiOiIxMjM0NUBtYWlsLmNvbSIsIm5hbWUiOiJKb2huIERvZSIsImlzX2VtcGxveWVlIjoxLCJpZF9yb2xlIjoxLCJpZF9hcHByb3ZhbF9hdXRoIjoxLCJpZF9jb21wYW55IjoxLCJpZF9zaXRlIjoxLCJjcmVhdGVkX2F0IjpudWxsLCJjcmVhdGVkX2J5IjpudWxsLCJ1cGRhdGVkX2F0IjpudWxsLCJ1cGRhdGVkX2J5IjpudWxsfSwiaXNzIjoiaHR0cDpcL1wvMTAzLjE2NS4xMzAuMTU3OjgwODZcL2FwaVwvbG9naW4iLCJpYXQiOjE2ODQ3ODMyODQsIm5iZiI6MTY4NDc4MzI4NCwianRpIjoiYXRLRWVVbk9MdWtxNENjdiJ9.w_Y-n-QqlnVPBFIrQuklQayujk373TT-ZHjyXWWgiis","token_type":"bearer","expires_in":0}
 
 class Token {
   Token({
@@ -81,7 +81,7 @@ Token copyWith({  bool? success,
 
 }
 
-/// access_token : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsInVzZXJzIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlzX2VtcGxveWVlIjowLCJpZF9yb2xlIjowLCJpZF9hcHByb3ZhbF9hdXRoIjowLCJpZF9jb21wYW55IjowLCJpZF9zaXRlIjowLCJjcmVhdGVkX2F0IjpudWxsLCJjcmVhdGVkX2J5IjpudWxsLCJ1cGRhdGVkX2F0IjpudWxsLCJ1cGRhdGVkX2J5IjpudWxsfSwiaXNzIjoiaHR0cDpcL1wvMTAzLjE2NS4xMzAuMTU3OjgwODZcL2FwaVwvbG9naW4iLCJpYXQiOjE2ODM1MjgxNDIsIm5iZiI6MTY4MzUyODE0MiwianRpIjoiUGNQZDAweTVnUDBiek1QQiJ9.MaRhUmQYTMQSepTPcHLpXCYvS0i2YhCcxLgsMLCcRro"
+/// access_token : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjIsInVzZXJzIjp7ImlkIjoyLCJ1c2VybmFtZSI6IjEyMzQ1IiwiZW1haWwiOiIxMjM0NUBtYWlsLmNvbSIsIm5hbWUiOiJKb2huIERvZSIsImlzX2VtcGxveWVlIjoxLCJpZF9yb2xlIjoxLCJpZF9hcHByb3ZhbF9hdXRoIjoxLCJpZF9jb21wYW55IjoxLCJpZF9zaXRlIjoxLCJjcmVhdGVkX2F0IjpudWxsLCJjcmVhdGVkX2J5IjpudWxsLCJ1cGRhdGVkX2F0IjpudWxsLCJ1cGRhdGVkX2J5IjpudWxsfSwiaXNzIjoiaHR0cDpcL1wvMTAzLjE2NS4xMzAuMTU3OjgwODZcL2FwaVwvbG9naW4iLCJpYXQiOjE2ODQ3ODMyODQsIm5iZiI6MTY4NDc4MzI4NCwianRpIjoiYXRLRWVVbk9MdWtxNENjdiJ9.w_Y-n-QqlnVPBFIrQuklQayujk373TT-ZHjyXWWgiis"
 /// token_type : "bearer"
 /// expires_in : 0
 
@@ -124,125 +124,143 @@ Data copyWith({  String? accessToken,
 
 }
 
-/// id : 1
-/// username : "admin"
-/// email : "admin@mail.com"
-/// is_employee : 0
-/// id_role : 0
-/// id_approval_auth : 0
-/// id_company : 0
-/// id_site : 0
-/// created_at : null
-/// created_by : null
-/// updated_at : null
-/// updated_by : null
+/// id : 2
+/// name : "John Doe"
+/// is_employee : 1
+/// id_company : 1
+/// id_site : 1
+/// id_role : 1
+/// id_approval_auth : 1
+/// company_name : "PT. Testing"
+/// company_code : "1234"
+/// site_name : "Surabaya"
+/// site_code : "SBY"
+/// id_employee : 1
+/// employee_name : "Jhon Doe"
+/// sn_employee : "12345"
 
 class Users {
   Users({
       num? id, 
-      String? username, 
-      String? email, 
+      String? name, 
       num? isEmployee, 
-      num? idRole, 
-      num? idApprovalAuth, 
       num? idCompany, 
       num? idSite, 
-      dynamic createdAt, 
-      dynamic createdBy, 
-      dynamic updatedAt, 
-      dynamic updatedBy,}){
+      num? idRole, 
+      num? idApprovalAuth, 
+      String? companyName, 
+      String? companyCode, 
+      String? siteName, 
+      String? siteCode, 
+      num? idEmployee, 
+      String? employeeName, 
+      String? snEmployee,}){
     _id = id;
-    _username = username;
-    _email = email;
+    _name = name;
     _isEmployee = isEmployee;
-    _idRole = idRole;
-    _idApprovalAuth = idApprovalAuth;
     _idCompany = idCompany;
     _idSite = idSite;
-    _createdAt = createdAt;
-    _createdBy = createdBy;
-    _updatedAt = updatedAt;
-    _updatedBy = updatedBy;
+    _idRole = idRole;
+    _idApprovalAuth = idApprovalAuth;
+    _companyName = companyName;
+    _companyCode = companyCode;
+    _siteName = siteName;
+    _siteCode = siteCode;
+    _idEmployee = idEmployee;
+    _employeeName = employeeName;
+    _snEmployee = snEmployee;
 }
 
   Users.fromJson(dynamic json) {
     _id = json['id'];
-    _username = json['username'];
-    _email = json['email'];
+    _name = json['name'];
     _isEmployee = json['is_employee'];
-    _idRole = json['id_role'];
-    _idApprovalAuth = json['id_approval_auth'];
     _idCompany = json['id_company'];
     _idSite = json['id_site'];
-    _createdAt = json['created_at'];
-    _createdBy = json['created_by'];
-    _updatedAt = json['updated_at'];
-    _updatedBy = json['updated_by'];
+    _idRole = json['id_role'];
+    _idApprovalAuth = json['id_approval_auth'];
+    _companyName = json['company_name'];
+    _companyCode = json['company_code'];
+    _siteName = json['site_name'];
+    _siteCode = json['site_code'];
+    _idEmployee = json['id_employee'];
+    _employeeName = json['employee_name'];
+    _snEmployee = json['sn_employee'];
   }
   num? _id;
-  String? _username;
-  String? _email;
+  String? _name;
   num? _isEmployee;
-  num? _idRole;
-  num? _idApprovalAuth;
   num? _idCompany;
   num? _idSite;
-  dynamic _createdAt;
-  dynamic _createdBy;
-  dynamic _updatedAt;
-  dynamic _updatedBy;
+  num? _idRole;
+  num? _idApprovalAuth;
+  String? _companyName;
+  String? _companyCode;
+  String? _siteName;
+  String? _siteCode;
+  num? _idEmployee;
+  String? _employeeName;
+  String? _snEmployee;
 Users copyWith({  num? id,
-  String? username,
-  String? email,
+  String? name,
   num? isEmployee,
-  num? idRole,
-  num? idApprovalAuth,
   num? idCompany,
   num? idSite,
-  dynamic createdAt,
-  dynamic createdBy,
-  dynamic updatedAt,
-  dynamic updatedBy,
+  num? idRole,
+  num? idApprovalAuth,
+  String? companyName,
+  String? companyCode,
+  String? siteName,
+  String? siteCode,
+  num? idEmployee,
+  String? employeeName,
+  String? snEmployee,
 }) => Users(  id: id ?? _id,
-  username: username ?? _username,
-  email: email ?? _email,
+  name: name ?? _name,
   isEmployee: isEmployee ?? _isEmployee,
-  idRole: idRole ?? _idRole,
-  idApprovalAuth: idApprovalAuth ?? _idApprovalAuth,
   idCompany: idCompany ?? _idCompany,
   idSite: idSite ?? _idSite,
-  createdAt: createdAt ?? _createdAt,
-  createdBy: createdBy ?? _createdBy,
-  updatedAt: updatedAt ?? _updatedAt,
-  updatedBy: updatedBy ?? _updatedBy,
+  idRole: idRole ?? _idRole,
+  idApprovalAuth: idApprovalAuth ?? _idApprovalAuth,
+  companyName: companyName ?? _companyName,
+  companyCode: companyCode ?? _companyCode,
+  siteName: siteName ?? _siteName,
+  siteCode: siteCode ?? _siteCode,
+  idEmployee: idEmployee ?? _idEmployee,
+  employeeName: employeeName ?? _employeeName,
+  snEmployee: snEmployee ?? _snEmployee,
 );
   num? get id => _id;
-  String? get username => _username;
-  String? get email => _email;
+  String? get name => _name;
   num? get isEmployee => _isEmployee;
-  num? get idRole => _idRole;
-  num? get idApprovalAuth => _idApprovalAuth;
   num? get idCompany => _idCompany;
   num? get idSite => _idSite;
-  dynamic get createdAt => _createdAt;
-  dynamic get createdBy => _createdBy;
-  dynamic get updatedAt => _updatedAt;
-  dynamic get updatedBy => _updatedBy;
+  num? get idRole => _idRole;
+  num? get idApprovalAuth => _idApprovalAuth;
+  String? get companyName => _companyName;
+  String? get companyCode => _companyCode;
+  String? get siteName => _siteName;
+  String? get siteCode => _siteCode;
+  num? get idEmployee => _idEmployee;
+  String? get employeeName => _employeeName;
+  String? get snEmployee => _snEmployee;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
-    map['username'] = _username;
-    map['email'] = _email;
+    map['name'] = _name;
     map['is_employee'] = _isEmployee;
-    map['id_role'] = _idRole;
-    map['id_approval_auth'] = _idApprovalAuth;
     map['id_company'] = _idCompany;
     map['id_site'] = _idSite;
-    map['created_at'] = _createdAt;
-    map['created_by'] = _createdBy;
-    map['updated_at'] = _updatedAt;
-    map['updated_by'] = _updatedBy;
+    map['id_role'] = _idRole;
+    map['id_approval_auth'] = _idApprovalAuth;
+    map['company_name'] = _companyName;
+    map['company_code'] = _companyCode;
+    map['site_name'] = _siteName;
+    map['site_code'] = _siteCode;
+    map['id_employee'] = _idEmployee;
+    map['employee_name'] = _employeeName;
+    map['sn_employee'] = _snEmployee;
     return map;
   }
 

@@ -5,7 +5,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/cutompagination.dart';
-import 'package:gais/reusable/dataempty.dart';
+import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/requester_info/requester_info_screen.dart';
@@ -31,9 +31,10 @@ class RequestTripListScreen extends StatelessWidget {
               backgroundColor: whiteColor,
               title: Text("Request Trip", style: appTitle),
               centerTitle: true,
-              flexibleSpace: TopBar(),
+              flexibleSpace: const TopBar(),
             ),
-            body: CustomScrollView(
+            body: controller.isLoading == false
+                ? CustomScrollView(
                     slivers: [
                       SliverPersistentHeader(
                         pinned: true,
@@ -47,11 +48,11 @@ class RequestTripListScreen extends StatelessWidget {
                                 color: baseColor,
                               ),
                               Container(
-                                margin: EdgeInsets.symmetric(
+                                margin: const EdgeInsets.symmetric(
                                   horizontal: 16,
                                   // vertical: 5,
                                 ),
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
                                 decoration: BoxDecoration(
                                     color: whiteColor,
@@ -60,10 +61,10 @@ class RequestTripListScreen extends StatelessWidget {
                                   children: [
                                     Container(
                                       width: Get.width - 112,
-                                      margin: EdgeInsets.only(right: 10),
+                                      margin: const EdgeInsets.only(right: 10),
                                       child: TextField(
                                         controller: controller.search,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           hintText: "Search",
                                           prefixIcon: Icon(IconlyLight.search),
                                         ),
@@ -85,41 +86,12 @@ class RequestTripListScreen extends StatelessWidget {
                                                 top: Radius.circular(20)),
                                           ),
                                           isScrollControlled: false,
-                                          // showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
-                                            // return AlertDialog(
-                                            //   scrollable: true,
-                                            //   titlePadding: EdgeInsets.zero,
-                                            //   shape: RoundedRectangleBorder(
-                                            //       borderRadius: BorderRadius.all(
-                                            //           Radius.circular(8))),
-                                            //   title: Container(
-                                            //     padding: EdgeInsets.symmetric(
-                                            //         horizontal: 20, vertical: 5),
-                                            //     decoration: BoxDecoration(
-                                            //         color: lightBlueColor,
-                                            //         borderRadius: BorderRadius.only(
-                                            //             topRight: Radius.circular(8),
-                                            //             topLeft: Radius.circular(8))),
-                                            //     child: Row(
-                                            //       mainAxisAlignment:
-                                            //           MainAxisAlignment.spaceBetween,
-                                            //       children: [
-                                            //         Text("Filter"),
-                                            //         IconButton(
-                                            //             onPressed: () => Get.back(),
-                                            //             icon: Icon(Icons.close))
-                                            //       ],
-                                            //     ),
-                                            //   ),
-                                            //   content: Column(
-                                            // crossAxisAlignment:
-                                            // CrossAxisAlignment.start,
                                             return AnimatedContainer(
                                               padding: const EdgeInsets.all(45),
-                                              duration:
-                                                  Duration(milliseconds: 5000),
+                                              duration: const Duration(
+                                                  milliseconds: 5000),
                                               child: ListView(
                                                 shrinkWrap: true,
                                                 children: [
@@ -127,13 +99,12 @@ class RequestTripListScreen extends StatelessWidget {
                                                       style:
                                                           listTitleTextStyle),
                                                   Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 6),
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 10,
-                                                            vertical: 3),
+                                                    margin: const EdgeInsets
+                                                        .symmetric(vertical: 6),
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 3),
                                                     width: Get.width,
                                                     decoration: BoxDecoration(
                                                         color: whiteColor,
@@ -143,35 +114,35 @@ class RequestTripListScreen extends StatelessWidget {
                                                         border: Border.all(
                                                             color: blackColor)),
                                                     child: DropdownButton(
-                                                      icon: Icon(Icons
+                                                      icon: const Icon(Icons
                                                           .keyboard_arrow_down),
-                                                      hint: Text(
+                                                      hint: const Text(
                                                           "Company Business"),
                                                       value: controller
                                                           .purposeValue,
                                                       isExpanded: true,
-                                                      underline: SizedBox(),
-                                                      items: [
+                                                      underline:
+                                                          const SizedBox(),
+                                                      items: const [
                                                         DropdownMenuItem(
+                                                          value: "CB",
                                                           child: Text(
                                                               "Company Business"),
-                                                          value:
-                                                              "CB",
                                                         ),
                                                         DropdownMenuItem(
+                                                          value: "FB",
                                                           child: Text(
                                                               "Field Break"),
-                                                          value: "FB",
                                                         ),
                                                         DropdownMenuItem(
+                                                          value: "SV",
                                                           child: Text(
                                                               "Site Visit"),
-                                                          value: "SV",
                                                         ),
                                                         DropdownMenuItem(
+                                                          value: "TV",
                                                           child: Text(
                                                               "Taxi Voucher Only"),
-                                                          value: "TV",
                                                         ),
                                                       ],
                                                       onChanged: (value) {
@@ -186,14 +157,13 @@ class RequestTripListScreen extends StatelessWidget {
                                                       style:
                                                           listTitleTextStyle),
                                                   Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 6),
+                                                    margin: const EdgeInsets
+                                                        .symmetric(vertical: 6),
                                                     child: TextField(
                                                       readOnly: true,
                                                       controller:
                                                           controller.dateRange,
-                                                      decoration: InputDecoration(
+                                                      decoration: const InputDecoration(
                                                           suffixIcon: Icon(Icons
                                                               .calendar_month)),
                                                       onTap: () {
@@ -244,7 +214,7 @@ class RequestTripListScreen extends StatelessWidget {
                                                       },
                                                     ),
                                                   ),
-                                                  CustomFilledButton(
+                                                  const CustomFilledButton(
                                                     color: successColor,
                                                     title: "Filter",
                                                     width: 120,
@@ -253,16 +223,6 @@ class RequestTripListScreen extends StatelessWidget {
                                                 // ),
                                               ),
                                             );
-                                            //   actionsAlignment:
-                                            //       MainAxisAlignment.center,
-                                            //   actions: [
-                                            //     CustomFilledButton(
-                                            //       color: successColor,
-                                            //       title: "Filter",
-                                            //       width: 120,
-                                            //     )
-                                            //   ],
-                                            // );
                                           },
                                         );
                                       },
@@ -286,15 +246,22 @@ class RequestTripListScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               CustomPagination(
-                                margin: EdgeInsets.symmetric(horizontal: 16),
+                                colorSub: whiteColor,
+                                colorPrimary: infoColor,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 onPageChanged: (int pageNumber) {
                                   controller.currentPage = pageNumber;
+                                  controller.fetchList();
                                   controller.update();
                                 },
-                                pageTotal: controller.requestList.length > 10
-                                    ? (controller.requestList.length / 10)
-                                        .ceil()
-                                    : 1,
+                                pageTotal:
+                                    // controller.rtlModel!.data!.total! >= 10
+                                    //     ? (controller.rtlModel!.data!.total! /
+                                    //             controller.perPage)
+                                    //         .ceil()
+                                    //     : 1,
+                                controller.rtlModel?.data?.lastPage?.toInt() ?? 1,
                                 pageInit: controller.currentPage,
                               ),
                               Container(height: 10, color: baseColor),
@@ -305,53 +272,80 @@ class RequestTripListScreen extends StatelessWidget {
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
-                            // int _page = 0;
-                            // controller.currentPage != 1
-                            //     ? _page = controller.currentPage + 9
-                            //     : 0;
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: CustomTripCard(
-                                listNumber: index + 1,
-                                title:
-                                    "code request : ${controller.requestList[index].id}",
-                                status:
-                                    "code status: ${controller.requestList[index].codeStatus}",
-                                subtitle:
-                                    "tgl buat : ${controller.requestList[index].createdAt?.substring(0, 10)}",
-                                info:
-                                    'purpose : ${controller.requestList[index].noRequestTrip}',
-                                isEdit: true,
-                                isDelete: true,
-                                content: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Requestor",
-                                        style: listTitleTextStyle),
-                                    Text(
-                                        "employee : ${controller.requestList[index].idEmployee}",
-                                        style: listSubTitleTextStyle)
-                                  ],
-                                ),
-                                onTap: () => Get.to(FormRequestTripScreen()),
-                              ),
-                            );
+                            return controller.isLoading == true
+                                ? CircularProgressIndicator.adaptive()
+                                : Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        child: CustomTripCard(
+                                          listNumber: controller.currentPage > 1
+                                              ? (index +
+                                                  controller
+                                                      .rtlModel!.data!.from!
+                                                      .toInt())
+                                              : (index + 1),
+                                          title: controller
+                                              .requestList[index].noRequestTrip
+                                              .toString(),
+                                          status: controller
+                                              .requestList[index].status,
+                                          subtitle: controller
+                                              .requestList[index].createdAt
+                                              ?.substring(0, 10),
+                                          info: controller
+                                              .requestList[index].documentName,
+                                          isEdit: true,
+                                          editAction: () => Get.to(
+                                              const FormRequestTripScreen()),
+                                          isDelete: true,
+                                          deleteAction: () {
+                                            controller.isLoading == true
+                                                ? LoadingDialog().show(context)
+                                                : LoadingDialog()
+                                                    .close(context);
+                                            controller.delete(int.parse(
+                                                controller.requestList[index].id
+                                                    .toString()));
+
+                                            controller.update();
+                                          },
+                                          content: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Requestor",
+                                                  style: listTitleTextStyle),
+                                              Text(
+                                                  controller.requestList[index]
+                                                          .employeeName ??
+                                                      "",
+                                                  style: listSubTitleTextStyle)
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      controller.requestList.length == index + 1
+                                          ? SizedBox(height: 100)
+                                          : SizedBox()
+                                    ],
+                                  );
                           },
-                          // childCount: controller.requestList.length
-                          childCount: controller.requestList.length < 10
-                              ? controller.requestList.length
-                              : 10,
+                          childCount: controller.requestList.length,
                         ),
                       ),
                     ],
+                  )
+                : const Center(
+                    child: CircularProgressIndicator.adaptive(),
                   ),
             floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.add_rounded, size: 45),
               backgroundColor: successColor,
-              onPressed: () => Get.to(RequesterInfoScreen()),
+              onPressed: () => Get.to(const RequesterInfoScreen()),
+              child: const Icon(Icons.add_rounded, size: 45),
             ),
-            bottomNavigationBar: BottomBar(menu: 1),
+            bottomNavigationBar: const BottomBar(menu: 1),
           );
         });
   }

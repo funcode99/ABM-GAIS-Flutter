@@ -59,6 +59,7 @@ class LoginController extends BaseController {
               value.users?.isEmployee.toString() ?? "",
               value.users?.idApprovalAuth.toString() ?? "",
             );
+            saveEmployeeInfo();
           })
           .then(
             (_) => Get.showSnackbar(
@@ -71,14 +72,9 @@ class LoginController extends BaseController {
             ),
           )
           .then((value) => Get.offAll(() => const HomeScreen()));
-      print("role : ${await storage.readRole()}");
-      if (await storage.readRole() == "1") {
-        // await repository.getEmployeeInfo();
-        saveEmployeeInfo();
-      }
-      print("site : ${await FlutterSecureStorage().read(key: 'site')}");
-    } catch (e) {
-      print(e);
+    } catch (e, i) {
+      e.printError();
+      i.printError();
       Get.showSnackbar(
         const GetSnackBar(
           icon: Icon(
@@ -92,37 +88,60 @@ class LoginController extends BaseController {
         ),
       );
     }
+    print("role : ${await storage.readRole()}");
+    if (await storage.readRole() == "1") {
+      // await repository.getEmployeeInfo();
+      // saveEmployeeInfo();
+    }
+    print("site : ${await FlutterSecureStorage().read(key: 'site')}");
   }
 
   Future<void> saveEmployeeInfo() async {
     try {
       await repository.getEmployeeInfo().then(
             (value) => storage.saveUser(
-                value.data?.first.id.toString() ?? "",
-                value.data?.first.employeeName ?? "",
-                value.data?.first.phoneNumber ?? "",
-                value.data?.first.snEmployee ?? "",
-                value.data?.first.email ?? "",
-                value.data?.first.nik ?? "",
-                value.data?.first.dob ?? "",
-                value.data?.first.startDate ?? "",
-                value.data?.first.endDate ?? "",
-                value.data?.first.jenkel ?? "",
-                value.data?.first.idDepartment.toString() ?? "",
-                value.data?.first.idCompany.toString() ?? "",
-                value.data?.first.idSite.toString() ?? "",
-                value.data?.first.siteName.toString() ?? "",
+              value.data?.first.id.toString() ?? "",
+              value.data?.first.employeeName ?? "",
+              value.data?.first.phoneNumber ?? "",
+              value.data?.first.snEmployee ?? "",
+              value.data?.first.email ?? "",
+              value.data?.first.nik ?? "",
+              value.data?.first.dob ?? "",
+              value.data?.first.startDate ?? "",
+              value.data?.first.endDate ?? "",
+              value.data?.first.jenkel ?? "",
+              value.data?.first.idDepartment.toString() ?? "",
+              value.data?.first.idCompany.toString() ?? "",
+              value.data?.first.companyName.toString() ?? "",
+              value.data?.first.idSite.toString() ?? "",
+              value.data?.first.siteName.toString() ?? "",
+              value.data?.first.idJobBand.toString() ?? "",
+              value.data?.first.bandJobName.toString() ?? "",
+              value.data?.first.foto.toString() ?? "",
+              value.data?.first.fotoPath.toString() ?? "",
+              value.data?.first.flightClass.toString() ?? "",
             ),
           );
+      // .then(
+      //   (value) async => Get.showSnackbar(
+      //     GetSnackBar(
+      //       message:
+      //           'welcome ${await FlutterSecureStorage().read(key: 'userID')}',
+      //       isDismissible: true,
+      //       duration: Duration(seconds: 3),
+      //       backgroundColor: Colors.green,
+      //     ),
+      //   ),
+      // );
     } catch (e) {
-      print(e);
+      e.printError();
       Get.showSnackbar(
         const GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,
           ),
-          message: 'gagal load data employee',
+          message: 'Failed To Load Data',
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: Colors.red,

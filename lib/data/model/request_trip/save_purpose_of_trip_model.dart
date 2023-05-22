@@ -1,6 +1,6 @@
 /// success : true
 /// message : "Success Create Menu"
-/// data : {"id_employee":2,"no_request_trip":"1","code_document":"1","id_site":"1","notes":"1","id_city_from":"1","id_city_to":"1","date_departure":"01-01-2023","date_arrival":"02-01-2023","id_zona":"1","tlk_per_day":100000.12,"total_tlk":600000,"file":"public/files/request_trip/BAOdLu4VHezu2XFJOQGaV4oDwPYI4c8fEjnDOFZz.png","created_at":"2023-05-10T06:38:12.000000Z","created_by":2,"code_status":"0","updated_at":"2023-05-10T06:38:12.000000Z","id":3}
+/// data : {"id_employee":"1","no_request_trip":"REQ/ABM/123","code_document":"1","id_site":"1","notes":"1","id_city_from":"1","id_city_to":"1","date_departure":"01-01-2023","date_arrival":"02-01-2023","id_zona":"1","tlk_per_day":100000.12,"total_tlk":600000,"file":"http://103.165.130.157:8086/storage/files/request_trip/SfKxcsBX9KN9Y74VMtAazpJF4sNCHQD5QYzl6WEC.png","created_at":"2023-05-17T06:42:16.000000Z","created_by":2,"code_status_doc":"0","updated_at":"2023-05-17T06:42:16.000000Z","id":78}
 
 class SavePurposeOfTripModel {
   SavePurposeOfTripModel({
@@ -43,8 +43,8 @@ SavePurposeOfTripModel copyWith({  bool? success,
 
 }
 
-/// id_employee : 2
-/// no_request_trip : "1"
+/// id_employee : "1"
+/// no_request_trip : "REQ/ABM/123"
 /// code_document : "1"
 /// id_site : "1"
 /// notes : "1"
@@ -55,16 +55,16 @@ SavePurposeOfTripModel copyWith({  bool? success,
 /// id_zona : "1"
 /// tlk_per_day : 100000.12
 /// total_tlk : 600000
-/// file : "public/files/request_trip/BAOdLu4VHezu2XFJOQGaV4oDwPYI4c8fEjnDOFZz.png"
-/// created_at : "2023-05-10T06:38:12.000000Z"
+/// file : "http://103.165.130.157:8086/storage/files/request_trip/SfKxcsBX9KN9Y74VMtAazpJF4sNCHQD5QYzl6WEC.png"
+/// created_at : "2023-05-17T06:42:16.000000Z"
 /// created_by : 2
-/// code_status : "0"
-/// updated_at : "2023-05-10T06:38:12.000000Z"
-/// id : 3
+/// code_status_doc : "0"
+/// updated_at : "2023-05-17T06:42:16.000000Z"
+/// id : 78
 
 class Data {
   Data({
-      num? idEmployee, 
+      String? idEmployee, 
       String? noRequestTrip, 
       String? codeDocument, 
       String? idSite, 
@@ -118,11 +118,11 @@ class Data {
     _file = json['file'];
     _createdAt = json['created_at'];
     _createdBy = json['created_by'];
-    _codeStatus = json['code_status'];
+    _codeStatus = json['code_status_doc'];
     _updatedAt = json['updated_at'];
     _id = json['id'];
   }
-  num? _idEmployee;
+  String? _idEmployee;
   String? _noRequestTrip;
   String? _codeDocument;
   String? _idSite;
@@ -140,7 +140,7 @@ class Data {
   String? _codeStatus;
   String? _updatedAt;
   num? _id;
-Data copyWith({  num? idEmployee,
+Data copyWith({  String? idEmployee,
   String? noRequestTrip,
   String? codeDocument,
   String? idSite,
@@ -177,7 +177,7 @@ Data copyWith({  num? idEmployee,
   updatedAt: updatedAt ?? _updatedAt,
   id: id ?? _id,
 );
-  num? get idEmployee => _idEmployee;
+  String? get idEmployee => _idEmployee;
   String? get noRequestTrip => _noRequestTrip;
   String? get codeDocument => _codeDocument;
   String? get idSite => _idSite;
@@ -213,7 +213,7 @@ Data copyWith({  num? idEmployee,
     map['file'] = _file;
     map['created_at'] = _createdAt;
     map['created_by'] = _createdBy;
-    map['code_status'] = _codeStatus;
+    map['code_status_doc'] = _codeStatus;
     map['updated_at'] = _updatedAt;
     map['id'] = _id;
     return map;
