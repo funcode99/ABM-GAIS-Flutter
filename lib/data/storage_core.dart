@@ -2,6 +2,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class StorageCore {
   static const String userID = "userID";
+  static const String employeeName = "employeeName";
+  static const String companyName = "companyName";
+  static const String siteName = "siteName";
 
   final storage = const FlutterSecureStorage();
 
@@ -34,6 +37,9 @@ class StorageCore {
     String idCompany,
     String idSite,
     String site,
+    String employeeName,
+    String companyName,
+    String siteName,
   ) async {
     await storage.write(key: 'userID', value: id);
     await storage.write(key: 'name', value: name);
@@ -49,6 +55,9 @@ class StorageCore {
     await storage.write(key: 'companyID', value: idCompany);
     await storage.write(key: 'siteID', value: idSite);
     await storage.write(key: 'site', value: site);
+    await storage.write(key: 'employeeName', value: employeeName);
+    await storage.write(key: 'companyName', value: companyName);
+    await storage.write(key: 'siteName', value: siteName);
   }
 
   void deleteToken() async {
@@ -87,6 +96,10 @@ class StorageCore {
 
   Future<bool> ensureStorageReady() async {
     return await storage.read(key: 'token') != null;
+  }
+
+  Future<void> writeString(String key, String value)async{
+    return await storage.write(key: key, value: value);
   }
 
   Future<String> readString(String key)async{

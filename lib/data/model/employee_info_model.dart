@@ -91,7 +91,8 @@ class Data {
       String? createdBy, 
       String? updatedAt, 
       dynamic updatedBy, 
-      String? siteName, 
+      String? companyName,
+      String? siteName,
       String? siteCode,}){
     _id = id;
     _employeeName = employeeName;
@@ -113,6 +114,7 @@ class Data {
     _updatedAt = updatedAt;
     _updatedBy = updatedBy;
     _siteName = siteName;
+    _companyName = companyName;
     _siteCode = siteCode;
 }
 
@@ -137,6 +139,7 @@ class Data {
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
     _siteName = json['site_name'];
+    _companyName = json['company_name'];
     _siteCode = json['site_code'];
   }
   num? _id;
@@ -159,6 +162,7 @@ class Data {
   String? _updatedAt;
   dynamic _updatedBy;
   String? _siteName;
+  String? _companyName;
   String? _siteCode;
 Data copyWith({  num? id,
   String? employeeName,
@@ -180,6 +184,7 @@ Data copyWith({  num? id,
   String? updatedAt,
   dynamic updatedBy,
   String? siteName,
+  String? companyName,
   String? siteCode,
 }) => Data(  id: id ?? _id,
   employeeName: employeeName ?? _employeeName,
@@ -201,6 +206,7 @@ Data copyWith({  num? id,
   updatedAt: updatedAt ?? _updatedAt,
   updatedBy: updatedBy ?? _updatedBy,
   siteName: siteName ?? _siteName,
+  companyName: _companyName ?? _companyName,
   siteCode: siteCode ?? _siteCode,
 );
   num? get id => _id;
@@ -223,6 +229,7 @@ Data copyWith({  num? id,
   String? get updatedAt => _updatedAt;
   dynamic get updatedBy => _updatedBy;
   String? get siteName => _siteName;
+  String? get companyName => _companyName;
   String? get siteCode => _siteCode;
 
   Map<String, dynamic> toJson() {
@@ -247,6 +254,7 @@ Data copyWith({  num? id,
     map['updated_at'] = _updatedAt;
     map['updated_by'] = _updatedBy;
     map['site_name'] = _siteName;
+    map['company_name'] = _companyName;
     map['site_code'] = _siteCode;
     return map;
   }

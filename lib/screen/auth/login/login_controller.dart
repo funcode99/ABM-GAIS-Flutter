@@ -2,6 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/data/model/login_model.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/screen/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -70,13 +71,16 @@ class LoginController extends BaseController {
               ),
             ),
           )
-          .then((value) => Get.offAll(() => const HomeScreen()));
-      print("role : ${await storage.readRole()}");
-      if (await storage.readRole() == "1") {
-        // await repository.getEmployeeInfo();
-        saveEmployeeInfo();
-      }
-      print("site : ${await FlutterSecureStorage().read(key: 'site')}");
+          .then((value) async {
+            Get.offAll(() => const HomeScreen());
+            String? role = await storage.readRole();
+            print("role : $role-");
+            if (role == "1") {
+              // await repository.getEmployeeInfo();
+              saveEmployeeInfo();
+            }
+            print("site : ${await FlutterSecureStorage().read(key: 'site')}");
+          });
     } catch (e) {
       print(e);
       Get.showSnackbar(
@@ -98,20 +102,23 @@ class LoginController extends BaseController {
     try {
       await repository.getEmployeeInfo().then(
             (value) => storage.saveUser(
-                value.data?.first.id.toString() ?? "",
-                value.data?.first.employeeName ?? "",
-                value.data?.first.phoneNumber ?? "",
-                value.data?.first.snEmployee ?? "",
-                value.data?.first.email ?? "",
-                value.data?.first.nik ?? "",
-                value.data?.first.dob ?? "",
-                value.data?.first.startDate ?? "",
-                value.data?.first.endDate ?? "",
-                value.data?.first.jenkel ?? "",
-                value.data?.first.idDepartment.toString() ?? "",
-                value.data?.first.idCompany.toString() ?? "",
-                value.data?.first.idSite.toString() ?? "",
-                value.data?.first.siteName.toString() ?? "",
+              value.data?.first.id.toString() ?? "",
+              value.data?.first.employeeName ?? "",
+              value.data?.first.phoneNumber ?? "",
+              value.data?.first.snEmployee ?? "",
+              value.data?.first.email ?? "",
+              value.data?.first.nik ?? "",
+              value.data?.first.dob ?? "",
+              value.data?.first.startDate ?? "",
+              value.data?.first.endDate ?? "",
+              value.data?.first.jenkel ?? "",
+              value.data?.first.idDepartment.toString() ?? "",
+              value.data?.first.idCompany.toString() ?? "",
+              value.data?.first.idSite.toString() ?? "",
+              value.data?.first.siteName.toString() ?? "",
+              value.data?.first.employeeName.toString() ?? "",
+              value.data?.first.companyName.toString() ?? "",
+              value.data?.first.siteName.toString() ?? "",
             ),
           );
     } catch (e) {
