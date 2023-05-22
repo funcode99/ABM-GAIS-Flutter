@@ -8,6 +8,7 @@ import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
+import 'package:gais/reusable/error/empty_list_error.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -19,10 +20,10 @@ import 'package:iconly/iconly.dart';
 class ManagementItemATKListScreen extends StatelessWidget {
   const ManagementItemATKListScreen({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-    final ManagementItemATKListController controller = Get.put(ManagementItemATKListController());
+    final ManagementItemATKListController controller =
+        Get.put(ManagementItemATKListController());
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -37,7 +38,10 @@ class ManagementItemATKListScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {},
+              onChanged: (string) {
+                controller.keyword(string);
+                controller.getHeader(page: 1);
+              },
               onPressedFilter: () {
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {
@@ -100,108 +104,125 @@ class ManagementItemATKListScreen extends StatelessWidget {
                 ));
               },
             ),
-            CustomPagination(
-              onPageChanged: (int) {},
-              pageTotal: 5,
-              margin: EdgeInsets.zero,
-            ),
+            Obx(() {
+              return CustomPagination(
+                key: UniqueKey(),
+                onPageChanged: (page) {
+                  controller.getHeader(page: page);
+                },
+                pageTotal: controller.totalPage.value,
+                margin: EdgeInsets.zero,
+                pageInit: controller.currentPage.value,
+              );
+            }),
             const SizedBox(
               height: 12,
             ),
             Expanded(
-                child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ...controller.listItem.mapIndexed((index, element) =>
-                      CommonListItem(
-                          number: "${index+1}",
-                          subtitle: element.id,
-                          title: element.itemName,
-                          total: "${element.alertQuantity + 100}",
-                          content: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                      "Brand".tr,
-                                      style: listTitleTextStyle,
-                                    ),
-                                    Text(
-                                      "Pilot",
-                                      style: listSubTitleTextStyle,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      "Warehouse".tr,
-                                      style: listTitleTextStyle,
-                                    ),
-                                    Text(
-                                      "Warehouse A",
-                                      style: listSubTitleTextStyle,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      "Alert Quantity".tr,
-                                      style: listTitleTextStyle,
-                                    ),
-                                    Text(
-                                      "20",
-                                      style: listSubTitleTextStyle,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      "UOM".tr,
-                                      style: listTitleTextStyle,
-                                    ),
-                                    Text(
-                                      "Pcs",
-                                      style: listSubTitleTextStyle,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          action: [
-                            CustomIconButton(
-                              title: "Edit".tr,
-                              iconData: IconlyBold.edit,
-                              backgroundColor: successColor,
-                              onPressed: () {
-                                Get.to(const AddManagementItemATKScreen());
-                              },
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            CustomIconButton(
-                              title: "Delete".tr,
-                              iconData: IconlyBold.delete,
-                              backgroundColor: redColor,
-                              onPressed: () {
-                                Get.dialog(DeleteConfirmationDialog(
-                                  onDeletePressed: (){
-                                    Get.back();
-                                  },
-                                ));
-                              },
-                            )
-                          ]))
-                ],
-              ),
-            ))
+                child: RefreshIndicator(
+              onRefresh: () async {
+                controller.getHeader();
+              },
+              child: Obx(() {
+                return controller.listHeader.isEmpty
+                    ? const EmptyListError()
+                    : ListView(
+                        children: [
+                          ...controller.listHeader
+                              .mapIndexed((index, item) => CommonListItem(
+                                      number: "${index + 1}",
+                                      subtitle: "${item.codeItem}",
+                                      title: item.itemName,
+                                      total: "${item.currentStock}",
+                                      content: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 8),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "Brand".tr,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                  "${item.brandName}",
+                                                  style: listSubTitleTextStyle,
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "Warehouse".tr,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                  "${item.warehouseName}",
+                                                  style: listSubTitleTextStyle,
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "Alert Quantity".tr,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                  "${item.alertQty}",
+                                                  style: listSubTitleTextStyle,
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "UOM".tr,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                  "${item.uomName}",
+                                                  style: listSubTitleTextStyle,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      action: [
+                                        CustomIconButton(
+                                          title: "Edit".tr,
+                                          iconData: IconlyBold.edit,
+                                          backgroundColor: successColor,
+                                          onPressed: () {
+                                            Get.to(
+                                                const AddManagementItemATKScreen());
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        CustomIconButton(
+                                          title: "Delete".tr,
+                                          iconData: IconlyBold.delete,
+                                          backgroundColor: redColor,
+                                          onPressed: () {
+                                            Get.dialog(DeleteConfirmationDialog(
+                                              onDeletePressed: () {
+                                                Get.back();
+                                              },
+                                            ));
+                                          },
+                                        )
+                                      ]))
+                        ],
+                      );
+              }),
+            )),
           ],
         ),
       ),
