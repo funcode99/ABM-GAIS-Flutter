@@ -213,6 +213,7 @@ class ManagementItemATKListScreen extends StatelessWidget {
                                           onPressed: () {
                                             Get.dialog(DeleteConfirmationDialog(
                                               onDeletePressed: () {
+                                                controller.deleteHeader(item);
                                                 Get.back();
                                               },
                                             ));

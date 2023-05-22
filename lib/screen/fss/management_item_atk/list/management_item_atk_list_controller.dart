@@ -69,4 +69,18 @@ class ManagementItemATKListController extends BaseController {
         });
   }
 
+  void deleteHeader(ManagementItemATKModel item) async {
+    final result = await _repository.deleteData(item.id!);
+    result.fold(
+            (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (r) {
+          Get.showSnackbar(CustomGetSnackBar(
+            message: "Success Delete Data".tr,
+          ));
+          getHeader();
+        });
+  }
+
+
 }
