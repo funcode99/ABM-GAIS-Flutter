@@ -81,22 +81,6 @@ class _AddItemRequestATKScreenState extends State<AddItemRequestATKScreen> {
                         const SizedBox(
                           height: 32,
                         ),
-                        CustomTextFormField(
-                            isRequired: true,
-                            readOnly: true,
-                            controller: controller.companyController,
-                            label: "Company".tr),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CustomTextFormField(
-                            isRequired: true,
-                            readOnly: true,
-                            controller: controller.siteController,
-                            label: "Site".tr),
-                        const SizedBox(
-                          height: 8,
-                        ),
                         CustomDropDownFormField(
                           isRequired: true,
                           items: controller.listWarehouse
