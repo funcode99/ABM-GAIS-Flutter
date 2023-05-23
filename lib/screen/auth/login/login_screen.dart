@@ -56,6 +56,11 @@ class LoginScreen extends StatelessWidget {
                               decoration: InputDecoration(
                                   hintText: "Input Username",
                                   hintStyle: hintTextStyle),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Username tidak boleh kosong";
+                                }
+                              },
                             ),
                             SizedBox(height: 8),
                             RichText(
@@ -95,6 +100,11 @@ class LoginScreen extends StatelessWidget {
                                       controller.update();
                                     },
                                   )),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Username tidak boleh kosong";
+                                }
+                              },
                             ),
                             Container(
                               alignment: Alignment.centerRight,
@@ -109,8 +119,10 @@ class LoginScreen extends StatelessWidget {
                             CustomFilledButton(
                               color: infoColor,
                               title: 'Login',
-                              onPressed: () async{
-                                controller.doLogin();
+                              onPressed: () async {
+                                if (controller.formKey.currentState
+                                        ?.validate() ==
+                                    true) controller.doLogin();
                               },
                             ),
                             Container(

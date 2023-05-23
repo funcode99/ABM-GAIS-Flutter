@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
@@ -8,6 +9,7 @@ import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/taxi_voucher/edit/edit_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_controller.dart';
 import 'package:get/get.dart';
 
@@ -20,16 +22,14 @@ class TaxiVoucherScreen extends StatelessWidget {
         init: TaxiVoucherController(),
         builder: (controller) {
           return Scaffold(
-            appBar: AppBar(
+            appBar: TopBar(
               title: Text("Request Trip", style: appTitle),
-              centerTitle: true,
-              leading: CustomBackButton(),
-              flexibleSpace: TopBar(),
+              leading: const CustomBackButton(),
             ),
             body: Container(
               alignment: Alignment.topCenter,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.all(7),
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(7),
               decoration: BoxDecoration(
                 color: whiteColor,
                 borderRadius: BorderRadius.circular(8),
@@ -46,81 +46,135 @@ class TaxiVoucherScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: infoColor,
                           borderRadius: BorderRadius.circular(50)),
-                      child: Icon(Icons.account_balance_wallet_rounded, color: whiteColor),
+                      child: const Icon(Icons.account_balance_wallet_rounded,
+                          color: whiteColor),
                     ),
                     Text("Taxi Voucher", style: appTitle),
-                    SizedBox(height: 14),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      child: Text("Taxi Voucher",
-                          style: listTitleTextStyle,
-                          textAlign: TextAlign.start),
+                    const SizedBox(height: 14),
+                    Column(
+                      children: controller.tvList.isNotEmpty
+                          ? controller.tvList
+                              .mapIndexed(
+                                (i, e) => CustomTripCard(
+                                  listNumber: i + 1,
+                                  title: e.accountName.toString(),
+                                  subtitle: e.date,
+                                  status: e.status.toString(),
+                                  info: e.amount,
+                                  isEdit: true,
+                                  editAction: () => Get.to(
+                                      const EditTaxiVoucherScreen(),
+                                      arguments: {
+                                        'purposeID': controller.purposeID,
+                                        'id': e.id
+                                      })?.then((_) {
+                                    controller.getList();
+                                    controller.update();
+                                  }),
+                                  isDelete: true,
+                                  deleteAction: () => controller
+                                      .delete(int.parse(e.id.toString())),
+                                  content: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text("Departure",
+                                              style: listTitleTextStyle),
+                                          Text(e.nameDepartureCity.toString(),
+                                              style: listSubTitleTextStyle),
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text("Arrival",
+                                              style: listTitleTextStyle),
+                                          Text(e.nameArrivalCity.toString(),
+                                              style: listSubTitleTextStyle),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                              .toList()
+                          : [Container()],
                     ),
-                    CustomTripCard(
-                      listNumber: 1,
-                      title: "Jack H",
-                      subtitle: "23/04/23",
-                      status: "Pending",
-                      info: "200.000",
-                      isEdit: true,
-                      isDelete: true,
-                      content: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Departure", style: listTitleTextStyle),
-                              Text("Surabaya", style: listSubTitleTextStyle),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Arrival", style: listTitleTextStyle),
-                              Text("Surabaya Barat", style: listSubTitleTextStyle),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 50),
                       child: CustomFilledButton(
                         color: infoColor,
                         title: "Add Taxi Voucher",
                         icon: Icons.add,
-                        onPressed: ()=> Get.to(AddTaxiVoucherScreen()),
+                        onPressed: () => Get.to(const AddTaxiVoucherScreen(),
+                                arguments: {'purposeID': controller.purposeID})
+                            ?.then((_) {
+                          controller.getList();
+                          controller.update();
+                        }),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomFilledButton(
-                          width: 100,
-                          color: Colors.transparent,
-                          borderColor: infoColor,
-                          title: "Back",
-                          fontColor: infoColor,
-                          onPressed: () => Get.back(),
-                        ),
-                        CustomFilledButton(
-                          width: 100,
-                          color: infoColor,
-                          title: "Next",
-                          onPressed: () => Get.to(OtherTransportScreen()),
-                        ),
-                      ],
-                    )
+                    controller.codeDocument == 4
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomFilledButton(
+                                width: 100,
+                                color: Colors.transparent,
+                                borderColor: infoColor,
+                                title: "Back",
+                                fontColor: infoColor,
+                                onPressed: () => Get.back(),
+                              ),
+                              const CustomFilledButton(
+                                width: 100,
+                                color: infoColor,
+                                title: "Draft",
+                              ),
+                              CustomFilledButton(
+                                width: 100,
+                                color: infoColor,
+                                title: "Submit",
+                                onPressed: () => controller.submit(),
+                              ),
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomFilledButton(
+                                width: 100,
+                                color: Colors.transparent,
+                                borderColor: infoColor,
+                                title: "Back",
+                                fontColor: infoColor,
+                                onPressed: () => Get.back(),
+                              ),
+                              CustomFilledButton(
+                                width: 100,
+                                color: infoColor,
+                                title: "Next",
+                                onPressed: () => Get.to(
+                                    const OtherTransportScreen(),
+                                    arguments: {
+                                      'purposeID': controller.purposeID,
+                                      'codeDocument': controller.codeDocument
+                                    }),
+                              ),
+                            ],
+                          ),
                   ],
                 ),
               ),
             ),
-            bottomNavigationBar: BottomBar(menu: 1),
+            bottomNavigationBar: const BottomBar(menu: 1),
           );
-        }
-    );
+        });
   }
 }

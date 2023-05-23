@@ -1,6 +1,6 @@
 /// success : true
 /// message : "Success Get Data"
-/// data : [{"id":1,"zona_name":"A","id_city":1,"created_at":"2023-05-10T08:23:50.000000Z","created_by":"2","updated_at":"2023-05-10T08:23:50.000000Z","updated_by":null}]
+/// data : [{"id":7,"zona_name":"A","city":[{"id_city":"1","city_name":"Bogor","city_code":"BGR"},{"id_city":"2","city_name":"Jakarta","city_code":"JKT"}]},{"id":8,"zona_name":"B","city":[{"id_city":"1","city_name":"Bogor","city_code":"BGR"},{"id_city":"2","city_name":"Jakarta","city_code":"JKT"},{"id_city":"3","city_name":"Surabaya","city_code":"SBY"}]}]
 
 class GetZonaModel {
   GetZonaModel({
@@ -48,80 +48,94 @@ GetZonaModel copyWith({  bool? success,
 
 }
 
-/// id : 1
+/// id : 7
 /// zona_name : "A"
-/// id_city : 1
-/// created_at : "2023-05-10T08:23:50.000000Z"
-/// created_by : "2"
-/// updated_at : "2023-05-10T08:23:50.000000Z"
-/// updated_by : null
+/// city : [{"id_city":"1","city_name":"Bogor","city_code":"BGR"},{"id_city":"2","city_name":"Jakarta","city_code":"JKT"}]
 
 class Data {
   Data({
       num? id, 
       String? zonaName, 
-      num? idCity, 
-      String? createdAt, 
-      String? createdBy, 
-      String? updatedAt, 
-      dynamic updatedBy,}){
+      List<City>? city,}){
     _id = id;
     _zonaName = zonaName;
-    _idCity = idCity;
-    _createdAt = createdAt;
-    _createdBy = createdBy;
-    _updatedAt = updatedAt;
-    _updatedBy = updatedBy;
+    _city = city;
 }
 
   Data.fromJson(dynamic json) {
     _id = json['id'];
     _zonaName = json['zona_name'];
-    _idCity = json['id_city'];
-    _createdAt = json['created_at'];
-    _createdBy = json['created_by'];
-    _updatedAt = json['updated_at'];
-    _updatedBy = json['updated_by'];
+    if (json['city'] != null) {
+      _city = [];
+      json['city'].forEach((v) {
+        _city?.add(City.fromJson(v));
+      });
+    }
   }
   num? _id;
   String? _zonaName;
-  num? _idCity;
-  String? _createdAt;
-  String? _createdBy;
-  String? _updatedAt;
-  dynamic _updatedBy;
+  List<City>? _city;
 Data copyWith({  num? id,
   String? zonaName,
-  num? idCity,
-  String? createdAt,
-  String? createdBy,
-  String? updatedAt,
-  dynamic updatedBy,
+  List<City>? city,
 }) => Data(  id: id ?? _id,
   zonaName: zonaName ?? _zonaName,
-  idCity: idCity ?? _idCity,
-  createdAt: createdAt ?? _createdAt,
-  createdBy: createdBy ?? _createdBy,
-  updatedAt: updatedAt ?? _updatedAt,
-  updatedBy: updatedBy ?? _updatedBy,
+  city: city ?? _city,
 );
   num? get id => _id;
   String? get zonaName => _zonaName;
-  num? get idCity => _idCity;
-  String? get createdAt => _createdAt;
-  String? get createdBy => _createdBy;
-  String? get updatedAt => _updatedAt;
-  dynamic get updatedBy => _updatedBy;
+  List<City>? get city => _city;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['zona_name'] = _zonaName;
+    if (_city != null) {
+      map['city'] = _city?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+
+}
+
+/// id_city : "1"
+/// city_name : "Bogor"
+/// city_code : "BGR"
+
+class City {
+  City({
+      String? idCity, 
+      String? cityName, 
+      String? cityCode,}){
+    _idCity = idCity;
+    _cityName = cityName;
+    _cityCode = cityCode;
+}
+
+  City.fromJson(dynamic json) {
+    _idCity = json['id_city'];
+    _cityName = json['city_name'];
+    _cityCode = json['city_code'];
+  }
+  String? _idCity;
+  String? _cityName;
+  String? _cityCode;
+City copyWith({  String? idCity,
+  String? cityName,
+  String? cityCode,
+}) => City(  idCity: idCity ?? _idCity,
+  cityName: cityName ?? _cityName,
+  cityCode: cityCode ?? _cityCode,
+);
+  String? get idCity => _idCity;
+  String? get cityName => _cityName;
+  String? get cityCode => _cityCode;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
     map['id_city'] = _idCity;
-    map['created_at'] = _createdAt;
-    map['created_by'] = _createdBy;
-    map['updated_at'] = _updatedAt;
-    map['updated_by'] = _updatedBy;
+    map['city_name'] = _cityName;
+    map['city_code'] = _cityCode;
     return map;
   }
 

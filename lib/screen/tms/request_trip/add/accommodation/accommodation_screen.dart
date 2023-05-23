@@ -1,6 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
@@ -9,6 +11,7 @@ import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/accommodation/edit/edit_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_screen.dart';
 import 'package:get/get.dart';
 
@@ -21,16 +24,14 @@ class AccommodationScreen extends StatelessWidget {
         init: AccommodationController(),
         builder: (controller) {
           return Scaffold(
-            appBar: AppBar(
+            appBar: TopBar(
               title: Text("Request Trip", style: appTitle),
-              centerTitle: true,
-              leading: CustomBackButton(),
-              flexibleSpace: TopBar(),
+              leading: const CustomBackButton(),
             ),
             body: Container(
               alignment: Alignment.topCenter,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.all(7),
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(7),
               decoration: BoxDecoration(
                 color: whiteColor,
                 borderRadius: BorderRadius.circular(8),
@@ -48,60 +49,89 @@ class AccommodationScreen extends StatelessWidget {
                           color: infoColor,
                           borderRadius: BorderRadius.circular(50)),
                       child:
-                      SvgPicture.asset("assets/icons/building.svg", height: 25),
+                          SvgPicture.asset(ImageConstant.building, height: 25),
                     ),
                     Text("Accommodation", style: appTitle),
-                    SizedBox(height: 14),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      child: Text("Accommodation",
-                          style: listTitleTextStyle,
-                          textAlign: TextAlign.start),
+                    const SizedBox(height: 14),
+                    Column(
+                      children: controller.accommodationsList
+                          .mapIndexed(
+                            (i, e) => CustomTripCard(
+                              listNumber: i + 1,
+                              title: e.noRequestTrip.toString(),
+                              status: e.codeStatusDoc.toString(),
+                              info: e.vendor,
+                              //hotel name
+                              isEdit: true,
+                              editAction: () => Get.off(
+                                  const EditAccommodationScreen(),
+                                  arguments: {
+                                    'purposeID': controller.purposeID,
+                                    'codeDocument': controller.codeDocument,
+                                    'id': e.id,
+                                  })?.then((result) {
+                                controller.fetchList();
+                                controller.update();
+                                print(result);
+                              }),
+                              isDelete: true,
+                              deleteAction: () =>
+                                  controller.delete(e.id!.toInt()),
+                              content: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Check In",
+                                          style: listTitleTextStyle),
+                                      Text(e.checkInDate.toString(),
+                                          style: listSubTitleTextStyle),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Check Out",
+                                          style: listTitleTextStyle),
+                                      Text(e.checkOutDate.toString(),
+                                          style: listSubTitleTextStyle),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Price", style: listTitleTextStyle),
+                                      Text(e.price.toString(),
+                                          style: listSubTitleTextStyle),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ),
-                    CustomTripCard(
-                      listNumber: 1,
-                      title: "Jack H",
-                      status: "Pending",
-                      info: "Aston Gubeng",
-                      isEdit: true,
-                      isDelete: true,
-                      content: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Check In", style: listTitleTextStyle),
-                              Text("21/03/23", style: listSubTitleTextStyle),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Check Out", style: listTitleTextStyle),
-                              Text("23/03/23",
-                                  style: listSubTitleTextStyle),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Price", style: listTitleTextStyle),
-                              Text("899.990", style: listSubTitleTextStyle),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 50),
                       child: CustomFilledButton(
                         color: infoColor,
                         title: "Add Accommodation",
                         icon: Icons.add,
-                        onPressed: ()=> Get.to(AddAccommodationScreen()),
+                        onPressed: () => Get.off(const AddAccommodationScreen(),
+                            arguments: {
+                              'purposeID': controller.purposeID,
+                              'codeDocument': controller.codeDocument
+                            })?.then((result) {
+                          controller.fetchList();
+                          controller.update();
+                          print(result);
+                        }),
                       ),
                     ),
                     Row(
@@ -119,7 +149,13 @@ class AccommodationScreen extends StatelessWidget {
                           width: 100,
                           color: infoColor,
                           title: "Next",
-                          onPressed: () => Get.to(CashAdvanceScreen()),
+                          onPressed: () => Get.to(
+                            const CashAdvanceScreen(),
+                            arguments: {
+                              'purposeID': controller.purposeID,
+                              'codeDocument': controller.codeDocument
+                            },
+                          ),
                         ),
                       ],
                     )
@@ -127,7 +163,7 @@ class AccommodationScreen extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: BottomBar(menu: 1),
+            bottomNavigationBar: const BottomBar(menu: 1),
           );
         });
   }

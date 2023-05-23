@@ -91,8 +91,8 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
               onPageChanged: (int) {},
               pageTotal: 5,
               margin: EdgeInsets.zero,
-              colorSub: infoColor,
-              colorPrimary: whiteColor,
+              colorSub: whiteColor,
+              colorPrimary: infoColor,
             ),
             const SizedBox(
               height: 12,
@@ -107,70 +107,77 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                     ? const EmptyListError()
                     : ListView(
                         children: [
-                          ...controller.listHeader
-                              .mapIndexed((index, item) => CommonListItem(
-                                    number: "${index + 1}",
-                                    title: "${item.noCa}",
-                                    subtitle:
-                                        "${item.date?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
-                                    total:
-                                        "${item.grandTotal?.toInt().toCurrency()}",
-                                    content: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 8),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                          ...controller.listHeader.mapIndexed((index, item) =>
+                              CommonListItem(
+                                number: "${index + 1}",
+                                title: "${item.noCa}",
+                                onTap: item.code == 0 ? null : (){
+                                  Get.to(()=> const EditCashAdvanceNonTravelScreen(), arguments: {
+                                    "item": item
+                                  });
+                                },
+                                subtitle:
+                                    "${item.date?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                total:
+                                    "${item.grandTotal?.toInt().toCurrency()}",
+                                content: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Column(
                                         children: [
-                                          Column(
-                                            children: [
-                                              Text(
-                                                "Event".tr,
-                                                style: listTitleTextStyle,
-                                              ),
-                                              Text(
-                                                "${item.event}",
-                                                style: listSubTitleTextStyle,
-                                              ),
-                                            ],
+                                          Text(
+                                            "Event".tr,
+                                            style: listTitleTextStyle,
+                                          ),
+                                          Text(
+                                            "${item.event}",
+                                            style: listSubTitleTextStyle,
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    action: [
-                                      CustomIconButton(
-                                        title: "Edit".tr,
-                                        iconData: IconlyBold.edit,
-                                        backgroundColor: successColor,
-                                        onPressed: () async {
-                                          Get.to(
-                                              () =>
-                                                  const EditCashAdvanceNonTravelScreen(),
-                                              arguments: {
-                                                "item": item
-                                              })?.then((value) =>
-                                              controller.getHeader());
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        width: 4,
-                                      ),
-                                      CustomIconButton(
-                                        title: "Delete".tr,
-                                        iconData: IconlyBold.delete,
-                                        backgroundColor: redColor,
-                                        onPressed: () {
-                                          Get.dialog(DeleteConfirmationDialog(
-                                            onDeletePressed: () {
-                                              controller.deleteHeader(item);
-                                              Get.back();
-                                            },
-                                          ));
-                                        },
-                                      )
                                     ],
-                                    status: item.status,
-                                  ))
+                                  ),
+                                ),
+                                action: item.code == 0
+                                    ? [
+                                        CustomIconButton(
+                                          title: "Edit".tr,
+                                          iconData: IconlyBold.edit,
+                                          backgroundColor: successColor,
+                                          onPressed: () async {
+                                            Get.to(
+                                                () =>
+                                                    const EditCashAdvanceNonTravelScreen(),
+                                                arguments: {
+                                                  "item": item
+                                                })?.then((value) =>
+                                                controller.getHeader());
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        CustomIconButton(
+                                          title: "Delete".tr,
+                                          iconData: IconlyBold.delete,
+                                          backgroundColor: redColor,
+                                          onPressed: () {
+                                            Get.dialog(DeleteConfirmationDialog(
+                                              onDeletePressed: () {
+                                                controller.deleteHeader(item);
+                                                Get.back();
+                                              },
+                                            ));
+                                          },
+                                        )
+                                      ]
+                                    : [],
+                                status: item.status,
+                              ))
                         ],
                       );
               }),
@@ -181,7 +188,8 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
         onPressed: () async {
-          Get.to(() => const AddCashAdvanceNonTravelScreen())?.then((value) => controller.getHeader());
+          Get.to(() => const AddCashAdvanceNonTravelScreen())
+              ?.then((value) => controller.getHeader());
         },
         child: const Icon(Icons.add_rounded, size: 45),
       ),
