@@ -59,7 +59,6 @@ class ManagementItemATKListController extends BaseController {
           paginationModel = r;
           int tempTotalPage = (paginationModel!.total!/limit).ceil();
           totalPage(tempTotalPage);
-          print("${paginationModel?.currentPage}");
           currentPage(paginationModel?.currentPage);
 
           listHeader.value = paginationModel!.data!

@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 class ManagementItemATKRepository implements BaseRepository<ManagementItemATKModel, bool>{
   final network = Get.find<NetworkCore>();
 
+  @override
   Future<Either<BaseError, PaginationModel>> getPaginationData({Map<String, dynamic>? data}) async{
     try {
       Dio.Response response = await network.dio.get(
@@ -77,9 +78,24 @@ class ManagementItemATKRepository implements BaseRepository<ManagementItemATKMod
   }
 
   @override
-  Future<Either<BaseError, ManagementItemATKModel>> saveData(model) {
-    // TODO: implement saveData
-    throw UnimplementedError();
+  Future<Either<BaseError, ManagementItemATKModel>> saveData(model) async{
+    final managementItemModel = model as ManagementItemATKModel;
+
+    try {
+      Dio.Response response = await network.dio.post(
+          '/api/management_atk/store',
+          data: managementItemModel.toJson()
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ManagementItemATKModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
@@ -91,6 +107,12 @@ class ManagementItemATKRepository implements BaseRepository<ManagementItemATKMod
   @override
   Future<Either<BaseError, bool>> updateDetail(model, int id) {
     // TODO: implement updateDetail
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<BaseError, ManagementItemATKModel>> submitData(int id) {
+    // TODO: implement submitData
     throw UnimplementedError();
   }
 

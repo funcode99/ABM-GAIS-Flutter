@@ -229,7 +229,12 @@ class ManagementItemATKListScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
-        onPressed: () => Get.to(const AddManagementItemATKScreen()),
+        onPressed: ()async{
+          final result = await Get.to(()=> const AddManagementItemATKScreen());
+          if(result){
+            controller.getHeader();
+          }
+        },
         child: const Icon(Icons.add_rounded, size: 45),
       ),
       bottomNavigationBar: const BottomBar(menu: 1),
