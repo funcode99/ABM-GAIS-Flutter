@@ -18,7 +18,7 @@ class AddManagementItemATKScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AddManagementItemATKController controller =
-        Get.put(AddManagementItemATKController());
+    Get.put(AddManagementItemATKController());
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -70,6 +70,7 @@ class AddManagementItemATKScreen extends StatelessWidget {
                   ),
                   CustomTextFormField(
                       isRequired: true,
+                      readOnly: true,
                       controller: controller.companyController,
                       label: "Company".tr),
                   const SizedBox(
@@ -77,25 +78,29 @@ class AddManagementItemATKScreen extends StatelessWidget {
                   ),
                   CustomTextFormField(
                       isRequired: true,
+                      readOnly: true,
                       controller: controller.siteController,
                       label: "Site".tr),
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomDropDownFormField(
-                    isRequired: true,
-                    items: controller.listWarehouse
-                        .map((e) => DropdownMenuItem(
-                              value: e.id,
-                              child: Text(e.name),
-                            ))
-                        .toList(),
-                    onChanged: (item) {
-                      controller.onChangeSelectedWarehouse(item!);
-                    },
-                    label: "Warehouse ".tr,
-                    value: controller.selectedWarehouse.id,
-                  ),
+                  Obx(() {
+                    return CustomDropDownFormField(
+                      isRequired: true,
+                      items: controller.listWarehouse
+                          .map((e) =>
+                          DropdownMenuItem(
+                            value: e.id.toString(),
+                            child: Text("${e.warehouseName}"),
+                          ))
+                          .toList(),
+                      onChanged: (item) {
+                        controller.onChangeSelectedWarehouse(item.toString());
+                      },
+                      label: "Warehouse ".tr,
+                      value: controller.selectedWarehouse.value.id.toString(),
+                    );
+                  }),
                   const SizedBox(
                     height: 8,
                   ),
@@ -118,37 +123,43 @@ class AddManagementItemATKScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomDropDownFormField(
-                    isRequired: true,
-                    items: controller.listBrand
-                        .map((item) => DropdownMenuItem(
-                              value: item.id.toString(),
-                              child: Text("${item.brandName}"),
-                            ))
-                        .toList(),
-                    onChanged: (item) {
-                      controller.onChangeSelectedBrand(item.toString());
-                    },
-                    label: "Brand".tr,
-                    value: controller.selectedBrand.id.toString(),
-                  ),
+                  Obx(() {
+                    return CustomDropDownFormField(
+                      isRequired: true,
+                      items: controller.listBrand
+                          .map((item) =>
+                          DropdownMenuItem(
+                            value: item.id.toString(),
+                            child: Text("${item.brandName}"),
+                          ))
+                          .toList(),
+                      onChanged: (item) {
+                        controller.onChangeSelectedBrand(item.toString());
+                      },
+                      label: "Brand".tr,
+                      value: controller.selectedBrand.value.id.toString(),
+                    );
+                  }),
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomDropDownFormField(
-                    isRequired: true,
-                    items: controller.listUOM
-                        .map((item) => DropdownMenuItem(
-                              value: item.id.toString(),
-                              child: Text("${item.uomName}"),
-                            ))
-                        .toList(),
-                    onChanged: (item) {
-                      controller.onChangeSelectedUOM(item.toString());
-                    },
-                    label: "UOM".tr,
-                    value: controller.selectedUOM.id.toString(),
-                  ),
+                  Obx(() {
+                    return CustomDropDownFormField(
+                      isRequired: true,
+                      items: controller.listUOM
+                          .map((item) =>
+                          DropdownMenuItem(
+                            value: item.id.toString(),
+                            child: Text("${item.uomName}"),
+                          ))
+                          .toList(),
+                      onChanged: (item) {
+                        controller.onChangeSelectedUOM(item.toString());
+                      },
+                      label: "UOM".tr,
+                      value: controller.selectedUOM.value.id.toString(),
+                    );
+                  }),
                   const SizedBox(
                     height: 8,
                   ),

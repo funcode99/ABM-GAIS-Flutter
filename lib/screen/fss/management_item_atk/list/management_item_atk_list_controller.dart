@@ -22,7 +22,7 @@ class ManagementItemATKListController extends BaseController {
   late PaginationModel? paginationModel;
   final totalPage = 1.obs;
   final currentPage = 1.obs;
-  int limit = 1;
+  int limit = 10;
 
   List<ManagementItemATKModel> listItem = <ManagementItemATKModel>[].obs;
 

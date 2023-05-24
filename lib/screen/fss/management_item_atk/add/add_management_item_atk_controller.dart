@@ -8,9 +8,10 @@ import 'package:gais/data/repository/management_item_atk/management_item_atk_rep
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/ext/string_ext.dart';
+import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 
-class AddManagementItemATKController extends BaseController {
+class AddManagementItemATKController extends BaseController with MasterDataMixin{
   final TextEditingController idController = TextEditingController();
   final TextEditingController companyController = TextEditingController();
   final TextEditingController itemController = TextEditingController();
@@ -20,30 +21,17 @@ class AddManagementItemATKController extends BaseController {
   final formKey = GlobalKey<FormState>();
 
   final enableButton = false.obs;
-  final List<WarehouseModel> listWarehouse = [];
-  final List<BrandModel> listBrand = [];
-  final List<UomModel> listUOM = [];
-  late WarehouseModel selectedWarehouse;
-  late BrandModel selectedBrand;
-  late UomModel selectedUOM;
+  final listWarehouse = <WarehouseModel>[].obs;
+  final listBrand = <BrandModel>[].obs;
+  final listUOM = <UomModel>[].obs;
+  final selectedWarehouse = WarehouseModel().obs;
+  final selectedBrand = BrandModel().obs;
+  final selectedUOM = UomModel().obs;
 
   final ManagementItemATKRepository _repository = Get.find();
 
   @override
   void onInit() {
-    for (int i = 0; i < 10; i++) {
-      listWarehouse.add(WarehouseModel(id: i.toString(), name: "Warehouse $i"));
-
-      listBrand.add(BrandModel(id: i, brandName: "Brand Name ${i}"));
-
-      listUOM.add(UomModel(id: i, uomName: "UOM Name ${i}"));
-    }
-
-    selectedWarehouse = listWarehouse.first;
-    selectedBrand = listBrand.first;
-    selectedUOM = listUOM.first;
-    print("selectedBrand ${selectedBrand.toJson()}");
-
     super.onInit();
   }
 
@@ -55,22 +43,38 @@ class AddManagementItemATKController extends BaseController {
 
   void initData()async{
     String companyName = await storage.readString(StorageCore.companyName);
+    String idCompany = await storage.readString(StorageCore.companyID);
     String siteName = await storage.readString(StorageCore.siteName);
 
     companyController.text = companyName;
     siteController.text = siteName;
+
+    final warehouses = await getListWarehouseByCompanyId(idCompany.toInt());
+    listWarehouse(warehouses);
+    selectedWarehouse(listWarehouse.first);
+
+    final brands = await getListBrandByCompanyId(idCompany.toInt());
+    listBrand(brands);
+    selectedBrand(listBrand.first);
+
+    final uoms = await getListUOM();
+    listUOM(uoms);
+    selectedUOM(listUOM.first);
   }
 
   void onChangeSelectedWarehouse(String id) {
-    selectedWarehouse = listWarehouse.firstWhere((item) => item.id == id);
+    final selected = listWarehouse.firstWhere((item) => item.id == id.toInt());
+    selectedWarehouse(selected);
   }
 
   void onChangeSelectedBrand(String id) {
-    selectedBrand = listBrand.firstWhere((item) => item.id == id.toInt());
+    final selected = listBrand.firstWhere((item) => item.id == id.toInt());
+    selectedBrand(selected);
   }
 
   void onChangeSelectedUOM(String id) {
-    selectedUOM = listUOM.firstWhere((item) => item.id == id.toInt());
+    final selected = listUOM.firstWhere((item) => item.id == id.toInt());
+    selectedUOM(selected);
   }
 
   void updateButton() {
@@ -90,13 +94,13 @@ class AddManagementItemATKController extends BaseController {
     ManagementItemATKModel managementItemATKModel = ManagementItemATKModel(
       codeItem: idController.text,
       itemName: itemController.text,
-      idBrand: selectedBrand.id,
-      idUom: selectedUOM.id,
+      idBrand: selectedBrand.value.id,
+      idUom: selectedUOM.value.id,
       alertQty: alertQuantityController.text.toInt(),
       currentStock: alertQuantityController.text.toInt(),
       idCompany: idCompany.toInt(),
       idSite: idSite.toInt(),
-      idWarehouse: selectedWarehouse.id.toInt(),
+      idWarehouse: selectedWarehouse.value.id,
       remarks: remarksController.text,
     );
 

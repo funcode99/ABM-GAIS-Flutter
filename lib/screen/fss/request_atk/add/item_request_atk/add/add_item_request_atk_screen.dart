@@ -86,11 +86,11 @@ class _AddItemRequestATKScreenState extends State<AddItemRequestATKScreen> {
                           items: controller.listWarehouse
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
-                                    child: Text(e.name),
+                                    child: Text("${e.warehouseName}"),
                                   ))
                               .toList(),
                           onChanged: (item) {
-                            controller.onChangeSelectedWarehouse(item!);
+                            controller.onChangeSelectedWarehouse(item.toString());
                           },
                           label: "Warehouse ".tr,
                           value: controller.selectedWarehouse.id,
