@@ -13,6 +13,8 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/management_item_atk/add/add_management_item_atk_screen.dart';
+import 'package:gais/screen/fss/management_item_atk/edit/edit_management_item_atk_controller.dart';
+import 'package:gais/screen/fss/management_item_atk/edit/edit_management_item_atk_screen.dart';
 import 'package:gais/screen/fss/management_item_atk/list/management_item_atk_list_controller.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -140,7 +142,7 @@ class ManagementItemATKListScreen extends StatelessWidget {
                                             horizontal: 8, vertical: 8),
                                         child: Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceAround,
                                           children: [
                                             Column(
                                               children: [
@@ -198,9 +200,13 @@ class ManagementItemATKListScreen extends StatelessWidget {
                                           title: "Edit".tr,
                                           iconData: IconlyBold.edit,
                                           backgroundColor: successColor,
-                                          onPressed: () {
-                                            Get.to(
-                                                const AddManagementItemATKScreen());
+                                          onPressed: () async {
+                                            final result = await Get.to(() =>
+                                                EditManagementItemATKScreen(
+                                                    item: item));
+                                            if (result) {
+                                              controller.getHeader();
+                                            }
                                           },
                                         ),
                                         const SizedBox(
@@ -229,9 +235,9 @@ class ManagementItemATKListScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
-        onPressed: ()async{
-          final result = await Get.to(()=> const AddManagementItemATKScreen());
-          if(result){
+        onPressed: () async {
+          final result = await Get.to(() => const AddManagementItemATKScreen());
+          if (result) {
             controller.getHeader();
           }
         },

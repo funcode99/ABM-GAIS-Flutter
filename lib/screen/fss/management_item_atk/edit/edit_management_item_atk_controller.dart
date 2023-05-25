@@ -11,7 +11,7 @@ import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 
-class AddManagementItemATKController extends BaseController with MasterDataMixin{
+class EditManagementItemATKController extends BaseController with MasterDataMixin{
   final TextEditingController idController = TextEditingController();
   final TextEditingController companyController = TextEditingController();
   final TextEditingController itemController = TextEditingController();
@@ -27,6 +27,7 @@ class AddManagementItemATKController extends BaseController with MasterDataMixin
   final selectedWarehouse = WarehouseModel().obs;
   final selectedBrand = BrandModel().obs;
   final selectedUOM = UomModel().obs;
+  final managementItemATK = ManagementItemATKModel().obs;
 
   final ManagementItemATKRepository _repository = Get.find();
 
@@ -48,18 +49,22 @@ class AddManagementItemATKController extends BaseController with MasterDataMixin
 
     companyController.text = companyName;
     siteController.text = siteName;
+    idController.text = managementItemATK.value.codeItem ?? "";
+    itemController.text = managementItemATK.value.itemName ?? "";
+    alertQuantityController.text = managementItemATK.value.alertQty.toString();
+    remarksController.text = managementItemATK.value.remarks ?? "";
 
     final warehouses = await getListWarehouseByCompanyId(idCompany.toInt());
     listWarehouse(warehouses);
-    selectedWarehouse(listWarehouse.first);
+    onChangeSelectedWarehouse(managementItemATK.value.idWarehouse.toString());
 
     final brands = await getListBrandByCompanyId(idCompany.toInt());
     listBrand(brands);
-    selectedBrand(listBrand.first);
+    onChangeSelectedBrand(managementItemATK.value.idBrand.toString());
 
     final uoms = await getListUOM();
     listUOM(uoms);
-    selectedUOM(listUOM.first);
+    onChangeSelectedUOM(managementItemATK.value.idUom.toString());
   }
 
   void onChangeSelectedWarehouse(String id) {
@@ -88,7 +93,7 @@ class AddManagementItemATKController extends BaseController with MasterDataMixin
     idController.text = randomString;
   }
 
-  void saveData() async {
+  void updateData() async {
     String idCompany = await storage.readString(StorageCore.companyID);
     String idSite = await storage.readString(StorageCore.siteID);
     ManagementItemATKModel managementItemATKModel = ManagementItemATKModel(
@@ -104,13 +109,13 @@ class AddManagementItemATKController extends BaseController with MasterDataMixin
       remarks: remarksController.text,
     );
 
-    final result = await _repository.saveData(managementItemATKModel);
+    final result = await _repository.updateData(managementItemATKModel, managementItemATK.value.id!);
     result.fold(
-        (l) => Get.showSnackbar(
+            (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-        (cashAdvanceModel) {
-      //update list
-      Get.back(result: true);
-    });
+            (cashAdvanceModel) {
+          //update list
+          Get.back(result: true);
+        });
   }
 }

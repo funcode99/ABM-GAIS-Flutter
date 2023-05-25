@@ -99,9 +99,24 @@ class ManagementItemATKRepository implements BaseRepository<ManagementItemATKMod
   }
 
   @override
-  Future<Either<BaseError, ManagementItemATKModel>> updateData(model, int id) {
-    // TODO: implement updateData
-    throw UnimplementedError();
+  Future<Either<BaseError, ManagementItemATKModel>> updateData(model, int id) async{
+    final managementItemATKModel = model as ManagementItemATKModel;
+
+    try {
+      Dio.Response response = await network.dio.post(
+          '/api/management_atk/update_data/$id',
+          data: managementItemATKModel.toJson()
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ManagementItemATKModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
