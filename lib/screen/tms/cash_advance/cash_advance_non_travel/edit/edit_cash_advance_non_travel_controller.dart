@@ -47,7 +47,7 @@ class EditCashAdvanceNonTravelController extends BaseController {
     requestorController.text = selectedItem.value.employeeName ?? "-";
     eventController.text = selectedItem.value.event ?? "-";
     totalController.text =
-        selectedItem.value.grandTotal?.toInt().toCurrency() ?? "-";
+        "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
   }
 
   void updateEnableButton() {

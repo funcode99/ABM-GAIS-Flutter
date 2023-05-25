@@ -6,6 +6,7 @@ import 'package:gais/base/base_repository.dart';
 import 'package:gais/data/model/api_response_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
+import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:get/get.dart';
 
@@ -171,8 +172,13 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, CashAdvanceModel>> submitData(int id) async{
+  Future<Either<BaseError, PaginationModel>> getPaginationData({Map<String, dynamic>? data}) {
+    // TODO: implement getPaginationData
+    throw UnimplementedError();
+  }
 
+  @override
+  Future<Either<BaseError, CashAdvanceModel>> submitData(int id) async{
     try {
       Dio.Response response = await network.dio.post(
           '/api/cash_advance/submit/$id',

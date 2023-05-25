@@ -22,8 +22,8 @@ class AddItemCashAdvanceNonTravelController extends BaseController {
   void onInit() {
     super.onInit();
 
-    for(int i = 0; i < 10; i++) {
-      listCostCenter.add(CostCenterModel(costCenterName: "Cost Center Name ${i+1}", id: i));
+    for(int i = 1; i <= 10; i++) {
+      listCostCenter.add(CostCenterModel(costCenterName: "Cost Center Name ${i}", id: i));
     }
   }
 

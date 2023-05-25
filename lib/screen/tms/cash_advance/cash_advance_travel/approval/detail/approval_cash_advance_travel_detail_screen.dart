@@ -141,6 +141,14 @@ class _ApprovalCashAdvanceTravelDetailScreenState
                             ),
                             CustomTextFormField(
                                 readOnly: true,
+                                isRequired: false,
+                                controller: controller.currencyController,
+                                label: "Currency".tr),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            CustomTextFormField(
+                                readOnly: true,
                                 controller: controller.totalController,
                                 label: "Total".tr),
                             const SizedBox(
@@ -169,7 +177,7 @@ class _ApprovalCashAdvanceTravelDetailScreenState
                         child: CommonListItem(
                           number: "1",
                           subtitle: "John Smith - 1",
-                          total: "250.000",
+                          total: "Rp 250.000",
                           content: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                             child: Row(
@@ -218,26 +226,6 @@ class _ApprovalCashAdvanceTravelDetailScreenState
                                 Column(
                                   children: [
                                     Text(
-                                      "Currency".tr,
-                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          height: 1.5
-                                      ),
-                                    ),
-                                    Text(
-                                      "Rupiah",
-                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                                          fontSize: 14,
-                                          color: greyColor,
-                                          height: 1.5
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
                                       "Nominal".tr,
                                       style: Theme.of(context).textTheme.bodyText1?.copyWith(
                                           fontSize: 14,
@@ -246,7 +234,7 @@ class _ApprovalCashAdvanceTravelDetailScreenState
                                       ),
                                     ),
                                     Text(
-                                      "250.000",
+                                      "Rp 250.000",
                                       style: Theme.of(context).textTheme.bodyText1?.copyWith(
                                           fontSize: 14,
                                           color: greyColor,

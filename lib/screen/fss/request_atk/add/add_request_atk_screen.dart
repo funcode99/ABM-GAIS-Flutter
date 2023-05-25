@@ -66,26 +66,16 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                         CustomTextFormField(
                             isRequired: true,
                             readOnly: true,
-                            controller: controller.requestorController,
-                            label: "Requestor".tr),
+                            controller: controller.companyController,
+                            label: "Company".tr),
                         const SizedBox(
                           height: 8,
                         ),
                         CustomTextFormField(
                             isRequired: true,
                             readOnly: true,
-                            controller: controller.dateController,
-                            onTap: () async {
-                              DateTime? dateTime = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(DateTime.now().year),
-                                lastDate: DateTime(DateTime.now().year + 1),
-                              );
-                              controller.dateController.text =
-                                  controller.dateFormat.format(dateTime!);
-                            },
-                            label: "Date".tr),
+                            controller: controller.siteController,
+                            label: "Site".tr),
                         const SizedBox(
                           height: 32,
                         ),

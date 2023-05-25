@@ -8,16 +8,17 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/management_item_atk/add/add_management_item_atk_controller.dart';
-import 'package:gais/screen/fss/management_item_atk/list/management_item_atk_list_screen.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-class AddManagementItemATKScreen extends StatelessWidget{
+class AddManagementItemATKScreen extends StatelessWidget {
   const AddManagementItemATKScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AddManagementItemATKController controller = Get.put(AddManagementItemATKController());
+    final AddManagementItemATKController controller =
+    Get.put(AddManagementItemATKController());
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -39,8 +40,7 @@ class AddManagementItemATKScreen extends StatelessWidget{
             },
             child: Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 32, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,6 +70,7 @@ class AddManagementItemATKScreen extends StatelessWidget{
                   ),
                   CustomTextFormField(
                       isRequired: true,
+                      readOnly: true,
                       controller: controller.companyController,
                       label: "Company".tr),
                   const SizedBox(
@@ -77,37 +78,41 @@ class AddManagementItemATKScreen extends StatelessWidget{
                   ),
                   CustomTextFormField(
                       isRequired: true,
+                      readOnly: true,
                       controller: controller.siteController,
                       label: "Site".tr),
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomDropDownFormField(
-                    isRequired: true,
-                    items: controller.listWarehouse
-                        .map((e) => DropdownMenuItem(
-                      value: e.id,
-                      child: Text(e.name),
-                    ))
-                        .toList(),
-                    onChanged: (item) {
-                      controller.onChangeSelectedWarehouse(item!);
-                    },
-                    label: "Warehouse ".tr,
-                    value: controller.selectedWarehouse.id,
-                  ),
+                  Obx(() {
+                    return CustomDropDownFormField(
+                      isRequired: true,
+                      items: controller.listWarehouse
+                          .map((e) =>
+                          DropdownMenuItem(
+                            value: e.id.toString(),
+                            child: Text("${e.warehouseName}"),
+                          ))
+                          .toList(),
+                      onChanged: (item) {
+                        controller.onChangeSelectedWarehouse(item.toString());
+                      },
+                      label: "Warehouse ".tr,
+                      value: controller.selectedWarehouse.value.id.toString(),
+                    );
+                  }),
                   const SizedBox(
                     height: 8,
                   ),
-              CustomTextFormField(
-                  suffixIcon: const Icon(Icons.add_box_outlined),
-                  isRequired: true,
-                  readOnly: true,
-                  onTap: (){
-                    controller.generateRandom();
-                  },
-                  controller: controller.idController,
-                  label: "ID Item".tr),
+                  CustomTextFormField(
+                      suffixIcon: const Icon(Icons.add_box_outlined),
+                      isRequired: true,
+                      readOnly: true,
+                      onTap: () {
+                        controller.generateRandom();
+                      },
+                      controller: controller.idController,
+                      label: "ID Item".tr),
                   const SizedBox(
                     height: 8,
                   ),
@@ -118,43 +123,46 @@ class AddManagementItemATKScreen extends StatelessWidget{
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomDropDownFormField(
-                    isRequired: true,
-                    items: controller.listBrand
-                        .map((e) => DropdownMenuItem(
-                      value: e,
-                      child: Text(e),
-                    ))
-                        .toList(),
-                    onChanged: (item) {
-                      controller.onChangeSelectedBrand(item!);
-                    },
-                    label: "Brand".tr,
-                    value: controller.selectedBrang,
-                  ),
-
+                  Obx(() {
+                    return CustomDropDownFormField(
+                      isRequired: true,
+                      items: controller.listBrand
+                          .map((item) =>
+                          DropdownMenuItem(
+                            value: item.id.toString(),
+                            child: Text("${item.brandName}"),
+                          ))
+                          .toList(),
+                      onChanged: (item) {
+                        controller.onChangeSelectedBrand(item.toString());
+                      },
+                      label: "Brand".tr,
+                      value: controller.selectedBrand.value.id.toString(),
+                    );
+                  }),
                   const SizedBox(
                     height: 8,
                   ),
-
-                  CustomDropDownFormField(
-                    isRequired: true,
-                    items: controller.listUOM
-                        .map((e) => DropdownMenuItem(
-                      value: e,
-                      child: Text(e),
-                    ))
-                        .toList(),
-                    onChanged: (item) {
-                      controller.onChangeSelectedUOM(item!);
-                    },
-                    label: "UOM".tr,
-                    value: controller.selectedUOM,
-                  ),
+                  Obx(() {
+                    return CustomDropDownFormField(
+                      isRequired: true,
+                      items: controller.listUOM
+                          .map((item) =>
+                          DropdownMenuItem(
+                            value: item.id.toString(),
+                            child: Text("${item.uomName}"),
+                          ))
+                          .toList(),
+                      onChanged: (item) {
+                        controller.onChangeSelectedUOM(item.toString());
+                      },
+                      label: "UOM".tr,
+                      value: controller.selectedUOM.value.id.toString(),
+                    );
+                  }),
                   const SizedBox(
                     height: 8,
                   ),
-
                   CustomTextFormField(
                       isRequired: true,
                       inputType: TextInputType.number,
@@ -166,7 +174,6 @@ class AddManagementItemATKScreen extends StatelessWidget{
                   const SizedBox(
                     height: 8,
                   ),
-
                   CustomTextFormField(
                       multiLine: true,
                       controller: controller.remarksController,
@@ -177,18 +184,16 @@ class AddManagementItemATKScreen extends StatelessWidget{
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Obx(
-                          () => ElevatedButton(
+                      Obx(() => ElevatedButton(
                             onPressed: controller.enableButton.value
                                 ? () {
-                              Get.offAll(const ManagementItemATKListScreen());
-                            }
+                                    controller.saveData();
+                                  }
                                 : null,
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: successColor),
                             child: Text("Save".tr),
-                          )
-                      ),
+                          )),
                     ],
                   ),
                   const SizedBox(

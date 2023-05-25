@@ -20,8 +20,8 @@ class ApprovalCashAdvanceTravelDetailController extends BaseController{
     itemController.text = "Transport";
     frequencyController.text = "1";
     currencyController.text = "Rupiah";
-    amountController.text = "150.000";
-    totalController.text = "150.000";
+    amountController.text = "Rp 150.000";
+    totalController.text = "Rp 150.000";
     remarksController.text = "Remarks";
     super.onInit();
   }

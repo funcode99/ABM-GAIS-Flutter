@@ -54,7 +54,7 @@ class AddItemRequestATKController extends BaseController {
           brandName: "Brand Name ${i + 1}",
           uom: "pcs"));
       listWarehouse.add(
-          WarehouseModel(id: i.toString(), name: "Warehouse $i")
+          WarehouseModel(id: i, warehouseName: "Warehouse $i")
       );
     }
 

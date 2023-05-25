@@ -12,7 +12,9 @@ class CashAdvanceTravelDetailController extends BaseController {
   final TextEditingController createdDateController = TextEditingController();
   final TextEditingController requestorController = TextEditingController();
   final TextEditingController referenceController = TextEditingController();
+  final TextEditingController currencyController = TextEditingController();
   final TextEditingController totalController = TextEditingController();
+  final TextEditingController remarksController = TextEditingController();
 
   final selectedItem = CashAdvanceModel().obs;
   final listDetail = <CashAdvanceDetailModel>[].obs;
@@ -36,7 +38,10 @@ class CashAdvanceTravelDetailController extends BaseController {
     requestorController.text = selectedItem.value.employeeName ?? "-";
     referenceController.text = selectedItem.value.noRequestTrip ?? "-";
     totalController.text =
-        selectedItem.value.grandTotal?.toInt().toCurrency() ?? "-";
+        "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
+    currencyController.text = "${selectedItem.value.currencyName}";
+    remarksController.text =
+        selectedItem.value.remarks ?? "-";
 
     getDetailData();
   }

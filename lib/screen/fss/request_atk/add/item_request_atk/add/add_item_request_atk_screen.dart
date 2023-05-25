@@ -81,32 +81,16 @@ class _AddItemRequestATKScreenState extends State<AddItemRequestATKScreen> {
                         const SizedBox(
                           height: 32,
                         ),
-                        CustomTextFormField(
-                            isRequired: true,
-                            readOnly: true,
-                            controller: controller.companyController,
-                            label: "Company".tr),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CustomTextFormField(
-                            isRequired: true,
-                            readOnly: true,
-                            controller: controller.siteController,
-                            label: "Site".tr),
-                        const SizedBox(
-                          height: 8,
-                        ),
                         CustomDropDownFormField(
                           isRequired: true,
                           items: controller.listWarehouse
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
-                                    child: Text(e.name),
+                                    child: Text("${e.warehouseName}"),
                                   ))
                               .toList(),
                           onChanged: (item) {
-                            controller.onChangeSelectedWarehouse(item!);
+                            controller.onChangeSelectedWarehouse(item.toString());
                           },
                           label: "Warehouse ".tr,
                           value: controller.selectedWarehouse.id,
