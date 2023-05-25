@@ -217,7 +217,8 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                                   title: "${item.itemName}",
                                   subtitle: "${item.costCenterName}",
                                   nominal:
-                                  "${item.nominal?.toInt().toCurrency()}",
+                                  "${controller.selectedItem.value
+                                      .currencyCode ?? ""} ${item.nominal?.toInt().toCurrency()}",
                                   onTap: !controller.onEdit.value
                                       ? () {
                                     Get.dialog(Dialog(

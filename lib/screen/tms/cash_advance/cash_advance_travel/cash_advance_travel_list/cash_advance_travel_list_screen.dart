@@ -127,6 +127,18 @@ class _CashAdvanceTravelListScreenState
                                           Column(
                                             children: [
                                               Text(
+                                                "Item Count".tr,
+                                                style: listTitleTextStyle,
+                                              ),
+                                              Text(
+                                                "${item.itemCount}",
+                                                style: listSubTitleTextStyle,
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
                                                 "Currency".tr,
                                                 style: listTitleTextStyle,
                                               ),
