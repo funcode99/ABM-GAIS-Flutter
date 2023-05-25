@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
+import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
@@ -43,7 +44,18 @@ class _ApprovalCashAdvanceTravelListScreenState
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
+              Column(
+                children: [
+                  Text(
+                    "Item Count".tr,
+                    style: listTitleTextStyle,
+                  ),
+                  Text(
+                    "1",
+                    style: listSubTitleTextStyle,
+                  ),
+                ],
+              ),
               Column(
                 children: [
                   Text(
@@ -126,6 +138,7 @@ class _ApprovalCashAdvanceTravelListScreenState
           return Scaffold(
             backgroundColor: baseColor,
             appBar: AppBar(
+              leading: const CustomBackButton(),
               backgroundColor: whiteColor,
               title: Text("approval_cash_advance_travel".tr, style: appTitle),
               centerTitle: true,
