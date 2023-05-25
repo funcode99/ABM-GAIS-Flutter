@@ -110,4 +110,10 @@ class RequestATKRepository implements BaseRepository<RequestAtkModel, RequestATK
     throw UnimplementedError();
   }
 
+  @override
+  Future<Either<BaseError, RequestAtkModel>> submitData(int id) {
+    // TODO: implement submitData
+    throw UnimplementedError();
+  }
+
 }

@@ -27,8 +27,8 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
     CashAdvanceModel selectedItem = Get.arguments["item"];
 
     final EditCashAdvanceNonTravelController controller =
-        Get.put(EditCashAdvanceNonTravelController())
-          ..selectedItem(selectedItem);
+    Get.put(EditCashAdvanceNonTravelController())
+      ..selectedItem(selectedItem);
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -59,58 +59,62 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                   width: double.infinity,
                   child: Text(
                     "${controller.selectedItem.value.noCa}",
-                    style: Theme.of(context)
+                    style: Theme
+                        .of(context)
                         .textTheme
                         .bodyText1
                         ?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
                     textAlign: TextAlign.center,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    OutlinedButton(
-                      onPressed: () {
-                        controller.updateOnEdit();
-                      },
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: const Size(75, 30),
+                Obx(() {
+                  return controller.selectedItem.value.code == 0 ?
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      OutlinedButton(
+                        onPressed: () {
+                          controller.updateOnEdit();
+                        },
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: const Size(75, 30),
+                        ),
+                        child: Text("Edit".tr),
                       ),
-                      child: Text("Edit".tr),
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Obx(() {
-                      return controller.onEdit.value
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      controller.onEdit.value
                           ? ElevatedButton(
-                              onPressed: controller.enableButton.value
-                                  ? () {
-                                      controller.updateHeader();
-                                    }
-                                  : null,
-                              style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(75, 30),
-                                  backgroundColor: successColor),
-                              child: Text("Save".tr),
-                            )
+                        onPressed: controller.enableButton.value
+                            ? () {
+                          controller.updateHeader();
+                        }
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(75, 30),
+                            backgroundColor: successColor),
+                        child: Text("Save".tr),
+                      )
                           : ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(75, 30),
-                                  backgroundColor: successColor),
-                              child: Text("Submit".tr),
-                            );
-                    }),
-                  ],
-                ),
+                        onPressed: () {
+                          controller.submitHeader();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(75, 30),
+                            backgroundColor: successColor),
+                        child: Text("Submit".tr),
+                      ),
+                    ],
+                  ) : const SizedBox();
+                }),
                 const Divider(
                   height: 20,
                   color: greyColor,
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -142,16 +146,20 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                             controller: controller.dateController,
                             onTap: controller.onEdit.value
                                 ? () async {
-                                    DateTime? dateTime = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(DateTime.now().year),
-                                      lastDate:
-                                          DateTime(DateTime.now().year + 1),
-                                    );
-                                    controller.dateController.text =
-                                        controller.dateFormat.format(dateTime!);
-                                  }
+                              DateTime? dateTime = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(DateTime
+                                    .now()
+                                    .year),
+                                lastDate:
+                                DateTime(DateTime
+                                    .now()
+                                    .year + 1),
+                              );
+                              controller.dateController.text =
+                                  controller.dateFormat.format(dateTime!);
+                            }
                                 : null,
                             label: "Date".tr);
                       }),
@@ -170,29 +178,23 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                         children: [
                           Text(
                             "Details Item",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                ?.copyWith(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600),
+                            style: listTitleTextStyle,
                           ),
                           Obx(() {
                             return controller.onEdit.value
                                 ? CustomIconButton(
-                                    title: "Add".tr,
-                                    iconData: IconlyBold.plus,
-                                    backgroundColor: successColor,
-                                    onPressed: () async {
-                                      final addedItem = await Get.to(
-                                          const AddItemCashAdvanceNonTravelScreen());
-                                      if (addedItem != null) {
-                                        //add item
-                                        controller.addDetail(addedItem);
-                                      }
-                                    },
-                                  )
+                              title: "Add".tr,
+                              iconData: IconlyBold.plus,
+                              backgroundColor: successColor,
+                              onPressed: () async {
+                                final addedItem = await Get.to(
+                                    const AddItemCashAdvanceNonTravelScreen());
+                                if (addedItem != null) {
+                                  //add item
+                                  controller.addDetail(addedItem);
+                                }
+                              },
+                            )
                                 : const SizedBox();
                           }),
                         ],
@@ -205,67 +207,68 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                         return controller.listDetail.isEmpty
                             ? const SizedBox()
                             : ListView(
-                                shrinkWrap: true,
-                                physics: const ScrollPhysics(),
-                                children: [
-                                  ...controller.listDetail.mapIndexed((index,
-                                          item) =>
-                                      CommonAddItem(
-                                        number: "${index + 1}",
-                                        title: "${item.itemName}",
-                                        subtitle: "${item.costCenterName}",
-                                        nominal:
-                                            "${item.nominal?.toInt().toCurrency()}",
-                                        onTap: !controller.onEdit.value
-                                            ? () {
-                                                Get.dialog(Dialog(
-                                                  child:
-                                                      DetailItemCashAdvanceNonTravelScreen(
-                                                          item: item),
-                                                ));
-                                              }
-                                            : null,
-                                        action: controller.onEdit.value
-                                            ? [
-                                                CustomIconButton(
-                                                  title: "Edit".tr,
-                                                  iconData: IconlyBold.edit,
-                                                  backgroundColor: successColor,
-                                                  onPressed: () async {
-                                                    final updatedItem =
-                                                        await Get.to(() =>
-                                                            AddItemCashAdvanceNonTravelScreen(
-                                                                item: item));
-                                                    if (updatedItem != null) {
-                                                      //add item
-                                                      controller
-                                                          .updateDetail(updatedItem);
-                                                    }
-                                                  },
-                                                ),
-                                                const SizedBox(
-                                                  width: 8,
-                                                ),
-                                                CustomIconButton(
-                                                  title: "Delete".tr,
-                                                  iconData: IconlyBold.delete,
-                                                  backgroundColor: redColor,
-                                                  onPressed: () {
-                                                    Get.dialog(
-                                                        DeleteConfirmationDialog(
-                                                      onDeletePressed: () {
-                                                        controller
-                                                            .deleteDetail(item);
-                                                        Get.back();
-                                                      },
-                                                    ));
-                                                  },
-                                                )
-                                              ]
-                                            : [],
-                                      ))
-                                ],
-                              );
+                          shrinkWrap: true,
+                          physics: const ScrollPhysics(),
+                          children: [
+                            ...controller.listDetail.mapIndexed((index,
+                                item) =>
+                                CommonAddItem(
+                                  number: "${index + 1}",
+                                  title: "${item.itemName}",
+                                  subtitle: "${item.costCenterName}",
+                                  nominal:
+                                  "${controller.selectedItem.value
+                                      .currencyCode ?? ""} ${item.nominal?.toInt().toCurrency()}",
+                                  onTap: !controller.onEdit.value
+                                      ? () {
+                                    Get.dialog(Dialog(
+                                      child:
+                                      DetailItemCashAdvanceNonTravelScreen(
+                                          item: item),
+                                    ));
+                                  }
+                                      : null,
+                                  action: controller.onEdit.value
+                                      ? [
+                                    CustomIconButton(
+                                      title: "Edit".tr,
+                                      iconData: IconlyBold.edit,
+                                      backgroundColor: successColor,
+                                      onPressed: () async {
+                                        final updatedItem =
+                                        await Get.to(() =>
+                                            AddItemCashAdvanceNonTravelScreen(
+                                                item: item));
+                                        if (updatedItem != null) {
+                                          //add item
+                                          controller
+                                              .updateDetail(updatedItem);
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    CustomIconButton(
+                                      title: "Delete".tr,
+                                      iconData: IconlyBold.delete,
+                                      backgroundColor: redColor,
+                                      onPressed: () {
+                                        Get.dialog(
+                                            DeleteConfirmationDialog(
+                                              onDeletePressed: () {
+                                                controller
+                                                    .deleteDetail(item);
+                                                Get.back();
+                                              },
+                                            ));
+                                      },
+                                    )
+                                  ]
+                                      : [],
+                                ))
+                          ],
+                        );
                       }),
                       const SizedBox(
                         height: 32,

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_controller.dart';
 import 'package:get/get.dart';
@@ -18,16 +19,14 @@ class AddGuestScreen extends StatelessWidget {
         init: AddGuestController(),
         builder: (controller) {
           return Scaffold(
-            appBar: AppBar(
+            appBar: TopBar(
               title: Text("Guest as Traveller", style: appTitle),
-              centerTitle: true,
-              leading: CustomBackButton(),
-              flexibleSpace: TopBar(),
+              leading: const CustomBackButton(),
             ),
             body: Container(
               alignment: Alignment.topCenter,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.all(7),
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(7),
               decoration: BoxDecoration(
                 color: whiteColor,
                 borderRadius: BorderRadius.circular(8),
@@ -44,289 +43,202 @@ class AddGuestScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: infoColor,
                           borderRadius: BorderRadius.circular(50)),
-                      child: Icon(Icons.groups, color: whiteColor),
+                      child: const Icon(Icons.groups, color: whiteColor),
                     ),
                     Text("Guest", style: appTitle),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Form(
                       key: controller.formKey,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            RichText(
-                              text: TextSpan(
-                                text: 'Type of Traveller ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Type"),
-                              value: controller.type,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("name"),
-                                  value: "value",
-                                ),
-                              ],
+                            CustomDropDownFormField(
+                              items: controller.typeList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.typeTraveller.toString()),
+                                      ))
+                                  .toList(),
+                              label: "Type of Traveller",
+                              hintText: "Type",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
                               onChanged: (value) {
-                                controller.type = value;
+                                controller.selectedType = value;
                                 controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Name ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Name"),
-                              value: controller.name,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("name"),
-                                  value: "value",
-                                ),
-                              ],
-                              onChanged: (value) {
-                                controller.name = value;
-                                controller.update();
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.guestName,
+                              label: "Name",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
                               },
+                              hintText: "Name",
+                              // readOnly: true,
+                              // suffixIcon: Icon(Icons.keyboard_arrow_down,
+                              //     color: greyColor),
+                              // onTap: () {
+                              //   CustomSearchList(
+                              //     ShowList(
+                              //       bottomSheetTitle: const Text(
+                              //         "Guest",
+                              //         style: TextStyle(
+                              //           fontWeight: FontWeight.bold,
+                              //           fontSize: 20.0,
+                              //         ),
+                              //       ),
+                              //       data: controller.guestList,
+                              //       selectedItems: (selectedList) {
+                              //         controller.guestName.text =
+                              //             selectedList.first.name.toString();
+                              //         controller.selectedGuest =
+                              //             selectedList.first.value.toString();
+                              //         controller.setGuestInfo();
+                              //         controller.update();
+                              //       },
+                              //       enableMultipleSelection: false,
+                              //     ),
+                              //   ).showModal(context);
+                              // },
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Gender ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Gender"),
-                              value: controller.gender,
-                              isExpanded: true,
-                              // underline: SizedBox(),
+                            const SizedBox(height: 8),
+                            CustomDropDownFormField(
                               items: [
-                                DropdownMenuItem(
+                                const DropdownMenuItem(
+                                  value: "L",
                                   child: Text("Male"),
-                                  value: "Male",
                                 ),
-                                DropdownMenuItem(
+                                const DropdownMenuItem(
+                                  value: "P",
                                   child: Text("Female"),
-                                  value: "Female",
                                 ),
                               ],
+                              label: "Gender",
+                              hintText: controller.gender,
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
                               onChanged: (value) {
                                 controller.gender = value;
                                 controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'SN ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.guestNIK,
+                              label: "NIK",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
                             ),
-                            TextFormField(
-                              controller: controller.sn,
-                              decoration: InputDecoration(
-                                hintText: "SN",
-                                hintStyle: hintTextStyle,
-                              ),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.guestContact,
+                              label: "Contact No",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Contact No ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            TextFormField(
-                              controller: controller.contact,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              decoration: InputDecoration(
-                                hintText: "Contact No",
-                                hintStyle: hintTextStyle,
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Department ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Department"),
-                              value: controller.department,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("name"),
-                                  value: "value",
-                                ),
-                              ],
+                            const SizedBox(height: 8),
+                            CustomDropDownFormField(
+                              items: controller.departmentList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child:
+                                            Text(e.departementName.toString()),
+                                      ))
+                                  .toList(),
+                              label: "Department",
+                              hintText: "Department",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
                               onChanged: (value) {
-                                controller.department = value;
+                                controller.selectedDepartment = value;
+                                print(value);
                                 controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Company ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Company"),
-                              value: controller.company,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("name"),
-                                  value: "value",
-                                ),
-                              ],
+                            const SizedBox(height: 8),
+                            CustomDropDownFormField(
+                              items: controller.companyList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.companyName.toString()),
+                                      ))
+                                  .toList(),
+                              label: "Company",
+                              hintText: "Company",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
                               onChanged: (value) {
-                                controller.company = value;
+                                controller.selectedCompany = value;
+                                print(controller.selectedCompany ?? "kosong");
                                 controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Hotel Fare ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
+                            const SizedBox(height: 8),
+                            controller.selectedCompany == "0"
+                                ? CustomTextFormField(
+                                    controller: controller.otherCompany,
+                                    label: "Other Company",
+                                    hintText: "Company",
+                                  )
+                                : Container(),
+                            CustomTextFormField(
+                              controller: controller.hotelFare,
+                              label: "Hotel Fare",
+                              isRequired: true,
+                              readOnly: true,
                             ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Max Fare"),
-                              value: controller.hotelFare,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("name"),
-                                  value: "value",
-                                ),
-                              ],
-                              onChanged: (value) {
-                                controller.hotelFare = value;
-                                controller.update();
-                              },
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.flightEntitlement,
+                              label: "Flight Entitlement",
+                              isRequired: true,
+                              readOnly: true,
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Flight Entitlement ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Flight Entitlement"),
-                              value: controller.flight,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("name"),
-                                  value: "value",
-                                ),
-                              ],
-                              onChanged: (value) {
-                                controller.flight = value;
-                                controller.update();
-                              },
-                            ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Notes ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            TextFormField(
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
                               controller: controller.notes,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              decoration: InputDecoration(
-                                hintText: "Notes",
-                                hintStyle: hintTextStyle,
-                              ),
+                              label: "Notes",
+                              hintText: "Notes",
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -342,7 +254,11 @@ class AddGuestScreen extends StatelessWidget {
                                   width: 100,
                                   color: infoColor,
                                   title: "Save",
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    if (controller.formKey.currentState
+                                            ?.validate() ==
+                                        true) controller.saveGuest();
+                                  },
                                 ),
                               ],
                             )
@@ -354,7 +270,7 @@ class AddGuestScreen extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: BottomBar(menu: 1),
+            bottomNavigationBar: const BottomBar(menu: 1),
           );
         });
   }

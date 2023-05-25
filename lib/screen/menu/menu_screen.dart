@@ -375,7 +375,7 @@ class MenuScreen extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: (){
-                                Get.off(const ManagementItemATKListScreen());
+                                Get.to(const ManagementItemATKListScreen());
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -403,7 +403,7 @@ class MenuScreen extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: (){
-                                Get.off(const StockInListScreen());
+                                Get.to(const StockInListScreen());
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,

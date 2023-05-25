@@ -117,8 +117,28 @@ class _CashAdvanceTravelDetailScreenState
                       ),
                       CustomTextFormField(
                           readOnly: true,
+                          isRequired: false,
+                          controller: controller.currencyController,
+                          label: "Currency".tr),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      CustomTextFormField(
+                          readOnly: true,
                           controller: controller.totalController,
                           label: "Total".tr),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Obx(() {
+                        if(controller.selectedItem.value.status == "Reject"){
+                          return CustomTextFormField(
+                              readOnly: true,
+                              controller: controller.remarksController,
+                              label: "Note".tr);
+                        }
+                        return SizedBox();
+                      }),
                       const SizedBox(
                         height: 64,
                       ),
@@ -218,33 +238,6 @@ class _CashAdvanceTravelDetailScreenState
                                     Column(
                                       children: [
                                         Text(
-                                          "Currency".tr,
-                                          style: Theme
-                                              .of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              ?.copyWith(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              height: 1.5),
-                                        ),
-                                        Text(
-                                          "${controller.selectedItem.value
-                                              .currencyName}",
-                                          style: Theme
-                                              .of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              ?.copyWith(
-                                              fontSize: 14,
-                                              color: greyColor,
-                                              height: 1.5),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
                                           "Nominal".tr,
                                           style: Theme
                                               .of(context)
@@ -256,7 +249,8 @@ class _CashAdvanceTravelDetailScreenState
                                               height: 1.5),
                                         ),
                                         Text(
-                                          "${item.nominal?.toInt()
+                                          "${controller.selectedItem.value
+                                              .currencyCode ?? ""} ${item.nominal?.toInt()
                                               .toCurrency()}",
                                           style: Theme
                                               .of(context)

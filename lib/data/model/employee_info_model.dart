@@ -1,6 +1,6 @@
 /// success : true
 /// message : "Success Get Data"
-/// data : [{"id":1,"employee_name":"John Doe","phone_number":"0812345678","sn_employee":"12345","email":"12345@mail.com","nik":"1234123412341234123","dob":"1991-01-01 00:00:00","start_date":"1991-01-01 00:00:00","end_date":"1991-01-01 00:00:00","jenkel":"L","id_department":1,"id_company":1,"id_site":1,"foto":null,"foto_path":null,"created_at":"2023-05-10 05:00:56","created_by":"2","updated_at":"2023-05-10 05:00:56","updated_by":null,"site_name":"test","site_code":"1"}]
+/// data : [{"id":1,"employee_name":"John Doe","phone_number":"0812345678","sn_employee":"12345","email":"12345@mail.com","nik":"1234123412341234123","dob":"1991-01-01 00:00:00","start_date":"1991-01-01 00:00:00","end_date":"1991-01-01 00:00:00","jenkel":"L","id_department":1,"id_company":1,"id_site":1,"id_job_band":1,"foto":null,"foto_path":null,"created_at":"2023-05-15 06:11:11","created_by":null,"updated_at":"2023-05-15 06:11:11","updated_by":null,"id_users":2,"site_name":null,"site_code":null,"company_name":"PT Cipta Kridatama","company_code":"3000","band_job_name":"Band Job Test","flight_class":null}]
 
 class EmployeeInfoModel {
   EmployeeInfoModel({
@@ -61,14 +61,20 @@ EmployeeInfoModel copyWith({  bool? success,
 /// id_department : 1
 /// id_company : 1
 /// id_site : 1
+/// id_job_band : 1
 /// foto : null
 /// foto_path : null
-/// created_at : "2023-05-10 05:00:56"
-/// created_by : "2"
-/// updated_at : "2023-05-10 05:00:56"
+/// created_at : "2023-05-15 06:11:11"
+/// created_by : null
+/// updated_at : "2023-05-15 06:11:11"
 /// updated_by : null
-/// site_name : "test"
-/// site_code : "1"
+/// id_users : 2
+/// site_name : null
+/// site_code : null
+/// company_name : "PT Cipta Kridatama"
+/// company_code : "3000"
+/// band_job_name : "Band Job Test"
+/// flight_class : null
 
 class Data {
   Data({
@@ -85,15 +91,20 @@ class Data {
       num? idDepartment, 
       num? idCompany, 
       num? idSite, 
+      num? idJobBand, 
       dynamic foto, 
       dynamic fotoPath, 
       String? createdAt, 
-      String? createdBy, 
+      dynamic createdBy, 
       String? updatedAt, 
       dynamic updatedBy, 
-      String? companyName,
-      String? siteName,
-      String? siteCode,}){
+      num? idUsers, 
+      dynamic siteName, 
+      dynamic siteCode, 
+      String? companyName, 
+      String? companyCode, 
+      String? bandJobName, 
+      dynamic flightClass,}){
     _id = id;
     _employeeName = employeeName;
     _phoneNumber = phoneNumber;
@@ -107,15 +118,20 @@ class Data {
     _idDepartment = idDepartment;
     _idCompany = idCompany;
     _idSite = idSite;
+    _idJobBand = idJobBand;
     _foto = foto;
     _fotoPath = fotoPath;
     _createdAt = createdAt;
     _createdBy = createdBy;
     _updatedAt = updatedAt;
     _updatedBy = updatedBy;
+    _idUsers = idUsers;
     _siteName = siteName;
-    _companyName = companyName;
     _siteCode = siteCode;
+    _companyName = companyName;
+    _companyCode = companyCode;
+    _bandJobName = bandJobName;
+    _flightClass = flightClass;
 }
 
   Data.fromJson(dynamic json) {
@@ -132,15 +148,20 @@ class Data {
     _idDepartment = json['id_department'];
     _idCompany = json['id_company'];
     _idSite = json['id_site'];
+    _idJobBand = json['id_job_band'];
     _foto = json['foto'];
     _fotoPath = json['foto_path'];
     _createdAt = json['created_at'];
     _createdBy = json['created_by'];
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
+    _idUsers = json['id_users'];
     _siteName = json['site_name'];
-    _companyName = json['company_name'];
     _siteCode = json['site_code'];
+    _companyName = json['company_name'];
+    _companyCode = json['company_code'];
+    _bandJobName = json['band_job_name'];
+    _flightClass = json['flight_class'];
   }
   num? _id;
   String? _employeeName;
@@ -155,15 +176,20 @@ class Data {
   num? _idDepartment;
   num? _idCompany;
   num? _idSite;
+  num? _idJobBand;
   dynamic _foto;
   dynamic _fotoPath;
   String? _createdAt;
-  String? _createdBy;
+  dynamic _createdBy;
   String? _updatedAt;
   dynamic _updatedBy;
-  String? _siteName;
+  num? _idUsers;
+  dynamic _siteName;
+  dynamic _siteCode;
   String? _companyName;
-  String? _siteCode;
+  String? _companyCode;
+  String? _bandJobName;
+  dynamic _flightClass;
 Data copyWith({  num? id,
   String? employeeName,
   String? phoneNumber,
@@ -177,15 +203,20 @@ Data copyWith({  num? id,
   num? idDepartment,
   num? idCompany,
   num? idSite,
+  num? idJobBand,
   dynamic foto,
   dynamic fotoPath,
   String? createdAt,
-  String? createdBy,
+  dynamic createdBy,
   String? updatedAt,
   dynamic updatedBy,
-  String? siteName,
+  num? idUsers,
+  dynamic siteName,
+  dynamic siteCode,
   String? companyName,
-  String? siteCode,
+  String? companyCode,
+  String? bandJobName,
+  dynamic flightClass,
 }) => Data(  id: id ?? _id,
   employeeName: employeeName ?? _employeeName,
   phoneNumber: phoneNumber ?? _phoneNumber,
@@ -199,15 +230,20 @@ Data copyWith({  num? id,
   idDepartment: idDepartment ?? _idDepartment,
   idCompany: idCompany ?? _idCompany,
   idSite: idSite ?? _idSite,
+  idJobBand: idJobBand ?? _idJobBand,
   foto: foto ?? _foto,
   fotoPath: fotoPath ?? _fotoPath,
   createdAt: createdAt ?? _createdAt,
   createdBy: createdBy ?? _createdBy,
   updatedAt: updatedAt ?? _updatedAt,
   updatedBy: updatedBy ?? _updatedBy,
+  idUsers: idUsers ?? _idUsers,
   siteName: siteName ?? _siteName,
-  companyName: _companyName ?? _companyName,
   siteCode: siteCode ?? _siteCode,
+  companyName: companyName ?? _companyName,
+  companyCode: companyCode ?? _companyCode,
+  bandJobName: bandJobName ?? _bandJobName,
+  flightClass: flightClass ?? _flightClass,
 );
   num? get id => _id;
   String? get employeeName => _employeeName;
@@ -222,15 +258,20 @@ Data copyWith({  num? id,
   num? get idDepartment => _idDepartment;
   num? get idCompany => _idCompany;
   num? get idSite => _idSite;
+  num? get idJobBand => _idJobBand;
   dynamic get foto => _foto;
   dynamic get fotoPath => _fotoPath;
   String? get createdAt => _createdAt;
-  String? get createdBy => _createdBy;
+  dynamic get createdBy => _createdBy;
   String? get updatedAt => _updatedAt;
   dynamic get updatedBy => _updatedBy;
-  String? get siteName => _siteName;
+  num? get idUsers => _idUsers;
+  dynamic get siteName => _siteName;
+  dynamic get siteCode => _siteCode;
   String? get companyName => _companyName;
-  String? get siteCode => _siteCode;
+  String? get companyCode => _companyCode;
+  String? get bandJobName => _bandJobName;
+  dynamic get flightClass => _flightClass;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -247,15 +288,20 @@ Data copyWith({  num? id,
     map['id_department'] = _idDepartment;
     map['id_company'] = _idCompany;
     map['id_site'] = _idSite;
+    map['id_job_band'] = _idJobBand;
     map['foto'] = _foto;
     map['foto_path'] = _fotoPath;
     map['created_at'] = _createdAt;
     map['created_by'] = _createdBy;
     map['updated_at'] = _updatedAt;
     map['updated_by'] = _updatedBy;
+    map['id_users'] = _idUsers;
     map['site_name'] = _siteName;
-    map['company_name'] = _companyName;
     map['site_code'] = _siteCode;
+    map['company_name'] = _companyName;
+    map['company_code'] = _companyCode;
+    map['band_job_name'] = _bandJobName;
+    map['flight_class'] = _flightClass;
     return map;
   }
 

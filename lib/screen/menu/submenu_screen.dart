@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
@@ -71,7 +72,7 @@ class SubmenuScreen extends StatelessWidget {
                                       height: 50,
                                       width: 50,
                                       child: SvgPicture.asset(
-                                        "assets/icons/airplane.svg",
+                                        ImageConstant.airplane,
                                         height: 25,
                                       ),
                                     ),
@@ -79,9 +80,9 @@ class SubmenuScreen extends StatelessWidget {
                                   ],
                                 ),
                                 onTap: () => controller.approval
-                                    ? Get.off(() =>
+                                    ? Get.to(() =>
                                         const ApprovalCashAdvanceTravelListScreen())
-                                    : Get.off(
+                                    : Get.to(
                                         () => CashAdvanceTravelListScreen()),
                               ),
                               GestureDetector(
@@ -97,7 +98,7 @@ class SubmenuScreen extends StatelessWidget {
                                       height: 50,
                                       width: 50,
                                       child: SvgPicture.asset(
-                                        "assets/icons/Ticket Star.svg",
+                                        ImageConstant.ticketStar,
                                         height: 25,
                                       ),
                                     ),
@@ -105,9 +106,9 @@ class SubmenuScreen extends StatelessWidget {
                                   ],
                                 ),
                                 onTap: () => controller.approval
-                                    ? Get.off(() =>
+                                    ? Get.to(() =>
                                         const ApprovalCashAdvanceNonTravelListScreen())
-                                    : Get.off(() =>
+                                    : Get.to(() =>
                                         const CashAdvanceNonTravelListScreen()),
                               ),
                             ],

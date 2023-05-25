@@ -37,7 +37,7 @@ class AddItemStockInATKController extends BaseController {
 
     for (int i = 0; i < 10; i++) {
       listWarehouse.add(
-          WarehouseModel(id: i.toString(), name: "Warehouse $i")
+          WarehouseModel(id: i, warehouseName: "Warehouse $i")
       );
 
       listBrand.add(
@@ -79,7 +79,7 @@ class AddItemStockInATKController extends BaseController {
         site: siteController.text,
         brand: selectedBrang,
         itemName: itemController.text,
-        warehouse: selectedWarehouse.name,
+        warehouse: selectedWarehouse.warehouseName ?? "",
         quantity: quantityController.text.toInt(),
         uom: companyController.text,
         remarks: remarksController.text

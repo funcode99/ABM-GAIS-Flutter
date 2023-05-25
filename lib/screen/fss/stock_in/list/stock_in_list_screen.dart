@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
+import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
@@ -30,6 +31,7 @@ class StockInListScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: baseColor,
       appBar: AppBar(
+        leading: const CustomBackButton(),
         backgroundColor: whiteColor,
         title: Text("Stock In ATK".tr, style: appTitle),
         centerTitle: true,
