@@ -49,7 +49,10 @@ class _CashAdvanceTravelListScreenState
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {},
+              onChanged: (string) {
+                controller.keyword(string);
+                controller.getHeader(page: 1);
+              },
               onPressedFilter: () {
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {},
@@ -92,20 +95,24 @@ class _CashAdvanceTravelListScreenState
                 ));
               },
             ),
-            CustomPagination(
-              onPageChanged: (int) {},
-              pageTotal: 5,
-              margin: EdgeInsets.zero,
-              colorSub: infoColor,
-              colorPrimary: whiteColor,
-            ),
+            Obx(() {
+              return CustomPagination(
+                key: UniqueKey(),
+                onPageChanged: (page) {
+                  controller.getHeader(page: page);
+                },
+                pageTotal: controller.totalPage.value,
+                margin: EdgeInsets.zero,
+                pageInit: controller.currentPage.value,
+              );
+            }),
             const SizedBox(
               height: 12,
             ),
             Expanded(
                 child: RefreshIndicator(
               onRefresh: () async {
-                controller.getData();
+                controller.getHeader();
               },
               child: Obx(() {
                 return controller.listHeader.isEmpty
