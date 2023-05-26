@@ -102,7 +102,6 @@ class EditManagementItemATKController extends BaseController with MasterDataMixi
       idBrand: selectedBrand.value.id,
       idUom: selectedUOM.value.id,
       alertQty: alertQuantityController.text.toInt(),
-      currentStock: 0,
       idCompany: idCompany.toInt(),
       idSite: idSite.toInt(),
       idWarehouse: selectedWarehouse.value.id,

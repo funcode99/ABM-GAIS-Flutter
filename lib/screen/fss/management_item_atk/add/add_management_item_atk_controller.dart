@@ -97,7 +97,6 @@ class AddManagementItemATKController extends BaseController with MasterDataMixin
       idBrand: selectedBrand.value.id,
       idUom: selectedUOM.value.id,
       alertQty: alertQuantityController.text.toInt(),
-      currentStock: 0,
       idCompany: idCompany.toInt(),
       idSite: idSite.toInt(),
       idWarehouse: selectedWarehouse.value.id,
