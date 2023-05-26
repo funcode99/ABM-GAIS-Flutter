@@ -44,7 +44,10 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {},
+              onChanged: (string) {
+                controller.keyword(string);
+                controller.getHeader(page: 1);
+              },
               onPressedFilter: () {
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {
@@ -89,13 +92,17 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                 ));
               },
             ),
-            CustomPagination(
-              onPageChanged: (int) {},
-              pageTotal: 5,
-              margin: EdgeInsets.zero,
-              colorSub: whiteColor,
-              colorPrimary: infoColor,
-            ),
+            Obx(() {
+              return CustomPagination(
+                key: UniqueKey(),
+                onPageChanged: (page) {
+                  controller.getHeader(page: page);
+                },
+                pageTotal: controller.totalPage.value,
+                margin: EdgeInsets.zero,
+                pageInit: controller.currentPage.value,
+              );
+            }),
             const SizedBox(
               height: 12,
             ),
