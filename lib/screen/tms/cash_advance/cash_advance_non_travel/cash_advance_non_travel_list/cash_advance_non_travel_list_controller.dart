@@ -37,7 +37,7 @@ class CashAdvanceNonTravelListController extends BaseController {
     final result = await _cashAdvanceTravelNonRepository.getPaginationData(
         data: {
           "page" : page,
-          // "perPage" : limit,
+          "perPage" : limit,
           "search" : keyword.value
         }
     );

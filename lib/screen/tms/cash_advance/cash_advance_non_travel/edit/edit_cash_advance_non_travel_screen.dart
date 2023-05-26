@@ -68,45 +68,47 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                   ),
                 ),
                 Obx(() {
-                  return controller.selectedItem.value.code == 0 ?
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () {
-                          controller.updateOnEdit();
-                        },
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size(75, 30),
+                  if(controller.selectedItem.value.codeStatusDoc.toString() == "0"){
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        OutlinedButton(
+                          onPressed: () {
+                            controller.updateOnEdit();
+                          },
+                          style: OutlinedButton.styleFrom(
+                            minimumSize: const Size(75, 30),
+                          ),
+                          child: Text("Edit".tr),
                         ),
-                        child: Text("Edit".tr),
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      controller.onEdit.value
-                          ? ElevatedButton(
-                        onPressed: controller.enableButton.value
-                            ? () {
-                          controller.updateHeader();
-                        }
-                            : null,
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(75, 30),
-                            backgroundColor: successColor),
-                        child: Text("Save".tr),
-                      )
-                          : ElevatedButton(
-                        onPressed: () {
-                          controller.submitHeader();
-                        },
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(75, 30),
-                            backgroundColor: successColor),
-                        child: Text("Submit".tr),
-                      ),
-                    ],
-                  ) : const SizedBox();
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        controller.onEdit.value
+                            ? ElevatedButton(
+                          onPressed: controller.enableButton.value
+                              ? () {
+                            controller.updateHeader();
+                          }
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(75, 30),
+                              backgroundColor: successColor),
+                          child: Text("Save".tr),
+                        )
+                            : ElevatedButton(
+                          onPressed: () {
+                            controller.submitHeader();
+                          },
+                          style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(75, 30),
+                              backgroundColor: successColor),
+                          child: Text("Submit".tr),
+                        ),
+                      ],
+                    );
+                  }
+                  return const SizedBox();
                 }),
                 const Divider(
                   height: 20,

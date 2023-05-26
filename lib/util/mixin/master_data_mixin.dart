@@ -1,4 +1,5 @@
 import 'package:gais/data/model/master/brand/brand_model.dart';
+import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
 import 'package:gais/data/model/warehouse_model.dart';
 import 'package:gais/data/repository/master/master_repository.dart';
@@ -21,6 +22,15 @@ mixin MasterDataMixin{
   Future<List<UomModel>> getListUOM()async{
     final result = await _repository.getListUom();
     return result.fold((l) => [], (listUom) => listUom);
+  }
+
+  Future<List<CostCenterModel>> getListCostCenter() async{
+    final list = <CostCenterModel>[];
+    for(int i = 1; i <= 10; i++) {
+      list.add(CostCenterModel(costCenterName: "Cost Center Name ${i}", id: i));
+    }
+
+    return list;
   }
 
 }

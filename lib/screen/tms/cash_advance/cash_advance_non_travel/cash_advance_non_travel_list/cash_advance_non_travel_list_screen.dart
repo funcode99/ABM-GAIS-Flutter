@@ -120,7 +120,7 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                               CommonListItem(
                                 number: "${index + 1}",
                                 title: "${item.noCa}",
-                                onTap: item.code == 0 ? null : (){
+                                onTap: item.codeStatusDoc == 0 ? null : (){
                                   Get.to(()=> const EditCashAdvanceNonTravelScreen(), arguments: {
                                     "item": item
                                   });
@@ -151,7 +151,7 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                action: item.code == 0
+                                action: item.codeStatusDoc == 0
                                     ? [
                                         CustomIconButton(
                                           title: "Edit".tr,

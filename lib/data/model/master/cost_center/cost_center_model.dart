@@ -5,10 +5,10 @@ part 'cost_center_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class CostCenterModel extends Equatable{
-  final int? id;
-  final String? costCenterName;
+  int? id;
+  String? costCenterName;
 
-  const CostCenterModel({this.id, this.costCenterName});
+  CostCenterModel({this.id, this.costCenterName});
 
   @override
   List<Object?> get props => [id, costCenterName];
