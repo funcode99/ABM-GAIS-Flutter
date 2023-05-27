@@ -12,7 +12,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/edit/edit_accommodation_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_screen.dart';
+import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 
 class AccommodationScreen extends StatelessWidget {
@@ -58,9 +58,9 @@ class AccommodationScreen extends StatelessWidget {
                           .mapIndexed(
                             (i, e) => CustomTripCard(
                               listNumber: i + 1,
-                              title: e.noRequestTrip.toString(),
-                              status: e.codeStatusDoc.toString(),
-                              info: e.vendor,
+                              title: e.employeeName.toString(),
+                              status: e.status.toString(),
+                              info: e.hotelName,
                               //hotel name
                               isEdit: true,
                               editAction: () => Get.off(
@@ -69,6 +69,7 @@ class AccommodationScreen extends StatelessWidget {
                                     'purposeID': controller.purposeID,
                                     'codeDocument': controller.codeDocument,
                                     'id': e.id,
+                                    'formEdit': controller.formEdit
                                   })?.then((result) {
                                 controller.fetchList();
                                 controller.update();
@@ -106,7 +107,7 @@ class AccommodationScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text("Price", style: listTitleTextStyle),
-                                      Text(e.price.toString(),
+                                      Text("${int.parse(e.price ?? "0").toCurrency()}",
                                           style: listSubTitleTextStyle),
                                     ],
                                   ),
@@ -126,7 +127,8 @@ class AccommodationScreen extends StatelessWidget {
                         onPressed: () => Get.off(const AddAccommodationScreen(),
                             arguments: {
                               'purposeID': controller.purposeID,
-                              'codeDocument': controller.codeDocument
+                              'codeDocument': controller.codeDocument,
+                              'formEdit': true,
                             })?.then((result) {
                           controller.fetchList();
                           controller.update();
@@ -149,13 +151,7 @@ class AccommodationScreen extends StatelessWidget {
                           width: 100,
                           color: infoColor,
                           title: "Next",
-                          onPressed: () => Get.to(
-                            const CashAdvanceScreen(),
-                            arguments: {
-                              'purposeID': controller.purposeID,
-                              'codeDocument': controller.codeDocument
-                            },
-                          ),
+                          onPressed: () => controller.next()
                         ),
                       ],
                     )

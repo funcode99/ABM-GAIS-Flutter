@@ -12,6 +12,7 @@ import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_scree
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/edit/edit_guest_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/traveller_controller.dart';
+import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 
 class TravellerScreen extends StatelessWidget {
@@ -63,7 +64,6 @@ class TravellerScreen extends StatelessWidget {
                       title: controller.travellerName ?? "",
                       subtitle: controller.travellerSN ?? "",
                       info: "Requestor",
-                      isEdit: true,
                       content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -82,7 +82,7 @@ class TravellerScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("Hotel Fare", style: listTitleTextStyle),
-                              Text(controller.travellerHotel ?? "",
+                              Text("${int.parse(controller.travellerHotel ?? "0").toCurrency() }",
                                   style: listSubTitleTextStyle),
                             ],
                           ),
@@ -156,7 +156,7 @@ class TravellerScreen extends StatelessWidget {
                                         children: [
                                           Text("Hotel Fare",
                                               style: listTitleTextStyle),
-                                          Text(e.hotelFare.toString(),
+                                          Text("${int.parse(e.hotelFare.toString()).toCurrency()}",
                                               style: listSubTitleTextStyle),
                                         ],
                                       ),
@@ -207,19 +207,7 @@ class TravellerScreen extends StatelessWidget {
                           width: 100,
                           color: infoColor,
                           title: "Next",
-                          onPressed: () => controller.codeDocument == 4
-                              ? Get.to(const TaxiVoucherScreen(), arguments: {
-                                  'purposeID': controller.purposeID,
-                                  'codeDocument': controller.codeDocument
-                                })?.then((result) {
-                                  result.printInfo(info: "result");
-                                })
-                              : Get.to(const AirlinessScreen(), arguments: {
-                                  'purposeID': controller.purposeID,
-                                  'codeDocument': controller.codeDocument
-                                })?.then((result) {
-                                  result.printInfo(info: "result");
-                                }),
+                          onPressed: () => controller.next()
                         ),
                       ],
                     )

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
-import 'package:gais/data/model/request_trip/get_other_transport_model.dart'
-    as ot;
+import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as ot;
+import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
 
 class OtherTransportController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
-  int codeDocument = Get.arguments['codeDocument'];
+  int? codeDocument = Get.arguments['codeDocument'];
+  bool? formEdit = Get.arguments['formEdit'];
 
   List<ot.Data> otList = [];
   ot.GetOtherTransportModel? otModel;
@@ -24,14 +25,9 @@ class OtherTransportController extends BaseController {
   Future<void> fetchList() async {
     otList = [];
     try {
-      var otherTransportData =
-          await repository.getOtherTransportBytripList(purposeID);
+      var otherTransportData = await repository.getOtherTransportBytripList(purposeID);
       otModel = otherTransportData;
-      otList.addAll(otherTransportData.data
-              ?.where((e) => e.idRequestTrip == purposeID)
-              .toSet()
-              .toList() ??
-          []);
+      otList.addAll(otherTransportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
       update();
     } catch (e) {
@@ -41,21 +37,18 @@ class OtherTransportController extends BaseController {
 
   Future<void> delete(int id) async {
     try {
-      await repository
-          .deleteOtherTransportation(id)
-          .then((value) => fetchList())
-          .then((value) => Get.showSnackbar(
-                GetSnackBar(
-                  icon: Icon(
-                    Icons.error,
-                    color: Colors.white,
-                  ),
-                  message: 'Data Deleted',
-                  isDismissible: true,
-                  duration: Duration(seconds: 3),
-                  backgroundColor: successColor,
-                ),
-              ));
+      await repository.deleteOtherTransportation(id).then((value) => fetchList()).then((value) => Get.showSnackbar(
+            GetSnackBar(
+              icon: Icon(
+                Icons.error,
+                color: Colors.white,
+              ),
+              message: 'Data Deleted',
+              isDismissible: true,
+              duration: Duration(seconds: 3),
+              backgroundColor: successColor,
+            ),
+          ));
       update();
     } catch (e) {
       Get.showSnackbar(
@@ -100,6 +93,14 @@ class OtherTransportController extends BaseController {
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
       );
+    }
+  }
+
+  void next() {
+    if (formEdit == true) {
+      Get.back();
+    } else {
+      Get.to(AccommodationScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument});
     }
   }
 }

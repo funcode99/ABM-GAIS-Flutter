@@ -8,7 +8,7 @@ import 'package:gais/data/model/reference/get_type_transportation_model.dart'
 
 class AddOtherTransportController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
-  int codeDocument = Get.arguments['codeDocument'];
+  int? codeDocument = Get.arguments['codeDocument'];
 
   final formKey = GlobalKey<FormState>();
   final travellerName = TextEditingController();

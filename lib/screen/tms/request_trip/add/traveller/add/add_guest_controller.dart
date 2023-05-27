@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_traveller_type_model.dart'
     as type;
-import 'package:gais/data/model/reference/get_employee_model.dart' as guest;
 import 'package:gais/data/model/reference/get_department_model.dart'
     as department;
 import 'package:gais/data/model/reference/get_company_model.dart' as company;
-import 'package:gais/data/model/reference/get_job_band_model.dart' as hotel;
-import 'package:gais/data/model/reference/get_flight_class_model.dart'
-    as flight;
-import 'package:gais/data/model/request_trip/selected_guest_model.dart';
+import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
 class AddGuestController extends BaseController {
@@ -118,7 +115,7 @@ class AddGuestController extends BaseController {
 
       var dataHotel = await repository.getJobBandList();
       hotelFare.text =
-          dataHotel.data?.where((e) => e.id == jobBandID).first.hotelFare ?? "";
+          "${int.parse(dataHotel.data?.where((e) => e.id == jobBandID).first.hotelFare ?? " ").toCurrency()}";
       idFlight = dataHotel.data?.where((e) => e.id == jobBandID).first.idFlightClass?.toInt() ?? 0;
       // hotelModel = dataHotel;
       // hotelList.addAll(dataHotel.data?.toSet().toList() ?? []);
@@ -166,7 +163,7 @@ class AddGuestController extends BaseController {
         guestNIK.text,
         guestContact.text,
         selectedDepartment ?? "",
-        hotelFare.text ?? "",
+        hotelFare.text.digitOnly() ?? "",
         idFlight.toString() ?? "1",
         notes.text,
         gender.toString(),

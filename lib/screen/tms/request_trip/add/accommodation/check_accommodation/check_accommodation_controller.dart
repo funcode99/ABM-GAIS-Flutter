@@ -7,9 +7,10 @@ import 'package:get/get.dart';
 
 class CheckAccommodationController extends BaseController {
   bool isEdit = Get.arguments['isEdit'] ?? false;
+  bool? formEdit = Get.arguments['formEdit'];
   int id = Get.arguments['id'] ?? 0;
   int purposeID = Get.arguments['purposeID'];
-  int codeDocument = Get.arguments['codeDocument'];
+  int? codeDocument = Get.arguments['codeDocument'];
   int cityID = Get.arguments['city'];
   String checkinDate = Get.arguments['checkIn'];
   String checkoutDate = Get.arguments['checkOut'];
@@ -29,6 +30,7 @@ class CheckAccommodationController extends BaseController {
   void onInit() {
     super.onInit();
     Future.wait([fetchList()]);
+    formEdit.printInfo();
   }
 
   Future<void> fetchList() async {
@@ -37,16 +39,11 @@ class CheckAccommodationController extends BaseController {
     try {
       var response = await repository.getHotelList();
       hotelModel = response;
-      hotelList.addAll(response.data
-              ?.where((e) =>
-                  e.idCity == cityID && e.idTypeHotel == accommodationType)
-              .toSet()
-              .toList() ??
-          []);
+      hotelList
+          .addAll(response.data?.where((e) => e.idCity == cityID && e.idTypeHotel == accommodationType).toSet().toList() ?? []);
       hotelList.forEach((element) {
         viewRoom.add(false);
       });
-      print("viewRoom ${viewRoom}");
 
       var cityData = await repository.getCityList();
       cityModel = cityData;
@@ -81,25 +78,24 @@ class CheckAccommodationController extends BaseController {
       try {
         await repository
             .updateAccommodation(
-                id,
-                purposeID.toString(),
-                type,
-                checkinDate,
-                checkoutDate,
-                idVendor,
-                useGL,
-                cityID.toString(),
-                sharingName,
-                remarks,
-                price.toString(),
-                codeHotel)
-            .then((value) => Get.off(
-                  AccommodationScreen(),
-                  arguments: {
-                    'purposeID': purposeID,
-                    'codeDocument': codeDocument,
-                  },
-                ));
+              id,
+              purposeID.toString(),
+              type,
+              checkinDate,
+              checkoutDate,
+              idVendor,
+              useGL,
+              cityID.toString(),
+              sharingName,
+              remarks,
+              price.toString(),
+              codeHotel,
+            )
+            .then((value) => Get.off(const AccommodationScreen(), arguments: {
+                  'purposeID': purposeID,
+                  'codeDocument': codeDocument,
+                  'formEdit': formEdit,
+                }));
       } catch (e, i) {
         e.printError();
         i.printError();
@@ -120,22 +116,24 @@ class CheckAccommodationController extends BaseController {
       try {
         await repository
             .saveAccommodation(
-                purposeID.toString(),
-                type,
-                checkinDate,
-                checkoutDate,
-                idVendor,
-                useGL,
-                cityID.toString(),
-                sharingName,
-                remarks,
-                price.toString(),
-                codeHotel)
+              purposeID.toString(),
+              type,
+              checkinDate,
+              checkoutDate,
+              idVendor,
+              useGL,
+              cityID.toString(),
+              sharingName,
+              remarks,
+              price.toString(),
+              codeHotel,
+            )
             .then((value) => Get.off(
-                  AccommodationScreen(),
+                  const AccommodationScreen(),
                   arguments: {
                     'purposeID': purposeID,
                     'codeDocument': codeDocument,
+                    'formEdit': formEdit,
                   },
                 ));
       } catch (e) {

@@ -1,78 +1,73 @@
 /// success : true
-/// message : "Success Get Data"
-/// data : [{"id":1,"id_request_trip":1,"id_vendor":1,"flight_no":"1","code_airlines":"1","ticket_price":"15000","code_status_doc":0,"created_at":"2023-05-15 20:18:32","created_by":"1","updated_at":"2023-05-15 20:18:32","updated_by":null}]
+/// message : "Success Update Data"
+/// data : {"id":5,"id_request_trip":"1","id_vendor":"1","flight_no":"1","code_airlines":"1","ticket_price":15000,"code_status_doc":"0","created_at":"2023-05-19T08:10:59.000000Z","created_by":"2","updated_at":"2023-05-26T09:48:06.000000Z","updated_by":2}
 
-class GetAirlinessBytripModel {
-  GetAirlinessBytripModel({
+class UpdateAirlinessModel {
+  UpdateAirlinessModel({
       bool? success, 
       String? message, 
-      List<Data>? data,}){
+      Data? data,}){
     _success = success;
     _message = message;
     _data = data;
 }
 
-  GetAirlinessBytripModel.fromJson(dynamic json) {
+  UpdateAirlinessModel.fromJson(dynamic json) {
     _success = json['success'];
     _message = json['message'];
-    if (json['data'] != null) {
-      _data = [];
-      json['data'].forEach((v) {
-        _data?.add(Data.fromJson(v));
-      });
-    }
+    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
   bool? _success;
   String? _message;
-  List<Data>? _data;
-GetAirlinessBytripModel copyWith({  bool? success,
+  Data? _data;
+UpdateAirlinessModel copyWith({  bool? success,
   String? message,
-  List<Data>? data,
-}) => GetAirlinessBytripModel(  success: success ?? _success,
+  Data? data,
+}) => UpdateAirlinessModel(  success: success ?? _success,
   message: message ?? _message,
   data: data ?? _data,
 );
   bool? get success => _success;
   String? get message => _message;
-  List<Data>? get data => _data;
+  Data? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['success'] = _success;
     map['message'] = _message;
     if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
+      map['data'] = _data?.toJson();
     }
     return map;
   }
 
 }
 
-/// id : 1
-/// id_request_trip : 1
-/// id_vendor : 1
+/// id : 5
+/// id_request_trip : "1"
+/// id_vendor : "1"
 /// flight_no : "1"
 /// code_airlines : "1"
-/// ticket_price : "15000"
-/// code_status_doc : 0
-/// created_at : "2023-05-15 20:18:32"
-/// created_by : "1"
-/// updated_at : "2023-05-15 20:18:32"
-/// updated_by : null
+/// ticket_price : 15000
+/// code_status_doc : "0"
+/// created_at : "2023-05-19T08:10:59.000000Z"
+/// created_by : "2"
+/// updated_at : "2023-05-26T09:48:06.000000Z"
+/// updated_by : 2
 
 class Data {
   Data({
       num? id, 
-      num? idRequestTrip, 
-      num? idVendor, 
+      String? idRequestTrip, 
+      String? idVendor, 
       String? flightNo, 
       String? codeAirlines, 
-      String? ticketPrice, 
-      num? codeStatusDoc,
+      num? ticketPrice, 
+      String? codeStatusDoc, 
       String? createdAt, 
       String? createdBy, 
       String? updatedAt, 
-      dynamic updatedBy,}){
+      num? updatedBy,}){
     _id = id;
     _idRequestTrip = idRequestTrip;
     _idVendor = idVendor;
@@ -100,27 +95,27 @@ class Data {
     _updatedBy = json['updated_by'];
   }
   num? _id;
-  num? _idRequestTrip;
-  num? _idVendor;
+  String? _idRequestTrip;
+  String? _idVendor;
   String? _flightNo;
   String? _codeAirlines;
-  String? _ticketPrice;
-  num? _codeStatusDoc;
+  num? _ticketPrice;
+  String? _codeStatusDoc;
   String? _createdAt;
   String? _createdBy;
   String? _updatedAt;
-  dynamic _updatedBy;
+  num? _updatedBy;
 Data copyWith({  num? id,
-  num? idRequestTrip,
-  num? idVendor,
+  String? idRequestTrip,
+  String? idVendor,
   String? flightNo,
   String? codeAirlines,
-  String? ticketPrice,
-  num? codeStatusDoc,
+  num? ticketPrice,
+  String? codeStatusDoc,
   String? createdAt,
   String? createdBy,
   String? updatedAt,
-  dynamic updatedBy,
+  num? updatedBy,
 }) => Data(  id: id ?? _id,
   idRequestTrip: idRequestTrip ?? _idRequestTrip,
   idVendor: idVendor ?? _idVendor,
@@ -134,16 +129,16 @@ Data copyWith({  num? id,
   updatedBy: updatedBy ?? _updatedBy,
 );
   num? get id => _id;
-  num? get idRequestTrip => _idRequestTrip;
-  num? get idVendor => _idVendor;
+  String? get idRequestTrip => _idRequestTrip;
+  String? get idVendor => _idVendor;
   String? get flightNo => _flightNo;
   String? get codeAirlines => _codeAirlines;
-  String? get ticketPrice => _ticketPrice;
-  num? get codeStatusDoc => _codeStatusDoc;
+  num? get ticketPrice => _ticketPrice;
+  String? get codeStatusDoc => _codeStatusDoc;
   String? get createdAt => _createdAt;
   String? get createdBy => _createdBy;
   String? get updatedAt => _updatedAt;
-  dynamic get updatedBy => _updatedBy;
+  num? get updatedBy => _updatedBy;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

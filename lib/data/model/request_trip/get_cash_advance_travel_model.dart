@@ -1,6 +1,6 @@
 /// success : true
 /// message : "Success Get Data"
-/// data : [{"id":2,"id_employee":2,"type_ca":1,"no_ca":"2","id_request_trip":1,"id_currency":1,"grand_total":"1","is_paid":0,"is_journal":0,"code_status_doc":0,"created_at":"2023-05-19 10:26:41","updated_at":"2023-05-19 10:26:41","no_request_trip":"REQ/ABM/123","employee_name":null,"sn_employee":null,"currency_name":"Dollar Hong Kong","currency_symbol":"HK$","currency_code":"HKD","code":0,"status":"Draft","item_count":0}]
+/// data : [{"id":90,"id_employee":1,"type_ca":1,"no_ca":"CA/TEST/DUMMY/01","id_request_trip":26,"id_currency":7,"grand_total":"100000","is_paid":0,"is_journal":0,"code_status_doc":0,"created_at":"2023-05-24 05:26:49","updated_at":"2023-05-24 05:26:49","no_request_trip":"REQ/ABM/123","employee_name":"Jhon Doe","sn_employee":"12345","currency_name":"Rupiah","currency_symbol":"Rp","currency_code":"Rp","code":0,"status":"Draft","item_count":1},{"id":89,"id_employee":1,"type_ca":1,"no_ca":"CA/TEST/DUMMY/01","id_request_trip":25,"id_currency":7,"grand_total":"200000","is_paid":0,"is_journal":0,"code_status_doc":0,"created_at":"2023-05-24 05:23:20","updated_at":"2023-05-24 05:23:20","no_request_trip":"REQ/ABM/123","employee_name":"Jhon Doe","sn_employee":"12345","currency_name":"Rupiah","currency_symbol":"Rp","currency_code":"Rp","code":0,"status":"Draft","item_count":1},{"id":88,"id_employee":1,"type_ca":1,"no_ca":"CA/TEST/DUMMY/01","id_request_trip":1,"id_currency":1,"grand_total":"72000","is_paid":0,"is_journal":0,"code_status_doc":0,"created_at":"2023-05-24 05:22:43","updated_at":"2023-05-24 05:22:43","no_request_trip":null,"employee_name":"Jhon Doe","sn_employee":"12345","currency_name":null,"currency_symbol":null,"currency_code":null,"code":0,"status":"Draft","item_count":2},{"id":87,"id_employee":1,"type_ca":1,"no_ca":"CA/TEST/DUMMY/01","id_request_trip":1,"id_currency":1,"grand_total":"72000","is_paid":0,"is_journal":0,"code_status_doc":0,"created_at":"2023-05-24 05:22:26","updated_at":"2023-05-24 05:22:26","no_request_trip":null,"employee_name":"Jhon Doe","sn_employee":"12345","currency_name":null,"currency_symbol":null,"currency_code":null,"code":0,"status":"Draft","item_count":2},{"id":86,"id_employee":1,"type_ca":1,"no_ca":"CA/TEST/DUMMY/01","id_request_trip":1,"id_currency":1,"grand_total":"72000","is_paid":0,"is_journal":0,"code_status_doc":0,"created_at":"2023-05-24 02:00:10","updated_at":"2023-05-24 02:00:10","no_request_trip":null,"employee_name":"Jhon Doe","sn_employee":"12345","currency_name":null,"currency_symbol":null,"currency_code":null,"code":0,"status":"Draft","item_count":2},{"id":85,"id_employee":1,"type_ca":1,"no_ca":"CA/TEST/DUMMY/01","id_request_trip":1,"id_currency":1,"grand_total":"72000","is_paid":0,"is_journal":0,"code_status_doc":0,"created_at":"2023-05-24 01:56:58","updated_at":"2023-05-24 01:56:58","no_request_trip":null,"employee_name":"Jhon Doe","sn_employee":"12345","currency_name":null,"currency_symbol":null,"currency_code":null,"code":0,"status":"Draft","item_count":2},{"id":84,"id_employee":1,"type_ca":1,"no_ca":"CA/TEST/DUMMY/01","id_request_trip":1,"id_currency":1,"grand_total":"72000","is_paid":0,"is_journal":0,"code_status_doc":0,"created_at":"2023-05-24 01:56:34","updated_at":"2023-05-24 01:56:34","no_request_trip":null,"employee_name":"Jhon Doe","sn_employee":"12345","currency_name":null,"currency_symbol":null,"currency_code":null,"code":0,"status":"Draft","item_count":0}]
 
 class GetCashAdvanceTravelModel {
   GetCashAdvanceTravelModel({
@@ -48,27 +48,27 @@ GetCashAdvanceTravelModel copyWith({  bool? success,
 
 }
 
-/// id : 2
-/// id_employee : 2
+/// id : 90
+/// id_employee : 1
 /// type_ca : 1
-/// no_ca : "2"
-/// id_request_trip : 1
-/// id_currency : 1
-/// grand_total : "1"
+/// no_ca : "CA/TEST/DUMMY/01"
+/// id_request_trip : 26
+/// id_currency : 7
+/// grand_total : "100000"
 /// is_paid : 0
 /// is_journal : 0
 /// code_status_doc : 0
-/// created_at : "2023-05-19 10:26:41"
-/// updated_at : "2023-05-19 10:26:41"
+/// created_at : "2023-05-24 05:26:49"
+/// updated_at : "2023-05-24 05:26:49"
 /// no_request_trip : "REQ/ABM/123"
-/// employee_name : null
-/// sn_employee : null
-/// currency_name : "Dollar Hong Kong"
-/// currency_symbol : "HK$"
-/// currency_code : "HKD"
+/// employee_name : "Jhon Doe"
+/// sn_employee : "12345"
+/// currency_name : "Rupiah"
+/// currency_symbol : "Rp"
+/// currency_code : "Rp"
 /// code : 0
 /// status : "Draft"
-/// item_count : 0
+/// item_count : 1
 
 class Data {
   Data({
@@ -85,8 +85,8 @@ class Data {
       String? createdAt, 
       String? updatedAt, 
       String? noRequestTrip, 
-      dynamic employeeName, 
-      dynamic snEmployee, 
+      String? employeeName, 
+      String? snEmployee, 
       String? currencyName, 
       String? currencySymbol, 
       String? currencyCode, 
@@ -152,8 +152,8 @@ class Data {
   String? _createdAt;
   String? _updatedAt;
   String? _noRequestTrip;
-  dynamic _employeeName;
-  dynamic _snEmployee;
+  String? _employeeName;
+  String? _snEmployee;
   String? _currencyName;
   String? _currencySymbol;
   String? _currencyCode;
@@ -173,8 +173,8 @@ Data copyWith({  num? id,
   String? createdAt,
   String? updatedAt,
   String? noRequestTrip,
-  dynamic employeeName,
-  dynamic snEmployee,
+  String? employeeName,
+  String? snEmployee,
   String? currencyName,
   String? currencySymbol,
   String? currencyCode,
@@ -216,8 +216,8 @@ Data copyWith({  num? id,
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
   String? get noRequestTrip => _noRequestTrip;
-  dynamic get employeeName => _employeeName;
-  dynamic get snEmployee => _snEmployee;
+  String? get employeeName => _employeeName;
+  String? get snEmployee => _snEmployee;
   String? get currencyName => _currencyName;
   String? get currencySymbol => _currencySymbol;
   String? get currencyCode => _currencyCode;

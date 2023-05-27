@@ -11,6 +11,8 @@ import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/edit/edit_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_controller.dart';
+import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
+import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 
 class TaxiVoucherScreen extends StatelessWidget {
@@ -60,7 +62,7 @@ class TaxiVoucherScreen extends StatelessWidget {
                                   title: e.accountName.toString(),
                                   subtitle: e.date,
                                   status: e.status.toString(),
-                                  info: e.amount,
+                                  info: int.parse(e.amount.toString()).toCurrency(),
                                   isEdit: true,
                                   editAction: () => Get.to(
                                       const EditTaxiVoucherScreen(),
@@ -132,10 +134,11 @@ class TaxiVoucherScreen extends StatelessWidget {
                                 fontColor: infoColor,
                                 onPressed: () => Get.back(),
                               ),
-                              const CustomFilledButton(
+                              CustomFilledButton(
                                 width: 100,
                                 color: infoColor,
                                 title: "Draft",
+                                onPressed: ()=> Get.offAll(RequestTripListScreen()),
                               ),
                               CustomFilledButton(
                                 width: 100,
@@ -160,12 +163,7 @@ class TaxiVoucherScreen extends StatelessWidget {
                                 width: 100,
                                 color: infoColor,
                                 title: "Next",
-                                onPressed: () => Get.to(
-                                    const OtherTransportScreen(),
-                                    arguments: {
-                                      'purposeID': controller.purposeID,
-                                      'codeDocument': controller.codeDocument
-                                    }),
+                                onPressed: () => controller.next(),
                               ),
                             ],
                           ),

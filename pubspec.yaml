@@ -32,6 +32,7 @@ dependencies:
   json_annotation: ^4.8.0
   dartz: ^0.10.1
   equatable: ^2.0.5
+  easy_stepper: ^0.5.2+1
 
 dev_dependencies:
   build_runner: ^2.3.3

@@ -6,10 +6,13 @@ import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
 class CustomSearchBar extends StatefulWidget {
-  const CustomSearchBar({super.key, required this.onChanged, this.onPressedFilter});
+  const CustomSearchBar({super.key, this.onChanged, this.onPressedFilter, this.margin, this.padding, this.onSubmit});
 
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmit;
   final VoidCallback? onPressedFilter;
+  final EdgeInsets? margin;
+  final EdgeInsets? padding;
 
   @override
   State<CustomSearchBar> createState() => _CustomSearchBarState();
@@ -27,15 +30,21 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 1000), () {
-      widget.onChanged(query);
+      widget.onChanged!(query);
+    });
+  }
+  _onSubmit(String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 1000), () {
+      widget.onSubmit!(query);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 15),
-      padding: const EdgeInsets.all(15),
+      margin: widget.margin ?? EdgeInsets.symmetric(vertical: 15),
+      padding: widget.padding ?? EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: whiteColor,
         borderRadius: BorderRadius.circular(8),
@@ -45,8 +54,9 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           Expanded(
             child: TextField(
               onChanged: _onSearchChanged,
+              onSubmitted: _onSubmit,
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                // contentPadding: const EdgeInsets.symmetric(vertical: 8),
                   hintText: "Search".tr, prefixIcon: const Icon(IconlyLight.search)),
             ),
           ),

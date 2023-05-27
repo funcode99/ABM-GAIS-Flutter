@@ -11,6 +11,10 @@ import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_controller.dart';
+import 'package:gais/screen/tms/request_trip/add/cash_advance/edit/edit_cash_advance_travel_screen.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
+import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
+import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 
 class CashAdvanceScreen extends StatelessWidget {
@@ -43,11 +47,8 @@ class CashAdvanceScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
-                      child: SvgPicture.asset(ImageConstant.emptyWalletTime,
-                          height: 25),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                      child: SvgPicture.asset(ImageConstant.emptyWalletTime, height: 25),
                     ),
                     Text("Cash Advance", style: appTitle),
                     SizedBox(height: 14),
@@ -55,52 +56,38 @@ class CashAdvanceScreen extends StatelessWidget {
                       children: controller.caList
                           .mapIndexed((i, e) => CustomTripCard(
                                 listNumber: i + 1,
-                                title: e.employeeName ?? "",
-                                subtitle: e.noRequestTrip,
+                                title: e.noCa.toString(),
+                                // subtitle: e.noRequestTrip,
                                 status: e.status,
-                                info: e.grandTotal,
+                                info: int.parse(e.grandTotal.toString()).toCurrency(),
                                 isEdit: true,
+                                editAction: () async {
+                                  Get.to(() => const EditCashAdvanceTravelScreen(), arguments: {"item": e})
+                                      ?.then((value) => controller.fetchList());
+                                },
                                 isDelete: true,
                                 content: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Currency", style: listTitleTextStyle),
+                                        Text(e.currencyName.toString(), style: listSubTitleTextStyle),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Text("Item", style: listTitleTextStyle),
-                                        Text("Meals",
-                                            style: listSubTitleTextStyle),
+                                        Text(e.itemCount.toString(), style: listSubTitleTextStyle),
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text("Frequency",
-                                            style: listTitleTextStyle),
-                                        Text("2", style: listSubTitleTextStyle),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Currency",
-                                            style: listTitleTextStyle),
-                                        Text(e.currencyName.toString(),
-                                            style: listSubTitleTextStyle),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Nominal",
-                                            style: listTitleTextStyle),
-                                        Text("60.000",
-                                            style: listSubTitleTextStyle),
+                                        Text("Notes", style: listTitleTextStyle),
+                                        Text("notes".toString(), style: listSubTitleTextStyle),
                                       ],
                                     ),
                                   ],
@@ -119,9 +106,10 @@ class CashAdvanceScreen extends StatelessWidget {
                           AddCashAdvanceTravelScreen(),
                           arguments: {
                             'purposeID': controller.purposeID,
-                            'codeDocument': controller.codeDocument
+                            'codeDocument': controller.codeDocument,
+                            'formEdit' : controller.formEdit
                           },
-                        ),
+                        )?.then((value) => controller.fetchList()),
                       ),
                     ),
                     Row(
@@ -139,12 +127,16 @@ class CashAdvanceScreen extends StatelessWidget {
                           width: 100,
                           color: infoColor,
                           title: "Draft",
+                          onPressed: () => controller.formEdit == true
+                              ? Get.off(FormRequestTripScreen(),
+                                  arguments: {'id': controller.purposeID, 'codeDocument': controller.codeDocument})
+                              : Get.offAll(RequestTripListScreen()),
                         ),
                         CustomFilledButton(
                           width: 100,
                           color: infoColor,
                           title: "Submit",
-                          onPressed: ()=> controller.submit(),
+                          onPressed: () => controller.submit(),
                         ),
                       ],
                     )

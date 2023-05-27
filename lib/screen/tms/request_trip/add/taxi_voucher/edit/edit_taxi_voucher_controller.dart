@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart' as tv;
+import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
@@ -8,6 +10,7 @@ import 'package:gais/data/model/reference/get_city_model.dart' as city;
 class EditTaxiVoucherController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
   int tvID = Get.arguments['id'];
+  bool? formEdit = Get.arguments['formEdit'];
 
   DateFormat dateFormat = DateFormat("dd-MM-yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy/MM/dd");
@@ -72,7 +75,7 @@ class EditTaxiVoucherController extends BaseController {
       date.text = value.data?.first.date ?? "";
       departure = value.data?.first.idDepartureCity.toString();
       arrival = value.data?.first.idArrivalCity.toString();
-      amount.text = value.data?.first.amount ?? "";
+      amount.text = int.parse(value.data?.first.amount ?? "").toCurrency();
       accountName.text = value.data?.first.accountName ?? "";
       remarks.text = value.data?.first.remarks ?? "";
     });
@@ -85,14 +88,12 @@ class EditTaxiVoucherController extends BaseController {
           .updateTaxiVoucher(
         taxiVoucherID!.toInt(),
         purposeID.toString(),
-        amount.text,
+        amount.text.digitOnly(),
         accountName.text,
         departure.toString(),
         arrival.toString(),
         remarks.text,
-        selectedDate != null
-            ? saveDateFormat.format(selectedDate!).toString()
-            : date.text,
+        selectedDate != null ? saveDateFormat.format(selectedDate!).toString() : date.text,
         accountName.text,
       )
           .then(

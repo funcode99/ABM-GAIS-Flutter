@@ -24,13 +24,11 @@ class EditAccommodationScreen extends StatelessWidget {
             appBar: TopBar(
               title: Text("Accommodation", style: appTitle),
               leading: IconButton(
-                  onPressed: () =>
-                      Get.off(
-                          AccommodationScreen(),
-                          arguments: {
-                            'purposeID': controller.purposeID,
-                            'codeDocument': controller.codeDocument,
-                          }),
+                  onPressed: () => Get.off(AccommodationScreen(), arguments: {
+                        'purposeID': controller.purposeID,
+                        'codeDocument': controller.codeDocument,
+                        'formEdit': controller.formEdit,
+                      }),
                   icon: Icon(
                     Icons.chevron_left,
                     color: Colors.black,
@@ -54,11 +52,8 @@ class EditAccommodationScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
-                      child:
-                      SvgPicture.asset(ImageConstant.building, height: 25),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                      child: SvgPicture.asset(ImageConstant.building, height: 25),
                     ),
                     Text("Accommodation", style: appTitle),
                     const SizedBox(height: 14),
@@ -111,8 +106,7 @@ class EditAccommodationScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             const SizedBox(height: 35),
-                            Text("Requested Accommodation",
-                                style: formlabelTextStyle),
+                            Text("Requested Accommodation", style: formlabelTextStyle),
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
                               label: "City",
@@ -126,11 +120,10 @@ class EditAccommodationScreen extends StatelessWidget {
                                 return null;
                               },
                               items: controller.cityList
-                                  .map((e) =>
-                                  DropdownMenuItem(
-                                    value: e.id.toString(),
-                                    child: Text(e.cityName.toString()),
-                                  ))
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.cityName.toString()),
+                                      ))
                                   .toList(),
                               onChanged: (value) {
                                 controller.selectedCity = value;
@@ -151,19 +144,16 @@ class EditAccommodationScreen extends StatelessWidget {
                               },
                               readOnly: true,
                               suffixIcon: const Icon(Icons.calendar_month),
-                              onTap: () =>
-                                  showDatePicker(
+                              onTap: () => showDatePicker(
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
-                                      .then((date) {
-                                    controller.selectedDate = date!;
-                                    controller.checkinDate.text =
-                                        controller.dateFormat.format(date);
-                                    controller.update();
-                                  }),
+                                      lastDate: DateTime.now().add(const Duration(days: 30)))
+                                  .then((date) {
+                                controller.selectedDate = date!;
+                                controller.checkinDate.text = controller.dateFormat.format(date);
+                                controller.update();
+                              }),
                             ),
                             const SizedBox(height: 8),
                             CustomTextFormField(
@@ -179,19 +169,16 @@ class EditAccommodationScreen extends StatelessWidget {
                               },
                               readOnly: true,
                               suffixIcon: const Icon(Icons.calendar_month),
-                              onTap: () =>
-                                  showDatePicker(
+                              onTap: () => showDatePicker(
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
-                                      .then((date) {
-                                    controller.selectedDate = date!;
-                                    controller.checkoutDate.text =
-                                        controller.dateFormat.format(date);
-                                    controller.update();
-                                  }),
+                                      lastDate: DateTime.now().add(const Duration(days: 30)))
+                                  .then((date) {
+                                controller.selectedDate = date!;
+                                controller.checkoutDate.text = controller.dateFormat.format(date);
+                                controller.update();
+                              }),
                             ),
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
@@ -206,12 +193,10 @@ class EditAccommodationScreen extends StatelessWidget {
                                 return null;
                               },
                               items: controller.hotelTypeList
-                                  .map((e) =>
-                                  DropdownMenuItem(
-                                    value: e.id.toString(),
-                                    child:
-                                    Text(e.typeAccomodation.toString()),
-                                  ))
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.typeAccomodation.toString()),
+                                      ))
                                   .toList(),
                               onChanged: (value) {
                                 controller.accommodationType = value;
@@ -240,10 +225,10 @@ class EditAccommodationScreen extends StatelessWidget {
                             ),
                             controller.isSharing == true
                                 ? CustomTextFormField(
-                              controller: controller.sharingName,
-                              label: "",
-                              hintText: "Name",
-                            )
+                                    controller: controller.sharingName,
+                                    label: "",
+                                    hintText: "Name",
+                                  )
                                 : Container(),
                             const SizedBox(height: 8),
                             Text("Create GL?", style: listTitleTextStyle),
@@ -269,21 +254,18 @@ class EditAccommodationScreen extends StatelessWidget {
                                   borderColor: infoColor,
                                   title: "Cancel",
                                   fontColor: infoColor,
-                                  onPressed: () => Get.off(
-                                      AccommodationScreen(),
-                                      arguments: {
-                                        'purposeID': controller.purposeID,
-                                        'codeDocument': controller.codeDocument,
-                                      }),
+                                  onPressed: () => Get.off(AccommodationScreen(), arguments: {
+                                    'purposeID': controller.purposeID,
+                                    'codeDocument': controller.codeDocument,
+                                    'formKey': controller.formEdit,
+                                  }),
                                 ),
                                 CustomFilledButton(
                                   width: 100,
                                   color: infoColor,
                                   title: "Check",
                                   onPressed: () {
-                                    if (controller.formKey.currentState
-                                        ?.validate() == true)
-                                      controller.check();
+                                    if (controller.formKey.currentState?.validate() == true) controller.check();
                                   },
                                 ),
                               ],

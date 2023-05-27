@@ -17,18 +17,19 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/item_cash_advance_travel/add/add_item_cash_advance_travel_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/cash_advance/edit/edit_cash_advance_travel_controller.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-class AddCashAdvanceTravelScreen extends StatelessWidget {
-  const AddCashAdvanceTravelScreen({Key? key}) : super(key: key);
+class EditCashAdvanceTravelScreen extends StatelessWidget {
+  const EditCashAdvanceTravelScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AddCashAdvanceTravelController>(
-        init: AddCashAdvanceTravelController(),
+    return GetBuilder<EditCashAdvanceTravelController>(
+        init: EditCashAdvanceTravelController(),
         builder: (controller) {
           return Scaffold(
             backgroundColor: baseColor,
@@ -67,6 +68,11 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                     Text("Cash Advance Travel", style: appTitle),
                     Form(
                       key: controller.formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      onChanged: () {
+                        controller.isButtonEnabled = controller.formKey.currentState!.validate();
+                        controller.update();
+                      },
                       child: Container(
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
@@ -98,7 +104,7 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                                         child: Text(e.currencyName.toString()),
                                         value: e.id.toString(),
                                         onTap: () {
-                                          controller.currencyCode = "${e.currencyCode.toString()}";
+                                          controller.currencyCode = e.currencyCode.toString();
                                         },
                                       ))
                                   .toList(),
@@ -128,7 +134,7 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                                 .mapIndexed((index, e) => CustomTripCard(
                                       listNumber: index + 1,
                                       title: e.itemName.toString(),
-                                      info: "${controller.currencyCode} ${int.parse(e.total.toString()).toCurrency()}",
+                                      info: "${controller.currencyCode}. ${int.parse(e.total.toString()).toCurrency()}",
                                       isEdit: true,
                                       editButton: GestureDetector(
                                         child: Container(
@@ -155,12 +161,12 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                                           child: Icon(IconlyBold.delete, color: whiteColor),
                                         ),
                                         onTap: () {
-                                          // Get.dialog(DeleteConfirmationDialog(
-                                          //   onDeletePressed: () {
+                                          Get.dialog(DeleteConfirmationDialog(
+                                            onDeletePressed: () {
                                               controller.removeItem(e);
                                               Get.back();
-                                            // },
-                                          // ));
+                                            },
+                                          ));
                                         },
                                       ),
                                       content: Padding(
@@ -179,7 +185,7 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
                                                 Text("Nominal", style: listTitleTextStyle),
-                                                Text("${controller.currencyCode} ${int.parse(e.nominal.toString()).toCurrency()}",
+                                                Text("${controller.currencyCode}.${int.parse(e.nominal.toString()).toCurrency()}",
                                                     style: listSubTitleTextStyle),
                                               ],
                                             ),
@@ -230,7 +236,7 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                                     title: "Save",
                                     width: 100,
                                     onPressed: () {
-                                      if (controller.formKey.currentState?.validate() == true) controller.saveData();
+                                      controller.saveData();
                                     }),
                               ],
                             ),

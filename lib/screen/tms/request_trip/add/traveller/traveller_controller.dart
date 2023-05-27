@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
-import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart'
-    as guest;
+import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
+import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
 import 'package:get/get.dart';
 
 class AirlinesController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
-  int codeDocument = Get.arguments['codeDocument'];
+  int? codeDocument = Get.arguments['codeDocument'];
+  bool? formEdit = Get.arguments['formEdit'];
 
   int? travellerID;
   int? jobBandID;
@@ -41,8 +43,7 @@ class AirlinesController extends BaseController {
     });
 
     var hotel = await repository.getJobBandList();
-    travellerHotel =
-        hotel.data?.where((e) => e.id == jobBandID).first.hotelFare;
+    travellerHotel = hotel.data?.where((e) => e.id == jobBandID).first.hotelFare;
     // var flight = await repository.getFlightList();
     // travellerFlight =
     //     flight.data?.where((e) => e.id == jobBandID).first.flightClass;
@@ -54,9 +55,7 @@ class AirlinesController extends BaseController {
     try {
       var guestData = await repository.getGuestBytripList(purposeID);
       guestModel = guestData;
-      guestList.addAll(
-          guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ??
-              []);
+      guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
       print("guest : ${guestData.data?.where((e) => e.id == purposeID).isNotEmpty}");
     } catch (e) {
       guestList = [];
@@ -96,5 +95,23 @@ class AirlinesController extends BaseController {
         ),
       );
     }
+  }
+
+  void next() {
+    formEdit == true
+        ? Get.back()
+        : codeDocument == 4
+            ? Get.to(
+                const TaxiVoucherScreen(),
+                arguments: {'purposeID': purposeID, 'codeDocument': codeDocument},
+              )?.then((result) {
+                result.printInfo(info: "result");
+              })
+            : Get.to(
+                const AirlinessScreen(),
+                arguments: {'purposeID': purposeID, 'codeDocument': codeDocument},
+              )?.then((result) {
+                result.printInfo(info: "result");
+              });
   }
 }

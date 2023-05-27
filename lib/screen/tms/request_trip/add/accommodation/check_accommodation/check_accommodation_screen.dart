@@ -26,9 +26,7 @@ class CheckAccommodationScreen extends StatelessWidget {
                 title: Text("Accommodation", style: appTitle),
                 leading: IconButton(
                     onPressed: () => Get.off(
-                          controller.isEdit == true
-                              ? EditAccommodationScreen()
-                              : AddAccommodationScreen(),
+                          controller.isEdit == true ? EditAccommodationScreen() : AddAccommodationScreen(),
                           arguments: {
                             'purposeID': controller.purposeID,
                             'codeDocument': controller.codeDocument,
@@ -56,36 +54,23 @@ class CheckAccommodationScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
-                      child:
-                          SvgPicture.asset(ImageConstant.building, height: 25),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                      child: SvgPicture.asset(ImageConstant.building, height: 25),
                     ),
                     Text("Accommodation", style: appTitle),
                     SizedBox(height: 14),
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(10)),
+                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(10)),
                       child: Column(
                         children: [
-                          Text(controller.city.toString(),
-                              style: listTitleTextStyle.copyWith(
-                                  color: whiteColor)),
+                          Text(controller.city.toString(), style: listTitleTextStyle.copyWith(color: whiteColor)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(controller.checkinDate,
-                                  style: listTitleTextStyle.copyWith(
-                                      color: whiteColor)),
-                              const Icon(IconlyLight.arrow_right,
-                                  color: whiteColor),
-                              Text(controller.checkoutDate,
-                                  style: listTitleTextStyle.copyWith(
-                                      color: whiteColor)),
+                              Text(controller.checkinDate, style: listTitleTextStyle.copyWith(color: whiteColor)),
+                              const Icon(IconlyLight.arrow_right, color: whiteColor),
+                              Text(controller.checkoutDate, style: listTitleTextStyle.copyWith(color: whiteColor)),
                             ],
                           ),
                         ],
@@ -100,48 +85,32 @@ class CheckAccommodationScreen extends StatelessWidget {
                                       Card(
                                         elevation: 3,
                                         child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 7, horizontal: 4),
+                                          padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 4),
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Image.asset(
-                                                  "assets/img/hotel.png"),
+                                              Image.asset("assets/img/hotel.png"),
                                               Container(
-                                                margin:
-                                                    EdgeInsets.only(left: 5),
+                                                margin: EdgeInsets.only(left: 5),
                                                 child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(e.hotelName.toString(),
-                                                        style:
-                                                            listTitleTextStyle),
+                                                    Text(e.hotelName.toString(), style: listTitleTextStyle),
                                                     RatingBarIndicator(
-                                                      rating: e.rating
-                                                              ?.toDouble() ??
-                                                          0,
-                                                      itemBuilder:
-                                                          (context, index) =>
-                                                              Icon(
+                                                      rating: e.rating?.toDouble() ?? 0,
+                                                      itemBuilder: (context, index) => Icon(
                                                         Icons.star,
                                                         color: Colors.amber,
                                                       ),
                                                       itemCount: 5,
                                                       itemSize: 20.0,
-                                                      direction:
-                                                          Axis.horizontal,
+                                                      direction: Axis.horizontal,
                                                     ),
                                                     SizedBox(
                                                       width: 150,
                                                       child: Text(
                                                         e.address.toString(),
-                                                        style:
-                                                            listSubTitleTextStyle
-                                                                .copyWith(
-                                                                    color: Colors
-                                                                        .blue),
+                                                        style: listSubTitleTextStyle.copyWith(color: Colors.blue),
                                                       ),
                                                     )
                                                   ],
@@ -151,48 +120,31 @@ class CheckAccommodationScreen extends StatelessWidget {
                                                 children: [
                                                   Text(
                                                     "899.990",
-                                                    style:
-                                                        listSubTitleTextStyle,
+                                                    style: listSubTitleTextStyle,
                                                   ),
                                                   GestureDetector(
                                                     child: Container(
                                                       height: 30,
-                                                      padding:
-                                                          EdgeInsets.all(4),
-                                                      decoration: BoxDecoration(
-                                                          color: infoColor,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5)),
+                                                      padding: EdgeInsets.all(4),
+                                                      decoration:
+                                                          BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(5)),
                                                       child: Row(
                                                         children: [
                                                           Text(
                                                             "View Room ",
-                                                            style: listSubTitleTextStyle
-                                                                .copyWith(
-                                                                    color:
-                                                                        whiteColor),
+                                                            style: listSubTitleTextStyle.copyWith(color: whiteColor),
                                                           ),
                                                           Icon(
-                                                            controller.viewRoom[
-                                                                        i] ==
-                                                                    false
-                                                                ? Icons
-                                                                    .keyboard_arrow_down_outlined
-                                                                : Icons
-                                                                    .keyboard_arrow_up,
+                                                            controller.viewRoom[i] == false
+                                                                ? Icons.keyboard_arrow_down_outlined
+                                                                : Icons.keyboard_arrow_up,
                                                             color: whiteColor,
                                                           )
                                                         ],
                                                       ),
                                                     ),
                                                     onTap: () {
-                                                      controller.viewRoom[i] =
-                                                          controller.viewRoom[
-                                                                      i] ==
-                                                                  false
-                                                              ? true
-                                                              : false;
+                                                      controller.viewRoom[i] = controller.viewRoom[i] == false ? true : false;
                                                       controller.update();
                                                     },
                                                   ),
@@ -208,70 +160,44 @@ class CheckAccommodationScreen extends StatelessWidget {
                                               child: Card(
                                                 elevation: 3,
                                                 child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 8,
-                                                      horizontal: 5),
+                                                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                                                   child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
-                                                      Image.asset(
-                                                          "assets/img/hotel_room.png"),
+                                                      Image.asset("assets/img/hotel_room.png"),
                                                       Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
-                                                          Text("Deluxe Room",
-                                                              style:
-                                                                  listTitleTextStyle),
-                                                          Text(
-                                                              "65ft square\nInclude Breakfast")
+                                                          Text("Deluxe Room", style: listTitleTextStyle),
+                                                          Text("65ft square\nInclude Breakfast")
                                                         ],
                                                       ),
                                                       Column(
                                                         children: [
                                                           Text(
                                                             "899.990",
-                                                            style:
-                                                                listSubTitleTextStyle,
+                                                            style: listSubTitleTextStyle,
                                                           ),
                                                           GestureDetector(
                                                             child: Container(
                                                               height: 30,
-                                                              margin: EdgeInsets
-                                                                  .only(top: 5),
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(4),
+                                                              margin: EdgeInsets.only(top: 5),
+                                                              padding: EdgeInsets.all(4),
                                                               decoration: BoxDecoration(
-                                                                  color:
-                                                                      infoColor,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              5)),
+                                                                  color: infoColor, borderRadius: BorderRadius.circular(5)),
                                                               child: Text(
                                                                 "Book ",
-                                                                style: listSubTitleTextStyle
-                                                                    .copyWith(
-                                                                        color:
-                                                                            whiteColor),
+                                                                style: listSubTitleTextStyle.copyWith(color: whiteColor),
                                                               ),
                                                             ),
                                                             onTap: () {
-                                                              controller
-                                                                  .selectHotel(
+                                                              controller.selectHotel(
                                                                 e.id.toString(),
                                                                 899990,
                                                                 e.id.toString(),
-                                                                e.idTypeHotel
-                                                                    .toString(),
+                                                                e.idTypeHotel.toString(),
                                                               );
-                                                              controller
-                                                                  .update();
+                                                              controller.update();
                                                             },
                                                           ),
                                                         ],

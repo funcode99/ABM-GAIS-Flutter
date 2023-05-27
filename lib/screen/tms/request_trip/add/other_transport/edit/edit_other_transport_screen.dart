@@ -176,6 +176,7 @@ class EditOtherTransportScreen extends StatelessWidget {
                               label: "Quantity",
                               hintText: "Quantity",
                               isRequired: true,
+                              inputType: TextInputType.number,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return "This field is required";
