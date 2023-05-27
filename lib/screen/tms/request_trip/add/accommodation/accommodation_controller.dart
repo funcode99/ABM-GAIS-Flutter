@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
-import 'package:gais/data/model/request_trip/get_accommodation_model.dart'
-    as acc;
+import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as acc;
+import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_screen.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
 
 class AccommodationController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
-  int codeDocument = Get.arguments['codeDocument'];
+  int? codeDocument = Get.arguments['codeDocument'];
+  bool? formEdit = Get.arguments['formEdit'];
 
   List<acc.Data> accommodationsList = [];
   acc.GetAccommodationModel? accommodationsModel;
@@ -17,22 +19,18 @@ class AccommodationController extends BaseController {
   void onInit() {
     super.onInit();
     Future.wait([fetchList()]);
+    formEdit.printInfo();
   }
 
   Future<void> fetchList() async {
     accommodationsList = [];
     try {
-      var accommodation =
-          await repository.getAccommodationBytripList(purposeID);
+      var accommodation = await repository.getAccommodationBytripList(purposeID);
       accommodationsModel = accommodation;
-      accommodationsList.addAll(accommodation.data
-              ?.where((e) => e.idRequestTrip == purposeID)
-              .toSet()
-              .toList() ??
-          []);
+      accommodationsList.addAll(accommodation.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
       update();
-    } catch (e,i) {
+    } catch (e, i) {
       e.printError();
       i.printError();
     }
@@ -68,5 +66,12 @@ class AccommodationController extends BaseController {
     }
   }
 
-
+  void next() {
+    formEdit == true
+        ? Get.off(FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+        : Get.to(
+            const CashAdvanceScreen(),
+            arguments: {'purposeID': purposeID, 'codeDocument': codeDocument},
+          );
+  }
 }

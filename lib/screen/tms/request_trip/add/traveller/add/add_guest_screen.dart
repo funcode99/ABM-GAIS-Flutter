@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
@@ -8,6 +9,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_controller.dart';
+import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
 import 'package:get/get.dart';
 
 class AddGuestScreen extends StatelessWidget {
@@ -157,6 +159,7 @@ class AddGuestScreen extends StatelessWidget {
                               controller: controller.guestContact,
                               label: "Contact No",
                               isRequired: true,
+                              inputType: TextInputType.number,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return "This field is required";

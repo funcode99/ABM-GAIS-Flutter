@@ -2,6 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/data/model/login_model.dart';
+import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/screen/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -12,6 +13,7 @@ class LoginController extends BaseController {
   bool isErrorPasswordLogin = false;
   bool isObscurePasswordLogin = true;
   bool isRemember = false;
+  bool isLoading = false;
 
   Widget showIcon = Icon(
     IconlyBold.show,
@@ -40,14 +42,17 @@ class LoginController extends BaseController {
   }
 
   Future cekToken() async {
+    isLoading = true;
     print("token : ${await storage.readToken()}");
     print("role : ${await storage.readRole()}");
     if (await storage.readToken() != null) {
       Get.offAll(HomeScreen());
     }
+    isLoading = false;
   }
 
   Future<void> doLogin() async {
+    isLoading = true;
     try {
       await repository
           .postLogin(usernameLoginController.text, passwordLoginController.text)
@@ -72,6 +77,8 @@ class LoginController extends BaseController {
             ),
           )
           .then((value) => Get.offAll(() => const HomeScreen()));
+      isLoading = false;
+      update();
     } catch (e, i) {
       e.printError();
       i.printError();

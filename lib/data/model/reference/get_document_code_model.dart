@@ -4,13 +4,14 @@
 
 class GetDocumentCodeModel {
   GetDocumentCodeModel({
-      bool? success, 
-      String? message, 
-      List<Data>? data,}){
+    bool? success,
+    String? message,
+    List<Data>? data,
+  }) {
     _success = success;
     _message = message;
     _data = data;
-}
+  }
 
   GetDocumentCodeModel.fromJson(dynamic json) {
     _success = json['success'];
@@ -22,18 +23,26 @@ class GetDocumentCodeModel {
       });
     }
   }
+
   bool? _success;
   String? _message;
   List<Data>? _data;
-GetDocumentCodeModel copyWith({  bool? success,
-  String? message,
-  List<Data>? data,
-}) => GetDocumentCodeModel(  success: success ?? _success,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+
+  GetDocumentCodeModel copyWith({
+    bool? success,
+    String? message,
+    List<Data>? data,
+  }) =>
+      GetDocumentCodeModel(
+        success: success ?? _success,
+        message: message ?? _message,
+        data: data ?? _data,
+      );
+
   bool? get success => _success;
+
   String? get message => _message;
+
   List<Data>? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -45,7 +54,6 @@ GetDocumentCodeModel copyWith({  bool? success,
     }
     return map;
   }
-
 }
 
 /// id : 1
@@ -58,21 +66,26 @@ GetDocumentCodeModel copyWith({  bool? success,
 
 class Data {
   Data({
-      num? id, 
-      String? codeDocument, 
-      String? documentName, 
-      dynamic createdAt, 
-      dynamic createdBy, 
-      dynamic updatedAt, 
-      dynamic updatedBy,}){
+    num? id,
+    String? codeDocument,
+    String? documentName,
+    bool? isSelected = false,
+    bool? isShow = true,
+    dynamic createdAt,
+    dynamic createdBy,
+    dynamic updatedAt,
+    dynamic updatedBy,
+  }) {
     _id = id;
     _codeDocument = codeDocument;
     _documentName = documentName;
+    _isSelected = isSelected;
+    _isShow = isShow;
     _createdAt = createdAt;
     _createdBy = createdBy;
     _updatedAt = updatedAt;
     _updatedBy = updatedBy;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _id = json['id'];
@@ -83,34 +96,63 @@ class Data {
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
   }
+
   num? _id;
   String? _codeDocument;
   String? _documentName;
+  bool? _isSelected = false;
+  bool? _isShow = true;
+
+  bool get isSelected => _isSelected ?? false;
+  bool get isShow => _isShow ?? true;
+
+  set isSelected(bool value) {
+    _isSelected = value;
+  }
+  set isShow(bool value) {
+    _isShow = value;
+  }
+
   dynamic _createdAt;
   dynamic _createdBy;
   dynamic _updatedAt;
   dynamic _updatedBy;
-Data copyWith({  num? id,
-  String? codeDocument,
-  String? documentName,
-  dynamic createdAt,
-  dynamic createdBy,
-  dynamic updatedAt,
-  dynamic updatedBy,
-}) => Data(  id: id ?? _id,
-  codeDocument: codeDocument ?? _codeDocument,
-  documentName: documentName ?? _documentName,
-  createdAt: createdAt ?? _createdAt,
-  createdBy: createdBy ?? _createdBy,
-  updatedAt: updatedAt ?? _updatedAt,
-  updatedBy: updatedBy ?? _updatedBy,
-);
+
+  Data copyWith({
+    num? id,
+    String? codeDocument,
+    String? documentName,
+    bool? isSelected,
+    bool? isShow,
+    dynamic createdAt,
+    dynamic createdBy,
+    dynamic updatedAt,
+    dynamic updatedBy,
+  }) =>
+      Data(
+        id: id ?? _id,
+        codeDocument: codeDocument ?? _codeDocument,
+        documentName: documentName ?? _documentName,
+        isSelected: isSelected ?? _isSelected,
+        isShow: isShow ?? _isShow,
+        createdAt: createdAt ?? _createdAt,
+        createdBy: createdBy ?? _createdBy,
+        updatedAt: updatedAt ?? _updatedAt,
+        updatedBy: updatedBy ?? _updatedBy,
+      );
+
   num? get id => _id;
+
   String? get codeDocument => _codeDocument;
+
   String? get documentName => _documentName;
+
   dynamic get createdAt => _createdAt;
+
   dynamic get createdBy => _createdBy;
+
   dynamic get updatedAt => _updatedAt;
+
   dynamic get updatedBy => _updatedBy;
 
   Map<String, dynamic> toJson() {
@@ -124,5 +166,4 @@ Data copyWith({  num? id,
     map['updated_by'] = _updatedBy;
     return map;
   }
-
 }

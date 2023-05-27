@@ -10,7 +10,7 @@ import 'package:gais/data/model/reference/get_type_transportation_model.dart'
 
 class EditOtherTransportController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
-  int codeDocument = Get.arguments['codeDocument'];
+  int? codeDocument = Get.arguments['codeDocument'];
   int otID = Get.arguments['otID'];
 
   final formKey = GlobalKey<FormState>();

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/request_trip/request_trip_list_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
@@ -13,6 +14,7 @@ import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_scr
 import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/edit/edit_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_controller.dart';
+import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
 
 class OtherTransportScreen extends StatelessWidget {
@@ -152,6 +154,7 @@ class OtherTransportScreen extends StatelessWidget {
                                 width: 100,
                                 color: infoColor,
                                 title: "Draft",
+                                onPressed: ()=> Get.offAll(RequestTripListScreen()),
                               ),
                               CustomFilledButton(
                                 width: 100,
@@ -176,11 +179,7 @@ class OtherTransportScreen extends StatelessWidget {
                                 width: 100,
                                 color: infoColor,
                                 title: "Next",
-                                onPressed: () => Get.to(AccommodationScreen(),
-                                    arguments: {
-                                      'purposeID': controller.purposeID,
-                                      'codeDocument': controller.codeDocument
-                                    }),
+                                onPressed: () => controller.next()
                               ),
                             ],
                           )

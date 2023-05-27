@@ -8,7 +8,6 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/purpose_of_trip/purpose_of_trip_controller.dart';
-import 'package:gais/screen/tms/request_trip/add/traveller/traveller_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -43,15 +42,17 @@ class PurposeOfTripScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                       child: const Icon(IconlyBold.work, color: whiteColor),
                     ),
                     Text("Purpose Of Trip", style: appTitle),
                     const SizedBox(height: 39),
                     Form(
                       key: controller.formKey,
+                      onChanged: (){
+                        controller.isEnabledButton = controller.formKey.currentState?.validate();
+                        print(controller.isEnabledButton);
+                      },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 34),
                         child: Column(
@@ -60,12 +61,6 @@ class PurposeOfTripScreen extends StatelessWidget {
                             CustomDropDownFormField(
                               label: 'Purpose of Trip',
                               isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
                               hintText: "pick document type",
                               items: controller.purposeList
                                   .map((e) => DropdownMenuItem(
@@ -75,9 +70,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                                   .toList(),
                               onChanged: (value) {
                                 controller.selectedPurpose = value;
-                                value == "1" || value == "2"
-                                    ? controller.isAttachment = true
-                                    : controller.isAttachment = false;
+                                value == "1" || value == "2" ? controller.isAttachment = true : controller.isAttachment = false;
                                 controller.update();
                                 // print(controller.selectedPurpose);
                               },
@@ -88,15 +81,8 @@ class PurposeOfTripScreen extends StatelessWidget {
                                     controller: controller.fileName,
                                     label: 'File Attachment',
                                     isRequired: true,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return "This field is required";
-                                      }
-                                      return null;
-                                    },
                                     readOnly: true,
-                                    hintText:
-                                        "Upload Form ${controller.selectedPurpose}",
+                                    hintText: "Upload Form ${controller.selectedPurpose}",
                                     suffixIcon: const Icon(Icons.upload),
                                     onTap: () => controller.getSingleFile(),
                                   )
@@ -113,12 +99,6 @@ class PurposeOfTripScreen extends StatelessWidget {
                             CustomDropDownFormField(
                               label: "From",
                               isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
                               hintText: "City",
                               items: controller.cityList
                                   .map((e) => DropdownMenuItem(
@@ -135,12 +115,6 @@ class PurposeOfTripScreen extends StatelessWidget {
                             CustomDropDownFormField(
                               label: "To",
                               isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
                               hintText: "City",
                               items: controller.cityList
                                   .map((e) => DropdownMenuItem(
@@ -171,15 +145,12 @@ class PurposeOfTripScreen extends StatelessWidget {
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
+                                      lastDate: DateTime.now().add(const Duration(days: 30)))
                                   .then(
                                 (date) {
                                   controller.selectedDate = date!;
-                                  controller.departureDate.text =
-                                      controller.dateFormat.format(date);
-                                  controller.selectedDepartureDate =
-                                      controller.saveDateFormat.format(date);
+                                  controller.departureDate.text = controller.dateFormat.format(date);
+                                  controller.selectedDepartureDate = controller.saveDateFormat.format(date);
                                   controller.update();
                                 },
                               ),
@@ -201,15 +172,12 @@ class PurposeOfTripScreen extends StatelessWidget {
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
+                                      lastDate: DateTime.now().add(const Duration(days: 30)))
                                   .then(
                                 (date) {
                                   controller.selectedDate = date!;
-                                  controller.arrivalDate.text =
-                                      controller.dateFormat.format(date);
-                                  controller.selectedArrivalDate =
-                                      controller.saveDateFormat.format(date);
+                                  controller.arrivalDate.text = controller.dateFormat.format(date);
+                                  controller.selectedArrivalDate = controller.saveDateFormat.format(date);
                                   controller.update();
                                 },
                               ),
@@ -219,12 +187,6 @@ class PurposeOfTripScreen extends StatelessWidget {
                               controller: controller.zona,
                               label: "Zona",
                               isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
                               readOnly: true,
                               hintText: "Zona",
                             ),
@@ -233,12 +195,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                               controller: controller.tlkDay,
                               label: "TLK / Day",
                               isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
+                              inputType: TextInputType.number,
                               hintText: "TLK / Day",
                             ),
                             const SizedBox(height: 8),
@@ -246,12 +203,6 @@ class PurposeOfTripScreen extends StatelessWidget {
                               controller: controller.totalTLK,
                               label: "Total TLK",
                               isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
                               hintText: "Total TLK",
                             ),
                             const SizedBox(height: 8),
@@ -271,7 +222,9 @@ class PurposeOfTripScreen extends StatelessWidget {
                                   color: infoColor,
                                   title: "Next",
                                   onPressed: () {
-                                    controller.postPurposeOfTrip();
+                                    if (controller.formKey.currentState?.validate() == true) {
+                                      controller.postPurposeOfTrip();
+                                    }
                                   },
                                 )
                               ],

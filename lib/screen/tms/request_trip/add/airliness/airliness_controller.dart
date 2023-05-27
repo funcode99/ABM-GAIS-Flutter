@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/data/model/reference/get_status_document_model.dart';
-import 'package:gais/data/model/request_trip/get_airliness_bytrip_model.dart'
-    as airliness;
+import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airliness;
+import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
 
 class AirlinessController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
-  int codeDocument = Get.arguments['codeDocument'];
+  int? codeDocument = Get.arguments['codeDocument'];
+  bool? formEdit = Get.arguments['formEdit'];
   String travellerName = "";
   bool? isLoading;
 
   GetStatusDocumentModel? statusModel;
   List<airliness.Data> airlinessList = [];
-  airliness.GetAirlinessBytripModel? airlinessModel;
+  airliness.GetAirlinessModel? airlinessModel;
 
   @override
   void onInit() {
@@ -28,15 +31,11 @@ class AirlinessController extends BaseController {
   Future<void> fetchList() async {
     airlinessList = [];
     try {
-      var airliessData = await repository.getAirlinessBytripList(purposeID);
+      var airliessData = await repository.getAirlinessBytripList();
       airlinessModel = airliessData;
-      airlinessList.addAll(
-          airliessData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ??
-              []);
+      airlinessList.addAll(airliessData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      await storage
-          .readEmployeeInfo()
-          .then((value) => travellerName = value.first.employeeName.toString());
+      await storage.readEmployeeInfo().then((value) => travellerName = value.first.employeeName.toString());
 
       var status = await repository.getStatusDocument();
       statusModel = status;
@@ -51,7 +50,6 @@ class AirlinessController extends BaseController {
     isLoading = true;
     try {
       await repository.deleteAirliness(id).then((value) {
-        fetchList();
         GetSnackBar(
           icon: Icon(
             Icons.info,
@@ -64,7 +62,7 @@ class AirlinessController extends BaseController {
         );
       });
       isLoading = false;
-      update();
+      fetchList();
     } catch (e) {
       GetSnackBar(
         icon: Icon(
@@ -77,5 +75,14 @@ class AirlinessController extends BaseController {
         backgroundColor: Colors.red,
       );
     }
+    update();
+  }
+
+  void next() {
+    formEdit == true
+        ? Get.off(FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+        : codeDocument == 2
+            ? Get.to(OtherTransportScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument})
+            : Get.to(TaxiVoucherScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument});
   }
 }

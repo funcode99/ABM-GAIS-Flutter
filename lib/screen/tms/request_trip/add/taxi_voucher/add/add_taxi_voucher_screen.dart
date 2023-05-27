@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
@@ -9,6 +10,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_controller.dart';
+import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
 import 'package:get/get.dart';
 
 class AddTaxiVoucherScreen extends StatelessWidget {
@@ -144,6 +146,11 @@ class AddTaxiVoucherScreen extends StatelessWidget {
                             SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.amount,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                ThousandsSeparatorInputFormatter()
+                              ],
+                              inputType: TextInputType.number,
                               label: "amount",
                               hintText: "Amount",
                               isRequired: true,

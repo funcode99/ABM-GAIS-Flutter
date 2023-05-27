@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/check_accommodation/check_accommodation_screen.dart';
+import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
@@ -8,7 +9,8 @@ import 'package:gais/data/model/reference/get_hotel_type_model.dart' as type;
 
 class AddAccommodationController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
-  int codeDocument = Get.arguments['codeDocument'];
+  int? codeDocument = Get.arguments['codeDocument'];
+  bool? formEdit = Get.arguments['formEdit'];
 
   final formKey = GlobalKey<FormState>();
   final travellerName = TextEditingController();
@@ -30,6 +32,7 @@ class AddAccommodationController extends BaseController {
   String? arrival;
   bool isSharing = false;
   bool createGL = false;
+  bool isButtonEnabled = false;
 
   city.GetCityModel? cityModel;
   List<city.Data> cityList = [];
@@ -70,7 +73,7 @@ class AddAccommodationController extends BaseController {
 
       var hotel = await repository.getJobBandList();
       hotelFare.text =
-          hotel.data?.where((e) => e.id == jobBandID).first.hotelFare ?? "";
+          "${int.parse(hotel.data?.where((e) => e.id == jobBandID).first.hotelFare ?? "0").toCurrency()}";
 
       var dataCity = await repository.getCityList();
       cityModel = dataCity;
@@ -99,6 +102,7 @@ class AddAccommodationController extends BaseController {
         'useGL': createGL == true ? "1" : "0",
         'sharingName': sharingName.text ?? "",
         'remarks': remarks.text,
+        'formEdit': formEdit,
       },
     );
   }

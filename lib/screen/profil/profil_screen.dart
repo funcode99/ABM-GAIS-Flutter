@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
-import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/screen/profil/profil_controller.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +12,7 @@ class ProfilScreen extends StatelessWidget {
     return GetBuilder<ProfilController>(
         init: ProfilController(),
         builder: (controller) {
+          controller.update();
           return Container(
             margin: EdgeInsets.only(top: 8, left: 6, right: 6),
             padding: EdgeInsets.all(10),
@@ -33,7 +33,7 @@ class ProfilScreen extends StatelessWidget {
                           color: Color(0xffF6DE9D),
                           borderRadius: BorderRadius.circular(50)),
                     ),
-                    Text("Reza M \n123239201", style: appTitle)
+                    Text("${controller.userName ?? "Name"} \n${controller.userSN ?? "serial number"}", style: appTitle)
                   ],
                 ),
                 SingleChildScrollView(

@@ -37,6 +37,7 @@ class PurposeOfTripController extends BaseController {
   int? purposeID;
   String? zonaID;
   bool? isFilled = false;
+  bool? isEnabledButton = false;
 
   purpose.GetDocumentCodeModel? purposeModel;
   List<purpose.Data> purposeList = [];

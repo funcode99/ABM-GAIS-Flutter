@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart' as tv;
+import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
 
 class TaxiVoucherController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
-  int codeDocument = Get.arguments['codeDocument'];
+  int? codeDocument = Get.arguments['codeDocument'];
+  bool? formEdit = Get.arguments['formEdit'];
 
   tv.GetTaxiVoucherModel? tvModel;
   List<tv.Data> tvList = [];
@@ -25,11 +29,7 @@ class TaxiVoucherController extends BaseController {
     try {
       var tvData = await repository.getTaxiVoucherBytripList(purposeID);
       tvModel = tvData;
-      tvList.addAll(tvData.data
-              ?.where((e) => e.idRequestTrip == purposeID)
-              .toSet()
-              .toList() ??
-          []);
+      tvList.addAll(tvData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
     } catch (e) {
       e.printError();
     }
@@ -98,6 +98,14 @@ class TaxiVoucherController extends BaseController {
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
       );
+    }
+  }
+
+  void next() {
+    if (formEdit == true) {
+      Get.back();
+    } else {
+      Get.to(const OtherTransportScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument});
     }
   }
 }

@@ -215,7 +215,8 @@ class AddAirlinessScreen extends StatelessWidget {
                                                 controller.arrival.toString()),
                                             'flightClass': int.parse(controller
                                                 .flightClass
-                                                .toString())
+                                                .toString()),
+                                            'formEdit': controller.formEdit,
                                           });
                                   },
                                 ),

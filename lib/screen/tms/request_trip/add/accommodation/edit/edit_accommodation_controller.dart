@@ -9,7 +9,8 @@ import 'package:gais/data/model/reference/get_hotel_type_model.dart' as type;
 class EditAccommodationController extends BaseController {
   int id = Get.arguments['id'];
   int purposeID = Get.arguments['purposeID'];
-  int codeDocument = Get.arguments['codeDocument'];
+  int? codeDocument = Get.arguments['codeDocument'];
+  bool? formEdit = Get.arguments['formEdit'];
 
   final formKey = GlobalKey<FormState>();
   final travellerName = TextEditingController();
@@ -45,8 +46,8 @@ class EditAccommodationController extends BaseController {
     remarks.text;
     isSharing = false;
     createGL = false;
-
     Future.wait([fetchList(), fetchData()]);
+    formEdit.printInfo();
   }
 
   @override
@@ -58,6 +59,8 @@ class EditAccommodationController extends BaseController {
   }
 
   Future<void> fetchList() async {
+    cityList = [];
+    hotelTypeList = [];
     try {
       await storage.readEmployeeInfo().then((value) {
         print(value.isNotEmpty);
@@ -76,18 +79,20 @@ class EditAccommodationController extends BaseController {
       var dataCity = await repository.getCityList();
       cityModel = dataCity;
       cityList.addAll(dataCity.data?.toSet().toList() ?? []);
+      print(cityList);
 
       var hotelType = await repository.getHotelTypeList();
       hotelTypeModel = hotelType;
       hotelTypeList.addAll(hotelType.data?.toSet().toList() ?? []);
 
-      update();
     } catch (e) {
       e.printError();
     }
+    update();
   }
 
   Future<void> fetchData() async {
+
     try {
       await repository.getAccommodationByid(id).then((value) {
         selectedCity = value.data?.first.idCity.toString();
@@ -102,6 +107,7 @@ class EditAccommodationController extends BaseController {
     } catch (e) {
       e.printError();
     }
+    print("selected city : ${selectedCity}");
   }
 
   Future<void> check() async {
@@ -119,6 +125,7 @@ class EditAccommodationController extends BaseController {
         'remarks': remarks.text,
         'isEdit': true,
         'id': id,
+        'formEdit': formEdit,
       },
     );
   }

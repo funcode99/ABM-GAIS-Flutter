@@ -4,6 +4,7 @@ import 'package:gais/data/model/employee_info_model.dart';
 import 'package:gais/data/model/login_model.dart';
 import 'package:gais/data/model/reference/get_city_model.dart';
 import 'package:gais/data/model/reference/get_company_model.dart';
+import 'package:gais/data/model/reference/get_currency_model.dart';
 import 'package:gais/data/model/reference/get_department_model.dart';
 import 'package:gais/data/model/reference/get_document_code_model.dart';
 import 'package:gais/data/model/reference/get_employee_model.dart';
@@ -17,12 +18,13 @@ import 'package:gais/data/model/reference/get_traveller_type_model.dart';
 import 'package:gais/data/model/reference/get_type_transportation_model.dart';
 import 'package:gais/data/model/reference/get_zona_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart';
-import 'package:gais/data/model/request_trip/get_airliness_bytrip_model.dart';
+import 'package:gais/data/model/request_trip/get_airliness_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_vendor_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart';
 import 'package:gais/data/model/request_trip/get_guest_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart';
 import 'package:gais/data/model/request_trip/get_other_transport_model.dart';
+import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart';
 import 'package:gais/data/model/request_trip/request_trip_list_model.dart';
 import 'package:gais/data/model/request_trip/save_accommodation_model.dart';
@@ -33,6 +35,7 @@ import 'package:gais/data/model/request_trip/save_taxi_voucher_model.dart';
 import 'package:gais/data/model/request_trip/save_traveller_guest_model.dart';
 import 'package:gais/data/model/request_trip/submit_request_trip_model.dart';
 import 'package:gais/data/model/request_trip/update_accommodation_model.dart';
+import 'package:gais/data/model/request_trip/update_airliness_model.dart';
 import 'package:gais/data/model/request_trip/update_other_transport_model.dart';
 import 'package:gais/data/model/request_trip/update_taxi_voucher_model.dart';
 import 'package:gais/data/model/request_trip/update_traveller_guest_model.dart';
@@ -41,7 +44,15 @@ import 'package:gais/data/model/status_document_model.dart';
 abstract class Repository {
   Future<LoginModel> postLogin(String username, String password);
 
-  Future<RequestTripListModel> getRequestTripList(int perPage, int page);
+  Future<RequestTripListModel> getRequestTripList(
+    int perPage,
+    int page,
+    String? search,
+    String? startDate,
+    String? endDate,
+  );
+
+  Future<GetRequestTripByidModel> getRequestTripByid(int id);
 
   Future<EmployeeInfoModel> getEmployeeInfo();
 
@@ -54,6 +65,8 @@ abstract class Repository {
   Future<GetSiteModel> getSiteList();
 
   Future<GetHotelModel> getHotelList();
+
+  Future<GetCurrencyModel> getCurrencyList();
 
   Future<SavePurposeOfTripModel> saveRequestTrip(
     String employeeID,
@@ -163,7 +176,7 @@ abstract class Repository {
     String ticketPrice,
   );
 
-  Future<SaveAirlinesModel> updateAirlines(
+  Future<UpdateAirlinessModel> updateAirlines(
     int id,
     String idRequestTrip,
     String idVendor,
@@ -176,7 +189,9 @@ abstract class Repository {
 
   Future<GetAirlinessVendorModel> getAirlinessVendorList();
 
-  Future<GetAirlinessBytripModel> getAirlinessBytripList(int id);
+  Future<GetAirlinessModel> getAirlinessBytripList();
+
+  Future<GetAirlinessModel> getAirlinessByid(int id);
 
   Future<SaveOtherTransportationModel> saveOtherTransportation(
     String idRequestTrip,
@@ -251,6 +266,4 @@ abstract class Repository {
   Future deleteCashAdvanceTravel(int id);
 
   Future<SubmitRequestTripModel> submitRequestTrip(int id);
-
-
 }

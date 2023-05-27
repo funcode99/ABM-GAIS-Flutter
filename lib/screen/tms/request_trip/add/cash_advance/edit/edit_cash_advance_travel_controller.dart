@@ -13,10 +13,9 @@ import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class AddCashAdvanceTravelController extends BaseController {
+class EditCashAdvanceTravelController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
-  bool? formEdit = Get.arguments['formEdit'];
 
   final formKey = GlobalKey<FormState>();
   final TextEditingController notes = TextEditingController();
@@ -105,7 +104,6 @@ class AddCashAdvanceTravelController extends BaseController {
           arguments: {
             'purposeID': purposeID,
             'codeDocument': codeDocument,
-            'formEdit': formEdit
           },
         );
       });

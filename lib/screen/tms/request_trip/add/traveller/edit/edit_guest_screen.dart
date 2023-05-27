@@ -136,6 +136,7 @@ class EditGuestScreen extends StatelessWidget {
                                     controller: controller.guestContact,
                                     label: "Contact No",
                                     isRequired: true,
+                                    inputType: TextInputType.number,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return "This field is required";

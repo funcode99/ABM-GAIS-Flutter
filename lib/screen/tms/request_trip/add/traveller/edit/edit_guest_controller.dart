@@ -9,6 +9,8 @@ import 'package:gais/data/model/reference/get_job_band_model.dart' as hotel;
 import 'package:gais/data/model/reference/get_flight_class_model.dart'
     as flight;
 import 'package:gais/data/model/request_trip/get_guest_byid_model.dart';
+import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
 class EditGuestController extends BaseController {
@@ -29,11 +31,9 @@ class EditGuestController extends BaseController {
   String? gender;
   String? selectedDepartment;
   String? selectedCompany;
-  // String? selectedHotel;
-  // String? selectedFlight;
   String? travellerId;
   int? jobBandID;
-  // String? guestNIK;
+  int? flightID;
 
   GetGuestByidModel? guestModel;
   List<type.Data> typeList = [];
@@ -42,10 +42,6 @@ class EditGuestController extends BaseController {
   department.GetDepartmentModel? departmentModel;
   List<company.Data> companyList = [];
   company.GetCompanyModel? companyModel;
-  // List<hotel.Data> hotelList = [];
-  // hotel.GetJobBandModel? hotelModel;
-  // List<flight.Data> flightList = [];
-  // flight.GetFlightClassModel? flightModel;
 
   @override
   void onInit() {
@@ -82,9 +78,9 @@ class EditGuestController extends BaseController {
         guestNIK.text = value.data?.first.nik.toString() ?? "";
         guestContact.text = value.data?.first.contactNo.toString() ?? "";
         selectedCompany = value.data?.first.idCompany.toString();
-        hotelFare.text = value.data?.first.hotelFare ?? "";
+        hotelFare.text = "${int.parse(value.data?.first.hotelFare ?? "0").toCurrency()}";
         selectedDepartment = value.data?.first.departement;
-        flightEntitlement.text = value.data?.first.idFlightClass.toString() ?? "";
+        flightID = value.data?.first.idFlightClass?.toInt();
         guestNotes.text = value.data?.first.notes ?? "";
         travellerId = value.data?.first.idTypeTraveller.toString();
         gender = value.data?.first.gender.toString();
@@ -114,8 +110,7 @@ class EditGuestController extends BaseController {
     typeList = [];
     departmentList = [];
     companyList = [];
-    // hotelList = [];
-    // flightList = [];
+
     try {
       var dataType = await repository.getTravellerTypeList();
       typeModel = dataType;
@@ -130,13 +125,8 @@ class EditGuestController extends BaseController {
       companyList.addAll(dataCompany.data?.toSet().toList() ?? []);
       companyList.add(company.Data(id: 0, companyName: "Other..."));
 
-      // var dataHotel = await repository.getJobBandList();
-      // hotelModel = dataHotel;
-      // hotelList.addAll(dataHotel.data?.toSet().toList() ?? []);
-      //
-      // var dataFlight = await repository.getFlightList();
-      // flightModel = dataFlight;
-      // flightList.addAll(dataFlight.data?.toSet().toList() ?? []);
+      var dataFlight = await repository.getFlightList();
+      flightEntitlement.text = dataFlight.data?.where((e) => e.id == flightID).first.flightClass ?? "";
 
       update();
     } catch (e) {
@@ -158,8 +148,8 @@ class EditGuestController extends BaseController {
         guestNIK.text,
         guestContact.text,
         selectedDepartment ?? "1",
-        hotelFare.text ?? "1",
-        int.parse(flightEntitlement.text ?? "1"),
+        hotelFare.text.digitOnly() ?? "1",
+        flightID ?? 1,
         guestNotes.text,
         gender.toString(),
       )

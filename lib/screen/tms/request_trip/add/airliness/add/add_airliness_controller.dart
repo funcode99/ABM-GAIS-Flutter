@@ -3,12 +3,13 @@ import 'package:gais/base/base_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
-import 'package:gais/data/model/reference/get_flight_class_model.dart'
-    as flight;
+import 'package:gais/data/model/reference/get_flight_class_model.dart' as flight;
 
 class AddAirlinessController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
-  int codeDocument = Get.arguments['codeDocument'];
+  int? codeDocument = Get.arguments['codeDocument'];
+  int? airlinessID = Get.arguments['id'];
+  bool? formEdit = Get.arguments['formEdit'];
 
   final formKey = GlobalKey<FormState>();
   final travellerName = TextEditingController();
@@ -34,7 +35,7 @@ class AddAirlinessController extends BaseController {
     purposeID.printInfo(info: "purposeID");
     codeDocument.printInfo(info: "code document");
     Future.wait([
-      getTravellerInfo(),
+      getInfo(),
       fetchList(),
     ]);
   }
@@ -45,12 +46,20 @@ class AddAirlinessController extends BaseController {
     departureDate.dispose();
   }
 
-  Future<void> getTravellerInfo() async {
-    await storage.readEmployeeInfo().then((value) {
-      print(value);
-      travellerID = int.parse(value.first.id.toString());
-      travellerName.text = value.first.employeeName.toString();
-    });
+  Future<void> getInfo() async {
+    if (airlinessID != null) {
+      await repository.getAirlinessByid(airlinessID!).then((value) {
+        travellerName.text = value.data?.first.employeeName ?? "";
+
+      });
+    } else {
+      await storage.readEmployeeInfo().then((value) {
+        print(value);
+        travellerID = int.parse(value.first.id.toString());
+        travellerName.text = value.first.employeeName.toString();
+      });
+    }
+
     update();
   }
 

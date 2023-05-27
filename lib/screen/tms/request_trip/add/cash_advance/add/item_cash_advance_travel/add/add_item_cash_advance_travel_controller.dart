@@ -8,26 +8,23 @@ import 'package:get/get.dart';
 
 class AddItemCashAdvanceTravelController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
-  int codeDocument = Get.arguments['codeDocument'];
+  int? codeDocument = Get.arguments['codeDocument'];
 
   final TextEditingController itemNameController = TextEditingController();
-  final TextEditingController costCenterController = TextEditingController();
+  final TextEditingController frequencyController = TextEditingController();
   final TextEditingController nominalController = TextEditingController();
+  final TextEditingController totalController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final isButtonEnabled = false.obs;
   CashAdvanceDetailModel? item;
 
-  final listCostCenter = <CostCenterModel>[].obs;
-  final selectedCostCenterId = "".obs;
+  String? selectedItem;
 
   @override
   void onInit() {
     super.onInit();
-
-    for(int i = 0; i < 10; i++) {
-      listCostCenter.add(CostCenterModel(costCenterName: "Cost Center Name ${i+1}", id: i));
-    }
+    initData();
   }
 
   @override
@@ -38,36 +35,36 @@ class AddItemCashAdvanceTravelController extends BaseController {
 
   void initData(){
     if(item!=null){
-      itemNameController.text = item!.itemName ?? "";
-      costCenterController.text = item!.costCenterName ?? "";
+      selectedItem = item!.itemName;
+      frequencyController.text = item!.frequency.toString() ?? "";
       nominalController.text = item!.nominal?.toInt().toCurrency() ?? "";
+      totalController.text = item!.total?.toInt().toCurrency() ?? "";
       remarksController.text = item!.remarks ?? "";
-      selectedCostCenterId(item!.idCostCenter.toString());
+      update();
     }
   }
 
   CashAdvanceDetailModel getAddedItem() {
     if(item!=null){
-      item?.costCenterName = costCenterController.text;
+      item?.itemName = selectedItem;
+      item?.frequency = frequencyController.text.digitOnly().toInt();
       item?.nominal = nominalController.text.digitOnly();
+      item?.total = totalController.text.digitOnly();
       item?.remarks = remarksController.text;
-      item?.idCostCenter = selectedCostCenterId.value.toInt();
-      item?.itemName = itemNameController.text;
       return item!;
     }else{
       return CashAdvanceDetailModel(
           key: DateTime.now().microsecondsSinceEpoch.toString(),
-          costCenterName: costCenterController.text,
+          frequency: frequencyController.text.digitOnly().toInt(),
           nominal: nominalController.text.digitOnly(),
+          total: totalController.text.digitOnly(),
           remarks: remarksController.text,
-          idCostCenter: selectedCostCenterId.value.toInt(),
-          //TODO : change to dynamic one
-          itemName: itemNameController.text);
+          itemName: selectedItem);
     }
   }
 
-  void setSelectedCostCenter(String? value){
-    selectedCostCenterId(value);
-    costCenterController.text = listCostCenter.firstWhere((element) => element.id.toString() == value).costCenterName!;
-  }
+  // void setSelectedCostCenter(String? value){
+  //   selectedCostCenterId(value);
+  //   frequencyController.text = listCostCenter.firstWhere((element) => element.id.toString() == value).costCenterName!;
+  // }
 }

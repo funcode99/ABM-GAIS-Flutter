@@ -120,7 +120,7 @@ class _CustomPaginationState extends State<CustomPagination> {
     return Container(
       padding: const EdgeInsets.all(8.0),
       margin:
-          widget.margin ?? EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+          widget.margin ?? EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
         color: widget.colorPrimary ?? whiteColor,
         borderRadius: BorderRadius.circular(8),
