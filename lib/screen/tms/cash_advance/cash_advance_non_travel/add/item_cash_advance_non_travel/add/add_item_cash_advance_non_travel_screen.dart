@@ -9,6 +9,7 @@ import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customformlabel.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_controller.dart';
@@ -23,8 +24,7 @@ class AddItemCashAdvanceNonTravelScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AddItemCashAdvanceNonTravelController controller =
-    Get.put(AddItemCashAdvanceNonTravelController())
-      ..item = item;
+    Get.put(AddItemCashAdvanceNonTravelController())..cashAdvanceDetailModel(item);
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -63,29 +63,12 @@ class AddItemCashAdvanceNonTravelScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomFormLabel(
-                    label: "Cost Center".tr,
-                    showRequired: true,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
                   Obx(() {
-                    return DropdownButtonFormField(
-                      decoration: const InputDecoration(
-                          contentPadding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      hint: const Text("Item"),
-                      value: controller.selectedCostCenterId.value,
-                      isExpanded: true,
-                      validator: ValidationBuilder().required().build(),
+                    return CustomDropDownFormField(
+                      isRequired: true,
                       items: [
-                        const DropdownMenuItem(
-                          value: "",
-                          child: Text("Cost Center"),
-                        ),
                         ...controller.listCostCenter.mapIndexed((index, item) {
+                          print("ITEM $item");
                           return DropdownMenuItem(
                             value: "${item.id}",
                             child: Text("${item.costCenterName}"),
@@ -93,8 +76,10 @@ class AddItemCashAdvanceNonTravelScreen extends StatelessWidget {
                         }).toList()
                       ],
                       onChanged: (value) {
-                        controller.setSelectedCostCenter(value);
+                        controller.onChangeSelectedCostCenter(value.toString());
                       },
+                      label: "Cost Center".tr,
+                      value: controller.selectedCostCenter.value.id.toString(),
                     );
                   }),
                   const SizedBox(

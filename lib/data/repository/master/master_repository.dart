@@ -30,7 +30,7 @@ class MasterRepository{
   Future<Either<BaseError, List<BrandModel>>> getListBrandByCompanyId(int idCompany)async{
     try {
       Dio.Response response = await network.dio.get(
-        '/api/brand/',
+        '/api/brand/get_by_company_id/$idCompany',
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, BrandModel.fromJsonModelList);
       return right(apiResponseModel.data);

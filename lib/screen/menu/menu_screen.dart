@@ -115,7 +115,7 @@ class MenuScreen extends StatelessWidget {
                                   const Text("Cash Advance"),
                                 ],
                               ),
-                              onTap: () => Get.off(const SubmenuScreen(),
+                              onTap: () => Get.to(()=>const SubmenuScreen(),
                                   arguments: false),
                             ),
                           ],

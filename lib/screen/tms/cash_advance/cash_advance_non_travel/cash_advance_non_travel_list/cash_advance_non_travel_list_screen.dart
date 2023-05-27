@@ -44,10 +44,14 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {},
+              onChanged: (string) {
+                controller.keyword(string);
+                controller.getHeader(page: 1);
+              },
               onPressedFilter: () {
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {
+                    controller.getHeader();
                     Get.back();
                   },
                   children: [
@@ -63,21 +67,18 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                                 .subtract(const Duration(days: 365)),
                             maximumDate:
                                 DateTime.now().add(const Duration(days: 365)),
-                            endDate: controller.endDate,
-                            startDate: controller.startDate,
+                            endDate: controller.endDate.value,
+                            startDate: controller.startDate.value,
                             backgroundColor: Colors.white,
                             primaryColor: Colors.green,
                             onApplyClick: (start, end) {
-                              controller.endDate = end;
-                              controller.startDate = start;
+                              controller.endDate.value = end;
+                              controller.startDate.value = start;
                               controller.dateRange.text =
                                   "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                               controller.update();
                             },
                             onCancelClick: () {
-                              controller.endDate = null;
-                              controller.startDate = null;
-                              controller.update();
                             },
                           );
                         },
@@ -89,13 +90,17 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                 ));
               },
             ),
-            CustomPagination(
-              onPageChanged: (int) {},
-              pageTotal: 5,
-              margin: EdgeInsets.zero,
-              colorSub: whiteColor,
-              colorPrimary: infoColor,
-            ),
+            Obx(() {
+              return CustomPagination(
+                key: UniqueKey(),
+                onPageChanged: (page) {
+                  controller.getHeader(page: page);
+                },
+                pageTotal: controller.totalPage.value,
+                margin: EdgeInsets.zero,
+                pageInit: controller.currentPage.value,
+              );
+            }),
             const SizedBox(
               height: 12,
             ),
@@ -113,7 +118,7 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                               CommonListItem(
                                 number: "${index + 1}",
                                 title: "${item.noCa}",
-                                onTap: item.code == 0 ? null : (){
+                                onTap: item.codeStatusDoc == 0 ? null : (){
                                   Get.to(()=> const EditCashAdvanceNonTravelScreen(), arguments: {
                                     "item": item
                                   });
@@ -144,7 +149,7 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                action: item.code == 0
+                                action: item.codeStatusDoc == 0
                                     ? [
                                         CustomIconButton(
                                           title: "Edit".tr,

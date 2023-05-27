@@ -49,10 +49,16 @@ class _CashAdvanceTravelListScreenState
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {},
+              onChanged: (string) {
+                controller.keyword(string);
+                controller.getHeader(page: 1);
+              },
               onPressedFilter: () {
                 Get.bottomSheet(FilterBottomSheet(
-                  onApplyFilter: () {},
+                  onApplyFilter: () {
+                    controller.getHeader();
+                    Get.back();
+                  },
                   children: [
                     CustomTextFormField(
                         readOnly: true,
@@ -66,21 +72,19 @@ class _CashAdvanceTravelListScreenState
                                 .subtract(const Duration(days: 365)),
                             maximumDate:
                                 DateTime.now().add(const Duration(days: 365)),
-                            endDate: controller.endDate,
-                            startDate: controller.startDate,
+                            endDate: controller.endDate.value,
+                            startDate: controller.startDate.value,
                             backgroundColor: Colors.white,
                             primaryColor: Colors.green,
                             onApplyClick: (start, end) {
-                              controller.endDate = end;
-                              controller.startDate = start;
+                              controller.endDate.value = end;
+                              controller.startDate.value = start;
                               controller.dateRange.text =
                                   "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                               controller.update();
                             },
                             onCancelClick: () {
-                              controller.endDate = null;
-                              controller.startDate = null;
-                              controller.update();
+
                             },
                           );
                         },
@@ -92,20 +96,24 @@ class _CashAdvanceTravelListScreenState
                 ));
               },
             ),
-            CustomPagination(
-              onPageChanged: (int) {},
-              pageTotal: 5,
-              margin: EdgeInsets.zero,
-              colorSub: infoColor,
-              colorPrimary: whiteColor,
-            ),
+            Obx(() {
+              return CustomPagination(
+                key: UniqueKey(),
+                onPageChanged: (page) {
+                  controller.getHeader(page: page);
+                },
+                pageTotal: controller.totalPage.value,
+                margin: EdgeInsets.zero,
+                pageInit: controller.currentPage.value,
+              );
+            }),
             const SizedBox(
               height: 12,
             ),
             Expanded(
                 child: RefreshIndicator(
               onRefresh: () async {
-                controller.getData();
+                controller.getHeader();
               },
               child: Obx(() {
                 return controller.listHeader.isEmpty
