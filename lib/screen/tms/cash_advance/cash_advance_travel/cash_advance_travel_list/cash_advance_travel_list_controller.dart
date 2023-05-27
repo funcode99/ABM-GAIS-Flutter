@@ -29,7 +29,6 @@ class CashAdvanceTravelListController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    dateRange.text = "10/03/2023 - 17/03/2023";
 
     getHeader();
   }
