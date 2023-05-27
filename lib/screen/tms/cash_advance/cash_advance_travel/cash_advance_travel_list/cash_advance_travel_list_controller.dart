@@ -10,8 +10,10 @@ import 'package:intl/intl.dart';
 class CashAdvanceTravelListController extends BaseController {
   final TextEditingController dateRange = TextEditingController();
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
-  DateTime? startDate;
-  DateTime? endDate;
+  DateFormat formatFilter = DateFormat("yyyy-MM-dd");
+
+  final startDate = Rxn<DateTime>();
+  final endDate = Rxn<DateTime>();
 
   final CashAdvanceTravelRepository _cashAdvanceTravelRepository = Get.find();
   final listHeader = <CashAdvanceModel>[].obs;
@@ -38,7 +40,9 @@ class CashAdvanceTravelListController extends BaseController {
         data: {
           "page" : page,
           "perPage" : limit,
-          "search" : keyword.value
+          "search" : keyword.value,
+          "start_date" : startDate.value != null ? formatFilter.format(startDate.value!) : "",
+          "end_date" : endDate.value != null ? formatFilter.format(endDate.value!) : "",
         }
     );
 

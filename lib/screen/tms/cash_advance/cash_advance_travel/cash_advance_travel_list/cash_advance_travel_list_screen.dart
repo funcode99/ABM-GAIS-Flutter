@@ -55,7 +55,10 @@ class _CashAdvanceTravelListScreenState
               },
               onPressedFilter: () {
                 Get.bottomSheet(FilterBottomSheet(
-                  onApplyFilter: () {},
+                  onApplyFilter: () {
+                    controller.getHeader();
+                    Get.back();
+                  },
                   children: [
                     CustomTextFormField(
                         readOnly: true,
@@ -69,21 +72,19 @@ class _CashAdvanceTravelListScreenState
                                 .subtract(const Duration(days: 365)),
                             maximumDate:
                                 DateTime.now().add(const Duration(days: 365)),
-                            endDate: controller.endDate,
-                            startDate: controller.startDate,
+                            endDate: controller.endDate.value,
+                            startDate: controller.startDate.value,
                             backgroundColor: Colors.white,
                             primaryColor: Colors.green,
                             onApplyClick: (start, end) {
-                              controller.endDate = end;
-                              controller.startDate = start;
+                              controller.endDate.value = end;
+                              controller.startDate.value = start;
                               controller.dateRange.text =
                                   "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                               controller.update();
                             },
                             onCancelClick: () {
-                              controller.endDate = null;
-                              controller.startDate = null;
-                              controller.update();
+
                             },
                           );
                         },
