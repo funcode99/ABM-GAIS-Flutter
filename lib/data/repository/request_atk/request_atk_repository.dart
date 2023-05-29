@@ -108,7 +108,7 @@ class RequestATKRepository implements BaseRepository<RequestAtkModel, RequestATK
     }on FormatException catch (e){
       return left(BaseError(message: e.message));
     } catch (e){
-      print("E $e");
+      print("Error $e");
       return left(BaseError(message: "General error occurred"));
     }
   }

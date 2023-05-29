@@ -64,10 +64,10 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
     final items = await getListItemByWarehouseId(selectedWarehouse.value.id!);
     listItem(items);
     if(listItem.isNotEmpty){
-      selectedItem(listItem.first);
+      onChangeSelectedItemId(listItem.first.id.toString());
     }else{
       Get.showSnackbar(CustomGetSnackBar(message: "Item tidak tersedia", backgroundColor: Colors.red));
-      selectedItem.value = null;
+      onChangeSelectedItemId("");
     }
 
     updateButton();

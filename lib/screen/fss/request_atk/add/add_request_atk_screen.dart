@@ -101,7 +101,6 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                                   number: "${index + 1}",
                                   title: "${element.codeItem} -  ${element.itemName}",
                                   subtitle: "${element.brandName}",
-                                  nominal: "0",
                                   content: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 8),

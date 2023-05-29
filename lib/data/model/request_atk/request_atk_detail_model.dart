@@ -13,7 +13,7 @@ class RequestATKDetailModel extends Equatable {
   int? qty;
   String? remarks;
   String? createdAt;
-  String? createdBy;
+  dynamic createdBy;
   String? updatedAt;
   String? updatedBy;
   String? itemName;

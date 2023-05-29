@@ -65,15 +65,9 @@ class MasterRepository{
     try {
       Dio.Response response = await network.dio.get(
         '/api/management_atk/get_by_warehouse_id/$warehouseId',
-        queryParameters: {
-          'perPage' : 100000
-        }
       );
-      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
-      PaginationModel paginationModel = apiResponseModel.data;
-      List<ManagementItemATKModel> result = paginationModel.data!.map((e) => ManagementItemATKModel.fromJson(e))
-          .toList();
-      return right(result);
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ManagementItemATKModel.fromJsonModelList);
+      return right(apiResponseModel.data);
 
     } on Dio.DioError catch (e) {
       print(e);

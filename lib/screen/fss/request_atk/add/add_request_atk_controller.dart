@@ -62,6 +62,7 @@ class AddRequestATKController extends BaseController {
         idDepartement: departmentId.toInt(),
         idSite: siteId.toInt(),
         idWarehouse: warehouseId,
+        remarks: "dummy remarks, this should be inside the item not in header",
         arrayDetail: listItem);
 
     final result = await _repository.saveData(requestAtkModel);
