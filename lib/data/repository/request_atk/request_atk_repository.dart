@@ -93,9 +93,24 @@ class RequestATKRepository implements BaseRepository<RequestAtkModel, RequestATK
   }
 
   @override
-  Future<Either<BaseError, RequestAtkModel>> saveData(model) {
-    // TODO: implement saveData
-    throw UnimplementedError();
+  Future<Either<BaseError, RequestAtkModel>> saveData(model) async{
+    final requestAtkModel = model as RequestAtkModel;
+
+    try {
+      Dio.Response response = await network.dio.post(
+          '/api/request_atk/store',
+          data: requestAtkModel.toJson()
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, RequestAtkModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override

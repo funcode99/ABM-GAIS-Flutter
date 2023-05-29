@@ -88,9 +88,9 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                               .textTheme
                               .bodyText1
                               ?.copyWith(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600),
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600),
                         ),
                         const Divider(
                           height: 20,
@@ -98,44 +98,75 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                         ),
                         ...controller.listItem
                             .mapIndexed((index, element) => CommonAddItem(
-                          number: "${index+1}",
-                          title: element.item,
-                          subtitle: element.brand,
-                          nominal: element.quantity.toString(),
-                          action: [
-                            CustomIconButton(
-                              title: "Edit".tr,
-                              iconData: IconlyBold.edit,
-                              backgroundColor: successColor,
-                              onPressed: () {
-                                Get.to(const AddItemRequestATKScreen());
-                              },
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            CustomIconButton(
-                              title: "Delete".tr,
-                              iconData: IconlyBold.delete,
-                              backgroundColor: redColor,
-                              onPressed: () {
-                                Get.dialog(DeleteConfirmationDialog(
-                                  onDeletePressed: (){
-                                    controller.removeItem(element);
-                                    Get.back();
-                                  },
-                                ));
-                              },
-                            )
-                          ],
-                        ))
+                                  number: "${index + 1}",
+                                  title: "${element.codeItem} -  ${element.itemName}",
+                                  subtitle: "${element.brandName}",
+                                  nominal: "0",
+                                  content: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 8),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .spaceAround,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Text(
+                                                "Quantity".tr,
+                                                style: listTitleTextStyle,
+                                              ),
+                                              Text(
+                                                "${element.qty}",
+                                                style: listSubTitleTextStyle,
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                "UOM".tr,
+                                                style: listTitleTextStyle,
+                                              ),
+                                              Text(
+                                                "${element.uomName}",
+                                                style: listSubTitleTextStyle,
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                "Warehouse".tr,
+                                                style: listTitleTextStyle,
+                                              ),
+                                              Text(
+                                                "${element.warehouseName}",
+                                                style: listSubTitleTextStyle,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  action: [
+                                  ],
+                                ))
                             .toList(),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () async {
                               final addedItem = await Get.to(
-                                  const AddItemRequestATKScreen());
+                                  () => const AddItemRequestATKScreen());
                               if (addedItem != null) {
                                 controller.addItem(addedItem);
                               }
@@ -148,9 +179,9 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                                       .textTheme
                                       .bodyText1
                                       ?.copyWith(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700),
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700),
                                   children: [
                                     const TextSpan(text: "+ "),
                                     TextSpan(text: "Add Item".tr)
@@ -174,9 +205,11 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                               child: Text("Cancel".tr),
                             ),
                             ElevatedButton(
-                              onPressed: _isButtonEnabled ? () {
-                                Get.off(const RequestATKDetailScreen());
-                              } : null,
+                              onPressed: _isButtonEnabled
+                                  ? () {
+                                      controller.saveData();
+                                    }
+                                  : null,
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: infoColor),
                               child: Text("Book".tr),

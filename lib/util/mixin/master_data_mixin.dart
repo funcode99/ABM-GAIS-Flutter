@@ -1,3 +1,4 @@
+import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/master/brand/brand_model.dart';
 import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
@@ -31,6 +32,11 @@ mixin MasterDataMixin{
     }
 
     return list;
+  }
+
+  Future<List<ManagementItemATKModel>> getListItemByWarehouseId(int warehouseId)async{
+    final result = await _repository.getListItemByWarehouseId(warehouseId);
+    return result.fold((l) => [], (listManagementItem) => listManagementItem);
   }
 
 }
