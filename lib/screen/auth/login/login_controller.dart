@@ -43,16 +43,19 @@ class LoginController extends BaseController {
 
   Future cekToken() async {
     isLoading = true;
+    update();
     print("token : ${await storage.readToken()}");
     print("role : ${await storage.readRole()}");
     if (await storage.readToken() != null) {
       Get.offAll(HomeScreen());
     }
     isLoading = false;
+    update();
   }
 
   Future<void> doLogin() async {
     isLoading = true;
+    update();
     try {
       await repository
           .postLogin(usernameLoginController.text, passwordLoginController.text)
