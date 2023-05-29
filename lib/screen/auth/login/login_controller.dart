@@ -49,10 +49,12 @@ class LoginController extends BaseController {
       Get.offAll(HomeScreen());
     }
     isLoading = false;
+    update();
   }
 
   Future<void> doLogin() async {
     isLoading = true;
+    update();
     try {
       await repository
           .postLogin(usernameLoginController.text, passwordLoginController.text)
