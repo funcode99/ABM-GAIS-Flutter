@@ -79,7 +79,7 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                           style: OutlinedButton.styleFrom(
                             minimumSize: const Size(75, 30),
                           ),
-                          child: Text("Edit".tr),
+                          child: controller.onEdit.value ? Text("Cancel".tr) : Text("Edit".tr),
                         ),
                         const SizedBox(
                           width: 16,
