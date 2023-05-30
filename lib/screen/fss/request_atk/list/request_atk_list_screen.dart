@@ -29,11 +29,10 @@ class RequestATKListScreen extends StatefulWidget {
 }
 
 class _RequestATKListScreenState extends State<RequestATKListScreen> {
-
   @override
   Widget build(BuildContext context) {
     final RequestATKListController controller =
-    Get.put(RequestATKListController());
+        Get.put(RequestATKListController());
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -98,7 +97,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                             minimumDate: DateTime.now()
                                 .subtract(const Duration(days: 365)),
                             maximumDate:
-                            DateTime.now().add(const Duration(days: 365)),
+                                DateTime.now().add(const Duration(days: 365)),
                             endDate: controller.endDate,
                             startDate: controller.startDate,
                             backgroundColor: Colors.white,
@@ -107,9 +106,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                               controller.endDate = end;
                               controller.startDate = start;
                               controller.dateRange.text =
-                              "${controller.dateFormat.format(
-                                  start)} - ${controller.dateFormat.format(
-                                  end)}";
+                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                               controller.update();
                             },
                             onCancelClick: () {
@@ -143,80 +140,97 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
             ),
             Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () async {
-                    controller.getHeader();
-                  },
-                  child: Obx(() {
-                    return controller.listHeader.isEmpty
-                        ? const EmptyListError()
-                        : ListView(
-                      children: [
-                        ...controller.listHeader
-                            .mapIndexed((index, item) =>
-                            CommonListItem(
-                              onTap: () {
-                                Get.to(() => const RequestATKDetailScreen(), arguments: {
-                                  "item" : item
-                                });
-                              },
-                              number: "${index+1}",
-                              title: "${item.noAtkRequest}",
-                              subtitle: "${item.employeeName}",
-                              content: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceAround,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Warehouse".tr,
-                                          style: listTitleTextStyle,
-                                        ),
-                                        Text(
-                                          "${item.warehouseName}",
-                                          style: listSubTitleTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Item Count".tr,
-                                          style: listTitleTextStyle,
-                                        ),
-                                        Text(
-                                          "${item.itemCount}",
-                                          style: listSubTitleTextStyle,
-                                        ),
-                                      ],
-                                    )
-                                  ],
+              onRefresh: () async {
+                controller.getHeader();
+              },
+              child: Obx(() {
+                return controller.listHeader.isEmpty
+                    ? const EmptyListError()
+                    : ListView(
+                        children: [
+                          ...controller.listHeader.mapIndexed((index, item) =>
+                              CommonListItem(
+                                onTap: () {
+                                  Get.to(() => const RequestATKDetailScreen(),
+                                      arguments: {"item": item});
+                                },
+                                number: "${index + 1}",
+                                title: "${item.noAtkRequest}",
+                                subtitle: "${item.employeeName}",
+                                content: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text(
+                                            "Warehouse".tr,
+                                            style: listTitleTextStyle,
+                                          ),
+                                          Text(
+                                            "${item.warehouseName}",
+                                            style: listSubTitleTextStyle,
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            "Item Count".tr,
+                                            style: listTitleTextStyle,
+                                          ),
+                                          Text(
+                                            "${item.itemCount}",
+                                            style: listSubTitleTextStyle,
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              action: [
-                                CustomIconButton(
-                                  backgroundColor: redColor,
-                                  title: "Delete".tr,
-                                  iconData: IconlyBold.delete,
-                                  onPressed: () {
-                                    Get.dialog(DeleteConfirmationDialog(
-                                      onDeletePressed: () {
-                                        controller.deleteHeader(item);
-                                        Get.back();
-                                      },
-                                    ));
-                                  },
-                                )
-                              ],
-                              status: "${item.status}",
-                            ))
-                      ],
-                    );
-                  }),
-                ))
+                                action: item.codeStatusDoc == 0
+                                    ? [
+                                        CustomIconButton(
+                                          title: "Edit".tr,
+                                          iconData: IconlyBold.edit,
+                                          backgroundColor: successColor,
+                                          onPressed: () async {
+                                            Get.to(
+                                                () =>
+                                                    const RequestATKDetailScreen(),
+                                                arguments: {
+                                                  "item": item
+                                                })?.then((value) =>
+                                                controller.getHeader());
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        CustomIconButton(
+                                          backgroundColor: redColor,
+                                          title: "Delete".tr,
+                                          iconData: IconlyBold.delete,
+                                          onPressed: () {
+                                            Get.dialog(DeleteConfirmationDialog(
+                                              onDeletePressed: () {
+                                                controller.deleteHeader(item);
+                                                Get.back();
+                                              },
+                                            ));
+                                          },
+                                        )
+                                      ]
+                                    : [],
+                                status: item.status,
+                              ))
+                        ],
+                      );
+              }),
+            ))
           ],
         ),
       ),
