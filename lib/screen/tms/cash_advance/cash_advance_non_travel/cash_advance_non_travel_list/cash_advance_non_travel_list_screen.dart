@@ -99,6 +99,8 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                 pageTotal: controller.totalPage.value,
                 margin: EdgeInsets.zero,
                 pageInit: controller.currentPage.value,
+                colorSub: whiteColor,
+                colorPrimary: infoColor,
               );
             }),
             const SizedBox(

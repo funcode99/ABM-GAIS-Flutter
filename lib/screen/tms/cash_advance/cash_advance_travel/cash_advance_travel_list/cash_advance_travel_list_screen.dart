@@ -105,6 +105,8 @@ class _CashAdvanceTravelListScreenState
                 pageTotal: controller.totalPage.value,
                 margin: EdgeInsets.zero,
                 pageInit: controller.currentPage.value,
+                colorSub: whiteColor,
+                colorPrimary: infoColor,
               );
             }),
             const SizedBox(
@@ -130,47 +132,50 @@ class _CashAdvanceTravelListScreenState
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 8),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Text(
-                                                "Item Count".tr,
-                                                style: listTitleTextStyle,
-                                              ),
-                                              Text(
-                                                "${item.itemCount}",
-                                                style: listSubTitleTextStyle,
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              Text(
-                                                "Currency".tr,
-                                                style: listTitleTextStyle,
-                                              ),
-                                              Text(
-                                                item.currencyName ?? "",
-                                                style: listSubTitleTextStyle,
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              Text(
-                                                "Reference".tr,
-                                                style: listTitleTextStyle,
-                                              ),
-                                              Text(
-                                                item.noRequestTrip ?? "-",
-                                                style: listSubTitleTextStyle,
-                                              ),
-                                            ],
-                                          )
-                                        ],
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "Item Count".tr,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                  "${item.itemCount}",
+                                                  style: listSubTitleTextStyle,
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "Currency".tr,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                  item.currencyName ?? "",
+                                                  style: listSubTitleTextStyle,
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "Reference".tr,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                  item.noRequestTrip ?? "-",
+                                                  style: listSubTitleTextStyle,
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     action: [
