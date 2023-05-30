@@ -77,6 +77,7 @@ class EditCashAdvanceNonTravelController extends BaseController {
   void updateHeader() async {
     String userId = await storage.readString(StorageCore.userID);
     CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
+      codeStatusDoc: selectedItem.value.codeStatusDoc,
       id: selectedItem.value.id,
       noCa: selectedItem.value.noCa,
       idEmployee: userId.toInt(),
@@ -107,7 +108,6 @@ class EditCashAdvanceNonTravelController extends BaseController {
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (cashAdvanceModel) {
-          print("CASH ADVANCE MODEL ${cashAdvanceModel.toJson()}");
       selectedItem(cashAdvanceModel);
     });
   }
