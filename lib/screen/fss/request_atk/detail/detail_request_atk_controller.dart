@@ -3,6 +3,12 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/request_atk/item_request_atk_model.dart';
 import 'package:gais/data/model/request_atk/item_request_atk_model.dart';
 import 'package:gais/data/model/request_atk/item_request_atk_model.dart';
+import 'package:gais/data/model/request_atk/request_atk_detail_model.dart';
+import 'package:gais/data/model/request_atk/request_atk_model.dart';
+import 'package:gais/data/repository/request_atk/request_atk_repository.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
+import 'package:gais/util/ext/string_ext.dart';
+import 'package:get/get.dart';
 
 class RequestATKDetailController extends BaseController {
   final TextEditingController createdDateController = TextEditingController();
@@ -11,22 +17,37 @@ class RequestATKDetailController extends BaseController {
 
   List<ItemRequestATKModel> listItem = <ItemRequestATKModel>[];
 
+  final selectedItem = RequestAtkModel().obs;
+
+  final listDetail = <RequestATKDetailModel>[].obs;
+
+  final RequestATKRepository _repository = Get.find();
+
+
   @override
-  void onInit() {
-    super.onInit();
+  void onReady() {
+    super.onReady();
+    initData();
+  }
 
-    createdDateController.text = "23/02/23";
-    createdByController.text = "John Smith";
-    rejectNoteController.text = "Remarks Example";
+  void initData() {
+    createdByController.text = selectedItem.value.createdBy ?? "-";
+    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ?? "-";
+    if(selectedItem.value.status?.toLowerCase() == "reject"){
+      rejectNoteController.text = selectedItem.value.remarks ?? "-";
+    }
 
-    listItem.add(ItemRequestATKModel(
-        id: DateTime.now().toString(),
-        company: "Company Name",
-        site: "Company Site",
-        brand: "Faber Castell",
-        item: "Pen",
-        warehouse: "Warehouse A",
-        quantity: 10,
-        uom: "pcs"));
+    getDetailData();
+  }
+
+  void getDetailData() async {
+    final result = await _repository.getDataDetails(selectedItem.value.id!);
+    result.fold(
+            (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (r) {
+          listDetail.value = r;
+          listDetail.refresh();
+        });
   }
 }

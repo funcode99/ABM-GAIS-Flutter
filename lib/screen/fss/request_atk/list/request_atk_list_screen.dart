@@ -155,7 +155,9 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                             .mapIndexed((index, item) =>
                             CommonListItem(
                               onTap: () {
-                                Get.to(() => const RequestATKDetailScreen());
+                                Get.to(() => const RequestATKDetailScreen(), arguments: {
+                                  "item" : item
+                                });
                               },
                               number: "${index+1}",
                               title: "${item.noAtkRequest}",

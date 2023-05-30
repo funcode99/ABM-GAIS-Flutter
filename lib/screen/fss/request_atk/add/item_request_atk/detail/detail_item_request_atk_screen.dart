@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
 import 'package:gais/data/model/request_atk/item_request_atk_model.dart';
+import 'package:gais/data/model/request_atk/request_atk_detail_model.dart';
+import 'package:gais/data/model/request_atk/request_atk_model.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:get/get.dart';
 
 class DetailItemRequestATKScreen extends StatefulWidget{
-  const DetailItemRequestATKScreen({super.key, required this.item});
+  const DetailItemRequestATKScreen({super.key, required this.detailItem, required this.header});
 
-  final ItemRequestATKModel item;
+
+  final RequestAtkModel header;
+  final RequestATKDetailModel detailItem;
 
   @override
   State<DetailItemRequestATKScreen> createState() => _DetailItemRequestATKScreenState();
@@ -25,14 +29,14 @@ class _DetailItemRequestATKScreenState extends State<DetailItemRequestATKScreen>
   @override
   void initState() {
     super.initState();
-    _companyController.text = widget.item.company;
-    _itemController.text = widget.item.item;
-    _brandController.text = widget.item.brand;
-    _quantityController.text = widget.item.quantity.toString();
-    _uomController.text = widget.item.uom;
-    _siteController.text = widget.item.site;
-    _warehouseController.text = widget.item.warehouse;
-    _remarksController.text = widget.item.remarks ?? "-";
+    _companyController.text = "${widget.header.companyName}";
+    _itemController.text = "${widget.detailItem.itemName}";
+    _brandController.text = "${widget.detailItem.brandName}";
+    _quantityController.text ="${widget.detailItem.qty}";
+    _uomController.text = "${widget.detailItem.uomName}";
+    _siteController.text = "${widget.header.siteName}";
+    _warehouseController.text = "${widget.detailItem.warehouseName}";
+    _remarksController.text = "${widget.detailItem.remarks}";
   }
 
   @override

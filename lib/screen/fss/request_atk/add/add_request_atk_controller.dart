@@ -69,10 +69,10 @@ class AddRequestATKController extends BaseController {
     result.fold(
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-        (addedItem) {
+        (requestAtkModel) {
       //update list
       Get.off(() => const RequestATKDetailScreen(),
-          arguments: {"item": addedItem});
+          arguments: {"item": requestAtkModel});
     });
   }
 }
