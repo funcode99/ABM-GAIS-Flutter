@@ -54,15 +54,19 @@ class _CashAdvanceTravelListScreenState
                 controller.getHeader(page: 1);
               },
               onPressedFilter: () {
+                controller.openFilter();
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {
-                    controller.getHeader();
+                    controller.applyFilter();
                     Get.back();
+                  },
+                  onResetFilter: () {
+                    controller.resetFilter();
                   },
                   children: [
                     CustomTextFormField(
                         readOnly: true,
-                        controller: controller.dateRange,
+                        controller: controller.dateRangeController,
                         suffixIcon: const Icon(Icons.calendar_month),
                         onTap: () {
                           showCustomDateRangePicker(
@@ -77,15 +81,13 @@ class _CashAdvanceTravelListScreenState
                             backgroundColor: Colors.white,
                             primaryColor: Colors.green,
                             onApplyClick: (start, end) {
-                              controller.endDate.value = end;
-                              controller.startDate.value = start;
-                              controller.dateRange.text =
+                              controller.endDateTemp.value = end;
+                              controller.startDateTemp.value = start;
+                              controller.dateRangeController.text =
                                   "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                               controller.update();
                             },
-                            onCancelClick: () {
-
-                            },
+                            onCancelClick: () {},
                           );
                         },
                         label: "Date Range".tr),
@@ -97,6 +99,10 @@ class _CashAdvanceTravelListScreenState
               },
             ),
             Obx(() {
+              if(controller.listHeader.isEmpty){
+                return const SizedBox();
+              }
+
               return CustomPagination(
                 key: UniqueKey(),
                 onPageChanged: (page) {
@@ -124,7 +130,8 @@ class _CashAdvanceTravelListScreenState
                         children: [
                           ...controller.listHeader
                               .mapIndexed((index, item) => CommonListItem(
-                                    number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
+                                    number:
+                                        "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
                                     title: item.noCa ?? "-",
                                     subtitle: item.employeeName ?? "-",
                                     total:
