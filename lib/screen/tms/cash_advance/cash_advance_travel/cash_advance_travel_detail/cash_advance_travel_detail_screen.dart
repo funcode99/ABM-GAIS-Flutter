@@ -175,7 +175,8 @@ class _CashAdvanceTravelDetailScreenState
                               number: "${index + 1}",
                               subtitle: controller.selectedItem.value
                                   .employeeName ?? "-",
-                              total: item.total?.toInt().toCurrency(),
+                              total: "${controller.selectedItem.value
+                                  .currencyCode ?? ""} ${item.total?.toInt().toCurrency()}",
                               content: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 8),
