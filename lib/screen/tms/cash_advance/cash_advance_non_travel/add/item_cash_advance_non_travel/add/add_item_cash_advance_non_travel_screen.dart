@@ -122,7 +122,7 @@ class AddItemCashAdvanceNonTravelScreen extends StatelessWidget {
                             Get.back(result: controller.getAddedItem());
                           } : null,
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: infoColor),
+                              backgroundColor: successColor),
                           child: Text("Save".tr),
                         );
                       }),

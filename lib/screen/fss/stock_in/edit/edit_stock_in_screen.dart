@@ -181,7 +181,7 @@ class EditStockInScreen extends StatelessWidget {
                             child: CustomIconButton(
                               title: "Add".tr,
                               iconData: IconlyBold.plus,
-                              backgroundColor: successColor,
+                              backgroundColor: infoColor,
                               onPressed: () async {
                                 final addedItem = await Get.to(
                                     const AddItemStockInATKScreen());
