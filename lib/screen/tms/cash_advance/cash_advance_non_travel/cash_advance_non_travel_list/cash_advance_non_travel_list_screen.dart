@@ -45,8 +45,10 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
           children: [
             CustomSearchBar(
               onSubmit: (string) {
-                controller.keyword(string);
-                controller.getHeader(page: 1);
+                controller.applySearch(string);
+              },
+              onClearFilter: (){
+                controller.applySearch("");
               },
               onPressedFilter: () {
                 controller.openFilter();
@@ -144,17 +146,22 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "Event".tr,
-                                            style: listTitleTextStyle,
-                                          ),
-                                          Text(
-                                            "${item.event}",
-                                            style: listSubTitleTextStyle,
-                                          ),
-                                        ],
+                                      Flexible(
+                                        flex: 1,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Event".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              "${item.event}",
+                                              style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                              )
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),

@@ -50,8 +50,10 @@ class _CashAdvanceTravelListScreenState
           children: [
             CustomSearchBar(
               onSubmit: (string) {
-                controller.keyword(string);
-                controller.getHeader(page: 1);
+                controller.applySearch(string);
+              },
+              onClearFilter: (){
+                controller.applySearch("");
               },
               onPressedFilter: () {
                 controller.openFilter();
@@ -135,17 +137,17 @@ class _CashAdvanceTravelListScreenState
                                     title: item.noCa ?? "-",
                                     subtitle: item.employeeName ?? "-",
                                     total:
-                                        item.grandTotal?.toInt().toCurrency(),
+                                       "${item.currencyCode ?? ""} ${item.grandTotal?.toInt().toCurrency()}",
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 8),
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Column(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Flexible(
+                                            flex: 1,
+                                            child: Column(
                                               children: [
                                                 Text(
                                                   "Item Count".tr,
@@ -153,11 +155,16 @@ class _CashAdvanceTravelListScreenState
                                                 ),
                                                 Text(
                                                   "${item.itemCount}",
-                                                  style: listSubTitleTextStyle,
+                                                    style: listSubTitleTextStyle.copyWith(
+                                                        overflow: TextOverflow.ellipsis
+                                                    )
                                                 ),
                                               ],
                                             ),
-                                            Column(
+                                          ),
+                                          Flexible(
+                                            flex: 1,
+                                            child: Column(
                                               children: [
                                                 Text(
                                                   "Currency".tr,
@@ -165,11 +172,16 @@ class _CashAdvanceTravelListScreenState
                                                 ),
                                                 Text(
                                                   item.currencyName ?? "",
-                                                  style: listSubTitleTextStyle,
+                                                  style: listSubTitleTextStyle.copyWith(
+                                                    overflow: TextOverflow.ellipsis
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                            Column(
+                                          ),
+                                          Flexible(
+                                            flex: 1,
+                                            child: Column(
                                               children: [
                                                 Text(
                                                   "Reference".tr,
@@ -177,12 +189,14 @@ class _CashAdvanceTravelListScreenState
                                                 ),
                                                 Text(
                                                   item.noRequestTrip ?? "-",
-                                                  style: listSubTitleTextStyle,
+                                                  style: listSubTitleTextStyle.copyWith(
+                                                      overflow: TextOverflow.ellipsis
+                                                  )
                                                 ),
                                               ],
-                                            )
-                                          ],
-                                        ),
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     ),
                                     action: [
