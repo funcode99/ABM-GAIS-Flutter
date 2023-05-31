@@ -50,8 +50,10 @@ class _CashAdvanceTravelListScreenState
           children: [
             CustomSearchBar(
               onSubmit: (string) {
-                controller.keyword(string);
-                controller.getHeader(page: 1);
+                controller.applySearch(string);
+              },
+              onClearFilter: (){
+                controller.applySearch("");
               },
               onPressedFilter: () {
                 controller.openFilter();

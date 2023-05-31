@@ -67,6 +67,11 @@ class CashAdvanceTravelListController extends BaseController {
         });
   }
 
+  void applySearch(String search){
+    keyword(search);
+    getHeader(page: 1);
+  }
+
   void resetFilter(){
     endDateTemp.value = null;
     startDateTemp.value = null;
