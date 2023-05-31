@@ -118,7 +118,7 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {
+              onSubmit: (string) {
               },
               onPressedFilter: (){
                 Get.bottomSheet(
@@ -169,8 +169,8 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
               onPageChanged: (int ) {  },
               pageTotal: 5,
               margin: EdgeInsets.zero,
-              colorSub: infoColor,
-              colorPrimary: whiteColor,
+              colorSub: whiteColor,
+              colorPrimary: infoColor,
             ),
             const SizedBox(
               height: 12,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
-import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
@@ -78,6 +77,7 @@ class EditCashAdvanceNonTravelController extends BaseController {
   void updateHeader() async {
     String userId = await storage.readString(StorageCore.userID);
     CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
+      codeStatusDoc: selectedItem.value.codeStatusDoc,
       id: selectedItem.value.id,
       noCa: selectedItem.value.noCa,
       idEmployee: userId.toInt(),
@@ -108,7 +108,6 @@ class EditCashAdvanceNonTravelController extends BaseController {
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (cashAdvanceModel) {
-          print("CASH ADVANCE MODEL ${cashAdvanceModel.toJson()}");
       selectedItem(cashAdvanceModel);
     });
   }

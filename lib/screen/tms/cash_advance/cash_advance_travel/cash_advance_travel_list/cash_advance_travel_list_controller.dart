@@ -8,12 +8,14 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class CashAdvanceTravelListController extends BaseController {
-  final TextEditingController dateRange = TextEditingController();
+  final TextEditingController dateRangeController = TextEditingController();
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat formatFilter = DateFormat("yyyy-MM-dd");
 
   final startDate = Rxn<DateTime>();
   final endDate = Rxn<DateTime>();
+  final startDateTemp = Rxn<DateTime>();
+  final endDateTemp = Rxn<DateTime>();
 
   final CashAdvanceTravelRepository _cashAdvanceTravelRepository = Get.find();
   final listHeader = <CashAdvanceModel>[].obs;
@@ -63,6 +65,30 @@ class CashAdvanceTravelListController extends BaseController {
               .toList();
           listHeader.refresh();
         });
+  }
+
+  void resetFilter(){
+    endDateTemp.value = null;
+    startDateTemp.value = null;
+    dateRangeController.text = "";
+  }
+
+  void openFilter(){
+    startDateTemp.value = startDate.value;
+    endDateTemp.value = endDate.value;
+    if(startDateTemp.value!=null){
+      dateRangeController.text = "${dateFormat.format(startDateTemp.value!)} - ${dateFormat.format(endDateTemp.value!)}";
+    }else{
+      dateRangeController.text = "";
+    }
+
+  }
+
+  void applyFilter(){
+    startDate.value = startDateTemp.value;
+    endDate.value = endDateTemp.value;
+
+    getHeader();
   }
 
 }

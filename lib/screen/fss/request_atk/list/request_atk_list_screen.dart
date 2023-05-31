@@ -48,7 +48,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {
+              onSubmit: (string) {
                 controller.keyword(string);
                 controller.getHeader();
               },
@@ -126,6 +126,8 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
             ),
             Obx(() {
               return CustomPagination(
+                colorSub: whiteColor,
+                colorPrimary: infoColor,
                 key: UniqueKey(),
                 onPageChanged: (page) {
                   controller.getHeader(page: page);
