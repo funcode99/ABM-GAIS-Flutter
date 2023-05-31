@@ -149,7 +149,7 @@ class _ApprovalCashAdvanceTravelListScreenState
               child: Column(
                 children: [
                   CustomSearchBar(
-                    onChanged: (string) {
+                    onSubmit: (string) {
                     },
                     onPressedFilter: (){
                       Get.bottomSheet(

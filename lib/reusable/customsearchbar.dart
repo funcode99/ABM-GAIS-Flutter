@@ -30,7 +30,9 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 1000), () {
-      widget.onChanged!(query);
+      if(widget.onChanged!=null){
+        widget.onChanged!(query);
+      }
     });
   }
   _onSubmit(String query) {

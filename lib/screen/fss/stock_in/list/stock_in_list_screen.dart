@@ -42,7 +42,7 @@ class StockInListScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {},
+              onSubmit: (string) {},
               onPressedFilter: () {
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {

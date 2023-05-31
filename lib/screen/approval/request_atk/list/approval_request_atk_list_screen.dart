@@ -118,7 +118,7 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {
+              onSubmit: (string) {
               },
               onPressedFilter: (){
                 Get.bottomSheet(

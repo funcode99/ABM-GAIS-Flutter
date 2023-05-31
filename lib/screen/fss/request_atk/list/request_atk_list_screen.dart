@@ -49,7 +49,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {
+              onSubmit: (string) {
                 controller.keyword(string);
                 controller.getHeader();
               },

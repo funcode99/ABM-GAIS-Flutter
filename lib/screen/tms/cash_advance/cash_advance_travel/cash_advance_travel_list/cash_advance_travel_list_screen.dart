@@ -49,7 +49,7 @@ class _CashAdvanceTravelListScreenState
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {
+              onSubmit: (string) {
                 controller.keyword(string);
                 controller.getHeader(page: 1);
               },

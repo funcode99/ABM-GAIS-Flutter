@@ -131,7 +131,7 @@ class _ApprovalCashAdvanceNonTravelListScreenState extends State<ApprovalCashAdv
               child: Column(
                 children: [
                   CustomSearchBar(
-                    onChanged: (string) {
+                    onSubmit: (string) {
                     },
                     onPressedFilter: (){
                       Get.bottomSheet(
