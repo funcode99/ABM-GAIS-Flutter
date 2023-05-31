@@ -4,6 +4,7 @@ import 'package:gais/base/base_error.dart';
 import 'package:gais/data/model/api_response_model.dart';
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/master/brand/brand_model.dart';
+import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/model/warehouse_model.dart';
@@ -67,6 +68,28 @@ class MasterRepository{
         '/api/management_atk/get_by_warehouse_id/$warehouseId',
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ManagementItemATKModel.fromJsonModelList);
+      return right(apiResponseModel.data);
+
+    } on Dio.DioError catch (e) {
+      print(e);
+
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print(e);
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print(e);
+
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  Future<Either<BaseError, List<StatusDocModel>>> getListStatusDoc()async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/menu/get_status_doc',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, StatusDocModel.fromJsonModelList);
       return right(apiResponseModel.data);
 
     } on Dio.DioError catch (e) {

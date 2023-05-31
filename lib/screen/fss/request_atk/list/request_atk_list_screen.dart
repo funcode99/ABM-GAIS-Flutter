@@ -51,7 +51,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
               onSubmit: (string) {
                 controller.applySearch(string);
               },
-              onClearFilter: (){
+              onClearFilter: () {
                 controller.applySearch("");
               },
               onPressedFilter: () {
@@ -60,31 +60,30 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                     controller.applyFilter();
                     Get.back();
                   },
+                  onResetFilter: () {
+                    controller.resetFilter();
+                  },
                   children: [
                     const SizedBox(
                       height: 8,
                     ),
-                    CustomDropDownFormField(
-                      items: [
-                        DropdownMenuItem(
-                          value: "",
-                          child: Text("Status".tr),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Completed",
-                          child: Text("Completed"),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Pending",
-                          child: Text("Pending"),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        controller.tempSelectedValue = value!;
-                      },
-                      label: "Status".tr,
-                      value: controller.selectedValue,
-                    ),
+                    Obx(() {
+                      return CustomDropDownFormField(
+                        items: controller.listStatus
+                            .map((e) => DropdownMenuItem(
+                                  value: e.code.toString(),
+                                  child: Text("${e.status}"),
+                                ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller.onChangeSelectedStatus(item.toString());
+                        },
+                        label: "Status".tr,
+                        value: controller.selectedStatus.value != null
+                            ? controller.selectedStatus.value?.code.toString()
+                            : "\"\"",
+                      );
+                    }),
                     const SizedBox(
                       height: 8,
                     ),
@@ -92,26 +91,27 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                         readOnly: true,
                         controller: controller.dateRangeController,
                         suffixIcon: const Icon(Icons.calendar_month),
-                        onTap: () {showCustomDateRangePicker(
-                          context,
-                          dismissible: true,
-                          minimumDate: DateTime.now()
-                              .subtract(const Duration(days: 365)),
-                          maximumDate:
-                          DateTime.now().add(const Duration(days: 365)),
-                          endDate: controller.endDate.value,
-                          startDate: controller.startDate.value,
-                          backgroundColor: Colors.white,
-                          primaryColor: Colors.green,
-                          onApplyClick: (start, end) {
-                            controller.endDateTemp.value = end;
-                            controller.startDateTemp.value = start;
-                            controller.dateRangeController.text =
-                            "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
-                            controller.update();
-                          },
-                          onCancelClick: () {},
-                        );
+                        onTap: () {
+                          showCustomDateRangePicker(
+                            context,
+                            dismissible: true,
+                            minimumDate: DateTime.now()
+                                .subtract(const Duration(days: 365)),
+                            maximumDate:
+                                DateTime.now().add(const Duration(days: 365)),
+                            endDate: controller.endDate.value,
+                            startDate: controller.startDate.value,
+                            backgroundColor: Colors.white,
+                            primaryColor: Colors.green,
+                            onApplyClick: (start, end) {
+                              controller.endDateTemp.value = end;
+                              controller.startDateTemp.value = start;
+                              controller.dateRangeController.text =
+                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                              controller.update();
+                            },
+                            onCancelClick: () {},
+                          );
                         },
                         label: "Date Range".tr),
                     const SizedBox(
@@ -122,7 +122,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
               },
             ),
             Obx(() {
-              if(controller.listHeader.isEmpty){
+              if (controller.listHeader.isEmpty) {
                 return const SizedBox();
               }
 
