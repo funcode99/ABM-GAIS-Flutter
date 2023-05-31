@@ -135,7 +135,7 @@ class _CashAdvanceTravelListScreenState
                                     title: item.noCa ?? "-",
                                     subtitle: item.employeeName ?? "-",
                                     total:
-                                        item.grandTotal?.toInt().toCurrency(),
+                                       "${item.currencyCode ?? ""} ${item.grandTotal?.toInt().toCurrency()}",
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 8),
