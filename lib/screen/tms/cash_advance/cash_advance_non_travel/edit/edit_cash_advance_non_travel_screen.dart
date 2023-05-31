@@ -7,6 +7,7 @@ import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
+import 'package:gais/reusable/customstatuscontainer.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_add_item.dart';
@@ -54,18 +55,33 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  width: double.infinity,
-                  child: Text(
-                    "${controller.selectedItem.value.noCa}",
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
-                    textAlign: TextAlign.center,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Obx(() {
+                        return CustomStatusContainer(
+                          backgroundColor: greenColor,
+                          status: "${controller.selectedItem.value.status}",
+                        );
+                      })
+                    ],
                   ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: Obx(() {
+                    return Text(
+                      controller.selectedItem.value.noCa ?? "-",
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText1
+                          ?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
+                      textAlign: TextAlign.center,
+                    );
+                  }),
                 ),
                 Obx(() {
                   if(controller.selectedItem.value.codeStatusDoc.toString() == "0"){
