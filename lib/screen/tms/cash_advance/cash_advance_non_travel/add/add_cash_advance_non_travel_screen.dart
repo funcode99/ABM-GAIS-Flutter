@@ -126,7 +126,9 @@ class _AddCashAdvanceNonTravelScreenState
                                       backgroundColor: successColor,
                                       onPressed: () async{
                                         final editedItem = await Get.to(()=>AddItemCashAdvanceNonTravelScreen(item: element));
-                                        controller.editItem(editedItem);
+                                        if(editedItem!=null){
+                                          controller.editItem(editedItem);
+                                        }
                                       },
                                     ),
                                     const SizedBox(
@@ -198,7 +200,7 @@ class _AddCashAdvanceNonTravelScreenState
                                     }
                                   : null,
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: infoColor),
+                                  backgroundColor: successColor),
                               child: Text("Save".tr),
                             ),
                           ],

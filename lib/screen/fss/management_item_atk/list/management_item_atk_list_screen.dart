@@ -42,7 +42,7 @@ class ManagementItemATKListScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {
+              onSubmit: (string) {
                 controller.keyword(string);
                 controller.getHeader(page: 1);
               },
@@ -110,6 +110,8 @@ class ManagementItemATKListScreen extends StatelessWidget {
             ),
             Obx(() {
               return CustomPagination(
+                colorSub: whiteColor,
+                colorPrimary: infoColor,
                 key: UniqueKey(),
                 onPageChanged: (page) {
                   controller.getHeader(page: page);
