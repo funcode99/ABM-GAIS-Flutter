@@ -49,15 +49,19 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                 controller.getHeader(page: 1);
               },
               onPressedFilter: () {
+                controller.openFilter();
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {
-                    controller.getHeader();
+                    controller.applyFilter();
                     Get.back();
+                  },
+                  onResetFilter: (){
+                    controller.resetFilter();
                   },
                   children: [
                     CustomTextFormField(
                         readOnly: true,
-                        controller: controller.dateRange,
+                        controller: controller.dateRangeController,
                         suffixIcon: const Icon(Icons.calendar_month),
                         onTap: () {
                           showCustomDateRangePicker(
@@ -72,9 +76,9 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                             backgroundColor: Colors.white,
                             primaryColor: Colors.green,
                             onApplyClick: (start, end) {
-                              controller.endDate.value = end;
-                              controller.startDate.value = start;
-                              controller.dateRange.text =
+                              controller.endDateTemp.value = end;
+                              controller.startDateTemp.value = start;
+                              controller.dateRangeController.text =
                                   "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                               controller.update();
                             },
@@ -91,6 +95,10 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
               },
             ),
             Obx(() {
+              if(controller.listHeader.isEmpty){
+                return const SizedBox();
+              }
+
               return CustomPagination(
                 key: UniqueKey(),
                 onPageChanged: (page) {
