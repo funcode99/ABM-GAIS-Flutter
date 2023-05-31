@@ -74,7 +74,7 @@ class EditCashAdvanceNonTravelController extends BaseController {
     });
   }
 
-  void updateHeader() async {
+  void updateHeader({bool hideButtonAfterEdit = false}) async {
     String userId = await storage.readString(StorageCore.userID);
     CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
       codeStatusDoc: selectedItem.value.codeStatusDoc,
@@ -99,6 +99,9 @@ class EditCashAdvanceNonTravelController extends BaseController {
 
       selectedItem(cashAdvanceModel);
       getDataDetail();
+      if(hideButtonAfterEdit){
+        onEdit(false);
+      }
     });
   }
 

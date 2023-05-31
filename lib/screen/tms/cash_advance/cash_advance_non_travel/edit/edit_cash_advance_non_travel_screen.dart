@@ -88,7 +88,7 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                             ? ElevatedButton(
                           onPressed: controller.enableButton.value
                               ? () {
-                            controller.updateHeader();
+                            controller.updateHeader(hideButtonAfterEdit: true);
                           }
                               : null,
                           style: ElevatedButton.styleFrom(
