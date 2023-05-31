@@ -6,11 +6,19 @@ import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
 class CustomSearchBar extends StatefulWidget {
-  const CustomSearchBar({super.key, this.onChanged, this.onPressedFilter, this.margin, this.padding, this.onSubmit});
+  const CustomSearchBar(
+      {super.key,
+      this.onChanged,
+      this.onPressedFilter,
+      this.onClearFilter,
+      this.margin,
+      this.padding,
+      this.onSubmit});
 
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmit;
   final VoidCallback? onPressedFilter;
+  final VoidCallback? onClearFilter;
   final EdgeInsets? margin;
   final EdgeInsets? padding;
 
@@ -20,6 +28,7 @@ class CustomSearchBar extends StatefulWidget {
 
 class _CustomSearchBarState extends State<CustomSearchBar> {
   Timer? _debounce;
+  final _controller = TextEditingController();
 
   @override
   void dispose() {
@@ -30,11 +39,12 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 1000), () {
-      if(widget.onChanged!=null){
+      if (widget.onChanged != null) {
         widget.onChanged!(query);
       }
     });
   }
+
   _onSubmit(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 1000), () {
@@ -45,8 +55,8 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.margin ?? EdgeInsets.symmetric(vertical: 15),
-      padding: widget.padding ?? EdgeInsets.all(15),
+      margin: widget.margin ?? const EdgeInsets.symmetric(vertical: 15),
+      padding: widget.padding ?? const EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: whiteColor,
         borderRadius: BorderRadius.circular(8),
@@ -55,24 +65,35 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         children: [
           Expanded(
             child: TextField(
+              controller: _controller,
               onChanged: _onSearchChanged,
               onSubmitted: _onSubmit,
               decoration: InputDecoration(
-                // contentPadding: const EdgeInsets.symmetric(vertical: 8),
-                  hintText: "Search".tr, prefixIcon: const Icon(IconlyLight.search)),
+                  // contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                  hintText: "Search".tr,
+                  prefixIcon: const Icon(IconlyLight.search),
+                  suffixIcon: widget.onClearFilter != null
+                      ? IconButton(
+                          onPressed: (){
+                            _controller.text = "";
+                            widget.onClearFilter!();
+                          },
+                          icon: const Icon(Icons.close))
+                      : null),
             ),
           ),
           SizedBox(
             width: widget.onPressedFilter != null ? 18 : 0,
           ),
-          widget.onPressedFilter != null ? ElevatedButton(
-            onPressed: widget.onPressedFilter,
-            style: ElevatedButton.styleFrom(
-                backgroundColor: successColor,
-                minimumSize: const Size(48, 48)
-            ),
-            child: const Icon(IconlyBold.filter_2),
-          ) : const SizedBox()
+          widget.onPressedFilter != null
+              ? ElevatedButton(
+                  onPressed: widget.onPressedFilter,
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: successColor,
+                      minimumSize: const Size(48, 48)),
+                  child: const Icon(IconlyBold.filter_2),
+                )
+              : const SizedBox()
         ],
       ),
     );
