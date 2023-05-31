@@ -144,17 +144,22 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "Event".tr,
-                                            style: listTitleTextStyle,
-                                          ),
-                                          Text(
-                                            "${item.event}",
-                                            style: listSubTitleTextStyle,
-                                          ),
-                                        ],
+                                      Flexible(
+                                        flex: 1,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Event".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              "${item.event}",
+                                              style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                              )
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),

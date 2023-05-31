@@ -139,13 +139,13 @@ class _CashAdvanceTravelListScreenState
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 8),
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Column(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Flexible(
+                                            flex: 1,
+                                            child: Column(
                                               children: [
                                                 Text(
                                                   "Item Count".tr,
@@ -153,11 +153,16 @@ class _CashAdvanceTravelListScreenState
                                                 ),
                                                 Text(
                                                   "${item.itemCount}",
-                                                  style: listSubTitleTextStyle,
+                                                    style: listSubTitleTextStyle.copyWith(
+                                                        overflow: TextOverflow.ellipsis
+                                                    )
                                                 ),
                                               ],
                                             ),
-                                            Column(
+                                          ),
+                                          Flexible(
+                                            flex: 1,
+                                            child: Column(
                                               children: [
                                                 Text(
                                                   "Currency".tr,
@@ -165,11 +170,16 @@ class _CashAdvanceTravelListScreenState
                                                 ),
                                                 Text(
                                                   item.currencyName ?? "",
-                                                  style: listSubTitleTextStyle,
+                                                  style: listSubTitleTextStyle.copyWith(
+                                                    overflow: TextOverflow.ellipsis
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                            Column(
+                                          ),
+                                          Flexible(
+                                            flex: 1,
+                                            child: Column(
                                               children: [
                                                 Text(
                                                   "Reference".tr,
@@ -177,12 +187,14 @@ class _CashAdvanceTravelListScreenState
                                                 ),
                                                 Text(
                                                   item.noRequestTrip ?? "-",
-                                                  style: listSubTitleTextStyle,
+                                                  style: listSubTitleTextStyle.copyWith(
+                                                      overflow: TextOverflow.ellipsis
+                                                  )
                                                 ),
                                               ],
-                                            )
-                                          ],
-                                        ),
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     ),
                                     action: [
