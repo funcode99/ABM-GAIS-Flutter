@@ -19,6 +19,7 @@ class RequestATKListController extends BaseController with MasterDataMixin{
   final startDateTemp = Rxn<DateTime>();
   final endDateTemp = Rxn<DateTime>();
   final selectedStatus = Rxn<StatusDocModel>();
+  final selectedStatusTemp = Rxn<StatusDocModel>();
 
   String tempSelectedValue = "";
   String selectedValue = "";
@@ -45,9 +46,10 @@ class RequestATKListController extends BaseController with MasterDataMixin{
     initData();
   }
   void initData()async{
-    listStatus.add(StatusDocModel(code: "\"\"", status: "Status"));;
+    listStatus.add(StatusDocModel(code: "", status: "Status"));;
     final statuses = await getListStatusDoc();
     listStatus.addAll(statuses);
+    onChangeSelectedStatus("");
   }
 
   void getHeader({int page = 1}) async {
@@ -86,7 +88,7 @@ class RequestATKListController extends BaseController with MasterDataMixin{
 
   void onChangeSelectedStatus(String id) {
     final selected = listStatus.firstWhere((item) => item.code.toString() == id.toString());
-    selectedStatus(selected);
+    selectedStatusTemp(selected);
   }
 
   void deleteHeader(RequestAtkModel item) async {
@@ -110,12 +112,14 @@ class RequestATKListController extends BaseController with MasterDataMixin{
   void resetFilter(){
     endDateTemp.value = null;
     startDateTemp.value = null;
+    onChangeSelectedStatus("");
     dateRangeController.text = "";
   }
 
   void openFilter(){
     startDateTemp.value = startDate.value;
     endDateTemp.value = endDate.value;
+    selectedStatusTemp.value = selectedStatus.value;
     if(startDateTemp.value!=null){
       dateRangeController.text = "${dateFormat.format(startDateTemp.value!)} - ${dateFormat.format(endDateTemp.value!)}";
     }else{
@@ -127,6 +131,7 @@ class RequestATKListController extends BaseController with MasterDataMixin{
   void applyFilter(){
     startDate.value = startDateTemp.value;
     endDate.value = endDateTemp.value;
+    selectedStatus.value = selectedStatusTemp.value;
 
     getHeader();
   }

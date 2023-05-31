@@ -55,6 +55,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                 controller.applySearch("");
               },
               onPressedFilter: () {
+                controller.openFilter();
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {
                     controller.applyFilter();
@@ -68,6 +69,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                       height: 8,
                     ),
                     Obx(() {
+                      print("controller.selectedStatus.value?.code ${controller.selectedStatus.value?.code}");
                       return CustomDropDownFormField(
                         items: controller.listStatus
                             .map((e) => DropdownMenuItem(
@@ -79,9 +81,9 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                           controller.onChangeSelectedStatus(item.toString());
                         },
                         label: "Status".tr,
-                        value: controller.selectedStatus.value != null
-                            ? controller.selectedStatus.value?.code.toString()
-                            : "\"\"",
+                        value: controller.selectedStatusTemp.value != null
+                            ? controller.selectedStatusTemp.value?.code.toString()
+                            : "",
                       );
                     }),
                     const SizedBox(
