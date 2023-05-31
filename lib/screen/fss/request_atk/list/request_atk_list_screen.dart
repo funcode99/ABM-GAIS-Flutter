@@ -49,8 +49,10 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
           children: [
             CustomSearchBar(
               onSubmit: (string) {
-                controller.keyword(string);
-                controller.getHeader();
+                controller.applySearch(string);
+              },
+              onClearFilter: (){
+                controller.applySearch("");
               },
               onPressedFilter: () {
                 Get.bottomSheet(FilterBottomSheet(
@@ -88,33 +90,28 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                     ),
                     CustomTextFormField(
                         readOnly: true,
-                        controller: controller.dateRange,
+                        controller: controller.dateRangeController,
                         suffixIcon: const Icon(Icons.calendar_month),
-                        onTap: () {
-                          showCustomDateRangePicker(
-                            context,
-                            dismissible: true,
-                            minimumDate: DateTime.now()
-                                .subtract(const Duration(days: 365)),
-                            maximumDate:
-                                DateTime.now().add(const Duration(days: 365)),
-                            endDate: controller.endDate,
-                            startDate: controller.startDate,
-                            backgroundColor: Colors.white,
-                            primaryColor: Colors.green,
-                            onApplyClick: (start, end) {
-                              controller.endDate = end;
-                              controller.startDate = start;
-                              controller.dateRange.text =
-                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
-                              controller.update();
-                            },
-                            onCancelClick: () {
-                              controller.endDate = null;
-                              controller.startDate = null;
-                              controller.update();
-                            },
-                          );
+                        onTap: () {showCustomDateRangePicker(
+                          context,
+                          dismissible: true,
+                          minimumDate: DateTime.now()
+                              .subtract(const Duration(days: 365)),
+                          maximumDate:
+                          DateTime.now().add(const Duration(days: 365)),
+                          endDate: controller.endDate.value,
+                          startDate: controller.startDate.value,
+                          backgroundColor: Colors.white,
+                          primaryColor: Colors.green,
+                          onApplyClick: (start, end) {
+                            controller.endDateTemp.value = end;
+                            controller.startDateTemp.value = start;
+                            controller.dateRangeController.text =
+                            "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                            controller.update();
+                          },
+                          onCancelClick: () {},
+                        );
                         },
                         label: "Date Range".tr),
                     const SizedBox(
@@ -125,6 +122,10 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
               },
             ),
             Obx(() {
+              if(controller.listHeader.isEmpty){
+                return const SizedBox();
+              }
+
               return CustomPagination(
                 colorSub: whiteColor,
                 colorPrimary: infoColor,
@@ -166,29 +167,20 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "Warehouse".tr,
-                                            style: listTitleTextStyle,
-                                          ),
-                                          Text(
-                                            "${item.warehouseName}",
-                                            style: listSubTitleTextStyle,
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "Item Count".tr,
-                                            style: listTitleTextStyle,
-                                          ),
-                                          Text(
-                                            "${item.itemCount}",
-                                            style: listSubTitleTextStyle,
-                                          ),
-                                        ],
+                                      Flexible(
+                                        flex: 1,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Item Count".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              "${item.itemCount}",
+                                              style: listSubTitleTextStyle,
+                                            ),
+                                          ],
+                                        ),
                                       )
                                     ],
                                   ),

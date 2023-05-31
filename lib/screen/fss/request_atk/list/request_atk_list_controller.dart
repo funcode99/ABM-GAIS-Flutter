@@ -8,10 +8,14 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class RequestATKListController extends BaseController {
-  final TextEditingController dateRange = TextEditingController();
+  final TextEditingController dateRangeController = TextEditingController();
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
-  DateTime? startDate;
-  DateTime? endDate;
+
+  final startDate = Rxn<DateTime>();
+  final endDate = Rxn<DateTime>();
+  final startDateTemp = Rxn<DateTime>();
+  final endDateTemp = Rxn<DateTime>();
+
   String tempSelectedValue = "";
   String selectedValue = "";
 
@@ -24,14 +28,10 @@ class RequestATKListController extends BaseController {
   final currentPage = 1.obs;
   int limit = 10;
 
-  void applyFilter() {
-    selectedValue = tempSelectedValue;
-  }
-
   @override
   void onInit() {
     super.onInit();
-    dateRange.text = "10/03/2023 - 17/03/2023";
+    dateRangeController.text = "10/03/2023 - 17/03/2023";
 
     getHeader();
   }
@@ -77,6 +77,35 @@ class RequestATKListController extends BaseController {
           ));
           getHeader();
         });
+  }
+
+  void applySearch(String search){
+    keyword(search);
+    getHeader(page: 1);
+  }
+
+  void resetFilter(){
+    endDateTemp.value = null;
+    startDateTemp.value = null;
+    dateRangeController.text = "";
+  }
+
+  void openFilter(){
+    startDateTemp.value = startDate.value;
+    endDateTemp.value = endDate.value;
+    if(startDateTemp.value!=null){
+      dateRangeController.text = "${dateFormat.format(startDateTemp.value!)} - ${dateFormat.format(endDateTemp.value!)}";
+    }else{
+      dateRangeController.text = "";
+    }
+
+  }
+
+  void applyFilter(){
+    startDate.value = startDateTemp.value;
+    endDate.value = endDateTemp.value;
+
+    getHeader();
   }
 
 }
