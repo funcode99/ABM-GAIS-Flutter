@@ -76,4 +76,25 @@ class RequestATKDetailController extends BaseController {
       listDetail.add(detailModel);
     });
   }
+
+  void deleteDetail(RequestATKDetailModel item) async {
+    if (item.id != null) {
+      final result = await _repository.deleteDetail(item.id!);
+      result.fold(
+          (l) => Get.showSnackbar(CustomGetSnackBar(
+              message: l.message, backgroundColor: Colors.red)), (model) {
+        Get.showSnackbar(CustomGetSnackBar(
+          message: "Success Delete Data".tr,
+        ));
+        //update state
+        listDetail.remove(item);
+      });
+    } else {
+      Get.showSnackbar(CustomGetSnackBar(
+        message: "Success Delete Data".tr,
+      ));
+
+      listDetail.remove(item);
+    }
+  }
 }
