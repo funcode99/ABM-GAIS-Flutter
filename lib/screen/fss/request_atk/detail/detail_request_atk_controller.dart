@@ -6,6 +6,7 @@ import 'package:gais/data/model/request_atk/item_request_atk_model.dart';
 import 'package:gais/data/model/request_atk/request_atk_detail_model.dart';
 import 'package:gais/data/model/request_atk/request_atk_model.dart';
 import 'package:gais/data/repository/request_atk/request_atk_repository.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -28,7 +29,6 @@ class RequestATKDetailController extends BaseController {
 
   final RequestATKRepository _repository = Get.find();
 
-
   @override
   void onReady() {
     super.onReady();
@@ -37,8 +37,10 @@ class RequestATKDetailController extends BaseController {
 
   void initData() {
     createdByController.text = selectedItem.value.createdBy ?? "-";
-    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ?? "-";
-    if(selectedItem.value.status?.toLowerCase() == "reject"){
+    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(
+            originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
+        "-";
+    if (selectedItem.value.status?.toLowerCase() == "reject") {
       rejectNoteController.text = selectedItem.value.remarks ?? "-";
     }
 
@@ -48,12 +50,12 @@ class RequestATKDetailController extends BaseController {
   void getDetailData() async {
     final result = await _repository.getDataDetails(selectedItem.value.id!);
     result.fold(
-            (l) => Get.showSnackbar(
+        (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-            (r) {
-          listDetail.value = r;
-          listDetail.refresh();
-        });
+        (r) {
+      listDetail.value = r;
+      listDetail.refresh();
+    });
   }
 
   void updateEnableButton() {
@@ -62,5 +64,16 @@ class RequestATKDetailController extends BaseController {
 
   void updateOnEdit() {
     onEdit(!onEdit.value);
+  }
+
+  void addDetail(RequestATKDetailModel item) async {
+    item.idAtkRequest = selectedItem.value.id;
+    final result = await _repository.addDetail(item);
+    result.fold(
+        (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (detailModel) {
+      listDetail.add(detailModel);
+    });
   }
 }

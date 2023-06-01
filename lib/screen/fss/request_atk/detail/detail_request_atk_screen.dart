@@ -11,6 +11,7 @@ import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/fss/request_atk/add/item_request_atk/add/add_item_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_controller.dart';
 import 'package:get/get.dart';
@@ -212,13 +213,12 @@ class RequestATKDetailScreen extends StatelessWidget {
                               iconData: IconlyBold.plus,
                               backgroundColor: infoColor,
                               onPressed: () async {
-                                /*
-                        final addedItem = await Get.to(
-                              const AddItemCashAdvanceNonTravelScreen());
-                        if (addedItem != null) {
-                            //add item
-                            controller.addDetail(addedItem);
-                        }*/
+                                final addedItem = await Get.to(
+                                    () => const AddItemRequestATKScreen());
+                                if (addedItem != null) {
+                                  //add item
+                                  controller.addDetail(addedItem);
+                                }
                               },
                             ),
                           ),
