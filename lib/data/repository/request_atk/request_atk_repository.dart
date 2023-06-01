@@ -68,6 +68,10 @@ class RequestATKRepository implements BaseRepository<RequestAtkModel, RequestATK
       Dio.Response response = await network.dio.delete(
         '/api/request_atk/delete_data/$id',
       );
+      if(response.data == ""){
+        return right(true);
+      }
+
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, RequestAtkModel.fromJsonModel);
       return right(apiResponseModel.success!);
     } on DioError catch (e) {
