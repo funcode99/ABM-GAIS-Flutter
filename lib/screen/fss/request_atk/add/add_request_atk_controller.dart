@@ -16,7 +16,7 @@ class AddRequestATKController extends BaseController {
   final formKey = GlobalKey<FormState>();
   DateFormat dateFormat = DateFormat("dd/MM/yy");
 
-  List<RequestATKDetailModel> listItem = [];
+  List<RequestATKDetailModel> listDetail = [];
 
   final RequestATKRepository _repository = Get.find();
 
@@ -39,15 +39,14 @@ class AddRequestATKController extends BaseController {
   }
 
   void addItem(RequestATKDetailModel item) {
-    listItem.add(item);
+    listDetail.add(item);
 
     update();
   }
 
-  void removeItem(RequestATKDetailModel item) {
-    listItem.removeWhere((element) => element.id == item.id);
 
-    update();
+  void removeItem(RequestATKDetailModel item) {
+    listDetail.removeWhere((element) => element.key == item.key);
   }
 
   void saveData() async {
@@ -55,15 +54,14 @@ class AddRequestATKController extends BaseController {
     String companyId = await storage.readString(StorageCore.companyID);
     String departmentId = await storage.readString(StorageCore.departmentID);
     String siteId = await storage.readString(StorageCore.siteID);
-    int warehouseId = 7; //dummies TODO this should inside the item
+    int warehouseId = 0; //dummies TODO this should inside the item
     RequestAtkModel requestAtkModel = RequestAtkModel(
         idEmployee: userId.toInt(),
         idCompany: companyId.toInt(),
         idDepartement: departmentId.toInt(),
         idSite: siteId.toInt(),
         idWarehouse: warehouseId,
-        remarks: "dummy remarks, this should be inside the item not in header",
-        arrayDetail: listItem);
+        arrayDetail: listDetail);
 
     final result = await _repository.saveData(requestAtkModel);
     result.fold(

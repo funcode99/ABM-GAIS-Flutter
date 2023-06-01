@@ -27,7 +27,7 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
   final listItem = <ManagementItemATKModel>[].obs;
   final selectedWarehouse = WarehouseModel().obs;
   final selectedItem = Rxn<ManagementItemATKModel>();
-
+  final emptyItem = ManagementItemATKModel(id: null, itemName: "Item");
 
   @override
   void onInit() {
@@ -51,9 +51,9 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
   }
 
   void initData()async{
-    String idCompany = await storage.readString(StorageCore.companyID);
+    String idSite = await storage.readString(StorageCore.siteID);
 
-    final warehouses = await getListWarehouseByCompanyId(idCompany.toInt());
+    final warehouses = await getListWarehouseBySiteId(idSite.toInt());
     listWarehouse(warehouses);
     selectedWarehouse(listWarehouse.first);
 
@@ -66,6 +66,7 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
     if(listItem.isNotEmpty){
       onChangeSelectedItemId(listItem.first.id.toString());
     }else{
+      listItem.add(emptyItem);
       Get.showSnackbar(CustomGetSnackBar(message: "Item tidak tersedia", backgroundColor: Colors.red));
       onChangeSelectedItemId("");
     }
@@ -82,7 +83,10 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
       uomController.text = selected.uomName ?? "-";
 
       selectedItem(selected);
+    }else{
+      selectedItem(emptyItem);
     }
+    quantityController.text = "";
   }
 
   void onChangeSelectedWarehouse(String id) {

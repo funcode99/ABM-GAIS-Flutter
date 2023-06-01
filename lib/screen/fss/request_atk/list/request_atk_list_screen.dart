@@ -232,7 +232,10 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
-        onPressed: () => Get.to(const AddRequestATKScreen()),
+        onPressed: ()async{
+          Get.to(() => const AddRequestATKScreen())
+              ?.then((value) => controller.getHeader());
+        },
         child: const Icon(Icons.add_rounded, size: 45),
       ),
       bottomNavigationBar: const BottomBar(menu: 1),

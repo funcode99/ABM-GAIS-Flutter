@@ -30,6 +30,22 @@ class MasterRepository{
     }
   }
 
+  Future<Either<BaseError, List<WarehouseModel>>> getListWarehouseBySiteId(int idSite)async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/warehouse/get_by_site_id/$idSite',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, WarehouseModel.fromJsonModelList);
+      return right(apiResponseModel.data);
+    } on Dio.DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    }catch (e){
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
   Future<Either<BaseError, List<BrandModel>>> getListBrandByCompanyId(int idCompany)async{
     try {
       Dio.Response response = await network.dio.get(

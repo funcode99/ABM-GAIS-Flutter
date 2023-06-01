@@ -96,15 +96,17 @@ class AddItemRequestATKScreen extends StatelessWidget {
                       items: controller.listItem
                           .map((e) =>
                           DropdownMenuItem(
-                            value: e.id.toString(),
-                            child: Text("${e.codeItem} - ${e.itemName}"),
+                            value: e.id != null ? e.id.toString() : "",
+                            child: Text(e.codeItem != null? "${e.codeItem} - ${e.itemName}" : "${e.itemName}"),
                           ))
                           .toList(),
                       onChanged: (item) {
                         controller.onChangeSelectedItemId(item.toString());
                       },
-                      label: "Item ".tr,
-                      value: controller.selectedItem.value?.id.toString(),
+                      label: "Item".tr,
+                      value: controller.selectedItem.value?.id != null
+                          ? controller.selectedItem.value?.id.toString()
+                          : "",
                     );
                   }),
                   const SizedBox(
@@ -123,7 +125,7 @@ class AddItemRequestATKScreen extends StatelessWidget {
                         validator: controller.selectedItem.value != null
                             ? ValidationBuilder()
                             .required()
-                            .max(controller.selectedItem.value!.currentStock!)
+                            .max(controller.selectedItem.value?.currentStock ?? 0)
                             .build()
                             : ValidationBuilder()
                             .required()

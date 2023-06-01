@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
@@ -12,7 +11,6 @@ import 'package:gais/reusable/list_item/common_add_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/request_atk/add/add_request_atk_controller.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/add/add_item_request_atk_screen.dart';
-import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -96,7 +94,7 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                           height: 20,
                           color: greyColor,
                         ),
-                        ...controller.listItem
+                        ...controller.listDetail
                             .mapIndexed((index, element) => CommonAddItem(
                                   number: "${index + 1}",
                                   title: "${element.codeItem} -  ${element.itemName}",
@@ -104,13 +102,13 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                                   content: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 8),
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceAround,
-                                        children: [
-                                          Column(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .spaceAround,
+                                      children: [
+                                        Flexible(
+                                          flex: 1,
+                                          child: Column(
                                             children: [
                                               Text(
                                                 "Quantity".tr,
@@ -118,14 +116,19 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                                               ),
                                               Text(
                                                 "${element.qty}",
-                                                style: listSubTitleTextStyle,
+                                                style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                                ),
                                               ),
                                             ],
                                           ),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Column(
+                                        ),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Flexible(
+                                          flex: 1,
+                                          child: Column(
                                             children: [
                                               Text(
                                                 "UOM".tr,
@@ -133,14 +136,19 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                                               ),
                                               Text(
                                                 "${element.uomName}",
-                                                style: listSubTitleTextStyle,
+                                                style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                                ),
                                               ),
                                             ],
                                           ),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Column(
+                                        ),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Flexible(
+                                          flex: 1,
+                                          child: Column(
                                             children: [
                                               Text(
                                                 "Warehouse".tr,
@@ -148,15 +156,44 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                                               ),
                                               Text(
                                                 "${element.warehouseName}",
-                                                style: listSubTitleTextStyle,
+                                                style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                                ),
                                               ),
                                             ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   action: [
+                                    CustomIconButton(
+                                      title: "Edit".tr,
+                                      iconData: IconlyBold.edit,
+                                      backgroundColor: successColor,
+                                      onPressed: () async{/*
+                                        final editedItem = await Get.to(()=>AddItemCashAdvanceNonTravelScreen(item: element));
+                                        if(editedItem!=null){
+                                          controller.editItem(editedItem);
+                                        }*/
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    CustomIconButton(
+                                      title: "Delete".tr,
+                                      iconData: IconlyBold.delete,
+                                      backgroundColor: redColor,
+                                      onPressed: () {
+                                        Get.dialog(DeleteConfirmationDialog(
+                                          onDeletePressed: () {
+                                            controller.removeItem(element);
+                                            Get.back();
+                                          },
+                                        ));
+                                      },
+                                    )
                                   ],
                                 ))
                             .toList(),
