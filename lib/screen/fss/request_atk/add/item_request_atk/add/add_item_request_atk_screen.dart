@@ -38,7 +38,7 @@ class AddItemRequestATKScreen extends StatelessWidget {
         child: Card(
           child: Form(
             key: controller.formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.always,
             onChanged: () {
               controller.updateButton();
             },

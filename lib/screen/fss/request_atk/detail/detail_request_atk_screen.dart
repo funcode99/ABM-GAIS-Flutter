@@ -41,7 +41,7 @@ class RequestATKDetailScreen extends StatelessWidget {
         child: Card(
           child: Form(
             key: controller.formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.always,
             onChanged: () {
               controller.updateEnableButton();
             },
@@ -99,7 +99,9 @@ class RequestATKDetailScreen extends StatelessWidget {
                         controller.onEdit.value
                             ? ElevatedButton(
                                 onPressed: controller.enableButton.value
-                                    ? () {}
+                                    ? () {
+                                        controller.onEdit(false);
+                                      }
                                     : null,
                                 style: ElevatedButton.styleFrom(
                                     minimumSize: const Size(75, 30),

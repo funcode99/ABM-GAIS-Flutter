@@ -99,7 +99,6 @@ class RequestATKDetailController extends BaseController {
   }
 
   void updateDetail(RequestATKDetailModel item) async {
-    print("ITEMMMM ${item.toJson()}");
     item.idAtkRequest = selectedItem.value.id;
     final result = await _repository.updateDetail(item, item.id!);
     result.fold(
