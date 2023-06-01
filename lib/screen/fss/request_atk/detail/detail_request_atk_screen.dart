@@ -7,12 +7,14 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_controller.dart';
 import 'package:get/get.dart';
+import 'package:iconly/iconly.dart';
 
 class RequestATKDetailScreen extends StatelessWidget {
   const RequestATKDetailScreen({Key? key}) : super(key: key);
@@ -36,8 +38,12 @@ class RequestATKDetailScreen extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Card(
-          child: SizedBox(
-            width: double.infinity,
+          child: Form(
+            key: controller.formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            onChanged: () {
+              controller.updateEnableButton();
+            },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,6 +75,48 @@ class RequestATKDetailScreen extends StatelessWidget {
                     );
                   }),
                 ),
+                Obx(() {
+                  if (controller.selectedItem.value.codeStatusDoc.toString() ==
+                      "0") {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        OutlinedButton(
+                          onPressed: () {
+                            controller.updateOnEdit();
+                          },
+                          style: OutlinedButton.styleFrom(
+                            minimumSize: const Size(75, 30),
+                          ),
+                          child: controller.onEdit.value
+                              ? Text("Cancel".tr)
+                              : Text("Edit".tr),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        controller.onEdit.value
+                            ? ElevatedButton(
+                                onPressed: controller.enableButton.value
+                                    ? () {}
+                                    : null,
+                                style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(75, 30),
+                                    backgroundColor: successColor),
+                                child: Text("Save".tr),
+                              )
+                            : ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(75, 30),
+                                    backgroundColor: successColor),
+                                child: Text("Submit".tr),
+                              ),
+                      ],
+                    );
+                  }
+                  return const SizedBox();
+                }),
                 const SizedBox(
                   height: 16,
                 ),
@@ -105,7 +153,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                               controller: controller.rejectNoteController,
                               label: "Note".tr);
                         }
-                        return SizedBox();
+                        return const SizedBox();
                       }),
                       const SizedBox(
                         height: 64,
@@ -152,112 +200,157 @@ class RequestATKDetailScreen extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
+                Obx(() {
+                  return controller.onEdit.value
+                      ? Container(
+                          margin: const EdgeInsets.only(right: 8, bottom: 8),
+                          alignment: Alignment.topRight,
+                          child: SizedBox(
+                            width: 100,
+                            child: CustomIconButton(
+                              title: "Add".tr,
+                              iconData: IconlyBold.plus,
+                              backgroundColor: infoColor,
+                              onPressed: () async {
+                                /*
+                        final addedItem = await Get.to(
+                              const AddItemCashAdvanceNonTravelScreen());
+                        if (addedItem != null) {
+                            //add item
+                            controller.addDetail(addedItem);
+                        }*/
+                              },
+                            ),
+                          ),
+                        )
+                      : const SizedBox();
+                }),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Obx(() {
                     return controller.listDetail.isEmpty
                         ? const SizedBox()
                         : ListView(
-                      shrinkWrap: true,
-                      physics: const ScrollPhysics(),
-                      children: [
-                        ...controller.listDetail
-                            .mapIndexed((index, item) =>
-                            CommonListItem(
-                              number: "${index + 1}",
-                              title: item.itemName,
-                              subtitle: "${item.brandName}",
-                              action: [],
-                              content: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 8),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Quantity".tr,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              ?.copyWith(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              height: 1.5),
+                            shrinkWrap: true,
+                            physics: const ScrollPhysics(),
+                            children: [
+                              ...controller.listDetail
+                                  .mapIndexed((index, item) => CommonListItem(
+                                        number: "${index + 1}",
+                                        title: item.itemName,
+                                        subtitle: "${item.brandName}",
+                                        action: controller.onEdit.value
+                                            ? [
+                                                CustomIconButton(
+                                                  title: "Edit".tr,
+                                                  iconData: IconlyBold.edit,
+                                                  backgroundColor: successColor,
+                                                  onPressed: () async {
+                                                    /*
+                                              final updatedItem =
+                                              await Get.to(() =>
+                                                  AddItemCashAdvanceNonTravelScreen(
+                                                      item: item));
+                                              if (updatedItem != null) {
+                                                //add item
+                                                controller
+                                                    .updateDetail(updatedItem);
+                                              }*/
+                                                  },
+                                                ),
+                                                const SizedBox(
+                                                  width: 8,
+                                                ),
+                                                CustomIconButton(
+                                                  title: "Delete".tr,
+                                                  iconData: IconlyBold.delete,
+                                                  backgroundColor: redColor,
+                                                  onPressed: () {
+                                                    Get.dialog(
+                                                        DeleteConfirmationDialog(
+                                                      onDeletePressed: () {
+                                                        /*controller
+                                                          .deleteDetail(item);
+                                                      Get.back();*/
+                                                      },
+                                                    ));
+                                                  },
+                                                )
+                                              ]
+                                            : [],
+                                        content: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 8),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "Quantity".tr,
+                                                      style: listTitleTextStyle,
+                                                    ),
+                                                    Text(
+                                                      "${item.qty}",
+                                                      style: listSubTitleTextStyle
+                                                          .copyWith(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "UOM".tr,
+                                                      style: listTitleTextStyle,
+                                                    ),
+                                                    Text(
+                                                      "${item.uomName}",
+                                                      style: listSubTitleTextStyle
+                                                          .copyWith(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "Warehouse".tr,
+                                                      style: listTitleTextStyle,
+                                                    ),
+                                                    Text(
+                                                      "${item.warehouseName}",
+                                                      style: listSubTitleTextStyle
+                                                          .copyWith(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        Text(
-                                          "${item.qty}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              ?.copyWith(
-                                              fontSize: 14,
-                                              color: greyColor,
-                                              height: 1.5),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "UOM".tr,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              ?.copyWith(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              height: 1.5),
-                                        ),
-                                        Text(
-                                          "${item.uomName}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              ?.copyWith(
-                                              fontSize: 14,
-                                              color: greyColor,
-                                              height: 1.5),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Warehouse".tr,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              ?.copyWith(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              height: 1.5),
-                                        ),
-                                        Text(
-                                          "${item.warehouseName}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
-                                              ?.copyWith(
-                                              fontSize: 14,
-                                              color: greyColor,
-                                              height: 1.5),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              onTap: () {
-                                Get.dialog(DetailItemRequestATKScreen(
-                                    detailItem: item, header: controller.selectedItem.value));
-                              },
-                            )
-                        )
-                      ],
-                    );
+                                        onTap: () {
+                                          Get.dialog(DetailItemRequestATKScreen(
+                                              detailItem: item,
+                                              header: controller
+                                                  .selectedItem.value));
+                                        },
+                                      ))
+                            ],
+                          );
                   }),
                 ),
                 const SizedBox(

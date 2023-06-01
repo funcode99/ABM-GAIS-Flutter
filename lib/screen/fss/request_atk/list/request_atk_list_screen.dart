@@ -155,7 +155,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                         children: [
                           ...controller.listHeader.mapIndexed((index, item) =>
                               CommonListItem(
-                                onTap: () {
+                                onTap: item.codeStatusDoc == 0 ? null : (){
                                   Get.to(() => const RequestATKDetailScreen(),
                                       arguments: {"item": item});
                                 },

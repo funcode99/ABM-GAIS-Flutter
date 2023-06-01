@@ -15,7 +15,12 @@ class RequestATKDetailController extends BaseController {
   final TextEditingController createdByController = TextEditingController();
   final TextEditingController rejectNoteController = TextEditingController();
 
+  final formKey = GlobalKey<FormState>();
+
   List<ItemRequestATKModel> listItem = <ItemRequestATKModel>[];
+
+  final enableButton = false.obs;
+  final onEdit = false.obs;
 
   final selectedItem = RequestAtkModel().obs;
 
@@ -49,5 +54,13 @@ class RequestATKDetailController extends BaseController {
           listDetail.value = r;
           listDetail.refresh();
         });
+  }
+
+  void updateEnableButton() {
+    enableButton(formKey.currentState!.validate());
+  }
+
+  void updateOnEdit() {
+    onEdit(!onEdit.value);
   }
 }
