@@ -19,7 +19,7 @@ RequestATKDetailModel _$RequestATKDetailModelFromJson(
       createdAt: json['created_at'] as String?,
       createdBy: json['created_by'],
       updatedAt: json['updated_at'] as String?,
-      updatedBy: json['updated_by'] as String?,
+      updatedBy: json['updated_by'],
       itemName: json['item_name'] as String?,
       codeItem: json['code_item'] as String?,
       brandName: json['brand_name'] as String?,

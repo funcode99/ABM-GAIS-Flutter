@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/request_atk/request_atk_detail_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
@@ -14,12 +15,14 @@ import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
 class AddItemRequestATKScreen extends StatelessWidget {
-  const AddItemRequestATKScreen({super.key});
+  const AddItemRequestATKScreen({super.key, this.item});
+
+  final RequestATKDetailModel? item;
 
   @override
   Widget build(BuildContext context) {
     final AddItemRequestATKController controller =
-    Get.put(AddItemRequestATKController());
+    Get.put(AddItemRequestATKController())..requestATKDetailModel(item);
 
     return Scaffold(
       backgroundColor: baseColor,

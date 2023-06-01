@@ -15,7 +15,7 @@ class RequestATKDetailModel extends Equatable {
   String? createdAt;
   dynamic createdBy;
   String? updatedAt;
-  String? updatedBy;
+  dynamic updatedBy;
   String? itemName;
   String? codeItem;
   String? brandName;

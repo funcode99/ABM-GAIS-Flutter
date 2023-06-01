@@ -11,23 +11,22 @@ import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 
 class AddItemRequestATKController extends BaseController with MasterDataMixin{
-  final TextEditingController companyController = TextEditingController();
-  final TextEditingController itemController = TextEditingController();
   final TextEditingController brandController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
   final TextEditingController uomController = TextEditingController();
-  final TextEditingController siteController = TextEditingController();
-  final TextEditingController warehousController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final enableButton = false.obs;
 
+  final requestATKDetailModel = Rxn<RequestATKDetailModel>();
 
   final listWarehouse = <WarehouseModel>[].obs;
   final listItem = <ManagementItemATKModel>[].obs;
   final selectedWarehouse = WarehouseModel().obs;
   final selectedItem = Rxn<ManagementItemATKModel>();
   final emptyItem = ManagementItemATKModel(id: null, itemName: "Item");
+
+  bool initEdit = false;
 
   @override
   void onInit() {
@@ -57,14 +56,37 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
     listWarehouse(warehouses);
     selectedWarehouse(listWarehouse.first);
 
-    _getItemData();
+    if(requestATKDetailModel.value !=null){
+      initEdit = true;
+
+      if(requestATKDetailModel.value?.idWarehouse!=null){
+        onChangeSelectedWarehouse("${requestATKDetailModel.value?.idWarehouse}");
+      }else{
+        onChangeSelectedWarehouse(listWarehouse.first.id.toString());
+      }
+    }else{
+      _getItemData();
+    }
   }
 
   _getItemData()async{
     final items = await getListItemByWarehouseId(selectedWarehouse.value.id!);
     listItem(items);
     if(listItem.isNotEmpty){
-      onChangeSelectedItemId(listItem.first.id.toString());
+      if(initEdit){
+        if(requestATKDetailModel.value !=null){
+          //init if in edit
+          if(requestATKDetailModel.value?.idItem!=null){
+            onChangeSelectedItemId("${requestATKDetailModel.value?.idItem}");
+          }
+          quantityController.text = "${requestATKDetailModel.value?.qty}";
+          remarksController.text = requestATKDetailModel.value?.remarks ?? "";
+        }
+        initEdit = false;
+      }else{
+        //if not in edit
+        onChangeSelectedItemId(listItem.first.id.toString());
+      }
     }else{
       listItem.add(emptyItem);
       Get.showSnackbar(CustomGetSnackBar(message: "Item tidak tersedia", backgroundColor: Colors.red));
@@ -97,7 +119,19 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
   }
 
   RequestATKDetailModel getAddedItem() {
-    return RequestATKDetailModel(
+    if(requestATKDetailModel.value!=null){
+      requestATKDetailModel.value?.remarks = remarksController.text;
+      requestATKDetailModel.value?.itemName = selectedItem.value?.itemName;
+      requestATKDetailModel.value?.codeItem = selectedItem.value?.codeItem;
+      requestATKDetailModel.value?.warehouseName = selectedItem.value?.warehouseName;
+      requestATKDetailModel.value?.uomName = uomController.text;
+      requestATKDetailModel.value?.brandName = brandController.text;
+      requestATKDetailModel.value?.qty = quantityController.text.toInt();
+      requestATKDetailModel.value?.idWarehouse = selectedWarehouse.value.id;
+      requestATKDetailModel.value?.idItem = selectedItem.value?.id;
+      return requestATKDetailModel.value!;
+    }else{
+      return RequestATKDetailModel(
         key: DateTime.now().toString(),
         idWarehouse: selectedWarehouse.value.id,
         idItem: selectedItem.value?.id,
@@ -108,7 +142,8 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
         warehouseName : selectedWarehouse.value.warehouseName,
         itemName : selectedItem.value?.itemName,
         codeItem : selectedItem.value?.codeItem,
-    );
+      );
+    }
   }
 
   void updateButton() {

@@ -246,16 +246,15 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                   iconData: IconlyBold.edit,
                                                   backgroundColor: successColor,
                                                   onPressed: () async {
-                                                    /*
-                                              final updatedItem =
-                                              await Get.to(() =>
-                                                  AddItemCashAdvanceNonTravelScreen(
-                                                      item: item));
-                                              if (updatedItem != null) {
-                                                //add item
-                                                controller
-                                                    .updateDetail(updatedItem);
-                                              }*/
+                                                    final updatedItem =
+                                                        await Get.to(() =>
+                                                            AddItemRequestATKScreen(
+                                                                item: item));
+                                                    if (updatedItem != null) {
+                                                      //add item
+                                                      controller.updateDetail(
+                                                          updatedItem);
+                                                    }
                                                   },
                                                 ),
                                                 const SizedBox(
@@ -269,7 +268,8 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                     Get.dialog(
                                                         DeleteConfirmationDialog(
                                                       onDeletePressed: () {
-                                                        controller.deleteDetail(item);
+                                                        controller
+                                                            .deleteDetail(item);
                                                         Get.back();
                                                       },
                                                     ));

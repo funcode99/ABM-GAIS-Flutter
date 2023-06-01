@@ -97,4 +97,17 @@ class RequestATKDetailController extends BaseController {
       listDetail.remove(item);
     }
   }
+
+  void updateDetail(RequestATKDetailModel item) async {
+    print("ITEMMMM ${item.toJson()}");
+    item.idAtkRequest = selectedItem.value.id;
+    final result = await _repository.updateDetail(item, item.id!);
+    result.fold(
+        (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (model) {
+      int index = listDetail.indexWhere((element) => element.id == item.id);
+      listDetail[index] = item;
+    });
+  }
 }
