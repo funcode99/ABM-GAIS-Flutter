@@ -44,6 +44,16 @@ class AddRequestATKController extends BaseController {
     update();
   }
 
+  void editItem(RequestATKDetailModel item){
+    int index = listDetail.indexWhere((element){
+      if(item.id != null){
+        return element.id == item.id;
+      }
+      return element.key == item.key;
+    });
+    listDetail[index] = item;
+    update();
+  }
 
   void removeItem(RequestATKDetailModel item) {
     listDetail.removeWhere((element) => element.key == item.key);

@@ -9,6 +9,7 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_add_item.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -84,7 +85,8 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                   }),
                 ),
                 Obx(() {
-                  if(controller.selectedItem.value.codeStatusDoc.toString() == "0"){
+                  if (controller.selectedItem.value.codeStatusDoc.toString() ==
+                      "0") {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -95,7 +97,9 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                           style: OutlinedButton.styleFrom(
                             minimumSize: const Size(75, 30),
                           ),
-                          child: controller.onEdit.value ? Text("Cancel".tr) : Text("Edit".tr),
+                          child: controller.onEdit.value
+                              ? Text("Cancel".tr)
+                              : Text("Edit".tr),
                         ),
                         const SizedBox(
                           width: 16,
@@ -184,10 +188,46 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                       const SizedBox(
                         height: 8,
                       ),
-                      CustomTextFormField(
-                          readOnly: true,
-                          controller: controller.totalController,
-                          label: "Total".tr),
+                      Obx(() {
+                        if (controller.onEdit.value) {
+                          return CustomDropDownFormField(
+                            isRequired: true,
+                            items: controller.listCurrency
+                                .map((e) =>
+                                DropdownMenuItem(
+                                  value: e.id.toString(),
+                                  child: Text(
+                                      "${e.currencyName} (${e.currencyCode})"),
+                                ))
+                                .toList(),
+                            onChanged: (item) {
+                              controller.onChangeSelectedCurrency(
+                                  item.toString());
+                            },
+                            label: "Currency".tr,
+                            value: controller.selectedCurrency.value.id
+                                .toString(),
+                          );
+                        }
+                        controller.currencyController.text = "${controller
+                            .selectedItem.value.currencyName} (${controller
+                            .selectedItem.value.currencyCode})";
+                        return CustomTextFormField(
+                            readOnly: true,
+                            isRequired: true,
+                            controller: controller.currencyController,
+                            label: "Currency".tr);
+                      }),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Obx(() {
+                        controller.totalController.text = "${controller.selectedItem.value.currencyCode ?? ""} ${controller.selectedItem.value.grandTotal?.toInt().toCurrency()}";
+                        return CustomTextFormField(
+                            readOnly: true,
+                            controller: controller.totalController,
+                            label: "Total".tr);
+                      }),
                       const SizedBox(
                         height: 16,
                       ),
@@ -233,10 +273,11 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                                 CommonAddItem(
                                   number: "${index + 1}",
                                   title: "${item.itemName}",
-                                  subtitle: "${item.costCenterName}",
+                                  subtitle: item.costCenterName ?? "",
                                   nominal:
                                   "${controller.selectedItem.value
-                                      .currencyCode ?? ""} ${item.nominal?.toInt().toCurrency()}",
+                                      .currencyCode ?? ""} ${item.nominal
+                                      ?.toInt().toCurrency()}",
                                   onTap: !controller.onEdit.value
                                       ? () {
                                     Get.dialog(Dialog(

@@ -171,11 +171,11 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                                       title: "Edit".tr,
                                       iconData: IconlyBold.edit,
                                       backgroundColor: successColor,
-                                      onPressed: () async{/*
-                                        final editedItem = await Get.to(()=>AddItemCashAdvanceNonTravelScreen(item: element));
+                                      onPressed: () async{
+                                        final editedItem = await Get.to(()=>AddItemRequestATKScreen(item: element));
                                         if(editedItem!=null){
                                           controller.editItem(editedItem);
-                                        }*/
+                                        }
                                       },
                                     ),
                                     const SizedBox(

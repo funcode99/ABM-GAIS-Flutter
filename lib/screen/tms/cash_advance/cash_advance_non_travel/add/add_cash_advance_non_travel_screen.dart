@@ -7,6 +7,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_add_item.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -88,6 +89,26 @@ class _AddCashAdvanceNonTravelScreenState
                                   controller.dateFormat.format(dateTime!);
                             },
                             label: "Date".tr),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Obx(() {
+                          return CustomDropDownFormField(
+                            isRequired: true,
+                            items: controller.listCurrency
+                                .map((e) =>
+                                DropdownMenuItem(
+                                  value: e.id.toString(),
+                                  child: Text("${e.currencyName} (${e.currencyCode})"),
+                                ))
+                                .toList(),
+                            onChanged: (item) {
+                              controller.onChangeSelectedCurrency(item.toString());
+                            },
+                            label: "Currency ".tr,
+                            value: controller.selectedCurrency.value.id.toString(),
+                          );
+                        }),
                         const SizedBox(
                           height: 8,
                         ),

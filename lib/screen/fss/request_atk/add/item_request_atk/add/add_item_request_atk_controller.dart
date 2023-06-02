@@ -30,23 +30,13 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
 
   @override
   void onInit() {
-  /*  companyController.text = "Auto Fill Company";
-    itemController.text = "";
-    brandController.text = "";
-    quantityController.text = "";
-    uomController.text = "";
-    siteController.text = "Auto Fill Site";
-    warehousController.text = "";
-    remarksController.text = "";*/
-
-
     super.onInit();
+    initData();
   }
 
   @override
   void onReady() {
     super.onReady();
-    initData();
   }
 
   void initData()async{
