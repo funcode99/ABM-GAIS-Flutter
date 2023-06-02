@@ -209,9 +209,6 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                                 .toString(),
                           );
                         }
-                        controller.currencyController.text = "${controller
-                            .selectedItem.value.currencyName} (${controller
-                            .selectedItem.value.currencyCode})";
                         return CustomTextFormField(
                             readOnly: true,
                             isRequired: true,
@@ -222,7 +219,6 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                         height: 8,
                       ),
                       Obx(() {
-                        controller.totalController.text = "${controller.selectedItem.value.currencyCode ?? ""} ${controller.selectedItem.value.grandTotal?.toInt().toCurrency()}";
                         return CustomTextFormField(
                             readOnly: true,
                             controller: controller.totalController,

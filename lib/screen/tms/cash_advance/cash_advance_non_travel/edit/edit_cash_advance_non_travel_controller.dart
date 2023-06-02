@@ -12,7 +12,8 @@ import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class EditCashAdvanceNonTravelController extends BaseController with MasterDataMixin{
+class EditCashAdvanceNonTravelController extends BaseController
+    with MasterDataMixin {
   final TextEditingController dateController = TextEditingController();
   final TextEditingController eventController = TextEditingController();
   final TextEditingController requestorController = TextEditingController();
@@ -45,25 +46,25 @@ class EditCashAdvanceNonTravelController extends BaseController with MasterDataM
     getDataDetail();
   }
 
-  void initData() async{
+  void initData() async {
     final currencies = await getListCurrency();
     listCurrency(currencies);
-    if(selectedItem.value.idCurrency != null){
+    if (selectedItem.value.idCurrency != null) {
       onChangeSelectedCurrency(selectedItem.value.idCurrency.toString());
-    }else{
+    } else {
       selectedCurrency(listCurrency.first);
     }
 
     dateController.text = selectedItem.value.date?.toDateFormat(
-        originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+            originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
         "-";
     requestorController.text = selectedItem.value.employeeName ?? "-";
     eventController.text = selectedItem.value.event ?? "-";
-    totalController.text = "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
+    totalController.text =
+        "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
 
-    currencyController.text = "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
-
-
+    currencyController.text =
+        "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
   }
 
   void updateEnableButton() {
@@ -116,12 +117,14 @@ class EditCashAdvanceNonTravelController extends BaseController with MasterDataM
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (cashAdvanceModel) {
-      //update state
-      // onEdit(false);
 
       selectedItem(cashAdvanceModel);
+      currencyController.text =
+      "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
+      totalController.text = "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
+
       getDataDetail();
-      if(hideButtonAfterEdit){
+      if (hideButtonAfterEdit) {
         onEdit(false);
       }
     });
