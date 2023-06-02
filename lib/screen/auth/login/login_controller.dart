@@ -13,7 +13,7 @@ class LoginController extends BaseController {
   bool isErrorPasswordLogin = false;
   bool isObscurePasswordLogin = true;
   bool isRemember = false;
-  bool isLoading = false;
+  bool isLoading = true;
 
   Widget showIcon = Icon(
     IconlyBold.show,
@@ -83,6 +83,8 @@ class LoginController extends BaseController {
       isLoading = false;
       update();
     } catch (e, i) {
+      isLoading = false;
+      update();
       e.printError();
       i.printError();
       Get.showSnackbar(

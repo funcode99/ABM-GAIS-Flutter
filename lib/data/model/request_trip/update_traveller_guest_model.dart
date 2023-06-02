@@ -1,6 +1,6 @@
 /// success : true
 /// message : "Success Update Data"
-/// data : {"id":2,"id_employee":"1","id_request_trip":"1","id_company":"1","company":"1","id_type_traveller":"1","nik":"123","contact_no":"1","departement":"1","hotel_fare":700000,"id_flight_class":"1","notes":"1","created_at":"2023-05-15T09:38:57.000000Z","created_by":"1","updated_at":"2023-05-15T16:57:52.000000Z","updated_by":1}
+/// data : {"id":21,"id_employee":null,"name_guest":"charlie","id_request_trip":"1","id_company":"1","company":"1","code_status_doc":0,"id_type_traveller":"1","nik":"1","gender":"L","contact_no":"1","departement":"1","hotel_fare":700000,"id_flight_class":"1","notes":"1","created_at":"2023-05-29T21:38:54.000000Z","created_by":"2","updated_at":"2023-05-29T21:46:38.000000Z","updated_by":2}
 
 class UpdateTravellerGuestModel {
   UpdateTravellerGuestModel({
@@ -43,32 +43,38 @@ UpdateTravellerGuestModel copyWith({  bool? success,
 
 }
 
-/// id : 2
-/// id_employee : "1"
+/// id : 21
+/// id_employee : null
+/// name_guest : "charlie"
 /// id_request_trip : "1"
 /// id_company : "1"
 /// company : "1"
+/// code_status_doc : 0
 /// id_type_traveller : "1"
-/// nik : "123"
+/// nik : "1"
+/// gender : "L"
 /// contact_no : "1"
 /// departement : "1"
 /// hotel_fare : 700000
 /// id_flight_class : "1"
 /// notes : "1"
-/// created_at : "2023-05-15T09:38:57.000000Z"
-/// created_by : "1"
-/// updated_at : "2023-05-15T16:57:52.000000Z"
-/// updated_by : 1
+/// created_at : "2023-05-29T21:38:54.000000Z"
+/// created_by : "2"
+/// updated_at : "2023-05-29T21:46:38.000000Z"
+/// updated_by : 2
 
 class Data {
   Data({
       num? id, 
-      String? idEmployee, 
+      dynamic idEmployee, 
+      String? nameGuest, 
       String? idRequestTrip, 
       String? idCompany, 
       String? company, 
+      num? codeStatusDoc, 
       String? idTypeTraveller, 
       String? nik, 
+      String? gender, 
       String? contactNo, 
       String? departement, 
       num? hotelFare, 
@@ -80,11 +86,14 @@ class Data {
       num? updatedBy,}){
     _id = id;
     _idEmployee = idEmployee;
+    _nameGuest = nameGuest;
     _idRequestTrip = idRequestTrip;
     _idCompany = idCompany;
     _company = company;
+    _codeStatusDoc = codeStatusDoc;
     _idTypeTraveller = idTypeTraveller;
     _nik = nik;
+    _gender = gender;
     _contactNo = contactNo;
     _departement = departement;
     _hotelFare = hotelFare;
@@ -99,11 +108,14 @@ class Data {
   Data.fromJson(dynamic json) {
     _id = json['id'];
     _idEmployee = json['id_employee'];
+    _nameGuest = json['name_guest'];
     _idRequestTrip = json['id_request_trip'];
     _idCompany = json['id_company'];
     _company = json['company'];
+    _codeStatusDoc = json['code_status_doc'];
     _idTypeTraveller = json['id_type_traveller'];
     _nik = json['nik'];
+    _gender = json['gender'];
     _contactNo = json['contact_no'];
     _departement = json['departement'];
     _hotelFare = json['hotel_fare'];
@@ -115,12 +127,15 @@ class Data {
     _updatedBy = json['updated_by'];
   }
   num? _id;
-  String? _idEmployee;
+  dynamic _idEmployee;
+  String? _nameGuest;
   String? _idRequestTrip;
   String? _idCompany;
   String? _company;
+  num? _codeStatusDoc;
   String? _idTypeTraveller;
   String? _nik;
+  String? _gender;
   String? _contactNo;
   String? _departement;
   num? _hotelFare;
@@ -131,12 +146,15 @@ class Data {
   String? _updatedAt;
   num? _updatedBy;
 Data copyWith({  num? id,
-  String? idEmployee,
+  dynamic idEmployee,
+  String? nameGuest,
   String? idRequestTrip,
   String? idCompany,
   String? company,
+  num? codeStatusDoc,
   String? idTypeTraveller,
   String? nik,
+  String? gender,
   String? contactNo,
   String? departement,
   num? hotelFare,
@@ -148,11 +166,14 @@ Data copyWith({  num? id,
   num? updatedBy,
 }) => Data(  id: id ?? _id,
   idEmployee: idEmployee ?? _idEmployee,
+  nameGuest: nameGuest ?? _nameGuest,
   idRequestTrip: idRequestTrip ?? _idRequestTrip,
   idCompany: idCompany ?? _idCompany,
   company: company ?? _company,
+  codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
   idTypeTraveller: idTypeTraveller ?? _idTypeTraveller,
   nik: nik ?? _nik,
+  gender: gender ?? _gender,
   contactNo: contactNo ?? _contactNo,
   departement: departement ?? _departement,
   hotelFare: hotelFare ?? _hotelFare,
@@ -164,12 +185,15 @@ Data copyWith({  num? id,
   updatedBy: updatedBy ?? _updatedBy,
 );
   num? get id => _id;
-  String? get idEmployee => _idEmployee;
+  dynamic get idEmployee => _idEmployee;
+  String? get nameGuest => _nameGuest;
   String? get idRequestTrip => _idRequestTrip;
   String? get idCompany => _idCompany;
   String? get company => _company;
+  num? get codeStatusDoc => _codeStatusDoc;
   String? get idTypeTraveller => _idTypeTraveller;
   String? get nik => _nik;
+  String? get gender => _gender;
   String? get contactNo => _contactNo;
   String? get departement => _departement;
   num? get hotelFare => _hotelFare;
@@ -184,11 +208,14 @@ Data copyWith({  num? id,
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['id_employee'] = _idEmployee;
+    map['name_guest'] = _nameGuest;
     map['id_request_trip'] = _idRequestTrip;
     map['id_company'] = _idCompany;
     map['company'] = _company;
+    map['code_status_doc'] = _codeStatusDoc;
     map['id_type_traveller'] = _idTypeTraveller;
     map['nik'] = _nik;
+    map['gender'] = _gender;
     map['contact_no'] = _contactNo;
     map['departement'] = _departement;
     map['hotel_fare'] = _hotelFare;

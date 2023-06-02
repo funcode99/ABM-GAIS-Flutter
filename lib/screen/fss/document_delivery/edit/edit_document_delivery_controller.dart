@@ -17,7 +17,6 @@ class EditDocumentDeliveryController extends BaseController{
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
   }
 

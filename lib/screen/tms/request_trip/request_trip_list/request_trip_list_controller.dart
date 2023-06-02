@@ -9,13 +9,15 @@ import 'package:intl/intl.dart';
 class RequestTripListController extends BaseController {
   bool isLoading = false;
   int? requestorID;
+  String? requestorName;
 
+  final formKey = GlobalKey<FormState>();
   final TextEditingController dateRange = TextEditingController();
 
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat rangeFormat = DateFormat("yyyy-MM-dd");
-  String? purposeValue;
-  String searchValue = "All";
+  String purposeValue = "All";
+  String? searchValue;
   String? startDate;
   String? endDate;
   bool showFilter = false;
@@ -23,17 +25,20 @@ class RequestTripListController extends BaseController {
   bool searchNotFound = false;
   int currentPage = 1;
   int perPage = 5;
+  int lastNumber = 1;
 
   requests.RequestTripListModel? rtlModel;
   List<requests.Data2> requestList = [];
   List<doc.Data> documentList = <doc.Data>[].obs;
+  doc.GetDocumentCodeModel? documentModel;
   List<doc.Data> selectedPurpose = [];
 
   @override
   void onInit() {
     super.onInit();
     Future.wait([fetchData(), fetchList()]);
-    update();
+    print("height: ${Get.height}");
+    print("width: ${Get.width}");
   }
 
   @override
@@ -41,47 +46,65 @@ class RequestTripListController extends BaseController {
     super.dispose();
   }
 
+  void resetFilter() {
+    formKey.currentState?.reset();
+    purposeValue = "All";
+    dateRange.text = "";
+    update();
+  }
+
   Future<void> fetchData() async {
     await storage.readEmployeeInfo().then((value) {
       requestorID = value.first.id?.toInt();
+      requestorName = value.first.employeeName;
+      searchValue = requestorName?.toLowerCase();
+      update();
+      print("employee Name : $requestorName");
     });
 
-    await repository.getDocumentCodeList().then((value) {
-      documentList.add(doc.Data(id: 0, documentName: "All", isSelected: true));
-      documentList.addAll(value.data?.toSet().toList() ?? []);
-    });
+    documentList = [];
+    var document = await repository.getDocumentCodeList();
+    documentList.add(doc.Data(id: 0, documentName: "All", isSelected: true));
+    documentList.addAll(document.data?.toSet().toList() ?? []);
+    documentModel = document;
   }
 
   Future<void> fetchList() async {
     requestList = [];
+
     isLoading = true;
     try {
       var requestTrip = await repository.getRequestTripList(
-        perPage,
-        currentPage,
-        searchValue=="All" ? "" : searchValue,
-        startDate,
-        endDate,
-      );
+          perPage,
+          currentPage,
+          searchValue != null
+              ? searchValue
+              : purposeValue == "All"
+                  ? ""
+                  : purposeValue,
+          startDate,
+          endDate);
       rtlModel = requestTrip;
-      requestList.addAll(rtlModel?.data?.data?.where((e) => e.idEmployee == requestorID).toSet().toList() ?? []);
+      requestList.addAll(rtlModel?.data?.data?.toSet().toList() ?? []);
       isLoading = false;
       searchNotFound = rtlModel?.data?.data?.isEmpty ?? false;
+      dataisnull = rtlModel?.data?.data?.isEmpty ?? false;
+      print("reqList: ${searchNotFound.toString()}");
 
-      if (searchNotFound == true) {
-        Get.showSnackbar(
-          const GetSnackBar(
-            icon: Icon(
-              Icons.error,
-              color: Colors.white,
-            ),
-            message: 'Search Not found',
-            isDismissible: true,
-            duration: Duration(seconds: 3),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      // if (searchNotFound == true) {
+      //   Get.showSnackbar(
+      //     const GetSnackBar(
+      //       icon: Icon(
+      //         Icons.error,
+      //         color: Colors.white,
+      //       ),
+      //       message: 'Search Not found',
+      //       isDismissible: true,
+      //       duration: Duration(seconds: 3),
+      //       backgroundColor: Colors.red,
+      //     ),
+      //   );
+      // }
     } catch (e) {
       Get.showSnackbar(
         const GetSnackBar(
@@ -106,7 +129,6 @@ class RequestTripListController extends BaseController {
     isLoading = true;
     try {
       await repository.deletePurposeOfTrip(id).then((value) {
-
         const GetSnackBar(
           icon: Icon(
             Icons.info,

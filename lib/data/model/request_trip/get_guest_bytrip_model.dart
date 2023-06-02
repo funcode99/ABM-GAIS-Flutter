@@ -1,6 +1,6 @@
 /// success : true
 /// message : "Success Get Data"
-/// data : [{"id":6,"id_employee":1,"name_guest":null,"id_request_trip":1,"id_company":1,"company":"1","code_status_doc":0,"id_type_traveller":1,"nik":"1","gender":"L","contact_no":"1","departement":"1","hotel_fare":"10000","id_flight_class":1,"notes":"1","created_at":"2023-05-22 18:48:45","created_by":"2","updated_at":"2023-05-22 18:48:45","updated_by":null,"no_request_trip":"REQ/ABM/123","type_traveller":"Interrviewee","employee_name":"Jhon Doe","company_name":"PT. Testing","flight_class":null},{"id":5,"id_employee":1,"name_guest":null,"id_request_trip":4,"id_company":1,"company":null,"code_status_doc":0,"id_type_traveller":1,"nik":"123","gender":"L","contact_no":"08123","departement":"1","hotel_fare":"700000","id_flight_class":1,"notes":null,"created_at":"2023-05-21 06:44:53","created_by":"2","updated_at":"2023-05-21 06:44:53","updated_by":null,"no_request_trip":"REQ/ABM/123","type_traveller":"Interrviewee","employee_name":"Jhon Doe","company_name":"PT. Testing","flight_class":null},{"id":1,"id_employee":1,"name_guest":null,"id_request_trip":3,"id_company":1,"company":"1","code_status_doc":0,"id_type_traveller":1,"nik":"123","gender":"P","contact_no":"08123","departement":"1","hotel_fare":"700000","id_flight_class":1,"notes":"notes","created_at":"2023-05-19 07:55:01","created_by":"2","updated_at":"2023-05-19 08:02:06","updated_by":"2","no_request_trip":"REQ/ABM/123","type_traveller":"Interrviewee","employee_name":"Jhon Doe","company_name":"PT. Testing","flight_class":null},{"id":4,"id_employee":1,"name_guest":null,"id_request_trip":3,"id_company":1,"company":null,"code_status_doc":0,"id_type_traveller":1,"nik":"123","gender":"L","contact_no":"08123","departement":"1","hotel_fare":"700000","id_flight_class":1,"notes":null,"created_at":"2023-05-21 05:49:58","created_by":"2","updated_at":"2023-05-21 05:49:58","updated_by":null,"no_request_trip":"REQ/ABM/123","type_traveller":"Interrviewee","employee_name":"Jhon Doe","company_name":"PT. Testing","flight_class":null},{"id":2,"id_employee":1,"name_guest":null,"id_request_trip":2,"id_company":1,"company":"1","code_status_doc":0,"id_type_traveller":1,"nik":"123","gender":"P","contact_no":"08123","departement":"1","hotel_fare":"700000","id_flight_class":1,"notes":null,"created_at":"2023-05-20 10:17:39","created_by":"2","updated_at":"2023-05-20 10:18:03","updated_by":"2","no_request_trip":"REQ/ABM/123","type_traveller":"Interrviewee","employee_name":"Jhon Doe","company_name":"PT. Testing","flight_class":null},{"id":3,"id_employee":2,"name_guest":null,"id_request_trip":2,"id_company":1,"company":null,"code_status_doc":0,"id_type_traveller":1,"nik":"234","gender":"P","contact_no":"08234","departement":"1","hotel_fare":"700000","id_flight_class":1,"notes":null,"created_at":"2023-05-20 11:35:12","created_by":"2","updated_at":"2023-05-20 11:35:12","updated_by":null,"no_request_trip":"REQ/ABM/123","type_traveller":"Interrviewee","employee_name":null,"company_name":"PT. Testing","flight_class":null}]
+/// data : [{"id":21,"id_employee":null,"name_guest":"jane doe","id_request_trip":54,"id_company":28,"company":null,"code_status_doc":0,"id_type_traveller":1,"nik":"34567","gender":"P","contact_no":"08345678","departement":"1","hotel_fare":"160000","id_flight_class":63,"notes":null,"created_at":"2023-05-29 21:38:54","created_by":"2","updated_at":"2023-05-29 21:38:54","updated_by":null,"no_request_trip":"RTRIP-2023-23-05/004/TRV-3000/05/2023","type_traveller":"Interrviewee","employee_name":null,"company_name":"PT Biasa aja","flight_class":"First Class"},{"id":20,"id_employee":null,"name_guest":"steven","id_request_trip":54,"id_company":27,"company":null,"code_status_doc":0,"id_type_traveller":1,"nik":"2345","gender":"L","contact_no":"082345","departement":"1","hotel_fare":"160000","id_flight_class":63,"notes":"test add guest","created_at":"2023-05-29 21:37:05","created_by":"2","updated_at":"2023-05-29 21:37:05","updated_by":null,"no_request_trip":"RTRIP-2023-23-05/004/TRV-3000/05/2023","type_traveller":"Interrviewee","employee_name":null,"company_name":"PT Uji Coba sekalian test panjang karakter 30 kata","flight_class":"First Class"},{"id":19,"id_employee":null,"name_guest":"steven","id_request_trip":1,"id_company":1,"company":"1","code_status_doc":0,"id_type_traveller":1,"nik":"1","gender":"L","contact_no":"1","departement":"1","hotel_fare":"10000","id_flight_class":1,"notes":"1","created_at":"2023-05-29 21:22:02","created_by":"2","updated_at":"2023-05-29 21:22:02","updated_by":null,"no_request_trip":null,"type_traveller":"Interrviewee","employee_name":null,"company_name":"PT Cipta Kridatama","flight_class":null}]
 
 class GetGuestBytripModel {
   GetGuestBytripModel({
@@ -48,39 +48,39 @@ GetGuestBytripModel copyWith({  bool? success,
 
 }
 
-/// id : 6
-/// id_employee : 1
-/// name_guest : null
-/// id_request_trip : 1
-/// id_company : 1
-/// company : "1"
+/// id : 21
+/// id_employee : null
+/// name_guest : "jane doe"
+/// id_request_trip : 54
+/// id_company : 28
+/// company : null
 /// code_status_doc : 0
 /// id_type_traveller : 1
-/// nik : "1"
-/// gender : "L"
-/// contact_no : "1"
+/// nik : "34567"
+/// gender : "P"
+/// contact_no : "08345678"
 /// departement : "1"
-/// hotel_fare : "10000"
-/// id_flight_class : 1
-/// notes : "1"
-/// created_at : "2023-05-22 18:48:45"
+/// hotel_fare : "160000"
+/// id_flight_class : 63
+/// notes : null
+/// created_at : "2023-05-29 21:38:54"
 /// created_by : "2"
-/// updated_at : "2023-05-22 18:48:45"
+/// updated_at : "2023-05-29 21:38:54"
 /// updated_by : null
-/// no_request_trip : "REQ/ABM/123"
+/// no_request_trip : "RTRIP-2023-23-05/004/TRV-3000/05/2023"
 /// type_traveller : "Interrviewee"
-/// employee_name : "Jhon Doe"
-/// company_name : "PT. Testing"
-/// flight_class : null
+/// employee_name : null
+/// company_name : "PT Biasa aja"
+/// flight_class : "First Class"
 
 class Data {
   Data({
       num? id, 
-      num? idEmployee, 
-      dynamic nameGuest, 
+      dynamic idEmployee, 
+      String? nameGuest, 
       num? idRequestTrip, 
       num? idCompany, 
-      String? company, 
+      dynamic company, 
       num? codeStatusDoc, 
       num? idTypeTraveller, 
       String? nik, 
@@ -89,16 +89,16 @@ class Data {
       String? departement, 
       String? hotelFare, 
       num? idFlightClass, 
-      String? notes, 
+      dynamic notes, 
       String? createdAt, 
       String? createdBy, 
       String? updatedAt, 
       dynamic updatedBy, 
       String? noRequestTrip, 
       String? typeTraveller, 
-      String? employeeName, 
+      dynamic employeeName, 
       String? companyName, 
-      dynamic flightClass,}){
+      String? flightClass,}){
     _id = id;
     _idEmployee = idEmployee;
     _nameGuest = nameGuest;
@@ -152,11 +152,11 @@ class Data {
     _flightClass = json['flight_class'];
   }
   num? _id;
-  num? _idEmployee;
-  dynamic _nameGuest;
+  dynamic _idEmployee;
+  String? _nameGuest;
   num? _idRequestTrip;
   num? _idCompany;
-  String? _company;
+  dynamic _company;
   num? _codeStatusDoc;
   num? _idTypeTraveller;
   String? _nik;
@@ -165,22 +165,22 @@ class Data {
   String? _departement;
   String? _hotelFare;
   num? _idFlightClass;
-  String? _notes;
+  dynamic _notes;
   String? _createdAt;
   String? _createdBy;
   String? _updatedAt;
   dynamic _updatedBy;
   String? _noRequestTrip;
   String? _typeTraveller;
-  String? _employeeName;
+  dynamic _employeeName;
   String? _companyName;
-  dynamic _flightClass;
+  String? _flightClass;
 Data copyWith({  num? id,
-  num? idEmployee,
-  dynamic nameGuest,
+  dynamic idEmployee,
+  String? nameGuest,
   num? idRequestTrip,
   num? idCompany,
-  String? company,
+  dynamic company,
   num? codeStatusDoc,
   num? idTypeTraveller,
   String? nik,
@@ -189,16 +189,16 @@ Data copyWith({  num? id,
   String? departement,
   String? hotelFare,
   num? idFlightClass,
-  String? notes,
+  dynamic notes,
   String? createdAt,
   String? createdBy,
   String? updatedAt,
   dynamic updatedBy,
   String? noRequestTrip,
   String? typeTraveller,
-  String? employeeName,
+  dynamic employeeName,
   String? companyName,
-  dynamic flightClass,
+  String? flightClass,
 }) => Data(  id: id ?? _id,
   idEmployee: idEmployee ?? _idEmployee,
   nameGuest: nameGuest ?? _nameGuest,
@@ -225,11 +225,11 @@ Data copyWith({  num? id,
   flightClass: flightClass ?? _flightClass,
 );
   num? get id => _id;
-  num? get idEmployee => _idEmployee;
-  dynamic get nameGuest => _nameGuest;
+  dynamic get idEmployee => _idEmployee;
+  String? get nameGuest => _nameGuest;
   num? get idRequestTrip => _idRequestTrip;
   num? get idCompany => _idCompany;
-  String? get company => _company;
+  dynamic get company => _company;
   num? get codeStatusDoc => _codeStatusDoc;
   num? get idTypeTraveller => _idTypeTraveller;
   String? get nik => _nik;
@@ -238,16 +238,16 @@ Data copyWith({  num? id,
   String? get departement => _departement;
   String? get hotelFare => _hotelFare;
   num? get idFlightClass => _idFlightClass;
-  String? get notes => _notes;
+  dynamic get notes => _notes;
   String? get createdAt => _createdAt;
   String? get createdBy => _createdBy;
   String? get updatedAt => _updatedAt;
   dynamic get updatedBy => _updatedBy;
   String? get noRequestTrip => _noRequestTrip;
   String? get typeTraveller => _typeTraveller;
-  String? get employeeName => _employeeName;
+  dynamic get employeeName => _employeeName;
   String? get companyName => _companyName;
-  dynamic get flightClass => _flightClass;
+  String? get flightClass => _flightClass;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

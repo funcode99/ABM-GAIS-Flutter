@@ -83,16 +83,13 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                               isRequired: true,
                               controller: controller.notes,
                               label: "Notes".tr,
-                              onChanged: (value) {
-                                controller.isButtonEnabled = controller.formKey.currentState!.validate();
-                                controller.update();
-                              },
                             ),
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
                               label: "Currency",
                               hintText: "Currency",
                               isRequired: true,
+                              value: controller.currentCurrency,
                               items: controller.currencyList
                                   .map((e) => DropdownMenuItem(
                                         child: Text(e.currencyName.toString()),
@@ -127,7 +124,7 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                             ...controller.listDetail
                                 .mapIndexed((index, e) => CustomTripCard(
                                       listNumber: index + 1,
-                                      title: e.itemName.toString(),
+                                      title: controller.itemCA.where((item) => item["id"] == e.idItemCa?.toInt()).first["item"].toString(),
                                       info: "${controller.currencyCode} ${int.parse(e.total.toString()).toCurrency()}",
                                       isEdit: true,
                                       editButton: GestureDetector(
@@ -157,9 +154,8 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                                         onTap: () {
                                           // Get.dialog(DeleteConfirmationDialog(
                                           //   onDeletePressed: () {
-                                              controller.removeItem(e);
-                                              Get.back();
-                                            // },
+                                          controller.removeItem(e);
+                                          // },
                                           // ));
                                         },
                                       ),

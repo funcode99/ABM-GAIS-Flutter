@@ -73,7 +73,7 @@ class AddAccommodationController extends BaseController {
 
       var hotel = await repository.getJobBandList();
       hotelFare.text =
-          "${int.parse(hotel.data?.where((e) => e.id == jobBandID).first.hotelFare ?? "0").toCurrency()}";
+          "${int.parse(hotel.data?.data?.where((e) => e.id == jobBandID).first.hotelFare ?? "0").toCurrency()}";
 
       var dataCity = await repository.getCityList();
       cityModel = dataCity;

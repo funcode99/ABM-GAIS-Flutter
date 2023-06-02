@@ -15,7 +15,7 @@ import 'package:gais/screen/tms/request_trip/add/accommodation/edit/edit_accommo
 import 'package:gais/screen/tms/request_trip/add/airliness/check_schedule/check_schedule_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/edit/edit_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/edit/edit_taxi_voucher_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/traveller/edit/edit_guest_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_controller.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
@@ -52,37 +52,55 @@ class FormRequestTripScreen extends StatelessWidget {
                       SliverPersistentHeader(
                         pinned: true,
                         delegate: SliverAppBarDelegate(
-                          minHeight: 75,
+                          minHeight: 120,
                           maxHeight: 32,
                           child: Container(
                             color: whiteColor,
+                            width: Get.width,
                             child: Column(
                               children: [
-                                Text(controller.rtNumber.toString(), style: appTitle),
+                                Text(
+                                  controller.rtNumber.toString(),
+                                  style: appTitle,
+                                  textAlign: TextAlign.center,
+                                ),
                                 Row(
-                                  mainAxisAlignment:
-                                      controller.isEdit == true ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
+                                  mainAxisAlignment: controller.isEdit == true || controller.rtStatus == "Draft"
+                                      ? MainAxisAlignment.spaceEvenly
+                                      : MainAxisAlignment.center,
                                   children: [
                                     CustomFilledButton(
                                       color: Colors.transparent,
                                       title: controller.isEdit ? "Cancel" : "Edit",
                                       borderColor: infoColor,
                                       fontColor: infoColor,
-                                      height: 30,
-                                      width: 100,
+                                      width: Get.width / 4,
                                       onPressed: () {
                                         controller.isEdit = controller.isEdit == false ? true : false;
                                         controller.update();
                                       },
                                     ),
-                                    controller.isEdit == true
-                                        ? const CustomFilledButton(
+                                    controller.isEdit
+                                        ? CustomFilledButton(
                                             color: successColor,
                                             title: "Save",
-                                            height: 30,
-                                            width: 100,
+                                            width: Get.width / 4,
+                                            onPressed: () {
+                                              controller.updateRequestTrip();
+                                              controller.update();
+                                            },
                                           )
-                                        : const SizedBox(),
+                                        : controller.rtStatus == "Draft"
+                                            ? CustomFilledButton(
+                                                color: successColor,
+                                                title: "Submit",
+                                                width: Get.width / 4,
+                                                onPressed: () {
+                                                  controller.submitRequestTrip();
+                                                  controller.update();
+                                                },
+                                              )
+                                            : SizedBox()
                                   ],
                                 )
                               ],
@@ -121,15 +139,17 @@ class FormRequestTripScreen extends StatelessWidget {
                                           items: controller.purposeList
                                               .map((e) => DropdownMenuItem(
                                                     // value: e.id.toString(),
-                                                    value: e.codeDocument,
+                                                    value: e.codeDocument.toString(),
                                                     child: Text(e.documentName.toString()),
+                                                    onTap: () {
+                                                      controller.codeDocument = e.id?.toInt();
+                                                      controller.update();
+                                                    },
                                                   ))
                                               .toList(),
                                           onChanged: (value) {
                                             controller.selectedPurpose = value.toString();
-                                            value == "SV" || value == "FB"
-                                                ? controller.isAttachment = true
-                                                : controller.isAttachment = false;
+                                            value == "SV" || value == "FB" ? controller.isAttachment = true : controller.isAttachment = false;
                                             controller.update();
                                             // print(controller.selectedPurpose);
                                           },
@@ -149,18 +169,28 @@ class FormRequestTripScreen extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   controller.isAttachment
-                                      ? CustomTextFormField(
-                                          controller: controller.attachment,
-                                          label: "attachment",
-                                          isRequired: true,
-                                          readOnly: true,
-                                        )
+                                      ? controller.isEdit
+                                          ? CustomTextFormField(
+                                              controller: controller.attachment,
+                                              label: 'File Attachment',
+                                              isRequired: true,
+                                              readOnly: true,
+                                              hintText: "Upload Form ${controller.selectedPurpose}",
+                                              suffixIcon: const Icon(Icons.upload),
+                                              onTap: () => controller.getSingleFile(),
+                                            )
+                                          : CustomTextFormField(
+                                              controller: controller.attachment,
+                                              label: "attachment",
+                                              isRequired: true,
+                                              readOnly: true,
+                                            )
                                       : Container(),
                                   const SizedBox(height: 8),
                                   CustomTextFormField(
                                     controller: controller.notes,
                                     label: "Notes to Purpose of Trip",
-                                    readOnly: true,
+                                    readOnly: !controller.isEdit,
                                   ),
                                   const SizedBox(height: 8),
                                 ],
@@ -186,15 +216,13 @@ class FormRequestTripScreen extends StatelessWidget {
                                   child: Container(
                                     alignment: Alignment.center,
                                     margin: const EdgeInsets.only(top: 10, left: 5),
-                                    width: 100,
+                                    width: Get.width / 4,
                                     height: 50,
                                     decoration: BoxDecoration(
                                       color: controller.isDetail ? whiteColor : neutralColor,
-                                      borderRadius:
-                                          const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
+                                      borderRadius: const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
                                       gradient: LinearGradient(
-                                          stops: const [0.1, 0],
-                                          colors: [controller.isDetail ? blackColor : whiteColor, Colors.white]),
+                                          stops: const [0.15, 0], colors: [controller.isDetail ? blackColor : whiteColor, Colors.white]),
                                     ),
                                     child: const Text("Detail"),
                                   ),
@@ -209,15 +237,13 @@ class FormRequestTripScreen extends StatelessWidget {
                                   child: Container(
                                     alignment: Alignment.center,
                                     margin: const EdgeInsets.only(top: 10, left: 3),
-                                    width: 100,
+                                    width: Get.width / 4,
                                     height: 50,
                                     decoration: BoxDecoration(
                                       color: controller.isTLK ? whiteColor : neutralColor,
-                                      borderRadius:
-                                          const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
-                                      gradient: LinearGradient(
-                                          stops: const [0.1, 0],
-                                          colors: [controller.isTLK ? blackColor : whiteColor, Colors.white]),
+                                      borderRadius: const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
+                                      gradient:
+                                          LinearGradient(stops: const [0.15, 0], colors: [controller.isTLK ? blackColor : whiteColor, Colors.white]),
                                     ),
                                     child: const Text("TLK Info"),
                                   ),
@@ -232,15 +258,14 @@ class FormRequestTripScreen extends StatelessWidget {
                                   child: Container(
                                     alignment: Alignment.center,
                                     margin: const EdgeInsets.only(top: 10, left: 3),
-                                    width: 130,
+                                    padding: EdgeInsets.symmetric(horizontal: 8),
+                                    width: Get.width / 2.6,
                                     height: 50,
                                     decoration: BoxDecoration(
                                       color: controller.isTLK ? whiteColor : neutralColor,
-                                      borderRadius:
-                                          const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
+                                      borderRadius: const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
                                       gradient: LinearGradient(
-                                          stops: const [0.1, 0],
-                                          colors: [controller.isApproval ? blackColor : whiteColor, Colors.white]),
+                                          stops: const [0.1, 0], colors: [controller.isApproval ? blackColor : whiteColor, Colors.white]),
                                     ),
                                     child: const Text("Approval Info"),
                                   ),
@@ -280,9 +305,9 @@ class FormRequestTripScreen extends StatelessWidget {
                                       ? CustomFilledButton(
                                           color: successColor,
                                           icon: IconlyBold.plus,
-                                          title: "Add",
-                                          width: 100,
-                                          height: 30,
+                                          title: " Add",
+                                          fontSize: 13,
+                                          width: Get.width / 5,
                                           onPressed: () {
                                             index == 1 || index == 4 || index == 5
                                                 ? Get.off(
@@ -317,16 +342,15 @@ class FormRequestTripScreen extends StatelessWidget {
                                                     .mapIndexed(
                                                       (i, e) => CustomTripCard(
                                                         listNumber: i + 1,
-                                                        title: e.idEmployee.toString(),
+                                                        title: e.nameGuest.toString(),
                                                         subtitle: e.nik,
                                                         info: "Guest",
                                                         isEdit: controller.isEdit,
                                                         editAction: () => Get.to(
-                                                          const EditGuestScreen(),
+                                                          const AddGuestScreen(),
                                                           arguments: {
                                                             'purposeID': controller.purposeID,
                                                             'guestID': e.id,
-                                                            'isEdit': true,
                                                             'formEdit': true,
                                                           },
                                                         )?.then((_) {
@@ -346,8 +370,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
                                                                 Text("Gender", style: listTitleTextStyle),
-                                                                Text(e.gender == "L" ? "Male" : "Female",
-                                                                    style: listSubTitleTextStyle),
+                                                                Text(e.gender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
                                                               ],
                                                             ),
                                                             Column(
@@ -398,8 +421,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 });
                                                               },
                                                               isDelete: controller.isEdit,
-                                                              deleteAction: () =>
-                                                                  controller.deleteAirliness(int.parse(e.id.toString())),
+                                                              deleteAction: () => controller.deleteAirliness(int.parse(e.id.toString())),
                                                               content: Row(
                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                 children: [
@@ -421,8 +443,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: [
                                                                       Text("Price", style: listTitleTextStyle),
-                                                                      Text(e.ticketPrice.toString(),
-                                                                          style: listSubTitleTextStyle),
+                                                                      Text(e.ticketPrice.toString(), style: listSubTitleTextStyle),
                                                                     ],
                                                                   )
                                                                 ],
@@ -453,17 +474,13 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 info: int.parse(e.amount.toString()).toCurrency(),
                                                                 isEdit: controller.isEdit,
                                                                 editAction: () => Get.to(const EditTaxiVoucherScreen(),
-                                                                    arguments: {
-                                                                      'purposeID': controller.purposeID,
-                                                                      'id': e.id,
-                                                                      'formEdit': true
-                                                                    })?.then((_) {
+                                                                        arguments: {'purposeID': controller.purposeID, 'id': e.id, 'formEdit': true})
+                                                                    ?.then((_) {
                                                                   controller.fetchList();
                                                                   controller.update();
                                                                 }),
                                                                 isDelete: controller.isEdit,
-                                                                deleteAction: () =>
-                                                                    controller.deleteTaxiVoucher(int.parse(e.id.toString())),
+                                                                deleteAction: () => controller.deleteTaxiVoucher(int.parse(e.id.toString())),
                                                                 content: Row(
                                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                                   children: [
@@ -471,16 +488,14 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                                       children: [
                                                                         Text("Departure", style: listTitleTextStyle),
-                                                                        Text(e.nameDepartureCity.toString(),
-                                                                            style: listSubTitleTextStyle),
+                                                                        Text(e.nameDepartureCity.toString(), style: listSubTitleTextStyle),
                                                                       ],
                                                                     ),
                                                                     Column(
                                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                                       children: [
                                                                         Text("Arrival", style: listTitleTextStyle),
-                                                                        Text(e.nameArrivalCity.toString(),
-                                                                            style: listSubTitleTextStyle),
+                                                                        Text(e.nameArrivalCity.toString(), style: listSubTitleTextStyle),
                                                                       ],
                                                                     ),
                                                                   ],
@@ -506,13 +521,12 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 .mapIndexed(
                                                                   (i, e) => CustomTripCard(
                                                                     listNumber: i + 1,
-                                                                    title: e.noRequestTrip.toString(),
+                                                                    title: e.employeeName.toString(),
                                                                     subtitle: e.typeTransportation.toString(),
                                                                     status: e.status.toString(),
                                                                     info: e.cityName.toString(),
                                                                     isEdit: controller.isEdit,
-                                                                    editAction: () =>
-                                                                        Get.to(EditOtherTransportScreen(), arguments: {
+                                                                    editAction: () => Get.to(EditOtherTransportScreen(), arguments: {
                                                                       'purposeID': controller.purposeID,
                                                                       'codeDocument': controller.codeDocument,
                                                                       'otID': e.id,
@@ -523,8 +537,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                       print(result);
                                                                     }),
                                                                     isDelete: controller.isEdit,
-                                                                    deleteAction: () => controller
-                                                                        .deleteOtherTransport(int.parse(e.id.toString())),
+                                                                    deleteAction: () => controller.deleteOtherTransport(int.parse(e.id.toString())),
                                                                     content: Row(
                                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                       children: [
@@ -532,16 +545,14 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                                           children: [
                                                                             Text("From Date", style: listTitleTextStyle),
-                                                                            Text(e.fromDate.toString(),
-                                                                                style: listSubTitleTextStyle),
+                                                                            Text(e.fromDate.toString(), style: listSubTitleTextStyle),
                                                                           ],
                                                                         ),
                                                                         Column(
                                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                                           children: [
                                                                             Text("To Date", style: listTitleTextStyle),
-                                                                            Text(e.toDate.toString(),
-                                                                                style: listSubTitleTextStyle),
+                                                                            Text(e.toDate.toString(), style: listSubTitleTextStyle),
                                                                           ],
                                                                         ),
                                                                         Column(
@@ -578,8 +589,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                         status: e.status.toString(),
                                                                         info: e.hotelName,
                                                                         isEdit: controller.isEdit,
-                                                                        editAction: () =>
-                                                                            Get.off(const EditAccommodationScreen(), arguments: {
+                                                                        editAction: () => Get.off(const EditAccommodationScreen(), arguments: {
                                                                           'purposeID': controller.purposeID,
                                                                           'codeDocument': controller.codeDocument,
                                                                           'id': e.id,
@@ -590,8 +600,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                           print(result);
                                                                         }),
                                                                         isDelete: controller.isEdit,
-                                                                        deleteAction: () =>
-                                                                            controller.deleteAccommodation(e.id!.toInt()),
+                                                                        deleteAction: () => controller.deleteAccommodation(e.id!.toInt()),
                                                                         content: Row(
                                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                           children: [
@@ -599,24 +608,21 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                                               children: [
                                                                                 Text("Check In", style: listTitleTextStyle),
-                                                                                Text(e.checkInDate.toString(),
-                                                                                    style: listSubTitleTextStyle),
+                                                                                Text(e.checkInDate.toString(), style: listSubTitleTextStyle),
                                                                               ],
                                                                             ),
                                                                             Column(
                                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                                               children: [
                                                                                 Text("Check Out", style: listTitleTextStyle),
-                                                                                Text(e.checkOutDate.toString(),
-                                                                                    style: listSubTitleTextStyle),
+                                                                                Text(e.checkOutDate.toString(), style: listSubTitleTextStyle),
                                                                               ],
                                                                             ),
                                                                             Column(
                                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                                               children: [
                                                                                 Text("Price", style: listTitleTextStyle),
-                                                                                Text(e.price.toString(),
-                                                                                    style: listSubTitleTextStyle),
+                                                                                Text(e.price.toString(), style: listSubTitleTextStyle),
                                                                               ],
                                                                             ),
                                                                           ],
@@ -642,43 +648,38 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                         .mapIndexed((i, e) => CustomTripCard(
                                                                               listNumber: i + 1,
                                                                               title: e.employeeName ?? "",
-                                                                              subtitle: e.employeeName,
-                                                                              status: e.status,
-                                                                              info: e.grandTotal,
+                                                                              subtitle: e.noCa,
+                                                                              status: e.status.toString(),
+                                                                              info:
+                                                                                  "${e.currencyCode} ${int.parse(e.grandTotal.toString()).toCurrency()}",
                                                                               isEdit: controller.isEdit,
+                                                                              editAction: () {
+                                                                                // Get.off(
+                                                                                //   EditCashAdvanceTravelScreen(),
+                                                                                //   arguments: {
+                                                                                //     'purposeID': controller.purposeID,
+                                                                                //     'codeDocument': controller.codeDocument,
+                                                                                //     'formEdit': true,
+                                                                                //     'id': e.id,
+                                                                                //   },
+                                                                                // );
+                                                                              },
                                                                               isDelete: controller.isEdit,
                                                                               content: Row(
-                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                                                 children: [
                                                                                   Column(
-                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                    crossAxisAlignment: CrossAxisAlignment.center,
                                                                                     children: [
                                                                                       Text("Item", style: listTitleTextStyle),
-                                                                                      Text("Meals", style: listSubTitleTextStyle),
+                                                                                      Text(e.itemCount.toString(), style: listSubTitleTextStyle),
                                                                                     ],
                                                                                   ),
                                                                                   Column(
                                                                                     crossAxisAlignment: CrossAxisAlignment.center,
                                                                                     children: [
-                                                                                      Text("Frequency",
-                                                                                          style: listTitleTextStyle),
-                                                                                      Text("2", style: listSubTitleTextStyle),
-                                                                                    ],
-                                                                                  ),
-                                                                                  Column(
-                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                    children: [
-                                                                                      Text("Currency", style: listTitleTextStyle),
-                                                                                      Text(e.currencyName.toString(),
-                                                                                          style: listSubTitleTextStyle),
-                                                                                    ],
-                                                                                  ),
-                                                                                  Column(
-                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                    children: [
-                                                                                      Text("Nominal", style: listTitleTextStyle),
-                                                                                      Text("60.000",
-                                                                                          style: listSubTitleTextStyle),
+                                                                                      Text("Reference", style: listTitleTextStyle),
+                                                                                      Text("-", style: listSubTitleTextStyle),
                                                                                     ],
                                                                                   ),
                                                                                 ],
@@ -733,7 +734,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                     const SizedBox(height: 8),
                                     CustomTextFormField(
                                       controller: controller.tlkTotalMeals,
-                                      label: "Total Meeals",
+                                      label: "Total Meals",
                                       isRequired: true,
                                       readOnly: true,
                                     ),
@@ -746,32 +747,39 @@ class FormRequestTripScreen extends StatelessWidget {
                               return Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  EasyStepper(
-                                    activeStep: controller.activeStep,
-                                    lineLength: 75,
-                                    direction: Axis.vertical,
-                                    stepShape: StepShape.circle,
-                                    stepBorderRadius: 10,
-                                    borderThickness: 2,
-                                    showTitle: false,
-                                    finishedStepBackgroundColor: infoColor,
-                                    activeLineColor: infoColor,
-                                    showLoadingAnimation: false,
-                                    steps: const [
-                                      EasyStep(
-                                        icon: Icon(Icons.groups),
-                                      ),
-                                      EasyStep(
-                                        icon: Icon(Icons.groups),
-                                      ),
-                                      EasyStep(
-                                        icon: Icon(Icons.groups),
-                                      ),
-                                    ],
-                                    // onStepReached: (index) {
-                                    //   controller.activeStep = index;
-                                    //   controller.update();
-                                    // },
+                                  Container(
+                                    width: Get.width / 4,
+                                    child: EasyStepper(
+                                      activeStep: controller.activeStep,
+                                      lineLength: 75,
+                                      direction: Axis.vertical,
+                                      stepShape: StepShape.circle,
+                                      stepBorderRadius: 10,
+                                      borderThickness: 2,
+                                      showTitle: false,
+                                      finishedStepBackgroundColor: infoColor,
+                                      activeStepBorderColor: Colors.blue,
+                                      activeStepIconColor: Colors.blue,
+                                      unreachedStepBorderColor: Colors.blue,
+                                      unreachedStepIconColor: Colors.blue,
+                                      showLoadingAnimation: false,
+                                      padding: EdgeInsetsDirectional.only(top: 10),
+                                      steps: const [
+                                        EasyStep(
+                                          icon: Icon(Icons.groups),
+                                        ),
+                                        EasyStep(
+                                          icon: Icon(Icons.groups),
+                                        ),
+                                        EasyStep(
+                                          icon: Icon(Icons.groups),
+                                        ),
+                                      ],
+                                      // onStepReached: (index) {
+                                      //   controller.activeStep = index;
+                                      //   controller.update();
+                                      // },
+                                    ),
                                   ),
                                   Column(
                                     children: [

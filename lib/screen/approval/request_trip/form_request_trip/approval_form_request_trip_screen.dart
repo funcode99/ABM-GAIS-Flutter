@@ -446,7 +446,7 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                                                 .mapIndexed(
                                                   (i, e) => CustomTripCard(
                                                     listNumber: i + 1,
-                                                    title: e.idEmployee.toString(),
+                                                    title: e.nameGuest.toString(),
                                                     subtitle: e.nik,
                                                     info: "Guest",
                                                     content: Row(
@@ -693,9 +693,10 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                                                                 ? controller.caList
                                                                     .mapIndexed((i, e) => CustomTripCard(
                                                                           listNumber: i + 1,
-                                                                          title: e.employeeName ?? "",
-                                                                          subtitle: e.employeeName,
-                                                                          status: e.status,
+                                                                          // title: e.employeeName ?? "",
+                                                                          title: "",
+                                                                          // subtitle: e.employeeName,
+                                                                          // status: e.status,
                                                                           info: e.grandTotal,
                                                                           isEdit: controller.isEdit,
                                                                           isDelete: controller.isEdit,
@@ -720,8 +721,7 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                                 children: [
                                                                                   Text("Currency", style: listTitleTextStyle),
-                                                                                  Text(e.currencyName.toString(),
-                                                                                      style: listSubTitleTextStyle),
+                                                                                  // Text(e.currencyName.toString(), style: listSubTitleTextStyle),
                                                                                 ],
                                                                               ),
                                                                               Column(
@@ -783,7 +783,7 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                                 const SizedBox(height: 8),
                                 CustomTextFormField(
                                   controller: controller.tlkTotalMeals,
-                                  label: "Total Meeals",
+                                  label: "Total Meals",
                                   isRequired: true,
                                   readOnly: true,
                                 ),

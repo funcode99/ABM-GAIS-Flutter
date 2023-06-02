@@ -23,17 +23,9 @@ class SubmenuScreen extends StatelessWidget {
         init: SubmenuController(),
         builder: (controller) {
           return Scaffold(
-            appBar: AppBar(
+            appBar: TopBar(
               title: Text("Menu", style: appTitle),
-              centerTitle: true,
-              leading: IconButton(
-                  onPressed: () => Get.offAll(HomeScreen(), arguments: 1),
-                  icon: Icon(
-                    Icons.chevron_left,
-                    color: Colors.black,
-                    size: 30,
-                  )),
-              flexibleSpace: const TopBar(),
+              leading: CustomBackButton(),
             ),
             body: ListView(
               children: [

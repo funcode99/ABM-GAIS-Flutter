@@ -67,11 +67,9 @@ class AccommodationController extends BaseController {
   }
 
   void next() {
-    formEdit == true
-        ? Get.off(FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
-        : Get.to(
-            const CashAdvanceScreen(),
-            arguments: {'purposeID': purposeID, 'codeDocument': codeDocument},
-          );
+    Get.to(
+      const CashAdvanceScreen(),
+      arguments: {'purposeID': purposeID, 'codeDocument': codeDocument},
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 
 class CustomApprovalInfoCard extends StatelessWidget {
   final String? status;
@@ -28,8 +29,8 @@ class CustomApprovalInfoCard extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
-      padding: EdgeInsets.all(10),
-      width: 270,
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+      width: Get.width/1.5,
       decoration: BoxDecoration(
           color: lightBlueColor, borderRadius: BorderRadius.circular(12)),
       child: Row(
@@ -40,7 +41,6 @@ class CustomApprovalInfoCard extends StatelessWidget {
             alignment: Alignment.center,
             height: 30,
             width: 30,
-            // padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
                 color: greyColor, borderRadius: BorderRadius.circular(50)),
             child: const Icon(Icons.person, color: whiteColor),
@@ -48,33 +48,33 @@ class CustomApprovalInfoCard extends StatelessWidget {
           Column(
             children: [
               Container(
-                width: 200,
+                width: Get.width/2,
                 child: RichText(
                   text: TextSpan(
                     text: status ?? "",
-                    style: formlabelTextStyle,
+                    style: listTitleTextStyle,
                     children: <TextSpan>[
                       TextSpan(
                         text: name,
-                        style: formlabelTextStyle,
+                        style: listTitleTextStyle,
                       ),
                       TextSpan(
                         text: "($position) ",
-                        style: formlabelTextStyle.copyWith(color: Colors.blue),
+                        style: listTitleTextStyle.copyWith(color: Colors.blue),
                       ),
-                      TextSpan(text: message, style: formlabelTextStyle),
+                      TextSpan(text: message, style: listTitleTextStyle),
                     ],
                   ),
                 ),
               ),
               SizedBox(height: 10),
               Container(
-                width: 200,
+                width: Get.width/2,
                 child: Text(approvalDate== null ? "-": dateFormat.format(approvalDate!)),
               ),
               SizedBox(height: 10),
               Container(
-                width: 200,
+                width: Get.width/2,
                 child: Text(approvalDate == null ? "-" : timeFormat.format(approvalDate!) ),
               ),
             ],

@@ -43,7 +43,7 @@ class AirlinesController extends BaseController {
     });
 
     var hotel = await repository.getJobBandList();
-    travellerHotel = hotel.data?.where((e) => e.id == jobBandID).first.hotelFare;
+    travellerHotel = hotel.data?.data?.where((e) => e.id == jobBandID).first.hotelFare;
     // var flight = await repository.getFlightList();
     // travellerFlight =
     //     flight.data?.where((e) => e.id == jobBandID).first.flightClass;
@@ -56,7 +56,6 @@ class AirlinesController extends BaseController {
       var guestData = await repository.getGuestBytripList(purposeID);
       guestModel = guestData;
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
-      print("guest : ${guestData.data?.where((e) => e.id == purposeID).isNotEmpty}");
     } catch (e) {
       guestList = [];
     }

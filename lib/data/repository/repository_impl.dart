@@ -16,13 +16,16 @@ import 'package:gais/data/model/reference/get_hotel_type_model.dart';
 import 'package:gais/data/model/reference/get_job_band_model.dart';
 import 'package:gais/data/model/reference/get_site_model.dart';
 import 'package:gais/data/model/reference/get_status_document_model.dart';
+import 'package:gais/data/model/reference/get_tlk_job_model.dart';
 import 'package:gais/data/model/reference/get_traveller_type_model.dart';
 import 'package:gais/data/model/reference/get_type_transportation_model.dart';
 import 'package:gais/data/model/reference/get_zona_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_vendor_model.dart';
+import 'package:gais/data/model/request_trip/get_cash_advance_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart';
+import 'package:gais/data/model/request_trip/get_detailca_bycashid_model.dart';
 import 'package:gais/data/model/request_trip/get_guest_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart';
 import 'package:gais/data/model/request_trip/get_other_transport_model.dart';
@@ -38,7 +41,9 @@ import 'package:gais/data/model/request_trip/save_traveller_guest_model.dart';
 import 'package:gais/data/model/request_trip/submit_request_trip_model.dart';
 import 'package:gais/data/model/request_trip/update_accommodation_model.dart';
 import 'package:gais/data/model/request_trip/update_airliness_model.dart';
+import 'package:gais/data/model/request_trip/update_cash_advance_travel_model.dart';
 import 'package:gais/data/model/request_trip/update_other_transport_model.dart';
+import 'package:gais/data/model/request_trip/update_purpose_of_trip_model.dart';
 import 'package:gais/data/model/request_trip/update_taxi_voucher_model.dart';
 import 'package:gais/data/model/request_trip/update_traveller_guest_model.dart';
 import 'package:gais/data/model/status_document_model.dart';
@@ -88,7 +93,7 @@ class RepositoryImpl implements Repository {
           "page": page,
           "search": search,
           "start_date": startDate,
-          "end_Date": endDate,
+          "end_date": endDate,
         },
       );
       RequestTripListModel.fromJson(response.data).data?.total.printInfo();
@@ -211,6 +216,20 @@ class RepositoryImpl implements Repository {
   }
 
   @override
+  Future<GetTlkJobModel> getTLKJobByIDJob(int id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/zona_job/get_by_job/$id",
+      );
+      return GetTlkJobModel.fromJson(response.data);
+    } on DioError catch (e) {
+      return e.error;
+    }
+  }
+
+  @override
   Future<GetTravellerTypeModel> getTravellerTypeList() async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -302,6 +321,7 @@ class RepositoryImpl implements Repository {
       Response response = await network.dio.get(
         "/api/job_band/",
       );
+      GetJobBandModel.fromJson(response.data).success.printInfo();
       return GetJobBandModel.fromJson(response.data);
     } on DioError catch (e) {
       return e.error;
@@ -329,7 +349,6 @@ class RepositoryImpl implements Repository {
 
     var formData = FormData.fromMap({
       "id_employee": employeeID,
-      "no_request_trip": noRequestTrip,
       "code_document": codeDocument,
       "id_site": siteID,
       "notes": notes,
@@ -360,7 +379,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<SavePurposeOfTripModel> updateRequestTrip(
+  Future<UpdatePurposeOfTripModel> updateRequestTrip(
     int id,
     String employeeID,
     String noRequestTrip,
@@ -372,7 +391,7 @@ class RepositoryImpl implements Repository {
     String departureDate,
     String arrivalDate,
     String zonaID,
-    int tlkDay,
+    String tlkDay,
     String tlkTotal,
     File? file,
   ) async {
@@ -390,7 +409,7 @@ class RepositoryImpl implements Repository {
       "date_departure": departureDate,
       "date_arrival": arrivalDate,
       "id_zona": zonaID,
-      "tlk_per_day": tlkDay,
+      "tlk_per_day": double.parse(tlkDay),
       "total_tlk": tlkTotal,
     });
 
@@ -403,9 +422,9 @@ class RepositoryImpl implements Repository {
         "/api/request_trip/update_data/$id",
         data: formData,
       );
-      return SavePurposeOfTripModel.fromJson(response.data);
+      return UpdatePurposeOfTripModel.fromJson(response.data);
     } on DioError catch (e) {
-      return SavePurposeOfTripModel.fromJson(e.message);
+      return UpdatePurposeOfTripModel.fromJson(e.message);
       // return e.error;
       // throw Exception();
     }
@@ -413,7 +432,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<SaveTravellerGuestModel> saveTravellerGuest(
-    String idemployee,
+    String nameGuest,
     String idrequesttrip,
     String idcompany,
     String company,
@@ -428,9 +447,8 @@ class RepositoryImpl implements Repository {
   ) async {
     try {
       var formData = FormData.fromMap({
-        "id_employee": idemployee,
+        "name_guest": nameGuest,
         "id_request_trip": idrequesttrip,
-        "id_company": idcompany,
         "company": company,
         "id_type_traveller": idtypetraveller,
         "nik": nik,
@@ -458,7 +476,7 @@ class RepositoryImpl implements Repository {
   @override
   Future<UpdateTravellerGuestModel> updateTravellerGuest(
     int id,
-    int idemployee,
+    String guestName,
     int idrequesttrip,
     int idcompany,
     String company,
@@ -473,9 +491,8 @@ class RepositoryImpl implements Repository {
   ) async {
     try {
       var formData = FormData.fromMap({
-        "id_employee": idemployee,
+        "name_guest": guestName,
         "id_request_trip": idrequesttrip,
-        "id_company": idcompany,
         "company": company,
         "id_type_traveller": idtypetraveller,
         "nik": nik,
@@ -1067,14 +1084,14 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetCashAdvanceTravelModel> getCashAdvanceTravelList() async {
+  Future<GetCashAdvanceTravelModel> getCashAdvanceTravelList(int id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       Response response = await network.dio.get(
-        "/api/cash_advance/travel/",
+        "/api/cash_advance/get_by_trip_id/$id",
       );
-      GetCashAdvanceTravelModel.fromJson(response.data).data?.first.idRequestTrip.printInfo();
+      GetCashAdvanceTravelModel.fromJson(response.data).data?.first.noCa.printInfo();
       return GetCashAdvanceTravelModel.fromJson(response.data);
     } on DioError catch (e) {
       return e.error;
@@ -1082,14 +1099,28 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetCashAdvanceTravelModel> getCashAdvanceTravelByid(int id) async {
+  Future<GetCashAdvanceByidModel> getCashAdvanceTravelByid(int id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       Response response = await network.dio.get(
         "/api/cash_advance/travel/$id",
       );
-      return GetCashAdvanceTravelModel.fromJson(response.data);
+      return GetCashAdvanceByidModel.fromJson(response.data);
+    } on DioError catch (e) {
+      return e.error;
+    }
+  }
+
+  @override
+  Future<GetDetailcaBycashidModel> getDetailCashAdvanceTravelByid(int id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/cash_advance/get_by_cash_id/$id",
+      );
+      return GetDetailcaBycashidModel.fromJson(response.data);
     } on DioError catch (e) {
       return e.error;
     }
@@ -1119,6 +1150,39 @@ class RepositoryImpl implements Repository {
       );
       return SubmitRequestTripModel.fromJson(response.data);
     } on DioError catch (e) {
+      return e.error;
+    }
+  }
+
+  @override
+  Future<UpdateCashAdvanceTravelModel> updateCashAdvanceTravel(
+    int id,
+    String idEmployee,
+    String idRequestTrip,
+    String idCurrency,
+    String remarks,
+    String grandTotal,
+    String typeCa,
+  ) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+
+    var formData = FormData.fromMap({
+      "id_employee": idEmployee,
+      "id_request_trip": idRequestTrip,
+      "id_currency": idCurrency,
+      "remarks": remarks,
+      "grand_total": grandTotal,
+      "type_ca": typeCa,
+    });
+    try {
+      Response response = await network.dio.post(
+        "/api/cash_advance/update_data/175",
+        data: formData,
+      );
+      return UpdateCashAdvanceTravelModel.fromJson(response.data);
+    } on DioError catch (e) {
+      e.error.printError();
       return e.error;
     }
   }
