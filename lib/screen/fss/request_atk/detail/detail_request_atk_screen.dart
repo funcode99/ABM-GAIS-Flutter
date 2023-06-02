@@ -55,6 +55,9 @@ class RequestATKDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Obx(() {
+                        if(controller.selectedItem.value.status==null){
+                          return const SizedBox();
+                        }
                         return CustomStatusContainer(
                           backgroundColor: greenColor,
                           status: "${controller.selectedItem.value.status}",
@@ -109,7 +112,9 @@ class RequestATKDetailScreen extends StatelessWidget {
                                 child: Text("Save".tr),
                               )
                             : ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  controller.submitHeader();
+                                },
                                 style: ElevatedButton.styleFrom(
                                     minimumSize: const Size(75, 30),
                                     backgroundColor: successColor),
@@ -240,7 +245,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                                   .mapIndexed((index, item) => CommonListItem(
                                         number: "${index + 1}",
                                         title: item.itemName,
-                                        subtitle: "${item.brandName}",
+                                        subtitle: item.brandName ?? "-",
                                         action: controller.onEdit.value
                                             ? [
                                                 CustomIconButton(
@@ -270,9 +275,8 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                     Get.dialog(
                                                         DeleteConfirmationDialog(
                                                       onDeletePressed: () {
-                                                        controller
-                                                            .deleteDetail(item);
-                                                        Get.back();
+                                                        controller.deleteDetail(item);
+                                                        Get.close(1);
                                                       },
                                                     ));
                                                   },
@@ -312,7 +316,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                       style: listTitleTextStyle,
                                                     ),
                                                     Text(
-                                                      "${item.uomName}",
+                                                      item.uomName ?? "-",
                                                       style: listSubTitleTextStyle
                                                           .copyWith(
                                                               overflow:

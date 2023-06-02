@@ -33,18 +33,43 @@ class RequestATKDetailController extends BaseController {
   void onReady() {
     super.onReady();
     initData();
+    detailHeader();
   }
 
   void initData() {
+    getDetailData();
+    setValue();
+  }
+
+  void setValue(){
     createdByController.text = selectedItem.value.createdBy ?? "-";
     createdDateController.text = selectedItem.value.createdAt?.toDateFormat(
-            originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
+        originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
         "-";
     if (selectedItem.value.status?.toLowerCase() == "reject") {
       rejectNoteController.text = selectedItem.value.remarks ?? "-";
     }
+  }
 
-    getDetailData();
+  void detailHeader() async {
+    final result = await _repository.detailData(selectedItem.value.id!);
+
+    result.fold((l) {
+      print("ERROR DETAIL HEADER ${l.message}");
+    }, (r) {
+      selectedItem(r);
+      setValue();
+    });
+  }
+
+  void submitHeader() async {
+    final result = await _repository.submitData(selectedItem.value.id!);
+    result.fold(
+            (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (cashAdvanceModel) {
+          detailHeader();
+        });
   }
 
   void getDetailData() async {
