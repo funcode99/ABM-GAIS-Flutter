@@ -135,7 +135,7 @@ class _CashAdvanceTravelListScreenState
                                     number:
                                         "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
                                     title: item.noCa ?? "-",
-                                    subtitle: item.employeeName ?? "-",
+                                    subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                     total:
                                        "${item.currencyCode ?? ""} ${item.grandTotal?.toInt().toCurrency()}",
                                     content: Padding(
@@ -155,6 +155,23 @@ class _CashAdvanceTravelListScreenState
                                                 ),
                                                 Text(
                                                   "${item.itemCount}",
+                                                    style: listSubTitleTextStyle.copyWith(
+                                                        overflow: TextOverflow.ellipsis
+                                                    )
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Flexible(
+                                            flex: 1,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "Requestor".tr,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                    "${item.employeeName}",
                                                     style: listSubTitleTextStyle.copyWith(
                                                         overflow: TextOverflow.ellipsis
                                                     )
