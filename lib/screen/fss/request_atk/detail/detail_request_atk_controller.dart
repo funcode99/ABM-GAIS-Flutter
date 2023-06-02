@@ -62,6 +62,16 @@ class RequestATKDetailController extends BaseController {
     });
   }
 
+  void submitHeader() async {
+    final result = await _repository.submitData(selectedItem.value.id!);
+    result.fold(
+            (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (cashAdvanceModel) {
+          detailHeader();
+        });
+  }
+
   void getDetailData() async {
     final result = await _repository.getDataDetails(selectedItem.value.id!);
     result.fold(

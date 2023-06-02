@@ -55,6 +55,9 @@ class RequestATKDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Obx(() {
+                        if(controller.selectedItem.value.status==null){
+                          return const SizedBox();
+                        }
                         return CustomStatusContainer(
                           backgroundColor: greenColor,
                           status: "${controller.selectedItem.value.status}",
@@ -109,7 +112,9 @@ class RequestATKDetailScreen extends StatelessWidget {
                                 child: Text("Save".tr),
                               )
                             : ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  controller.submitHeader();
+                                },
                                 style: ElevatedButton.styleFrom(
                                     minimumSize: const Size(75, 30),
                                     backgroundColor: successColor),
