@@ -16,6 +16,7 @@ class CashAdvanceDetailModel extends Equatable {
   String? itemName;
   String? remarks;
   String? costCenterName;
+  String? costCenterCode;
 
   CashAdvanceDetailModel(
       {this.id,
@@ -28,6 +29,7 @@ class CashAdvanceDetailModel extends Equatable {
       this.remarks,
       this.idCostCenter,
       this.costCenterName,
+      this.costCenterCode,
       this.total});
 
   factory CashAdvanceDetailModel.fromJson(Map<String, dynamic> json) =>

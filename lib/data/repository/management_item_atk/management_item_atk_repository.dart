@@ -131,6 +131,12 @@ class ManagementItemATKRepository implements BaseRepository<ManagementItemATKMod
     throw UnimplementedError();
   }
 
+  @override
+  Future<Either<BaseError, ManagementItemATKModel>> detailData(int id) {
+    // TODO: implement detailData
+    throw UnimplementedError();
+  }
+
 
 
 }

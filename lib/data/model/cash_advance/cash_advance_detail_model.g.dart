@@ -19,6 +19,7 @@ CashAdvanceDetailModel _$CashAdvanceDetailModelFromJson(
       remarks: json['remarks'] as String?,
       idCostCenter: json['id_cost_center'] as int?,
       costCenterName: json['cost_center_name'] as String?,
+      costCenterCode: json['cost_center_code'] as String?,
       total: json['total'] as String?,
     );
 
@@ -36,4 +37,5 @@ Map<String, dynamic> _$CashAdvanceDetailModelToJson(
       'item_name': instance.itemName,
       'remarks': instance.remarks,
       'cost_center_name': instance.costCenterName,
+      'cost_center_code': instance.costCenterCode,
     };

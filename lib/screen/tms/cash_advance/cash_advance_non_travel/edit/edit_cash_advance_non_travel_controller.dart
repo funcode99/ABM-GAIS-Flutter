@@ -43,6 +43,7 @@ class EditCashAdvanceNonTravelController extends BaseController
     super.onReady();
     initData();
 
+    detailHeader();
     getDataDetail();
   }
 
@@ -84,14 +85,6 @@ class EditCashAdvanceNonTravelController extends BaseController
     return total.toCurrency();
   }
 
-  void getDataDetail() async {
-    final result = await _repository.getDataDetails(selectedItem.value.id!);
-    result.fold((l) => null, (r) {
-      listDetail.value = r;
-      listDetail.refresh();
-    });
-  }
-
   void updateHeader({bool hideButtonAfterEdit = false}) async {
     String userId = await storage.readString(StorageCore.userID);
     CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
@@ -117,16 +110,33 @@ class EditCashAdvanceNonTravelController extends BaseController
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (cashAdvanceModel) {
-
-      selectedItem(cashAdvanceModel);
-      currencyController.text =
-      "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
-      totalController.text = "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
-
+      detailHeader();
       getDataDetail();
       if (hideButtonAfterEdit) {
         onEdit(false);
       }
+    });
+  }
+
+  void detailHeader() async {
+    final result = await _repository.detailData(selectedItem.value.id!);
+
+    result.fold((l) {
+      print("ERROR DETAIL HEADER ${l.message}");
+    }, (r) {
+      selectedItem(r);
+      currencyController.text =
+          "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
+      totalController.text =
+          "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
+    });
+  }
+
+  void getDataDetail() async {
+    final result = await _repository.getDataDetails(selectedItem.value.id!);
+    result.fold((l) => null, (r) {
+      listDetail.value = r;
+      listDetail.refresh();
     });
   }
 
@@ -136,34 +146,25 @@ class EditCashAdvanceNonTravelController extends BaseController
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (cashAdvanceModel) {
-      selectedItem(cashAdvanceModel);
+      detailHeader();
     });
   }
 
   void deleteDetail(CashAdvanceDetailModel item) async {
-    if (item.id != null) {
-      final result = await _repository.deleteDetail(item.id!);
-      result.fold(
-          (l) => Get.showSnackbar(CustomGetSnackBar(
-              message: l.message,
-              backgroundColor: Colors.red)), (cashAdvanceModel) {
-        Get.showSnackbar(CustomGetSnackBar(
-          message: "Success Delete Data".tr,
-        ));
-        //update state
-        listDetail.remove(item);
-
-        totalController.text = _getTotal();
-        updateHeader();
-      });
-    } else {
+    final result = await _repository.deleteDetail(item.id!);
+    result.fold(
+        (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (cashAdvanceModel) {
       Get.showSnackbar(CustomGetSnackBar(
         message: "Success Delete Data".tr,
       ));
-
+      //update state
       listDetail.remove(item);
+
       totalController.text = _getTotal();
-    }
+      updateHeader();
+    });
   }
 
   void addDetail(CashAdvanceDetailModel item) async {

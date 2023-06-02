@@ -188,4 +188,10 @@ class RequestATKRepository implements BaseRepository<RequestAtkModel, RequestATK
     throw UnimplementedError();
   }
 
+  @override
+  Future<Either<BaseError, RequestAtkModel>> detailData(int id) {
+    // TODO: implement detailData
+    throw UnimplementedError();
+  }
+
 }
