@@ -189,9 +189,24 @@ class RequestATKRepository implements BaseRepository<RequestAtkModel, RequestATK
   }
 
   @override
-  Future<Either<BaseError, RequestAtkModel>> detailData(int id) {
-    // TODO: implement detailData
-    throw UnimplementedError();
+  Future<Either<BaseError, RequestAtkModel>> detailData(int id) async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/request_atk/get/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, RequestAtkModel.fromJsonModelList);
+      List<RequestAtkModel> list = apiResponseModel.data;
+      return right(list.first);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
 }
