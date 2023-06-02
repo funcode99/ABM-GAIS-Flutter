@@ -18,6 +18,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/request_atk/add/add_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/list/request_atk_list_controller.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -161,7 +162,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                                 },
                                 number: "${index + 1}",
                                 title: "${item.noAtkRequest}",
-                                subtitle: "${item.employeeName}",
+                                subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                 content: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 8),
@@ -169,6 +170,21 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
+                                      Flexible(
+                                        flex: 1,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Requestor".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              "${item.employeeName}",
+                                              style: listSubTitleTextStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                       Flexible(
                                         flex: 1,
                                         child: Column(
@@ -183,7 +199,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                                             ),
                                           ],
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
