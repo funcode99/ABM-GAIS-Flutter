@@ -59,17 +59,17 @@ class EditCashAdvanceNonTravelController extends BaseController
     setValue();
   }
 
-  void setValue(){
+  void setValue() {
     dateController.text = selectedItem.value.date?.toDateFormat(
-        originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+            originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
         "-";
     requestorController.text = selectedItem.value.employeeName ?? "-";
     eventController.text = selectedItem.value.event ?? "-";
     totalController.text =
-    "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
+        "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
 
     currencyController.text =
-    "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
+        "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
   }
 
   void updateEnableButton() {
@@ -198,7 +198,8 @@ class EditCashAdvanceNonTravelController extends BaseController
   }
 
   void onChangeSelectedCurrency(String id) {
-    final selected = listCurrency.firstWhere((item) => item.id == id.toInt());
+    final selected = listCurrency.firstWhere((item) => item.id == id.toInt(),
+        orElse: () => listCurrency.first);
     selectedCurrency(selected);
   }
 }
