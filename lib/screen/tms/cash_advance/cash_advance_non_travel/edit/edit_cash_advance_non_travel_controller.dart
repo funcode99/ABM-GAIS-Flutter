@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
+import 'package:gais/data/model/master/currency/currency_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
+import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class EditCashAdvanceNonTravelController extends BaseController {
+class EditCashAdvanceNonTravelController extends BaseController with MasterDataMixin{
   final TextEditingController dateController = TextEditingController();
   final TextEditingController eventController = TextEditingController();
   final TextEditingController requestorController = TextEditingController();
   final TextEditingController totalController = TextEditingController();
+  final TextEditingController currencyController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   final CashAdvanceNonTravelRepository _repository = Get.find();
@@ -25,6 +28,9 @@ class EditCashAdvanceNonTravelController extends BaseController {
   final onEdit = false.obs;
 
   final listDetail = <CashAdvanceDetailModel>[].obs;
+  final listCurrency = <CurrencyModel>[].obs;
+
+  final selectedCurrency = CurrencyModel().obs;
 
   @override
   void onInit() {
@@ -39,14 +45,25 @@ class EditCashAdvanceNonTravelController extends BaseController {
     getDataDetail();
   }
 
-  void initData() {
+  void initData() async{
+    final currencies = await getListCurrency();
+    listCurrency(currencies);
+    if(selectedItem.value.idCurrency != null){
+      onChangeSelectedCurrency(selectedItem.value.idCurrency.toString());
+    }else{
+      selectedCurrency(listCurrency.first);
+    }
+
     dateController.text = selectedItem.value.date?.toDateFormat(
-            originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+        originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
         "-";
     requestorController.text = selectedItem.value.employeeName ?? "-";
     eventController.text = selectedItem.value.event ?? "-";
-    totalController.text =
-        "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
+    totalController.text = "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
+
+    currencyController.text = "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
+
+
   }
 
   void updateEnableButton() {
@@ -78,11 +95,16 @@ class EditCashAdvanceNonTravelController extends BaseController {
     String userId = await storage.readString(StorageCore.userID);
     CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
       codeStatusDoc: selectedItem.value.codeStatusDoc,
+      status: selectedItem.value.status,
       id: selectedItem.value.id,
       noCa: selectedItem.value.noCa,
       idEmployee: userId.toInt(),
       typeCa: "2",
       event: eventController.text,
+      idCurrency: selectedCurrency.value.id,
+      currencyCode: selectedCurrency.value.currencyCode,
+      currencyName: selectedCurrency.value.currencyName,
+      currencySymbol: selectedCurrency.value.currencySymbol,
       date: dateController.text
           .toDateFormat(targetFormat: "yyyy/MM/dd", originFormat: "dd/MM/yyyy"),
       grandTotal: totalController.text.digitOnly(),
@@ -168,5 +190,10 @@ class EditCashAdvanceNonTravelController extends BaseController {
       totalController.text = _getTotal();
       updateHeader();
     });
+  }
+
+  void onChangeSelectedCurrency(String id) {
+    final selected = listCurrency.firstWhere((item) => item.id == id.toInt());
+    selectedCurrency(selected);
   }
 }
