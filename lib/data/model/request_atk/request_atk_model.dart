@@ -13,7 +13,7 @@ class RequestAtkModel {
   int? idEmployee;
   String? noAtkRequest;
   String? remarks;
-  int? codeStatusDoc;
+  dynamic codeStatusDoc;
   String? status;
   String? createdAt;
   String? createdBy;

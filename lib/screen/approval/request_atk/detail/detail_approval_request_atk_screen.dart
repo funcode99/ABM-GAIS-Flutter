@@ -245,9 +245,9 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                                     ),
                                   ),
                                   onTap: (){
-                                    Get.dialog(
+                                    /*Get.dialog(
                                         DetailItemRequestATKScreen(item: element)
-                                    );
+                                    );*/
                                   },
                                 ))
                                 .toList(),

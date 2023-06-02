@@ -5,6 +5,7 @@ import 'package:gais/data/model/temp_filled_model.dart';
 class StorageCore {
   static const String userID = "userID";
   static const String companyID = "companyID";
+  static const String departmentID = "departmentID";
   static const String employeeName = "employeeName";
   static const String companyName = "companyName";
   static const String siteName = "site";

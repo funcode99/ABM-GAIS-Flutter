@@ -9,16 +9,23 @@ class RequestATKDetailModel extends Equatable {
   int? id;
   int? idAtkRequest;
   int? idItem;
+  int? idWarehouse;
   int? qty;
   String? remarks;
   String? createdAt;
-  String? createdBy;
+  dynamic createdBy;
   String? updatedAt;
-  String? updatedBy;
+  dynamic updatedBy;
+  String? itemName;
+  String? codeItem;
+  String? brandName;
+  String? uomName;
+  String? warehouseName;
 
   RequestATKDetailModel({
     this.key,
     this.id,
+    this.idWarehouse,
     this.idAtkRequest,
     this.idItem,
     this.qty,
@@ -27,6 +34,11 @@ class RequestATKDetailModel extends Equatable {
     this.createdBy,
     this.updatedAt,
     this.updatedBy,
+    this.itemName,
+    this.codeItem,
+    this.brandName,
+    this.uomName,
+    this.warehouseName,
   });
 
   factory RequestATKDetailModel.fromJson(Map<String, dynamic> json) =>

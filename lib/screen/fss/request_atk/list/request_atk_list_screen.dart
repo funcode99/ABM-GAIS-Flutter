@@ -29,11 +29,10 @@ class RequestATKListScreen extends StatefulWidget {
 }
 
 class _RequestATKListScreenState extends State<RequestATKListScreen> {
-
   @override
   Widget build(BuildContext context) {
     final RequestATKListController controller =
-    Get.put(RequestATKListController());
+        Get.put(RequestATKListController());
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -50,46 +49,49 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
           children: [
             CustomSearchBar(
               onSubmit: (string) {
-                controller.keyword(string);
-                controller.getHeader();
+                controller.applySearch(string);
+              },
+              onClearFilter: () {
+                controller.applySearch("");
               },
               onPressedFilter: () {
+                controller.openFilter();
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {
                     controller.applyFilter();
                     Get.back();
                   },
+                  onResetFilter: () {
+                    controller.resetFilter();
+                  },
                   children: [
                     const SizedBox(
                       height: 8,
                     ),
-                    CustomDropDownFormField(
-                      items: [
-                        DropdownMenuItem(
-                          value: "",
-                          child: Text("Status".tr),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Completed",
-                          child: Text("Completed"),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Pending",
-                          child: Text("Pending"),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        controller.tempSelectedValue = value!;
-                      },
-                      label: "Status".tr,
-                      value: controller.selectedValue,
-                    ),
+                    Obx(() {
+                      print("controller.selectedStatus.value?.code ${controller.selectedStatus.value?.code}");
+                      return CustomDropDownFormField(
+                        items: controller.listStatus
+                            .map((e) => DropdownMenuItem(
+                                  value: e.code.toString(),
+                                  child: Text("${e.status}"),
+                                ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller.onChangeSelectedStatus(item.toString());
+                        },
+                        label: "Status".tr,
+                        value: controller.selectedStatusTemp.value != null
+                            ? controller.selectedStatusTemp.value?.code.toString()
+                            : "",
+                      );
+                    }),
                     const SizedBox(
                       height: 8,
                     ),
                     CustomTextFormField(
                         readOnly: true,
-                        controller: controller.dateRange,
+                        controller: controller.dateRangeController,
                         suffixIcon: const Icon(Icons.calendar_month),
                         onTap: () {
                           showCustomDateRangePicker(
@@ -98,25 +100,19 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                             minimumDate: DateTime.now()
                                 .subtract(const Duration(days: 365)),
                             maximumDate:
-                            DateTime.now().add(const Duration(days: 365)),
-                            endDate: controller.endDate,
-                            startDate: controller.startDate,
+                                DateTime.now().add(const Duration(days: 365)),
+                            endDate: controller.endDate.value,
+                            startDate: controller.startDate.value,
                             backgroundColor: Colors.white,
                             primaryColor: Colors.green,
                             onApplyClick: (start, end) {
-                              controller.endDate = end;
-                              controller.startDate = start;
-                              controller.dateRange.text =
-                              "${controller.dateFormat.format(
-                                  start)} - ${controller.dateFormat.format(
-                                  end)}";
+                              controller.endDateTemp.value = end;
+                              controller.startDateTemp.value = start;
+                              controller.dateRangeController.text =
+                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                               controller.update();
                             },
-                            onCancelClick: () {
-                              controller.endDate = null;
-                              controller.startDate = null;
-                              controller.update();
-                            },
+                            onCancelClick: () {},
                           );
                         },
                         label: "Date Range".tr),
@@ -128,6 +124,10 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
               },
             ),
             Obx(() {
+              if (controller.listHeader.isEmpty) {
+                return const SizedBox();
+              }
+
               return CustomPagination(
                 colorSub: whiteColor,
                 colorPrimary: infoColor,
@@ -145,84 +145,97 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
             ),
             Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () async {
-                    controller.getHeader();
-                  },
-                  child: Obx(() {
-                    return controller.listHeader.isEmpty
-                        ? const EmptyListError()
-                        : ListView(
-                      children: [
-                        ...controller.listHeader
-                            .mapIndexed((index, item) =>
-                            CommonListItem(
-                              onTap: () {
-                                Get.to(() => const RequestATKDetailScreen());
-                              },
-                              number: "${index+1}",
-                              title: "${item.noAtkRequest}",
-                              subtitle: "${item.employeeName}",
-                              content: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceAround,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Warehouse".tr,
-                                          style: listTitleTextStyle,
+              onRefresh: () async {
+                controller.getHeader();
+              },
+              child: Obx(() {
+                return controller.listHeader.isEmpty
+                    ? const EmptyListError()
+                    : ListView(
+                        children: [
+                          ...controller.listHeader.mapIndexed((index, item) =>
+                              CommonListItem(
+                                onTap: item.codeStatusDoc == 0 ? null : (){
+                                  Get.to(() => const RequestATKDetailScreen(),
+                                      arguments: {"item": item});
+                                },
+                                number: "${index + 1}",
+                                title: "${item.noAtkRequest}",
+                                subtitle: "${item.employeeName}",
+                                content: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Flexible(
+                                        flex: 1,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Item Count".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              "${item.itemCount}",
+                                              style: listSubTitleTextStyle,
+                                            ),
+                                          ],
                                         ),
-                                        Text(
-                                          "${item.warehouseName}",
-                                          style: listSubTitleTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Item Count".tr,
-                                          style: listTitleTextStyle,
-                                        ),
-                                        Text(
-                                          "${item.itemCount}",
-                                          style: listSubTitleTextStyle,
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              action: [
-                                CustomIconButton(
-                                  backgroundColor: redColor,
-                                  title: "Delete".tr,
-                                  iconData: IconlyBold.delete,
-                                  onPressed: () {
-                                    Get.dialog(DeleteConfirmationDialog(
-                                      onDeletePressed: () {
-                                        controller.deleteHeader(item);
-                                        Get.back();
-                                      },
-                                    ));
-                                  },
-                                )
-                              ],
-                              status: "${item.status}",
-                            ))
-                      ],
-                    );
-                  }),
-                ))
+                                action: item.codeStatusDoc == 0
+                                    ? [
+                                        CustomIconButton(
+                                          title: "Edit".tr,
+                                          iconData: IconlyBold.edit,
+                                          backgroundColor: successColor,
+                                          onPressed: () async {
+                                            Get.to(
+                                                () =>
+                                                    const RequestATKDetailScreen(),
+                                                arguments: {
+                                                  "item": item
+                                                })?.then((value) =>
+                                                controller.getHeader());
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        CustomIconButton(
+                                          backgroundColor: redColor,
+                                          title: "Delete".tr,
+                                          iconData: IconlyBold.delete,
+                                          onPressed: () {
+                                            Get.dialog(DeleteConfirmationDialog(
+                                              onDeletePressed: () {
+                                                controller.deleteHeader(item);
+                                                Get.back();
+                                              },
+                                            ));
+                                          },
+                                        )
+                                      ]
+                                    : [],
+                                status: item.status,
+                              ))
+                        ],
+                      );
+              }),
+            ))
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
-        onPressed: () => Get.to(const AddRequestATKScreen()),
+        onPressed: ()async{
+          Get.to(() => const AddRequestATKScreen())
+              ?.then((value) => controller.getHeader());
+        },
         child: const Icon(Icons.add_rounded, size: 45),
       ),
       bottomNavigationBar: const BottomBar(menu: 1),

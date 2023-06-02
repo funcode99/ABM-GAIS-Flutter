@@ -16,7 +16,7 @@ RequestAtkModel _$RequestAtkModelFromJson(Map<String, dynamic> json) =>
       idEmployee: json['id_employee'] as int?,
       noAtkRequest: json['no_atk_request'] as String?,
       remarks: json['remarks'] as String?,
-      codeStatusDoc: json['code_status_doc'] as int?,
+      codeStatusDoc: json['code_status_doc'],
       status: json['status'] as String?,
       createdAt: json['created_at'] as String?,
       createdBy: json['created_by'] as String?,

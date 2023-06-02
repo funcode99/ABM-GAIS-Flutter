@@ -49,6 +49,7 @@ class CustomDropDownFormField<T> extends StatelessWidget {
         Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
           child: DropdownButtonFormField(
+            autovalidateMode: AutovalidateMode.always,
             validator: validator,
             decoration: const InputDecoration(
                 contentPadding:
