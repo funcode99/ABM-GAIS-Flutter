@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
+import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/customtripcard.dart';
@@ -14,6 +15,8 @@ import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/request_trip/form_request_trip/approval_form_request_trip_screen.dart';
 import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_controller.dart';
+import 'package:gais/screen/home/home_screen.dart';
+import 'package:gais/screen/menu/menu_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/requester_info/requester_info_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
@@ -31,8 +34,14 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: baseColor,
             appBar: TopBar(
-              title: Text("Request Trip", style: appTitle),
-            ),
+                title: Text("Request Trip", style: appTitle),
+                leading: IconButton(
+                    onPressed: () => Get.off(HomeScreen(), arguments: 1),
+                    icon: Icon(
+                      Icons.chevron_left,
+                      color: Colors.black,
+                      size: 30,
+                    ))),
             body: CustomScrollView(
               slivers: [
                 SliverPersistentHeader(
@@ -190,8 +199,7 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: CustomTripCard(
-                              listNumber:
-                                  controller.currentPage > 1 ? (index + controller.rtlModel!.data!.from!.toInt()) : (index + 1),
+                              listNumber: controller.currentPage > 1 ? (index + controller.rtlModel!.data!.from!.toInt()) : (index + 1),
                               title: controller.requestList[index].noRequestTrip.toString(),
                               status: controller.requestList[index].status,
                               subtitle: controller.requestList[index].createdAt?.substring(0, 10),

@@ -1,6 +1,6 @@
 /// success : true
 /// message : "Success Get Data"
-/// data : [{"id":1,"id_request_trip":2,"id_type_transportation":2,"from_date":"2023-05-20","to_date":"2023-05-23","id_city":1,"qty":2,"remarks":null,"code_status_doc":0,"created_at":"2023-05-20 11:40:35","created_by":"2","updated_at":"2023-05-20 12:33:18","updated_by":"2","no_request_trip":"REQ/ABM/123","type_transportation":"Rent Car","city_name":"Bandung","code":0,"status":"Draft"}]
+/// data : [{"id":14,"id_request_trip":80,"id_type_transportation":1,"from_date":"2023-06-01","to_date":"2023-06-03","id_city":10,"qty":2,"remarks":null,"code_status_doc":0,"created_at":"2023-06-01 07:48:22","created_by":"2","updated_at":"2023-06-01 07:48:22","updated_by":null,"no_request_trip":"RTRIP-2023-23-06/017/TRV-3000/06/2023","type_transportation":"RWA HO Office Car","city_name":"Bekasi","code":0,"status":"Draft","employee_name":"John Doe"},{"id":12,"id_request_trip":43,"id_type_transportation":6,"from_date":"2023-05-31","to_date":"2023-06-03","id_city":36,"qty":1,"remarks":null,"code_status_doc":0,"created_at":"2023-05-29 05:01:27","created_by":"1","updated_at":"2023-05-29 05:01:27","updated_by":null,"no_request_trip":"1","type_transportation":"SSB Pool Car (SSB)","city_name":"Batam Tengah","code":0,"status":"Draft","employee_name":"Admin"},{"id":13,"id_request_trip":54,"id_type_transportation":2,"from_date":"2023-05-30","to_date":"2023-05-30","id_city":8,"qty":1,"remarks":"tester add ot","code_status_doc":1,"created_at":"2023-05-29 21:56:05","created_by":"2","updated_at":"2023-05-29 21:56:05","updated_by":null,"no_request_trip":"RTRIP-2023-23-05/004/TRV-3000/05/2023","type_transportation":"Rent Car","city_name":"Depok","code":1,"status":"Submit","employee_name":"John Doe"}]
 
 class GetOtherTransportModel {
   GetOtherTransportModel({
@@ -48,24 +48,25 @@ GetOtherTransportModel copyWith({  bool? success,
 
 }
 
-/// id : 1
-/// id_request_trip : 2
-/// id_type_transportation : 2
-/// from_date : "2023-05-20"
-/// to_date : "2023-05-23"
-/// id_city : 1
+/// id : 14
+/// id_request_trip : 80
+/// id_type_transportation : 1
+/// from_date : "2023-06-01"
+/// to_date : "2023-06-03"
+/// id_city : 10
 /// qty : 2
 /// remarks : null
 /// code_status_doc : 0
-/// created_at : "2023-05-20 11:40:35"
+/// created_at : "2023-06-01 07:48:22"
 /// created_by : "2"
-/// updated_at : "2023-05-20 12:33:18"
-/// updated_by : "2"
-/// no_request_trip : "REQ/ABM/123"
-/// type_transportation : "Rent Car"
-/// city_name : "Bandung"
+/// updated_at : "2023-06-01 07:48:22"
+/// updated_by : null
+/// no_request_trip : "RTRIP-2023-23-06/017/TRV-3000/06/2023"
+/// type_transportation : "RWA HO Office Car"
+/// city_name : "Bekasi"
 /// code : 0
 /// status : "Draft"
+/// employee_name : "John Doe"
 
 class Data {
   Data({
@@ -81,12 +82,13 @@ class Data {
       String? createdAt, 
       String? createdBy, 
       String? updatedAt, 
-      String? updatedBy, 
+      dynamic updatedBy, 
       String? noRequestTrip, 
       String? typeTransportation, 
       String? cityName, 
       num? code, 
-      String? status,}){
+      String? status, 
+      String? employeeName,}){
     _id = id;
     _idRequestTrip = idRequestTrip;
     _idTypeTransportation = idTypeTransportation;
@@ -105,6 +107,7 @@ class Data {
     _cityName = cityName;
     _code = code;
     _status = status;
+    _employeeName = employeeName;
 }
 
   Data.fromJson(dynamic json) {
@@ -126,6 +129,7 @@ class Data {
     _cityName = json['city_name'];
     _code = json['code'];
     _status = json['status'];
+    _employeeName = json['employee_name'];
   }
   num? _id;
   num? _idRequestTrip;
@@ -139,12 +143,13 @@ class Data {
   String? _createdAt;
   String? _createdBy;
   String? _updatedAt;
-  String? _updatedBy;
+  dynamic _updatedBy;
   String? _noRequestTrip;
   String? _typeTransportation;
   String? _cityName;
   num? _code;
   String? _status;
+  String? _employeeName;
 Data copyWith({  num? id,
   num? idRequestTrip,
   num? idTypeTransportation,
@@ -157,12 +162,13 @@ Data copyWith({  num? id,
   String? createdAt,
   String? createdBy,
   String? updatedAt,
-  String? updatedBy,
+  dynamic updatedBy,
   String? noRequestTrip,
   String? typeTransportation,
   String? cityName,
   num? code,
   String? status,
+  String? employeeName,
 }) => Data(  id: id ?? _id,
   idRequestTrip: idRequestTrip ?? _idRequestTrip,
   idTypeTransportation: idTypeTransportation ?? _idTypeTransportation,
@@ -181,6 +187,7 @@ Data copyWith({  num? id,
   cityName: cityName ?? _cityName,
   code: code ?? _code,
   status: status ?? _status,
+  employeeName: employeeName ?? _employeeName,
 );
   num? get id => _id;
   num? get idRequestTrip => _idRequestTrip;
@@ -194,12 +201,13 @@ Data copyWith({  num? id,
   String? get createdAt => _createdAt;
   String? get createdBy => _createdBy;
   String? get updatedAt => _updatedAt;
-  String? get updatedBy => _updatedBy;
+  dynamic get updatedBy => _updatedBy;
   String? get noRequestTrip => _noRequestTrip;
   String? get typeTransportation => _typeTransportation;
   String? get cityName => _cityName;
   num? get code => _code;
   String? get status => _status;
+  String? get employeeName => _employeeName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -221,6 +229,7 @@ Data copyWith({  num? id,
     map['city_name'] = _cityName;
     map['code'] = _code;
     map['status'] = _status;
+    map['employee_name'] = _employeeName;
     return map;
   }
 

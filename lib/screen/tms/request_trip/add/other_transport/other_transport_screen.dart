@@ -14,6 +14,7 @@ import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_scr
 import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/edit/edit_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_controller.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
 
@@ -49,9 +50,7 @@ class OtherTransportScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                       child: SvgPicture.asset(ImageConstant.car, height: 25),
                     ),
                     Text("Other Transportation", style: appTitle),
@@ -61,57 +60,44 @@ class OtherTransportScreen extends StatelessWidget {
                           .mapIndexed(
                             (i, e) => CustomTripCard(
                               listNumber: i + 1,
-                              title: e.noRequestTrip.toString(),
+                              title: e.employeeName.toString(),
                               subtitle: e.typeTransportation.toString(),
                               status: e.status.toString(),
                               info: e.cityName.toString(),
                               isEdit: true,
-                              editAction: () => Get.to(
-                                  EditOtherTransportScreen(),
-                                  arguments: {
-                                    'purposeID': controller.purposeID,
-                                    'codeDocument': controller.codeDocument,
-                                    'otID': e.id,
-                                  })?.then((result) {
+                              editAction: () => Get.to(EditOtherTransportScreen(), arguments: {
+                                'purposeID': controller.purposeID,
+                                'codeDocument': controller.codeDocument,
+                                'otID': e.id,
+                              })?.then((result) {
                                 controller.fetchList();
                                 controller.update();
                                 print(result);
                               }),
                               isDelete: true,
-                              deleteAction: () =>
-                                  controller.delete(int.parse(e.id.toString())),
+                              deleteAction: () => controller.delete(int.parse(e.id.toString())),
                               content: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("From Date",
-                                          style: listTitleTextStyle),
-                                      Text(e.fromDate.toString(),
-                                          style: listSubTitleTextStyle),
+                                      Text("From Date", style: listTitleTextStyle),
+                                      Text(e.fromDate.toString(), style: listSubTitleTextStyle),
                                     ],
                                   ),
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("To Date",
-                                          style: listTitleTextStyle),
-                                      Text(e.toDate.toString(),
-                                          style: listSubTitleTextStyle),
+                                      Text("To Date", style: listTitleTextStyle),
+                                      Text(e.toDate.toString(), style: listSubTitleTextStyle),
                                     ],
                                   ),
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Text("Quantity",
-                                          style: listTitleTextStyle),
-                                      Text(e.qty.toString(),
-                                          style: listSubTitleTextStyle),
+                                      Text("Quantity", style: listTitleTextStyle),
+                                      Text(e.qty.toString(), style: listSubTitleTextStyle),
                                     ],
                                   ),
                                 ],
@@ -127,11 +113,9 @@ class OtherTransportScreen extends StatelessWidget {
                         color: infoColor,
                         title: "Add Other Transportation",
                         icon: Icons.add,
-                        onPressed: () => Get.to(AddOtherTransportScreen(),
-                            arguments: {
-                              'purposeID': controller.purposeID,
-                              'codeDocument': controller.codeDocument
-                            })?.then((result) {
+                        onPressed: () =>
+                            Get.to(AddOtherTransportScreen(), arguments: {'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument})
+                                ?.then((result) {
                           controller.fetchList();
                           controller.update();
                           print(result);
@@ -154,13 +138,16 @@ class OtherTransportScreen extends StatelessWidget {
                                 width: 100,
                                 color: infoColor,
                                 title: "Draft",
-                                onPressed: ()=> Get.offAll(RequestTripListScreen()),
+                                onPressed: () => Get.offAll(FormRequestTripScreen(), arguments: {
+                                  'id': controller.purposeID,
+                                  'codeDocument': controller.codeDocument,
+                                }),
                               ),
                               CustomFilledButton(
                                 width: 100,
                                 color: infoColor,
                                 title: "Submit",
-                                onPressed: ()=> controller.submit(),
+                                onPressed: () => controller.submit(),
                               ),
                             ],
                           )
@@ -175,12 +162,7 @@ class OtherTransportScreen extends StatelessWidget {
                                 fontColor: infoColor,
                                 onPressed: () => Get.back(),
                               ),
-                              CustomFilledButton(
-                                width: 100,
-                                color: infoColor,
-                                title: "Next",
-                                onPressed: () => controller.next()
-                              ),
+                              CustomFilledButton(width: 100, color: infoColor, title: "Next", onPressed: () => controller.next()),
                             ],
                           )
                   ],

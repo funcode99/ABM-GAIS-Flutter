@@ -9,7 +9,6 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_controller.dart';
-import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
 import 'package:get/get.dart';
 
 class AddGuestScreen extends StatelessWidget {
@@ -42,9 +41,7 @@ class AddGuestScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                       child: const Icon(Icons.groups, color: whiteColor),
                     ),
                     Text("Guest", style: appTitle),
@@ -66,12 +63,7 @@ class AddGuestScreen extends StatelessWidget {
                               label: "Type of Traveller",
                               hintText: "Type",
                               isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
+                              value: controller.selectedType,
                               onChanged: (value) {
                                 controller.selectedType = value;
                                 controller.update();
@@ -82,12 +74,6 @@ class AddGuestScreen extends StatelessWidget {
                               controller: controller.guestName,
                               label: "Name",
                               isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
                               hintText: "Name",
                               // readOnly: true,
                               // suffixIcon: Icon(Icons.keyboard_arrow_down,
@@ -129,14 +115,9 @@ class AddGuestScreen extends StatelessWidget {
                                 ),
                               ],
                               label: "Gender",
-                              hintText: controller.gender,
+                              hintText: "Gender",
+                              value: controller.gender,
                               isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
                               onChanged: (value) {
                                 controller.gender = value;
                                 controller.update();
@@ -147,12 +128,7 @@ class AddGuestScreen extends StatelessWidget {
                               controller: controller.guestNIK,
                               label: "NIK",
                               isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
+                              inputType: TextInputType.number,
                             ),
                             const SizedBox(height: 8),
                             CustomTextFormField(
@@ -160,68 +136,21 @@ class AddGuestScreen extends StatelessWidget {
                               label: "Contact No",
                               isRequired: true,
                               inputType: TextInputType.number,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
                             ),
                             const SizedBox(height: 8),
-                            CustomDropDownFormField(
-                              items: controller.departmentList
-                                  .map((e) => DropdownMenuItem(
-                                        value: e.id.toString(),
-                                        child:
-                                            Text(e.departementName.toString()),
-                                      ))
-                                  .toList(),
+                            CustomTextFormField(
+                              controller: controller.guestDepartment,
                               label: "Department",
-                              hintText: "Department",
                               isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                controller.selectedDepartment = value;
-                                print(value);
-                                controller.update();
-                              },
                             ),
                             const SizedBox(height: 8),
-                            CustomDropDownFormField(
-                              items: controller.companyList
-                                  .map((e) => DropdownMenuItem(
-                                        value: e.id.toString(),
-                                        child: Text(e.companyName.toString()),
-                                      ))
-                                  .toList(),
+                            CustomTextFormField(
+                              controller: controller.guestCompany,
                               label: "Company",
                               hintText: "Company",
                               isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                controller.selectedCompany = value;
-                                print(controller.selectedCompany ?? "kosong");
-                                controller.update();
-                              },
                             ),
                             const SizedBox(height: 8),
-                            controller.selectedCompany == "0"
-                                ? CustomTextFormField(
-                                    controller: controller.otherCompany,
-                                    label: "Other Company",
-                                    hintText: "Company",
-                                  )
-                                : Container(),
                             CustomTextFormField(
                               controller: controller.hotelFare,
                               label: "Hotel Fare",
@@ -258,9 +187,9 @@ class AddGuestScreen extends StatelessWidget {
                                   color: infoColor,
                                   title: "Save",
                                   onPressed: () {
-                                    if (controller.formKey.currentState
-                                            ?.validate() ==
-                                        true) controller.saveGuest();
+                                    if (controller.formKey.currentState?.validate() == true) {
+                                      controller.guestID == null ? controller.saveGuest() : controller.updateGuest();
+                                    }
                                   },
                                 ),
                               ],

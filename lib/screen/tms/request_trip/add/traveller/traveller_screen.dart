@@ -7,10 +7,7 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/topbar.dart';
-import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/traveller/edit/edit_guest_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/traveller_controller.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
@@ -45,9 +42,7 @@ class TravellerScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                       child: const Icon(Icons.groups, color: whiteColor),
                     ),
                     Text("Traveller", style: appTitle),
@@ -55,9 +50,7 @@ class TravellerScreen extends StatelessWidget {
                     Container(
                       alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.symmetric(horizontal: 50),
-                      child: Text("Traveller",
-                          style: formlabelTextStyle,
-                          textAlign: TextAlign.start),
+                      child: Text("Traveller", style: formlabelTextStyle, textAlign: TextAlign.start),
                     ),
                     CustomTripCard(
                       listNumber: 1,
@@ -71,28 +64,21 @@ class TravellerScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("Gender", style: listTitleTextStyle),
-                              Text(
-                                  controller.travellerGender == "L"
-                                      ? "Male"
-                                      : "Female",
-                                  style: listSubTitleTextStyle),
+                              Text(controller.travellerGender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
                             ],
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("Hotel Fare", style: listTitleTextStyle),
-                              Text("${int.parse(controller.travellerHotel ?? "0").toCurrency() }",
-                                  style: listSubTitleTextStyle),
+                              Text("${int.parse(controller.travellerHotel ?? "0").toCurrency()}", style: listSubTitleTextStyle),
                             ],
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Flight Entitlement",
-                                  style: listTitleTextStyle),
-                              Text(controller.travellerFlight ?? "",
-                                  style: listSubTitleTextStyle),
+                              Text("Flight Entitlement", style: listTitleTextStyle),
+                              Text(controller.travellerFlight ?? "", style: listSubTitleTextStyle),
                             ],
                           ),
                         ],
@@ -102,9 +88,7 @@ class TravellerScreen extends StatelessWidget {
                     Container(
                       alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.symmetric(horizontal: 50),
-                      child: Text("Guest",
-                          style: formlabelTextStyle,
-                          textAlign: TextAlign.start),
+                      child: Text("Guest", style: formlabelTextStyle, textAlign: TextAlign.start),
                     ),
                     Column(
                       children: controller.guestList.isNotEmpty
@@ -112,62 +96,47 @@ class TravellerScreen extends StatelessWidget {
                               .mapIndexed(
                                 (i, e) => CustomTripCard(
                                   listNumber: i + 1,
-                                  title: e.idEmployee.toString(),
+                                  title: e.nameGuest.toString(),
                                   subtitle: e.nik,
                                   info: "Guest",
                                   isEdit: true,
-                                  editAction: () => Get.to(
-                                      const EditGuestScreen(),
-                                      arguments: {
-                                        'purposeID': controller.purposeID,
-                                        'guestID': e.id,
-                                        'isEdit': true,
-                                      })?.then((_) {
+                                  editAction: () => Get.to(const AddGuestScreen(), arguments: {
+                                    'purposeID': controller.purposeID,
+                                    'codeDocument': controller.codeDocument,
+                                    'guestID': e.id,
+                                    'isEdit': true,
+                                  })?.then((_) {
                                     controller.getGuestList();
                                     controller.update();
                                   }),
                                   isDelete: true,
                                   deleteAction: () {
-                                    controller.deleteGuest(
-                                        int.parse(e.id.toString()));
+                                    controller.deleteGuest(int.parse(e.id.toString()));
                                     controller.update();
                                     print(e.id);
                                   },
                                   content: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text("Gender",
-                                              style: listTitleTextStyle),
-                                          Text(
-                                              e.gender == "L"
-                                                  ? "Male"
-                                                  : "Female",
-                                              style: listSubTitleTextStyle),
+                                          Text("Gender", style: listTitleTextStyle),
+                                          Text(e.gender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
                                         ],
                                       ),
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text("Hotel Fare",
-                                              style: listTitleTextStyle),
-                                          Text("${int.parse(e.hotelFare.toString()).toCurrency()}",
-                                              style: listSubTitleTextStyle),
+                                          Text("Hotel Fare", style: listTitleTextStyle),
+                                          Text("${int.parse(e.hotelFare.toString()).toCurrency()}", style: listSubTitleTextStyle),
                                         ],
                                       ),
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text("Flight Entitlement",
-                                              style: listTitleTextStyle),
-                                          Text(e.flightClass.toString(),
-                                              style: listSubTitleTextStyle),
+                                          Text("Flight Entitlement", style: listTitleTextStyle),
+                                          Text(e.flightClass.toString(), style: listSubTitleTextStyle),
                                         ],
                                       ),
                                     ],
@@ -185,7 +154,8 @@ class TravellerScreen extends StatelessWidget {
                         icon: Icons.add,
                         onPressed: () => Get.to(AddGuestScreen(), arguments: {
                           'purposeID': controller.purposeID,
-                          'travellerID': controller.travellerID
+                          'travellerID': controller.travellerID,
+                          'formEdit': controller.formEdit,
                         })?.then((_) {
                           controller.getGuestList();
                           controller.update();
@@ -203,12 +173,7 @@ class TravellerScreen extends StatelessWidget {
                           fontColor: infoColor,
                           onPressed: () => Get.back(result: true),
                         ),
-                        CustomFilledButton(
-                          width: 100,
-                          color: infoColor,
-                          title: "Next",
-                          onPressed: () => controller.next()
-                        ),
+                        CustomFilledButton(width: 100, color: infoColor, title: "Next", onPressed: () => controller.next()),
                       ],
                     )
                   ],

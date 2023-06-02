@@ -104,7 +104,8 @@ class App extends StatelessWidget{
                 textStyle: MaterialStateProperty.all<TextStyle>(
                     const TextStyle(fontWeight: FontWeight.w700, fontSize: 16))),
 
-          )
+          ),
+
       ),
       home: const LoginScreen(),
     );

@@ -14,13 +14,17 @@ import 'package:gais/data/model/reference/get_hotel_type_model.dart';
 import 'package:gais/data/model/reference/get_job_band_model.dart';
 import 'package:gais/data/model/reference/get_site_model.dart';
 import 'package:gais/data/model/reference/get_status_document_model.dart';
+import 'package:gais/data/model/reference/get_tlk_job_model.dart';
 import 'package:gais/data/model/reference/get_traveller_type_model.dart';
 import 'package:gais/data/model/reference/get_type_transportation_model.dart';
 import 'package:gais/data/model/reference/get_zona_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_vendor_model.dart';
+import 'package:gais/data/model/request_trip/get_cash_advance_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart';
+import 'package:gais/data/model/request_trip/update_cash_advance_travel_model.dart';
+import 'package:gais/data/model/request_trip/get_detailca_bycashid_model.dart';
 import 'package:gais/data/model/request_trip/get_guest_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart';
 import 'package:gais/data/model/request_trip/get_other_transport_model.dart';
@@ -37,6 +41,7 @@ import 'package:gais/data/model/request_trip/submit_request_trip_model.dart';
 import 'package:gais/data/model/request_trip/update_accommodation_model.dart';
 import 'package:gais/data/model/request_trip/update_airliness_model.dart';
 import 'package:gais/data/model/request_trip/update_other_transport_model.dart';
+import 'package:gais/data/model/request_trip/update_purpose_of_trip_model.dart';
 import 'package:gais/data/model/request_trip/update_taxi_voucher_model.dart';
 import 'package:gais/data/model/request_trip/update_traveller_guest_model.dart';
 import 'package:gais/data/model/status_document_model.dart';
@@ -68,6 +73,8 @@ abstract class Repository {
 
   Future<GetCurrencyModel> getCurrencyList();
 
+  Future<GetTlkJobModel> getTLKJobByIDJob(int job);
+
   Future<SavePurposeOfTripModel> saveRequestTrip(
     String employeeID,
     String noRequestTrip,
@@ -80,6 +87,23 @@ abstract class Repository {
     String arrivalDate,
     String zonaID,
     int tlkDay,
+    String tlkTotal,
+    File? file,
+  );
+
+  Future<UpdatePurposeOfTripModel> updateRequestTrip(
+    int id,
+    String employeeID,
+    String noRequestTrip,
+    String codeDocument,
+    String siteID,
+    String notes,
+    String fromCity,
+    String toCity,
+    String departureDate,
+    String arrivalDate,
+    String zonaID,
+    String tlkDay,
     String tlkTotal,
     File? file,
   );
@@ -99,7 +123,7 @@ abstract class Repository {
   Future<GetStatusDocumentModel> getStatusDocument();
 
   Future<SaveTravellerGuestModel> saveTravellerGuest(
-    String idemployee,
+    String nameGuest,
     String idrequesttrip,
     String idcompany,
     String company,
@@ -115,7 +139,7 @@ abstract class Repository {
 
   Future<UpdateTravellerGuestModel> updateTravellerGuest(
     int id,
-    int idemployee,
+    String nameGuest,
     int idrequesttrip,
     int idcompany,
     String company,
@@ -259,11 +283,25 @@ abstract class Repository {
 
   Future<GetHotelTypeModel> getHotelTypeList();
 
-  Future<GetCashAdvanceTravelModel> getCashAdvanceTravelList();
+  Future<GetCashAdvanceTravelModel> getCashAdvanceTravelList(int id);
 
-  Future<GetCashAdvanceTravelModel> getCashAdvanceTravelByid(int id);
+  Future<GetCashAdvanceByidModel> getCashAdvanceTravelByid(int id);
 
-  Future deleteCashAdvanceTravel(int id);
+  Future<GetDetailcaBycashidModel> getDetailCashAdvanceTravelByid(int id);
+
+  Future<UpdateCashAdvanceTravelModel> updateCashAdvanceTravel(
+    int id,
+    String idEmployee,
+    String idRequestTrip,
+    String idCurrency,
+    String remarks,
+    String grandTotal,
+    String typeCa,
+  );
+
+  Future deleteCashAdvanceTravel(
+    int id,
+  );
 
   Future<SubmitRequestTripModel> submitRequestTrip(int id);
 }

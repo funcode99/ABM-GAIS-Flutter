@@ -8,6 +8,8 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/purpose_of_trip/purpose_of_trip_controller.dart';
+import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -49,10 +51,6 @@ class PurposeOfTripScreen extends StatelessWidget {
                     const SizedBox(height: 39),
                     Form(
                       key: controller.formKey,
-                      onChanged: (){
-                        controller.isEnabledButton = controller.formKey.currentState?.validate();
-                        print(controller.isEnabledButton);
-                      },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 34),
                         child: Column(
@@ -148,17 +146,20 @@ class PurposeOfTripScreen extends StatelessWidget {
                                       lastDate: DateTime.now().add(const Duration(days: 30)))
                                   .then(
                                 (date) {
-                                  controller.selectedDate = date!;
+                                  controller.departure = date!;
+                                  controller.rangeDate = controller.arrival.difference(controller.departure).inDays.toInt();
+                                  controller.totalTLK.text = (controller.rangeDate.toInt() * (controller.tlkDay.text.digitOnly()).toInt()).toCurrency().toString();
                                   controller.departureDate.text = controller.dateFormat.format(date);
                                   controller.selectedDepartureDate = controller.saveDateFormat.format(date);
                                   controller.update();
+
                                 },
                               ),
                             ),
                             const SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.arrivalDate,
-                              label: "Date Arrival",
+                              label: "Return Date",
                               isRequired: true,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -175,7 +176,9 @@ class PurposeOfTripScreen extends StatelessWidget {
                                       lastDate: DateTime.now().add(const Duration(days: 30)))
                                   .then(
                                 (date) {
-                                  controller.selectedDate = date!;
+                                  controller.arrival = date!;
+                                  controller.rangeDate = controller.arrival.difference(controller.departure).inDays.toInt();
+                                  controller.totalTLK.text = (controller.rangeDate.toInt() * (controller.tlkDay.text.digitOnly()).toInt()).toCurrency().toString();
                                   controller.arrivalDate.text = controller.dateFormat.format(date);
                                   controller.selectedArrivalDate = controller.saveDateFormat.format(date);
                                   controller.update();
@@ -195,6 +198,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                               controller: controller.tlkDay,
                               label: "TLK / Day",
                               isRequired: true,
+                              readOnly: true,
                               inputType: TextInputType.number,
                               hintText: "TLK / Day",
                             ),
@@ -203,6 +207,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                               controller: controller.totalTLK,
                               label: "Total TLK",
                               isRequired: true,
+                              readOnly: true,
                               hintText: "Total TLK",
                             ),
                             const SizedBox(height: 8),

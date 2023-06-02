@@ -68,15 +68,15 @@ class AddItemCashAdvanceTravelScreen extends StatelessWidget {
                         items: [
                           DropdownMenuItem(
                             child: Text("Meals"),
-                            value: "meals",
+                            value: "1",
                           ),
                           DropdownMenuItem(
                             child: Text("Transport"),
-                            value: "transport",
+                            value: "2",
                           ),
                           DropdownMenuItem(
                             child: Text("Other"),
-                            value: "other",
+                            value: "3",
                           ),
                         ],
                         onChanged: (value) {
@@ -151,7 +151,8 @@ class AddItemCashAdvanceTravelScreen extends StatelessWidget {
                               title: "Save",
                               width: 100,
                               onPressed: () {
-                                Get.back(result: controller.getAddedItem());
+                                if(controller.formKey.currentState?.validate() == true)
+                                  Get.back(result: controller.getAddedItem());
                               }),
                         ],
                       ),

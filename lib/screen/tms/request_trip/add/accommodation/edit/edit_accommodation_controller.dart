@@ -74,7 +74,7 @@ class EditAccommodationController extends BaseController {
 
       var hotel = await repository.getJobBandList();
       hotelFare.text =
-          hotel.data?.where((e) => e.id == jobBandID).first.hotelFare ?? "";
+          hotel.data?.data?.where((e) => e.id == jobBandID).first.hotelFare ?? "";
 
       var dataCity = await repository.getCityList();
       cityModel = dataCity;

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
@@ -10,15 +13,24 @@ import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as ac
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart' as ca;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/traveller/traveller_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:get/get.dart';
 
 class FormRequestTripController extends BaseController {
   int purposeID = Get.arguments['id'];
+  String? documentID = Get.arguments['idDocument'];
+  int? requsetorID;
+  int? siteID;
+  int? jobID;
 
   final formKey = GlobalKey<FormState>();
   final createdDate = TextEditingController();
@@ -37,25 +49,34 @@ class FormRequestTripController extends BaseController {
   bool isDetail = true;
   bool isTLK = false;
   bool isApproval = false;
-  bool isEdit = true;
+  bool isEdit = false;
   bool isAttachment = false;
-  String selectedPurpose = "";
+  String? selectedPurpose;
+
   int? codeDocument;
   int activeStep = 1;
   String? rtStatus;
   String? rtNumber;
+  File? gettedFile;
+  String? fromCity;
+  String? toCity;
+  String? departureDate;
+  String? arrivalDate;
+  String? zonaID;
+  String? tlkDay;
+  String? tlk;
 
   List requestTrip = ["Traveller Guest", "Airliness", "Taxi Voucher", "Other Transportation", "Accommodation", "Cash Advance"];
 
   List<bool> showList = [true, true, true, true, true, true];
 
   List addScreen = [
-    const TravellerScreen(),
-    const AirlinessScreen(),
-    const TaxiVoucherScreen(),
-    const OtherTransportScreen(),
-    const AccommodationScreen(),
-    const CashAdvanceScreen(),
+    const AddGuestScreen(),
+    const AddAirlinessScreen(),
+    const AddTaxiVoucherScreen(),
+    const AddOtherTransportScreen(),
+    const AddAccommodationScreen(),
+    const AddCashAdvanceTravelScreen(),
   ];
 
   List<guest.Data> guestList = [];
@@ -79,6 +100,7 @@ class FormRequestTripController extends BaseController {
     tlkZona.text;
     tlkTotal.text;
     tlkTotalMeals.text;
+    isEdit = false;
     Future.wait([fetchRequestTrip(), fetchList()]);
   }
 
@@ -95,6 +117,19 @@ class FormRequestTripController extends BaseController {
     tlkTotalMeals.dispose();
   }
 
+  getSingleFile() async {
+    // Pick an file
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      gettedFile = File(result.files.single.path ?? "Not Attached");
+      PlatformFile nameFile = result.files.first;
+      attachment.text = nameFile.name;
+      update();
+    } else {
+      // User canceled the picker
+    }
+  }
+
   Future<void> fetchRequestTrip() async {
     var rtData = await repository.getRequestTripByid(purposeID);
     rtModel = rtData;
@@ -105,15 +140,31 @@ class FormRequestTripController extends BaseController {
     purpose.text = rtModel?.data?.first.documentName ?? "";
     // codeDocument = int.parse(rtModel?.data?.first.codeDocument ?? "");
     site.text = rtModel?.data?.first.siteName ?? "";
-    selectedPurpose = rtModel?.data?.first.codeDocument ?? "CB";
+    notes.text = rtModel?.data?.first.notes ?? "";
+    attachment.text = rtModel?.data?.first.file ?? "";
+    selectedPurpose = rtModel?.data?.first.codeDocument.toString() ?? "";
+    isAttachment = selectedPurpose == "SV" || selectedPurpose == "FB" ? true : false;
     tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";
     // tlkJobBand.text = rtModel?.data?.first.
     tlkZona.text = rtModel?.data?.first.zonaName ?? "";
-    tlkTotal.text = rtModel?.data?.first.tlkPerDay ?? "";
-    tlkTotalMeals.text = rtModel?.data?.first.totalTlk ?? "";
+    tlkTotal.text = rtModel?.data?.first.totalTlk ?? "";
+    // tlkTotalMeals.text = rtModel?.data?.first. ?? "";
+    fromCity  = rtModel?.data?.first.idCityFrom.toString();
+    toCity = rtModel?.data?.first.idCityTo.toString();
+    departureDate = rtModel?.data?.first.dateDeparture;
+    arrivalDate  = rtModel?.data?.first.dateArrival;
+    zonaID = rtModel?.data?.first.idZona.toString();
+    tlkDay = rtModel?.data?.first.tlkPerDay.toString();
+    tlk = rtModel?.data?.first.totalTlk;
 
-    var docData = await repository.getDocumentCodeList();
-    purposeList.addAll(docData.data?.toSet().toList() ?? []);
+    await storage.readEmployeeInfo().then((value) {
+      tlkJobBand.text = value.first.bandJobName != "null" ? value.first.bandJobName.toString() : "";
+      requsetorID = value.first.id?.toInt();
+      siteID = value.first.idSite?.toInt();
+      jobID = value.first.idJobBand?.toInt();
+    });
+
+    update();
   }
 
   Future<void> fetchList() async {
@@ -125,6 +176,9 @@ class FormRequestTripController extends BaseController {
     caList = [];
     purposeList = [];
     try {
+      var docData = await repository.getDocumentCodeList();
+      purposeList.addAll(docData.data?.toSet().toList() ?? []);
+
       var guestData = await repository.getGuestBytripList(purposeID);
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
@@ -140,8 +194,8 @@ class FormRequestTripController extends BaseController {
       var accData = await repository.getAccommodationBytripList(purposeID);
       accommodationsList.addAll(accData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      // var caData = await repository.getCashAdvanceTravelList();
-      // caList.addAll(caData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+      var caData = await repository.getCashAdvanceTravelList(purposeID);
+      caList.addAll(caData.data?.toSet().toList() ?? []);
     } catch (e, i) {
       e.printError();
       i.printError();
@@ -306,6 +360,90 @@ class FormRequestTripController extends BaseController {
             color: Colors.white,
           ),
           message: 'Delete Failed',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: errorColor,
+        ),
+      );
+    }
+  }
+
+  Future<void> submitRequestTrip() async {
+    try {
+      await repository.submitRequestTrip(purposeID).then((value) {
+        fetchRequestTrip();
+        fetchList();
+        GetSnackBar(
+          icon: Icon(
+            Icons.info,
+            color: Colors.white,
+          ),
+          message: "Data Submitted",
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: greenColor,
+        );
+      });
+    } catch (e) {
+      e.printError();
+      GetSnackBar(
+        icon: Icon(
+          Icons.error,
+          color: Colors.white,
+        ),
+        message: "Submit Failed",
+        isDismissible: true,
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.red,
+      );
+    }
+    update();
+  }
+
+  Future<void> updateRequestTrip() async {
+    try {
+      await repository
+          .updateRequestTrip(
+        purposeID,
+        requsetorID.toString(),
+        rtNumber.toString(),
+        codeDocument.toString(),
+        siteID.toString(),
+        notes.text,
+        fromCity.toString(),
+        toCity.toString(),
+        departureDate.toString(),
+        arrivalDate.toString(),
+        zonaID.toString(),
+        tlkDay.toString(),
+        tlk.toString(),
+        gettedFile,
+      )
+          .then((value) {
+        fetchList();
+        Get.showSnackbar(
+          GetSnackBar(
+            icon: Icon(
+              Icons.error,
+              color: Colors.white,
+            ),
+            message: 'Data Updated',
+            isDismissible: true,
+            duration: Duration(seconds: 3),
+            backgroundColor: successColor,
+          ),
+        );
+      });
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+      Get.showSnackbar(
+        GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Update Failed',
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: errorColor,

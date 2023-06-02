@@ -87,7 +87,6 @@ class CheckAccommodationScreen extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 4),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Image.asset("assets/img/hotel.png"),
                                               Container(
@@ -106,50 +105,55 @@ class CheckAccommodationScreen extends StatelessWidget {
                                                       itemSize: 20.0,
                                                       direction: Axis.horizontal,
                                                     ),
-                                                    SizedBox(
-                                                      width: 150,
-                                                      child: Text(
-                                                        e.address.toString(),
-                                                        style: listSubTitleTextStyle.copyWith(color: Colors.blue),
-                                                      ),
+                                                    Row(
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 150,
+                                                          child: Text(
+                                                            e.address.toString(),
+                                                            style: listSubTitleTextStyle.copyWith(color: Colors.blue),
+                                                          ),
+                                                        ),
+                                                        Column(
+                                                          children: [
+                                                            Text(
+                                                              "899.990\n ",
+                                                              style: listSubTitleTextStyle,
+                                                            ),
+                                                            GestureDetector(
+                                                              child: Container(
+                                                                height: 30,
+                                                                padding: EdgeInsets.all(4),
+                                                                decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(5)),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Text(
+                                                                      "View Room ",
+                                                                      style: listSubTitleTextStyle.copyWith(color: whiteColor),
+                                                                    ),
+                                                                    Icon(
+                                                                      controller.viewRoom[i] == false
+                                                                          ? Icons.keyboard_arrow_down_outlined
+                                                                          : Icons.keyboard_arrow_up,
+                                                                      color: whiteColor,
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              onTap: () {
+                                                                controller.viewRoom[i] = controller.viewRoom[i] == false ? true : false;
+                                                                controller.update();
+                                                              },
+                                                            ),
+                                                          ],
+                                                        ),
+
+                                                      ],
                                                     )
                                                   ],
                                                 ),
                                               ),
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    "899.990",
-                                                    style: listSubTitleTextStyle,
-                                                  ),
-                                                  GestureDetector(
-                                                    child: Container(
-                                                      height: 30,
-                                                      padding: EdgeInsets.all(4),
-                                                      decoration:
-                                                          BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(5)),
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            "View Room ",
-                                                            style: listSubTitleTextStyle.copyWith(color: whiteColor),
-                                                          ),
-                                                          Icon(
-                                                            controller.viewRoom[i] == false
-                                                                ? Icons.keyboard_arrow_down_outlined
-                                                                : Icons.keyboard_arrow_up,
-                                                            color: whiteColor,
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    onTap: () {
-                                                      controller.viewRoom[i] = controller.viewRoom[i] == false ? true : false;
-                                                      controller.update();
-                                                    },
-                                                  ),
-                                                ],
-                                              )
+
                                             ],
                                           ),
                                         ),
@@ -183,8 +187,7 @@ class CheckAccommodationScreen extends StatelessWidget {
                                                               height: 30,
                                                               margin: EdgeInsets.only(top: 5),
                                                               padding: EdgeInsets.all(4),
-                                                              decoration: BoxDecoration(
-                                                                  color: infoColor, borderRadius: BorderRadius.circular(5)),
+                                                              decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(5)),
                                                               child: Text(
                                                                 "Book ",
                                                                 style: listSubTitleTextStyle.copyWith(color: whiteColor),

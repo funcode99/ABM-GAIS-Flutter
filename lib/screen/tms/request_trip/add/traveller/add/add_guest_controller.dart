@@ -1,50 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
-import 'package:gais/data/model/reference/get_traveller_type_model.dart'
-    as type;
-import 'package:gais/data/model/reference/get_department_model.dart'
-    as department;
-import 'package:gais/data/model/reference/get_company_model.dart' as company;
+import 'package:gais/data/model/reference/get_traveller_type_model.dart' as type;
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
 class AddGuestController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
-  int travellerID = Get.arguments['travellerID'];
+  int? codeDocument = Get.arguments['codeDocument'];
   int? guestID = Get.arguments['guestID'];
+  bool? formEdit = Get.arguments['formEdit'];
 
   final formKey = GlobalKey<FormState>();
   final guestName = TextEditingController();
   final guestNIK = TextEditingController();
   final guestContact = TextEditingController();
   final notes = TextEditingController();
-  final otherCompany = TextEditingController();
+  final guestCompany = TextEditingController();
+  final guestDepartment = TextEditingController();
   final hotelFare = TextEditingController();
   final flightEntitlement = TextEditingController();
 
   String? selectedType;
   String? selectedGuest;
-  String? gender = "Gender";
+  String? gender;
   String? selectedDepartment;
   String? selectedCompany;
   int? jobBandID;
   int? idFlight;
-
+  int? travellerID;
   List<type.Data> typeList = [];
   type.GetTravellerTypeModel? typeModel;
-  // List<SelectedGuestModel> guestList = [];
-  // List _guestList = [];
-  // guest.GetEmployeeModel? guestModel;
-  List<department.Data> departmentList = [];
-  department.GetDepartmentModel? departmentModel;
-  List<company.Data> companyList = [];
-  company.GetCompanyModel? companyModel;
-
-  // List<hotel.Data> hotelList = [];
-  // hotel.GetJobBandModel? hotelModel;
-  // List<flight.Data> flightList = [];
-  // flight.GetFlightClassModel? flightModel;
 
   @override
   void onInit() {
@@ -53,11 +39,16 @@ class AddGuestController extends BaseController {
     guestNIK.text;
     guestContact.text;
     notes.text;
-    otherCompany.text;
+    guestCompany.text;
     hotelFare.text;
     flightEntitlement.text;
-    Future.wait([fetchList()]);
-    print("purpose id : $purposeID");
+    guestCompany.text;
+    guestDepartment.text;
+
+    fetchList();
+    if (guestID != null) {
+      fetchData();
+    }
   }
 
   @override
@@ -67,89 +58,71 @@ class AddGuestController extends BaseController {
     guestNIK.dispose();
     guestContact.dispose();
     notes.dispose();
-    otherCompany.dispose();
+    guestCompany.dispose();
     hotelFare.dispose();
     flightEntitlement.dispose();
+    guestCompany.dispose();
+    guestDepartment.dispose();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      await repository.getGuestByID(guestID!).then((value) {
+        selectedType = value.data?.first.idTypeTraveller.toString();
+        guestName.text = value.data?.first.nameGuest.toString() ?? "";
+        guestNIK.text = value.data?.first.nik.toString() ?? "";
+        guestContact.text = value.data?.first.contactNo.toString() ?? "";
+        guestCompany.text = value.data?.first.company.toString() ?? "";
+        hotelFare.text = int.parse(value.data?.first.hotelFare ?? "0").toCurrency();
+        guestDepartment.text = value.data?.first.departement ?? "";
+        idFlight = value.data?.first.idFlightClass?.toInt();
+        notes.text = value.data?.first.notes ?? "";
+        travellerID = value.data?.first.idTypeTraveller?.toInt();
+        gender = value.data?.first.gender.toString();
+      });
+      update();
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Guest Empty',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   Future<void> fetchList() async {
     typeList = [];
-    departmentList = [];
-    companyList = [];
-    // hotelList = [];
-    // flightList = [];
     try {
-      var dataType = await repository.getTravellerTypeList();
-      typeModel = dataType;
-      typeList.addAll(dataType.data?.toSet().toList() ?? []);
-
-      // var dataGuest = await repository.getEmployeeList();
-      // guestModel = dataGuest;
-      // _guestList.addAll(dataGuest.data ?? []);
-      // guestModel?.data?.forEach((element) {
-      //   guestList.add(SelectedGuestModel(
-      //     name: element.employeeName.toString(),
-      //     value: element.id.toString(),
-      //     isSelected: false,
-      //     gender: element.jenkel,
-      //     sn: element.snEmployee,
-      //     phone: element.phoneNumber,
-      //     nik: element.nik,
-      //   ));
-      // });
-
-      var dataDepartment = await repository.getDepartmentList();
-      departmentModel = dataDepartment;
-      departmentList.addAll(dataDepartment.data?.toSet().toList() ?? []);
-
-      var dataCompany = await repository.getCompanyList();
-      companyModel = dataCompany;
-      companyList.addAll(dataCompany.data?.toSet().toList() ?? []);
-      companyList.add(company.Data(id: 0, companyName: "Other..."));
+      await repository.getTravellerTypeList().then((value) {
+        typeModel = value;
+        typeList.addAll(value.data?.toSet().toList() ?? []);
+      });
 
       storage.readEmployeeInfo().then((value) {
         jobBandID = int.parse(value.first.idJobBand.toString());
         flightEntitlement.text = value.first.flightClass;
-        // idFlight = int.parse(value.first.)
+        travellerID = int.tryParse(value.first.id.toString());
       });
 
       var dataHotel = await repository.getJobBandList();
-      hotelFare.text =
-          "${int.parse(dataHotel.data?.where((e) => e.id == jobBandID).first.hotelFare ?? " ").toCurrency()}";
-      idFlight = dataHotel.data?.where((e) => e.id == jobBandID).first.idFlightClass?.toInt() ?? 0;
-      // hotelModel = dataHotel;
-      // hotelList.addAll(dataHotel.data?.toSet().toList() ?? []);
-
-
-
-      // var dataFlight = await repository.getFlightList();
-      // idFlight = dataFlight.data.where((e) => false)
-      // flightModel = dataFlight;
-      // flightList.addAll(dataFlight.data?.toSet().toList() ?? []);
+      hotelFare.text = int.parse(dataHotel.data?.data?.where((e) => e.id == jobBandID).first.hotelFare ?? " ").toCurrency();
+      idFlight = dataHotel.data?.data?.where((e) => e.id == jobBandID).first.idFlightClass?.toInt() ?? 0;
 
       update();
     } catch (e) {
-      print("error : $e");
+      e.printError();
     }
     print("purposeID : $purposeID");
   }
-
-  // Future<void> setGuestInfo() async {
-  //   gender = guestList
-  //       .where((e) => e.value == selectedGuest)
-  //       .first
-  //       .gender
-  //       .toString();
-  //   guestNIK.text =
-  //       guestList.where((e) => e.value == selectedGuest).first.sn.toString();
-  //   guestContact.text =
-  //       guestList.where((e) => e.value == selectedGuest).first.phone.toString();
-  //   // guestNIK =
-  //   //     guestList.where((e) => e.value == selectedGuest).first.nik.toString();
-  //   print(selectedGuest);
-  //   // print("list : ${_guestList.first.employeeName}");
-  //   print(guestList.where((e) => e.value == selectedGuest).first);
-  // }
 
   Future<void> saveGuest() async {
     try {
@@ -157,14 +130,14 @@ class AddGuestController extends BaseController {
           .saveTravellerGuest(
         guestName.text,
         purposeID.toString(),
-        selectedCompany ?? "1",
-        otherCompany.text,
-        travellerID.toString(),
+        guestCompany.text,
+        guestCompany.text,
+        selectedType.toString(),
         guestNIK.text,
         guestContact.text,
-        selectedDepartment ?? "",
-        hotelFare.text.digitOnly() ?? "",
-        idFlight.toString() ?? "1",
+        guestDepartment.text,
+        hotelFare.text.digitOnly(),
+        idFlight.toString(),
         notes.text,
         gender.toString(),
       )
@@ -177,7 +150,7 @@ class AddGuestController extends BaseController {
           Get.back(result: value.success);
         },
       );
-    } catch (e,i) {
+    } catch (e, i) {
       e.printError();
       i.printError();
       Get.showSnackbar(
@@ -194,4 +167,45 @@ class AddGuestController extends BaseController {
       );
     }
   }
-}
+
+  Future<void> updateGuest() async {
+    try {
+      await repository
+          .updateTravellerGuest(
+        guestID!,
+        guestName.text,
+        purposeID,
+        int.parse(selectedCompany ?? "1"),
+        guestCompany.text,
+        int.parse(selectedType ?? "1"),
+        guestNIK.text,
+        guestContact.text,
+        guestDepartment.text,
+        hotelFare.text.digitOnly(),
+        idFlight ?? 1,
+        notes.text,
+        gender.toString(),
+      )
+          .then(
+            (value) {
+          print(value.success);
+          Get.back();
+        },
+      );
+    } catch (e, s) {
+      e.printError();
+      s.printError();
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Update Failed',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }}

@@ -3,15 +3,18 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_document_code_model.dart'
-    as purpose;
+as purpose;
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/screen/tms/request_trip/add/traveller/traveller_screen.dart';
+import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
 class PurposeOfTripController extends BaseController {
   int? requsetorID;
   int? siteID;
+  int? jobID;
 
   DateFormat dateFormat = DateFormat("dd-MM-yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy/MM/dd");
@@ -27,7 +30,9 @@ class PurposeOfTripController extends BaseController {
 
   String? selectedPurpose = "3";
   int? idDocument = 1;
-  DateTime? selectedDate;
+  DateTime departure = DateTime.now();
+  DateTime arrival = DateTime.now();
+  int rangeDate = 0;
   bool? isAttachment = false;
   String? selectedDepartureDate;
   String? selectedArrivalDate;
@@ -38,6 +43,7 @@ class PurposeOfTripController extends BaseController {
   String? zonaID;
   bool? isFilled = false;
   bool? isEnabledButton = false;
+
 
   purpose.GetDocumentCodeModel? purposeModel;
   List<purpose.Data> purposeList = [];
@@ -90,6 +96,7 @@ class PurposeOfTripController extends BaseController {
     await storage.readEmployeeInfo().then((value) {
       requsetorID = value.first.id?.toInt();
       siteID = value.first.idSite?.toInt();
+      jobID = value.first.idJobBand?.toInt();
     });
 
     var dataCity = await repository.getCityList();
@@ -99,6 +106,10 @@ class PurposeOfTripController extends BaseController {
     var dataPurpose = await repository.getDocumentCodeList();
     purposeModel = dataPurpose;
     purposeList.addAll(dataPurpose.data?.toSet().toList() ?? []);
+
+    await repository.getTLKJobByIDJob(jobID!).then((value){
+      tlkDay.text = int.parse(value.data?.first.tlkRate ?? "0").toCurrency();
+    });
 
     update();
   }
@@ -127,12 +138,12 @@ class PurposeOfTripController extends BaseController {
           selectedArrivalDate ?? "",
           zonaID ?? "1",
           // "7",
-          int.parse(tlkDay.text),
-          totalTLK.text,
+          int.parse(tlkDay.text.digitOnly()),
+          totalTLK.text.digitOnly(),
           gettedFile,
         )
             .then(
-          (value) {
+              (value) {
             purposeID = int.parse(value.data!.id.toString());
             isFilled = value.success;
             print("requsetorID: $requsetorID");
@@ -140,17 +151,18 @@ class PurposeOfTripController extends BaseController {
             print("isFilled : $isFilled");
           },
         ).then(
-          (value) => Get.to(
-            const TravellerScreen(),
-            arguments: {
-              'purposeID': purposeID,
-              'codeDocument': int.parse(selectedPurpose.toString())
-            },
-          )?.then((result) {
-            isFilled = result;
-            update();
-            print("purpose is filled : $result");
-          }),
+              (value) =>
+              Get.to(
+                const TravellerScreen(),
+                arguments: {
+                  'purposeID': purposeID,
+                  'codeDocument': int.parse(selectedPurpose.toString())
+                },
+              )?.then((result) {
+                isFilled = result;
+                update();
+                print("purpose is filled : $result");
+              }),
         );
       } catch (e, i) {
         e.printError();

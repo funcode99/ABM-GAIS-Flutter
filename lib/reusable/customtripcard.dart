@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:gais/util/responsive/text_scale_factor.dart';
+import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
@@ -76,7 +77,15 @@ class CustomTripCard extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(title, style: listTitleTextStyle),
+                          Container(
+                            width: Get.width /2.2,
+                            child: Text(
+                              title,
+                              style: listTitleTextStyle.copyWith(),
+                              textAlign: TextAlign.start,
+
+                            ),
+                          ),
                           Text(
                             subtitle ?? "",
                             style: listSubTitleTextStyle,
@@ -111,7 +120,8 @@ class CustomTripCard extends StatelessWidget {
                 children: [
                   info != null
                       ? Container(
-                          padding: const EdgeInsets.all(10),
+                          width: Get.width/4,
+                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                           decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(4)),
                           child:
                               Text(info ?? "", style: listSubTitleTextStyle.copyWith(color: whiteColor, fontSize: 14), textAlign: TextAlign.center),
