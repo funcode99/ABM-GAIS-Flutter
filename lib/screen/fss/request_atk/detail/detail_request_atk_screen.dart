@@ -240,7 +240,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                                   .mapIndexed((index, item) => CommonListItem(
                                         number: "${index + 1}",
                                         title: item.itemName,
-                                        subtitle: "${item.brandName}",
+                                        subtitle: item.brandName ?? "-",
                                         action: controller.onEdit.value
                                             ? [
                                                 CustomIconButton(
@@ -270,9 +270,8 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                     Get.dialog(
                                                         DeleteConfirmationDialog(
                                                       onDeletePressed: () {
-                                                        controller
-                                                            .deleteDetail(item);
-                                                        Get.back();
+                                                        controller.deleteDetail(item);
+                                                        Get.close(1);
                                                       },
                                                     ));
                                                   },
@@ -312,7 +311,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                       style: listTitleTextStyle,
                                                     ),
                                                     Text(
-                                                      "${item.uomName}",
+                                                      item.uomName ?? "-",
                                                       style: listSubTitleTextStyle
                                                           .copyWith(
                                                               overflow:
