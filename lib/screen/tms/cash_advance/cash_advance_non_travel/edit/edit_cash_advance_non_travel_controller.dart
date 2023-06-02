@@ -56,16 +56,20 @@ class EditCashAdvanceNonTravelController extends BaseController
       selectedCurrency(listCurrency.first);
     }
 
+    setValue();
+  }
+
+  void setValue(){
     dateController.text = selectedItem.value.date?.toDateFormat(
-            originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+        originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
         "-";
     requestorController.text = selectedItem.value.employeeName ?? "-";
     eventController.text = selectedItem.value.event ?? "-";
     totalController.text =
-        "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
+    "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
 
     currencyController.text =
-        "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
+    "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
   }
 
   void updateEnableButton() {
@@ -125,10 +129,7 @@ class EditCashAdvanceNonTravelController extends BaseController
       print("ERROR DETAIL HEADER ${l.message}");
     }, (r) {
       selectedItem(r);
-      currencyController.text =
-          "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
-      totalController.text =
-          "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
+      setValue();
     });
   }
 
