@@ -25,7 +25,7 @@ class _DetailItemCashAdvanceNonTravelScreenState extends State<DetailItemCashAdv
   void initState() {
     super.initState();
     _itemCenterController.text = "${widget.item.itemName}";
-    _costCenterController.text = "${widget.item.costCenterName}";
+    _costCenterController.text = "${widget.item.costCenterName ?? ""} - ${widget.item.costCenterName ?? ""}";
     _nominalController.text = "${widget.item.nominal?.toInt().toCurrency()}";
     _remarksController.text = "${widget.item.remarks}";
   }
