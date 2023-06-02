@@ -99,6 +99,7 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
       selectedItem(emptyItem);
     }
     quantityController.text = "";
+    Future.delayed(const Duration(milliseconds: 100), ()=>updateButton());
   }
 
   void onChangeSelectedWarehouse(String id) {
