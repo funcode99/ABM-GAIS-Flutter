@@ -4,6 +4,7 @@ import 'package:gais/base/base_error.dart';
 import 'package:gais/data/model/api_response_model.dart';
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/master/brand/brand_model.dart';
+import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
 import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
@@ -129,6 +130,28 @@ class MasterRepository{
         '/api/currency',
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CurrencyModel.fromJsonModelList);
+      return right(apiResponseModel.data);
+
+    } on Dio.DioError catch (e) {
+      print(e);
+
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print(e);
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print(e);
+
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  Future<Either<BaseError, List<CostCenterModel>>> getListCostCenter()async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/company/get_cost_center',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CostCenterModel.fromJsonModelList);
       return right(apiResponseModel.data);
 
     } on Dio.DioError catch (e) {

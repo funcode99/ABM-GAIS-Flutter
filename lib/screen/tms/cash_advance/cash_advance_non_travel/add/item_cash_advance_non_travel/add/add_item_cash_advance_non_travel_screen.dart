@@ -68,10 +68,9 @@ class AddItemCashAdvanceNonTravelScreen extends StatelessWidget {
                       isRequired: true,
                       items: [
                         ...controller.listCostCenter.mapIndexed((index, item) {
-                          print("ITEM $item");
                           return DropdownMenuItem(
                             value: "${item.id}",
-                            child: Text("${item.costCenterName}"),
+                            child: Text("${item.costCenterName} - ${item.costCenterCode}"),
                           );
                         }).toList()
                       ],
