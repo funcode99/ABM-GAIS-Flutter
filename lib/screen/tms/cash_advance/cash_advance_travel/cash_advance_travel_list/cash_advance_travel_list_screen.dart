@@ -150,11 +150,11 @@ class _CashAdvanceTravelListScreenState
                                             child: Column(
                                               children: [
                                                 Text(
-                                                  "Item Count".tr,
+                                                  "Requestor".tr,
                                                   style: listTitleTextStyle,
                                                 ),
                                                 Text(
-                                                  "${item.itemCount}",
+                                                    "${item.employeeName}",
                                                     style: listSubTitleTextStyle.copyWith(
                                                         overflow: TextOverflow.ellipsis
                                                     )
@@ -167,11 +167,11 @@ class _CashAdvanceTravelListScreenState
                                             child: Column(
                                               children: [
                                                 Text(
-                                                  "Requestor".tr,
+                                                  "Item Count".tr,
                                                   style: listTitleTextStyle,
                                                 ),
                                                 Text(
-                                                    "${item.employeeName}",
+                                                  "${item.itemCount}",
                                                     style: listSubTitleTextStyle.copyWith(
                                                         overflow: TextOverflow.ellipsis
                                                     )
