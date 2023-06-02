@@ -36,7 +36,6 @@ class CashAdvanceTravelListController extends BaseController {
   }
 
   void getHeader({int page = 1}) async {
-    listHeader.clear(); //clear first, because when not found its not [] but error 404 :)
     final result = await _cashAdvanceTravelRepository.getPaginationData(
         data: {
           "page" : page,
@@ -51,6 +50,7 @@ class CashAdvanceTravelListController extends BaseController {
             (l) {
           Get.showSnackbar(
               CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+          listHeader.clear(); //clear first, because when not found its not [] but error 404 :)
           totalPage(1);
           currentPage(1);
         },

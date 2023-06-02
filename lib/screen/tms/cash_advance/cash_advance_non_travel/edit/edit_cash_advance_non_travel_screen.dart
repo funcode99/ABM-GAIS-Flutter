@@ -209,9 +209,6 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                                 .toString(),
                           );
                         }
-                        controller.currencyController.text = "${controller
-                            .selectedItem.value.currencyName} (${controller
-                            .selectedItem.value.currencyCode})";
                         return CustomTextFormField(
                             readOnly: true,
                             isRequired: true,
@@ -221,13 +218,10 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                       const SizedBox(
                         height: 8,
                       ),
-                      Obx(() {
-                        controller.totalController.text = "${controller.selectedItem.value.currencyCode ?? ""} ${controller.selectedItem.value.grandTotal?.toInt().toCurrency()}";
-                        return CustomTextFormField(
-                            readOnly: true,
-                            controller: controller.totalController,
-                            label: "Total".tr);
-                      }),
+                      CustomTextFormField(
+                          readOnly: true,
+                          controller: controller.totalController,
+                          label: "Total".tr),
                       const SizedBox(
                         height: 16,
                       ),
@@ -273,7 +267,7 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                                 CommonAddItem(
                                   number: "${index + 1}",
                                   title: "${item.itemName}",
-                                  subtitle: item.costCenterName ?? "",
+                                  subtitle: item.costCenterCode ?? "",
                                   nominal:
                                   "${controller.selectedItem.value
                                       .currencyCode ?? ""} ${item.nominal
@@ -316,9 +310,8 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                                         Get.dialog(
                                             DeleteConfirmationDialog(
                                               onDeletePressed: () {
-                                                controller
-                                                    .deleteDetail(item);
-                                                Get.back();
+                                                Get.close(1);
+                                                controller.deleteDetail(item);
                                               },
                                             ));
                                       },

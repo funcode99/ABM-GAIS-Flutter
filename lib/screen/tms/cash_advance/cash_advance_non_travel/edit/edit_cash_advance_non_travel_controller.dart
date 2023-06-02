@@ -12,7 +12,8 @@ import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class EditCashAdvanceNonTravelController extends BaseController with MasterDataMixin{
+class EditCashAdvanceNonTravelController extends BaseController
+    with MasterDataMixin {
   final TextEditingController dateController = TextEditingController();
   final TextEditingController eventController = TextEditingController();
   final TextEditingController requestorController = TextEditingController();
@@ -42,28 +43,33 @@ class EditCashAdvanceNonTravelController extends BaseController with MasterDataM
     super.onReady();
     initData();
 
+    detailHeader();
     getDataDetail();
   }
 
-  void initData() async{
+  void initData() async {
     final currencies = await getListCurrency();
     listCurrency(currencies);
-    if(selectedItem.value.idCurrency != null){
+    if (selectedItem.value.idCurrency != null) {
       onChangeSelectedCurrency(selectedItem.value.idCurrency.toString());
-    }else{
+    } else {
       selectedCurrency(listCurrency.first);
     }
 
+    setValue();
+  }
+
+  void setValue() {
     dateController.text = selectedItem.value.date?.toDateFormat(
-        originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+            originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
         "-";
     requestorController.text = selectedItem.value.employeeName ?? "-";
     eventController.text = selectedItem.value.event ?? "-";
-    totalController.text = "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
+    totalController.text =
+        "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
 
-    currencyController.text = "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
-
-
+    currencyController.text =
+        "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
   }
 
   void updateEnableButton() {
@@ -81,14 +87,6 @@ class EditCashAdvanceNonTravelController extends BaseController with MasterDataM
     }
 
     return total.toCurrency();
-  }
-
-  void getDataDetail() async {
-    final result = await _repository.getDataDetails(selectedItem.value.id!);
-    result.fold((l) => null, (r) {
-      listDetail.value = r;
-      listDetail.refresh();
-    });
   }
 
   void updateHeader({bool hideButtonAfterEdit = false}) async {
@@ -116,14 +114,30 @@ class EditCashAdvanceNonTravelController extends BaseController with MasterDataM
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (cashAdvanceModel) {
-      //update state
-      // onEdit(false);
-
-      selectedItem(cashAdvanceModel);
+      detailHeader();
       getDataDetail();
-      if(hideButtonAfterEdit){
+      if (hideButtonAfterEdit) {
         onEdit(false);
       }
+    });
+  }
+
+  void detailHeader() async {
+    final result = await _repository.detailData(selectedItem.value.id!);
+
+    result.fold((l) {
+      print("ERROR DETAIL HEADER ${l.message}");
+    }, (r) {
+      selectedItem(r);
+      setValue();
+    });
+  }
+
+  void getDataDetail() async {
+    final result = await _repository.getDataDetails(selectedItem.value.id!);
+    result.fold((l) => null, (r) {
+      listDetail.value = r;
+      listDetail.refresh();
     });
   }
 
@@ -133,34 +147,25 @@ class EditCashAdvanceNonTravelController extends BaseController with MasterDataM
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (cashAdvanceModel) {
-      selectedItem(cashAdvanceModel);
+      detailHeader();
     });
   }
 
   void deleteDetail(CashAdvanceDetailModel item) async {
-    if (item.id != null) {
-      final result = await _repository.deleteDetail(item.id!);
-      result.fold(
-          (l) => Get.showSnackbar(CustomGetSnackBar(
-              message: l.message,
-              backgroundColor: Colors.red)), (cashAdvanceModel) {
-        Get.showSnackbar(CustomGetSnackBar(
-          message: "Success Delete Data".tr,
-        ));
-        //update state
-        listDetail.remove(item);
-
-        totalController.text = _getTotal();
-        updateHeader();
-      });
-    } else {
+    final result = await _repository.deleteDetail(item.id!);
+    result.fold(
+        (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (cashAdvanceModel) {
       Get.showSnackbar(CustomGetSnackBar(
         message: "Success Delete Data".tr,
       ));
-
+      //update state
       listDetail.remove(item);
+
       totalController.text = _getTotal();
-    }
+      updateHeader();
+    });
   }
 
   void addDetail(CashAdvanceDetailModel item) async {
@@ -193,7 +198,8 @@ class EditCashAdvanceNonTravelController extends BaseController with MasterDataM
   }
 
   void onChangeSelectedCurrency(String id) {
-    final selected = listCurrency.firstWhere((item) => item.id == id.toInt());
+    final selected = listCurrency.firstWhere((item) => item.id == id.toInt(),
+        orElse: () => listCurrency.first);
     selectedCurrency(selected);
   }
 }

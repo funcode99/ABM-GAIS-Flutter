@@ -33,12 +33,8 @@ mixin MasterDataMixin{
   }
 
   Future<List<CostCenterModel>> getListCostCenter() async{
-    final list = <CostCenterModel>[];
-    for(int i = 1; i <= 10; i++) {
-      list.add(CostCenterModel(costCenterName: "Cost Center Name ${i}", id: i));
-    }
-
-    return list;
+    final result = await _repository.getListCostCenter();
+    return result.fold((l) => [], (list) => list);
   }
 
   Future<List<ManagementItemATKModel>> getListItemByWarehouseId(int warehouseId)async{
