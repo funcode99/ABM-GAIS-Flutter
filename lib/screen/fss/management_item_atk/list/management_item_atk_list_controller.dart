@@ -64,6 +64,11 @@ class ManagementItemATKListController extends BaseController
     final companies = await getListCompany();
     listCompany.addAll(companies);
     onChangeSelectedCompany("");
+
+    listSite.add(SiteModel(id: "", siteName: "Site"));
+    final sites = await getListSite();
+    listSite.addAll(sites);
+    onChangeSelectedSite("");
   }
 
   void getHeader({int page = 1}) async {
@@ -127,5 +132,12 @@ class ManagementItemATKListController extends BaseController
         (item) => item.id.toString() == id.toString(),
         orElse: () => listCompany.first);
     selectedCompanyTemp(selected);
+  }
+
+  void onChangeSelectedSite(String id) {
+    final selected = listSite.firstWhere(
+            (item) => item.id.toString() == id.toString(),
+        orElse: () => listSite.first);
+    selectedSiteTemp(selected);
   }
 }

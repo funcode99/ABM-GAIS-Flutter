@@ -5,7 +5,7 @@ part 'site_model.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class SiteModel {
   int? no;
-  int? id;
+  dynamic id;
   String? siteName;
   String? siteCode;
   int? idCompany;

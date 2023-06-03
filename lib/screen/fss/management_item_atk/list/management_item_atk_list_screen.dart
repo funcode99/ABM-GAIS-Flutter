@@ -81,24 +81,24 @@ class ManagementItemATKListScreen extends StatelessWidget {
                     const SizedBox(
                       height: 8,
                     ),
-                    /*Obx(() {
+                    Obx(() {
                       return CustomDropDownFormField(
-                        items: controller.listStatus
+                        items: controller.listSite
                             .map((e) => DropdownMenuItem(
-                          value: e.code.toString(),
-                          child: Text("${e.status}"),
+                          value: e.id.toString(),
+                          child: Text("${e.siteName}"),
                         ))
                             .toList(),
                         onChanged: (item) {
-                          controller.onChangeSelectedStatus(item.toString());
+                          controller.onChangeSelectedSite(item.toString());
                         },
                         label: "Site".tr,
-                        value: controller.selectedStatusTemp.value != null
-                            ? controller.selectedStatusTemp.value?.code.toString()
+                        value: controller.selectedSiteTemp.value != null
+                            ? controller.selectedSiteTemp.value?.id.toString()
                             : "",
                       );
                     }),
-                    const SizedBox(
+                    /*const SizedBox(
                       height: 8,
                     ),
                     Obx(() {

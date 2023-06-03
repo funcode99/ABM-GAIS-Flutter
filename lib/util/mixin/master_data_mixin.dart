@@ -3,6 +3,7 @@ import 'package:gais/data/model/master/brand/brand_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
+import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
 import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
@@ -55,6 +56,11 @@ mixin MasterDataMixin{
 
   Future<List<CompanyModel>> getListCompany()async{
     final result = await _repository.getListCompany();
+    return result.fold((l) => [], (list) => list);
+  }
+
+  Future<List<SiteModel>> getListSite()async{
+    final result = await _repository.getListSite();
     return result.fold((l) => [], (list) => list);
   }
 

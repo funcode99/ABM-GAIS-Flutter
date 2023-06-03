@@ -7,6 +7,7 @@ import 'package:gais/data/model/master/brand/brand_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
+import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
@@ -175,6 +176,28 @@ class MasterRepository{
         '/api/company/get',
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CompanyModel.fromJsonModelList);
+      return right(apiResponseModel.data);
+
+    } on Dio.DioError catch (e) {
+      print(e);
+
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print(e);
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print(e);
+
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  Future<Either<BaseError, List<SiteModel>>> getListSite()async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/site/get_data',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, SiteModel.fromJsonModelList);
       return right(apiResponseModel.data);
 
     } on Dio.DioError catch (e) {

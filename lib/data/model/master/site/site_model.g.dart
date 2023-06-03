@@ -8,7 +8,7 @@ part of 'site_model.dart';
 
 SiteModel _$SiteModelFromJson(Map<String, dynamic> json) => SiteModel(
       no: json['no'] as int?,
-      id: json['id'] as int?,
+      id: json['id'],
       siteName: json['site_name'] as String?,
       siteCode: json['site_code'] as String?,
       idCompany: json['id_company'] as int?,
