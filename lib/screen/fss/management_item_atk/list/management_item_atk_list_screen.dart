@@ -50,7 +50,8 @@ class ManagementItemATKListScreen extends StatelessWidget {
               },
               onPressedFilter: () {
                 controller.openFilter();
-                Get.bottomSheet(FilterBottomSheet(
+                Get.bottomSheet(
+                FilterBottomSheet(
                   onApplyFilter: () {
                     controller.applyFilter();
                     Get.back();
@@ -84,7 +85,7 @@ class ManagementItemATKListScreen extends StatelessWidget {
                     ),
                     Obx(() {
                       return CustomDropDownFormField(
-                        items: controller.listSite
+                        items: controller.listSiteFiltered
                             .map((e) => DropdownMenuItem(
                           value: e.id.toString(),
                           child: Text("${e.siteName}"),
@@ -104,7 +105,7 @@ class ManagementItemATKListScreen extends StatelessWidget {
                     ),
                     Obx(() {
                       return CustomDropDownFormField(
-                        items: controller.listWarehouse
+                        items: controller.listWarehouseFiltered
                             .map((e) => DropdownMenuItem(
                           value: e.id.toString(),
                           child: Text("${e.warehouseName}"),
@@ -122,26 +123,27 @@ class ManagementItemATKListScreen extends StatelessWidget {
                     const SizedBox(
                       height: 8,
                     ),
-                    /*Obx(() {
+                    Obx(() {
+                      print("LISTITEM ${controller.listItem.first.toJson()}");
                       return CustomDropDownFormField(
-                        items: controller.listStatus
+                        items: controller.listItem
                             .map((e) => DropdownMenuItem(
-                          value: e.code.toString(),
-                          child: Text("${e.status}"),
+                          value: e.id != null ? e.id.toString() : "",
+                          child: Text("${e.itemName}"),
                         ))
                             .toList(),
                         onChanged: (item) {
-                          controller.onChangeSelectedStatus(item.toString());
+                          controller.onChangeSelectedItem(item.toString());
                         },
                         label: "Item".tr,
-                        value: controller.selectedStatusTemp.value != null
-                            ? controller.selectedStatusTemp.value?.code.toString()
+                        value: controller.selectedItemTemp.value?.id != null
+                            ? controller.selectedItemTemp.value?.id.toString()
                             : "",
                       );
                     }),
                     const SizedBox(
                       height: 8,
-                    ),*/
+                    ),
                   ],
                 ));
               },

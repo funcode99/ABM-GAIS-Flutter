@@ -22,16 +22,19 @@ class ManagementItemATKListController extends BaseController
   final selectedCompanyTemp = Rxn<CompanyModel>();
 
   final listSite = <SiteModel>[].obs;
+  final listSiteFiltered = <SiteModel>[].obs;
   final selectedSite = Rxn<SiteModel>();
   final selectedSiteTemp = Rxn<SiteModel>();
 
   final listWarehouse = <WarehouseModel>[].obs;
+  final listWarehouseFiltered = <WarehouseModel>[].obs;
   final selectedWarehouse = Rxn<WarehouseModel>();
   final selectedWarehouseTemp = Rxn<WarehouseModel>();
 
   final listItem = <ManagementItemATKModel>[].obs;
   final selectedItem = Rxn<ManagementItemATKModel>();
   final selectedItemTemp = Rxn<ManagementItemATKModel>();
+  final emptyItem = ManagementItemATKModel(id: null, itemName: "Item");
 
   //end filter
 
@@ -59,20 +62,24 @@ class ManagementItemATKListController extends BaseController
     initData();
   }
 
+
   void initData() async {
     listCompany.add(CompanyModel(id: "", companyName: "Company"));
     final companies = await getListCompany();
     listCompany.addAll(companies);
-    onChangeSelectedCompany("");
 
-    listSite.add(SiteModel(id: "", siteName: "Site"));
+    listSiteFiltered.add(SiteModel(id: "", siteName: "Site"));
     final sites = await getListSite();
     listSite.addAll(sites);
-    onChangeSelectedSite("");
 
-    listWarehouse.add(WarehouseModel(id: "", warehouseName: "Warehouse"));
+    listWarehouseFiltered.add(WarehouseModel(id: "", warehouseName: "Warehouse"));
     final warehouses = await getListWarehouse();
     listWarehouse.addAll(warehouses);
+
+    listItem.add(emptyItem);
+
+    onChangeSelectedCompany("");
+    onChangeSelectedSite("");
     onChangeSelectedWarehouse("");
   }
 
@@ -80,7 +87,16 @@ class ManagementItemATKListController extends BaseController
     listHeader
         .clear(); //clear first, because when not found its not [] but error 404 :)
     final result = await _repository.getPaginationData(
-        data: {"page": page, "perPage": limit, "search": keyword.value});
+        data: {
+          "page": page,
+          "perPage": limit,
+          "search": keyword.value,
+          "id_company" : selectedCompany.value?.id ?? "",
+          "id_site" : selectedSite.value?.id ?? "",
+          "id_warehouse" : selectedWarehouse.value?.id ?? "",
+          "item_name" : selectedItem.value?.id != null ? selectedItem.value?.itemName ?? "" : "",
+          "id_item" : selectedItem.value?.id ?? "",
+        });
 
     result.fold((l) {
       Get.showSnackbar(
@@ -122,18 +138,21 @@ class ManagementItemATKListController extends BaseController
     onChangeSelectedCompany("");
     onChangeSelectedSite("");
     onChangeSelectedWarehouse("");
+    onChangeSelectedItem("");
   }
 
   void openFilter(){
     selectedCompanyTemp.value = selectedCompany.value;
     selectedSiteTemp.value = selectedSite.value;
     selectedWarehouseTemp.value = selectedWarehouse.value;
+    selectedItemTemp.value = selectedItem.value;
   }
 
   void applyFilter(){
     selectedCompany.value = selectedCompanyTemp.value;
     selectedSite.value = selectedSiteTemp.value;
     selectedWarehouse.value = selectedWarehouseTemp.value;
+    selectedItem.value = selectedItemTemp.value;
 
     getHeader();
   }
@@ -143,19 +162,64 @@ class ManagementItemATKListController extends BaseController
         (item) => item.id.toString() == id.toString(),
         orElse: () => listCompany.first);
     selectedCompanyTemp(selected);
+
+    //clear site and filter sites
+    onChangeSelectedSite("");
+    _filterSite(selected.id.toString());
   }
 
   void onChangeSelectedSite(String id) {
-    final selected = listSite.firstWhere(
+    final selected = listSiteFiltered.firstWhere(
             (item) => item.id.toString() == id.toString(),
-        orElse: () => listSite.first);
+        orElse: () => listSiteFiltered.first);
     selectedSiteTemp(selected);
+
+    //clear warehouse and filter warehouses
+    onChangeSelectedWarehouse("");
+    _filterWarehouse(selected.id.toString());
   }
 
   void onChangeSelectedWarehouse(String id) {
-    final selected = listWarehouse.firstWhere(
+    final selected = listWarehouseFiltered.firstWhere(
             (item) => item.id.toString() == id.toString(),
-        orElse: () => listWarehouse.first);
+        orElse: () => listWarehouseFiltered.first);
     selectedWarehouseTemp(selected);
+
+    _getItemData();
+  }
+
+  void onChangeSelectedItem(String id) {
+    print("LIST ITEMs ${listItem.toJson()}");
+    final selected = listItem.firstWhere(
+            (item) => item.id.toString() == id.toString(),
+        orElse: () => listItem.first);
+    selectedItemTemp(selected);
+  }
+
+  _getItemData()async{
+    listItem.removeWhere((element) => element.id != null);
+
+    if(selectedWarehouseTemp.value?.id != ""){
+      final items = await getListItemByWarehouseId(selectedWarehouseTemp.value!.id!);
+      listItem.addAll(items);
+    }
+    onChangeSelectedItem("");
+
+    print("LIISTT ITEM ${listItem}");
+  }
+
+
+  void _filterSite(String idCompany){
+    print("FILTER SITE ID COMPANY $idCompany");
+    final filtered = listSite.where((item) => item.idCompany.toString() == idCompany);
+    listSiteFiltered.removeWhere((element) => element.id != "");
+    listSiteFiltered.addAll(filtered);
+  }
+
+  void _filterWarehouse(String idSite){
+    print("FILTER WAREHOUSE ID SITE $idSite");
+    final filtered = listWarehouse.where((item) => item.idSite.toString() == idSite);
+    listWarehouseFiltered.removeWhere((element) => element.id != "");
+    listWarehouseFiltered.addAll(filtered);
   }
 }
