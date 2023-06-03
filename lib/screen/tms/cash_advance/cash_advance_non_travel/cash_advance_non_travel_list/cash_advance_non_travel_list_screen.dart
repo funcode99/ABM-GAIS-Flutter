@@ -105,7 +105,9 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
               return CustomPagination(
                 key: UniqueKey(),
                 onPageChanged: (page) {
-                  controller.getHeader(page: page);
+                  if(page != controller.currentPage.value){
+                    controller.getHeader(page: page);
+                  }
                 },
                 pageTotal: controller.totalPage.value,
                 margin: EdgeInsets.zero,

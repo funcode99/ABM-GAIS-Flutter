@@ -11,7 +11,6 @@ import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
-import 'package:gais/reusable/error/empty_list_error.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
@@ -134,7 +133,9 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                 colorPrimary: infoColor,
                 key: UniqueKey(),
                 onPageChanged: (page) {
-                  controller.getHeader(page: page);
+                  if(page != controller.currentPage.value){
+                    controller.getHeader(page: page);
+                  }
                 },
                 pageTotal: controller.totalPage.value,
                 margin: EdgeInsets.zero,
