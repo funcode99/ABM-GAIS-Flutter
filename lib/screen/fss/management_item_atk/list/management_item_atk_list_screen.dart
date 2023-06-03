@@ -147,6 +147,9 @@ class ManagementItemATKListScreen extends StatelessWidget {
               },
             ),
             Obx(() {
+              if(controller.listHeader.isEmpty){
+                return const SizedBox();
+              }
               return CustomPagination(
                 colorSub: whiteColor,
                 colorPrimary: infoColor,
