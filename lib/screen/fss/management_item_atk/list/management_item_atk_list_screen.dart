@@ -14,7 +14,6 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/management_item_atk/add/add_management_item_atk_screen.dart';
-import 'package:gais/screen/fss/management_item_atk/edit/edit_management_item_atk_controller.dart';
 import 'package:gais/screen/fss/management_item_atk/edit/edit_management_item_atk_screen.dart';
 import 'package:gais/screen/fss/management_item_atk/list/management_item_atk_list_controller.dart';
 import 'package:get/get.dart';
@@ -43,67 +42,105 @@ class ManagementItemATKListScreen extends StatelessWidget {
           children: [
             CustomSearchBar(
               onSubmit: (string) {
-                controller.keyword(string);
-                controller.getHeader(page: 1);
+                controller.applySearch(string);
+              },
+              onClearFilter: (){
+                controller.applySearch("");
               },
               onPressedFilter: () {
+                controller.openFilter();
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {
                     controller.applyFilter();
                     Get.back();
                   },
+                  onResetFilter: (){
+                    controller.resetFilter();
+                  },
                   children: [
                     const SizedBox(
                       height: 8,
                     ),
-                    CustomDropDownFormField(
-                      items: [
-                        DropdownMenuItem(
-                          value: "",
-                          child: Text("Item".tr),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Pen",
-                          child: Text("Pen"),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Book",
-                          child: Text("Book"),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        controller.tempSelectedValue = value!;
-                      },
-                      label: "Item".tr,
-                      value: controller.selectedValue,
-                    ),
+                    Obx(() {
+                      return CustomDropDownFormField(
+                        items: controller.listCompany
+                            .map((e) => DropdownMenuItem(
+                          value: e.id.toString(),
+                          child: Text("${e.companyName}"),
+                        ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller.onChangeSelectedCompany(item.toString());
+                        },
+                        label: "Company".tr,
+                        value: controller.selectedCompanyTemp.value != null
+                            ? controller.selectedCompanyTemp.value?.id.toString()
+                            : "",
+                      );
+                    }),
                     const SizedBox(
                       height: 8,
                     ),
-                    CustomDropDownFormField(
-                      items: [
-                        DropdownMenuItem(
-                          value: "",
-                          child: Text("Warehouse".tr),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Warehouse A",
-                          child: Text("Warehouse A"),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Warehouse B",
-                          child: Text("Warehouse B"),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        controller.tempSelectedValue = value!;
-                      },
-                      label: "Warehouse".tr,
-                      value: controller.selectedValue,
-                    ),
+                    /*Obx(() {
+                      return CustomDropDownFormField(
+                        items: controller.listStatus
+                            .map((e) => DropdownMenuItem(
+                          value: e.code.toString(),
+                          child: Text("${e.status}"),
+                        ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller.onChangeSelectedStatus(item.toString());
+                        },
+                        label: "Site".tr,
+                        value: controller.selectedStatusTemp.value != null
+                            ? controller.selectedStatusTemp.value?.code.toString()
+                            : "",
+                      );
+                    }),
                     const SizedBox(
                       height: 8,
                     ),
+                    Obx(() {
+                      return CustomDropDownFormField(
+                        items: controller.listStatus
+                            .map((e) => DropdownMenuItem(
+                          value: e.code.toString(),
+                          child: Text("${e.status}"),
+                        ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller.onChangeSelectedStatus(item.toString());
+                        },
+                        label: "Warehouse".tr,
+                        value: controller.selectedStatusTemp.value != null
+                            ? controller.selectedStatusTemp.value?.code.toString()
+                            : "",
+                      );
+                    }),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Obx(() {
+                      return CustomDropDownFormField(
+                        items: controller.listStatus
+                            .map((e) => DropdownMenuItem(
+                          value: e.code.toString(),
+                          child: Text("${e.status}"),
+                        ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller.onChangeSelectedStatus(item.toString());
+                        },
+                        label: "Item".tr,
+                        value: controller.selectedStatusTemp.value != null
+                            ? controller.selectedStatusTemp.value?.code.toString()
+                            : "",
+                      );
+                    }),
+                    const SizedBox(
+                      height: 8,
+                    ),*/
                   ],
                 ));
               },

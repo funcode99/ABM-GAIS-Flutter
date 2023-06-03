@@ -46,7 +46,7 @@ class RequestATKListController extends BaseController with MasterDataMixin{
     initData();
   }
   void initData()async{
-    listStatus.add(StatusDocModel(code: "", status: "Status"));;
+    listStatus.add(StatusDocModel(code: "", status: "Status"));
     final statuses = await getListStatusDoc();
     listStatus.addAll(statuses);
     onChangeSelectedStatus("");

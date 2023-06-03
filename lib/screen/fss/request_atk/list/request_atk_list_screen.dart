@@ -70,7 +70,6 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                       height: 8,
                     ),
                     Obx(() {
-                      print("controller.selectedStatus.value?.code ${controller.selectedStatus.value?.code}");
                       return CustomDropDownFormField(
                         items: controller.listStatus
                             .map((e) => DropdownMenuItem(

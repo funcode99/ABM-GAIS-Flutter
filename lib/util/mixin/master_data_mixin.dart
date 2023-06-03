@@ -1,10 +1,11 @@
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/master/brand/brand_model.dart';
+import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
 import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
-import 'package:gais/data/model/warehouse_model.dart';
+import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
 import 'package:gais/data/repository/master/master_repository.dart';
 import 'package:get/get.dart';
 
@@ -49,6 +50,11 @@ mixin MasterDataMixin{
 
   Future<List<CurrencyModel>> getListCurrency()async{
     final result = await _repository.getListCurrency();
+    return result.fold((l) => [], (list) => list);
+  }
+
+  Future<List<CompanyModel>> getListCompany()async{
+    final result = await _repository.getListCompany();
     return result.fold((l) => [], (list) => list);
   }
 
