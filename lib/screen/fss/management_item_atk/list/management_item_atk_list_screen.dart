@@ -10,7 +10,6 @@ import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
-import 'package:gais/reusable/error/empty_list_error.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -157,7 +156,9 @@ class ManagementItemATKListScreen extends StatelessWidget {
                 colorPrimary: infoColor,
                 key: UniqueKey(),
                 onPageChanged: (page) {
-                  controller.getHeader(page: page);
+                  if(page != controller.currentPage.value){
+                    controller.getHeader(page: page);
+                  }
                 },
                 pageTotal: controller.totalPage.value,
                 margin: EdgeInsets.zero,
@@ -179,7 +180,7 @@ class ManagementItemATKListScreen extends StatelessWidget {
                         children: [
                           ...controller.listHeader
                               .mapIndexed((index, item) => CommonListItem(
-                                      number: "${index + 1}",
+                                      number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
                                       subtitle: "${item.codeItem}",
                                       title: item.itemName,
                                       total: "${item.currentStock ?? "-"}",
