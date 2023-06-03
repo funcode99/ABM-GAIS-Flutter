@@ -4,7 +4,7 @@ part 'warehouse_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class WarehouseModel {
-  int? id;
+  dynamic id;
   String? warehouseName;
   int? idCompany;
   int? idSite;

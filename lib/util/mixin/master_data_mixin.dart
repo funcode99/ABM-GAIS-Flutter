@@ -64,4 +64,9 @@ mixin MasterDataMixin{
     return result.fold((l) => [], (list) => list);
   }
 
+  Future<List<WarehouseModel>> getListWarehouse()async{
+    final result = await _repository.getListWarehouse();
+    return result.fold((l) => [], (list) => list);
+  }
+
 }

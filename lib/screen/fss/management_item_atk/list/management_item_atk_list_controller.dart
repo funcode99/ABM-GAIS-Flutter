@@ -69,6 +69,11 @@ class ManagementItemATKListController extends BaseController
     final sites = await getListSite();
     listSite.addAll(sites);
     onChangeSelectedSite("");
+
+    listWarehouse.add(WarehouseModel(id: "", warehouseName: "Warehouse"));
+    final warehouses = await getListWarehouse();
+    listWarehouse.addAll(warehouses);
+    onChangeSelectedWarehouse("");
   }
 
   void getHeader({int page = 1}) async {
@@ -115,14 +120,20 @@ class ManagementItemATKListController extends BaseController
 
   void resetFilter(){
     onChangeSelectedCompany("");
+    onChangeSelectedSite("");
+    onChangeSelectedWarehouse("");
   }
 
   void openFilter(){
     selectedCompanyTemp.value = selectedCompany.value;
+    selectedSiteTemp.value = selectedSite.value;
+    selectedWarehouseTemp.value = selectedWarehouse.value;
   }
 
   void applyFilter(){
     selectedCompany.value = selectedCompanyTemp.value;
+    selectedSite.value = selectedSiteTemp.value;
+    selectedWarehouse.value = selectedWarehouseTemp.value;
 
     getHeader();
   }
@@ -139,5 +150,12 @@ class ManagementItemATKListController extends BaseController
             (item) => item.id.toString() == id.toString(),
         orElse: () => listSite.first);
     selectedSiteTemp(selected);
+  }
+
+  void onChangeSelectedWarehouse(String id) {
+    final selected = listWarehouse.firstWhere(
+            (item) => item.id.toString() == id.toString(),
+        orElse: () => listWarehouse.first);
+    selectedWarehouseTemp(selected);
   }
 }
