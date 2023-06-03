@@ -41,163 +41,229 @@ class RequestTripListScreen extends StatelessWidget {
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                children: [
-                  CustomSearchBar(
-                    onSubmit: (value) {
-                      controller.searchValue = value;
-                      controller.purposeValue = "All";
-                      controller.fetchList();
-                      print("cari : ${controller.searchNotFound}");
-                    },
-                    onPressedFilter: () {
-                      Get.bottomSheet(StatefulBuilder(builder: (context, setState) {
-                        return FilterBottomSheet(
-                          onApplyFilter: () {
-                            controller.fetchList();
-                            controller.update();
-                            Get.back();
-                          },
-                          onResetFilter: () {
-                            controller.formKey.currentState?.reset();
-                            controller.purposeValue = "All";
-                            controller.dateRange.text = "";
-                            controller.update();
-                          },
-                          children: [
-                            Text("Filter", style: appTitle.copyWith(fontSize: 25)),
-                            SizedBox(height: 10),
-                            Form(
-                              key: controller.formKey,
-                              child: CustomDropDownFormField(
-                                label: "Purpose of Trip",
-                                hintText: "Purpose of Trip",
-                                items: controller.documentList
-                                    .map((e) => DropdownMenuItem(
-                                          child: Text(e.documentName.toString()),
-                                          value: e.documentName,
-                                        ))
-                                    .toSet()
-                                    .toList(),
-                                value: controller.purposeValue,
-                                onChanged: (value) {
-                                  controller.searchValue = null;
-                                  controller.purposeValue = value ?? "";
-                                  controller.update();
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  controller.fetchList();
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    SliverPersistentHeader(
+                      pinned: true,
+                      delegate: SliverAppBarDelegate(
+                        minHeight: controller.dataisnull || controller.isLoading ? Get.height : 180,
+                        maxHeight: 32,
+                        child: Container(
+                          color: baseColor,
+                          child: Column(
+                            children: [
+                              CustomSearchBar(
+                                onSubmit: (value) {
+                                  controller.searchValue = value;
+                                  controller.purposeValue = "All";
+                                  controller.fetchList();
+                                  print("cari : ${controller.searchNotFound}");
                                 },
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            CustomTextFormField(
-                                readOnly: true,
-                                controller: controller.dateRange,
-                                suffixIcon: const Icon(Icons.calendar_month),
-                                onTap: () {
-                                  showCustomDateRangePicker(
-                                    context,
-                                    dismissible: true,
-                                    minimumDate: DateTime.now().subtract(const Duration(days: 365)),
-                                    maximumDate: DateTime.now().add(const Duration(days: 365)),
-                                    // endDate: controller.endDate,
-                                    // startDate: controller.startDate,
-                                    backgroundColor: Colors.white,
-                                    primaryColor: Colors.green,
-                                    onApplyClick: (start, end) {
-                                      controller.endDate = controller.rangeFormat.format(end);
-                                      controller.startDate = controller.rangeFormat.format(start);
-
-                                      controller.dateRange.text = "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
-                                      controller.update();
-                                    },
-                                    onCancelClick: () {
-                                      controller.endDate = null;
-                                      controller.startDate = null;
-                                      controller.update();
-                                    },
-                                  );
-                                },
-                                label: "Date Range".tr),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                          ],
-                        );
-                      }));
-                    },
-                  ),
-                  CustomPagination(
-                    colorSub: whiteColor,
-                    colorPrimary: infoColor,
-                    onPageChanged: (int pageNumber) {
-                      controller.currentPage = pageNumber;
-                      controller.fetchList();
-                      controller.update();
-                    },
-                    threshold: 5,
-                    pageTotal: controller.rtlModel?.data?.lastPage?.toInt() ?? 1,
-                    pageInit: controller.currentPage,
-                  ),
-                  RefreshIndicator(
-                    onRefresh: () async {
-                      controller.fetchList();
-                    },
-                    child: Flexible(
-                      child: SizedBox(
-                        height: Get.width >= 380 ? (Get.height / 1.65) : (Get.height / 2.4),
-                        child: controller.isLoading
-                            ? Center(child: CircularProgressIndicator.adaptive())
-                            : controller.dataisnull
-                                ? DataEmpty()
-                                : ListView(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.vertical,
-                                    children: [
-                                      ...controller.requestList.mapIndexed(
-                                        (index, item) => CustomTripCard(
-                                          listNumber:
-                                              controller.currentPage > 1 ? (controller.rtlModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
-                                          title: item.noRequestTrip.toString(),
-                                          status: item.status,
-                                          subtitle: item.createdAt?.substring(0, 10),
-                                          info: item.documentName,
-                                          isEdit: true,
-                                          editAction: () => Get.to(
-                                            const FormRequestTripScreen(),
-                                            arguments: {
-                                              'id': item.id?.toInt(),
-                                              'idDocument': item.codeDocument
+                                onPressedFilter: () {
+                                  Get.bottomSheet(StatefulBuilder(builder: (context, setState) {
+                                    return FilterBottomSheet(
+                                      onApplyFilter: () {
+                                        controller.fetchList();
+                                        controller.update();
+                                        Get.back();
+                                      },
+                                      onResetFilter: () {
+                                        controller.formKey.currentState?.reset();
+                                        controller.purposeValue = "All";
+                                        controller.dateRange.text = "";
+                                        controller.update();
+                                      },
+                                      children: [
+                                        Text("Filter", style: appTitle.copyWith(fontSize: 25)),
+                                        SizedBox(height: 10),
+                                        Form(
+                                          key: controller.formKey,
+                                          child: CustomDropDownFormField(
+                                            label: "Purpose of Trip",
+                                            hintText: "Purpose of Trip",
+                                            items: controller.documentList
+                                                .map((e) => DropdownMenuItem(
+                                                      child: Text(e.documentName.toString()),
+                                                      value: e.documentName,
+                                                    ))
+                                                .toSet()
+                                                .toList(),
+                                            value: controller.purposeValue,
+                                            onChanged: (value) {
+                                              controller.searchValue = null;
+                                              controller.purposeValue = value ?? "";
+                                              controller.update();
                                             },
-                                          )?.then((value) {
-                                            controller.fetchList();
-                                            controller.update();
-                                          }),
-                                          isDelete: true,
-                                          deleteAction: () {
-                                            controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
-                                            controller.delete(int.parse(item.id.toString()));
-
-                                            controller.update();
-                                          },
-                                          content: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text("Requestor", style: listTitleTextStyle),
-                                              Text(item.employeeName ?? "", style: listSubTitleTextStyle)
-                                            ],
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(height: 100)
-                                    ],
-                                  ),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                        CustomTextFormField(
+                                            readOnly: true,
+                                            controller: controller.dateRange,
+                                            suffixIcon: const Icon(Icons.calendar_month),
+                                            onTap: () {
+                                              showCustomDateRangePicker(
+                                                context,
+                                                dismissible: true,
+                                                minimumDate: DateTime.now().subtract(const Duration(days: 365)),
+                                                maximumDate: DateTime.now().add(const Duration(days: 365)),
+                                                // endDate: controller.endDate,
+                                                // startDate: controller.startDate,
+                                                backgroundColor: Colors.white,
+                                                primaryColor: Colors.green,
+                                                onApplyClick: (start, end) {
+                                                  controller.endDate = controller.rangeFormat.format(end);
+                                                  controller.startDate = controller.rangeFormat.format(start);
+
+                                                  controller.dateRange.text =
+                                                      "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                                  controller.update();
+                                                },
+                                                onCancelClick: () {
+                                                  controller.endDate = null;
+                                                  controller.startDate = null;
+                                                  controller.update();
+                                                },
+                                              );
+                                            },
+                                            label: "Date Range".tr),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                      ],
+                                    );
+                                  }));
+                                },
+                              ),
+                              CustomPagination(
+                                colorSub: whiteColor,
+                                colorPrimary: infoColor,
+                                onPageChanged: (int pageNumber) {
+                                  controller.currentPage = pageNumber;
+                                  controller.fetchList();
+                                  controller.update();
+                                },
+                                threshold: 5,
+                                pageTotal: controller.rtlModel?.data?.lastPage?.toInt() ?? 1,
+                                pageInit: controller.currentPage,
+                              ),
+                              controller.isLoading
+                                  ? Container(height: Get.height / 2, child: Center(child: CircularProgressIndicator()))
+                                  : controller.dataisnull
+                                      ? SizedBox(height: Get.height / 2, child: DataEmpty())
+                                      : Container()
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return SizedBox(
+                            child: Column(
+                              children: [
+                                CustomTripCard(
+                                  listNumber: controller.currentPage > 1 ? (controller.rtlModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
+                                  title: controller.requestList[index].noRequestTrip.toString(),
+                                  status: controller.requestList[index].status,
+                                  subtitle: controller.requestList[index].createdAt?.substring(0, 10),
+                                  info: controller.requestList[index].documentName,
+                                  isEdit: true,
+                                  editAction: () => Get.to(
+                                    const FormRequestTripScreen(),
+                                    arguments: {
+                                      'id': controller.requestList[index].id?.toInt(),
+                                      'idDocument': controller.requestList[index].codeDocument
+                                    },
+                                  )?.then((value) {
+                                    controller.fetchList();
+                                    controller.update();
+                                  }),
+                                  isDelete: true,
+                                  deleteAction: () {
+                                    controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
+                                    controller.delete(int.parse(controller.requestList[index].id.toString()));
+
+                                    controller.update();
+                                  },
+                                  content: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Requestor", style: listTitleTextStyle),
+                                      Text(controller.requestList[index].employeeName ?? "", style: listSubTitleTextStyle)
+                                    ],
+                                  ),
+                                ),
+                                if (controller.requestList.length == index + 1) SizedBox(height: 100)
+                              ],
+                            ),
+                          );
+                        },
+                        childCount: !controller.dataisnull ? controller.requestList.length : 1,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
+            // RefreshIndicator(
+            //   onRefresh: () async {
+            //     controller.fetchList();
+            //   },
+            //   child: Flexible(
+            //     child: SizedBox(
+            //       child: controller.isLoading
+            //           ? Center(child: CircularProgressIndicator.adaptive())
+            //           : controller.dataisnull
+            //           ? DataEmpty()
+            //           : ListView(
+            //         children: [
+            //           ...controller.requestList.mapIndexed(
+            //                 (index, item) => CustomTripCard(
+            //               listNumber: controller.currentPage > 1
+            //                   ? (controller.rtlModel?.data?.from?.toInt() ?? 0) + index
+            //                   : (index + 1),
+            //               title: item.noRequestTrip.toString(),
+            //               status: item.status,
+            //               subtitle: item.createdAt?.substring(0, 10),
+            //               info: item.documentName,
+            //               isEdit: true,
+            //               editAction: () => Get.to(
+            //                 const FormRequestTripScreen(),
+            //                 arguments: {'id': item.id?.toInt(), 'idDocument': item.codeDocument},
+            //               )?.then((value) {
+            //                 controller.fetchList();
+            //                 controller.update();
+            //               }),
+            //               isDelete: true,
+            //               deleteAction: () {
+            //                 controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
+            //                 controller.delete(int.parse(item.id.toString()));
+            //
+            //                 controller.update();
+            //               },
+            //               content: Column(
+            //                 crossAxisAlignment: CrossAxisAlignment.start,
+            //                 children: [
+            //                   Text("Requestor", style: listTitleTextStyle),
+            //                   Text(item.employeeName ?? "", style: listSubTitleTextStyle)
+            //                 ],
+            //               ),
+            //             ),
+            //           ),
+            //           SizedBox(height: 100)
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
             floatingActionButton: FloatingActionButton(
               backgroundColor: successColor,
               onPressed: () => Get.to(const RequesterInfoScreen()),

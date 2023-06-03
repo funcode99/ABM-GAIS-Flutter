@@ -89,7 +89,8 @@ class RequestTripListController extends BaseController {
       isLoading = false;
       searchNotFound = rtlModel?.data?.data?.isEmpty ?? false;
       dataisnull = rtlModel?.data?.data?.isEmpty ?? false;
-      print("reqList: ${searchNotFound.toString()}");
+      print("data null $dataisnull");
+      print("reqList: ${requestList.length.toString()}");
 
       // if (searchNotFound == true) {
       //   Get.showSnackbar(
@@ -119,6 +120,7 @@ class RequestTripListController extends BaseController {
         ),
       );
       dataisnull = true;
+      searchNotFound = true;
       isLoading = false;
       e.printError();
     }
