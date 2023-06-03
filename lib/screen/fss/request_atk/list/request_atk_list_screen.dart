@@ -8,6 +8,7 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/error/empty_list_error.dart';
@@ -150,7 +151,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
               },
               child: Obx(() {
                 return controller.listHeader.isEmpty
-                    ? const EmptyListError()
+                    ? const DataEmpty()
                     : ListView(
                         children: [
                           ...controller.listHeader.mapIndexed((index, item) =>
@@ -159,7 +160,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                                   Get.to(() => const RequestATKDetailScreen(),
                                       arguments: {"item": item});
                                 },
-                                number: "${index + 1}",
+                                number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
                                 title: "${item.noAtkRequest}",
                                 subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                 content: Padding(

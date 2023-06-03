@@ -7,6 +7,7 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/error/empty_list_error.dart';
@@ -168,7 +169,7 @@ class ManagementItemATKListScreen extends StatelessWidget {
               },
               child: Obx(() {
                 return controller.listHeader.isEmpty
-                    ? const EmptyListError()
+                    ? const DataEmpty()
                     : ListView(
                         children: [
                           ...controller.listHeader
@@ -176,7 +177,7 @@ class ManagementItemATKListScreen extends StatelessWidget {
                                       number: "${index + 1}",
                                       subtitle: "${item.codeItem}",
                                       title: item.itemName,
-                                      total: "${item.currentStock}",
+                                      total: "${item.currentStock ?? "-"}",
                                       content: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,

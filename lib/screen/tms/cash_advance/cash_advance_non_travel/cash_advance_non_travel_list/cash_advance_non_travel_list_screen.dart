@@ -8,6 +8,7 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/error/empty_list_error.dart';
@@ -123,7 +124,7 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
               },
               child: Obx(() {
                 return controller.listHeader.isEmpty
-                    ? const EmptyListError()
+                    ? const DataEmpty()
                     : ListView(
                         children: [
                           ...controller.listHeader.mapIndexed((index, item) =>
