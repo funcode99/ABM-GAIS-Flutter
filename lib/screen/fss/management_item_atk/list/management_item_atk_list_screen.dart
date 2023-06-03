@@ -177,64 +177,79 @@ class ManagementItemATKListScreen extends StatelessWidget {
                                       subtitle: "${item.codeItem}",
                                       title: item.itemName,
                                       total: "${item.currentStock}",
-                                      content: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 8),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Column(
+                                      content: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Expanded(
+                                            child: Column(
                                               children: [
                                                 Text(
                                                   "Brand".tr,
+                                                  textAlign: TextAlign.center,
                                                   style: listTitleTextStyle,
                                                 ),
                                                 Text(
-                                                  "${item.brandName}",
-                                                  style: listSubTitleTextStyle,
+                                                  item.brandName ?? "-",
+                                                  style: listSubTitleTextStyle.copyWith(
+                                                    overflow: TextOverflow.ellipsis
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                            Column(
+                                          ),
+                                          Expanded(
+                                            child: Column(
                                               children: [
                                                 Text(
                                                   "Warehouse".tr,
+                                                  textAlign: TextAlign.center,
                                                   style: listTitleTextStyle,
                                                 ),
                                                 Text(
-                                                  "${item.warehouseName}",
-                                                  style: listSubTitleTextStyle,
+                                                  item.warehouseName ?? "-",
+                                                  style: listSubTitleTextStyle.copyWith(
+                                                    overflow: TextOverflow.ellipsis
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                            Column(
+                                          ),
+                                          Expanded(
+                                            child: Column(
                                               children: [
                                                 Text(
                                                   "Alert Quantity".tr,
+                                                  textAlign: TextAlign.center,
                                                   style: listTitleTextStyle,
                                                 ),
                                                 Text(
                                                   "${item.alertQty}",
-                                                  style: listSubTitleTextStyle,
+                                                  style: listSubTitleTextStyle.copyWith(
+                                                    overflow: TextOverflow.ellipsis
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                            Column(
+                                          ),
+                                          Expanded(
+                                            child: Column(
                                               children: [
                                                 Text(
                                                   "UOM".tr,
+                                                  textAlign: TextAlign.center,
                                                   style: listTitleTextStyle,
                                                 ),
                                                 Text(
-                                                  "${item.uomName}",
-                                                  style: listSubTitleTextStyle,
+                                                  item.uomName ?? "-",
+                                                  style: listSubTitleTextStyle.copyWith(
+                                                    overflow: TextOverflow.ellipsis
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                       action: [
                                         CustomIconButton(
