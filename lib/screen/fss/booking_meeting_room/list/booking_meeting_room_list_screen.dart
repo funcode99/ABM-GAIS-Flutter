@@ -12,8 +12,8 @@ import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/list/booking_meeting_room_list_controller.dart';
-import 'package:gais/screen/fss/management_item_atk/add/add_management_item_atk_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -207,7 +207,7 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                 iconData: IconlyBold.edit,
                                 backgroundColor: successColor,
                                 onPressed: () {
-                                  Get.to(const AddManagementItemATKScreen());
+
                                 },
                               ),
                               const SizedBox(
@@ -233,7 +233,7 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
-        onPressed: () => Get.to(const AddManagementItemATKScreen()),
+        onPressed: () => Get.to(()=>const AddBookingMeetingRoomScreen()),
         child: const Icon(Icons.add_rounded, size: 45),
       ),
       bottomNavigationBar: const BottomBar(menu: 1),
