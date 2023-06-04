@@ -45,11 +45,12 @@ class AddManagementItemATKController extends BaseController with MasterDataMixin
     String companyName = await storage.readString(StorageCore.companyName);
     String idCompany = await storage.readString(StorageCore.companyID);
     String siteName = await storage.readString(StorageCore.siteName);
+    String idSite = await storage.readString(StorageCore.siteID);
 
     companyController.text = companyName;
-    siteController.text = siteName;
+    siteController.text = siteName ?? "-";
 
-    final warehouses = await getListWarehouseByCompanyId(idCompany.toInt());
+    final warehouses = await getListWarehouseBySiteId(idSite.toInt());
     listWarehouse(warehouses);
     selectedWarehouse(listWarehouse.first);
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
@@ -8,7 +9,6 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/management_item_atk/add/add_management_item_atk_controller.dart';
-import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -105,12 +105,15 @@ class AddManagementItemATKScreen extends StatelessWidget {
                     height: 8,
                   ),
                   CustomTextFormField(
-                      suffixIcon: const Icon(Icons.add_box_outlined),
+                      validator: ValidationBuilder().required().maxLength(9).minLength(9).build(),
+                      suffixIcon: IconButton(
+                        onPressed: (){
+                          controller.generateRandom();
+                        },
+                        icon: const Icon(Icons.add_box_outlined),
+                      ),
                       isRequired: true,
-                      readOnly: true,
-                      onTap: () {
-                        controller.generateRandom();
-                      },
+                      readOnly: false,
                       controller: controller.idController,
                       label: "ID Item".tr),
                   const SizedBox(
