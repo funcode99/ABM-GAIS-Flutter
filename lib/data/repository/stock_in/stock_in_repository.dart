@@ -80,9 +80,22 @@ class StockInATKRepository
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteDetail(int id) {
-    // TODO: implement deleteDetail
-    throw UnimplementedError();
+  Future<Either<BaseError, bool>> deleteDetail(int id) async{
+    try {
+      Dio.Response response = await network.dio.delete(
+        '/api/stock_in/delete_data_detail/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(
+          response.data, StockInATKModel.fromJsonModel);
+      return right(apiResponseModel.success!);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e) {
+      return left(BaseError(message: e.message));
+    } catch (e) {
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
