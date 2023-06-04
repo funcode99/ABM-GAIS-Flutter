@@ -123,7 +123,6 @@ class ManagementItemATKListScreen extends StatelessWidget {
                       height: 8,
                     ),
                     Obx(() {
-                      print("LISTITEM ${controller.listItem.first.toJson()}");
                       return CustomDropDownFormField(
                         items: controller.listItem
                             .map((e) => DropdownMenuItem(

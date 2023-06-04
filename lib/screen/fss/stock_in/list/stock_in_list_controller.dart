@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/master/company/company_model.dart';
+import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/model/stock_in/stock_in_atk_model.dart';
@@ -14,17 +16,31 @@ class StockInListController extends BaseController with MasterDataMixin{
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat formatFilter = DateFormat("yyyy-MM-dd");
 
+  //filter
+  final listCompany = <CompanyModel>[].obs;
+  final selectedCompany = Rxn<CompanyModel>();
+  final selectedCompanyTemp = Rxn<CompanyModel>();
+
+  final listSite = <SiteModel>[].obs;
+  final listSiteFiltered = <SiteModel>[].obs;
+  final selectedSite = Rxn<SiteModel>();
+  final selectedSiteTemp = Rxn<SiteModel>();
+
+  final listWarehouse = <WarehouseModel>[].obs;
+  final listWarehouseFiltered = <WarehouseModel>[].obs;
+  final selectedWarehouse = Rxn<WarehouseModel>();
+  final selectedWarehouseTemp = Rxn<WarehouseModel>();
+
   final startDate = Rxn<DateTime>();
   final endDate = Rxn<DateTime>();
   final startDateTemp = Rxn<DateTime>();
   final endDateTemp = Rxn<DateTime>();
-  final selectedWarehouse = Rxn<WarehouseModel>();
-  final selectedWarehouseTemp = Rxn<WarehouseModel>();
 
   final keyword = "".obs;
 
+  //end filter
+
   final listHeader = <StockInATKModel>[].obs;
-  final listWarehouse = <WarehouseModel>[].obs;
 
   final StockInATKRepository _repository = Get.find();
   late PaginationModel? paginationModel;
@@ -44,10 +60,21 @@ class StockInListController extends BaseController with MasterDataMixin{
     initData();
   }
 
-  void initData()async{
-    listWarehouse.add(WarehouseModel(id: "", warehouseName: "Warehouse"));
+  void initData() async {
+    listCompany.add(CompanyModel(id: "", companyName: "Company"));
+    final companies = await getListCompany();
+    listCompany.addAll(companies);
+
+    listSiteFiltered.add(SiteModel(id: "", siteName: "Site"));
+    final sites = await getListSite();
+    listSite.addAll(sites);
+
+    listWarehouseFiltered.add(WarehouseModel(id: "", warehouseName: "Warehouse"));
     final warehouses = await getListWarehouse();
     listWarehouse.addAll(warehouses);
+
+    onChangeSelectedCompany("");
+    onChangeSelectedSite("");
     onChangeSelectedWarehouse("");
   }
 
@@ -86,10 +113,6 @@ class StockInListController extends BaseController with MasterDataMixin{
         });
   }
 
-  void onChangeSelectedWarehouse(String id) {
-    final selected = listWarehouse.firstWhere((item) => item.id.toString() == id.toString());
-    selectedWarehouseTemp(selected);
-  }
 
   void applySearch(String search){
     keyword(search);
@@ -99,14 +122,22 @@ class StockInListController extends BaseController with MasterDataMixin{
   void resetFilter(){
     endDateTemp.value = null;
     startDateTemp.value = null;
+
     onChangeSelectedWarehouse("");
+    onChangeSelectedCompany("");
+    onChangeSelectedSite("");
+
     dateRangeController.text = "";
   }
 
   void openFilter(){
     startDateTemp.value = startDate.value;
     endDateTemp.value = endDate.value;
+
+    selectedCompanyTemp.value = selectedCompany.value;
+    selectedSiteTemp.value = selectedSite.value;
     selectedWarehouseTemp.value = selectedWarehouse.value;
+
     if(startDateTemp.value!=null){
       dateRangeController.text = "${dateFormat.format(startDateTemp.value!)} - ${dateFormat.format(endDateTemp.value!)}";
     }else{
@@ -118,8 +149,55 @@ class StockInListController extends BaseController with MasterDataMixin{
   void applyFilter(){
     startDate.value = startDateTemp.value;
     endDate.value = endDateTemp.value;
+
+    selectedCompany.value = selectedCompanyTemp.value;
+    selectedSite.value = selectedSiteTemp.value;
     selectedWarehouse.value = selectedWarehouseTemp.value;
 
     getHeader();
+  }
+
+
+  void onChangeSelectedCompany(String id) {
+    final selected = listCompany.firstWhere(
+            (item) => item.id.toString() == id.toString(),
+        orElse: () => listCompany.first);
+    selectedCompanyTemp(selected);
+
+    //clear site and filter sites
+    onChangeSelectedSite("");
+    _filterSite(selected.id.toString());
+  }
+
+  void onChangeSelectedSite(String id) {
+    final selected = listSiteFiltered.firstWhere(
+            (item) => item.id.toString() == id.toString(),
+        orElse: () => listSiteFiltered.first);
+    selectedSiteTemp(selected);
+
+    //clear warehouse and filter warehouses
+    onChangeSelectedWarehouse("");
+    _filterWarehouse(selected.id.toString());
+  }
+
+  void onChangeSelectedWarehouse(String id) {
+    final selected = listWarehouseFiltered.firstWhere(
+            (item) => item.id.toString() == id.toString(),
+        orElse: () => listWarehouseFiltered.first);
+    selectedWarehouseTemp(selected);
+  }
+
+  void _filterSite(String idCompany){
+    print("FILTER SITE ID COMPANY $idCompany");
+    final filtered = listSite.where((item) => item.idCompany.toString() == idCompany);
+    listSiteFiltered.removeWhere((element) => element.id != "");
+    listSiteFiltered.addAll(filtered);
+  }
+
+  void _filterWarehouse(String idSite){
+    print("FILTER WAREHOUSE ID SITE $idSite");
+    final filtered = listWarehouse.where((item) => item.idSite.toString() == idSite);
+    listWarehouseFiltered.removeWhere((element) => element.id != "");
+    listWarehouseFiltered.addAll(filtered);
   }
 }

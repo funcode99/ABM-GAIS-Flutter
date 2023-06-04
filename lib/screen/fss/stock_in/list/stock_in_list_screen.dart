@@ -64,19 +64,58 @@ class StockInListScreen extends StatelessWidget {
                     ),
                     Obx(() {
                       return CustomDropDownFormField(
-                        items: controller.listWarehouse
+                        items: controller.listCompany
                             .map((e) => DropdownMenuItem(
-                                  value: e.id.toString(),
-                                  child: Text("${e.warehouseName}"),
-                                ))
+                          value: e.id.toString(),
+                          child: Text("${e.companyName}"),
+                        ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller.onChangeSelectedCompany(item.toString());
+                        },
+                        label: "Company".tr,
+                        value: controller.selectedCompanyTemp.value != null
+                            ? controller.selectedCompanyTemp.value?.id.toString()
+                            : "",
+                      );
+                    }),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Obx(() {
+                      return CustomDropDownFormField(
+                        items: controller.listSiteFiltered
+                            .map((e) => DropdownMenuItem(
+                          value: e.id.toString(),
+                          child: Text("${e.siteName}"),
+                        ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller.onChangeSelectedSite(item.toString());
+                        },
+                        label: "Site".tr,
+                        value: controller.selectedSiteTemp.value != null
+                            ? controller.selectedSiteTemp.value?.id.toString()
+                            : "",
+                      );
+                    }),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Obx(() {
+                      return CustomDropDownFormField(
+                        items: controller.listWarehouseFiltered
+                            .map((e) => DropdownMenuItem(
+                          value: e.id.toString(),
+                          child: Text("${e.warehouseName}"),
+                        ))
                             .toList(),
                         onChanged: (item) {
                           controller.onChangeSelectedWarehouse(item.toString());
                         },
                         label: "Warehouse".tr,
                         value: controller.selectedWarehouseTemp.value != null
-                            ? controller.selectedWarehouseTemp.value?.id
-                                .toString()
+                            ? controller.selectedWarehouseTemp.value?.id.toString()
                             : "",
                       );
                     }),
@@ -110,8 +149,11 @@ class StockInListScreen extends StatelessWidget {
                           );
                         },
                         label: "Date Range".tr),
+                    const SizedBox(
+                      height: 8,
+                    ),
                   ],
-                ));
+                ), enableDrag: true);
               },
             ),
             Obx(() {
