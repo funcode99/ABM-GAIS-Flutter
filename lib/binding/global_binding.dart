@@ -7,6 +7,7 @@ import 'package:gais/data/repository/master/master_repository.dart';
 import 'package:gais/data/repository/repository.dart';
 import 'package:gais/data/repository/repository_impl.dart';
 import 'package:gais/data/repository/request_atk/request_atk_repository.dart';
+import 'package:gais/data/repository/stock_in/stock_in_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:get/get.dart';
 
@@ -22,6 +23,7 @@ class GlobalBinding extends Bindings {
     Get.put(CashAdvanceNonTravelRepository(), permanent: false);
     Get.put(RequestATKRepository(), permanent: false);
     Get.put(ManagementItemATKRepository(), permanent: false);
+    Get.put(StockInATKRepository(), permanent: false);
 
 
     Get.put(MasterRepository(), permanent: true);

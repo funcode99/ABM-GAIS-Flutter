@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gais/data/model/stock_in/item_stock_in_atk_model.dart';
+import 'package:gais/data/model/stock_in/stock_in_atk_detail_model.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:get/get.dart';
 
 class DetailItemStockInATKScreen extends StatefulWidget{
   const DetailItemStockInATKScreen({super.key, required this.item});
 
-  final ItemStockInATKModel item;
+  final StockInATKDetailModel item;
 
   @override
   State<DetailItemStockInATKScreen> createState() => _DetailItemStockInATKScreenState();
@@ -21,16 +23,26 @@ class _DetailItemStockInATKScreenState extends State<DetailItemStockInATKScreen>
   final TextEditingController _siteController = TextEditingController();
   final TextEditingController _warehouseController = TextEditingController();
   final TextEditingController _remarksController = TextEditingController();
+
+  final storage = Get.find<StorageCore>();
+
   @override
   void initState() {
     super.initState();
-    _companyController.text = widget.item.company;
-    _itemController.text = widget.item.itemName;
-    _brandController.text = widget.item.brand;
-    _quantityController.text = widget.item.quantity.toString();
-    _uomController.text = widget.item.uom;
-    _siteController.text = widget.item.site;
-    _warehouseController.text = widget.item.warehouse;
+    initData();
+  }
+
+  void initData()async{
+    String companyName = await storage.readString(StorageCore.companyName);
+    String siteName = await storage.readString(StorageCore.siteName);
+    _companyController.text = companyName;
+    _siteController.text = siteName ?? "";
+
+    _itemController.text = widget.item.itemName ?? "-";
+    _brandController.text = widget.item.brandName ?? "-";
+    _quantityController.text = widget.item.qty.toString();
+    _uomController.text = widget.item.uomName ?? "-";
+    _warehouseController.text = widget.item.warehouseName ?? "-";
     _remarksController.text = widget.item.remarks ?? "-";
   }
 

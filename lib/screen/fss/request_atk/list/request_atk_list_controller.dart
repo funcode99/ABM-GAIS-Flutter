@@ -21,9 +21,6 @@ class RequestATKListController extends BaseController with MasterDataMixin{
   final selectedStatus = Rxn<StatusDocModel>();
   final selectedStatusTemp = Rxn<StatusDocModel>();
 
-  String tempSelectedValue = "";
-  String selectedValue = "";
-
   final keyword = "".obs;
 
   final listHeader = <RequestAtkModel>[].obs;

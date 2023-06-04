@@ -18,8 +18,6 @@ class RequestATKDetailController extends BaseController {
 
   final formKey = GlobalKey<FormState>();
 
-  List<ItemRequestATKModel> listItem = <ItemRequestATKModel>[];
-
   final enableButton = false.obs;
   final onEdit = false.obs;
 
@@ -42,7 +40,7 @@ class RequestATKDetailController extends BaseController {
   }
 
   void setValue(){
-    createdByController.text = selectedItem.value.createdBy ?? "-";
+    createdByController.text = selectedItem.value.employeeName ?? "-";
     createdDateController.text = selectedItem.value.createdAt?.toDateFormat(
         originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
         "-";
