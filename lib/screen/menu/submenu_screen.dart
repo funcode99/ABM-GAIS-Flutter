@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
@@ -22,17 +23,9 @@ class SubmenuScreen extends StatelessWidget {
         init: SubmenuController(),
         builder: (controller) {
           return Scaffold(
-            appBar: AppBar(
+            appBar: TopBar(
               title: Text("Menu", style: appTitle),
-              centerTitle: true,
-              leading: IconButton(
-                  onPressed: () => Get.offAll(HomeScreen(), arguments: 1),
-                  icon: Icon(
-                    Icons.chevron_left,
-                    color: Colors.black,
-                    size: 30,
-                  )),
-              flexibleSpace: const TopBar(),
+              leading: CustomBackButton(),
             ),
             body: ListView(
               children: [
@@ -71,7 +64,7 @@ class SubmenuScreen extends StatelessWidget {
                                       height: 50,
                                       width: 50,
                                       child: SvgPicture.asset(
-                                        "assets/icons/airplane.svg",
+                                        ImageConstant.airplane,
                                         height: 25,
                                       ),
                                     ),
@@ -79,9 +72,10 @@ class SubmenuScreen extends StatelessWidget {
                                   ],
                                 ),
                                 onTap: () => controller.approval
-                                    ? Get.off(
+                                    ? Get.to(() =>
                                         const ApprovalCashAdvanceTravelListScreen())
-                                    : Get.off(CashAdvanceTravelListScreen()),
+                                    : Get.to(
+                                        () => CashAdvanceTravelListScreen()),
                               ),
                               GestureDetector(
                                 child: Column(
@@ -96,7 +90,7 @@ class SubmenuScreen extends StatelessWidget {
                                       height: 50,
                                       width: 50,
                                       child: SvgPicture.asset(
-                                        "assets/icons/Ticket Star.svg",
+                                        ImageConstant.ticketStar,
                                         height: 25,
                                       ),
                                     ),
@@ -104,74 +98,14 @@ class SubmenuScreen extends StatelessWidget {
                                   ],
                                 ),
                                 onTap: () => controller.approval
-                                    ? Get.off(
-                                        ApprovalCashAdvanceNonTravelListScreen())
-                                    : Get.off(
+                                    ? Get.to(() =>
+                                        const ApprovalCashAdvanceNonTravelListScreen())
+                                    : Get.to(() =>
                                         const CashAdvanceNonTravelListScreen()),
                               ),
                             ],
                           ),
-                        ),
-                        SizedBox(
-                          height: 100,
-                        ),
-                        Text("Cash Advance (For Approval, temporary)",
-                            style: listSubTitleTextStyle.copyWith(
-                                color: greyColor)),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 80),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: infoColor,
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      padding: const EdgeInsets.all(10),
-                                      margin: const EdgeInsets.only(top: 25),
-                                      height: 50,
-                                      width: 50,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/airplane.svg",
-                                        height: 25,
-                                      ),
-                                    ),
-                                    const Text("Travel")
-                                  ],
-                                ),
-                                onTap: () => Get.off(
-                                    const ApprovalCashAdvanceTravelListScreen()),
-                              ),
-                              GestureDetector(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: infoColor,
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      padding: const EdgeInsets.all(10),
-                                      margin: const EdgeInsets.only(top: 25),
-                                      height: 50,
-                                      width: 50,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/Ticket Star.svg",
-                                        height: 25,
-                                      ),
-                                    ),
-                                    const Text("Non Travel")
-                                  ],
-                                ),
-                                onTap: () => Get.off(
-                                    const ApprovalCashAdvanceNonTravelListScreen()),
-                              ),
-                            ],
-                          ),
-                        ),
+                        )
                       ],
                     ),
                   ),

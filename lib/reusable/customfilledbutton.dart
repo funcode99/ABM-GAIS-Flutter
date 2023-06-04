@@ -9,22 +9,26 @@ class CustomFilledButton extends StatelessWidget {
   final Color? fontColor;
   final double? fontSize;
   final double width;
-  final double height;
+  final double? height;
   final double radius;
   final VoidCallback? onPressed;
+  final EdgeInsets? margin;
+  final EdgeInsets? padding;
 
   const CustomFilledButton(
       {Key? key,
       this.title = '',
       this.width = double.infinity,
-      this.height = 50,
+      this.height,
       this.icon,
       required this.color,
       this.onPressed,
       this.borderColor = Colors.transparent,
       this.fontColor = Colors.white,
       this.radius = 5,
-      this.fontSize = 16})
+      this.fontSize = 14,
+      this.margin,
+      this.padding})
       : super(key: key);
 
   @override
@@ -33,9 +37,10 @@ class CustomFilledButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         alignment: Alignment.center,
-        margin: const EdgeInsets.symmetric(vertical: 10),
+        margin: margin ?? EdgeInsets.symmetric(vertical: 10),
+        padding: padding ?? EdgeInsets.symmetric(vertical: 10),
         width: width,
-        height: height,
+        height: height ?? 40,
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(radius),
@@ -48,16 +53,13 @@ class CustomFilledButton extends StatelessWidget {
                 ? Icon(
                     icon,
                     color: fontColor,
-                    size: fontSize!+2,
+                    size: fontSize! + 2,
                   )
                 : Container(),
             title != null
                 ? Text(
                     ' $title',
-                    style: TextStyle(
-                        color: fontColor,
-                        fontWeight: FontWeight.w900,
-                        fontSize: fontSize),
+                    style: TextStyle(color: fontColor, fontWeight: FontWeight.w900, fontSize: fontSize),
                     textAlign: TextAlign.center,
                   )
                 : Container(),

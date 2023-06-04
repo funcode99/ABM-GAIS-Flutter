@@ -1,6 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
@@ -9,7 +11,10 @@ import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_controller.dart';
+import 'package:gais/screen/tms/request_trip/add/airliness/check_schedule/check_schedule_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
+import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 
 class AirlinessScreen extends StatelessWidget {
@@ -18,117 +23,152 @@ class AirlinessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AirlinessController>(
-      init: AirlinessController(),
-      builder: (controller) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text("Request Trip", style: appTitle),
-            centerTitle: true,
-            leading: CustomBackButton(),
-            flexibleSpace: TopBar(),
-          ),
-          body: Container(
-            alignment: Alignment.topCenter,
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.all(7),
-            decoration: BoxDecoration(
-              color: whiteColor,
-              borderRadius: BorderRadius.circular(8),
+        init: AirlinessController(),
+        builder: (controller) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("Request Trip", style: appTitle),
+              centerTitle: true,
+              leading: CustomBackButton(),
+              flexibleSpace: TopBar(),
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    height: 42,
-                    width: 42,
-                    // padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
+            body: Container(
+              alignment: Alignment.topCenter,
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.all(7),
+              decoration: BoxDecoration(
+                color: whiteColor,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      height: 42,
+                      width: 42,
+                      // padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: infoColor,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: SvgPicture.asset(
+                        ImageConstant.airplane,
+                        height: 25,
+                      ),
+                    ),
+                    Text("Airliness", style: appTitle),
+                    SizedBox(height: 14),
+                    Column(
+                      children: controller.airlinessList
+                          .mapIndexed((i, e) => CustomTripCard(
+                                listNumber: i + 1,
+                                title: controller.travellerName,
+                                subtitle:
+                                    e.createdAt.toString().substring(0, 10),
+                                status: controller.statusModel?.data
+                                    ?.where((status) =>
+                                        status.code == e.codeStatusDoc)
+                                    .first
+                                    .status,
+                                info: e.flightNo,
+                                isEdit: true,
+                                editAction: (){
+                                  Get.off(CheckScheduleScreen(), arguments: {
+                                    'id': e.id?.toInt(),
+                                    'purposeID': controller.purposeID,
+                                    'codeDocument': controller.codeDocument
+                                  });
+                                },
+                                isDelete: true,
+                                deleteAction: () => controller
+                                    .delete(int.parse(e.id.toString())),
+                                content: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Departure",
+                                            style: listTitleTextStyle),
+                                        Text("CGK (06.00)",
+                                            style: listSubTitleTextStyle),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Arrival",
+                                            style: listTitleTextStyle),
+                                        Text("SUB (09.00)",
+                                            style: listSubTitleTextStyle),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Price",
+                                            style: listTitleTextStyle),
+                                        Text("${int.parse(e.ticketPrice.toString()).toCurrency()}",
+                                            style: listSubTitleTextStyle),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ))
+                          .toList(),
+                    ),
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      child: CustomFilledButton(
                         color: infoColor,
-                        borderRadius: BorderRadius.circular(50)),
-                    child: SvgPicture.asset("assets/icons/airplane.svg", height: 25,),
-                  ),
-                  Text("Airliness", style: appTitle),
-                  SizedBox(height: 14),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    child: Text("Airliness",
-                        style: listTitleTextStyle,
-                        textAlign: TextAlign.start),
-                  ),
-                  CustomTripCard(
-                    listNumber: 1,
-                    title: "Jack H",
-                    subtitle: "23/04/23",
-                    status: "Pending",
-                    info: "Citilink\nQG828",
-                    isEdit: true,
-                    content: Row(
+                        title: "Add Airliness",
+                        icon: Icons.add,
+                        onPressed: () => Get.off(AddAirlinessScreen(),
+                            arguments: {
+                              'purposeID': controller.purposeID,
+                              'codeDocument': controller.codeDocument,
+                              'formEdit': controller.formEdit,
+                            })?.then((result) {
+                          controller.fetchList();
+                          controller.update();
+                          print(result);
+                        }),
+                      ),
+                    ),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Departure", style: listTitleTextStyle),
-                            Text("CGK (06.00)", style: listSubTitleTextStyle),
-                          ],
+                        CustomFilledButton(
+                          width: 100,
+                          color: Colors.transparent,
+                          borderColor: infoColor,
+                          title: "Back",
+                          fontColor: infoColor,
+                          onPressed: () => Get.back(result: {
+                            'purposeID': controller.purposeID,
+                            'codeDocument': controller.codeDocument
+                          }),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Arrival", style: listTitleTextStyle),
-                            Text("SUB (09.00)", style: listSubTitleTextStyle),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Price",
-                                style: listTitleTextStyle),
-                            Text("899.000", style: listSubTitleTextStyle),
-                          ],
+                        CustomFilledButton(
+                          width: 100,
+                          color: infoColor,
+                          title: "Next",
+                          onPressed: ()=> controller.next()
                         ),
                       ],
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    child: CustomFilledButton(
-                      color: infoColor,
-                      title: "Add Airliness",
-                      icon: Icons.add,
-                      onPressed: ()=>Get.to(AddAirlinessScreen()),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomFilledButton(
-                        width: 100,
-                        color: Colors.transparent,
-                        borderColor: infoColor,
-                        title: "Back",
-                        fontColor: infoColor,
-                        onPressed: () => Get.back(),
-                      ),
-                      CustomFilledButton(
-                        width: 100,
-                        color: infoColor,
-                        title: "Next",
-                        onPressed: () => Get.to(TaxiVoucherScreen()),
-                      ),
-                    ],
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          bottomNavigationBar: BottomBar(menu: 1),
-        );
-      }
-    );
+            bottomNavigationBar: BottomBar(menu: 1),
+          );
+        });
   }
 }

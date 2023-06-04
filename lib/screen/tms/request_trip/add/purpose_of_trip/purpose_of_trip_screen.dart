@@ -8,6 +8,8 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/purpose_of_trip/purpose_of_trip_controller.dart';
+import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -42,9 +44,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                       child: const Icon(IconlyBold.work, color: whiteColor),
                     ),
                     Text("Purpose Of Trip", style: appTitle),
@@ -57,25 +57,22 @@ class PurposeOfTripScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CustomDropDownFormField(
-                                label: 'Purpose of Trip',
-                                isRequired: true,
-                                hintText: "Company Business",
-                                items: controller.purposeList
-                                    .map(
-                                      (e) => DropdownMenuItem(
-                                        value: e.codeDocument.toString(),
+                              label: 'Purpose of Trip',
+                              isRequired: true,
+                              hintText: "pick document type",
+                              items: controller.purposeList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
                                         child: Text(e.documentName.toString()),
-                                      )
-                                    )
-                                    .toList(),
-                                onChanged: (value) {
-                                  controller.selectedPurpose = value;
-                                  value == "FB" || value == "SV"
-                                      ? controller.isAttachment = true
-                                      : controller.isAttachment = false;
-                                  controller.update();
-                                  // print(controller.selectedPurpose);
-                                }),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                controller.selectedPurpose = value;
+                                value == "1" || value == "2" ? controller.isAttachment = true : controller.isAttachment = false;
+                                controller.update();
+                                // print(controller.selectedPurpose);
+                              },
+                            ),
                             const SizedBox(height: 8),
                             controller.isAttachment!
                                 ? CustomTextFormField(
@@ -83,8 +80,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                                     label: 'File Attachment',
                                     isRequired: true,
                                     readOnly: true,
-                                    hintText:
-                                        "Upload Form ${controller.selectedPurpose}",
+                                    hintText: "Upload Form ${controller.selectedPurpose}",
                                     suffixIcon: const Icon(Icons.upload),
                                     onTap: () => controller.getSingleFile(),
                                   )
@@ -126,6 +122,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                                   .toList(),
                               onChanged: (value) {
                                 controller.toCity = value;
+                                controller.getZonaCity();
                                 controller.update();
                               },
                             ),
@@ -134,41 +131,56 @@ class PurposeOfTripScreen extends StatelessWidget {
                               controller: controller.departureDate,
                               label: "Departure Date",
                               isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
                               suffixIcon: const Icon(Icons.calendar_month),
                               readOnly: true,
                               onTap: () => showDatePicker(
                                       context: context,
                                       initialDate: DateTime.now(),
-                                      firstDate: DateTime(DateTime.now().year),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime.now().add(const Duration(days: 30)))
                                   .then(
                                 (date) {
-                                  controller.selectedDate = date!;
-                                  controller.departureDate.text =
-                                      controller.dateFormat.format(date);
+                                  controller.departure = date!;
+                                  controller.rangeDate = controller.arrival.difference(controller.departure).inDays.toInt();
+                                  controller.totalTLK.text = (controller.rangeDate.toInt() * (controller.tlkDay.text.digitOnly()).toInt()).toCurrency().toString();
+                                  controller.departureDate.text = controller.dateFormat.format(date);
+                                  controller.selectedDepartureDate = controller.saveDateFormat.format(date);
                                   controller.update();
+
                                 },
                               ),
                             ),
                             const SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.arrivalDate,
-                              label: "Date Arrival",
+                              label: "Return Date",
                               isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
                               readOnly: true,
                               suffixIcon: const Icon(Icons.calendar_month),
                               onTap: () => showDatePicker(
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
+                                      lastDate: DateTime.now().add(const Duration(days: 30)))
                                   .then(
                                 (date) {
-                                  controller.selectedDate = date!;
-                                  controller.arrivalDate.text =
-                                      controller.dateFormat.format(date);
+                                  controller.arrival = date!;
+                                  controller.rangeDate = controller.arrival.difference(controller.departure).inDays.toInt();
+                                  controller.totalTLK.text = (controller.rangeDate.toInt() * (controller.tlkDay.text.digitOnly()).toInt()).toCurrency().toString();
+                                  controller.arrivalDate.text = controller.dateFormat.format(date);
+                                  controller.selectedArrivalDate = controller.saveDateFormat.format(date);
                                   controller.update();
                                 },
                               ),
@@ -186,6 +198,8 @@ class PurposeOfTripScreen extends StatelessWidget {
                               controller: controller.tlkDay,
                               label: "TLK / Day",
                               isRequired: true,
+                              readOnly: true,
+                              inputType: TextInputType.number,
                               hintText: "TLK / Day",
                             ),
                             const SizedBox(height: 8),
@@ -193,6 +207,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                               controller: controller.totalTLK,
                               label: "Total TLK",
                               isRequired: true,
+                              readOnly: true,
                               hintText: "Total TLK",
                             ),
                             const SizedBox(height: 8),
@@ -211,9 +226,12 @@ class PurposeOfTripScreen extends StatelessWidget {
                                   width: 100,
                                   color: infoColor,
                                   title: "Next",
-                                  onPressed: () =>
-                                      controller.postPurposeOfTrip(),
-                                ),
+                                  onPressed: () {
+                                    if (controller.formKey.currentState?.validate() == true) {
+                                      controller.postPurposeOfTrip();
+                                    }
+                                  },
+                                )
                               ],
                             ),
                             const SizedBox(height: 50)

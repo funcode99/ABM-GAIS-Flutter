@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
+import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
@@ -119,6 +120,7 @@ class _ApprovalCashAdvanceNonTravelListScreenState extends State<ApprovalCashAdv
           return Scaffold(
             backgroundColor: baseColor,
             appBar: AppBar(
+              leading: const CustomBackButton(),
               backgroundColor: whiteColor,
               title: Text("approval_cash_advance_non_travel".tr, style: appTitle),
               centerTitle: true,
@@ -129,7 +131,7 @@ class _ApprovalCashAdvanceNonTravelListScreenState extends State<ApprovalCashAdv
               child: Column(
                 children: [
                   CustomSearchBar(
-                    onChanged: (string) {
+                    onSubmit: (string) {
                     },
                     onPressedFilter: (){
                       Get.bottomSheet(
@@ -180,8 +182,8 @@ class _ApprovalCashAdvanceNonTravelListScreenState extends State<ApprovalCashAdv
                     onPageChanged: (int ) {  },
                     pageTotal: 5,
                     margin: EdgeInsets.zero,
-                    colorSub: infoColor,
-                    colorPrimary: whiteColor,
+                    colorSub: whiteColor,
+                    colorPrimary: infoColor,
                   ),
                   const SizedBox(
                     height: 12,

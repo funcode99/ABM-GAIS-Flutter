@@ -5,12 +5,12 @@ import 'package:gais/const/color.dart';
 
 class CustomPagination extends StatefulWidget {
   const CustomPagination(
-      {required this.onPageChanged,
+      {super.key, required this.onPageChanged,
       required this.pageTotal,
       this.threshold = 4,
       this.pageInit = 1,
-      this.colorPrimary = infoColor,
-      this.colorSub = Colors.white,
+      this.colorPrimary,
+      this.colorSub,
       this.controlButton,
       this.iconToFirst,
       this.iconPrevious,
@@ -28,9 +28,9 @@ class CustomPagination extends StatefulWidget {
 
   final int threshold;
 
-  final Color colorPrimary;
+  final Color? colorPrimary;
 
-  final Color colorSub;
+  final Color? colorSub;
 
   final Widget? controlButton;
 
@@ -65,13 +65,13 @@ class _CustomPaginationState extends State<CustomPagination> {
   void initState() {
     this.currentPage = widget.pageInit;
     this.iconToFirst = widget.iconToFirst ??
-        Icon(Icons.keyboard_double_arrow_left, color: widget.colorPrimary);
+        Icon(Icons.keyboard_double_arrow_left, color: widget.colorSub);
     this.iconPrevious = widget.iconPrevious ??
-        Icon(Icons.keyboard_arrow_left, color: widget.colorPrimary);
+        Icon(Icons.keyboard_arrow_left, color: widget.colorSub);
     this.iconNext = widget.iconNext ??
-        Icon(Icons.keyboard_arrow_right, color: widget.colorPrimary);
+        Icon(Icons.keyboard_arrow_right, color: widget.colorSub);
     this.iconToLast = widget.iconToLast ??
-        Icon(Icons.keyboard_double_arrow_right, color: widget.colorPrimary);
+        Icon(Icons.keyboard_double_arrow_right, color: widget.colorSub);
 
     _rangeSet();
 
@@ -85,7 +85,8 @@ class _CustomPaginationState extends State<CustomPagination> {
           elevation: MaterialStateProperty.all<double>(5.0),
           padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero),
           minimumSize: MaterialStateProperty.all(Size(48, 48)),
-          foregroundColor: MaterialStateProperty.all(widget.colorPrimary),
+          foregroundColor:
+              MaterialStateProperty.all(widget.colorPrimary ?? infoColor),
           backgroundColor: MaterialStateProperty.all(widget.colorSub),
         ),
         onPressed: () {},
@@ -119,9 +120,11 @@ class _CustomPaginationState extends State<CustomPagination> {
     return Container(
       padding: const EdgeInsets.all(8.0),
       margin:
-          widget.margin ?? EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+          widget.margin ?? EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
-          color: widget.colorSub, borderRadius: BorderRadius.circular(8)),
+        color: widget.colorPrimary ?? whiteColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -152,16 +155,17 @@ class _CustomPaginationState extends State<CustomPagination> {
                       const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                   decoration: BoxDecoration(
                     color: (currentPage - 1) % widget.threshold == index
-                        ? widget.colorPrimary
+                        ? widget.colorPrimary ?? infoColor
                         : widget.colorSub,
                     borderRadius: BorderRadius.all(Radius.circular(4)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(0.0, 1.0), //(x,y)
-                        blurRadius: 6.0,
-                      ),
-                    ],
+                    border: Border.all(color: widget.colorSub ?? infoColor, width: 1),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     color: Colors.grey,
+                    //     offset: Offset(0.0, 1.0), //(x,y)
+                    //     blurRadius: 6.0,
+                    //   ),
+                    // ],
                   ),
                   child: Text(
                     '${index + 1 + rangeStart}',
@@ -169,7 +173,7 @@ class _CustomPaginationState extends State<CustomPagination> {
                       fontSize: widget.fontSize,
                       fontFamily: widget.fontFamily,
                       color: (currentPage - 1) % widget.threshold == index
-                          ? widget.colorSub
+                          ? widget.colorSub ?? whiteColor
                           : widget.colorPrimary,
                     ),
                   ),

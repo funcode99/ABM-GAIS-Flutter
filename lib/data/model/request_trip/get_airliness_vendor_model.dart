@@ -1,9 +1,9 @@
 /// success : true
 /// message : "Success Get Data"
-/// data : [{"id":1,"code_document":"SV","document_name":"Site Visit","created_at":null,"created_by":null,"updated_at":null,"updated_by":null},{"id":2,"code_document":"FB","document_name":"Field Break","created_at":null,"created_by":null,"updated_at":null,"updated_by":null},{"id":3,"code_document":"CB","document_name":"Company Business","created_at":null,"created_by":null,"updated_at":null,"updated_by":null},{"id":4,"code_document":"TV","document_name":"Taxi Voucher","created_at":null,"created_by":null,"updated_at":null,"updated_by":null}]
+/// data : [{"id":1,"vendor":"Antavaya","created_at":null,"created_by":null,"updated_at":null,"updated_by":null},{"id":2,"vendor":"Aerowisata","created_at":null,"created_by":null,"updated_at":null,"updated_by":null}]
 
-class GetDocumentCodeModel {
-  GetDocumentCodeModel({
+class GetAirlinessVendorModel {
+  GetAirlinessVendorModel({
       bool? success, 
       String? message, 
       List<Data>? data,}){
@@ -12,7 +12,7 @@ class GetDocumentCodeModel {
     _data = data;
 }
 
-  GetDocumentCodeModel.fromJson(dynamic json) {
+  GetAirlinessVendorModel.fromJson(dynamic json) {
     _success = json['success'];
     _message = json['message'];
     if (json['data'] != null) {
@@ -25,10 +25,10 @@ class GetDocumentCodeModel {
   bool? _success;
   String? _message;
   List<Data>? _data;
-GetDocumentCodeModel copyWith({  bool? success,
+GetAirlinessVendorModel copyWith({  bool? success,
   String? message,
   List<Data>? data,
-}) => GetDocumentCodeModel(  success: success ?? _success,
+}) => GetAirlinessVendorModel(  success: success ?? _success,
   message: message ?? _message,
   data: data ?? _data,
 );
@@ -49,8 +49,7 @@ GetDocumentCodeModel copyWith({  bool? success,
 }
 
 /// id : 1
-/// code_document : "SV"
-/// document_name : "Site Visit"
+/// vendor : "Antavaya"
 /// created_at : null
 /// created_by : null
 /// updated_at : null
@@ -59,15 +58,13 @@ GetDocumentCodeModel copyWith({  bool? success,
 class Data {
   Data({
       num? id, 
-      String? codeDocument, 
-      String? documentName, 
+      String? vendor, 
       dynamic createdAt, 
       dynamic createdBy, 
       dynamic updatedAt, 
       dynamic updatedBy,}){
     _id = id;
-    _codeDocument = codeDocument;
-    _documentName = documentName;
+    _vendor = vendor;
     _createdAt = createdAt;
     _createdBy = createdBy;
     _updatedAt = updatedAt;
@@ -76,38 +73,33 @@ class Data {
 
   Data.fromJson(dynamic json) {
     _id = json['id'];
-    _codeDocument = json['code_document'];
-    _documentName = json['document_name'];
+    _vendor = json['vendor'];
     _createdAt = json['created_at'];
     _createdBy = json['created_by'];
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
   }
   num? _id;
-  String? _codeDocument;
-  String? _documentName;
+  String? _vendor;
   dynamic _createdAt;
   dynamic _createdBy;
   dynamic _updatedAt;
   dynamic _updatedBy;
 Data copyWith({  num? id,
-  String? codeDocument,
-  String? documentName,
+  String? vendor,
   dynamic createdAt,
   dynamic createdBy,
   dynamic updatedAt,
   dynamic updatedBy,
 }) => Data(  id: id ?? _id,
-  codeDocument: codeDocument ?? _codeDocument,
-  documentName: documentName ?? _documentName,
+  vendor: vendor ?? _vendor,
   createdAt: createdAt ?? _createdAt,
   createdBy: createdBy ?? _createdBy,
   updatedAt: updatedAt ?? _updatedAt,
   updatedBy: updatedBy ?? _updatedBy,
 );
   num? get id => _id;
-  String? get codeDocument => _codeDocument;
-  String? get documentName => _documentName;
+  String? get vendor => _vendor;
   dynamic get createdAt => _createdAt;
   dynamic get createdBy => _createdBy;
   dynamic get updatedAt => _updatedAt;
@@ -116,8 +108,7 @@ Data copyWith({  num? id,
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
-    map['code_document'] = _codeDocument;
-    map['document_name'] = _documentName;
+    map['vendor'] = _vendor;
     map['created_at'] = _createdAt;
     map['created_by'] = _createdBy;
     map['updated_at'] = _updatedAt;

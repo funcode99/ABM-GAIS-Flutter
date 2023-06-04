@@ -76,6 +76,8 @@ class LanguageEN{
       "Confirm" : "Confirm",
       "Stock In ATK" : "Stock In ATK",
       "Booking Meeting Room" : "Booking Meeting Room",
+      "Empty List" : "Empty List",
+      "Success Delete Data" : "Success Delete Data",
     };
   }
 }

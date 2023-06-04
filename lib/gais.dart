@@ -47,7 +47,7 @@ class App extends StatelessWidget{
             fillColor: whiteColor,
             labelStyle: hintTextStyle.copyWith(color: blackColor),
             hintStyle: hintTextStyle,
-            contentPadding: EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
@@ -104,7 +104,8 @@ class App extends StatelessWidget{
                 textStyle: MaterialStateProperty.all<TextStyle>(
                     const TextStyle(fontWeight: FontWeight.w700, fontSize: 16))),
 
-          )
+          ),
+
       ),
       home: const LoginScreen(),
     );

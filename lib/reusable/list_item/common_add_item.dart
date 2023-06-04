@@ -9,7 +9,7 @@ class CommonAddItem extends StatelessWidget {
         required this.number,
         required this.title,
         required this.subtitle,
-        required this.nominal,
+        this.nominal,
         required this.action,
         this.content,
         this.onTap
@@ -18,7 +18,7 @@ class CommonAddItem extends StatelessWidget {
   final String number;
   final String title;
   final String subtitle;
-  final String nominal;
+  final String? nominal;
   final List<Widget> action;
   final VoidCallback? onTap;
   final Widget? content;
@@ -68,7 +68,7 @@ class CommonAddItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                      nominal
+                      nominal ?? ""
                   ),
                 ],
               ),

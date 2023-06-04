@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_controller.dart';
+import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/check_schedule/check_schedule_screen.dart';
 import 'package:get/get.dart';
 
@@ -19,16 +23,25 @@ class AddAirlinessScreen extends StatelessWidget {
         init: AddAirlinessController(),
         builder: (controller) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text("Airliness", style: appTitle),
-              centerTitle: true,
-              leading: CustomBackButton(),
-              flexibleSpace: TopBar(),
-            ),
+            appBar: TopBar(
+                title: Text("Airliness", style: appTitle),
+                leading: IconButton(
+                    onPressed: () => Get.off(
+                          AirlinessScreen(),
+                          arguments: {
+                            'purposeID': controller.purposeID,
+                            'codeDocument': controller.codeDocument,
+                          },
+                        ),
+                    icon: Icon(
+                      Icons.chevron_left,
+                      color: Colors.black,
+                      size: 30,
+                    ))),
             body: Container(
               alignment: Alignment.topCenter,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.all(7),
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(7),
               decoration: BoxDecoration(
                 color: whiteColor,
                 borderRadius: BorderRadius.circular(8),
@@ -45,67 +58,51 @@ class AddAirlinessScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: infoColor,
                           borderRadius: BorderRadius.circular(50)),
-                      child: SvgPicture.asset("assets/icons/airplane.svg", height: 25,),
+                      child: SvgPicture.asset(
+                        ImageConstant.airplane,
+                        height: 25,
+                      ),
                     ),
                     Text("Airliness", style: appTitle),
-                    SizedBox(height: 14),
+                    const SizedBox(height: 14),
                     Form(
                       key: controller.formKey,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            RichText(
-                              text: TextSpan(
-                                text: 'Traveller ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Name"),
-                              value: controller.traveller,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("name"),
-                                  value: "value",
-                                ),
-                              ],
-                              onChanged: (value) {
-                                controller.traveller = value;
-                                controller.update();
+                            CustomTextFormField(
+                              controller: controller.travellerName,
+                              label: "Traveller",
+                              hintText: "name",
+                              isRequired: true,
+                              readOnly: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
                               },
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Departure Date ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            TextFormField(
-                              readOnly: true,
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
                               controller: controller.departureDate,
-                              decoration: InputDecoration(
-                                  hintText: "Date",
-                                  suffixIcon: Icon(Icons.keyboard_arrow_down)),
+                              label: "Departure Date",
+                              hintText: "Date",
+                              isRequired: true,
+                              readOnly: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
+                              suffixIcon: const Icon(Icons.calendar_month),
                               onTap: () => showDatePicker(
                                       context: context,
                                       initialDate: DateTime.now(),
-                                      firstDate: DateTime(DateTime.now().year),
+                                      firstDate: DateTime.now(),
                                       lastDate: DateTime.now()
                                           .add(const Duration(days: 30)))
                                   .then((date) {
@@ -115,106 +112,116 @@ class AddAirlinessScreen extends StatelessWidget {
                                 controller.update();
                               }),
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Flight Class ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Class"),
-                              value: controller.flightClass,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("name"),
-                                  value: "value",
-                                ),
-                              ],
+                            const SizedBox(height: 8),
+                            CustomDropDownFormField(
+                              label: "Flight Class",
+                              hintText: "Class",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
+                              items: controller.flightList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.flightClass.toString()),
+                                      ))
+                                  .toList(),
                               onChanged: (value) {
                                 controller.flightClass = value;
                                 controller.update();
+                                print(controller.flightClass);
                               },
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Departure ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("City"),
-                              value: controller.departure,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("name"),
-                                  value: "value",
-                                ),
-                              ],
+                            const SizedBox(height: 8),
+                            CustomDropDownFormField(
+                              label: "Departure",
+                              hintText: "City",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
+                              items: controller.cityList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.cityName.toString()),
+                                      ))
+                                  .toList(),
                               onChanged: (value) {
                                 controller.departure = value;
                                 controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Arrival ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("City"),
-                              value: controller.arrival,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("name"),
-                                  value: "value",
-                                ),
-                              ],
+                            const SizedBox(height: 8),
+                            CustomDropDownFormField(
+                              label: "Arrival",
+                              hintText: "City",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
+                              items: controller.cityList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.cityName.toString()),
+                                      ))
+                                  .toList(),
                               onChanged: (value) {
                                 controller.arrival = value;
                                 controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
-                            CustomFilledButton(
-                              color: infoColor,
-                              title: "Check",
-                              onPressed: ()=> Get.to(CheckScheduleScreen()),
-                            ),
-                            CustomFilledButton(
-                              color: Colors.transparent,
-                              fontColor: infoColor,
-                              borderColor: infoColor,
-                              title: "Cancel",
-                              onPressed: ()=> Get.back(),
-                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomFilledButton(
+                                  color: Colors.transparent,
+                                  fontColor: infoColor,
+                                  borderColor: infoColor,
+                                  title: "Cancel",
+                                  width: 100,
+                                  onPressed: () =>
+                                      Get.off(AirlinessScreen(), arguments: {
+                                    'purposeID': controller.purposeID,
+                                    'codeDocument': controller.codeDocument,
+                                  }),
+                                ),
+                                CustomFilledButton(
+                                  color: infoColor,
+                                  title: "Check",
+                                  width: 100,
+                                  onPressed: () {
+                                    if (controller.formKey.currentState
+                                            ?.validate() ==
+                                        true)
+                                      Get.off(const CheckScheduleScreen(),
+                                          arguments: {
+                                            'purposeID': controller.purposeID,
+                                            'codeDocument':
+                                                controller.codeDocument,
+                                            'departure': int.parse(controller
+                                                .departure
+                                                .toString()),
+                                            'arrival': int.parse(
+                                                controller.arrival.toString()),
+                                            'flightClass': int.parse(controller
+                                                .flightClass
+                                                .toString()),
+                                            'formEdit': controller.formEdit,
+                                          });
+                                  },
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       ),
@@ -223,7 +230,7 @@ class AddAirlinessScreen extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: BottomBar(menu: 1),
+            bottomNavigationBar: const BottomBar(menu: 1),
           );
         });
   }

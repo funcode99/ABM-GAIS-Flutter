@@ -1,19 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
+import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
+import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
+import 'package:gais/util/mixin/master_data_mixin.dart';
+import 'package:get/get.dart';
 
-class AddItemCashAdvanceNonTravelController extends BaseController{
-  final TextEditingController itemCenterController = TextEditingController();
-  final TextEditingController costCenterController = TextEditingController();
+class AddItemCashAdvanceNonTravelController extends BaseController with MasterDataMixin{
+  final TextEditingController itemNameController = TextEditingController();
   final TextEditingController nominalController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final isButtonEnabled = false.obs;
+  final cashAdvanceDetailModel = Rxn<CashAdvanceDetailModel>();
+
+
+  final listCostCenter = <CostCenterModel>[].obs;
+  final selectedCostCenter = CostCenterModel().obs;
+
 
   @override
   void onInit() {
-    itemCenterController.text = "";
-    costCenterController.text = "";
-    nominalController.text = "";
-    remarksController.text = "";
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    initData();
+  }
+
+  void initData()async{
+    final costCenters = await getListCostCenter();
+    listCostCenter(costCenters);
+    onChangeSelectedCostCenter("${listCostCenter.first.id}");
+
+    if(cashAdvanceDetailModel.value !=null){
+      itemNameController.text = cashAdvanceDetailModel.value?.itemName ?? "";
+      nominalController.text = cashAdvanceDetailModel.value?.nominal?.toInt().toCurrency() ?? "";
+      remarksController.text = cashAdvanceDetailModel.value?.remarks ?? "";
+
+      onChangeSelectedCostCenter("${cashAdvanceDetailModel.value?.idCostCenter}");
+    }
+  }
+
+  void onChangeSelectedCostCenter(String id) {
+    final selected = listCostCenter.firstWhere((item) => item.id == id.toInt());
+    selectedCostCenter(selected);
+  }
+
+  CashAdvanceDetailModel getAddedItem() {
+    if(cashAdvanceDetailModel.value!=null){
+      cashAdvanceDetailModel.value?.nominal = nominalController.text.digitOnly();
+      cashAdvanceDetailModel.value?.remarks = remarksController.text;
+      cashAdvanceDetailModel.value?.idCostCenter = selectedCostCenter.value.id;
+      cashAdvanceDetailModel.value?.costCenterName = selectedCostCenter.value.costCenterName;
+      cashAdvanceDetailModel.value?.itemName = itemNameController.text;
+      return cashAdvanceDetailModel.value!;
+    }else{
+      return CashAdvanceDetailModel(
+          key: DateTime.now().microsecondsSinceEpoch.toString(),
+          costCenterName: selectedCostCenter.value.costCenterName,
+          nominal: nominalController.text.digitOnly(),
+          remarks: remarksController.text,
+          idCostCenter: selectedCostCenter.value.id?.toInt(),
+          //TODO : change to dynamic one
+          itemName: itemNameController.text);
+    }
   }
 }

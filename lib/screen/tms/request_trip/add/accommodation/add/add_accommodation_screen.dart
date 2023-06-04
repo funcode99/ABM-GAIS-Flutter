@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_controller.dart';
-import 'package:gais/screen/tms/request_trip/add/accommodation/check_accommodation/check_accommodation_screen.dart';
 import 'package:get/get.dart';
 
 class AddAccommodationScreen extends StatelessWidget {
@@ -19,16 +22,26 @@ class AddAccommodationScreen extends StatelessWidget {
         init: AddAccommodationController(),
         builder: (controller) {
           return Scaffold(
-            appBar: AppBar(
+            appBar: TopBar(
               title: Text("Accommodation", style: appTitle),
-              centerTitle: true,
-              leading: CustomBackButton(),
-              flexibleSpace: TopBar(),
+              leading: IconButton(
+                  onPressed: () => Get.off(
+                    AccommodationScreen(),
+                    arguments: {
+                      'purposeID': controller.purposeID,
+                      'codeDocument': controller.codeDocument,
+                    },
+                  ),
+                  icon: Icon(
+                    Icons.chevron_left,
+                    color: Colors.black,
+                    size: 30,
+                  ))
             ),
             body: Container(
               alignment: Alignment.topCenter,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.all(7),
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(7),
               decoration: BoxDecoration(
                 color: whiteColor,
                 borderRadius: BorderRadius.circular(8),
@@ -45,204 +58,167 @@ class AddAccommodationScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: infoColor,
                           borderRadius: BorderRadius.circular(50)),
-                      child: SvgPicture.asset("assets/icons/building.svg",
-                          height: 25),
+                      child:
+                          SvgPicture.asset(ImageConstant.building, height: 25),
                     ),
                     Text("Accommodation", style: appTitle),
-                    SizedBox(height: 14),
+                    const SizedBox(height: 14),
                     Form(
                       key: controller.formKey,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            RichText(
-                              text: TextSpan(
-                                text: 'Traveller ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Name"),
-                              value: controller.traveller,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("name"),
-                                  value: "value",
-                                ),
-                              ],
-                              onChanged: (value) {
-                                controller.traveller = value;
-                                controller.update();
+                            CustomTextFormField(
+                              controller: controller.travellerName,
+                              label: "Traveller",
+                              hintText: "Name",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
                               },
+                              readOnly: true,
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Hotel Fare ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            TextFormField(
-                              decoration: InputDecoration(hintText: "Max fare"),
-                            ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Gender ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Gender"),
-                              value: controller.gender,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("Male"),
-                                  value: "Male",
-                                ),
-                                DropdownMenuItem(
-                                  child: Text("Female"),
-                                  value: "Female",
-                                ),
-                              ],
-                              onChanged: (value) {
-                                controller.gender = value;
-                                controller.update();
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.hotelFare,
+                              label: "Hotel Fare",
+                              hintText: "Maz Fare",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
                               },
+                              readOnly: true,
                             ),
-                            SizedBox(height: 8),
-                            SizedBox(height: 35),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.travellerGender,
+                              label: "Gender",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
+                              readOnly: true,
+                            ),
+                            const SizedBox(height: 8),
+                            const SizedBox(height: 35),
                             Text("Requested Accommodation",
-                                style: listTitleTextStyle),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Checkin ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            TextFormField(
-                              readOnly: true,
-                              controller: controller.departureDate,
-                              decoration: InputDecoration(
-                                  hintText: "Date",
-                                  suffixIcon: Icon(Icons.keyboard_arrow_down)),
-                              onTap: () => showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(DateTime.now().year),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
-                                  .then((date) {
-                                controller.selectedDate = date!;
-                                controller.departureDate.text =
-                                    controller.dateFormat.format(date);
-                                controller.update();
-                              }),
-                            ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Checkout ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            TextFormField(
-                              readOnly: true,
-                              controller: controller.departureDate,
-                              decoration: InputDecoration(
-                                  hintText: "Date",
-                                  suffixIcon: Icon(Icons.keyboard_arrow_down)),
-                              onTap: () => showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(DateTime.now().year),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
-                                  .then((date) {
-                                controller.selectedDate = date!;
-                                controller.departureDate.text =
-                                    controller.dateFormat.format(date);
-                                controller.update();
-                              }),
-                            ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Accommodation Type ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Type"),
-                              value: controller.arrival,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("name"),
-                                  value: "value",
-                                ),
-                              ],
+                                style: formlabelTextStyle),
+                            const SizedBox(height: 8),
+                            CustomDropDownFormField(
+                              label: "City",
+                              hintText: "City",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
+                              items: controller.cityList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.cityName.toString()),
+                                      ))
+                                  .toList(),
                               onChanged: (value) {
-                                controller.arrival = value;
+                                controller.selectedCity = value;
                                 controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Remarks ',
-                                style: listTitleTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.checkinDate,
+                              label: "Check In",
+                              hintText: "Date",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
+                              readOnly: true,
+                              suffixIcon: const Icon(Icons.calendar_month),
+                              onTap: () => showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime.now()
+                                          .add(const Duration(days: 30)))
+                                  .then((date) {
+                                controller.selectedDate = date!;
+                                controller.checkinDate.text =
+                                    controller.dateFormat.format(date);
+                                controller.update();
+                              }),
                             ),
-                            TextFormField(
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.checkoutDate,
+                              label: "Checkout",
+                              hintText: "Date",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
+                              readOnly: true,
+                              suffixIcon: const Icon(Icons.calendar_month),
+                              onTap: () => showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime.now()
+                                          .add(const Duration(days: 30)))
+                                  .then((date) {
+                                controller.selectedDate = date!;
+                                controller.checkoutDate.text =
+                                    controller.dateFormat.format(date);
+                                controller.update();
+                              }),
+                            ),
+                            const SizedBox(height: 8),
+                            CustomDropDownFormField(
+                              label: "Accommodation Type",
+                              hintText: "Type",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
+                              items: controller.hotelTypeList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child:
+                                            Text(e.typeAccomodation.toString()),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                controller.accommodationType = value;
+                                controller.update();
+                              },
+                            ),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
                               controller: controller.remarks,
-                              decoration: InputDecoration(hintText: "Remarks"),
+                              label: "Remarks",
+                              hintText: "Remarks",
+                              multiLine: true,
                             ),
                             Row(
                               children: [
@@ -257,24 +233,14 @@ class AddAccommodationScreen extends StatelessWidget {
                                 Text("Sharing with", style: listTitleTextStyle)
                               ],
                             ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text("Name"),
-                              value: controller.arrival,
-                              isExpanded: true,
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("name"),
-                                  value: "value",
-                                ),
-                              ],
-                              onChanged: (value) {
-                                controller.arrival = value;
-                                controller.update();
-                              },
-                            ),
-                            SizedBox(height: 8),
+                            controller.isSharing == true
+                                ? CustomTextFormField(
+                                    controller: controller.sharingName,
+                                    label: "",
+                                    hintText: "Name",
+                                  )
+                                : Container(),
+                            const SizedBox(height: 8),
                             Text("Create GL?", style: listTitleTextStyle),
                             Row(
                               children: [
@@ -298,13 +264,21 @@ class AddAccommodationScreen extends StatelessWidget {
                                   borderColor: infoColor,
                                   title: "Cancel",
                                   fontColor: infoColor,
-                                  onPressed: () => Get.back(),
+                                  onPressed: () => Get.off(
+                                      AccommodationScreen(),
+                                      arguments: {
+                                        'purposeID': controller.purposeID,
+                                        'codeDocument': controller.codeDocument,
+                                      }),
                                 ),
                                 CustomFilledButton(
                                   width: 100,
                                   color: infoColor,
                                   title: "Check",
-                                  onPressed: () => Get.to(CheckAccommodationScreen()),
+                                  onPressed: () {
+                                    if(controller.formKey.currentState?.validate()==true)
+                                      controller.check();
+                                  },
                                 ),
                               ],
                             )
@@ -316,7 +290,7 @@ class AddAccommodationScreen extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: BottomBar(menu: 1),
+            bottomNavigationBar: const BottomBar(menu: 1),
           );
         });
   }

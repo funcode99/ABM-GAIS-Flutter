@@ -14,6 +14,8 @@ import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/approval/de
 import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
 import 'package:gais/screen/tms/cash_advance/widget/approval_confirmation_dialog.dart';
 import 'package:gais/screen/tms/cash_advance/widget/reject_dialog.dart';
+import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
 class ApprovalCashAdvanceNonTravelDetailScreen extends StatefulWidget {
@@ -179,9 +181,9 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
                                 .mapIndexed((index, element) =>
                                     CommonAddItem(
                                       number: "${index + 1}",
-                                      title: element.item,
-                                      subtitle: element.costCenter,
-                                      nominal: element.nominal,
+                                      title: "${element.itemName}",
+                                      subtitle: "${element.costCenterName}",
+                                      nominal: "${element.nominal?.toInt().toCurrency}",
                                       action: [],
                                       onTap: () {
                                         Get.dialog(Dialog(

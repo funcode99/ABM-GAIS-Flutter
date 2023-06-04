@@ -82,7 +82,10 @@ class CommonListItem extends StatelessWidget {
                 height: 20,
                 color: greyColor,
               ),
-              content,
+              SizedBox(
+                width: double.infinity,
+                child: content,
+              ),
               const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

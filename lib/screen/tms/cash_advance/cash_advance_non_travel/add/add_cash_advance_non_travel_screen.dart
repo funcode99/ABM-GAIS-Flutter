@@ -7,12 +7,14 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_add_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_controller.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_screen.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_screen.dart';
+import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -90,6 +92,26 @@ class _AddCashAdvanceNonTravelScreenState
                         const SizedBox(
                           height: 8,
                         ),
+                        Obx(() {
+                          return CustomDropDownFormField(
+                            isRequired: true,
+                            items: controller.listCurrency
+                                .map((e) =>
+                                DropdownMenuItem(
+                                  value: e.id.toString(),
+                                  child: Text("${e.currencyName} (${e.currencyCode})"),
+                                ))
+                                .toList(),
+                            onChanged: (item) {
+                              controller.onChangeSelectedCurrency(item.toString());
+                            },
+                            label: "Currency ".tr,
+                            value: controller.selectedCurrency.value.id.toString(),
+                          );
+                        }),
+                        const SizedBox(
+                          height: 8,
+                        ),
                         CustomTextFormField(
                             readOnly: true,
                             controller: controller.totalController,
@@ -111,19 +133,23 @@ class _AddCashAdvanceNonTravelScreenState
                           height: 20,
                           color: greyColor,
                         ),
-                        ...controller.listItem
+                        ...controller.listDetail
                             .mapIndexed((index, element) => CommonAddItem(
-                                  number: "${index+1}",
-                                  title: element.item,
-                                  subtitle: element.costCenter,
-                                  nominal: element.nominal,
+                                  number: "${index + 1}",
+                                  title: "${element.itemName}",
+                                  subtitle: "${element.costCenterName}",
+                                  nominal:
+                                      "${element.nominal?.toInt().toCurrency()}",
                                   action: [
                                     CustomIconButton(
                                       title: "Edit".tr,
                                       iconData: IconlyBold.edit,
                                       backgroundColor: successColor,
-                                      onPressed: () {
-                                        Get.to(const AddItemCashAdvanceNonTravelScreen());
+                                      onPressed: () async{
+                                        final editedItem = await Get.to(()=>AddItemCashAdvanceNonTravelScreen(item: element));
+                                        if(editedItem!=null){
+                                          controller.editItem(editedItem);
+                                        }
                                       },
                                     ),
                                     const SizedBox(
@@ -135,7 +161,7 @@ class _AddCashAdvanceNonTravelScreenState
                                       backgroundColor: redColor,
                                       onPressed: () {
                                         Get.dialog(DeleteConfirmationDialog(
-                                          onDeletePressed: (){
+                                          onDeletePressed: () {
                                             controller.removeItem(element);
                                             Get.back();
                                           },
@@ -189,11 +215,13 @@ class _AddCashAdvanceNonTravelScreenState
                               child: Text("Cancel".tr),
                             ),
                             ElevatedButton(
-                              onPressed: _isButtonEnabled ? () {
-                                Get.off(const EditCashAdvanceNonTravelScreen());
-                              } : null,
+                              onPressed: _isButtonEnabled
+                                  ? () {
+                                      controller.saveData();
+                                    }
+                                  : null,
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: infoColor),
+                                  backgroundColor: successColor),
                               child: Text("Save".tr),
                             ),
                           ],

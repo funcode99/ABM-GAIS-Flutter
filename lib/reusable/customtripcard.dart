@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:gais/util/responsive/text_scale_factor.dart';
+import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
@@ -16,8 +17,11 @@ class CustomTripCard extends StatelessWidget {
   final bool? isDelete;
   final VoidCallback? editAction;
   final VoidCallback? deleteAction;
+  final Widget? editButton;
+  final Widget? deleteButton;
   final VoidCallback? onTap;
   final bool? approval;
+  final bool? iconOnly;
   final VoidCallback? approveAction;
   final VoidCallback? rejectAction;
 
@@ -37,6 +41,9 @@ class CustomTripCard extends StatelessWidget {
     this.approval = false,
     this.approveAction,
     this.rejectAction,
+    this.editButton,
+    this.deleteButton,
+    this.iconOnly,
   }) : super(key: key);
 
   @override
@@ -54,9 +61,7 @@ class CustomTripCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: status != null
-                    ? MainAxisAlignment.spaceBetween
-                    : MainAxisAlignment.start,
+                mainAxisAlignment: status != null ? MainAxisAlignment.spaceBetween : MainAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -65,19 +70,22 @@ class CustomTripCard extends StatelessWidget {
                         height: 50,
                         margin: EdgeInsets.only(right: status != null ? 0 : 10),
                         padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: infoColor,
-                            borderRadius: BorderRadius.circular(4)),
-                        child: Text("No\n$listNumber",
-                            style:
-                                listTitleTextStyle.copyWith(color: whiteColor),
-                            textAlign: TextAlign.center),
+                        decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(4)),
+                        child: Text("No\n$listNumber", style: listTitleTextStyle.copyWith(color: whiteColor), textAlign: TextAlign.center),
                       ),
                       const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(title, style: listTitleTextStyle),
+                          Container(
+                            width: Get.width /2.2,
+                            child: Text(
+                              title,
+                              style: listTitleTextStyle.copyWith(),
+                              textAlign: TextAlign.start,
+
+                            ),
+                          ),
                           Text(
                             subtitle ?? "",
                             style: listSubTitleTextStyle,
@@ -91,15 +99,10 @@ class CustomTripCard extends StatelessWidget {
                       ? Container(
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: greenColor,
-                              borderRadius: BorderRadius.circular(5)),
+                          decoration: BoxDecoration(color: greenColor, borderRadius: BorderRadius.circular(5)),
                           child: Text(
                             status ?? "",
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: whiteColor,
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 12, color: whiteColor, fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                         )
@@ -117,58 +120,57 @@ class CustomTripCard extends StatelessWidget {
                 children: [
                   info != null
                       ? Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: infoColor,
-                              borderRadius: BorderRadius.circular(4)),
-                          child: Text(info ?? "",
-                              style: listSubTitleTextStyle.copyWith(
-                                  color: whiteColor, fontSize: 14),
-                              textAlign: TextAlign.center),
+                          width: Get.width/4,
+                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                          decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(4)),
+                          child:
+                              Text(info ?? "", style: listSubTitleTextStyle.copyWith(color: whiteColor, fontSize: 14), textAlign: TextAlign.center),
                         )
                       : Container(),
                   Row(
                     children: [
                       isDelete! && isEdit!
-                          ? CustomFilledButton(
-                              width: 80,
-                              height: 40,
-                              color: successColor,
-                              title: approval! ? "approve" : "Edit",
-                              fontSize: 14,
-                              icon: approval! ? Icons.check : IconlyBold.edit,
-                              onPressed: approval! ? approveAction : editAction,
-                            )
+                          ? editButton ??
+                              CustomFilledButton(
+                                width: 80,
+                                height: 40,
+                                color: successColor,
+                                title: approval! ? "approve" : "Edit",
+                                fontSize: 14,
+                                icon: approval! ? Icons.check : IconlyBold.edit,
+                                onPressed: approval! ? approveAction : editAction,
+                              )
                           : const SizedBox(),
                       const SizedBox(width: 5),
                       isEdit!
-                          ? CustomFilledButton(
-                              width: 80,
-                              height: 40,
-                              fontSize: 14,
-                              color: isDelete! ? redColor : successColor,
-                              title: approval!
-                                  ? "reject"
-                                  : isDelete!
-                                      ? "Delete"
-                                      : approval!
-                                          ? "approve"
-                                          : "Edit",
-                              icon: approval!
-                                  ? Icons.close
-                                  : isDelete!
-                                      ? IconlyBold.delete
-                                      : approval!
-                                          ? Icons.check
-                                          : IconlyBold.edit,
-                              onPressed: approval!
-                                  ? rejectAction
-                                  : isDelete!
-                                      ? deleteAction
-                                      : approval!
-                                          ? approveAction
-                                          : editAction,
-                            )
+                          ? deleteButton ??
+                              CustomFilledButton(
+                                width: 80,
+                                height: 40,
+                                fontSize: 14,
+                                color: isDelete! ? redColor : successColor,
+                                title: approval!
+                                    ? "reject"
+                                    : isDelete!
+                                        ? "Delete"
+                                        : approval!
+                                            ? "approve"
+                                            : "Edit",
+                                icon: approval!
+                                    ? Icons.close
+                                    : isDelete!
+                                        ? IconlyBold.delete
+                                        : approval!
+                                            ? Icons.check
+                                            : IconlyBold.edit,
+                                onPressed: approval!
+                                    ? rejectAction
+                                    : isDelete!
+                                        ? deleteAction
+                                        : approval!
+                                            ? approveAction
+                                            : editAction,
+                              )
                           : const SizedBox()
                     ],
                   ),

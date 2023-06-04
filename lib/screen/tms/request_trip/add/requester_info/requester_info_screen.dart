@@ -102,8 +102,8 @@ class RequesterInfoScreen extends StatelessWidget {
                                   onPressed: () => Get.to(
                                     const PurposeOfTripScreen(),
                                     arguments: {
-                                      "employeeID": controller.requestorID.toString(),
-                                      "siteID": controller.siteID.toString()
+                                      "requestorID": controller.requestorID,
+                                      "siteID": controller.siteID
                                     },
                                   ),
                                 ),

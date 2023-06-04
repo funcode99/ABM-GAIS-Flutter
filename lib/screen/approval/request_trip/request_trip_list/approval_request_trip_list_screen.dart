@@ -2,13 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
+import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/cutompagination.dart';
+import 'package:gais/reusable/dataempty.dart';
+import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/request_trip/form_request_trip/approval_form_request_trip_screen.dart';
 import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_controller.dart';
+import 'package:gais/screen/home/home_screen.dart';
+import 'package:gais/screen/menu/menu_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/requester_info/requester_info_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
@@ -25,272 +33,203 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
         builder: (controller) {
           return Scaffold(
             backgroundColor: baseColor,
-            appBar: AppBar(
-              backgroundColor: whiteColor,
-              title: Text("Request Trip", style: appTitle),
-              centerTitle: true,
-              flexibleSpace: TopBar(),
-            ),
+            appBar: TopBar(
+                title: Text("Request Trip", style: appTitle),
+                leading: IconButton(
+                    onPressed: () => Get.off(HomeScreen(), arguments: 1),
+                    icon: Icon(
+                      Icons.chevron_left,
+                      color: Colors.black,
+                      size: 30,
+                    ))),
             body: CustomScrollView(
               slivers: [
                 SliverPersistentHeader(
                   pinned: true,
                   delegate: SliverAppBarDelegate(
-                    minHeight: 110,
+                    minHeight: controller.dataisnull ? Get.height : 180,
                     maxHeight: 32,
-                    child: Column(
-                      children: [
-                        Container(height: 10, color: baseColor),
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: whiteColor,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: Get.width - 112,
-                                margin: EdgeInsets.only(right: 10),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    hintText: "Search",
-                                    prefixIcon: Icon(IconlyLight.search),
-                                  ),
-                                ),
-                              ),
-                              CustomFilledButton(
-                                color: successColor,
-                                icon: IconlyBold.filter_2,
-                                width: 50,
-                                onPressed: () {
-                                  controller.showFilter =
-                                      controller.showFilter! ? false : true;
-                                  controller.update();
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        scrollable: true,
-                                        titlePadding: EdgeInsets.zero,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8))),
-                                        title: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 5),
-                                          decoration: BoxDecoration(
-                                              color: lightBlueColor,
-                                              borderRadius: BorderRadius.only(
-                                                  topRight: Radius.circular(8),
-                                                  topLeft: Radius.circular(8))),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Filter"),
-                                              IconButton(
-                                                  onPressed: () => Get.back(),
-                                                  icon: Icon(Icons.close))
-                                            ],
-                                          ),
-                                        ),
-                                        content: GetBuilder<
-                                                ApprovalRequestTripListController>(
-                                            init:
-                                                ApprovalRequestTripListController(),
-                                            builder: (c) {
-                                              return Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text("Purpose of trip",
-                                                      style:
-                                                          listTitleTextStyle),
-                                                  Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 6),
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 10,
-                                                            vertical: 3),
-                                                    width: Get.width,
-                                                    decoration: BoxDecoration(
-                                                        color: whiteColor,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                        border: Border.all(
-                                                            color: blackColor)),
-                                                    child: DropdownButton(
-                                                      icon: Icon(Icons
-                                                          .keyboard_arrow_down),
-                                                      hint: Text(
-                                                          "Company Business"),
-                                                      value: c.purposeValue,
-                                                      isExpanded: true,
-                                                      underline: SizedBox(),
-                                                      items: [
-                                                        DropdownMenuItem(
-                                                          child: Text(
-                                                              "Company Business"),
-                                                          value:
-                                                              "Company Business",
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          child: Text(
-                                                              "Field Break"),
-                                                          value: "Field Break",
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          child: Text(
-                                                              "Site Visit"),
-                                                          value: "Site Visit",
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          child: Text(
-                                                              "Taxi Voucher Only"),
-                                                          value: "Taxi Voucher",
-                                                        ),
-                                                      ],
-                                                      onChanged: (value) {
-                                                        c.purposeValue = value;
-                                                        c.update();
-                                                      },
-                                                    ),
-                                                  ),
-                                                  Text("Date Range",
-                                                      style:
-                                                          listTitleTextStyle),
-                                                  Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 6),
-                                                    child: TextField(
-                                                      readOnly: true,
-                                                      controller: c.dateRange,
-                                                      decoration: InputDecoration(
-                                                          suffixIcon: Icon(Icons
-                                                              .calendar_month)),
-                                                      onTap: () {
-                                                        showCustomDateRangePicker(
-                                                          context,
-                                                          dismissible: true,
-                                                          minimumDate: DateTime
-                                                                  .now()
-                                                              .subtract(
-                                                                  const Duration(
-                                                                      days:
-                                                                          365)),
-                                                          maximumDate: DateTime
-                                                                  .now()
-                                                              .add(
-                                                                  const Duration(
-                                                                      days:
-                                                                          365)),
-                                                          endDate: c.endDate,
-                                                          startDate:
-                                                              c.startDate,
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          primaryColor:
-                                                              Colors.green,
-                                                          onApplyClick:
-                                                              (start, end) {
-                                                            c.endDate = end;
-                                                            c.startDate = start;
-                                                            c.dateRange.text =
-                                                                "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
-                                                            c.update();
-                                                          },
-                                                          onCancelClick: () {
-                                                            c.endDate = null;
-                                                            c.startDate = null;
-                                                            c.update();
-                                                          },
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                  Center(
-                                                    child: CustomFilledButton(
-                                                        color: successColor,
-                                                        title: "Filter",
-                                                        width: 120,
-                                                        onPressed: () =>
-                                                            Get.back(result: [
-                                                              c.purposeValue,
-                                                              c.dateRange
-                                                            ])),
-                                                  )
-                                                ],
-                                              );
-                                            }),
-                                        actionsAlignment:
-                                            MainAxisAlignment.center,
-                                        actions: [],
-                                      );
-                                    },
-                                  );
-                                },
-                              )
-                            ],
+                    child: Container(
+                      color: baseColor,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        children: [
+                          CustomSearchBar(
+                            onSubmit: (value) {
+                              controller.searchValue = value;
+                              controller.fetchList();
+                              print("cari : ${controller.searchNotFound}");
+                            },
+                            onPressedFilter: () {
+                              Get.bottomSheet(StatefulBuilder(builder: (context, setState) {
+                                return FilterBottomSheet(
+                                  onApplyFilter: () {
+                                    controller.fetchList();
+                                    controller.update();
+                                    Get.back();
+                                  },
+                                  children: [
+                                    Text("Filter", style: appTitle.copyWith(fontSize: 25)),
+                                    SizedBox(height: 10),
+                                    // CustomFormLabel(
+                                    //   label: "Purpose of Trip",
+                                    // ),
+                                    // SingleChildScrollView(
+                                    //   scrollDirection: Axis.horizontal,
+                                    //   child:
+                                    // Row(
+                                    //   children: controller.documentList
+                                    //       .map(
+                                    //         (e) =>
+                                    //             GestureDetector(
+                                    //           onTap: () {
+                                    //             e.isSelected = e.isSelected == false ? true : false;
+                                    //             if (e.id! > 0)
+                                    //               controller.documentList[0].isSelected = false;
+                                    //             else {
+                                    //               controller.documentList[1].isSelected = false;
+                                    //               controller.documentList[2].isSelected = false;
+                                    //               controller.documentList[3].isSelected = false;
+                                    //               controller.documentList[4].isSelected = false;
+                                    //             }
+                                    //             controller.update();
+                                    //             setState(() {});
+                                    //             print(e.isSelected);
+                                    //             print(e.id);
+                                    //           },
+                                    //           child: Container(
+                                    //             margin: EdgeInsets.all(10),
+                                    //             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                    //             decoration: BoxDecoration(
+                                    //                 color: e.isSelected ? successColor : whiteColor,
+                                    //                 borderRadius: BorderRadius.circular(8),
+                                    //                 border: Border.all(color: e.isSelected ? Colors.transparent : blackColor)),
+                                    //             child: Text(
+                                    //               e.documentName.toString(),
+                                    //               style: TextStyle(color: e.isSelected! ? whiteColor : blackColor),
+                                    //             ),
+                                    //           ),
+                                    //         ),
+                                    //       )
+                                    //       .toList(),
+                                    // ),
+                                    // ),
+                                    CustomDropDownFormField(
+                                      label: "Purpose of Trip",
+                                      hintText: "Purpose of Trip",
+                                      items: controller.documentList
+                                          .map((e) => DropdownMenuItem(
+                                                child: Text(e.documentName.toString()),
+                                                value: e.documentName,
+                                              ))
+                                          .toList(),
+                                      value: controller.searchValue,
+                                      onChanged: (value) {
+                                        controller.searchValue = value ?? "";
+                                        controller.update();
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    CustomTextFormField(
+                                        readOnly: true,
+                                        controller: controller.dateRange,
+                                        suffixIcon: const Icon(Icons.calendar_month),
+                                        onTap: () {
+                                          showCustomDateRangePicker(
+                                            context,
+                                            dismissible: true,
+                                            minimumDate: DateTime.now().subtract(const Duration(days: 365)),
+                                            maximumDate: DateTime.now().add(const Duration(days: 365)),
+                                            // endDate: controller.endDate,
+                                            // startDate: controller.startDate,
+                                            backgroundColor: Colors.white,
+                                            primaryColor: Colors.green,
+                                            onApplyClick: (start, end) {
+                                              controller.endDate = controller.rangeFormat.format(end);
+                                              controller.startDate = controller.rangeFormat.format(start);
+
+                                              controller.dateRange.text =
+                                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+
+                                              controller.fetchList();
+                                              controller.update();
+                                            },
+                                            onCancelClick: () {
+                                              controller.endDate = null;
+                                              controller.startDate = null;
+                                              controller.update();
+                                            },
+                                          );
+                                        },
+                                        label: "Date Range".tr),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                  ],
+                                );
+                              }));
+                            },
                           ),
-                        ),
-                        Container(height: 10, color: baseColor),
-                      ],
-                    ),
-                  ),
-                ),
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: SliverAppBarDelegate(
-                    minHeight: 70,
-                    maxHeight: 32,
-                    child: Column(
-                      children: [
-                        CustomPagination(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          onPageChanged: (int pageNumber) {
-                            controller.currentPage = pageNumber;
-                          },
-                          pageTotal: 10,
-                          pageInit: controller.currentPage,
-                          colorPrimary: whiteColor,
-                          colorSub: infoColor,
-                        ),
-                        Container(height: 10, color: baseColor),
-                      ],
+                          controller.dataisnull
+                              ? DataEmpty()
+                              : CustomPagination(
+                                  colorSub: whiteColor,
+                                  colorPrimary: infoColor,
+                                  onPageChanged: (int pageNumber) {
+                                    controller.currentPage = pageNumber;
+                                    controller.fetchList();
+                                    controller.update();
+                                  },
+                                  threshold: 5,
+                                  pageTotal: controller.rtlModel?.data?.lastPage?.toInt() ?? 1,
+                                  pageInit: controller.currentPage,
+                                ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: CustomTripCard(
-                          listNumber: 1,
-                          title: "TRV-ABM/1232/23.04",
-                          status: "Waiting\nApproved",
-                          subtitle: "23/04/23",
-                          info: 'Company Business',
-                          isEdit: true,
-                          isDelete: true,
-                          approval: true,
-                          content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Requestor", style: listTitleTextStyle),
-                              Text("jack", style: listSubTitleTextStyle)
-                            ],
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: CustomTripCard(
+                              listNumber: controller.currentPage > 1 ? (index + controller.rtlModel!.data!.from!.toInt()) : (index + 1),
+                              title: controller.requestList[index].noRequestTrip.toString(),
+                              status: controller.requestList[index].status,
+                              subtitle: controller.requestList[index].createdAt?.substring(0, 10),
+                              info: controller.requestList[index].documentName,
+                              approval: true,
+                              isEdit: true,
+                              editAction: () => Get.to(
+                                const FormRequestTripScreen(),
+                                arguments: {
+                                  'id': controller.requestList[index].id?.toInt(),
+                                },
+                              ),
+                              isDelete: true,
+                              content: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Requestor", style: listTitleTextStyle),
+                                  Text(controller.requestList[index].employeeName ?? "", style: listSubTitleTextStyle)
+                                ],
+                              ),
+                              onTap: () => Get.to(ApprovalFormRequestTripScreen(), arguments: {
+                                'id': controller.requestList[index].id?.toInt(),
+                              }),
+                            ),
                           ),
-                          onTap: () => Get.to(ApprovalFormRequestTripScreen()),
-                        ),
+                          controller.requestList.length == index + 1 ? SizedBox(height: 100) : SizedBox()
+                        ],
                       );
                     },
-                    childCount: 10, // 1000 list items
+                    childCount: controller.requestList.length ?? 1,
                   ),
                 ),
               ],

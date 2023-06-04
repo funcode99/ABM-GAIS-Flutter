@@ -1,7 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/request_trip/request_trip_list_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
@@ -9,7 +12,10 @@ import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_transport_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/other_transport/edit/edit_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_controller.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
+import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
 
 class OtherTransportScreen extends StatelessWidget {
@@ -44,56 +50,61 @@ class OtherTransportScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
-                      child:
-                          SvgPicture.asset("assets/icons/car.svg", height: 25),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                      child: SvgPicture.asset(ImageConstant.car, height: 25),
                     ),
                     Text("Other Transportation", style: appTitle),
                     SizedBox(height: 14),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      child: Text("Other Transportation",
-                          style: listTitleTextStyle,
-                          textAlign: TextAlign.start),
-                    ),
-                    CustomTripCard(
-                      listNumber: 1,
-                      title: "Jack H",
-                      subtitle: "SSB Pool Car",
-                      status: "Pending",
-                      info: "Surabaya",
-                      isEdit: true,
-                      isDelete: true,
-                      content: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("From Date", style: listTitleTextStyle),
-                              Text("21/03/23", style: listSubTitleTextStyle),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("To Date", style: listTitleTextStyle),
-                              Text("23/03/23",
-                                  style: listSubTitleTextStyle),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text("Quantity", style: listTitleTextStyle),
-                              Text("1", style: listSubTitleTextStyle),
-                            ],
-                          ),
-                        ],
-                      ),
+                    Column(
+                      children: controller.otList
+                          .mapIndexed(
+                            (i, e) => CustomTripCard(
+                              listNumber: i + 1,
+                              title: e.employeeName.toString(),
+                              subtitle: e.typeTransportation.toString(),
+                              status: e.status.toString(),
+                              info: e.cityName.toString(),
+                              isEdit: true,
+                              editAction: () => Get.to(EditOtherTransportScreen(), arguments: {
+                                'purposeID': controller.purposeID,
+                                'codeDocument': controller.codeDocument,
+                                'otID': e.id,
+                              })?.then((result) {
+                                controller.fetchList();
+                                controller.update();
+                                print(result);
+                              }),
+                              isDelete: true,
+                              deleteAction: () => controller.delete(int.parse(e.id.toString())),
+                              content: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("From Date", style: listTitleTextStyle),
+                                      Text(e.fromDate.toString(), style: listSubTitleTextStyle),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("To Date", style: listTitleTextStyle),
+                                      Text(e.toDate.toString(), style: listSubTitleTextStyle),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Quantity", style: listTitleTextStyle),
+                                      Text(e.qty.toString(), style: listSubTitleTextStyle),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ),
                     SizedBox(height: 20),
                     Padding(
@@ -102,28 +113,58 @@ class OtherTransportScreen extends StatelessWidget {
                         color: infoColor,
                         title: "Add Other Transportation",
                         icon: Icons.add,
-                        onPressed: ()=> Get.to(AddOtherTransportScreen()),
+                        onPressed: () =>
+                            Get.to(AddOtherTransportScreen(), arguments: {'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument})
+                                ?.then((result) {
+                          controller.fetchList();
+                          controller.update();
+                          print(result);
+                        }),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomFilledButton(
-                          width: 100,
-                          color: Colors.transparent,
-                          borderColor: infoColor,
-                          title: "Back",
-                          fontColor: infoColor,
-                          onPressed: () => Get.back(),
-                        ),
-                        CustomFilledButton(
-                          width: 100,
-                          color: infoColor,
-                          title: "Next",
-                          onPressed: () => Get.to(AccommodationScreen()),
-                        ),
-                      ],
-                    )
+                    controller.codeDocument == 2
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomFilledButton(
+                                width: 100,
+                                color: Colors.transparent,
+                                borderColor: infoColor,
+                                title: "Back",
+                                fontColor: infoColor,
+                                onPressed: () => Get.back(),
+                              ),
+                              CustomFilledButton(
+                                width: 100,
+                                color: infoColor,
+                                title: "Draft",
+                                onPressed: () => Get.offAll(FormRequestTripScreen(), arguments: {
+                                  'id': controller.purposeID,
+                                  'codeDocument': controller.codeDocument,
+                                }),
+                              ),
+                              CustomFilledButton(
+                                width: 100,
+                                color: infoColor,
+                                title: "Submit",
+                                onPressed: () => controller.submit(),
+                              ),
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomFilledButton(
+                                width: 100,
+                                color: Colors.transparent,
+                                borderColor: infoColor,
+                                title: "Back",
+                                fontColor: infoColor,
+                                onPressed: () => Get.back(),
+                              ),
+                              CustomFilledButton(width: 100, color: infoColor, title: "Next", onPressed: () => controller.next()),
+                            ],
+                          )
                   ],
                 ),
               ),

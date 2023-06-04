@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
@@ -7,6 +8,7 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
@@ -14,9 +16,9 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/request_atk/add/add_request_atk_screen.dart';
-import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/list/request_atk_list_controller.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -28,224 +30,232 @@ class RequestATKListScreen extends StatefulWidget {
 }
 
 class _RequestATKListScreenState extends State<RequestATKListScreen> {
-  List<Widget> _getData() {
-    List<Widget> list = [];
-    for (int i = 1; i < 10; i++) {
-      list.add(CommonListItem(
-        onTap: () {
-          Get.to(RequestATKDetailScreen());
-        },
-        number: "$i",
-        title: "TCA-ABM/1232/23.0$i",
-        subtitle: "John Smith - $i",
-        content: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    "Requestor".tr,
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        fontSize: 14, color: Colors.black, height: 1.5),
-                  ),
-                  Text(
-                    "Kia B",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    "Item".tr,
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        fontSize: 14, color: Colors.black, height: 1.5),
-                  ),
-                  Text(
-                    "Pensil",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    "Qty".tr,
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        fontSize: 14, color: Colors.black, height: 1.5),
-                  ),
-                  Text(
-                    "2",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    "UOM".tr,
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        fontSize: 14, color: Colors.black, height: 1.5),
-                  ),
-                  Text(
-                    "Pcs",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        action: [
-          CustomIconButton(
-            backgroundColor: redColor,
-            title: "Delete".tr,
-            iconData: IconlyBold.delete,
-            onPressed: () {
-              Get.dialog(DeleteConfirmationDialog(
-                onDeletePressed: () {
-                  Get.back();
-                },
-              ));
-            },
-          )
-        ],
-        status: "Completed".tr,
-      ));
-    }
-    return list;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<RequestATKListController>(
-        init: RequestATKListController(),
-        builder: (controller) {
-          return Scaffold(
-            backgroundColor: baseColor,
-            appBar: AppBar(
-              leading: const CustomBackButton(),
-              backgroundColor: whiteColor,
-              title: Text("ATK Request".tr, style: appTitle),
-              centerTitle: true,
-              flexibleSpace: const TopBar(),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-                  CustomSearchBar(
-                    onChanged: (string) {},
-                    onPressedFilter: () {
-                      Get.bottomSheet(FilterBottomSheet(
-                        onApplyFilter: () {
-                          controller.applyFilter();
-                          Get.back();
+    final RequestATKListController controller =
+        Get.put(RequestATKListController());
+
+    return Scaffold(
+      backgroundColor: baseColor,
+      appBar: AppBar(
+        leading: const CustomBackButton(),
+        backgroundColor: whiteColor,
+        title: Text("ATK Request".tr, style: appTitle),
+        centerTitle: true,
+        flexibleSpace: const TopBar(),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            CustomSearchBar(
+              onSubmit: (string) {
+                controller.applySearch(string);
+              },
+              onClearFilter: () {
+                controller.applySearch("");
+              },
+              onPressedFilter: () {
+                controller.openFilter();
+                Get.bottomSheet(FilterBottomSheet(
+                  onApplyFilter: () {
+                    controller.applyFilter();
+                    Get.back();
+                  },
+                  onResetFilter: () {
+                    controller.resetFilter();
+                  },
+                  children: [
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Obx(() {
+                      return CustomDropDownFormField(
+                        items: controller.listStatus
+                            .map((e) => DropdownMenuItem(
+                                  value: e.code.toString(),
+                                  child: Text("${e.status}"),
+                                ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller.onChangeSelectedStatus(item.toString());
                         },
-                        children: [
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          CustomDropDownFormField(
-                            items: [
-                              DropdownMenuItem(
-                                value: "",
-                                child: Text("Status".tr),
-                              ),
-                              const DropdownMenuItem(
-                                value: "Completed",
-                                child: Text("Completed"),
-                              ),
-                              const DropdownMenuItem(
-                                value: "Pending",
-                                child: Text("Pending"),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              controller.tempSelectedValue = value!;
+                        label: "Status".tr,
+                        value: controller.selectedStatusTemp.value != null
+                            ? controller.selectedStatusTemp.value?.code.toString()
+                            : "",
+                      );
+                    }),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    CustomTextFormField(
+                        readOnly: true,
+                        controller: controller.dateRangeController,
+                        suffixIcon: const Icon(Icons.calendar_month),
+                        onTap: () {
+                          showCustomDateRangePicker(
+                            context,
+                            dismissible: true,
+                            minimumDate: DateTime.now()
+                                .subtract(const Duration(days: 365)),
+                            maximumDate:
+                                DateTime.now().add(const Duration(days: 365)),
+                            endDate: controller.endDate.value,
+                            startDate: controller.startDate.value,
+                            backgroundColor: Colors.white,
+                            primaryColor: Colors.green,
+                            onApplyClick: (start, end) {
+                              controller.endDateTemp.value = end;
+                              controller.startDateTemp.value = start;
+                              controller.dateRangeController.text =
+                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                              controller.update();
                             },
-                            label: "Status".tr,
-                            value: controller.selectedValue,
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          CustomTextFormField(
-                              readOnly: true,
-                              controller: controller.dateRange,
-                              suffixIcon: const Icon(Icons.calendar_month),
-                              onTap: () {
-                                showCustomDateRangePicker(
-                                  context,
-                                  dismissible: true,
-                                  minimumDate: DateTime.now()
-                                      .subtract(const Duration(days: 365)),
-                                  maximumDate: DateTime.now()
-                                      .add(const Duration(days: 365)),
-                                  endDate: controller.endDate,
-                                  startDate: controller.startDate,
-                                  backgroundColor: Colors.white,
-                                  primaryColor: Colors.green,
-                                  onApplyClick: (start, end) {
-                                    controller.endDate = end;
-                                    controller.startDate = start;
-                                    controller.dateRange.text =
-                                        "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
-                                    controller.update();
-                                  },
-                                  onCancelClick: () {
-                                    controller.endDate = null;
-                                    controller.startDate = null;
-                                    controller.update();
-                                  },
-                                );
-                              },
-                              label: "Date Range".tr),
-                          const SizedBox(
-                            height: 8,
-                          ),
+                            onCancelClick: () {},
+                          );
+                        },
+                        label: "Date Range".tr),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                  ],
+                ));
+              },
+            ),
+            Obx(() {
+              if (controller.listHeader.isEmpty) {
+                return const SizedBox();
+              }
+
+              return CustomPagination(
+                colorSub: whiteColor,
+                colorPrimary: infoColor,
+                key: UniqueKey(),
+                onPageChanged: (page) {
+                  if(page != controller.currentPage.value){
+                    controller.getHeader(page: page);
+                  }
+                },
+                pageTotal: controller.totalPage.value,
+                margin: EdgeInsets.zero,
+                pageInit: controller.currentPage.value,
+              );
+            }),
+            const SizedBox(
+              height: 12,
+            ),
+            Expanded(
+                child: RefreshIndicator(
+              onRefresh: () async {
+                controller.getHeader();
+              },
+              child: Obx(() {
+                return controller.listHeader.isEmpty
+                    ? const DataEmpty()
+                    : ListView(
+                        children: [
+                          ...controller.listHeader.mapIndexed((index, item) =>
+                              CommonListItem(
+                                onTap: item.codeStatusDoc == 0 ? null : (){
+                                  Get.to(() => const RequestATKDetailScreen(),
+                                      arguments: {"item": item});
+                                },
+                                number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
+                                title: "${item.noAtkRequest}",
+                                subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                content: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Flexible(
+                                        flex: 1,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Requestor".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              "${item.employeeName}",
+                                              style: listSubTitleTextStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Flexible(
+                                        flex: 1,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Item Count".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              "${item.itemCount}",
+                                              style: listSubTitleTextStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                action: item.codeStatusDoc == 0
+                                    ? [
+                                        CustomIconButton(
+                                          title: "Edit".tr,
+                                          iconData: IconlyBold.edit,
+                                          backgroundColor: successColor,
+                                          onPressed: () async {
+                                            Get.to(
+                                                () =>
+                                                    const RequestATKDetailScreen(),
+                                                arguments: {
+                                                  "item": item
+                                                })?.then((value) =>
+                                                controller.getHeader());
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        CustomIconButton(
+                                          backgroundColor: redColor,
+                                          title: "Delete".tr,
+                                          iconData: IconlyBold.delete,
+                                          onPressed: () {
+                                            Get.dialog(DeleteConfirmationDialog(
+                                              onDeletePressed: () {
+                                                controller.deleteHeader(item);
+                                                Get.back();
+                                              },
+                                            ));
+                                          },
+                                        )
+                                      ]
+                                    : [],
+                                status: item.status,
+                              ))
                         ],
-                      ));
-                    },
-                  ),
-                  CustomPagination(
-                    onPageChanged: (int) {},
-                    pageTotal: 5,
-                    margin: EdgeInsets.zero,
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [..._getData()],
-                        ),
-                      ))
-                ],
-              ),
-            ),
-            floatingActionButton: FloatingActionButton(
-              backgroundColor: successColor,
-              onPressed: () => Get.to(const AddRequestATKScreen()),
-              child: const Icon(Icons.add_rounded, size: 45),
-            ),
-            bottomNavigationBar: const BottomBar(menu: 1),
-          );
-        });
+                      );
+              }),
+            ))
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: successColor,
+        onPressed: ()async{
+          Get.to(() => const AddRequestATKScreen())
+              ?.then((value) => controller.getHeader());
+        },
+        child: const Icon(Icons.add_rounded, size: 45),
+      ),
+      bottomNavigationBar: const BottomBar(menu: 1),
+    );
   }
 }
