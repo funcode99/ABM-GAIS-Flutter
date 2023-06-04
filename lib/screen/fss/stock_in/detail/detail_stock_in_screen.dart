@@ -7,6 +7,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -49,11 +50,13 @@ class DetailStockInScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      controller.selectedItem.value.status != null ?
-                      CustomStatusContainer(
-                        backgroundColor: greenColor,
-                        status: controller.selectedItem.value.status ?? "-",
-                      ) : const SizedBox()
+                      controller.selectedItem.value.status != null
+                          ? CustomStatusContainer(
+                              backgroundColor: greenColor,
+                              status:
+                                  controller.selectedItem.value.status ?? "-",
+                            )
+                          : const SizedBox()
                     ],
                   ),
                 ),
@@ -238,7 +241,44 @@ class DetailStockInScreen extends StatelessWidget {
                                     number: "${index + 1}",
                                     title: item.itemName ?? "",
                                     subtitle: item.brandName ?? "",
-                                    action: [],
+                                    action: controller.onEdit.value
+                                        ? [
+                                            CustomIconButton(
+                                              title: "Edit".tr,
+                                              iconData: IconlyBold.edit,
+                                              backgroundColor: successColor,
+                                              onPressed: () async {
+                                                final updatedItem =
+                                                    await Get.to(() =>
+                                                        AddItemStockInATKScreen(
+                                                            item: item));
+                                                if (updatedItem != null) {
+                                                  //add item
+                                                  controller.updateDetail(
+                                                      updatedItem);
+                                                }
+                                              },
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            CustomIconButton(
+                                              title: "Delete".tr,
+                                              iconData: IconlyBold.delete,
+                                              backgroundColor: redColor,
+                                              onPressed: () {
+                                                Get.dialog(
+                                                    DeleteConfirmationDialog(
+                                                  onDeletePressed: () {
+                                                    controller
+                                                        .deleteDetail(item);
+                                                    Get.close(1);
+                                                  },
+                                                ));
+                                              },
+                                            )
+                                          ]
+                                        : [],
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 8),

@@ -91,7 +91,6 @@ class DetailStockInController extends BaseController {
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (detailModel) {
-      listDetail.add(detailModel);
       getDetailData();
     });
   }
@@ -124,8 +123,7 @@ class DetailStockInController extends BaseController {
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (model) {
-      int index = listDetail.indexWhere((element) => element.id == item.id);
-      listDetail[index] = item;
+      getDetailData();
     });
   }
 }
