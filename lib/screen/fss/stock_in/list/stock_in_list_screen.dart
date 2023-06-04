@@ -18,6 +18,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/stock_in/add/add_stock_in_screen.dart';
 import 'package:gais/screen/fss/stock_in/edit/edit_stock_in_screen.dart';
 import 'package:gais/screen/fss/stock_in/list/stock_in_list_controller.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -191,7 +192,7 @@ class StockInListScreen extends StatelessWidget {
                           ...controller.listHeader.mapIndexed((index, item) =>
                               CommonListItem(
                                   number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
-                                  subtitle: "${item.id}",
+                                  subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                   title: item.noStockIn,
                                   content: Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -204,11 +205,11 @@ class StockInListScreen extends StatelessWidget {
                                           child: Column(
                                             children: [
                                               Text(
-                                                "Warehouse".tr,
+                                                "Requestor".tr,
                                                 style: listTitleTextStyle,
                                               ),
                                               Text(
-                                                item.warehouseName ?? "-",
+                                                item.employeeName ?? "-",
                                                 style: listSubTitleTextStyle.copyWith(
                                                   overflow: TextOverflow.ellipsis
                                                 ),
