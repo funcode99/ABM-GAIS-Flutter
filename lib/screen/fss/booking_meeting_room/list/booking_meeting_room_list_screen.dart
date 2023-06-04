@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
+import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
@@ -27,6 +28,7 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: baseColor,
       appBar: AppBar(
+        leading: const CustomBackButton(),
         backgroundColor: whiteColor,
         title: Text("Booking Meeting Room".tr, style: appTitle),
         centerTitle: true,
@@ -38,6 +40,9 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
           children: [
             CustomSearchBar(
               onChanged: (string) {},
+              onClearFilter: (){
+
+              },
               onPressedFilter: () {
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {
@@ -104,104 +109,124 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
               onPageChanged: (int) {},
               pageTotal: 5,
               margin: EdgeInsets.zero,
+              colorSub: whiteColor,
+              colorPrimary: infoColor,
             ),
             const SizedBox(
               height: 12,
             ),
             Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ...controller.listItem.mapIndexed((index, element) =>
-                          CommonListItem(
-                              number: "${index+1}",
-                              subtitle: element.date,
-                              title: element.title,
-                              total: element.meetingRoom,
-                              status: element.status,
-                              content: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Column(
+                child: ListView(
+                  children: [
+                    ...controller.listItem.mapIndexed((index, element) =>
+                        CommonListItem(
+                            number: "${index+1}",
+                            subtitle: element.date,
+                            title: element.title,
+                            total: element.meetingRoom,
+                            status: element.status,
+                            content: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Expanded(
+                                    child: Column(
                                       children: [
                                         Text(
                                           "Brand".tr,
+                                          textAlign: TextAlign.center,
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
                                           "Pilot",
-                                          style: listSubTitleTextStyle,
+                                          style: listSubTitleTextStyle.copyWith(
+                                            overflow: TextOverflow.ellipsis
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    Column(
+                                  ),
+                                  Expanded(
+                                    child: Column(
                                       children: [
                                         Text(
                                           "Warehouse".tr,
+                                          textAlign: TextAlign.center,
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
                                           "Warehouse A",
-                                          style: listSubTitleTextStyle,
+                                          style: listSubTitleTextStyle.copyWith(
+                                            overflow: TextOverflow.ellipsis
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    Column(
+                                  ),
+                                  Expanded(
+                                    child: Column(
                                       children: [
                                         Text(
                                           "Alert Quantity".tr,
+                                          textAlign: TextAlign.center,
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
                                           "20",
-                                          style: listSubTitleTextStyle,
+                                          style: listSubTitleTextStyle.copyWith(
+                                            overflow: TextOverflow.ellipsis
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    Column(
+                                  ),
+                                  Expanded(
+                                    child: Column(
                                       children: [
                                         Text(
                                           "UOM".tr,
+                                          textAlign: TextAlign.center,
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
                                           "Pcs",
-                                          style: listSubTitleTextStyle,
+                                          style: listSubTitleTextStyle.copyWith(
+                                            overflow: TextOverflow.ellipsis
+                                          ),
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              action: [
-                                CustomIconButton(
-                                  title: "Edit".tr,
-                                  iconData: IconlyBold.edit,
-                                  backgroundColor: successColor,
-                                  onPressed: () {
-                                    Get.to(const AddManagementItemATKScreen());
-                                  },
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                CustomIconButton(
-                                  title: "Delete".tr,
-                                  iconData: IconlyBold.delete,
-                                  backgroundColor: redColor,
-                                  onPressed: () {
-                                    Get.dialog(DeleteConfirmationDialog(
-                                      onDeletePressed: (){
-                                        Get.back();
-                                      },
-                                    ));
-                                  },
-                                )
-                              ]))
-                    ],
-                  ),
+                            ),
+                            action: [
+                              CustomIconButton(
+                                title: "Edit".tr,
+                                iconData: IconlyBold.edit,
+                                backgroundColor: successColor,
+                                onPressed: () {
+                                  Get.to(const AddManagementItemATKScreen());
+                                },
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              CustomIconButton(
+                                title: "Delete".tr,
+                                iconData: IconlyBold.delete,
+                                backgroundColor: redColor,
+                                onPressed: () {
+                                  Get.dialog(DeleteConfirmationDialog(
+                                    onDeletePressed: (){
+                                      Get.back();
+                                    },
+                                  ));
+                                },
+                              )
+                            ]))
+                  ],
                 ))
           ],
         ),
