@@ -225,7 +225,7 @@ class StockInListScreen extends StatelessWidget {
                                                 style: listTitleTextStyle,
                                               ),
                                               Text(
-                                                "${index + 10}",
+                                                "${item.itemCount}",
                                                 style: listSubTitleTextStyle.copyWith(
                                                   overflow: TextOverflow.ellipsis
                                                 ),
@@ -256,7 +256,8 @@ class StockInListScreen extends StatelessWidget {
                                       onPressed: () {
                                         Get.dialog(DeleteConfirmationDialog(
                                           onDeletePressed: () {
-                                            Get.back();
+                                            Get.close(1);
+                                            controller.deleteHeader(item);
                                           },
                                         ));
                                       },
