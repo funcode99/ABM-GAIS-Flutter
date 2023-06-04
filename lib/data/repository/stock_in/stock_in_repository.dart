@@ -71,9 +71,25 @@ class StockInATKRepository
   }
 
   @override
-  Future<Either<BaseError, StockInATKModel>> detailData(int id) {
-    // TODO: implement detailData
-    throw UnimplementedError();
+  Future<Either<BaseError, StockInATKModel>> detailData(int id) async {
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/stock_in/get/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(
+          response.data, StockInATKModel.fromJsonModelList);
+      List<StockInATKModel> list = apiResponseModel.data;
+      return right(list.first);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e) {
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    } catch (e) {
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
@@ -85,7 +101,7 @@ class StockInATKRepository
 
   @override
   Future<Either<BaseError, List<StockInATKDetailModel>>> getDataDetails(
-      int id) async{
+      int id) async {
     try {
       Dio.Response response = await network.dio.get(
         '/api/stock_in/get_by_stock_in_id/$id',
@@ -103,7 +119,7 @@ class StockInATKRepository
   }
 
   @override
-  Future<Either<BaseError, StockInATKModel>> saveData(model) async{
+  Future<Either<BaseError, StockInATKModel>> saveData(model) async {
     final stockInModel = model as StockInATKModel;
 
     try {
