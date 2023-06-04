@@ -79,7 +79,7 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
                 iconData: Icons.check,
                 backgroundColor: successColor,
                 onPressed: (){
-
+                  Get.to(const DetailApprovalRequestATKScreen(approvalActionEnum: ApprovalActionEnum.approve,));
                 },
               ),
               const SizedBox(
