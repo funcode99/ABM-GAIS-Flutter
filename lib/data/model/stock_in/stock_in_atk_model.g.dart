@@ -16,7 +16,7 @@ StockInATKModel _$StockInATKModelFromJson(Map<String, dynamic> json) =>
       idEmployee: json['id_employee'] as int?,
       noStockIn: json['no_stock_in'] as String?,
       remarks: json['remarks'] as String?,
-      codeStatusDoc: json['code_status_doc'] as int?,
+      codeStatusDoc: json['code_status_doc'],
       createdAt: json['created_at'] as String?,
       createdBy: json['created_by'],
       updatedAt: json['updated_at'] as String?,
@@ -29,6 +29,10 @@ StockInATKModel _$StockInATKModelFromJson(Map<String, dynamic> json) =>
       siteName: json['site_name'] as String?,
       siteCode: json['site_code'] as String?,
       itemCount: json['item_count'] as int?,
+      arrayDetail: (json['array_detail'] as List<dynamic>?)
+          ?.map(
+              (e) => StockInATKDetailModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$StockInATKModelToJson(StockInATKModel instance) =>
@@ -54,4 +58,5 @@ Map<String, dynamic> _$StockInATKModelToJson(StockInATKModel instance) =>
       'site_name': instance.siteName,
       'site_code': instance.siteCode,
       'item_count': instance.itemCount,
+      'array_detail': instance.arrayDetail?.map((e) => e.toJson()).toList(),
     };

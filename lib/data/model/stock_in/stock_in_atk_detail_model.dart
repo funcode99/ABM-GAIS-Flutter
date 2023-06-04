@@ -8,6 +8,7 @@ class StockInATKDetailModel extends Equatable {
   String? key;
   int? id;
   int? idStockIn;
+  int? idWarehouse;
   int? idItem;
   int? qty;
   String? remarks;
@@ -15,11 +16,17 @@ class StockInATKDetailModel extends Equatable {
   dynamic createdBy;
   String? updatedAt;
   dynamic updatedBy;
+  String? itemName;
+  String? codeItem;
+  String? brandName;
+  String? uomName;
+  String? warehouseName;
 
   StockInATKDetailModel({
     this.key,
     this.id,
     this.idStockIn,
+    this.idWarehouse,
     this.idItem,
     this.qty,
     this.remarks,
@@ -27,6 +34,11 @@ class StockInATKDetailModel extends Equatable {
     this.createdBy,
     this.updatedAt,
     this.updatedBy,
+    this.itemName,
+    this.codeItem,
+    this.brandName,
+    this.uomName,
+    this.warehouseName,
   });
 
   factory StockInATKDetailModel.fromJson(Map<String, dynamic> json) =>
@@ -75,6 +87,7 @@ class StockInATKDetailModel extends Equatable {
         key,
         id,
         idStockIn,
+        idWarehouse,
         idItem,
         qty,
         remarks,
@@ -82,5 +95,10 @@ class StockInATKDetailModel extends Equatable {
         createdBy,
         updatedAt,
         updatedBy,
+        itemName,
+        codeItem,
+        brandName,
+        uomName,
+        warehouseName,
       ];
 }

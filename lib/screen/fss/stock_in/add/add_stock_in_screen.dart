@@ -54,6 +54,7 @@ class AddStockInATKScreen extends StatelessWidget {
                   ),
                   CustomTextFormField(
                       isRequired: true,
+                      readOnly: true,
                       controller: controller.companyController,
                       label: "Company".tr),
                   const SizedBox(
@@ -61,6 +62,7 @@ class AddStockInATKScreen extends StatelessWidget {
                   ),
                   CustomTextFormField(
                       isRequired: true,
+                      readOnly: true,
                       controller: controller.siteController,
                       label: "Site".tr),
                   const SizedBox(
@@ -78,84 +80,102 @@ class AddStockInATKScreen extends StatelessWidget {
                     color: greyColor,
                   ),
                   Obx(
-                      () => Column(
+                    () => Column(
                       children: [
-                        ...controller.listItem
+                        ...controller.listDetail
                             .mapIndexed((index, element) => CommonAddItem(
-                          number: "${index + 1}",
-                          title: element.itemName,
-                          subtitle: element.brand,
-                          content: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                      "Quantity".tr,
-                                      style: listTitleTextStyle,
+                                  number: "${index + 1}",
+                                  title: element.itemName ?? "",
+                                  subtitle: element.brandName ?? "",
+                                  content: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 8),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                "Quantity".tr,
+                                                style: listTitleTextStyle,
+                                              ),
+                                              Text(
+                                                "${element.qty}",
+                                                style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                "UOM".tr,
+                                                style: listTitleTextStyle,
+                                              ),
+                                              Text(
+                                                element.uomName ?? "-",
+                                                style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                "Warehouse".tr,
+                                                style: listTitleTextStyle,
+                                              ),
+                                              Text(
+                                                element.warehouseName ?? "-",
+                                                style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "${element.quantity}",
-                                      style: listSubTitleTextStyle,
+                                  ),
+                                  action: [
+                                    CustomIconButton(
+                                      title: "Edit".tr,
+                                      iconData: IconlyBold.edit,
+                                      backgroundColor: successColor,
+                                      onPressed: () async{
+                                        final editedItem = await Get.to(()=>AddItemStockInATKScreen(item: element));
+                                        if(editedItem!=null){
+                                          controller.editItem(editedItem);
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    CustomIconButton(
+                                      title: "Delete".tr,
+                                      iconData: IconlyBold.delete,
+                                      backgroundColor: redColor,
+                                      onPressed: () {
+                                        Get.dialog(DeleteConfirmationDialog(
+                                          onDeletePressed: () {
+                                            Get.close(1);
+                                            controller.removeItem(element);
+                                          },
+                                        ));
+                                      },
                                     )
                                   ],
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      "UOM".tr,
-                                      style: listTitleTextStyle,
-                                    ),
-                                    Text(
-                                      element.uom,
-                                      style: listSubTitleTextStyle,
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      "Warehouse".tr,
-                                      style: listTitleTextStyle,
-                                    ),
-                                    Text(
-                                      element.warehouse,
-                                      style: listSubTitleTextStyle,
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          action: [
-                            CustomIconButton(
-                              title: "Edit".tr,
-                              iconData: IconlyBold.edit,
-                              backgroundColor: successColor,
-                              onPressed: () {
-                                Get.to(const AddItemStockInATKScreen());
-                              },
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            CustomIconButton(
-                              title: "Delete".tr,
-                              iconData: IconlyBold.delete,
-                              backgroundColor: redColor,
-                              onPressed: () {
-                                Get.dialog(DeleteConfirmationDialog(
-                                  onDeletePressed: () {
-                                    controller.removeItem(element);
-                                    Get.back();
-                                  },
-                                ));
-                              },
-                            )
-                          ], nominal: '',
-                        ))
+                                  nominal: '',
+                                ))
                             .toList()
                       ],
                     ),
@@ -164,8 +184,8 @@ class AddStockInATKScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-                        final addedItem = await Get.to(
-                            const AddItemStockInATKScreen());
+                        final addedItem =
+                            await Get.to(() => const AddItemStockInATKScreen());
                         if (addedItem != null) {
                           controller.addItem(addedItem);
                         }
@@ -207,7 +227,7 @@ class AddStockInATKScreen extends StatelessWidget {
                         () => ElevatedButton(
                           onPressed: controller.enableButton.value
                               ? () {
-                                  Get.off(const DetailStockInScreen());
+                                  controller.saveData();
                                 }
                               : null,
                           style: ElevatedButton.styleFrom(

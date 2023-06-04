@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:gais/data/model/stock_in/stock_in_atk_detail_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'stock_in_atk_model.g.dart';
@@ -13,7 +14,7 @@ class StockInATKModel extends Equatable {
   int? idEmployee;
   String? noStockIn;
   String? remarks;
-  int? codeStatusDoc;
+  dynamic codeStatusDoc;
   String? createdAt;
   dynamic createdBy;
   String? updatedAt;
@@ -26,6 +27,7 @@ class StockInATKModel extends Equatable {
   String? siteName;
   String? siteCode;
   int? itemCount;
+  List<StockInATKDetailModel>? arrayDetail;
 
   StockInATKModel({
     this.id,
@@ -49,6 +51,7 @@ class StockInATKModel extends Equatable {
     this.siteName,
     this.siteCode,
     this.itemCount,
+    this.arrayDetail,
   });
 
   factory StockInATKModel.fromJson(Map<String, dynamic> json) =>
@@ -113,5 +116,6 @@ class StockInATKModel extends Equatable {
         siteName,
         siteCode,
         itemCount,
+        arrayDetail,
       ];
 }
