@@ -1,0 +1,37 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'stock_in_atk_detail_model.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+StockInATKDetailModel _$StockInATKDetailModelFromJson(
+        Map<String, dynamic> json) =>
+    StockInATKDetailModel(
+      key: json['key'] as String?,
+      id: json['id'] as int?,
+      idStockIn: json['id_stock_in'] as int?,
+      idItem: json['id_item'] as int?,
+      qty: json['qty'] as int?,
+      remarks: json['remarks'] as String?,
+      createdAt: json['created_at'] as String?,
+      createdBy: json['created_by'],
+      updatedAt: json['updated_at'] as String?,
+      updatedBy: json['updated_by'],
+    );
+
+Map<String, dynamic> _$StockInATKDetailModelToJson(
+        StockInATKDetailModel instance) =>
+    <String, dynamic>{
+      'key': instance.key,
+      'id': instance.id,
+      'id_stock_in': instance.idStockIn,
+      'id_item': instance.idItem,
+      'qty': instance.qty,
+      'remarks': instance.remarks,
+      'created_at': instance.createdAt,
+      'created_by': instance.createdBy,
+      'updated_at': instance.updatedAt,
+      'updated_by': instance.updatedBy,
+    };

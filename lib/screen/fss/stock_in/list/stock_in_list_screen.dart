@@ -8,6 +8,7 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
@@ -22,7 +23,6 @@ import 'package:iconly/iconly.dart';
 
 class StockInListScreen extends StatelessWidget {
   const StockInListScreen({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,68 +42,71 @@ class StockInListScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomSearchBar(
-              onSubmit: (string) {},
+              onSubmit: (string) {
+                controller.applySearch(string);
+              },
+              onClearFilter: () {
+                controller.applySearch("");
+              },
               onPressedFilter: () {
+                controller.openFilter();
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {
                     controller.applyFilter();
                     Get.back();
                   },
+                  onResetFilter: () {
+                    controller.resetFilter();
+                  },
                   children: [
                     const SizedBox(
                       height: 8,
                     ),
-                    CustomDropDownFormField(
-                      items: [
-                        DropdownMenuItem(
-                          value: "",
-                          child: Text("Warehouse".tr),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Warehouse A",
-                          child: Text("Warehouse A"),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Warehouse B",
-                          child: Text("Warehouse B"),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        controller.tempSelectedValue = value!;
-                      },
-                      label: "Warehouse".tr,
-                      value: controller.selectedValue,
-                    ),
+                    Obx(() {
+                      return CustomDropDownFormField(
+                        items: controller.listWarehouse
+                            .map((e) => DropdownMenuItem(
+                                  value: e.id.toString(),
+                                  child: Text("${e.warehouseName}"),
+                                ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller.onChangeSelectedWarehouse(item.toString());
+                        },
+                        label: "Warehouse".tr,
+                        value: controller.selectedWarehouseTemp.value != null
+                            ? controller.selectedWarehouseTemp.value?.id
+                                .toString()
+                            : "",
+                      );
+                    }),
                     const SizedBox(
                       height: 8,
                     ),
                     CustomTextFormField(
                         readOnly: true,
-                        controller: controller.dateRange,
-                        suffixIcon: const Icon(
-                            Icons.calendar_month),
-                        onTap: (){
+                        controller: controller.dateRangeController,
+                        suffixIcon: const Icon(Icons.calendar_month),
+                        onTap: () {
                           showCustomDateRangePicker(
                             context,
                             dismissible: true,
-                            minimumDate: DateTime.now().subtract(const Duration(days: 365)),
-                            maximumDate: DateTime.now().add(const Duration(days: 365)),
-                            endDate: controller.endDate,
-                            startDate: controller.startDate,
+                            minimumDate: DateTime.now()
+                                .subtract(const Duration(days: 365)),
+                            maximumDate:
+                                DateTime.now().add(const Duration(days: 365)),
+                            endDate: controller.endDate.value,
+                            startDate: controller.startDate.value,
                             backgroundColor: Colors.white,
                             primaryColor: Colors.green,
                             onApplyClick: (start, end) {
-                              controller.endDate = end;
-                              controller.startDate = start;
-                              controller.dateRange.text =
-                              "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                              controller.endDateTemp.value = end;
+                              controller.startDateTemp.value = start;
+                              controller.dateRangeController.text =
+                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                               controller.update();
                             },
-                            onCancelClick: () {
-                              controller.endDate = null;
-                              controller.startDate = null;
-                              controller.update();
-                            },
+                            onCancelClick: () {},
                           );
                         },
                         label: "Date Range".tr),
@@ -111,90 +114,124 @@ class StockInListScreen extends StatelessWidget {
                 ));
               },
             ),
-            CustomPagination(
-              onPageChanged: (int) {},
-              pageTotal: 5,
-              margin: EdgeInsets.zero,
-            ),
+            Obx(() {
+              if (controller.listHeader.isEmpty) {
+                return const SizedBox();
+              }
+
+              return CustomPagination(
+                colorSub: whiteColor,
+                colorPrimary: infoColor,
+                key: UniqueKey(),
+                onPageChanged: (page) {
+                  if (page != controller.currentPage.value) {
+                    controller.getHeader(page: page);
+                  }
+                },
+                pageTotal: controller.totalPage.value,
+                margin: EdgeInsets.zero,
+                pageInit: controller.currentPage.value,
+              );
+            }),
             const SizedBox(
               height: 12,
             ),
             Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ...controller.listItem.mapIndexed((index, element) =>
-                          CommonListItem(
-                              number: "${index+1}",
-                              subtitle: element.id,
-                              title: element.itemName,
-                              content: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Column(
+                child: RefreshIndicator(
+              onRefresh: () async {
+                controller.getHeader();
+              },
+              child: Obx(() {
+                return controller.listHeader.isEmpty
+                    ? const DataEmpty()
+                    : ListView(
+                        children: [
+                          ...controller.listHeader.mapIndexed((index, item) =>
+                              CommonListItem(
+                                  number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
+                                  subtitle: "${item.id}",
+                                  title: item.noStockIn,
+                                  content: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 8),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                       children: [
-                                        Text(
-                                          "Warehouse".tr,
-                                          style: listTitleTextStyle,
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                "Warehouse".tr,
+                                                style: listTitleTextStyle,
+                                              ),
+                                              Text(
+                                                item.warehouseName ?? "-",
+                                                style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        Text(
-                                          "${element.warehouse}",
-                                          style: listSubTitleTextStyle,
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                "Item Count".tr,
+                                                style: listTitleTextStyle,
+                                              ),
+                                              Text(
+                                                "${index + 10}",
+                                                style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Item Count".tr,
-                                          style: listTitleTextStyle,
-                                        ),
-                                        Text(
-                                          "${index + 10}",
-                                          style: listSubTitleTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              status: "Status",
-                              action: [
-                                CustomIconButton(
-                                  title: "Edit".tr,
-                                  iconData: IconlyBold.edit,
-                                  backgroundColor: successColor,
-                                  onPressed: () {
-                                    Get.to(const EditStockInScreen());
-                                  },
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                CustomIconButton(
-                                  title: "Delete".tr,
-                                  iconData: IconlyBold.delete,
-                                  backgroundColor: redColor,
-                                  onPressed: () {
-                                    Get.dialog(DeleteConfirmationDialog(
-                                      onDeletePressed: (){
-                                        Get.back();
+                                  ),
+                                  status: "Status",
+                                  action: [
+                                    CustomIconButton(
+                                      title: "Edit".tr,
+                                      iconData: IconlyBold.edit,
+                                      backgroundColor: successColor,
+                                      onPressed: () {
+                                        Get.to(const EditStockInScreen());
                                       },
-                                    ));
-                                  },
-                                )
-                              ]))
-                    ],
-                  ),
-                ))
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    CustomIconButton(
+                                      title: "Delete".tr,
+                                      iconData: IconlyBold.delete,
+                                      backgroundColor: redColor,
+                                      onPressed: () {
+                                        Get.dialog(DeleteConfirmationDialog(
+                                          onDeletePressed: () {
+                                            Get.back();
+                                          },
+                                        ));
+                                      },
+                                    )
+                                  ]))
+                        ],
+                      );
+              }),
+            ))
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
-        onPressed: () => Get.to(const AddStockInATKScreen()),
+        onPressed: () async {
+          Get.to(() => const AddStockInATKScreen())
+              ?.then((value) => controller.getHeader());
+        },
         child: const Icon(Icons.add_rounded, size: 45),
       ),
       bottomNavigationBar: const BottomBar(menu: 1),
