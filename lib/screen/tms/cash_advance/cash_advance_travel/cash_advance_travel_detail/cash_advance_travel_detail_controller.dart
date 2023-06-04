@@ -39,7 +39,7 @@ class CashAdvanceTravelDetailController extends BaseController {
     referenceController.text = selectedItem.value.noRequestTrip ?? "-";
     totalController.text =
         "${selectedItem.value.currencyCode ?? ""} ${selectedItem.value.grandTotal?.toInt().toCurrency()}";
-    currencyController.text = "${selectedItem.value.currencyName}";
+    currencyController.text = "${selectedItem.value.currencyName ?? "-"}";
     remarksController.text =
         selectedItem.value.remarks ?? "-";
 
