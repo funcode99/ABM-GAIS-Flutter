@@ -35,10 +35,10 @@ class DetailStockInController extends BaseController {
     setValue();
   }
 
-  void setValue(){
+  void setValue() {
     createdByController.text = selectedItem.value.employeeName ?? "-";
     createdDateController.text = selectedItem.value.createdAt?.toDateFormat(
-        originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
+            originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
         "-";
     if (selectedItem.value.status?.toLowerCase() == "reject") {
       rejectNoteController.text = selectedItem.value.remarks ?? "-";
@@ -59,22 +59,21 @@ class DetailStockInController extends BaseController {
   void submitHeader() async {
     final result = await _repository.submitData(selectedItem.value.id!);
     result.fold(
-            (l) => Get.showSnackbar(
+        (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-            (cashAdvanceModel) {
-          detailHeader();
-        });
+        (cashAdvanceModel) {
+      detailHeader();
+    });
   }
 
   void getDetailData() async {
     final result = await _repository.getDataDetails(selectedItem.value.id!);
     result.fold(
-            (l) => Get.showSnackbar(
+        (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-            (r) {
-          listDetail.value = r;
-          listDetail.refresh();
-        });
+        (r) {
+      listDetail.value = r;
+    });
   }
 
   void updateEnableButton() {
@@ -89,18 +88,19 @@ class DetailStockInController extends BaseController {
     item.idStockIn = selectedItem.value.id;
     final result = await _repository.addDetail(item);
     result.fold(
-            (l) => Get.showSnackbar(
+        (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-            (detailModel) {
-          listDetail.add(detailModel);
-        });
+        (detailModel) {
+      listDetail.add(detailModel);
+      getDetailData();
+    });
   }
 
   void deleteDetail(StockInATKDetailModel item) async {
     if (item.id != null) {
       final result = await _repository.deleteDetail(item.id!);
       result.fold(
-              (l) => Get.showSnackbar(CustomGetSnackBar(
+          (l) => Get.showSnackbar(CustomGetSnackBar(
               message: l.message, backgroundColor: Colors.red)), (model) {
         Get.showSnackbar(CustomGetSnackBar(
           message: "Success Delete Data".tr,
@@ -121,11 +121,11 @@ class DetailStockInController extends BaseController {
     item.idStockIn = selectedItem.value.id;
     final result = await _repository.updateDetail(item, item.id!);
     result.fold(
-            (l) => Get.showSnackbar(
+        (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-            (model) {
-          int index = listDetail.indexWhere((element) => element.id == item.id);
-          listDetail[index] = item;
-        });
+        (model) {
+      int index = listDetail.indexWhere((element) => element.id == item.id);
+      listDetail[index] = item;
+    });
   }
 }

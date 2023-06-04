@@ -36,9 +36,24 @@ class StockInATKRepository
   }
 
   @override
-  Future<Either<BaseError, StockInATKDetailModel>> addDetail(model) {
-    // TODO: implement addDetail
-    throw UnimplementedError();
+  Future<Either<BaseError, StockInATKDetailModel>> addDetail(model) async{
+    final stockInATKDetailModel = model as StockInATKDetailModel;
+
+    try {
+      Dio.Response response = await network.dio.post(
+          '/api/stock_in/store_detail',
+          data: stockInATKDetailModel.toJson());
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(
+          response.data, StockInATKDetailModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e) {
+      return left(BaseError(message: e.message));
+    } catch (e) {
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
