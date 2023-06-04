@@ -15,6 +15,7 @@ class StockInATKModel extends Equatable {
   String? noStockIn;
   String? remarks;
   dynamic codeStatusDoc;
+  String? status;
   String? createdAt;
   dynamic createdBy;
   String? updatedAt;
@@ -39,6 +40,7 @@ class StockInATKModel extends Equatable {
     this.noStockIn,
     this.remarks,
     this.codeStatusDoc,
+    this.status,
     this.createdAt,
     this.createdBy,
     this.updatedAt,
@@ -104,6 +106,7 @@ class StockInATKModel extends Equatable {
         noStockIn,
         remarks,
         codeStatusDoc,
+        status,
         createdAt,
         createdBy,
         updatedAt,

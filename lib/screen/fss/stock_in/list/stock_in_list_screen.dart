@@ -16,7 +16,7 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/stock_in/add/add_stock_in_screen.dart';
-import 'package:gais/screen/fss/stock_in/edit/edit_stock_in_screen.dart';
+import 'package:gais/screen/fss/stock_in/detail/detail_stock_in_screen.dart';
 import 'package:gais/screen/fss/stock_in/list/stock_in_list_controller.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -236,14 +236,19 @@ class StockInListScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  status: "Status",
+                                  status: item.status,
                                   action: [
                                     CustomIconButton(
                                       title: "Edit".tr,
                                       iconData: IconlyBold.edit,
                                       backgroundColor: successColor,
                                       onPressed: () {
-                                        Get.to(const EditStockInScreen());
+                                        Get.to(
+                                            () => const DetailStockInScreen(),
+                                          arguments: {
+                                              "item" : item
+                                          }
+                                        );
                                       },
                                     ),
                                     const SizedBox(
