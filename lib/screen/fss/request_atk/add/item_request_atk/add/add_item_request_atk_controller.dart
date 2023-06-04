@@ -3,7 +3,7 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/request_atk/item_request_atk_model.dart';
 import 'package:gais/data/model/request_atk/request_atk_detail_model.dart';
-import 'package:gais/data/model/warehouse_model.dart';
+import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/ext/string_ext.dart';

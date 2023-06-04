@@ -18,7 +18,7 @@ class ManagementItemATKModel {
   String? createdAt;
   dynamic createdBy;
   String? updatedAt;
-  String? updatedBy;
+  dynamic updatedBy;
   String? brandName;
   String? uomName;
   String? companyName;

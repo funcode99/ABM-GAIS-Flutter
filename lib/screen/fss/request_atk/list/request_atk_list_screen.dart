@@ -8,9 +8,9 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
-import 'package:gais/reusable/error/empty_list_error.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
@@ -70,7 +70,6 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                       height: 8,
                     ),
                     Obx(() {
-                      print("controller.selectedStatus.value?.code ${controller.selectedStatus.value?.code}");
                       return CustomDropDownFormField(
                         items: controller.listStatus
                             .map((e) => DropdownMenuItem(
@@ -134,7 +133,9 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                 colorPrimary: infoColor,
                 key: UniqueKey(),
                 onPageChanged: (page) {
-                  controller.getHeader(page: page);
+                  if(page != controller.currentPage.value){
+                    controller.getHeader(page: page);
+                  }
                 },
                 pageTotal: controller.totalPage.value,
                 margin: EdgeInsets.zero,
@@ -151,7 +152,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
               },
               child: Obx(() {
                 return controller.listHeader.isEmpty
-                    ? const EmptyListError()
+                    ? const DataEmpty()
                     : ListView(
                         children: [
                           ...controller.listHeader.mapIndexed((index, item) =>
@@ -160,7 +161,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                                   Get.to(() => const RequestATKDetailScreen(),
                                       arguments: {"item": item});
                                 },
-                                number: "${index + 1}",
+                                number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
                                 title: "${item.noAtkRequest}",
                                 subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                 content: Padding(

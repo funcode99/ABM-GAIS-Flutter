@@ -23,7 +23,7 @@ ManagementItemATKModel _$ManagementItemATKModelFromJson(
       createdAt: json['created_at'] as String?,
       createdBy: json['created_by'],
       updatedAt: json['updated_at'] as String?,
-      updatedBy: json['updated_by'] as String?,
+      updatedBy: json['updated_by'],
       brandName: json['brand_name'] as String?,
       uomName: json['uom_name'] as String?,
       companyName: json['company_name'] as String?,

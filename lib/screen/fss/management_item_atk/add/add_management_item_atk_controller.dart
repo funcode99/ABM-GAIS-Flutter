@@ -3,7 +3,7 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/master/brand/brand_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
-import 'package:gais/data/model/warehouse_model.dart';
+import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
 import 'package:gais/data/repository/management_item_atk/management_item_atk_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
@@ -45,11 +45,12 @@ class AddManagementItemATKController extends BaseController with MasterDataMixin
     String companyName = await storage.readString(StorageCore.companyName);
     String idCompany = await storage.readString(StorageCore.companyID);
     String siteName = await storage.readString(StorageCore.siteName);
+    String idSite = await storage.readString(StorageCore.siteID);
 
     companyController.text = companyName;
-    siteController.text = siteName;
+    siteController.text = siteName ?? "-";
 
-    final warehouses = await getListWarehouseByCompanyId(idCompany.toInt());
+    final warehouses = await getListWarehouseBySiteId(idSite.toInt());
     listWarehouse(warehouses);
     selectedWarehouse(listWarehouse.first);
 
