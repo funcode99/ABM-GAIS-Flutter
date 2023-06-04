@@ -51,110 +51,118 @@ class StockInListScreen extends StatelessWidget {
               },
               onPressedFilter: () {
                 controller.openFilter();
-                Get.bottomSheet(FilterBottomSheet(
-                  onApplyFilter: () {
-                    controller.applyFilter();
-                    Get.back();
-                  },
-                  onResetFilter: () {
-                    controller.resetFilter();
-                  },
-                  children: [
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Obx(() {
-                      return CustomDropDownFormField(
-                        items: controller.listCompany
-                            .map((e) => DropdownMenuItem(
-                          value: e.id.toString(),
-                          child: Text("${e.companyName}"),
-                        ))
-                            .toList(),
-                        onChanged: (item) {
-                          controller.onChangeSelectedCompany(item.toString());
-                        },
-                        label: "Company".tr,
-                        value: controller.selectedCompanyTemp.value != null
-                            ? controller.selectedCompanyTemp.value?.id.toString()
-                            : "",
-                      );
-                    }),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Obx(() {
-                      return CustomDropDownFormField(
-                        items: controller.listSiteFiltered
-                            .map((e) => DropdownMenuItem(
-                          value: e.id.toString(),
-                          child: Text("${e.siteName}"),
-                        ))
-                            .toList(),
-                        onChanged: (item) {
-                          controller.onChangeSelectedSite(item.toString());
-                        },
-                        label: "Site".tr,
-                        value: controller.selectedSiteTemp.value != null
-                            ? controller.selectedSiteTemp.value?.id.toString()
-                            : "",
-                      );
-                    }),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Obx(() {
-                      return CustomDropDownFormField(
-                        items: controller.listWarehouseFiltered
-                            .map((e) => DropdownMenuItem(
-                          value: e.id.toString(),
-                          child: Text("${e.warehouseName}"),
-                        ))
-                            .toList(),
-                        onChanged: (item) {
-                          controller.onChangeSelectedWarehouse(item.toString());
-                        },
-                        label: "Warehouse".tr,
-                        value: controller.selectedWarehouseTemp.value != null
-                            ? controller.selectedWarehouseTemp.value?.id.toString()
-                            : "",
-                      );
-                    }),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    CustomTextFormField(
-                        readOnly: true,
-                        controller: controller.dateRangeController,
-                        suffixIcon: const Icon(Icons.calendar_month),
-                        onTap: () {
-                          showCustomDateRangePicker(
-                            context,
-                            dismissible: true,
-                            minimumDate: DateTime.now()
-                                .subtract(const Duration(days: 365)),
-                            maximumDate:
-                                DateTime.now().add(const Duration(days: 365)),
-                            endDate: controller.endDate.value,
-                            startDate: controller.startDate.value,
-                            backgroundColor: Colors.white,
-                            primaryColor: Colors.green,
-                            onApplyClick: (start, end) {
-                              controller.endDateTemp.value = end;
-                              controller.startDateTemp.value = start;
-                              controller.dateRangeController.text =
-                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
-                              controller.update();
+                Get.bottomSheet(
+                    FilterBottomSheet(
+                      onApplyFilter: () {
+                        controller.applyFilter();
+                        Get.back();
+                      },
+                      onResetFilter: () {
+                        controller.resetFilter();
+                      },
+                      children: [
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Obx(() {
+                          return CustomDropDownFormField(
+                            items: controller.listCompany
+                                .map((e) => DropdownMenuItem(
+                                      value: e.id.toString(),
+                                      child: Text("${e.companyName}"),
+                                    ))
+                                .toList(),
+                            onChanged: (item) {
+                              controller
+                                  .onChangeSelectedCompany(item.toString());
                             },
-                            onCancelClick: () {},
+                            label: "Company".tr,
+                            value: controller.selectedCompanyTemp.value != null
+                                ? controller.selectedCompanyTemp.value?.id
+                                    .toString()
+                                : "",
                           );
-                        },
-                        label: "Date Range".tr),
-                    const SizedBox(
-                      height: 8,
+                        }),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Obx(() {
+                          return CustomDropDownFormField(
+                            items: controller.listSiteFiltered
+                                .map((e) => DropdownMenuItem(
+                                      value: e.id.toString(),
+                                      child: Text("${e.siteName}"),
+                                    ))
+                                .toList(),
+                            onChanged: (item) {
+                              controller.onChangeSelectedSite(item.toString());
+                            },
+                            label: "Site".tr,
+                            value: controller.selectedSiteTemp.value != null
+                                ? controller.selectedSiteTemp.value?.id
+                                    .toString()
+                                : "",
+                          );
+                        }),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Obx(() {
+                          return CustomDropDownFormField(
+                            items: controller.listWarehouseFiltered
+                                .map((e) => DropdownMenuItem(
+                                      value: e.id.toString(),
+                                      child: Text("${e.warehouseName}"),
+                                    ))
+                                .toList(),
+                            onChanged: (item) {
+                              controller
+                                  .onChangeSelectedWarehouse(item.toString());
+                            },
+                            label: "Warehouse".tr,
+                            value:
+                                controller.selectedWarehouseTemp.value != null
+                                    ? controller.selectedWarehouseTemp.value?.id
+                                        .toString()
+                                    : "",
+                          );
+                        }),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        CustomTextFormField(
+                            readOnly: true,
+                            controller: controller.dateRangeController,
+                            suffixIcon: const Icon(Icons.calendar_month),
+                            onTap: () {
+                              showCustomDateRangePicker(
+                                context,
+                                dismissible: true,
+                                minimumDate: DateTime.now()
+                                    .subtract(const Duration(days: 365)),
+                                maximumDate: DateTime.now()
+                                    .add(const Duration(days: 365)),
+                                endDate: controller.endDate.value,
+                                startDate: controller.startDate.value,
+                                backgroundColor: Colors.white,
+                                primaryColor: Colors.green,
+                                onApplyClick: (start, end) {
+                                  controller.endDateTemp.value = end;
+                                  controller.startDateTemp.value = start;
+                                  controller.dateRangeController.text =
+                                      "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                  controller.update();
+                                },
+                                onCancelClick: () {},
+                              );
+                            },
+                            label: "Date Range".tr),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                      ],
                     ),
-                  ],
-                ), enableDrag: true);
+                    enableDrag: true);
               },
             ),
             Obx(() {
@@ -191,83 +199,95 @@ class StockInListScreen extends StatelessWidget {
                         children: [
                           ...controller.listHeader.mapIndexed((index, item) =>
                               CommonListItem(
-                                  number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
-                                  subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
-                                  title: item.noStockIn,
-                                  content: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 8),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                "Requestor".tr,
-                                                style: listTitleTextStyle,
-                                              ),
-                                              Text(
-                                                item.employeeName ?? "-",
-                                                style: listSubTitleTextStyle.copyWith(
-                                                  overflow: TextOverflow.ellipsis
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                onTap: item.codeStatusDoc == 0 ? null : (){
+                                  Get.to(() => const DetailStockInScreen(),
+                                      arguments: {"item": item});
+                                },
+                                number:
+                                    "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
+                                subtitle:
+                                    "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                title: item.noStockIn,
+                                content: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Requestor".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              item.employeeName ?? "-",
+                                              style: listSubTitleTextStyle
+                                                  .copyWith(
+                                                      overflow: TextOverflow
+                                                          .ellipsis),
+                                            ),
+                                          ],
                                         ),
-                                        Expanded(
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                "Item Count".tr,
-                                                style: listTitleTextStyle,
-                                              ),
-                                              Text(
-                                                "${item.itemCount}",
-                                                style: listSubTitleTextStyle.copyWith(
-                                                  overflow: TextOverflow.ellipsis
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Item Count".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              "${item.itemCount}",
+                                              style: listSubTitleTextStyle
+                                                  .copyWith(
+                                                      overflow: TextOverflow
+                                                          .ellipsis),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                  status: item.status,
-                                  action: [
-                                    CustomIconButton(
-                                      title: "Edit".tr,
-                                      iconData: IconlyBold.edit,
-                                      backgroundColor: successColor,
-                                      onPressed: () {
-                                        Get.to(
-                                            () => const DetailStockInScreen(),
-                                          arguments: {
-                                              "item" : item
-                                          }
-                                        );
-                                      },
-                                    ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    CustomIconButton(
-                                      title: "Delete".tr,
-                                      iconData: IconlyBold.delete,
-                                      backgroundColor: redColor,
-                                      onPressed: () {
-                                        Get.dialog(DeleteConfirmationDialog(
-                                          onDeletePressed: () {
-                                            Get.close(1);
-                                            controller.deleteHeader(item);
+                                ),
+                                status: item.status,
+                                action: item.codeStatusDoc == 0
+                                    ? [
+                                        CustomIconButton(
+                                          title: "Edit".tr,
+                                          iconData: IconlyBold.edit,
+                                          backgroundColor: successColor,
+                                          onPressed: () async {
+                                            Get.to(
+                                                () =>
+                                                    const DetailStockInScreen(),
+                                                arguments: {
+                                                  "item": item
+                                                })?.then((value) =>
+                                                controller.getHeader());
                                           },
-                                        ));
-                                      },
-                                    )
-                                  ]))
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        CustomIconButton(
+                                          backgroundColor: redColor,
+                                          title: "Delete".tr,
+                                          iconData: IconlyBold.delete,
+                                          onPressed: () {
+                                            Get.dialog(DeleteConfirmationDialog(
+                                              onDeletePressed: () {
+                                                controller.deleteHeader(item);
+                                                Get.back();
+                                              },
+                                            ));
+                                          },
+                                        )
+                                      ]
+                                    : [],
+                              ))
                         ],
                       );
               }),
