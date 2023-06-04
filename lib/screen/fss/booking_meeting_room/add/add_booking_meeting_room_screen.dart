@@ -37,7 +37,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
             key: controller.formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             onChanged: () {
-              controller.updateButton()
+              controller.updateButton();
             },
             child: Container(
               width: double.infinity,
