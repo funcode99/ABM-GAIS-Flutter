@@ -219,7 +219,7 @@ class StockInListScreen extends StatelessWidget {
                                         child: Column(
                                           children: [
                                             Text(
-                                              "Requestor".tr,
+                                              "Created By".tr,
                                               style: listTitleTextStyle,
                                             ),
                                             Text(
