@@ -10,6 +10,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_controller.dart';
+import 'package:gais/screen/fss/booking_meeting_room/widget/meeting_room_time_picker_dialog.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -111,7 +112,11 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                       isRequired: true,
                       suffixIcon: const Icon(Icons.access_time),
                       onTap: (){
-
+                        Get.dialog(MeetingRoomTimePickerDialog(
+                          onConfirmClick: (startTime, endTime){
+                            
+                          },
+                        ));
                       },
                       controller: controller.timeController,
                       label: "Time Detail".tr),
