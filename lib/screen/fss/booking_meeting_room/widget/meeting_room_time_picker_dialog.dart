@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/util/ext/date_ext.dart';
 import 'package:get/get.dart';
 
-class MeetingRoomTimeModel {
-  final String time;
-  final int value;
-
-  MeetingRoomTimeModel({required this.time, required this.value});
-}
 
 class MeetingRoomTimePickerDialog extends StatefulWidget {
   const MeetingRoomTimePickerDialog({super.key, this.startTime, this.endTime, required this.onConfirmClick});
 
-  final MeetingRoomTimeModel? startTime;
-  final MeetingRoomTimeModel? endTime;
-  final Function(MeetingRoomTimeModel, MeetingRoomTimeModel) onConfirmClick;
+  final DateTime? startTime;
+  final DateTime? endTime;
+  final Function(DateTime?, DateTime?) onConfirmClick;
 
   @override
   State<MeetingRoomTimePickerDialog> createState() =>
@@ -24,32 +19,32 @@ class MeetingRoomTimePickerDialog extends StatefulWidget {
 
 class _MeetingRoomTimePickerDialogState
     extends State<MeetingRoomTimePickerDialog> {
-  List<MeetingRoomTimeModel> selected = [];
-  MeetingRoomTimeModel? startTimeTemp;
-  MeetingRoomTimeModel? endTimeTemp;
+  List<DateTime> selected = [];
+  DateTime? startTimeTemp;
+  DateTime? endTimeTemp;
 
 
-  List<MeetingRoomTimeModel> list = [
-    MeetingRoomTimeModel(time: "07:30", value: 1),
-    MeetingRoomTimeModel(time: "08:00", value: 2),
-    MeetingRoomTimeModel(time: "08:30", value: 3),
-    MeetingRoomTimeModel(time: "09:00", value: 4),
-    MeetingRoomTimeModel(time: "09:30", value: 5),
-    MeetingRoomTimeModel(time: "10:00", value: 6),
-    MeetingRoomTimeModel(time: "10:30", value: 7),
-    MeetingRoomTimeModel(time: "11:00", value: 8),
-    MeetingRoomTimeModel(time: "11:30", value: 9),
-    MeetingRoomTimeModel(time: "12:00", value: 10),
-    MeetingRoomTimeModel(time: "12:30", value: 11),
-    MeetingRoomTimeModel(time: "13:00", value: 12),
-    MeetingRoomTimeModel(time: "13:30", value: 13),
-    MeetingRoomTimeModel(time: "14:00", value: 14),
-    MeetingRoomTimeModel(time: "14:30", value: 15),
-    MeetingRoomTimeModel(time: "15:00", value: 16),
-    MeetingRoomTimeModel(time: "15:30", value: 17),
-    MeetingRoomTimeModel(time: "16:00", value: 18),
-    MeetingRoomTimeModel(time: "16:30", value: 19),
-    MeetingRoomTimeModel(time: "17:00", value: 20),
+  List<DateTime> list = [
+    DateTime.now().copyDateWith(hour: 7, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 8, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 8, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 9, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 9, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 10, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 10, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 11, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 11, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 12, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 12, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 13, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 13, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 14, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 14, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 15, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 15, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 16, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 16, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 17, minute: 00, second: 0),
   ];
 
   @override
@@ -61,55 +56,55 @@ class _MeetingRoomTimePickerDialogState
     });
   }
   
-  bool _isSelected(MeetingRoomTimeModel item){
+  bool _isSelected(DateTime item){
     bool result = false;
     if(startTimeTemp!=null){
       if(endTimeTemp!=null){
-        if(startTimeTemp!.value <= item.value &&  item.value <= endTimeTemp!.value){
+        if(startTimeTemp!.isTimeBefore(item) &&  endTimeTemp!.isTimeAfter(item)){
           result = true;
         }
       }else{
-         result = startTimeTemp!.value == item.value;
+         result = startTimeTemp!.isSameTime(item);
       }
     }
     
     return result;
   }
 
-  bool _isThumb(MeetingRoomTimeModel item){
+  bool _isThumb(DateTime item){
     if(startTimeTemp!=null){
       if(endTimeTemp!=null){
-        return endTimeTemp!.value == item.value || startTimeTemp!.value == item.value;
+        return endTimeTemp!.isSameTime(item) || startTimeTemp!.isSameTime(item);
       }
-      return startTimeTemp!.value == item.value;
+      return startTimeTemp!.isSameTime(item);
     }
 
     return false;
   }
 
-  void _setSelected(MeetingRoomTimeModel item){
+  void _setSelected(DateTime item){
     if(startTimeTemp!=null){
       if(endTimeTemp!=null){
-        if(item.value == endTimeTemp!.value){
+        if(endTimeTemp!.isSameTime(item)){
           setState(() {
             endTimeTemp = null;
           });
-        }else if(item.value == startTimeTemp!.value){
+        }else if(startTimeTemp!.isSameTime(item)){
           setState(() {
             startTimeTemp = endTimeTemp;
             endTimeTemp = null;
           });
         }
       }else{
-        if(item.value == startTimeTemp!.value){
+        if(startTimeTemp!.isSameTime(item)){
           setState(() {
             startTimeTemp = null;
           });
-        }else if(item.value > startTimeTemp!.value){
+        }else if(startTimeTemp!.isTimeBefore(item) && !startTimeTemp!.isSameTime(item)){
           setState(() {
             endTimeTemp = item;
           });
-        }else if(item.value < startTimeTemp!.value){
+        }else if(startTimeTemp!.isTimeAfter(item) && !startTimeTemp!.isSameTime(item)){
           setState(() {
             endTimeTemp = startTimeTemp;
             startTimeTemp = item;
@@ -204,7 +199,7 @@ class _MeetingRoomTimePickerDialogState
                       border: Border.all(color: infoColor),
                       borderRadius: BorderRadius.circular(8)),
                   child: Text(
-                    "${startTimeTemp?.time}",
+                    startTimeTemp!.toStringWithFormat(),
                     style: listTitleTextStyle,
                   ),
                 ) : Container(
@@ -225,7 +220,7 @@ class _MeetingRoomTimePickerDialogState
                   Icons.arrow_forward,
                   size: 24,
                   color: infoColor,
-                ) : SizedBox(),
+                ) : const SizedBox(),
                 SizedBox(
                   width: endTimeTemp != null ? 16 : 0,
                 ),
@@ -236,10 +231,10 @@ class _MeetingRoomTimePickerDialogState
                       border: Border.all(color: infoColor),
                       borderRadius: BorderRadius.circular(8)),
                   child: Text(
-                    "${endTimeTemp?.time}",
+                    "${endTimeTemp?.toStringWithFormat()}",
                     style: listTitleTextStyle,
                   ),
-                ) : SizedBox(),
+                ) : const SizedBox(),
               ],
             ),
           ),
@@ -266,6 +261,7 @@ class _MeetingRoomTimePickerDialogState
             width: double.infinity,
             child: ElevatedButton(
               onPressed: startTimeTemp != null ? () {
+                widget.onConfirmClick(startTimeTemp, endTimeTemp);
                 Get.back();
               } : null,
               style: ElevatedButton.styleFrom(backgroundColor: infoColor),
@@ -288,8 +284,8 @@ class MeetingRoomTimeItem extends StatelessWidget {
 
   final bool selected;
   final bool isThumb;
-  final MeetingRoomTimeModel item;
-  final ValueChanged<MeetingRoomTimeModel> onSelected;
+  final DateTime item;
+  final ValueChanged<DateTime> onSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -305,7 +301,7 @@ class MeetingRoomTimeItem extends StatelessWidget {
               color: isThumb ? infoColor : selected ? infoColor.withOpacity(0.6) : const Color(0xFF8b8b8b),
               borderRadius: BorderRadius.circular(8)),
           child: Text(
-            item.time,
+            item.toStringWithFormat(),
             textAlign: TextAlign.center,
             style: listTitleTextStyle.copyWith(
                 color: Colors.white, fontWeight: FontWeight.w400),

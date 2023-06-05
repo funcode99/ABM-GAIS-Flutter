@@ -11,6 +11,7 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_controller.dart';
 import 'package:gais/screen/fss/booking_meeting_room/widget/meeting_room_time_picker_dialog.dart';
+import 'package:gais/util/ext/date_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -110,11 +111,16 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   ),
                   CustomTextFormField(
                       isRequired: true,
+                      readOnly: true,
                       suffixIcon: const Icon(Icons.access_time),
                       onTap: (){
                         Get.dialog(MeetingRoomTimePickerDialog(
+                          startTime: controller.startTime.value,
+                          endTime: controller.endTime.value,
                           onConfirmClick: (startTime, endTime){
-                            
+                            controller.startTime.value = startTime;
+                            controller.endTime.value = endTime;
+                            controller.timeController.text = "${startTime?.toStringWithFormat()} ${endTime!=null ? "-" : ""} ${endTime?.toStringWithFormat() ?? ""}";
                           },
                         ));
                       },
