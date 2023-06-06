@@ -132,16 +132,34 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomTextFormField(
+                  /*CustomTextFormField(
                       isRequired: true,
                       suffixIcon: const Icon(Icons.key),
                       controller: controller.meetingRoomController,
-                      label: "Meeting Room".tr),
+                      label: "Meeting Room".tr),*/
+                  Obx(() {
+                    return CustomDropDownFormField(
+                      isRequired: true,
+                      items: controller.listRoom
+                          .map((e) =>
+                          DropdownMenuItem(
+                            value: e.id.toString(),
+                            child: Text("${e.roomName}"),
+                          ))
+                          .toList(),
+                      onChanged: (item) {
+                        controller.onChangeSelectedRoom(item.toString());
+                      },
+                      label: "Meeting Room".tr,
+                      value: controller.selectedRoom.value?.id.toString(),
+                    );
+                  }),
                   const SizedBox(
                     height: 8,
                   ),
                   CustomTextFormField(
                       isRequired: true,
+                      readOnly: true,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                       ],
@@ -153,6 +171,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   ),
                   CustomTextFormField(
                       isRequired: true,
+                      readOnly: true,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                       ],

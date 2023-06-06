@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/master/brand/brand_model.dart';
+import 'package:gais/data/model/master/room/room_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
 import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
 import 'package:gais/data/repository/management_item_atk/management_item_atk_repository.dart';
@@ -37,6 +38,9 @@ class AddBookingMeetingRoomController extends BaseController
   final endTime = Rxn<DateTime>();
 
   final enableButton = false.obs;
+
+  final listRoom = <RoomModel>[].obs;
+  final selectedRoom = Rxn<RoomModel>();
 
   final List<String> emails = [
     "Kaitlyn Beck",
@@ -81,11 +85,48 @@ class AddBookingMeetingRoomController extends BaseController
   @override
   void onInit() {
     super.onInit();
+    final temp = <RoomModel>[];
+    temp.add(
+      RoomModel(
+          id: "",
+          capacity: 0,
+          floor: 0,
+          roomName: "Meeting Room"
+      )
+    );
+    for (int i = 0; i<10; i++){
+      temp.add(
+        RoomModel(
+          id: i,
+          capacity: (i + 1) * 10,
+          floor: i + 1,
+          roomName: "Room Number $i"
+        )
+      );
+    }
+    listRoom.addAll(temp);
+    onChangeSelectedRoom("");
   }
 
   @override
   void onReady() {
     super.onReady();
+  }
+
+  void onChangeSelectedRoom(String id) {
+    final selected = listRoom.firstWhere(
+            (item) => item.id.toString() == id.toString(),
+        orElse: () => listRoom.first);
+
+    selectedRoom(selected);
+
+    if(selected.id != ""){
+      floorController.text = selected.floor.toString();
+      capacityController.text = selected.capacity.toString();
+    }else{
+      floorController.text = "";
+      capacityController.text = "";
+    }
   }
 
   void updateButton() {
