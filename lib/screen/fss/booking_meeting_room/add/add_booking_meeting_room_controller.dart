@@ -11,8 +11,10 @@ import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
-class AddBookingMeetingRoomController extends BaseController with MasterDataMixin{
+class AddBookingMeetingRoomController extends BaseController
+    with MasterDataMixin {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
@@ -22,6 +24,8 @@ class AddBookingMeetingRoomController extends BaseController with MasterDataMixi
   final TextEditingController participantController = TextEditingController();
   final TextEditingController linkController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
+
+  TextfieldTagsController textfieldTagsController = TextfieldTagsController();
   final formKey = GlobalKey<FormState>();
 
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
@@ -33,6 +37,46 @@ class AddBookingMeetingRoomController extends BaseController with MasterDataMixi
   final endTime = Rxn<DateTime>();
 
   final enableButton = false.obs;
+
+  final List<String> emails = [
+    "Kaitlyn Beck",
+    "Eduardo Pearson",
+    "Kiara Hendricks",
+    "Dash Lawson",
+    "Phoebe Miranda",
+    "Rory Dejesus",
+    "Julissa Macdonald",
+    "Hugh Bond",
+    "Alena Stein",
+    "Creed Garner",
+    "Jacqueline Harrington",
+    "Omari Stafford",
+    "Bridget Ortega",
+    "Kobe Owens",
+    "Amaya Lim",
+    "Cal Hammond",
+    "Holly Rosas",
+    "Remi Gillespie",
+    "Alianna Vazquez",
+    "Jesse Sherman",
+    "Addilyn Daniel",
+    "Grady Abbott",
+    "Melany Reynolds",
+    "Vincent Erickson",
+    "Sabrina Orozco",
+    "Keanu Mann",
+    "Paislee Madden",
+    "Everest Cuevas",
+    "Adele Bryant",
+    "Jonah Branch",
+    "Luisa Cisneros",
+    "Alden Barber",
+    "Cassidy Rasmussen",
+    "Will Rosario",
+    "Louisa Blake",
+    "Zyaire Norman",
+    "Malani Barry",
+  ];
 
   @override
   void onInit() {
@@ -47,5 +91,4 @@ class AddBookingMeetingRoomController extends BaseController with MasterDataMixi
   void updateButton() {
     enableButton(formKey.currentState!.validate());
   }
-
 }

@@ -6,9 +6,9 @@ import 'package:get/get.dart';
 
 
 class MeetingRoomTimePickerDialog extends StatefulWidget {
-  const MeetingRoomTimePickerDialog({super.key, required this.startDate, this.endDate, this.startTime, this.endTime, required this.onConfirmClick});
+  const MeetingRoomTimePickerDialog({super.key, this.startDate, this.endDate, this.startTime, this.endTime, required this.onConfirmClick});
 
-  final DateTime startDate;
+  final DateTime? startDate;
   final DateTime? endDate;
   final DateTime? startTime;
   final DateTime? endTime;

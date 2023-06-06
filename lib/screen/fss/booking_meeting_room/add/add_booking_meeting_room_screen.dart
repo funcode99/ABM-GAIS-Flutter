@@ -12,8 +12,10 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_controller.dart';
 import 'package:gais/screen/fss/booking_meeting_room/widget/meeting_room_time_picker_dialog.dart';
 import 'package:gais/util/ext/date_ext.dart';
+import 'package:gais/util/validator/custom_validation_builder.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
 class AddBookingMeetingRoomScreen extends StatelessWidget {
   const AddBookingMeetingRoomScreen({super.key});
@@ -85,8 +87,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                         showCustomDateRangePicker(
                           context,
                           dismissible: true,
-                          minimumDate: DateTime.now()
-                              .subtract(const Duration(days: 365)),
+                          minimumDate: DateTime.now(),
                           maximumDate:
                           DateTime.now().add(const Duration(days: 365)),
                           endDate: controller.endDate.value,
@@ -161,14 +162,169 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomTextFormField(
-                      isRequired: true,
-                      controller: controller.participantController,
-                      label: "Participant".tr),
+                  RichText(
+                    text: TextSpan(
+                      text: "Participant".tr,
+                      style: formlabelTextStyle,
+                      children: const <TextSpan>[
+                        TextSpan(
+                            text: "*",
+                            style: TextStyle(color: Colors.red)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Autocomplete<String>(
+                    optionsViewBuilder: (context, onSelected, options) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 4.0),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Material(
+                            elevation: 4.0,
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxHeight: 200),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: options.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final dynamic option = options.elementAt(index);
+                                  return TextButton(
+                                    onPressed: () {
+                                      onSelected(option);
+                                    },
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 0.0),
+                                        child: Text(
+                                          "$option",
+                                          textAlign: TextAlign.left,
+                                          style: listSubTitleTextStyle.copyWith(
+                                            color: Colors.black
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    optionsBuilder: (TextEditingValue textEditingValue) {
+                      if (textEditingValue.text == '') {
+                        return const Iterable<String>.empty();
+                      }
+                      return controller.emails.where((String option) {
+                        return option.contains(textEditingValue.text.toLowerCase());
+                      });
+                    },
+                    onSelected: (String selectedTag) {
+                      controller.textfieldTagsController.addTag = selectedTag;
+                    },
+                    fieldViewBuilder: (context, ttec, tfn, onFieldSubmitted) {
+                      return TextFieldTags(
+                        textEditingController: ttec,
+                        focusNode: tfn,
+                        textfieldTagsController: controller.textfieldTagsController,
+                        initialTags: [],
+                        textSeparators: const [' ', ','],
+                        letterCase: LetterCase.normal,
+                        validator: (String email) {
+                          if (controller.textfieldTagsController.getTags!.contains(email)) {
+                            return '$email already selected';
+                          }
+                          return null;
+                        },
+                        inputfieldBuilder:
+                            (context, tec, fn, error, onChanged, onSubmitted) {
+                          return ((context, sc, tags, onTagDelete) {
+                            return TextFormField(
+                              validator: (item){
+                                if(controller.textfieldTagsController.getTags!.isEmpty){
+                                  return "The field is required";
+                                }
+
+                                return null;
+                              },
+                              controller: tec,
+                              focusNode: fn,
+                              decoration: InputDecoration(
+                                hintText: controller.textfieldTagsController.hasTags ? '' : "Participant".tr,
+                                errorText: error,
+                                prefixIconConstraints: BoxConstraints(
+                                    maxWidth: MediaQuery.of(context).size.width * 0.74),
+                                prefixIcon: tags.isNotEmpty
+                                    ? SingleChildScrollView(
+                                  controller: sc,
+                                  scrollDirection: Axis.horizontal,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                                    child: Row(
+                                        children: tags.map((String email) {
+                                          return Container(
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(4.0),
+                                              ),
+                                              color:
+                                              Color(0xFFe4e4e4),
+                                            ),
+                                            margin:
+                                            const EdgeInsets.only(right: 5.0, left: 5),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10.0, vertical: 4.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                InkWell(
+                                                  child: Text(
+                                                    email,
+                                                    style: listSubTitleTextStyle,
+                                                  ),
+                                                  onTap: () {
+                                                    //print("$tag selected");
+                                                  },
+                                                ),
+                                                const SizedBox(width: 4.0),
+                                                InkWell(
+                                                  child: const Icon(
+                                                    Icons.cancel,
+                                                    size: 14.0,
+                                                    color: greyColor,
+                                                  ),
+                                                  onTap: () {
+                                                    onTagDelete(email);
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        }).toList()),
+                                  ),
+                                )
+                                    : null,
+                              ),
+                              onChanged: onChanged,
+                            );
+                          });
+                        },
+                      );
+                    },
+                  ),
                   const SizedBox(
                     height: 8,
                   ),
                   CustomTextFormField(
+                    validator: ValidationBuilder(optional: true).validLink().build(),
                       controller: controller.linkController,
                       label: "Link".tr),
                   const SizedBox(
