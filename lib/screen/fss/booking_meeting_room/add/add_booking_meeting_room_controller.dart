@@ -28,8 +28,6 @@ class AddBookingMeetingRoomController extends BaseController with MasterDataMixi
 
   final startDate = Rxn<DateTime>();
   final endDate = Rxn<DateTime>();
-  final startDateTemp = Rxn<DateTime>();
-  final endDateTemp = Rxn<DateTime>();
 
   final startTime = Rxn<DateTime>();
   final endTime = Rxn<DateTime>();

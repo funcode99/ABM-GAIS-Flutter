@@ -94,8 +94,8 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                           backgroundColor: Colors.white,
                           primaryColor: Colors.green,
                           onApplyClick: (start, end) {
-                            controller.endDateTemp.value = end;
-                            controller.startDateTemp.value = start;
+                            controller.startDate.value = start;
+                            controller.endDate.value = end;
                             controller.dateController.text =
                             "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                             controller.update();
@@ -115,6 +115,8 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                       suffixIcon: const Icon(Icons.access_time),
                       onTap: (){
                         Get.dialog(MeetingRoomTimePickerDialog(
+                          startDate: controller.startDate.value,
+                          endDate: controller.endDate.value,
                           startTime: controller.startTime.value,
                           endTime: controller.endTime.value,
                           onConfirmClick: (startTime, endTime){
