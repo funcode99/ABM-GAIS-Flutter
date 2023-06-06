@@ -6,8 +6,10 @@ import 'package:get/get.dart';
 
 
 class MeetingRoomTimePickerDialog extends StatefulWidget {
-  const MeetingRoomTimePickerDialog({super.key, this.startTime, this.endTime, required this.onConfirmClick});
+  const MeetingRoomTimePickerDialog({super.key, required this.startDate, this.endDate, this.startTime, this.endTime, required this.onConfirmClick});
 
+  final DateTime startDate;
+  final DateTime? endDate;
   final DateTime? startTime;
   final DateTime? endTime;
   final Function(DateTime?, DateTime?) onConfirmClick;
@@ -94,6 +96,14 @@ class _MeetingRoomTimePickerDialogState
             startTimeTemp = endTimeTemp;
             endTimeTemp = null;
           });
+        }else if(startTimeTemp!.isTimeAfter(item)){
+          setState(() {
+            startTimeTemp = item;
+          });
+        }else if(item.isTimeAfter(endTimeTemp!)){
+          setState(() {
+            endTimeTemp = item;
+          });
         }
       }else{
         if(startTimeTemp!.isSameTime(item)){
@@ -135,7 +145,7 @@ class _MeetingRoomTimePickerDialogState
                 Column(
                   children: [
                     Text(
-                      "Mon",
+                      "${widget.startDate?.toStringWithFormat(format: "EEE")}",
                       style: listTitleTextStyle,
                     ),
                     const SizedBox(
@@ -145,9 +155,9 @@ class _MeetingRoomTimePickerDialogState
                       padding: const EdgeInsets.all(8),
                       decoration: const BoxDecoration(
                           shape: BoxShape.circle, color: infoColor),
-                      child: const Text(
-                        "20",
-                        style: TextStyle(
+                      child: Text(
+                        "${widget.startDate?.toStringWithFormat(format: "d")}",
+                        style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.w600),
                       ),
                     )
@@ -166,7 +176,7 @@ class _MeetingRoomTimePickerDialogState
                 Column(
                   children: [
                     Text(
-                      "Mon",
+                      "${widget.endDate?.toStringWithFormat(format: "EEE")}",
                       style: listTitleTextStyle,
                     ),
                     const SizedBox(
@@ -176,9 +186,9 @@ class _MeetingRoomTimePickerDialogState
                       padding: const EdgeInsets.all(8),
                       decoration: const BoxDecoration(
                           shape: BoxShape.circle, color: infoColor),
-                      child: const Text(
-                        "20",
-                        style: TextStyle(
+                      child: Text(
+                        "${widget.endDate?.toStringWithFormat(format: "d")}",
+                        style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.w600),
                       ),
                     )
