@@ -26,13 +26,16 @@ class BookingMeetingRoomListController extends BaseController {
 
     for (int i = 1; i <= 10; i++) {
       listItem.add(BookingMeetingRoomModel(
+        idRoom: "$i",
         title: "Meet n Greet",
-        date: "12/12/23",
-        detailTime: "08.00 - 10.00",
-        meetingRoom: "Room Bali 123",
-        floor: "4",
-        capacity: "100",
-        participants: "60",
+        startDate: "12/12/23",
+        endDate: "15/12/23",
+        startTime: "09:00",
+        endTime: "1:00",
+        roomName: "Room Bali 123",
+        floor: 4,
+        capacity: 100,
+        participants: ["John Doe", "Slamet Riyadi"],
         link: "https://meet.google.com",
         remarks: "",
         status: "Booked",

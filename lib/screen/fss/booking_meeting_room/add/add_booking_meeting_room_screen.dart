@@ -10,6 +10,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_controller.dart';
+import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/widget/meeting_room_time_picker_dialog.dart';
 import 'package:gais/util/ext/date_ext.dart';
 import 'package:gais/util/validator/custom_validation_builder.dart';
@@ -82,14 +83,14 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   ),
                   CustomTextFormField(
                       isRequired: true,
-                      suffixIcon: const Icon(Icons.calendar_month),
-                      onTap: (){
+                      suffixIcon: const Icon(IconlyLight.calendar),
+                      onTap: () {
                         showCustomDateRangePicker(
                           context,
                           dismissible: true,
                           minimumDate: DateTime.now(),
                           maximumDate:
-                          DateTime.now().add(const Duration(days: 365)),
+                              DateTime.now().add(const Duration(days: 365)),
                           endDate: controller.endDate.value,
                           startDate: controller.startDate.value,
                           backgroundColor: Colors.white,
@@ -98,11 +99,10 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                             controller.startDate.value = start;
                             controller.endDate.value = end;
                             controller.dateController.text =
-                            "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                             controller.update();
                           },
-                          onCancelClick: () {
-                          },
+                          onCancelClick: () {},
                         );
                       },
                       controller: controller.dateController,
@@ -113,17 +113,18 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   CustomTextFormField(
                       isRequired: true,
                       readOnly: true,
-                      suffixIcon: const Icon(Icons.access_time),
-                      onTap: (){
+                      suffixIcon: const Icon(IconlyLight.time_circle),
+                      onTap: () {
                         Get.dialog(MeetingRoomTimePickerDialog(
                           startDate: controller.startDate.value,
                           endDate: controller.endDate.value,
                           startTime: controller.startTime.value,
                           endTime: controller.endTime.value,
-                          onConfirmClick: (startTime, endTime){
+                          onConfirmClick: (startTime, endTime) {
                             controller.startTime.value = startTime;
                             controller.endTime.value = endTime;
-                            controller.timeController.text = "${startTime?.toStringWithFormat()} ${endTime!=null ? "-" : ""} ${endTime?.toStringWithFormat() ?? ""}";
+                            controller.timeController.text =
+                                "${startTime?.toStringWithFormat()} ${endTime != null ? "-" : ""} ${endTime?.toStringWithFormat() ?? ""}";
                           },
                         ));
                       },
@@ -134,18 +135,17 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   ),
                   /*CustomTextFormField(
                       isRequired: true,
-                      suffixIcon: const Icon(Icons.key),
+                      suffixIcon: const Icon(IconlyLight.lock),
                       controller: controller.meetingRoomController,
                       label: "Meeting Room".tr),*/
                   Obx(() {
                     return CustomDropDownFormField(
                       isRequired: true,
                       items: controller.listRoom
-                          .map((e) =>
-                          DropdownMenuItem(
-                            value: e.id.toString(),
-                            child: Text("${e.roomName}"),
-                          ))
+                          .map((e) => DropdownMenuItem(
+                                value: e.id.toString(),
+                                child: Text("${e.roomName}"),
+                              ))
                           .toList(),
                       onChanged: (item) {
                         controller.onChangeSelectedRoom(item.toString());
@@ -172,6 +172,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   CustomTextFormField(
                       isRequired: true,
                       readOnly: true,
+                      suffixIcon: const Icon(IconlyLight.user),
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                       ],
@@ -187,8 +188,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                       style: formlabelTextStyle,
                       children: const <TextSpan>[
                         TextSpan(
-                            text: "*",
-                            style: TextStyle(color: Colors.red)),
+                            text: "*", style: TextStyle(color: Colors.red)),
                       ],
                     ),
                   ),
@@ -210,7 +210,8 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                 shrinkWrap: true,
                                 itemCount: options.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  final dynamic option = options.elementAt(index);
+                                  final dynamic option =
+                                      options.elementAt(index);
                                   return TextButton(
                                     onPressed: () {
                                       onSelected(option);
@@ -224,8 +225,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                           "$option",
                                           textAlign: TextAlign.left,
                                           style: listSubTitleTextStyle.copyWith(
-                                            color: Colors.black
-                                          ),
+                                              color: Colors.black),
                                         ),
                                       ),
                                     ),
@@ -242,7 +242,8 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                         return const Iterable<String>.empty();
                       }
                       return controller.emails.where((String option) {
-                        return option.contains(textEditingValue.text.toLowerCase());
+                        return option
+                            .contains(textEditingValue.text.toLowerCase());
                       });
                     },
                     onSelected: (String selectedTag) {
@@ -252,12 +253,15 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                       return TextFieldTags(
                         textEditingController: ttec,
                         focusNode: tfn,
-                        textfieldTagsController: controller.textfieldTagsController,
+                        textfieldTagsController:
+                            controller.textfieldTagsController,
                         initialTags: [],
                         textSeparators: const [' ', ','],
                         letterCase: LetterCase.normal,
                         validator: (String email) {
-                          if (controller.textfieldTagsController.getTags!.contains(email)) {
+                          controller.updateButton();
+                          if (controller.textfieldTagsController.getTags!
+                              .contains(email)) {
                             return '$email already selected';
                           }
                           return null;
@@ -266,8 +270,9 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                             (context, tec, fn, error, onChanged, onSubmitted) {
                           return ((context, sc, tags, onTagDelete) {
                             return TextFormField(
-                              validator: (item){
-                                if(controller.textfieldTagsController.getTags!.isEmpty){
+                              validator: (item) {
+                                if (controller
+                                    .textfieldTagsController.getTags!.isEmpty) {
                                   return "The field is required";
                                 }
 
@@ -276,60 +281,70 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                               controller: tec,
                               focusNode: fn,
                               decoration: InputDecoration(
-                                hintText: controller.textfieldTagsController.hasTags ? '' : "Participant".tr,
+                                hintText:
+                                    controller.textfieldTagsController.hasTags
+                                        ? ''
+                                        : "Participant".tr,
                                 errorText: error,
                                 prefixIconConstraints: BoxConstraints(
-                                    maxWidth: MediaQuery.of(context).size.width * 0.74),
+                                    maxWidth:
+                                        MediaQuery.of(context).size.width *
+                                            0.74),
                                 prefixIcon: tags.isNotEmpty
                                     ? SingleChildScrollView(
-                                  controller: sc,
-                                  scrollDirection: Axis.horizontal,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                                    child: Row(
-                                        children: tags.map((String email) {
-                                          return Container(
-                                            decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(4.0),
-                                              ),
-                                              color:
-                                              Color(0xFFe4e4e4),
-                                            ),
-                                            margin:
-                                            const EdgeInsets.only(right: 5.0, left: 5),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10.0, vertical: 4.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                InkWell(
-                                                  child: Text(
-                                                    email,
-                                                    style: listSubTitleTextStyle,
-                                                  ),
-                                                  onTap: () {
-                                                    //print("$tag selected");
-                                                  },
+                                        controller: sc,
+                                        scrollDirection: Axis.horizontal,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8),
+                                          child: Row(
+                                              children:
+                                                  tags.map((String email) {
+                                            return Container(
+                                              decoration: const BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(4.0),
                                                 ),
-                                                const SizedBox(width: 4.0),
-                                                InkWell(
-                                                  child: const Icon(
-                                                    Icons.cancel,
-                                                    size: 14.0,
-                                                    color: greyColor,
+                                                color: Color(0xFFe4e4e4),
+                                              ),
+                                              margin: const EdgeInsets.only(
+                                                  right: 5.0, left: 5),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10.0,
+                                                      vertical: 4.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  InkWell(
+                                                    child: Text(
+                                                      email,
+                                                      style:
+                                                          listSubTitleTextStyle,
+                                                    ),
+                                                    onTap: () {
+                                                      //print("$tag selected");
+                                                    },
                                                   ),
-                                                  onTap: () {
-                                                    onTagDelete(email);
-                                                  },
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        }).toList()),
-                                  ),
-                                )
+                                                  const SizedBox(width: 4.0),
+                                                  InkWell(
+                                                    child: const Icon(
+                                                      Icons.cancel,
+                                                      size: 14.0,
+                                                      color: greyColor,
+                                                    ),
+                                                    onTap: () {
+                                                      onTagDelete(email);
+                                                    },
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          }).toList()),
+                                        ),
+                                      )
                                     : null,
                               ),
                               onChanged: onChanged,
@@ -343,7 +358,8 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                     height: 8,
                   ),
                   CustomTextFormField(
-                    validator: ValidationBuilder(optional: true).validLink().build(),
+                      validator:
+                          ValidationBuilder(optional: true).validLink().build(),
                       controller: controller.linkController,
                       label: "Link".tr),
                   const SizedBox(
@@ -360,8 +376,11 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Obx(() => ElevatedButton(
-                            onPressed:
-                                controller.enableButton.value ? () {} : null,
+                            onPressed: controller.enableButton.value
+                                ? () {
+                                    controller.saveData();
+                                  }
+                                : null,
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: successColor),
                             child: Text("Save".tr),

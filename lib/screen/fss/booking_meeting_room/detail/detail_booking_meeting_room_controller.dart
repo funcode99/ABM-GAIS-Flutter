@@ -9,15 +9,16 @@ import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
 import 'package:gais/data/repository/management_item_atk/management_item_atk_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
-import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
-class AddBookingMeetingRoomController extends BaseController
+class DetailBookingMeetingRoomController extends BaseController
     with MasterDataMixin {
+  final TextEditingController createdAtController = TextEditingController();
+  final TextEditingController createdByController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
@@ -41,8 +42,13 @@ class AddBookingMeetingRoomController extends BaseController
 
   final enableButton = false.obs;
 
+  final onEdit = false.obs;
+
   final listRoom = <RoomModel>[].obs;
   final selectedRoom = Rxn<RoomModel>();
+
+  final selectedItem = BookingMeetingRoomModel().obs;
+
 
   final List<String> emails = [
     "Kaitlyn Beck",
@@ -89,21 +95,21 @@ class AddBookingMeetingRoomController extends BaseController
     super.onInit();
     final temp = <RoomModel>[];
     temp.add(
-      RoomModel(
-          id: "",
-          capacity: 0,
-          floor: 0,
-          roomName: "Meeting Room"
-      )
+        RoomModel(
+            id: "",
+            capacity: 0,
+            floor: 0,
+            roomName: "Meeting Room"
+        )
     );
     for (int i = 0; i<10; i++){
       temp.add(
-        RoomModel(
-          id: i,
-          capacity: (i + 1) * 10,
-          floor: i + 1,
-          roomName: "Room Number $i"
-        )
+          RoomModel(
+              id: i,
+              capacity: (i + 1) * 10,
+              floor: i + 1,
+              roomName: "Room Number $i"
+          )
       );
     }
     listRoom.addAll(temp);
@@ -113,6 +119,32 @@ class AddBookingMeetingRoomController extends BaseController
   @override
   void onReady() {
     super.onReady();
+    initData();
+  }
+
+  void initData()async{
+    createdByController.text = selectedItem.value.employeeName ?? "-";
+    createdAtController.text = selectedItem.value.createdAt?.toDateFormat(
+        originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
+        "-";
+    titleController.text = selectedItem.value.title ?? "";
+    dateController.text = "${selectedItem.value.startDate?.toDateFormat(targetFormat: "dd/MM/yyyy", originFormat: "yyyy-MM-dd HH:mm:ss")} - ${selectedItem.value.endDate?.toDateFormat(targetFormat: "dd/MM/yyyy", originFormat: "yyyy-MM-dd HH:mm:ss")}";
+    timeController.text = "${selectedItem.value.endTime?.toDateFormat(targetFormat: "HH:mm", originFormat: "yyyy-MM-dd HH:mm:ss")} - ${selectedItem.value.endTime?.toDateFormat(targetFormat: "HH:mm", originFormat: "yyyy-MM-dd HH:mm:ss")}";
+    linkController.text = selectedItem.value.link ?? "";
+    remarksController.text = selectedItem.value.remarks ?? "";
+    meetingRoomController.text = selectedItem.value.roomName ?? "";
+
+
+    if(selectedItem.value != null){
+      for(String item in selectedItem.value.participants!){
+        textfieldTagsController.addTag = item;
+      }
+    }
+
+    /*final warehouses = await getListWarehouseByCompanyId(idCompany.toInt());
+    listWarehouse(warehouses);
+    onChangeSelectedWarehouse(managementItemATK.value.idWarehouse.toString());*/
+    onChangeSelectedRoom(selectedItem.value.idRoom ?? "");
   }
 
   void onChangeSelectedRoom(String id) {
@@ -125,9 +157,11 @@ class AddBookingMeetingRoomController extends BaseController
     if(selected.id != ""){
       floorController.text = selected.floor.toString();
       capacityController.text = selected.capacity.toString();
+      meetingRoomController.text = selected.roomName.toString();
     }else{
       floorController.text = "";
       capacityController.text = "";
+      meetingRoomController.text = "";
     }
   }
 
@@ -135,28 +169,8 @@ class AddBookingMeetingRoomController extends BaseController
     enableButton(formKey.currentState!.validate());
   }
 
-  void saveData(){
-    BookingMeetingRoomModel meetingRoomModel = BookingMeetingRoomModel(
-        title: titleController.text,
-        startDate: startDate.toString(),
-        endDate: endDate.toString(),
-        startTime: startTime.toString(),
-        endTime: endTime.toString(),
-        idRoom: selectedRoom.value?.id.toString(),
-        roomName: selectedRoom.value?.roomName.toString(),
-        participants: textfieldTagsController.getTags!,
-        link: linkController.text,
-        remarks: remarksController.text,
-        createdAt: "2023-06-12",
-        employeeName: "John Doe",
-      codeStatusDoc: "0",
-      noBookingRoom: "NOMOR BOOKING ROOM",
-      status: "Draft"
-    );
-
-    Get.off(() => const DetailBookingMeetingRoomScreen(), arguments: {
-      "item" : meetingRoomModel
-    });
-
+  void updateOnEdit() {
+    onEdit(!onEdit.value);
   }
+
 }

@@ -121,9 +121,9 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                     ...controller.listItem.mapIndexed((index, element) =>
                         CommonListItem(
                             number: "${index+1}",
-                            subtitle: element.date,
+                            subtitle: "${element.startDate}-${element.endDate}",
                             title: element.title,
-                            total: element.meetingRoom,
+                            total: element.roomName,
                             status: element.status,
                             content: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
