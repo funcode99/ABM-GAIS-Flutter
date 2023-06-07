@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
@@ -78,6 +79,45 @@ class FormRequestTripController extends BaseController {
     const AddCashAdvanceTravelScreen(),
   ];
 
+  List items = [
+    {
+      "title": "Traveller Guest",
+      "isFilled": true,
+      "screen": AddGuestScreen(),
+      "showList": true,
+    },
+    {
+      "title": "Airliness",
+      "isFilled": false,
+      "screen": AddAirlinessScreen(),
+      "showList": false,
+    },
+    {
+      "title": "Taxi Voucher",
+      "isFilled": false,
+      "screen": AddTaxiVoucherScreen(),
+      "showList": false,
+    },
+    {
+      "title": "Other Transportation",
+      "isFilled": false,
+      "screen": AddOtherTransportScreen(),
+      "showList": false,
+    },
+    {
+      "title": "Accommodation",
+      "isFilled": false,
+      "screen": AddAccommodationScreen(),
+      "showList": false,
+    },
+    {
+      "title": "Cash Advance",
+      "isFilled": false,
+      "screen": AddCashAdvanceTravelScreen(),
+      "showList": false,
+    },
+  ];
+
   List<guest.Data> guestList = [];
   List<airliness.Data> airlinessList = [];
   List<tv.Data> tvList = [];
@@ -116,6 +156,48 @@ class FormRequestTripController extends BaseController {
     tlkTotalMeals.dispose();
   }
 
+  checkItems() {
+    if (selectedPurpose == "4") {
+      items.forEach((item) {
+        item['isFilled'] = item['title'] == "Taxi Voucher"
+            ? true
+            : item['title'] == "Traveller Guest"
+                ? true
+                : false;
+
+        item['showList'] = item['title'] == "Taxi Voucher"
+            ? true
+            : item['title'] == "Traveller Guest"
+                ? true
+                : false;
+      });
+    } else if (selectedPurpose == "2") {
+      items.forEach((item) {
+        item['isFilled'] = item['title'] == "Traveller Guest"
+            ? true
+            : item['title'] == "Airliness"
+                ? true
+                : item['title'] == "Other Transportation"
+                    ? true
+                    : false;
+
+        item['showList'] = item['title'] == "Traveller Guest"
+            ? true
+            : item['title'] == "Airliness"
+                ? true
+                : item['title'] == "Other Transportation"
+                    ? true
+                    : false;
+      });
+    } else {
+      items.where((e) => e['isFilled'] == false).forEach((item) {
+        item['isFilled'] = true;
+        item['showList'] = true;
+      });
+    }
+    update();
+  }
+
   getSingleFile() async {
     // Pick an file
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -141,20 +223,22 @@ class FormRequestTripController extends BaseController {
     site.text = rtModel?.data?.first.siteName ?? "";
     notes.text = rtModel?.data?.first.notes ?? "";
     attachment.text = rtModel?.data?.first.file ?? "";
-    selectedPurpose = rtModel?.data?.first.codeDocument.toString() ?? "";
-    isAttachment = selectedPurpose == "SV" || selectedPurpose == "FB" ? true : false;
+    selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
+    isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
     tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";
     // tlkJobBand.text = rtModel?.data?.first.
     tlkZona.text = rtModel?.data?.first.zonaName ?? "";
     tlkTotal.text = rtModel?.data?.first.totalTlk ?? "";
     // tlkTotalMeals.text = rtModel?.data?.first. ?? "";
-    fromCity  = rtModel?.data?.first.idCityFrom.toString();
+    fromCity = rtModel?.data?.first.idCityFrom.toString();
     toCity = rtModel?.data?.first.idCityTo.toString();
     departureDate = rtModel?.data?.first.dateDeparture;
-    arrivalDate  = rtModel?.data?.first.dateArrival;
+    arrivalDate = rtModel?.data?.first.dateArrival;
     zonaID = rtModel?.data?.first.idZona.toString();
     tlkDay = rtModel?.data?.first.tlkPerDay.toString();
     tlk = rtModel?.data?.first.totalTlk;
+
+    checkItems();
 
     await storage.readEmployeeInfo().then((value) {
       tlkJobBand.text = value.first.bandJobName != "null" ? value.first.bandJobName.toString() : "";

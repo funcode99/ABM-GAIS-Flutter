@@ -4,13 +4,14 @@
 
 class GetRequestTripByidModel {
   GetRequestTripByidModel({
-      bool? success, 
-      String? message, 
-      List<Data>? data,}){
+    bool? success,
+    String? message,
+    List<Data>? data,
+  }) {
     _success = success;
     _message = message;
     _data = data;
-}
+  }
 
   GetRequestTripByidModel.fromJson(dynamic json) {
     _success = json['success'];
@@ -22,18 +23,26 @@ class GetRequestTripByidModel {
       });
     }
   }
+
   bool? _success;
   String? _message;
   List<Data>? _data;
-GetRequestTripByidModel copyWith({  bool? success,
-  String? message,
-  List<Data>? data,
-}) => GetRequestTripByidModel(  success: success ?? _success,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+
+  GetRequestTripByidModel copyWith({
+    bool? success,
+    String? message,
+    List<Data>? data,
+  }) =>
+      GetRequestTripByidModel(
+        success: success ?? _success,
+        message: message ?? _message,
+        data: data ?? _data,
+      );
+
   bool? get success => _success;
+
   String? get message => _message;
+
   List<Data>? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -45,7 +54,6 @@ GetRequestTripByidModel copyWith({  bool? success,
     }
     return map;
   }
-
 }
 
 /// id : 29
@@ -73,40 +81,43 @@ GetRequestTripByidModel copyWith({  bool? success,
 /// zona_name : "B"
 /// code : 0
 /// status : "Draft"
+/// id_Document: 1
 /// document_name : "Company Business"
 /// name_city_from : null
 /// name_city_to : null
 
 class Data {
   Data({
-      num? id, 
-      num? idEmployee, 
-      String? noRequestTrip, 
-      String? codeDocument, 
-      num? idSite, 
-      dynamic notes, 
-      dynamic file, 
-      num? idCityFrom, 
-      num? idCityTo, 
-      String? dateDeparture, 
-      String? dateArrival, 
-      num? idZona, 
-      num? codeStatusDoc, 
-      String? tlkPerDay, 
-      String? totalTlk, 
-      String? createdAt, 
-      String? createdBy, 
-      String? updatedAt, 
-      dynamic updatedBy, 
-      String? employeeName, 
-      dynamic siteName, 
-      dynamic siteCode, 
-      String? zonaName, 
-      num? code, 
-      String? status, 
-      String? documentName, 
-      dynamic nameCityFrom, 
-      dynamic nameCityTo,}){
+    num? id,
+    num? idEmployee,
+    String? noRequestTrip,
+    String? codeDocument,
+    num? idSite,
+    dynamic notes,
+    dynamic file,
+    num? idCityFrom,
+    num? idCityTo,
+    String? dateDeparture,
+    String? dateArrival,
+    num? idZona,
+    num? codeStatusDoc,
+    String? tlkPerDay,
+    String? totalTlk,
+    String? createdAt,
+    String? createdBy,
+    String? updatedAt,
+    dynamic updatedBy,
+    String? employeeName,
+    dynamic siteName,
+    dynamic siteCode,
+    String? zonaName,
+    num? code,
+    String? status,
+    num? idDocument,
+    String? documentName,
+    dynamic nameCityFrom,
+    dynamic nameCityTo,
+  }) {
     _id = id;
     _idEmployee = idEmployee;
     _noRequestTrip = noRequestTrip;
@@ -132,10 +143,11 @@ class Data {
     _zonaName = zonaName;
     _code = code;
     _status = status;
+    _idDocument = idDocument;
     _documentName = documentName;
     _nameCityFrom = nameCityFrom;
     _nameCityTo = nameCityTo;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _id = json['id'];
@@ -163,10 +175,12 @@ class Data {
     _zonaName = json['zona_name'];
     _code = json['code'];
     _status = json['status'];
+    _idDocument = json['id_document'];
     _documentName = json['document_name'];
     _nameCityFrom = json['name_city_from'];
     _nameCityTo = json['name_city_to'];
   }
+
   num? _id;
   num? _idEmployee;
   String? _noRequestTrip;
@@ -192,93 +206,130 @@ class Data {
   String? _zonaName;
   num? _code;
   String? _status;
+  num? _idDocument;
   String? _documentName;
   dynamic _nameCityFrom;
   dynamic _nameCityTo;
-Data copyWith({  num? id,
-  num? idEmployee,
-  String? noRequestTrip,
-  String? codeDocument,
-  num? idSite,
-  dynamic notes,
-  dynamic file,
-  num? idCityFrom,
-  num? idCityTo,
-  String? dateDeparture,
-  String? dateArrival,
-  num? idZona,
-  num? codeStatusDoc,
-  String? tlkPerDay,
-  String? totalTlk,
-  String? createdAt,
-  String? createdBy,
-  String? updatedAt,
-  dynamic updatedBy,
-  String? employeeName,
-  dynamic siteName,
-  dynamic siteCode,
-  String? zonaName,
-  num? code,
-  String? status,
-  String? documentName,
-  dynamic nameCityFrom,
-  dynamic nameCityTo,
-}) => Data(  id: id ?? _id,
-  idEmployee: idEmployee ?? _idEmployee,
-  noRequestTrip: noRequestTrip ?? _noRequestTrip,
-  codeDocument: codeDocument ?? _codeDocument,
-  idSite: idSite ?? _idSite,
-  notes: notes ?? _notes,
-  file: file ?? _file,
-  idCityFrom: idCityFrom ?? _idCityFrom,
-  idCityTo: idCityTo ?? _idCityTo,
-  dateDeparture: dateDeparture ?? _dateDeparture,
-  dateArrival: dateArrival ?? _dateArrival,
-  idZona: idZona ?? _idZona,
-  codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
-  tlkPerDay: tlkPerDay ?? _tlkPerDay,
-  totalTlk: totalTlk ?? _totalTlk,
-  createdAt: createdAt ?? _createdAt,
-  createdBy: createdBy ?? _createdBy,
-  updatedAt: updatedAt ?? _updatedAt,
-  updatedBy: updatedBy ?? _updatedBy,
-  employeeName: employeeName ?? _employeeName,
-  siteName: siteName ?? _siteName,
-  siteCode: siteCode ?? _siteCode,
-  zonaName: zonaName ?? _zonaName,
-  code: code ?? _code,
-  status: status ?? _status,
-  documentName: documentName ?? _documentName,
-  nameCityFrom: nameCityFrom ?? _nameCityFrom,
-  nameCityTo: nameCityTo ?? _nameCityTo,
-);
+
+  Data copyWith({
+    num? id,
+    num? idEmployee,
+    String? noRequestTrip,
+    String? codeDocument,
+    num? idSite,
+    dynamic notes,
+    dynamic file,
+    num? idCityFrom,
+    num? idCityTo,
+    String? dateDeparture,
+    String? dateArrival,
+    num? idZona,
+    num? codeStatusDoc,
+    String? tlkPerDay,
+    String? totalTlk,
+    String? createdAt,
+    String? createdBy,
+    String? updatedAt,
+    dynamic updatedBy,
+    String? employeeName,
+    dynamic siteName,
+    dynamic siteCode,
+    String? zonaName,
+    num? code,
+    String? status,
+    num? idDocument,
+    String? documentName,
+    dynamic nameCityFrom,
+    dynamic nameCityTo,
+  }) =>
+      Data(
+        id: id ?? _id,
+        idEmployee: idEmployee ?? _idEmployee,
+        noRequestTrip: noRequestTrip ?? _noRequestTrip,
+        codeDocument: codeDocument ?? _codeDocument,
+        idSite: idSite ?? _idSite,
+        notes: notes ?? _notes,
+        file: file ?? _file,
+        idCityFrom: idCityFrom ?? _idCityFrom,
+        idCityTo: idCityTo ?? _idCityTo,
+        dateDeparture: dateDeparture ?? _dateDeparture,
+        dateArrival: dateArrival ?? _dateArrival,
+        idZona: idZona ?? _idZona,
+        codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
+        tlkPerDay: tlkPerDay ?? _tlkPerDay,
+        totalTlk: totalTlk ?? _totalTlk,
+        createdAt: createdAt ?? _createdAt,
+        createdBy: createdBy ?? _createdBy,
+        updatedAt: updatedAt ?? _updatedAt,
+        updatedBy: updatedBy ?? _updatedBy,
+        employeeName: employeeName ?? _employeeName,
+        siteName: siteName ?? _siteName,
+        siteCode: siteCode ?? _siteCode,
+        zonaName: zonaName ?? _zonaName,
+        code: code ?? _code,
+        status: status ?? _status,
+        idDocument: idDocument ?? _idDocument,
+        documentName: documentName ?? _documentName,
+        nameCityFrom: nameCityFrom ?? _nameCityFrom,
+        nameCityTo: nameCityTo ?? _nameCityTo,
+      );
+
   num? get id => _id;
+
   num? get idEmployee => _idEmployee;
+
   String? get noRequestTrip => _noRequestTrip;
+
   String? get codeDocument => _codeDocument;
+
   num? get idSite => _idSite;
+
   dynamic get notes => _notes;
+
   dynamic get file => _file;
+
   num? get idCityFrom => _idCityFrom;
+
   num? get idCityTo => _idCityTo;
+
   String? get dateDeparture => _dateDeparture;
+
   String? get dateArrival => _dateArrival;
+
   num? get idZona => _idZona;
+
   num? get codeStatusDoc => _codeStatusDoc;
+
   String? get tlkPerDay => _tlkPerDay;
+
   String? get totalTlk => _totalTlk;
+
   String? get createdAt => _createdAt;
+
   String? get createdBy => _createdBy;
+
   String? get updatedAt => _updatedAt;
+
   dynamic get updatedBy => _updatedBy;
+
   String? get employeeName => _employeeName;
+
   dynamic get siteName => _siteName;
+
   dynamic get siteCode => _siteCode;
+
   String? get zonaName => _zonaName;
+
   num? get code => _code;
+
   String? get status => _status;
+
+  num? get idDocument => _idDocument;
+
   String? get documentName => _documentName;
+
   dynamic get nameCityFrom => _nameCityFrom;
+
   dynamic get nameCityTo => _nameCityTo;
 
   Map<String, dynamic> toJson() {
@@ -308,10 +359,10 @@ Data copyWith({  num? id,
     map['zona_name'] = _zonaName;
     map['code'] = _code;
     map['status'] = _status;
+    map['id_document'] = _idDocument;
     map['document_name'] = _documentName;
     map['name_city_from'] = _nameCityFrom;
     map['name_city_to'] = _nameCityTo;
     return map;
   }
-
 }
