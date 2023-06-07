@@ -4,6 +4,8 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/document_delivery/form_document_delivery/form_document_delivery_controller.dart';
@@ -38,14 +40,42 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: SliverAppBarDelegate(
-                      minHeight: 100,
+                      minHeight: 150,
                       maxHeight: 32,
                       child: Container(
                         color: whiteColor,
                         child: Column(
                           children: [
-                            Text("Document No. 123231", style: appTitle),
+                            Text("Document No. 123231/ ${controller.ddID}", style: appTitle),
                             SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: !controller.isEdit ? MainAxisAlignment.center : MainAxisAlignment.spaceEvenly,
+                              children: [
+                                CustomFilledButton(
+                                  color: whiteColor,
+                                  width: Get.width / 4,
+                                  borderColor: infoColor,
+                                  fontColor: infoColor,
+                                  title: controller.isEdit ? "cancel" : "Edit",
+                                  onPressed: () {
+                                    controller.isEdit = controller.isEdit == false ? true : false;
+                                    controller.update();
+                                  },
+                                ),
+                                controller.isEdit
+                                    ? CustomFilledButton(
+                                        color: successColor,
+                                        width: Get.width / 4,
+                                        title: "Save",
+                                        onPressed: () {
+                                          if(controller.formKey.currentState?.validate() == true){
+                                            controller.saveDocument();
+                                          }
+                                        },
+                                      )
+                                    : Container(),
+                              ],
+                            ),
                             SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
@@ -63,9 +93,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                         )),
                                     child: Row(
                                       children: [
-                                        Text("Created",
-                                            style:
-                                                TextStyle(color: whiteColor)),
+                                        Text("Created", style: TextStyle(color: whiteColor)),
                                         Icon(
                                           Icons.check_circle_outline_sharp,
                                           color: whiteColor,
@@ -76,127 +104,102 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   GestureDetector(
                                     child: Container(
                                       padding: EdgeInsets.all(8),
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 5),
+                                      margin: EdgeInsets.symmetric(horizontal: 5),
                                       decoration: BoxDecoration(
-                                          color: controller.isReceived
-                                              ? successColor
-                                              : whiteColor,
+                                          color: controller.isReceived ? successColor : whiteColor,
                                           borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(8),
                                             topRight: Radius.circular(8),
                                             bottomLeft: Radius.circular(24),
                                             bottomRight: Radius.circular(8),
                                           ),
-                                          border: Border.all(
-                                              color: controller.isReceived
-                                                  ? Colors.transparent
-                                                  : blackColor)),
+                                          border: Border.all(color: controller.isReceived ? Colors.transparent : blackColor)),
                                       child: Row(
                                         children: [
-                                          Text("Received",
-                                              style: TextStyle(
-                                                  color: controller.isReceived
-                                                      ? whiteColor
-                                                      : blackColor)),
+                                          Text("Received", style: TextStyle(color: controller.isReceived ? whiteColor : blackColor)),
                                           controller.isReceived
                                               ? Icon(
-                                                  Icons
-                                                      .check_circle_outline_sharp,
+                                                  Icons.check_circle_outline_sharp,
                                                   color: whiteColor,
                                                 )
                                               : Container()
                                         ],
                                       ),
                                     ),
-                                    onTap: (){
-                                      controller.isReceived = true;
+                                    onTap: () {
+                                      if (controller.isEdit == true) {
+                                        controller.codeStatusDoc = 1;
+                                        controller.isReceived = true;
+                                      }
                                       controller.update();
                                     },
                                   ),
                                   GestureDetector(
                                     child: Container(
                                       padding: EdgeInsets.all(8),
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 5),
+                                      margin: EdgeInsets.symmetric(horizontal: 5),
                                       decoration: BoxDecoration(
-                                          color: controller.isDelivering
-                                              ? successColor
-                                              : whiteColor,
+                                          color: controller.isDelivering ? successColor : whiteColor,
                                           borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(8),
                                             topRight: Radius.circular(8),
                                             bottomLeft: Radius.circular(24),
                                             bottomRight: Radius.circular(8),
                                           ),
-                                          border: Border.all(
-                                              color: controller.isDelivering
-                                                  ? Colors.transparent
-                                                  : blackColor)),
+                                          border: Border.all(color: controller.isDelivering ? Colors.transparent : blackColor)),
                                       child: Row(
                                         children: [
-                                          Text("Delivering",
-                                              style: TextStyle(
-                                                  color: controller.isDelivering
-                                                      ? whiteColor
-                                                      : blackColor)),
+                                          Text("Delivering", style: TextStyle(color: controller.isDelivering ? whiteColor : blackColor)),
                                           controller.isDelivering
                                               ? Icon(
-                                                  Icons
-                                                      .check_circle_outline_sharp,
+                                                  Icons.check_circle_outline_sharp,
                                                   color: whiteColor,
                                                 )
                                               : Container()
                                         ],
                                       ),
                                     ),
-                                    onTap: (){
-                                      controller.isDelivering = true;
+                                    onTap: () {
+                                      if (controller.isEdit == true) {
+                                        controller.codeStatusDoc = 2;
+                                        controller.isDelivering = true;
+                                      }
                                       controller.update();
                                     },
                                   ),
                                   GestureDetector(
                                     child: Container(
                                       padding: EdgeInsets.all(8),
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 5),
+                                      margin: EdgeInsets.symmetric(horizontal: 5),
                                       decoration: BoxDecoration(
-                                          color: controller.isDelivered
-                                              ? successColor
-                                              : whiteColor,
+                                          color: controller.isDelivered ? successColor : whiteColor,
                                           borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(8),
                                             topRight: Radius.circular(8),
                                             bottomLeft: Radius.circular(24),
                                             bottomRight: Radius.circular(8),
                                           ),
-                                          border: Border.all(
-                                              color: controller.isDelivered
-                                                  ? Colors.transparent
-                                                  : blackColor)),
+                                          border: Border.all(color: controller.isDelivered ? Colors.transparent : blackColor)),
                                       child: Row(
                                         children: [
-                                          Text("Delivered",
-                                              style: TextStyle(
-                                                  color: controller.isDelivered
-                                                      ? whiteColor
-                                                      : blackColor)),
+                                          Text("Delivered", style: TextStyle(color: controller.isDelivered ? whiteColor : blackColor)),
                                           controller.isDelivered
                                               ? Icon(
-                                                  Icons
-                                                      .check_circle_outline_sharp,
+                                                  Icons.check_circle_outline_sharp,
                                                   color: whiteColor,
                                                 )
                                               : Container()
                                         ],
                                       ),
                                     ),
-                                    onTap: (){
-                                      controller.isDelivered = true;
+                                    onTap: () {
+                                      if (controller.isEdit == true) {
+                                        controller.codeStatusDoc = 3;
+                                        controller.isDelivered = true;
+                                      }
                                       controller.update();
                                     },
                                   ),
-
                                 ],
                               ),
                             )
@@ -213,34 +216,18 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              RichText(
-                                text: TextSpan(
-                                  text: 'Created Date ',
-                                  style: listTitleTextStyle,
-                                  children: const <TextSpan>[
-                                    TextSpan(
-                                        text: '*',
-                                        style: TextStyle(color: Colors.red)),
-                                  ],
-                                ),
-                              ),
-                              TextField(
+                              CustomTextFormField(
                                 controller: controller.createdDate,
+                                label: "Created Date",
+                                isRequired: true,
+                                readOnly: true,
                               ),
                               SizedBox(height: 8),
-                              RichText(
-                                text: TextSpan(
-                                  text: 'Created By ',
-                                  style: listTitleTextStyle,
-                                  children: const <TextSpan>[
-                                    TextSpan(
-                                        text: '*',
-                                        style: TextStyle(color: Colors.red)),
-                                  ],
-                                ),
-                              ),
-                              TextField(
+                              CustomTextFormField(
                                 controller: controller.createdBy,
+                                label: "Created By",
+                                isRequired: true,
+                                readOnly: true,
                               ),
                               SizedBox(height: 8),
                             ],
@@ -258,9 +245,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                       child: Container(
                         decoration: BoxDecoration(
                           color: infoColor,
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(8),
-                              topLeft: Radius.circular(8)),
+                          borderRadius: BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
                         ),
                         child: Row(
                           children: [
@@ -271,12 +256,8 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                               height: 50,
                               decoration: BoxDecoration(
                                 color: whiteColor,
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(8),
-                                    topLeft: Radius.circular(8)),
-                                gradient: LinearGradient(
-                                    stops: [0.1, 0],
-                                    colors: [blackColor, whiteColor]),
+                                borderRadius: BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
+                                gradient: LinearGradient(stops: [0.1, 0], colors: [blackColor, whiteColor]),
                               ),
                               child: Text("Detail"),
                             ),
@@ -289,155 +270,86 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                     // SliverToBoxAdapter(
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(38),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              RichText(
-                                text: TextSpan(
-                                  text: 'Sender ',
-                                  style: formlabelTextStyle,
-                                  children: const <TextSpan>[
-                                    TextSpan(
-                                        text: '*',
-                                        style: TextStyle(color: Colors.red)),
-                                  ],
+                        return Form(
+                          key: controller.formKey,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 34),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomTextFormField(
+                                  controller: controller.sender,
+                                  label: "Sender",
+                                  isRequired: true,
+                                  readOnly: true,
                                 ),
-                              ),
-                              TextFormField(
-                                controller: controller.sender,
-                                decoration: InputDecoration(
-                                    hintText: "Name", hintStyle: hintTextStyle),
-                              ),
-                              SizedBox(height: 8),
-                              RichText(
-                                text: TextSpan(
-                                  text: 'Receiver ',
-                                  style: formlabelTextStyle,
-                                  children: const <TextSpan>[
-                                    TextSpan(
-                                        text: '*',
-                                        style: TextStyle(color: Colors.red)),
-                                  ],
+                                SizedBox(height: 8),
+                                CustomDropDownFormField(
+                                  items: controller.receiverList
+                                      .map((e) => DropdownMenuItem(
+                                            child: Text(e.employeeName.toString()),
+                                            value: e.id.toString(),
+                                            onTap: () {
+                                              controller.location.text = e.siteName.toString();
+                                              controller.company.text = e.companyName.toString();
+                                              controller.siteID = e.idSite?.toInt();
+                                              controller.companyID = e.idCompany?.toInt();
+                                              controller.receiverID = e.id?.toInt();
+                                              controller.update();
+                                            },
+                                          ))
+                                      .toList(),
+                                  label: "Receiver",
+                                  hintText: "Receiver",
+                                  isRequired: true,
+                                  readOnly: !controller.isEdit,
+                                  selectedItem: controller.receiverName,
+                                  value: controller.selectedReceiver,
+                                  onChanged: (value) {
+                                    controller.selectedReceiver = value;
+                                    controller.update();
+                                  },
                                 ),
-                              ),
-                              DropdownButtonFormField(
-                                icon: Icon(Icons.keyboard_arrow_down),
-                                hint: Text(
-                                  "Receiver",
-                                  style: hintTextStyle,
+                                SizedBox(height: 8),
+                                CustomTextFormField(
+                                  controller: controller.location,
+                                  label: "Location",
+                                  isRequired: true,
+                                  readOnly: true,
                                 ),
-                                value: controller.receiver,
-                                isExpanded: true,
-                                style: TextStyle(fontSize: 14, color: blackColor),
-                                // underline: SizedBox(),
-                                items: [
-                                  DropdownMenuItem(
-                                    child: Text("Receiver"),
-                                    value: "name",
-                                  )
-                                ],
-                                onChanged: (value) {
-                                  controller.receiver = value;
-                                  controller.update();
-                                },
-                              ),
-                              SizedBox(height: 8),
-                              RichText(
-                                text: TextSpan(
-                                  text: 'Location ',
-                                  style: formlabelTextStyle,
-                                  children: const <TextSpan>[
-                                    TextSpan(
-                                        text: '*',
-                                        style: TextStyle(color: Colors.red)),
-                                  ],
+                                SizedBox(height: 8),
+                                CustomTextFormField(
+                                  controller: controller.company,
+                                  label: "Receiver Company",
+                                  isRequired: true,
+                                  readOnly: true,
                                 ),
-                              ),
-                              DropdownButtonFormField(
-                                icon: Icon(Icons.keyboard_arrow_down),
-                                hint: Text(
-                                  "Location",
-                                  style: hintTextStyle,
+                                SizedBox(height: 8),
+                                CustomTextFormField(
+                                  controller: controller.subjectDocument,
+                                  label: "Subject Document",
+                                  isRequired: true,
+                                  readOnly: !controller.isEdit,
                                 ),
-                                value: controller.receiver,
-                                isExpanded: true,
-                                style: TextStyle(fontSize: 14, color: blackColor),
-                                // underline: SizedBox(),
-                                items: [
-                                  DropdownMenuItem(
-                                    child: Text("Location"),
-                                    value: "location",
-                                  )
-                                ],
-                                onChanged: (value) {
-                                  controller.receiver = value;
-                                  controller.update();
-                                },
-                              ),
-                              SizedBox(height: 8),
-                              RichText(
-                                text: TextSpan(
-                                  text: 'Receiver Company ',
-                                  style: formlabelTextStyle,
-                                  children: const <TextSpan>[
-                                    TextSpan(
-                                        text: '*',
-                                        style: TextStyle(color: Colors.red)),
-                                  ],
+                                SizedBox(height: 8),
+                                CustomTextFormField(
+                                  controller: controller.attachment,
+                                  label: "Attachment (Optional)",
+                                  suffixIcon: !controller.isEdit ? null : Icon(Icons.upload),
+                                  readOnly: true,
+                                  onTap: () {
+                                    if (controller.isEdit == true) controller.getSingleFile();
+                                  },
                                 ),
-                              ),
-                              TextFormField(
-                                controller: controller.company,
-                                decoration: InputDecoration(
-                                  hintText: "Company",
-                                  hintStyle: hintTextStyle,
+                                SizedBox(height: 8),
+                                CustomTextFormField(
+                                  controller: controller.remarks,
+                                  label: "Remarks",
+                                  multiLine: true,
+                                  readOnly: !controller.isEdit,
                                 ),
-                              ),
-                              SizedBox(height: 8),
-                              RichText(
-                                text: TextSpan(
-                                  text: 'Subject Document ',
-                                  style: formlabelTextStyle,
-                                  children: const <TextSpan>[
-                                    TextSpan(
-                                        text: '*',
-                                        style: TextStyle(color: Colors.red)),
-                                  ],
-                                ),
-                              ),
-                              TextFormField(
-                                controller: controller.subjectDocument,
-                                readOnly: true,
-                                decoration: InputDecoration(
-                                  hintText: "Subject Document",
-                                  hintStyle: hintTextStyle,
-                                  suffixIcon: Icon(Icons.upload),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text("Attachment (Optional)",
-                                  style: formlabelTextStyle),
-                              TextFormField(
-                                controller: controller.attachment,
-                                readOnly: true,
-                                decoration: InputDecoration(
-                                  hintText: "Subject Document",
-                                  hintStyle: hintTextStyle,
-                                  suffixIcon: Icon(Icons.upload),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text("Remarks", style: formlabelTextStyle),
-                              TextFormField(
-                                controller: controller.remarks,
-                                maxLines: 3,
-                                decoration: InputDecoration(
-                                    hintText: "Remarks",
-                                    hintStyle: hintTextStyle),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         );
                       },

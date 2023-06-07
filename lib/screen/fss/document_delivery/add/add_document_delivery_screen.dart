@@ -4,6 +4,8 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/document_delivery/add/add_document_delivery_controller.dart';
 import 'package:get/get.dart';
@@ -26,8 +28,7 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
               alignment: Alignment.topCenter,
               padding: EdgeInsets.all(10),
               margin: EdgeInsets.all(7),
-              decoration: BoxDecoration(
-                  color: whiteColor, borderRadius: BorderRadius.circular(8)),
+              decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(8)),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,9 +38,7 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                       child: Icon(IconlyBold.info_square, color: whiteColor),
                     ),
                     Text("Document Delivery", style: appTitle),
@@ -51,153 +50,82 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            RichText(
-                              text: TextSpan(
-                                text: 'Sender ',
-                                style: formlabelTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            TextFormField(
+                            CustomTextFormField(
                               controller: controller.sender,
-                              decoration: InputDecoration(
-                                  hintText: "Name", hintStyle: hintTextStyle),
-                            ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Receiver ',
-                                style: formlabelTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text(
-                                "Receiver",
-                                style: hintTextStyle,
-                              ),
-                              value: controller.receiver,
-                              isExpanded: true,
-                              style: TextStyle(fontSize: 14, color: blackColor),
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("Receiver"),
-                                  value: "name",
-                                )
-                              ],
-                              onChanged: (value) {
-                                controller.receiver = value;
-                                controller.update();
-                              },
-                            ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Location ',
-                                style: formlabelTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            DropdownButtonFormField(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              hint: Text(
-                                "Location",
-                                style: hintTextStyle,
-                              ),
-                              value: controller.receiver,
-                              isExpanded: true,
-                              style: TextStyle(fontSize: 14, color: blackColor),
-                              // underline: SizedBox(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("Location"),
-                                  value: "location",
-                                )
-                              ],
-                              onChanged: (value) {
-                                controller.receiver = value;
-                                controller.update();
-                              },
-                            ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Receiver Company ',
-                                style: formlabelTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            TextFormField(
-                              controller: controller.company,
-                              decoration: InputDecoration(
-                                hintText: "Company",
-                                hintStyle: hintTextStyle,
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Subject Document ',
-                                style: formlabelTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: '*',
-                                      style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                            TextFormField(
-                              controller: controller.subjectDocument,
-                              decoration: InputDecoration(
-                                hintText: "Subject Document",
-                                hintStyle: hintTextStyle,
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            Text("Attachment (Optional)",
-                                style: formlabelTextStyle),
-                            TextFormField(
-                              controller: controller.attachment,
+                              label: "Sender",
+                              isRequired: true,
                               readOnly: true,
-                              decoration: InputDecoration(
-                                hintText: "Subject Document",
-                                hintStyle: hintTextStyle,
-                                suffixIcon: Icon(Icons.upload),
-                              ),
-                              onTap: () => controller.getAttachment(),
                             ),
                             SizedBox(height: 8),
-                            Text("Remarks", style: formlabelTextStyle),
-                            TextFormField(
+                            CustomDropDownFormField(
+                              items: controller.receiverList
+                                  .map((e) => DropdownMenuItem(
+                                        child: Text(e.employeeName.toString()),
+                                        value: e.id.toString(),
+                                        onTap: () {
+                                          controller.location.text = e.siteName.toString();
+                                          controller.company.text = e.companyName.toString();
+                                          controller.siteID = e.idSite?.toInt();
+                                          controller.companyID = e.idCompany?.toInt();
+                                          controller.receiverID = e.id?.toInt();
+                                          controller.update();
+                                        },
+                                      ))
+                                  .toList(),
+                              label: "Receiver",
+                              hintText: "Receiver",
+                              isRequired: true,
+                              onChanged: (value) {
+                                controller.selectedReceiver = value;
+                                controller.update();
+                              },
+                            ),
+                            SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.location,
+                              label: "Location",
+                              isRequired: true,
+                              readOnly: true,
+                            ),
+                            SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.company,
+                              label: "Receiver Company",
+                              isRequired: true,
+                              readOnly: true,
+                            ),
+                            SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.subjectDocument,
+                              label: "Subject Document",
+                              isRequired: true,
+                            ),
+                            SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.attachment,
+                              label: "Attachment (Optional)",
+                              suffixIcon: Icon(Icons.upload),
+                              readOnly: true,
+                              onTap: (){
+                                controller.getSingleFile();
+                              },
+                            ),
+                            SizedBox(height: 8),
+                            CustomTextFormField(
                               controller: controller.remarks,
-                              maxLines: 3,
-                              decoration: InputDecoration(
-                                  hintText: "Remarks",
-                                  hintStyle: hintTextStyle),
+                              label: "Remarks",
+                              multiLine: true,
                             ),
                             Center(
                               child: CustomFilledButton(
-                                width: 150,
+                                width: Get.width/2,
                                 color: successColor,
                                 title: "Save",
+                                onPressed: (){
+                                  if(controller.formKey.currentState?.validate() == true){
+                                    controller.saveDocument();
+                                  }
+                                },
                               ),
                             ),
                           ],

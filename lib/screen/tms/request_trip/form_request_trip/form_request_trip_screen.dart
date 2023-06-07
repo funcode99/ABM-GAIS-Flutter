@@ -138,8 +138,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                           hintText: "pick document type",
                                           items: controller.purposeList
                                               .map((e) => DropdownMenuItem(
-                                                    // value: e.id.toString(),
-                                                    value: e.codeDocument.toString(),
+                                                    value: e.id.toString(),
+                                                    // value: e.codeDocument.toString(),
                                                     child: Text(e.documentName.toString()),
                                                     onTap: () {
                                                       controller.codeDocument = e.id?.toInt();
@@ -149,7 +149,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                               .toList(),
                                           onChanged: (value) {
                                             controller.selectedPurpose = value.toString();
-                                            value == "SV" || value == "FB" ? controller.isAttachment = true : controller.isAttachment = false;
+                                            value == "1" || value == "2" ? controller.isAttachment = true : controller.isAttachment = false;
                                             controller.update();
                                             // print(controller.selectedPurpose);
                                           },

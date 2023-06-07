@@ -72,7 +72,7 @@ class LoginController extends BaseController {
           .then(
             (_) => Get.showSnackbar(
               const GetSnackBar(
-                message: 'Login Berhasil',
+                message: 'Welcome',
                 isDismissible: true,
                 duration: Duration(seconds: 3),
                 backgroundColor: Colors.green,
@@ -93,7 +93,7 @@ class LoginController extends BaseController {
             Icons.error,
             color: Colors.white,
           ),
-          message: 'Login Gagal',
+          message: 'Username or Password is not valid',
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: Colors.red,

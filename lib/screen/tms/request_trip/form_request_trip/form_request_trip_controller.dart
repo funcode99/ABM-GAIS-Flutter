@@ -27,7 +27,7 @@ import 'package:get/get.dart';
 
 class FormRequestTripController extends BaseController {
   int purposeID = Get.arguments['id'];
-  String? documentID = Get.arguments['idDocument'];
+  int? codeDocument = Get.arguments['codeDocument'];
   int? requsetorID;
   int? siteID;
   int? jobID;
@@ -53,7 +53,6 @@ class FormRequestTripController extends BaseController {
   bool isAttachment = false;
   String? selectedPurpose;
 
-  int? codeDocument;
   int activeStep = 1;
   String? rtStatus;
   String? rtNumber;

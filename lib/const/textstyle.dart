@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
-import 'package:get/get.dart';
 
 TextStyle titleTextStyle = TextStyle(fontSize: 32, fontWeight: medium);
 TextStyle hintTextStyle = TextStyle(fontSize: 14, fontWeight: semiBold, color: neutralColor);
