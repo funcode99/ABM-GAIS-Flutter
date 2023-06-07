@@ -21,4 +21,15 @@ extension CustomValidationBuilder on ValidationBuilder {
 
     return null;
   });
+
+  validLink(){
+    return add((value){
+      String pattern = r'(http|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?';
+      RegExp regExp = RegExp(pattern);
+      if (!regExp.hasMatch(value!)) {
+        return 'Please enter valid url';
+      }
+      return null;
+    });
+  }
 }

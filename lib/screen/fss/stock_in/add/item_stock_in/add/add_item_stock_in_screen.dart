@@ -71,22 +71,6 @@ class AddItemStockInATKScreen extends StatelessWidget{
                   const SizedBox(
                     height: 32,
                   ),
-                  CustomTextFormField(
-                      isRequired: true,
-                      readOnly: true,
-                      controller: controller.companyController,
-                      label: "Company".tr),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  CustomTextFormField(
-                      isRequired: true,
-                      readOnly: true,
-                      controller: controller.siteController,
-                      label: "Site".tr),
-                  const SizedBox(
-                    height: 8,
-                  ),
                   Obx(() {
                     return CustomDropDownFormField(
                       isRequired: true,

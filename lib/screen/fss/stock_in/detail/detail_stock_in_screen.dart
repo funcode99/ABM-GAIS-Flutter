@@ -115,7 +115,7 @@ class DetailStockInScreen extends StatelessWidget {
                                   },
                                   style: ElevatedButton.styleFrom(
                                       minimumSize: const Size(75, 30),
-                                      backgroundColor: successColor),
+                                      backgroundColor: orangeColor),
                                   child: Text("Submit".tr),
                                 ),
                         ],
