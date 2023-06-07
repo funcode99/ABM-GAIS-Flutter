@@ -5,15 +5,21 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/cutompagination.dart';
+import 'package:gais/reusable/dataempty.dart';
+import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_controller.dart';
 import 'package:gais/screen/fss/document_delivery/add/add_document_delivery_screen.dart';
 import 'package:gais/screen/fss/document_delivery/document_delivery_list/document_delivery_list_controller.dart';
-import 'package:gais/screen/fss/document_delivery/edit/edit_document_delivery_screen.dart';
 import 'package:gais/screen/fss/document_delivery/form_document_delivery/form_document_delivery_screen.dart';
+import 'package:gais/screen/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -29,298 +35,207 @@ class DocumentDeliveryListScreen extends StatelessWidget {
             backgroundColor: baseColor,
             appBar: TopBar(
               title: Text("Document Delivery", style: appTitle),
-              leading: CustomBackButton(),
+              leading: CustomBackButton(onPressed: ()=> Get.off(HomeScreen(), arguments: 1),),
             ),
-            body: CustomScrollView(
-              slivers: [
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: SliverAppBarDelegate(
-                    minHeight: 110,
-                    maxHeight: 32,
-                    child: Column(
-                      children: [
-                        Container(height: 10, color: baseColor),
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: whiteColor,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Row(
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  controller.fetchList();
+                  controller.update();
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    SliverPersistentHeader(
+                      pinned: true,
+                      delegate: SliverAppBarDelegate(
+                        minHeight: controller.dataisnull || controller.isLoading ? Get.height : 180,
+                        maxHeight: 32,
+                        child: Container(
+                          color: baseColor,
+                          child: Column(
                             children: [
-                              Container(
-                                width: Get.width - 112,
-                                margin: EdgeInsets.only(right: 10),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    hintText: "Search",
-                                    prefixIcon: Icon(IconlyLight.search),
-                                  ),
-                                ),
-                              ),
-                              CustomFilledButton(
-                                color: successColor,
-                                icon: IconlyBold.filter_2,
-                                width: 50,
-                                onPressed: () {
-                                  controller.showFilter =
-                                      controller.showFilter ? false : true;
-                                  controller.update();
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        scrollable: true,
-                                        titlePadding: EdgeInsets.zero,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8))),
-                                        title: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 5),
-                                          decoration: BoxDecoration(
-                                              color: lightBlueColor,
-                                              borderRadius: BorderRadius.only(
-                                                  topRight: Radius.circular(8),
-                                                  topLeft: Radius.circular(8))),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Filter"),
-                                              IconButton(
-                                                  onPressed: () => Get.back(),
-                                                  icon: Icon(Icons.close))
-                                            ],
+                              CustomSearchBar(
+                                onSubmit: (value) {
+                                  controller.searchValue = value;
+                                  controller.filterStatus = "-1";
+                                  controller.fetchList();
+                                },
+                                onPressedFilter: () {
+                                  Get.bottomSheet(StatefulBuilder(builder: (context, setState) {
+                                    return FilterBottomSheet(
+                                      onApplyFilter: () {
+                                        controller.fetchList();
+                                        controller.update();
+                                        Get.back();
+                                      },
+                                      onResetFilter: () {
+                                        setState(() {
+                                          controller.resetFilter();
+                                        });
+                                      },
+                                      children: [
+                                        Text("Filter", style: appTitle.copyWith(fontSize: 25)),
+                                        const SizedBox(height: 10),
+                                        Form(
+                                          key: controller.formKey,
+                                          child: CustomDropDownFormField(
+                                            label: "Status Document",
+                                            hintText: "Status Document",
+                                            value: controller.filterStatus,
+                                            items: controller.statusList
+                                                .map((e) => DropdownMenuItem(
+                                                      value: e.code.toString(),
+                                                      child: Text(e.status.toString()),
+                                                    ))
+                                                .toSet()
+                                                .toList(),
+                                            onChanged: (value) {
+                                              controller.searchValue = null;
+                                              controller.filterStatus = value.toString() ;
+                                              controller.update();
+                                            },
                                           ),
                                         ),
-                                        content: GetBuilder<
-                                                DocumentDeliveryListController>(
-                                            init:
-                                                DocumentDeliveryListController(),
-                                            builder: (c) {
-                                              return Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text("Status Document",
-                                                      style:
-                                                          listTitleTextStyle),
-                                                  Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 6),
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 10,
-                                                            vertical: 3),
-                                                    width: Get.width,
-                                                    decoration: BoxDecoration(
-                                                        color: whiteColor,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                        border: Border.all(
-                                                            color: blackColor)),
-                                                    child: DropdownButton(
-                                                      icon: Icon(Icons
-                                                          .keyboard_arrow_down),
-                                                      hint: Text("Created"),
-                                                      value: c.statusDocument,
-                                                      isExpanded: true,
-                                                      underline: SizedBox(),
-                                                      items: [
-                                                        DropdownMenuItem(
-                                                          child:
-                                                              Text("Created"),
-                                                          value: "Created",
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          child:
-                                                              Text("Received"),
-                                                          value: "Received",
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          child: Text(
-                                                              "Delivering"),
-                                                          value: "Delivering",
-                                                        ),
-                                                        DropdownMenuItem(
-                                                          child:
-                                                              Text("Delivered"),
-                                                          value: "Taxi Voucher",
-                                                        ),
-                                                      ],
-                                                      onChanged: (value) {
-                                                        c.statusDocument =
-                                                            value;
-                                                        c.update();
-                                                      },
-                                                    ),
-                                                  ),
-                                                  Text("Date Range",
-                                                      style:
-                                                          listTitleTextStyle),
-                                                  Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 6),
-                                                    child: TextField(
-                                                      readOnly: true,
-                                                      controller: c.dateRange,
-                                                      decoration: InputDecoration(
-                                                          suffixIcon: Icon(Icons
-                                                              .calendar_month)),
-                                                      onTap: () {
-                                                        showCustomDateRangePicker(
-                                                          context,
-                                                          dismissible: true,
-                                                          minimumDate: DateTime
-                                                                  .now()
-                                                              .subtract(
-                                                                  const Duration(
-                                                                      days:
-                                                                          365)),
-                                                          maximumDate: DateTime
-                                                                  .now()
-                                                              .add(
-                                                                  const Duration(
-                                                                      days:
-                                                                          365)),
-                                                          endDate: c.endDate,
-                                                          startDate:
-                                                              c.startDate,
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          primaryColor:
-                                                              Colors.green,
-                                                          onApplyClick:
-                                                              (start, end) {
-                                                            c.endDate = end;
-                                                            c.startDate = start;
-                                                            c.dateRange.text =
-                                                                "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
-                                                            c.update();
-                                                          },
-                                                          onCancelClick: () {
-                                                            c.endDate = null;
-                                                            c.startDate = null;
-                                                            c.update();
-                                                          },
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                  Center(
-                                                    child: CustomFilledButton(
-                                                        color: successColor,
-                                                        title: "Filter",
-                                                        width: 120,
-                                                        onPressed: () =>
-                                                            Get.back(result: [
-                                                              c.statusDocument,
-                                                              c.dateRange
-                                                            ])),
-                                                  )
-                                                ],
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                        CustomTextFormField(
+                                            readOnly: true,
+                                            controller: controller.dateRange,
+                                            suffixIcon: const Icon(Icons.calendar_month),
+                                            onTap: () {
+                                              showCustomDateRangePicker(
+                                                context,
+                                                dismissible: true,
+                                                minimumDate: DateTime.now().subtract(const Duration(days: 365)),
+                                                maximumDate: DateTime.now().add(const Duration(days: 365)),
+                                                // endDate: controller.endDate,
+                                                // startDate: controller.startDate,
+                                                backgroundColor: Colors.white,
+                                                primaryColor: Colors.green,
+                                                onApplyClick: (start, end) {
+                                                  controller.endDate = controller.rangeFormat.format(end);
+                                                  controller.startDate = controller.rangeFormat.format(start);
+
+                                                  controller.dateRange.text =
+                                                      "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                                  controller.update();
+                                                },
+                                                onCancelClick: () {
+                                                  controller.endDate = null;
+                                                  controller.startDate = null;
+                                                  controller.update();
+                                                },
                                               );
-                                            }),
-                                        actionsAlignment:
-                                            MainAxisAlignment.center,
-                                        actions: [],
-                                      );
-                                    },
-                                  );
+                                            },
+                                            label: "Date Range".tr),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                      ],
+                                    );
+                                  }));
                                 },
-                              )
+                              ),
+                              CustomPagination(
+                                colorSub: whiteColor,
+                                colorPrimary: infoColor,
+                                onPageChanged: (int pageNumber) {
+                                  controller.currentPage = pageNumber;
+                                  controller.fetchList();
+                                  controller.update();
+                                },
+                                threshold: 5,
+                                pageTotal: controller.ddModel?.data?.lastPage?.toInt() ?? 1,
+                                pageInit: controller.currentPage,
+                              ),
+                              controller.isLoading
+                                  ? Container(height: Get.height / 2, child: const Center(child: CircularProgressIndicator()))
+                                  : controller.dataisnull
+                                      ? SizedBox(height: Get.height / 2, child: const DataEmpty())
+                                      : Container()
                             ],
                           ),
                         ),
-                        Container(height: 10, color: baseColor),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: SliverAppBarDelegate(
-                    minHeight: 70,
-                    maxHeight: 32,
-                    child: Column(
-                      children: [
-                        CustomPagination(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          onPageChanged: (int pageNumber) {
-                            controller.currentPage = pageNumber;
-                            controller.update();
-                          },
-                          pageTotal: 10,
-                          pageInit: controller.currentPage,
-                        ),
-                        Container(height: 10, color: baseColor),
-                      ],
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return SizedBox(
+                            child: Column(
+                              children: [
+                                CustomTripCard(
+                                  listNumber: controller.currentPage > 1 ? (controller.ddModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
+                                  title: controller.ddList[index].id.toString(),
+                                  //code document delivery
+                                  status: controller.ddList[index].codeStatusDoc.toString(),
+                                  // status
+                                  subtitle: controller.ddList[index].createdAt?.substring(0, 10),
+                                  isEdit: true,
+                                  editAction: () => Get.to(
+                                    const FormDocumentDeliveryScreen(),
+                                    arguments: {
+                                      'id': controller.ddList[index].id?.toInt(),
+                                    },
+                                  )?.then((value) {
+                                    controller.fetchList();
+                                    controller.update();
+                                  }),
+                                  isDelete: true,
+                                  deleteAction: () {
+                                    controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
+                                    controller.deleteDocumentDelivery(int.parse(controller.ddList[index].id.toString()));
+
+                                    controller.update();
+                                  },
+                                  content: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Receiver", style: listTitleTextStyle),
+                                          Text(controller.ddList[index].idEmployeeReceiver.toString() ?? "", style: listSubTitleTextStyle)
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Sender", style: listTitleTextStyle),
+                                          Text(controller.ddList[index].idEmployeeSender.toString() ?? "", style: listSubTitleTextStyle)
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Location", style: listTitleTextStyle),
+                                          Text("${controller.ddList[index].siteCode} - ${controller.ddList[index].siteName.toString() ?? " "}", style: listSubTitleTextStyle)
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                if (controller.ddList.length == index + 1) const SizedBox(height: 100)
+                              ],
+                            ),
+                          );
+                        },
+                        childCount: !controller.dataisnull ? controller.ddList.length : 1,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      // int _page = 0;
-                      // controller.currentPage != 1
-                      //     ? _page = controller.currentPage + 9
-                      //     : 0;
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: CustomTripCard(
-                          listNumber: index + 1,
-                          title: "DOC-ABM/1859/23.03",
-                          subtitle: "23/04/23",
-                          status: "created",
-                          isEdit: true,
-                          editAction: ()=> Get.to(EditDocumentDeliveryScreen()),
-                          isDelete: true,
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Receiver", style: listTitleTextStyle),
-                                  Text("Fahri", style: listSubTitleTextStyle),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Sender", style: listTitleTextStyle),
-                                  Text("Mack N", style: listSubTitleTextStyle),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Location", style: listTitleTextStyle),
-                                  Text("KYB01-Jakarta, Cilandak",
-                                      style: listSubTitleTextStyle),
-                                ],
-                              ),
-                            ],
-                          ),
-                          onTap: ()=> Get.to(FormDocumentDeliveryScreen()),
-                        ),
-                      );
-                    },
-                    // childCount: controller.requestList.length
-                    childCount: 10,
-                  ),
-                ),
-              ],
+              ),
             ),
             floatingActionButton: FloatingActionButton(
               child: Icon(Icons.add_rounded, size: 45),
               backgroundColor: successColor,
-              onPressed: () => Get.to(AddDocumentDeliveryScreen()),
+              onPressed: () => Get.to(AddDocumentDeliveryScreen())?.then((value) {
+                controller.fetchList();
+                controller.update();
+              }),
             ),
             bottomNavigationBar: BottomBar(menu: 1),
           );

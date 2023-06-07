@@ -98,6 +98,7 @@ class CustomTripCard extends StatelessWidget {
                   status != null
                       ? Container(
                           alignment: Alignment.center,
+                          width: Get.width/5,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(color: greenColor, borderRadius: BorderRadius.circular(5)),
                           child: Text(

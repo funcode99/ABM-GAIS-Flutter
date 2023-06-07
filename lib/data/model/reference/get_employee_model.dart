@@ -1,6 +1,6 @@
 /// success : true
 /// message : "Success Get Data"
-/// data : [{"id":1,"employee_name":"John Doe","phone_number":"0812345678","sn_employee":"12345","email":"12345@mail.com","nik":"1234123412341234123","dob":"1991-01-01 00:00:00","start_date":"1991-01-01 00:00:00","end_date":"1991-01-01 00:00:00","jenkel":"L","id_department":1,"id_company":1,"id_site":1,"id_job_band":1,"foto":null,"foto_path":null,"created_at":"2023-05-11T04:46:09.000000Z","created_by":null,"updated_at":"2023-05-11T04:46:09.000000Z","updated_by":null}]
+/// data : [{"no":1,"id":1,"employee_name":"Jhon Doe","phone_number":"08123456789","sn_employee":"12345","email":"12345@mail.com","nik":"12344321","dob":"1990-01-01 00:00:00","start_date":"2020-01-01 00:00:00","end_date":"2025-12-01 00:00:00","jenkel":"L","id_department":2,"id_company":1,"id_site":14,"id_job_band":76,"foto":null,"foto_path":null,"created_at":null,"created_by":null,"updated_at":"2023-06-07 06:06:16","updated_by":"2","deleted_at":null,"company_code":"3000","site_name":"Balikpapan, Sepinggan","site_code":"BPP02","band_job_name":"B","departement_name":null,"company_name":"PT Cipta Kridatama"},{"no":2,"id":2,"employee_name":"Admin","phone_number":"0812345678","sn_employee":"12345","email":"admin@mail.com","nik":"1234123412341234123","dob":"1991-01-01 00:00:00","start_date":"1991-01-01 00:00:00","end_date":"1991-01-01 00:00:00","jenkel":"L","id_department":1,"id_company":1,"id_site":1,"id_job_band":1,"foto":null,"foto_path":null,"created_at":null,"created_by":null,"updated_at":null,"updated_by":null,"deleted_at":null,"company_code":"3000","site_name":null,"site_code":null,"band_job_name":"1","departement_name":null,"company_name":"PT Cipta Kridatama"},{"no":3,"id":3,"employee_name":"steven","phone_number":"08123456789","sn_employee":"123456","email":"steven@gmail.com","nik":"12344321","dob":"1990-01-01 00:00:00","start_date":"2020-01-01 00:00:00","end_date":"2025-01-01 00:00:00","jenkel":"L","id_department":2,"id_company":1,"id_site":1,"id_job_band":1,"foto":null,"foto_path":null,"created_at":"2023-05-29 15:05:32","created_by":"1","updated_at":"2023-05-29 15:05:32","updated_by":null,"deleted_at":null,"company_code":"3000","site_name":null,"site_code":null,"band_job_name":"1","departement_name":null,"company_name":"PT Cipta Kridatama"},{"no":4,"id":4,"employee_name":"Raden Mas Abdul Rahman Alhafizh Hutagalung","phone_number":"08988416727","sn_employee":"SN00001","email":"radenmasabdul@ml.co","nik":"3271000000000000001","dob":"1996-01-22 00:00:00","start_date":"2020-01-01 00:00:00","end_date":"2025-01-01 00:00:00","jenkel":"L","id_department":1,"id_company":1,"id_site":1,"id_job_band":1,"foto":"foto-abdul-resize.jpeg","foto_path":"http://103.165.130.157:8086/storage/files/employee/aWKlPKCNyOuVuN04gMQMmtTcQ5JQ5NNfbP8yBIQK.png","created_at":"2023-05-29 15:27:05","created_by":"1","updated_at":"2023-05-29 15:27:05","updated_by":null,"deleted_at":null,"company_code":"3000","site_name":null,"site_code":null,"band_job_name":"1","departement_name":null,"company_name":"PT Cipta Kridatama"}]
 
 class GetEmployeeModel {
   GetEmployeeModel({
@@ -48,29 +48,38 @@ GetEmployeeModel copyWith({  bool? success,
 
 }
 
+/// no : 1
 /// id : 1
-/// employee_name : "John Doe"
-/// phone_number : "0812345678"
+/// employee_name : "Jhon Doe"
+/// phone_number : "08123456789"
 /// sn_employee : "12345"
 /// email : "12345@mail.com"
-/// nik : "1234123412341234123"
-/// dob : "1991-01-01 00:00:00"
-/// start_date : "1991-01-01 00:00:00"
-/// end_date : "1991-01-01 00:00:00"
+/// nik : "12344321"
+/// dob : "1990-01-01 00:00:00"
+/// start_date : "2020-01-01 00:00:00"
+/// end_date : "2025-12-01 00:00:00"
 /// jenkel : "L"
-/// id_department : 1
+/// id_department : 2
 /// id_company : 1
-/// id_site : 1
-/// id_job_band : 1
+/// id_site : 14
+/// id_job_band : 76
 /// foto : null
 /// foto_path : null
-/// created_at : "2023-05-11T04:46:09.000000Z"
+/// created_at : null
 /// created_by : null
-/// updated_at : "2023-05-11T04:46:09.000000Z"
-/// updated_by : null
+/// updated_at : "2023-06-07 06:06:16"
+/// updated_by : "2"
+/// deleted_at : null
+/// company_code : "3000"
+/// site_name : "Balikpapan, Sepinggan"
+/// site_code : "BPP02"
+/// band_job_name : "B"
+/// departement_name : null
+/// company_name : "PT Cipta Kridatama"
 
 class Data {
   Data({
+      num? no, 
       num? id, 
       String? employeeName, 
       String? phoneNumber, 
@@ -87,10 +96,18 @@ class Data {
       num? idJobBand, 
       dynamic foto, 
       dynamic fotoPath, 
-      String? createdAt, 
+      dynamic createdAt, 
       dynamic createdBy, 
       String? updatedAt, 
-      dynamic updatedBy,}){
+      String? updatedBy, 
+      dynamic deletedAt, 
+      String? companyCode, 
+      String? siteName, 
+      String? siteCode, 
+      String? bandJobName, 
+      dynamic departementName, 
+      String? companyName,}){
+    _no = no;
     _id = id;
     _employeeName = employeeName;
     _phoneNumber = phoneNumber;
@@ -111,9 +128,17 @@ class Data {
     _createdBy = createdBy;
     _updatedAt = updatedAt;
     _updatedBy = updatedBy;
+    _deletedAt = deletedAt;
+    _companyCode = companyCode;
+    _siteName = siteName;
+    _siteCode = siteCode;
+    _bandJobName = bandJobName;
+    _departementName = departementName;
+    _companyName = companyName;
 }
 
   Data.fromJson(dynamic json) {
+    _no = json['no'];
     _id = json['id'];
     _employeeName = json['employee_name'];
     _phoneNumber = json['phone_number'];
@@ -134,7 +159,15 @@ class Data {
     _createdBy = json['created_by'];
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
+    _deletedAt = json['deleted_at'];
+    _companyCode = json['company_code'];
+    _siteName = json['site_name'];
+    _siteCode = json['site_code'];
+    _bandJobName = json['band_job_name'];
+    _departementName = json['departement_name'];
+    _companyName = json['company_name'];
   }
+  num? _no;
   num? _id;
   String? _employeeName;
   String? _phoneNumber;
@@ -151,11 +184,19 @@ class Data {
   num? _idJobBand;
   dynamic _foto;
   dynamic _fotoPath;
-  String? _createdAt;
+  dynamic _createdAt;
   dynamic _createdBy;
   String? _updatedAt;
-  dynamic _updatedBy;
-Data copyWith({  num? id,
+  String? _updatedBy;
+  dynamic _deletedAt;
+  String? _companyCode;
+  String? _siteName;
+  String? _siteCode;
+  String? _bandJobName;
+  dynamic _departementName;
+  String? _companyName;
+Data copyWith({  num? no,
+  num? id,
   String? employeeName,
   String? phoneNumber,
   String? snEmployee,
@@ -171,11 +212,19 @@ Data copyWith({  num? id,
   num? idJobBand,
   dynamic foto,
   dynamic fotoPath,
-  String? createdAt,
+  dynamic createdAt,
   dynamic createdBy,
   String? updatedAt,
-  dynamic updatedBy,
-}) => Data(  id: id ?? _id,
+  String? updatedBy,
+  dynamic deletedAt,
+  String? companyCode,
+  String? siteName,
+  String? siteCode,
+  String? bandJobName,
+  dynamic departementName,
+  String? companyName,
+}) => Data(  no: no ?? _no,
+  id: id ?? _id,
   employeeName: employeeName ?? _employeeName,
   phoneNumber: phoneNumber ?? _phoneNumber,
   snEmployee: snEmployee ?? _snEmployee,
@@ -195,7 +244,15 @@ Data copyWith({  num? id,
   createdBy: createdBy ?? _createdBy,
   updatedAt: updatedAt ?? _updatedAt,
   updatedBy: updatedBy ?? _updatedBy,
+  deletedAt: deletedAt ?? _deletedAt,
+  companyCode: companyCode ?? _companyCode,
+  siteName: siteName ?? _siteName,
+  siteCode: siteCode ?? _siteCode,
+  bandJobName: bandJobName ?? _bandJobName,
+  departementName: departementName ?? _departementName,
+  companyName: companyName ?? _companyName,
 );
+  num? get no => _no;
   num? get id => _id;
   String? get employeeName => _employeeName;
   String? get phoneNumber => _phoneNumber;
@@ -212,13 +269,21 @@ Data copyWith({  num? id,
   num? get idJobBand => _idJobBand;
   dynamic get foto => _foto;
   dynamic get fotoPath => _fotoPath;
-  String? get createdAt => _createdAt;
+  dynamic get createdAt => _createdAt;
   dynamic get createdBy => _createdBy;
   String? get updatedAt => _updatedAt;
-  dynamic get updatedBy => _updatedBy;
+  String? get updatedBy => _updatedBy;
+  dynamic get deletedAt => _deletedAt;
+  String? get companyCode => _companyCode;
+  String? get siteName => _siteName;
+  String? get siteCode => _siteCode;
+  String? get bandJobName => _bandJobName;
+  dynamic get departementName => _departementName;
+  String? get companyName => _companyName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    map['no'] = _no;
     map['id'] = _id;
     map['employee_name'] = _employeeName;
     map['phone_number'] = _phoneNumber;
@@ -239,6 +304,13 @@ Data copyWith({  num? id,
     map['created_by'] = _createdBy;
     map['updated_at'] = _updatedAt;
     map['updated_by'] = _updatedBy;
+    map['deleted_at'] = _deletedAt;
+    map['company_code'] = _companyCode;
+    map['site_name'] = _siteName;
+    map['site_code'] = _siteCode;
+    map['band_job_name'] = _bandJobName;
+    map['departement_name'] = _departementName;
+    map['company_name'] = _companyName;
     return map;
   }
 

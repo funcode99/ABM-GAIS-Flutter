@@ -10,7 +10,7 @@ class CustomBackButton<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        onPressed: () => onPressed ?? Get.back(result: result),
+        onPressed: onPressed ?? ()=> Get.back(result: result),
         icon: Icon(
           Icons.chevron_left,
           color: Colors.black,

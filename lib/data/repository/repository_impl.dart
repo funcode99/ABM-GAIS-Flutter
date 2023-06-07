@@ -72,6 +72,7 @@ class RepositoryImpl implements Repository {
     }
   }
 
+  /// Request Trip
   @override
   Future<RequestTripListModel> getRequestTripList(
     int perPage,
@@ -1186,4 +1187,5 @@ class RepositoryImpl implements Repository {
       return e.error;
     }
   }
+
 }

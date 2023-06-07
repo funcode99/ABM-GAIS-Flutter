@@ -10,8 +10,6 @@ class DataEmpty extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 500,
-        width: Get.width,
         margin: EdgeInsets.all(10),
         padding: EdgeInsets.all(50),
         decoration: BoxDecoration(
@@ -21,7 +19,7 @@ class DataEmpty extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("assets/img/data_notfound.png"),
+            Image.asset("assets/img/data_notfound.png",),
             SizedBox(height: 20),
             Text("Data Empty", style: appTitle)
           ],

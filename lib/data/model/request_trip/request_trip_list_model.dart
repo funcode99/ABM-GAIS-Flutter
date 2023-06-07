@@ -236,6 +236,7 @@ Links copyWith({  dynamic url,
 /// id : 1
 /// id_employee : 1
 /// no_request_trip : "REQ/ABM/123"
+/// id_document: 1
 /// code_document : "SV"
 /// id_site : 1
 /// notes : "1"
@@ -266,7 +267,8 @@ class Data2 {
   Data2({
       num? id, 
       num? idEmployee, 
-      String? noRequestTrip, 
+      String? noRequestTrip,
+      int? idDocument,
       String? codeDocument, 
       num? idSite, 
       String? notes, 
@@ -295,6 +297,7 @@ class Data2 {
     _id = id;
     _idEmployee = idEmployee;
     _noRequestTrip = noRequestTrip;
+    _idDocument = idDocument;
     _codeDocument = codeDocument;
     _idSite = idSite;
     _notes = notes;
@@ -326,6 +329,7 @@ class Data2 {
     _id = json['id'];
     _idEmployee = json['id_employee'];
     _noRequestTrip = json['no_request_trip'];
+    _idDocument = json['id_document'];
     _codeDocument = json['code_document'];
     _idSite = json['id_site'];
     _notes = json['notes'];
@@ -355,6 +359,7 @@ class Data2 {
   num? _id;
   num? _idEmployee;
   String? _noRequestTrip;
+  int? _idDocument;
   String? _codeDocument;
   num? _idSite;
   String? _notes;
@@ -383,6 +388,7 @@ class Data2 {
 Data2 copyWith({  num? id,
   num? idEmployee,
   String? noRequestTrip,
+  int? idDocument,
   String? codeDocument,
   num? idSite,
   String? notes,
@@ -411,6 +417,7 @@ Data2 copyWith({  num? id,
 }) => Data2(  id: id ?? _id,
   idEmployee: idEmployee ?? _idEmployee,
   noRequestTrip: noRequestTrip ?? _noRequestTrip,
+  idDocument: idDocument ?? _idDocument,
   codeDocument: codeDocument ?? _codeDocument,
   idSite: idSite ?? _idSite,
   notes: notes ?? _notes,
@@ -440,6 +447,7 @@ Data2 copyWith({  num? id,
   num? get id => _id;
   num? get idEmployee => _idEmployee;
   String? get noRequestTrip => _noRequestTrip;
+  int? get idDocument => _idDocument;
   String? get codeDocument => _codeDocument;
   num? get idSite => _idSite;
   String? get notes => _notes;
@@ -471,6 +479,7 @@ Data2 copyWith({  num? id,
     map['id'] = _id;
     map['id_employee'] = _idEmployee;
     map['no_request_trip'] = _noRequestTrip;
+    map['id_document'] = _idDocument;
     map['code_document'] = _codeDocument;
     map['id_site'] = _idSite;
     map['notes'] = _notes;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 
 class CustomDropDownFormField<T> extends StatelessWidget {
@@ -12,7 +13,7 @@ class CustomDropDownFormField<T> extends StatelessWidget {
     this.readOnly = false,
     this.onChanged,
     this.isRequired = false,
-    this.validator}) {
+    this.validator, this.selectedItem}) {
     if (isRequired) {
       validator ??= ValidationBuilder().required().build() as FormFieldValidator<T>?;
     }
@@ -20,6 +21,7 @@ class CustomDropDownFormField<T> extends StatelessWidget {
 
   final String label;
   final String? hintText;
+  final String? selectedItem;
   final bool readOnly;
   T? value;
   final ValueChanged<T?>? onChanged;
@@ -48,14 +50,25 @@ class CustomDropDownFormField<T> extends StatelessWidget {
         ),
         Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-          child: DropdownButtonFormField(
+          child: readOnly ? TextField(
+            controller: TextEditingController(text: selectedItem.toString()),
+            enabled: false,
+            style: Theme.of(context).textTheme.bodyText1?.copyWith(
+              fontSize: 16,
+              color: Colors.black,
+              // fontWeight: FontWeight.w600,
+            ),
+            decoration: InputDecoration(
+              fillColor: neutralColor,
+            ),
+          ):DropdownButtonFormField(
             // autovalidateMode: AutovalidateMode.always,
             validator: validator,
             decoration: const InputDecoration(
                 contentPadding:
                 EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
             icon: const Icon(Icons.keyboard_arrow_down),
-            hint: Text(hintText ?? "", style: hintTextStyle,),
+            hint: Text(hintText ?? label, style: hintTextStyle,),
             value: value,
             isExpanded: true,
             items: items,

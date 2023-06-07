@@ -138,8 +138,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                           hintText: "pick document type",
                                           items: controller.purposeList
                                               .map((e) => DropdownMenuItem(
-                                                    // value: e.id.toString(),
-                                                    value: e.codeDocument.toString(),
+                                                    value: e.id.toString(),
+                                                    // value: e.codeDocument.toString(),
                                                     child: Text(e.documentName.toString()),
                                                     onTap: () {
                                                       controller.codeDocument = e.id?.toInt();
@@ -149,7 +149,9 @@ class FormRequestTripScreen extends StatelessWidget {
                                               .toList(),
                                           onChanged: (value) {
                                             controller.selectedPurpose = value.toString();
-                                            value == "SV" || value == "FB" ? controller.isAttachment = true : controller.isAttachment = false;
+                                            value == "1" || value == "2" ? controller.isAttachment = true : controller.isAttachment = false;
+                                            controller.update();
+                                            controller.checkItems();
                                             controller.update();
                                             // print(controller.selectedPurpose);
                                           },
@@ -286,17 +288,65 @@ class FormRequestTripScreen extends StatelessWidget {
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
                             if (controller.isDetail == true) {
+                              // if(controller.items[index]['isFilled'] == true)
                               return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                // ListTile(
+                                //   title: Row(
+                                //     children: [
+                                //       Text(controller.requestTrip[index]),
+                                //       IconButton(
+                                //           onPressed: () {
+                                //             controller.items[index]['showList'] = controller.items[index]['showList'] == false ? true : false;
+                                //             controller.update();
+                                //           },
+                                //           icon: controller.items[index]['showList'] == false
+                                //               ? const Icon(Icons.keyboard_arrow_down)
+                                //               : const Icon(Icons.keyboard_arrow_up))
+                                //     ],
+                                //   ),
+                                //   trailing: controller.isEdit
+                                //       ? CustomFilledButton(
+                                //           color: successColor,
+                                //           icon: IconlyBold.plus,
+                                //           title: " Add",
+                                //           fontSize: 13,
+                                //           width: Get.width / 5,
+                                //           onPressed: () {
+                                //             index == 1 || index == 4 || index == 5
+                                //                 ? Get.off(
+                                //                     controller.addScreen[index],
+                                //                     arguments: {
+                                //                       'purposeID': controller.purposeID,
+                                //                       'codeDocument': controller.codeDocument,
+                                //                       'formEdit': true,
+                                //                     },
+                                //                   )
+                                //                 : Get.to(
+                                //                     controller.addScreen[index],
+                                //                     arguments: {
+                                //                       'purposeID': controller.purposeID,
+                                //                       'codeDocument': controller.codeDocument,
+                                //                       'formEdit': true,
+                                //                     },
+                                //                   )?.then((value) {
+                                //                     controller.fetchList();
+                                //                     controller.update();
+                                //                   });
+                                //           },
+                                //         )
+                                //       : const SizedBox(),
+                                // ),
+                                !controller.items[index]['isFilled'] ? Container() :
                                 ListTile(
                                   title: Row(
                                     children: [
-                                      Text(controller.requestTrip[index]),
+                                      Text(controller.items[index]['title']),
                                       IconButton(
                                           onPressed: () {
-                                            controller.showList[index] = controller.showList[index] == false ? true : false;
+                                            controller.items[index]['showList'] = controller.items[index]['showList'] == false ? true : false;
                                             controller.update();
                                           },
-                                          icon: controller.showList[index] == false
+                                          icon: controller.items[index]['showList'] == false
                                               ? const Icon(Icons.keyboard_arrow_down)
                                               : const Icon(Icons.keyboard_arrow_up))
                                     ],
@@ -311,7 +361,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                           onPressed: () {
                                             index == 1 || index == 4 || index == 5
                                                 ? Get.off(
-                                                    controller.addScreen[index],
+                                                    controller.items[index]['screen'],
                                                     arguments: {
                                                       'purposeID': controller.purposeID,
                                                       'codeDocument': controller.codeDocument,
@@ -319,7 +369,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                     },
                                                   )
                                                 : Get.to(
-                                                    controller.addScreen[index],
+                                                    controller.items[index]['screen'],
                                                     arguments: {
                                                       'purposeID': controller.purposeID,
                                                       'codeDocument': controller.codeDocument,
@@ -332,10 +382,10 @@ class FormRequestTripScreen extends StatelessWidget {
                                           },
                                         )
                                       : const SizedBox(),
-                                ),
-                                const Divider(height: 1, thickness: 3),
-                                controller.requestTrip[index] == "Traveller Guest"
-                                    ? controller.showList[index]
+                                ) ,
+                                const Divider(height: 1, thickness: 1),
+                                controller.items[index]['title'] == "Traveller Guest"
+                                    ? controller.items[index]['showList']
                                         ? Column(
                                             children: controller.guestList.isNotEmpty
                                                 ? controller.guestList
@@ -401,8 +451,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                                     )
                                                   ])
                                         : Container()
-                                    : controller.requestTrip[index] == "Airliness"
-                                        ? controller.showList[index]
+                                    : controller.items[index]['title'] == "Airliness"
+                                        ? controller.items[index]['showList']
                                             ? Column(
                                                 children: controller.airlinessList.isNotEmpty
                                                     ? controller.airlinessList
@@ -460,8 +510,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                                       ],
                                               )
                                             : Container()
-                                        : controller.requestTrip[index] == "Taxi Voucher"
-                                            ? controller.showList[index]
+                                        : controller.items[index]['title'] == "Taxi Voucher"
+                                            ? controller.items[index]['showList']
                                                 ? Column(
                                                     children: controller.tvList.isNotEmpty
                                                         ? controller.tvList
@@ -513,8 +563,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                                           ],
                                                   )
                                                 : Container()
-                                            : controller.requestTrip[index] == "Other Transportation"
-                                                ? controller.showList[index]
+                                            : controller.items[index]['title'] == "Other Transportation"
+                                                ? controller.items[index]['showList']
                                                     ? Column(
                                                         children: controller.otList.isNotEmpty
                                                             ? controller.otList
@@ -577,8 +627,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                                               ],
                                                       )
                                                     : Container()
-                                                : controller.requestTrip[index] == "Accommodation"
-                                                    ? controller.showList[index]
+                                                : controller.items[index]['title'] == "Accommodation"
+                                                    ? controller.items[index]['showList']
                                                         ? Column(
                                                             children: controller.accommodationsList.isNotEmpty
                                                                 ? controller.accommodationsList
@@ -640,15 +690,15 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                   ],
                                                           )
                                                         : Container()
-                                                    : controller.requestTrip[index] == "Cash Advance"
-                                                        ? controller.showList[index]
+                                                    : controller.items[index]['title'] == "Cash Advance"
+                                                        ? controller.items[index]['showList']
                                                             ? Column(
                                                                 children: controller.caList.isNotEmpty
                                                                     ? controller.caList
                                                                         .mapIndexed((i, e) => CustomTripCard(
                                                                               listNumber: i + 1,
-                                                                              title: e.employeeName ?? "",
-                                                                              subtitle: e.noCa,
+                                                                              title: e.noCa ?? "",
+                                                                              // subtitle: e.noCa,
                                                                               status: e.status.toString(),
                                                                               info:
                                                                                   "${e.currencyCode} ${int.parse(e.grandTotal.toString()).toCurrency()}",
@@ -808,7 +858,7 @@ class FormRequestTripScreen extends StatelessWidget {
                             }
                             return null;
                           },
-                          childCount: controller.isDetail == true ? controller.requestTrip.length : 1, // 1000 list items
+                          childCount: controller.isDetail == true ? controller.items.length : 1, // 1000 list items
                         ),
                       ),
                     ],

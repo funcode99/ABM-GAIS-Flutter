@@ -57,7 +57,6 @@ class RequestTripListController extends BaseController {
     await storage.readEmployeeInfo().then((value) {
       requestorID = value.first.id?.toInt();
       requestorName = value.first.employeeName;
-      searchValue = requestorName?.toLowerCase();
       update();
       print("employee Name : $requestorName");
     });
@@ -131,20 +130,19 @@ class RequestTripListController extends BaseController {
     isLoading = true;
     try {
       await repository.deletePurposeOfTrip(id).then((value) {
-        const GetSnackBar(
-          icon: Icon(
-            Icons.info,
-            color: Colors.white,
-          ),
-          message: "Data Deleted",
-          isDismissible: true,
-          duration: Duration(seconds: 3),
-          backgroundColor: greenColor,
-        );
         fetchList();
       });
+      GetSnackBar(
+        icon: Icon(
+          Icons.info,
+          color: Colors.white,
+        ),
+        message: "Data Deleted",
+        isDismissible: true,
+        duration: Duration(seconds: 3),
+        backgroundColor: greenColor,
+      );
       isLoading = false;
-      update();
     } catch (e) {
       const GetSnackBar(
         icon: Icon(
@@ -157,5 +155,6 @@ class RequestTripListController extends BaseController {
         backgroundColor: Colors.red,
       );
     }
+    update();
   }
 }

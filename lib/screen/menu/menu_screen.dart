@@ -66,7 +66,7 @@ class MenuScreen extends StatelessWidget {
                               ],
                             ),
                             onTap: () =>
-                                Get.to(const RequestTripListScreen()),
+                                Get.off(const RequestTripListScreen()),
                           ),
                           GestureDetector(
                             child: Column(
@@ -223,7 +223,7 @@ class MenuScreen extends StatelessWidget {
                                 )
                               ],
                             ),
-                            onTap: () => Get.to(DocumentDeliveryListScreen()),
+                            onTap: () => Get.off(DocumentDeliveryListScreen()),
                           ),
                         ],
                       ),
