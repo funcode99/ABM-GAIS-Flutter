@@ -90,17 +90,29 @@ class CommonListItem extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  total != null ? CustomAlertContainer(
-                    backgroundColor: infoColor,
-                    content: Text(total!,
-                        style: listSubTitleTextStyle.copyWith(
-                            color: whiteColor, fontSize: 14),
-                        textAlign: TextAlign.center),
-                    padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 32),
+                  total != null ? ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: 120
+                    ),
+                    child: CustomAlertContainer(
+                      backgroundColor: infoColor,
+                      content: Text(total!,
+                          style: listSubTitleTextStyle.copyWith(
+                            overflow: TextOverflow.ellipsis,
+                              color: whiteColor, fontSize: 14),
+                          textAlign: TextAlign.center),
+                      padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 32),
+                    ),
                   ) : const SizedBox(),
-                  Row(
-                    children: action,
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: action,
+                    ),
                   ),
                 ],
               )

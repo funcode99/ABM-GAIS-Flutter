@@ -86,7 +86,7 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                 ),
                 Obx(() {
                   if (controller.selectedItem.value.codeStatusDoc.toString() ==
-                      "0") {
+                      "2") {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -122,7 +122,7 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                           },
                           style: ElevatedButton.styleFrom(
                               minimumSize: const Size(75, 30),
-                              backgroundColor: successColor),
+                              backgroundColor: orangeColor),
                           child: Text("Submit".tr),
                         ),
                       ],

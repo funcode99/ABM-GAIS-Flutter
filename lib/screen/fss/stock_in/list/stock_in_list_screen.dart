@@ -219,7 +219,7 @@ class StockInListScreen extends StatelessWidget {
                                         child: Column(
                                           children: [
                                             Text(
-                                              "Requestor".tr,
+                                              "Created By".tr,
                                               style: listTitleTextStyle,
                                             ),
                                             Text(
@@ -279,8 +279,8 @@ class StockInListScreen extends StatelessWidget {
                                           onPressed: () {
                                             Get.dialog(DeleteConfirmationDialog(
                                               onDeletePressed: () {
+                                                Get.close(1);
                                                 controller.deleteHeader(item);
-                                                Get.back();
                                               },
                                             ));
                                           },
