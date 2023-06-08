@@ -269,7 +269,7 @@ class MenuScreen extends StatelessWidget {
                                       const Text("Request Trip"),
                                     ],
                                   ),
-                                  onTap: () => Get.to(
+                                  onTap: () => Get.off(
                                       const ApprovalRequestTripListScreen()),
                                 ),
                                 GestureDetector(

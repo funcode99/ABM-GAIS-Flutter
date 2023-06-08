@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:collection/collection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
@@ -13,16 +11,11 @@ import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as 
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as acc;
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart' as ca;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
-import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_transport_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:get/get.dart';
 
@@ -83,37 +76,37 @@ class FormRequestTripController extends BaseController {
     {
       "title": "Traveller Guest",
       "isFilled": true,
-      "screen": AddGuestScreen(),
+      "screen": const AddGuestScreen(),
       "showList": true,
     },
     {
       "title": "Airliness",
       "isFilled": false,
-      "screen": AddAirlinessScreen(),
+      "screen": const AddAirlinessScreen(),
       "showList": false,
     },
     {
       "title": "Taxi Voucher",
       "isFilled": false,
-      "screen": AddTaxiVoucherScreen(),
+      "screen": const AddTaxiVoucherScreen(),
       "showList": false,
     },
     {
       "title": "Other Transportation",
       "isFilled": false,
-      "screen": AddOtherTransportScreen(),
+      "screen": const AddOtherTransportScreen(),
       "showList": false,
     },
     {
       "title": "Accommodation",
       "isFilled": false,
-      "screen": AddAccommodationScreen(),
+      "screen": const AddAccommodationScreen(),
       "showList": false,
     },
     {
       "title": "Cash Advance",
       "isFilled": false,
-      "screen": AddCashAdvanceTravelScreen(),
+      "screen": const AddCashAdvanceTravelScreen(),
       "showList": false,
     },
   ];
@@ -158,7 +151,7 @@ class FormRequestTripController extends BaseController {
 
   checkItems() {
     if (selectedPurpose == "4") {
-      items.forEach((item) {
+      for (var item in items) {
         item['isFilled'] = item['title'] == "Taxi Voucher"
             ? true
             : item['title'] == "Traveller Guest"
@@ -170,9 +163,9 @@ class FormRequestTripController extends BaseController {
             : item['title'] == "Traveller Guest"
                 ? true
                 : false;
-      });
+      }
     } else if (selectedPurpose == "2") {
-      items.forEach((item) {
+      for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
             : item['title'] == "Airliness"
@@ -188,7 +181,7 @@ class FormRequestTripController extends BaseController {
                 : item['title'] == "Other Transportation"
                     ? true
                     : false;
-      });
+      }
     } else {
       items.where((e) => e['isFilled'] == false).forEach((item) {
         item['isFilled'] = true;
@@ -291,7 +284,7 @@ class FormRequestTripController extends BaseController {
       await repository.deleteTravellerGuest(id).then((value) {
         fetchList();
         Get.showSnackbar(
-          GetSnackBar(
+          const GetSnackBar(
             icon: Icon(
               Icons.error,
               color: Colors.white,
@@ -305,7 +298,7 @@ class FormRequestTripController extends BaseController {
       });
     } catch (e) {
       Get.showSnackbar(
-        GetSnackBar(
+        const GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,
@@ -324,7 +317,7 @@ class FormRequestTripController extends BaseController {
       await repository.deleteAirliness(id).then((value) {
         fetchList();
         Get.showSnackbar(
-          GetSnackBar(
+          const GetSnackBar(
             icon: Icon(
               Icons.error,
               color: Colors.white,
@@ -338,7 +331,7 @@ class FormRequestTripController extends BaseController {
       });
     } catch (e) {
       Get.showSnackbar(
-        GetSnackBar(
+        const GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,
@@ -357,7 +350,7 @@ class FormRequestTripController extends BaseController {
       await repository.deleteTaxiVoucher(id).then((value) {
         fetchList();
         Get.showSnackbar(
-          GetSnackBar(
+          const GetSnackBar(
             icon: Icon(
               Icons.error,
               color: Colors.white,
@@ -371,7 +364,7 @@ class FormRequestTripController extends BaseController {
       });
     } catch (e) {
       Get.showSnackbar(
-        GetSnackBar(
+        const GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,
@@ -390,7 +383,7 @@ class FormRequestTripController extends BaseController {
       await repository.deleteOtherTransportation(id).then((value) {
         fetchList();
         Get.showSnackbar(
-          GetSnackBar(
+          const GetSnackBar(
             icon: Icon(
               Icons.error,
               color: Colors.white,
@@ -404,7 +397,7 @@ class FormRequestTripController extends BaseController {
       });
     } catch (e) {
       Get.showSnackbar(
-        GetSnackBar(
+        const GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,
@@ -423,7 +416,7 @@ class FormRequestTripController extends BaseController {
       await repository.deleteAccommodation(id).then((value) {
         fetchList();
         Get.showSnackbar(
-          GetSnackBar(
+          const GetSnackBar(
             icon: Icon(
               Icons.error,
               color: Colors.white,
@@ -437,7 +430,7 @@ class FormRequestTripController extends BaseController {
       });
     } catch (e) {
       Get.showSnackbar(
-        GetSnackBar(
+        const GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,
@@ -456,7 +449,7 @@ class FormRequestTripController extends BaseController {
       await repository.submitRequestTrip(purposeID).then((value) {
         fetchRequestTrip();
         fetchList();
-        GetSnackBar(
+        const GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -469,7 +462,7 @@ class FormRequestTripController extends BaseController {
       });
     } catch (e) {
       e.printError();
-      GetSnackBar(
+      const GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -505,7 +498,7 @@ class FormRequestTripController extends BaseController {
           .then((value) {
         fetchList();
         Get.showSnackbar(
-          GetSnackBar(
+          const GetSnackBar(
             icon: Icon(
               Icons.error,
               color: Colors.white,
@@ -521,7 +514,7 @@ class FormRequestTripController extends BaseController {
       e.printError();
       i.printError();
       Get.showSnackbar(
-        GetSnackBar(
+        const GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,

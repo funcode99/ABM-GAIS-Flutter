@@ -34,14 +34,9 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: baseColor,
             appBar: TopBar(
-                title: Text("Request Trip", style: appTitle),
-                leading: IconButton(
-                    onPressed: () => Get.off(HomeScreen(), arguments: 1),
-                    icon: Icon(
-                      Icons.chevron_left,
-                      color: Colors.black,
-                      size: 30,
-                    ))),
+              title: Text("Request Trip", style: appTitle),
+              leading: CustomBackButton(onPressed: () => Get.off(HomeScreen(), arguments: 1)),
+            ),
             body: CustomScrollView(
               slivers: [
                 SliverPersistentHeader(

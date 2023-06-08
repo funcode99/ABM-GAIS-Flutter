@@ -56,7 +56,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   width: Get.width / 4,
                                   borderColor: infoColor,
                                   fontColor: infoColor,
-                                  title: controller.isEdit ? "cancel" : "Edit",
+                                  title: controller.isEdit ? "Cancel" : "Edit",
                                   onPressed: () {
                                     controller.isEdit = controller.isEdit == false ? true : false;
                                     controller.update();

@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/traveller_screen.dart';
+import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
 import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airliness;
@@ -62,6 +69,45 @@ class ApprovalFormRequestTripController extends BaseController {
     const CashAdvanceScreen(),
   ];
 
+  List items = [
+    {
+      "title": "Traveller Guest",
+      "isFilled": true,
+      "screen": const AddGuestScreen(),
+      "showList": true,
+    },
+    {
+      "title": "Airliness",
+      "isFilled": false,
+      "screen": const AddAirlinessScreen(),
+      "showList": false,
+    },
+    {
+      "title": "Taxi Voucher",
+      "isFilled": false,
+      "screen": const AddTaxiVoucherScreen(),
+      "showList": false,
+    },
+    {
+      "title": "Other Transportation",
+      "isFilled": false,
+      "screen": const AddOtherTransportScreen(),
+      "showList": false,
+    },
+    {
+      "title": "Accommodation",
+      "isFilled": false,
+      "screen": const AddAccommodationScreen(),
+      "showList": false,
+    },
+    {
+      "title": "Cash Advance",
+      "isFilled": false,
+      "screen": const AddCashAdvanceTravelScreen(),
+      "showList": false,
+    },
+  ];
+
   List<guest.Data> guestList = [];
   List<airliness.Data> airlinessList = [];
   List<tv.Data> tvList = [];
@@ -99,6 +145,48 @@ class ApprovalFormRequestTripController extends BaseController {
     tlkTotalMeals.dispose();
   }
 
+  checkItems() {
+    if (selectedPurpose == "4") {
+      for (var item in items) {
+        item['isFilled'] = item['title'] == "Taxi Voucher"
+            ? true
+            : item['title'] == "Traveller Guest"
+            ? true
+            : false;
+
+        item['showList'] = item['title'] == "Taxi Voucher"
+            ? true
+            : item['title'] == "Traveller Guest"
+            ? true
+            : false;
+      }
+    } else if (selectedPurpose == "2") {
+      for (var item in items) {
+        item['isFilled'] = item['title'] == "Traveller Guest"
+            ? true
+            : item['title'] == "Airliness"
+            ? true
+            : item['title'] == "Other Transportation"
+            ? true
+            : false;
+
+        item['showList'] = item['title'] == "Traveller Guest"
+            ? true
+            : item['title'] == "Airliness"
+            ? true
+            : item['title'] == "Other Transportation"
+            ? true
+            : false;
+      }
+    } else {
+      items.where((e) => e['isFilled'] == false).forEach((item) {
+        item['isFilled'] = true;
+        item['showList'] = true;
+      });
+    }
+    update();
+  }
+
   Future<void> fetchRequestTrip() async {
     var rtData = await repository.getRequestTripByid(purposeID);
     rtModel = rtData;
@@ -109,12 +197,14 @@ class ApprovalFormRequestTripController extends BaseController {
     purpose.text = rtModel?.data?.first.documentName ?? "";
     // codeDocument = int.parse(rtModel?.data?.first.codeDocument ?? "");
     site.text = rtModel?.data?.first.siteName ?? "";
-    selectedPurpose = rtModel?.data?.first.codeDocument ?? "CB";
+    selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
     tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";
     // tlkJobBand.text = rtModel?.data?.first.
     tlkZona.text = rtModel?.data?.first.zonaName ?? "";
-    tlkTotal.text = rtModel?.data?.first.tlkPerDay ?? "";
-    tlkTotalMeals.text = rtModel?.data?.first.totalTlk ?? "";
+    tlkTotal.text = int.parse(rtModel?.data?.first.tlkPerDay ?? "0").toCurrency();
+    tlkTotalMeals.text = int.parse(rtModel?.data?.first.totalTlk ?? "0").toCurrency();
+
+    checkItems();
 
     var docData = await repository.getDocumentCodeList();
     purposeList.addAll(docData.data?.toSet().toList() ?? []);
