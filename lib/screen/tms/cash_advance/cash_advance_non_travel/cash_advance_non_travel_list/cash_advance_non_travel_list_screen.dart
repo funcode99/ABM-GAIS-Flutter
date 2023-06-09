@@ -18,6 +18,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/cash_advance_non_travel_list/cash_advance_non_travel_list_controller.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_screen.dart';
+import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -133,7 +134,7 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                               CommonListItem(
                                 number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
                                 title: "${item.noCa}",
-                                onTap: item.codeStatusDoc == 2 ? null : (){
+                                onTap: item.codeStatusDoc == CashAdvanceNonTravelEnum.draft.value ||  item.codeStatusDoc == CashAdvanceNonTravelEnum.revision.value ? null : (){
                                   Get.to(()=> const EditCashAdvanceNonTravelScreen(), arguments: {
                                     "item": item
                                   });
@@ -169,7 +170,7 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                action: item.codeStatusDoc == 2
+                                action: item.codeStatusDoc == CashAdvanceNonTravelEnum.draft.value ||  item.codeStatusDoc == CashAdvanceNonTravelEnum.revision.value
                                     ? [
                                         CustomIconButton(
                                           title: "Edit".tr,
