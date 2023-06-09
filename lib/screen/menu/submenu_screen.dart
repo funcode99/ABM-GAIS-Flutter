@@ -97,6 +97,11 @@ class SubmenuScreen extends StatelessWidget {
                                     const Text("Non Travel")
                                   ],
                                 ),
+                                /*onTap: () => controller.approval
+                                    ? Get.to(() =>
+                                const ApprovalCashAdvanceNonTravelListScreen())
+                                    : Get.to(() =>
+                                const CashAdvanceNonTravelListScreen()),*/
                                 onTap: () => Get.to(() =>
                                 const ApprovalCashAdvanceNonTravelListScreen()),
                               ),

@@ -211,16 +211,4 @@ class StockInATKRepository
       return left(BaseError(message: "General error occurred"));
     }
   }
-
-  @override
-  Future<Either<BaseError, List<StockInATKModel>>> getDataApproval({Map<String, dynamic>? data}) {
-    // TODO: implement getDataApproval
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<BaseError, PaginationModel>> getPaginationDataApproval({Map<String, dynamic>? data}) {
-    // TODO: implement getPaginationDataApproval
-    throw UnimplementedError();
-  }
 }

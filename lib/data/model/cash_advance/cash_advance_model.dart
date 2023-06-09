@@ -30,71 +30,33 @@ class CashAdvanceModel {
   String? event;
   String? remarks;
   List<CashAdvanceDetailModel>? arrayDetail;
-  String? codeDocument;
-  int? idDocument;
-  int? level;
-  int? idCompany;
-  int? idSite;
-  int? idMatrix;
-  int? idApprovalAuth;
-  String? approvedBy;
-  String? approvedBehalf;
-  String? rejectedBy;
-  String? isApproved;
-  String? notes;
-  String? isRequestTrip;
-  String? codeSequence;
-  dynamic createdBy;
-  String? updatedAt;
-  dynamic updatedBy;
-  String? deletedAt;
-  int? currentLevel;
 
-  CashAdvanceModel({this.id,
-    this.idEmployee,
-    this.typeCa,
-    this.noCa,
-    this.idRequestTrip,
-    this.idCurrency,
-    this.grandTotal,
-    this.isPaid,
-    this.isJournal,
-    this.codeStatusDoc,
-    this.codeStatus,
-    this.noRequestTrip,
-    this.employeeName,
-    this.snEmployee,
-    this.currencyName,
-    this.currencySymbol,
-    this.currencyCode,
-    this.code,
-    this.status,
-    this.itemCount,
-    this.createdAt,
-    this.event,
-    this.date,
-    this.remarks,
-    this.arrayDetail,
-    this.codeDocument,
-    this.idDocument,
-    this.level,
-    this.idCompany,
-    this.idSite,
-    this.idMatrix,
-    this.idApprovalAuth,
-    this.approvedBy,
-    this.approvedBehalf,
-    this.rejectedBy,
-    this.isApproved,
-    this.notes,
-    this.isRequestTrip,
-    this.codeSequence,
-    this.createdBy,
-    this.updatedAt,
-    this.updatedBy,
-    this.deletedAt,
-    this.currentLevel,
-  });
+  CashAdvanceModel(
+      {this.id,
+      this.idEmployee,
+      this.typeCa,
+      this.noCa,
+      this.idRequestTrip,
+      this.idCurrency,
+      this.grandTotal,
+      this.isPaid,
+      this.isJournal,
+      this.codeStatusDoc,
+      this.codeStatus,
+      this.noRequestTrip,
+      this.employeeName,
+      this.snEmployee,
+      this.currencyName,
+      this.currencySymbol,
+      this.currencyCode,
+      this.code,
+      this.status,
+      this.itemCount,
+      this.createdAt,
+      this.event,
+      this.date,
+      this.remarks,
+      this.arrayDetail});
 
   static CashAdvanceModel fromJsonModel(Object? json) =>
       CashAdvanceModel.fromJson(json as Map<String, dynamic>);

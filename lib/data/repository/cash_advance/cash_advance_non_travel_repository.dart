@@ -1,16 +1,18 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' as Dio;
 import 'package:dio/dio.dart';
+import 'package:gais/base/approval_base_repository.dart';
 import 'package:gais/base/base_error.dart';
 import 'package:gais/base/base_repository.dart';
 import 'package:gais/data/model/api_response_model.dart';
+import 'package:gais/data/model/approval_cash_advance/approval_cash_advance_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:get/get.dart';
 
-class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel, CashAdvanceDetailModel>{
+class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel, CashAdvanceDetailModel>, ApprovalBaseRepository<ApprovalCashAdvanceModel>{
   final network = Get.find<NetworkCore>();
 
   @override
@@ -232,7 +234,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, List<CashAdvanceModel>>> getDataApproval({Map<String, dynamic>? data}) async{
+  Future<Either<BaseError, List<ApprovalCashAdvanceModel>>> getDataApproval({Map<String, dynamic>? data}) async{
     try {
       Dio.Response response = await network.dio.get(
         '/api/approval_non_travel/get_data',
@@ -258,7 +260,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
           '/api/approval_non_travel/get_data',
           queryParameters: data
       );
-      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceModel.fromJsonModelList);
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalCashAdvanceModel.fromJsonModelList);
       PaginationModel paginationModel = PaginationModel();
       paginationModel.data = apiResponseModel.data;
       paginationModel.perPage = "1000";

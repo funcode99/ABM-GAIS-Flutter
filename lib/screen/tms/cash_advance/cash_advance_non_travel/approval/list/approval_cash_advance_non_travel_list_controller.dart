@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/approval_cash_advance/approval_cash_advance_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
@@ -19,7 +20,7 @@ class ApprovalCashAdvanceNonTravelListController extends BaseController{
   final endDateTemp = Rxn<DateTime>();
 
   final CashAdvanceNonTravelRepository _cashAdvanceTravelNonRepository = Get.find();
-  final listHeader = <CashAdvanceModel>[].obs;
+  final listHeader = <ApprovalCashAdvanceModel>[].obs;
 
   final keyword = "".obs;
 
@@ -64,7 +65,7 @@ class ApprovalCashAdvanceNonTravelListController extends BaseController{
               .toList();
           listHeader.refresh();*/
           listHeader.value = paginationModel!.data!
-              .map((e) => e as CashAdvanceModel)
+              .map((e) => e as ApprovalCashAdvanceModel)
               .toList();
           listHeader.refresh();
         });
