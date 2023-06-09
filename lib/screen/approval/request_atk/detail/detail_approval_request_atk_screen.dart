@@ -5,14 +5,14 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
+import 'package:gais/reusable/dialog/reject_dialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/request_atk/detail/detail_approval_request_atk_controller.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
 import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
-import 'package:gais/screen/tms/cash_advance/widget/approval_confirmation_dialog.dart';
-import 'package:gais/screen/tms/cash_advance/widget/reject_dialog.dart';
+import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:get/get.dart';
 
 class DetailApprovalRequestATKScreen extends StatefulWidget {

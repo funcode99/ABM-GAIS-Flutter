@@ -1,22 +1,20 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/data/model/approval_cash_advance/approval_cash_advance_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
+import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
+import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
+import 'package:gais/reusable/dialog/reject_dialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_add_item.dart';
 import 'package:gais/reusable/topbar.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/detail/detail_item_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/approval/detail/approval_cash_advance_non_travel_detail_controller.dart';
 import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
-import 'package:gais/screen/tms/cash_advance/widget/approval_confirmation_dialog.dart';
-import 'package:gais/screen/tms/cash_advance/widget/reject_dialog.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -40,8 +38,14 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
     Get.dialog(const ApprovalConfirmationDialog());
   }
 
-  _openRejectDialog() {
-    Get.dialog(const RejectDialog());
+  _openRejectDialog() async{
+    ApprovalCashAdvanceNonTravelDetailController controller = Get.find();
+    ApprovalModel result = await Get.dialog(const RejectDialog());
+    if(result!=null){
+      controller.approvalModel(result);
+      controller.reject();
+    }
+
   }
 
   @override
@@ -89,7 +93,7 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
                     Obx(() {
                       return CustomStatusContainer(
                         backgroundColor: greenColor,
-                        status: "${controller.selectedItem.value.status}",
+                        status: "${controller.detailSelectedItem.value.status}",
                       );
                     })
                   ],
@@ -113,7 +117,7 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
                 height: 12,
               ),
               Obx(() {
-                if(controller.selectedItem.value.codeStatusDoc == CashAdvanceNonTravelEnum.waitingApproval.value){
+                if(controller.detailSelectedItem.value.codeStatusDoc == CashAdvanceNonTravelEnum.waitingApproval.value){
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

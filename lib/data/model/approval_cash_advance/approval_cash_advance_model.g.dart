@@ -21,7 +21,7 @@ ApprovalCashAdvanceModel _$ApprovalCashAdvanceModelFromJson(
       approvedBy: json['approved_by'],
       approvedBehalf: json['approved_behalf'],
       rejectedBy: json['rejected_by'],
-      isApproved: json['is_approved'] as String?,
+      isApproved: json['is_approved'],
       notes: json['notes'] as String?,
       codeStatusDoc: json['code_status_doc'] as int?,
       isRequestTrip: json['is_request_trip'] as String?,

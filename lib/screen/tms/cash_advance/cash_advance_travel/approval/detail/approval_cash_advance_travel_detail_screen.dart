@@ -4,13 +4,13 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
+import 'package:gais/reusable/dialog/reject_dialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/approval/detail/approval_cash_advance_travel_detail_controller.dart';
 import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
-import 'package:gais/screen/tms/cash_advance/widget/approval_confirmation_dialog.dart';
-import 'package:gais/screen/tms/cash_advance/widget/reject_dialog.dart';
+import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:get/get.dart';
 
 class ApprovalCashAdvanceTravelDetailScreen extends StatefulWidget {
@@ -31,7 +31,7 @@ class _ApprovalCashAdvanceTravelDetailScreenState
   }
 
   _openRejectDialog(){
-    Get.dialog(const RejectDialog());
+    final result = Get.dialog(const RejectDialog());
   }
 
   @override

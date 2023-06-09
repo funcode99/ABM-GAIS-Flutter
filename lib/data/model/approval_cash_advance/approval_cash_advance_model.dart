@@ -17,7 +17,7 @@ class ApprovalCashAdvanceModel {
   dynamic approvedBy;
   dynamic approvedBehalf;
   dynamic rejectedBy;
-  String? isApproved;
+  dynamic isApproved;
   String? notes;
   int? codeStatusDoc;
   String? isRequestTrip;

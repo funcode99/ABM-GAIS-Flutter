@@ -141,7 +141,8 @@ class _ApprovalCashAdvanceNonTravelListScreenState
                                                 approvalActionEnum:
                                                     ApprovalActionEnum.none,
                                               ),
-                                          arguments: {"item": item});
+                                          arguments: {"item": item})?.then((value) =>
+                                          controller.getHeader());
                                     },
                                     number:
                                         "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
@@ -202,7 +203,8 @@ class _ApprovalCashAdvanceNonTravelListScreenState
                                                               ApprovalActionEnum
                                                                   .approve,
                                                         ),
-                                                    arguments: {"item": item});
+                                                    arguments: {"item": item})?.then((value) =>
+                                                    controller.getHeader());
                                               },
                                             ),
                                             const SizedBox(
@@ -220,7 +222,8 @@ class _ApprovalCashAdvanceNonTravelListScreenState
                                                               ApprovalActionEnum
                                                                   .reject,
                                                         ),
-                                                    arguments: {"item": item});
+                                                    arguments: {"item": item})?.then((value) =>
+                                                    controller.getHeader());
                                               },
                                             )
                                           ]

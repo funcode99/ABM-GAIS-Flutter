@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/approval_cash_advance/approval_cash_advance_model.dart';
+import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
@@ -23,6 +24,8 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController{
 
   final selectedItem = ApprovalCashAdvanceModel().obs;
   final detailSelectedItem = CashAdvanceModel().obs;
+
+  final approvalModel = Rxn<ApprovalModel>();
 
   final listDetail = <CashAdvanceDetailModel>[].obs;
 
@@ -69,6 +72,14 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController{
     result.fold((l) => null, (r) {
       listDetail.value = r;
       listDetail.refresh();
+    });
+  }
+
+  void reject()async{
+    final result = await _repository.reject(approvalModel.value, selectedItem.value.id!);
+    result.fold((l) => null, (r) {
+      selectedItem.value = r;
+      detailHeader();
     });
   }
 
