@@ -23,7 +23,11 @@ class AddManagementItemATKScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: baseColor,
       appBar: AppBar(
-        leading: const CustomBackButton(),
+        leading: CustomBackButton(
+          onPressed: (){
+            Get.back(result: true);
+          },
+        ),
         backgroundColor: whiteColor,
         title: Text("Management Item ATK".tr, style: appTitle),
         centerTitle: true,

@@ -16,4 +16,8 @@ abstract class BaseRepository<T, S>{
   Future<Either<BaseError, bool>> deleteDetail(int id);
   Future<Either<BaseError, S>> addDetail(dynamic model);
   Future<Either<BaseError, S>> updateDetail(dynamic model, int id);
+
+  //approval
+  Future<Either<BaseError, PaginationModel>> getPaginationDataApproval({Map<String, dynamic>? data});
+  Future<Either<BaseError, List<T>>> getDataApproval({Map<String, dynamic>? data});
 }

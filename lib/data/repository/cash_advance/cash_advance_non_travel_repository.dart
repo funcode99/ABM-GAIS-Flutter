@@ -231,4 +231,51 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
     }
   }
 
+  @override
+  Future<Either<BaseError, List<CashAdvanceModel>>> getDataApproval({Map<String, dynamic>? data}) async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/approval_non_travel/get_data',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceModel.fromJsonModelList);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  @override
+  Future<Either<BaseError, PaginationModel>> getPaginationDataApproval({Map<String, dynamic>? data}) async{
+    try {
+      Dio.Response response = await network.dio.get(
+          '/api/approval_non_travel/get_data',
+          queryParameters: data
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceModel.fromJsonModelList);
+      PaginationModel paginationModel = PaginationModel();
+      paginationModel.data = apiResponseModel.data;
+      paginationModel.perPage = "1000";
+      paginationModel.currentPage = 1;
+      paginationModel.total = 1;
+      // ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
+      return right(paginationModel);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
 }

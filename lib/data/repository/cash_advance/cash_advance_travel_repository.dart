@@ -115,4 +115,16 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
     throw UnimplementedError();
   }
 
+  @override
+  Future<Either<BaseError, List<CashAdvanceModel>>> getDataApproval({Map<String, dynamic>? data}) {
+    // TODO: implement getDataApproval
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<BaseError, PaginationModel>> getPaginationDataApproval({Map<String, dynamic>? data}) {
+    // TODO: implement getPaginationDataApproval
+    throw UnimplementedError();
+  }
+
 }
