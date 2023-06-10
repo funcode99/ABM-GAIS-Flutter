@@ -147,12 +147,17 @@ class StockInListController extends BaseController with MasterDataMixin{
     getHeader(page: 1);
   }
 
-  void resetFilter(){
+  void resetFilter()async{
     endDateTemp.value = null;
     startDateTemp.value = null;
 
+    if(enableSelectCompany.value){
+      onChangeSelectedCompany("");
+    }else{
+      String idCompany = await storage.readString(StorageCore.companyID);
+      onChangeSelectedCompany(idCompany);
+    }
     onChangeSelectedWarehouse("");
-    onChangeSelectedCompany("");
     onChangeSelectedSite("");
 
     dateRangeController.text = "";
