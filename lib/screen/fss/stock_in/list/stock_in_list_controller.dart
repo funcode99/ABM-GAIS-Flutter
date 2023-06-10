@@ -6,7 +6,9 @@ import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/model/stock_in/stock_in_atk_model.dart';
 import 'package:gais/data/repository/stock_in/stock_in_repository.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
+import 'package:gais/util/enum/role_enum.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -36,6 +38,9 @@ class StockInListController extends BaseController with MasterDataMixin{
   final startDateTemp = Rxn<DateTime>();
   final endDateTemp = Rxn<DateTime>();
 
+  final enableSelectCompany = false.obs;
+
+
   final keyword = "".obs;
 
   //end filter
@@ -61,9 +66,12 @@ class StockInListController extends BaseController with MasterDataMixin{
   }
 
   void initData() async {
+    String codeRole = await storage.readString(StorageCore.codeRole);
+
     listCompany.add(CompanyModel(id: "", companyName: "Company"));
     final companies = await getListCompany();
     listCompany.addAll(companies);
+
 
     listSiteFiltered.add(SiteModel(id: "", siteName: "Site"));
     final sites = await getListSite();
@@ -73,7 +81,13 @@ class StockInListController extends BaseController with MasterDataMixin{
     final warehouses = await getListWarehouse();
     listWarehouse.addAll(warehouses);
 
-    onChangeSelectedCompany("");
+    if(codeRole == RoleEnum.superAdmin.value){
+      enableSelectCompany(true);
+      onChangeSelectedCompany("");
+    }else{
+      String idCompany = await storage.readString(StorageCore.companyID);
+      onChangeSelectedCompany(idCompany);
+    }
     onChangeSelectedSite("");
     onChangeSelectedWarehouse("");
   }
