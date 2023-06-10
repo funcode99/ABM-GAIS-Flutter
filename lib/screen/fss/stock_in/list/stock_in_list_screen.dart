@@ -65,23 +65,27 @@ class StockInListScreen extends StatelessWidget {
                           height: 8,
                         ),
                         Obx(() {
-                          return CustomDropDownFormField(
-                            items: controller.listCompany
-                                .map((e) => DropdownMenuItem(
-                                      value: e.id.toString(),
-                                      child: Text("${e.companyName}"),
-                                    ))
-                                .toList(),
-                            onChanged: (item) {
-                              controller
-                                  .onChangeSelectedCompany(item.toString());
-                            },
-                            label: "Company".tr,
-                            value: controller.selectedCompanyTemp.value != null
-                                ? controller.selectedCompanyTemp.value?.id
-                                    .toString()
-                                : "",
-                          );
+                          if(controller.enableSelectCompany.value){
+                            return CustomDropDownFormField(
+                              items: controller.listCompany
+                                  .map((e) => DropdownMenuItem(
+                                value: e.id.toString(),
+                                child: Text("${e.companyName}"),
+                              ))
+                                  .toList(),
+                              onChanged: (item) {
+                                controller
+                                    .onChangeSelectedCompany(item.toString());
+                              },
+                              label: "Company".tr,
+                              value: controller.selectedCompanyTemp.value != null
+                                  ? controller.selectedCompanyTemp.value?.id
+                                  .toString()
+                                  : "",
+                            );
+                          }
+
+                          return const SizedBox();
                         }),
                         const SizedBox(
                           height: 8,

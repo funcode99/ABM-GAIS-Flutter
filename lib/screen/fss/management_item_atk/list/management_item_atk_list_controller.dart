@@ -7,7 +7,9 @@ import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/repository/management_item_atk/management_item_atk_repository.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
+import 'package:gais/util/enum/role_enum.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -35,6 +37,8 @@ class ManagementItemATKListController extends BaseController
   final selectedItem = Rxn<ManagementItemATKModel>();
   final selectedItemTemp = Rxn<ManagementItemATKModel>();
   final emptyItem = ManagementItemATKModel(id: null, itemName: "Item");
+
+  final enableSelectCompany = false.obs;
 
   //end filter
 
@@ -64,6 +68,8 @@ class ManagementItemATKListController extends BaseController
 
 
   void initData() async {
+    String codeRole = await storage.readString(StorageCore.codeRole);
+
     listCompany.add(CompanyModel(id: "", companyName: "Company"));
     final companies = await getListCompany();
     listCompany.addAll(companies);
@@ -78,7 +84,14 @@ class ManagementItemATKListController extends BaseController
 
     listItem.add(emptyItem);
 
-    onChangeSelectedCompany("");
+    if(codeRole == RoleEnum.superAdmin.value){
+      enableSelectCompany(true);
+      onChangeSelectedCompany("");
+    }else{
+      String idCompany = await storage.readString(StorageCore.companyID);
+      onChangeSelectedCompany(idCompany);
+    }
+
     onChangeSelectedSite("");
     onChangeSelectedWarehouse("");
   }
@@ -134,8 +147,13 @@ class ManagementItemATKListController extends BaseController
     getHeader(page: 1);
   }
 
-  void resetFilter(){
-    onChangeSelectedCompany("");
+  void resetFilter()async{
+    if(enableSelectCompany.value){
+      onChangeSelectedCompany("");
+    }else{
+      String idCompany = await storage.readString(StorageCore.companyID);
+      onChangeSelectedCompany(idCompany);
+    }
     onChangeSelectedSite("");
     onChangeSelectedWarehouse("");
     onChangeSelectedItem("");
