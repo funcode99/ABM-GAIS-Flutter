@@ -132,7 +132,7 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
                 height: 12,
               ),
               Obx(() {
-                if(controller.detailSelectedItem.value.codeStatusDoc == CashAdvanceNonTravelEnum.waitingApproval.value){
+                if(controller.selectedItem.value.codeStatusDoc == CashAdvanceNonTravelEnum.waitingApproval.value){
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
