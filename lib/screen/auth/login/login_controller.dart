@@ -2,6 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/data/model/login_model.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/screen/home/home_screen.dart';
 import 'package:get/get.dart';
@@ -67,6 +68,8 @@ class LoginController extends BaseController {
               value.users?.isEmployee.toString() ?? "",
               value.users?.idApprovalAuth.toString() ?? "",
             );
+            storage.writeString(StorageCore.roleName, value.users?.roleName ?? "");
+            storage.writeString(StorageCore.codeRole, value.users?.codeRole ?? "");
             saveEmployeeInfo();
           })
           .then(

@@ -7,6 +7,7 @@ import 'package:gais/data/model/master/brand/brand_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
+import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
@@ -220,6 +221,34 @@ class MasterRepository{
         '/api/warehouse/',
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, WarehouseModel.fromJsonModelList);
+      return right(apiResponseModel.data);
+
+    } on Dio.DioError catch (e) {
+      print(e);
+
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print(e);
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print(e);
+
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  Future<Either<BaseError, List<EmployeeModel>>> getApproveBehalf({int? idEmployee, int? idCompany, int? idSite, int? idApprovalAuth})async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/employee/approval_behalf',
+        queryParameters: {
+          "id_employee" : idEmployee,
+          "id_site" : idSite,
+          "id_company" : idCompany,
+          "id_approval_auth" : idApprovalAuth,
+        }
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, EmployeeModel.fromJsonModelList);
       return right(apiResponseModel.data);
 
     } on Dio.DioError catch (e) {

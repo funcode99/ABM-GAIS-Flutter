@@ -198,7 +198,7 @@ class _CashAdvanceTravelDetailScreenState
                                               height: 1.5),
                                         ),
                                         Text(
-                                          "${item.idItemCa}",
+                                          "${item.itemName}",
                                           style: Theme
                                               .of(context)
                                               .textTheme

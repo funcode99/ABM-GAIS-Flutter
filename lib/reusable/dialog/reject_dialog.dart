@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -172,7 +173,12 @@ class _RejectDialogState
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _isButtonEnabled ? () {
-                        Get.back();
+                        Get.back(
+                            result: ApprovalModel(
+                              isRevision: _selectedRejectEnum == RejectEnum.rejectWithNote,
+                              notes: _noteController.text
+                            )
+                        );
                       } : null,
                       child: Text("Reject".tr),
                       style: ElevatedButton.styleFrom(backgroundColor: infoColor),

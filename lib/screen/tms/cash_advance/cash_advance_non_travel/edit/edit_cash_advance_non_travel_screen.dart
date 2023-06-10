@@ -16,6 +16,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/detail/detail_item_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_controller.dart';
+import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -86,7 +87,8 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                 ),
                 Obx(() {
                   if (controller.selectedItem.value.codeStatusDoc.toString() ==
-                      "2") {
+                      CashAdvanceNonTravelEnum.draft.value.toString() || controller.selectedItem.value.codeStatusDoc.toString() ==
+                      CashAdvanceNonTravelEnum.revision.value.toString()) {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
