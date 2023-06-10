@@ -24,12 +24,12 @@ ApprovalCashAdvanceModel _$ApprovalCashAdvanceModelFromJson(
       isApproved: json['is_approved'],
       notes: json['notes'] as String?,
       codeStatusDoc: json['code_status_doc'] as int?,
-      isRequestTrip: json['is_request_trip'] as String?,
+      isRequestTrip: json['is_request_trip'] as int?,
       codeSequence: json['code_sequence'] as String?,
       createdAt: json['created_at'] as String?,
-      createdBy: json['created_by'] as String?,
+      createdBy: json['created_by'],
       updatedAt: json['updated_at'] as String?,
-      updatedBy: json['updated_by'] as String?,
+      updatedBy: json['updated_by'],
       deletedAt: json['deleted_at'] as String?,
       currentLevel: json['current_level'] as int?,
       noCa: json['no_ca'] as String?,
@@ -42,6 +42,9 @@ ApprovalCashAdvanceModel _$ApprovalCashAdvanceModelFromJson(
       currencyName: json['currency_name'] as String?,
       currencySymbol: json['currency_symbol'] as String?,
       currencyCode: json['currency_code'] as String?,
+      employeeName: json['employee_name'] as String?,
+      itemCount: json['item_count'] as int?,
+      noRequestTrip: json['no_request_trip'] as String?,
     );
 
 Map<String, dynamic> _$ApprovalCashAdvanceModelToJson(
@@ -70,6 +73,7 @@ Map<String, dynamic> _$ApprovalCashAdvanceModelToJson(
       'updated_by': instance.updatedBy,
       'deleted_at': instance.deletedAt,
       'current_level': instance.currentLevel,
+      'item_count': instance.itemCount,
       'no_ca': instance.noCa,
       'id_ca': instance.idCa,
       'code_status_ca': instance.codeStatusCa,
@@ -80,4 +84,6 @@ Map<String, dynamic> _$ApprovalCashAdvanceModelToJson(
       'currency_name': instance.currencyName,
       'currency_symbol': instance.currencySymbol,
       'currency_code': instance.currencyCode,
+      'employee_name': instance.employeeName,
+      'no_request_trip': instance.noRequestTrip,
     };

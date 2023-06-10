@@ -240,7 +240,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
       Dio.Response response = await network.dio.get(
         '/api/approval_non_travel/get_data',
       );
-      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceModel.fromJsonModelList);
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalCashAdvanceModel.fromJsonModelList);
       return right(apiResponseModel.data);
     } on DioError catch (e) {
       print("DioError $e");

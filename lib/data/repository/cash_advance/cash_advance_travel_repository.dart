@@ -1,16 +1,18 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' as Dio;
 import 'package:dio/dio.dart';
+import 'package:gais/base/approval_base_repository.dart';
 import 'package:gais/base/base_error.dart';
 import 'package:gais/base/base_repository.dart';
 import 'package:gais/data/model/api_response_model.dart';
+import 'package:gais/data/model/approval_cash_advance/approval_cash_advance_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:get/get.dart';
 
-class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, CashAdvanceDetailModel>{
+class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, CashAdvanceDetailModel>, ApprovalBaseRepository<ApprovalCashAdvanceModel>{
   final network = Get.find<NetworkCore>();
 
   @override
@@ -112,6 +114,65 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
   @override
   Future<Either<BaseError, CashAdvanceModel>> detailData(int id) {
     // TODO: implement detailData
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<BaseError, List<ApprovalCashAdvanceModel>>> getDataApproval({Map<String, dynamic>? data}) async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/approval_cash_advance/get_data',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalCashAdvanceModel.fromJsonModelList);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  @override
+  Future<Either<BaseError, PaginationModel>> getPaginationDataApproval({Map<String, dynamic>? data}) async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/approval_cash_advance/get_data',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalCashAdvanceModel.fromJsonModelList);
+      PaginationModel paginationModel = PaginationModel();
+      paginationModel.data = apiResponseModel.data;
+      paginationModel.perPage = "1000";
+      paginationModel.currentPage = 1;
+      paginationModel.total = 1;
+      // ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
+      return right(paginationModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  @override
+  Future<Either<BaseError, bool>> reject(model, int id) {
+    // TODO: implement reject
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<BaseError, bool>> approve(model, int id) {
+    // TODO: implement approve
     throw UnimplementedError();
   }
 

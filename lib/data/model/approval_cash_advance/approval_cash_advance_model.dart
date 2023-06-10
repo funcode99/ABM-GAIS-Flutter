@@ -20,14 +20,15 @@ class ApprovalCashAdvanceModel {
   dynamic isApproved;
   String? notes;
   int? codeStatusDoc;
-  String? isRequestTrip;
+  int? isRequestTrip;
   String? codeSequence;
   String? createdAt;
-  String? createdBy;
+  dynamic createdBy;
   String? updatedAt;
-  String? updatedBy;
+  dynamic updatedBy;
   String? deletedAt;
   int? currentLevel;
+  int? itemCount;
   String? noCa;
   int? idCa;
   int? codeStatusCa;
@@ -38,6 +39,8 @@ class ApprovalCashAdvanceModel {
   String? currencyName;
   String? currencySymbol;
   String? currencyCode;
+  String? employeeName;
+  String? noRequestTrip;
 
   ApprovalCashAdvanceModel(
       {
@@ -74,6 +77,9 @@ class ApprovalCashAdvanceModel {
         this.currencyName,
         this.currencySymbol,
         this.currencyCode,
+        this.employeeName,
+        this.itemCount,
+        this.noRequestTrip,
       });
 
   static ApprovalCashAdvanceModel fromJsonModel(Object? json) =>
