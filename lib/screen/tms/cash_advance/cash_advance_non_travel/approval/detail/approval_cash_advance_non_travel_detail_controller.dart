@@ -8,6 +8,8 @@ import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
+import 'package:gais/reusable/dialog/fail_dialog.dart';
+import 'package:gais/reusable/dialog/success_dialog.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -78,16 +80,22 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController{
   void reject()async{
     final result = await _repository.reject(approvalModel.value, selectedItem.value.id!);
     result.fold((l) => null, (r) {
-      selectedItem.value = r;
-      detailHeader();
+      if(r){
+        showApprovalSuccessDialog("The request was successfully rejected!".tr).then((value) => Get.back(result: true));
+      }else{
+        showApprovalFailDialog("Request failed to be rejected!".tr).then((value) => Get.back(result: true));
+      }
     });
   }
 
   void approve()async{
     final result = await _repository.approve(approvalModel.value, selectedItem.value.id!);
     result.fold((l) => null, (r) {
-      // selectedItem.value = r; ==> commented, because idCa is not available in response
-      detailHeader();
+      if(r){
+        showApprovalSuccessDialog("The request was successfully approved!".tr).then((value) => Get.back(result: true));
+      }else{
+        showApprovalFailDialog("Request failed to be approved!".tr).then((value) => Get.back(result: true));
+      }
     });
   }
 

@@ -282,7 +282,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, ApprovalCashAdvanceModel>> reject(model, int id) async{
+  Future<Either<BaseError, bool>> reject(model, int id) async{
     try {
       final approvalModel = model as ApprovalModel;
 
@@ -291,7 +291,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
           data: approvalModel.toJson()
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalCashAdvanceModel.fromJsonModel);
-      return right(apiResponseModel.data);
+      return right(apiResponseModel.success ?? false);
     } on DioError catch (e) {
       print("DioError $e");
       return left(BaseError(message: e.response!.data['message'] ?? e.message));
@@ -305,7 +305,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, ApprovalCashAdvanceModel>> approve(model, int id) async{
+  Future<Either<BaseError, bool>> approve(model, int id) async{
     try {
       final approvalModel = model as ApprovalModel;
 
@@ -314,7 +314,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
           data: approvalModel.toJson()
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalCashAdvanceModel.fromJsonModel);
-      return right(apiResponseModel.data);
+      return right(apiResponseModel.success ?? false);
     } on DioError catch (e) {
       print("DioError $e");
       return left(BaseError(message: e.response!.data['message'] ?? e.message));
