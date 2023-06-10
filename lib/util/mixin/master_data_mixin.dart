@@ -3,6 +3,7 @@ import 'package:gais/data/model/master/brand/brand_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
+import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
@@ -66,6 +67,11 @@ mixin MasterDataMixin{
 
   Future<List<WarehouseModel>> getListWarehouse()async{
     final result = await _repository.getListWarehouse();
+    return result.fold((l) => [], (list) => list);
+  }
+
+  Future<List<EmployeeModel>> getApproveBehalf({int? idEmployee, int? idCompany, int? idSite, int? idApprovalAuth})async{
+    final result = await _repository.getApproveBehalf(idCompany: idCompany, idEmployee: idEmployee, idSite: idSite, idApprovalAuth: idApprovalAuth);
     return result.fold((l) => [], (list) => list);
   }
 

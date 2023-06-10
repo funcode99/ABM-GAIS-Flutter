@@ -83,4 +83,12 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController{
     });
   }
 
+  void approve()async{
+    final result = await _repository.approve(approvalModel.value, selectedItem.value.id!);
+    result.fold((l) => null, (r) {
+      // selectedItem.value = r; ==> commented, because idCa is not available in response
+      detailHeader();
+    });
+  }
+
 }

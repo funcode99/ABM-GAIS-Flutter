@@ -34,8 +34,20 @@ class ApprovalCashAdvanceNonTravelDetailScreen extends StatefulWidget {
 
 class _ApprovalCashAdvanceNonTravelDetailScreenState
     extends State<ApprovalCashAdvanceNonTravelDetailScreen> {
-  _openApproveDialog() {
-    Get.dialog(const ApprovalConfirmationDialog());
+
+  _openApproveDialog() async{
+    ApprovalCashAdvanceNonTravelDetailController controller = Get.find();
+    ApprovalModel? result = await Get.dialog(ApprovalConfirmationDialog(
+      idEmployee: controller.selectedItem.value.idEmployee,
+      idSite: controller.selectedItem.value.idSite,
+      idCompany: controller.selectedItem.value.idCompany,
+      idApprovalAuth: controller.selectedItem.value.idApprovalAuth,
+    ));
+
+    if(result!=null){
+      controller.approvalModel(result);
+      controller.approve();
+    }
   }
 
   _openRejectDialog() async{
@@ -62,7 +74,10 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
 
   @override
   Widget build(BuildContext context) {
-    ApprovalCashAdvanceModel selectedItem = Get.arguments["item"];
+    ApprovalCashAdvanceModel? selectedItem;
+    if (Get.arguments != null) {
+      selectedItem = Get.arguments["item"];
+    }
 
     final ApprovalCashAdvanceNonTravelDetailController controller =
     Get.put(ApprovalCashAdvanceNonTravelDetailController())

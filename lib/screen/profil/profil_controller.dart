@@ -21,6 +21,8 @@ class ProfilController extends BaseController {
     storage.readEmployeeInfo().then((value) {
       userName = value.first.employeeName;
       userSN = value.first.snEmployee;
+
+      update();
     });
   }
 }

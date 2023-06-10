@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/reusable/dialog/approval_confirmation_controller.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
 enum ApproveEnum { onBehalf, fullApprove }
 
-class ApprovalConfirmationDialog extends StatefulWidget {
-  const ApprovalConfirmationDialog({super.key});
+class ApprovalConfirmationDialog extends StatelessWidget {
 
-  @override
-  State<ApprovalConfirmationDialog> createState() =>
-      _ApprovalConfirmationDialogState();
-}
+  const ApprovalConfirmationDialog(
+      {super.key, this.idCompany, this.idSite, this.idEmployee, this.idApprovalAuth});
 
-class _ApprovalConfirmationDialogState
-    extends State<ApprovalConfirmationDialog> {
-  ApproveEnum _selectedApproveEnum = ApproveEnum.onBehalf;
+  final int? idCompany;
+  final int? idSite;
+  final int? idEmployee;
+  final int? idApprovalAuth;
 
   @override
   Widget build(BuildContext context) {
+    final ApprovalConfirmationController controller =
+    Get.put(ApprovalConfirmationController())
+      ..idApprovalAuth(idApprovalAuth)
+      ..idCompany(idCompany)
+      ..idSite(idSite)
+      ..idEmployee(idEmployee);
+
     return Dialog(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
@@ -32,7 +38,8 @@ class _ApprovalConfirmationDialogState
                 Expanded(
                   child: Text(
                     "Approval Confirmation".tr,
-                    style: Theme.of(context)
+                    style: Theme
+                        .of(context)
                         .textTheme
                         .subtitle1
                         ?.copyWith(fontWeight: FontWeight.w600, fontSize: 20),
@@ -52,7 +59,8 @@ class _ApprovalConfirmationDialogState
             ),
             Text(
               "Are you sure want to approve this document?".tr,
-              style: Theme.of(context)
+              style: Theme
+                  .of(context)
                   .textTheme
                   .subtitle1
                   ?.copyWith(fontWeight: FontWeight.w500, fontSize: 14),
@@ -60,81 +68,83 @@ class _ApprovalConfirmationDialogState
             const SizedBox(
               height: 16,
             ),
-            Row(
-              children: [
-                Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: blackColor),
-                      color: _selectedApproveEnum == ApproveEnum.onBehalf
-                          ? infoColor
-                          : Colors.transparent),
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedApproveEnum = ApproveEnum.onBehalf;
-                      });
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                Expanded(
-                  child: Text("Approve on Behalf of: ".tr),
-                ),
-                const SizedBox(
-                  width: 12,
-                ),
-                Expanded(
-                  child: DropdownButtonFormField(
-                    decoration: const InputDecoration(
-                        contentPadding:
-                        EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    hint: Text("Name".tr),
-                    value: "1",
-                    isExpanded: true,
-                    // underline: SizedBox(),
-                    items: const [
-                      DropdownMenuItem(
-                        value: "1",
-                        child: Text("Name One"),
+            Obx(() {
+              if (controller.enableOnBehalf.value) {
+                return Row(
+                  children: [
+                    Container(
+                      height: 30,
+                      width: 30,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: blackColor),
+                          color: controller.selectedEnum.value == ApproveEnum.onBehalf
+                              ? infoColor
+                              : Colors.transparent),
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.selectedEnum.value = ApproveEnum.onBehalf;
+                        },
                       ),
-                      DropdownMenuItem(
-                        value: "2",
-                        child: Text("Name Two"),
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Expanded(
+                      child: Text("Approve on Behalf of: ".tr),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    Expanded(
+                      child: DropdownButtonFormField(
+                        decoration: const InputDecoration(
+                            contentPadding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        hint: Text("Name".tr),
+                        value: controller.selectedEmployee.value?.id.toString(),
+                        isExpanded: true,
+                        // underline: SizedBox(),
+                        items: controller.listEmployee
+                            .map((e) =>
+                            DropdownMenuItem(
+                              value: e.id.toString(),
+                              child: Text("${e.employeeName}"),
+                            ))
+                            .toList(),
+                        onChanged: (value) {
+                          controller.onChangeSelectedEmployee(value.toString());
+                        },
                       ),
-                    ],
-                    onChanged: (value) {},
-                  ),
-                )
-              ],
-            ),
+                    )
+                  ],
+                );
+              }
+              return const SizedBox();
+            }),
             const SizedBox(
               height: 16,
             ),
             Row(
               children: [
-                Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: blackColor),
-                      color: _selectedApproveEnum == ApproveEnum.fullApprove
-                          ? infoColor
-                          : Colors.transparent),
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedApproveEnum = ApproveEnum.fullApprove;
-                      });
-                    },
-                  ),
-                ),
+                Obx(() {
+                  return Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: blackColor),
+                        color: controller.selectedEnum.value == ApproveEnum.fullApprove
+                            ? infoColor
+                            : Colors.transparent),
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.selectedEnum.value = ApproveEnum.fullApprove;
+                      },
+                    ),
+                  );
+                }),
                 const SizedBox(
                   width: 16,
                 ),
@@ -151,7 +161,7 @@ class _ApprovalConfirmationDialogState
             ),
             CustomTextFormField(
               label: "Notes".tr,
-              controller: TextEditingController(),
+              controller: controller.noteController,
             ),
             const SizedBox(
               height: 16,
@@ -171,7 +181,7 @@ class _ApprovalConfirmationDialogState
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.back();
+                      Get.back(result: controller.approve());
                     },
                     style: ElevatedButton.styleFrom(backgroundColor: infoColor),
                     child: Text("Approve".tr),

@@ -10,6 +10,8 @@ class StorageCore {
   static const String companyName = "companyName";
   static const String siteName = "site";
   static const String siteID = "siteID";
+  static const String roleName = "roleName";
+  static const String codeRole = "codeRole";
 
   final storage = const FlutterSecureStorage();
 

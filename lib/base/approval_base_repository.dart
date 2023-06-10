@@ -8,4 +8,5 @@ abstract class ApprovalBaseRepository<T>{
   Future<Either<BaseError, List<T>>> getDataApproval({Map<String, dynamic>? data});
 
   Future<Either<BaseError, T>> reject(dynamic model, int id);
+  Future<Either<BaseError, T>> approve(dynamic model, int id);
 }
