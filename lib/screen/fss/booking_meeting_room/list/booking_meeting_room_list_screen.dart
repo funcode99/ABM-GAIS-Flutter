@@ -13,6 +13,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_screen.dart';
+import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/list/booking_meeting_room_list_controller.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -134,12 +135,12 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         Text(
-                                          "Brand".tr,
+                                          "Title".tr,
                                           textAlign: TextAlign.center,
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
-                                          "Pilot",
+                                          "Weekly Meeting",
                                           style: listSubTitleTextStyle.copyWith(
                                             overflow: TextOverflow.ellipsis
                                           ),
@@ -151,12 +152,12 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         Text(
-                                          "Warehouse".tr,
+                                          "Requestor".tr,
                                           textAlign: TextAlign.center,
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
-                                          "Warehouse A",
+                                          "Fahri",
                                           style: listSubTitleTextStyle.copyWith(
                                             overflow: TextOverflow.ellipsis
                                           ),
@@ -168,12 +169,12 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         Text(
-                                          "Alert Quantity".tr,
+                                          "Date".tr,
                                           textAlign: TextAlign.center,
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
-                                          "20",
+                                          "20/06/2023 - 21/06/2023",
                                           style: listSubTitleTextStyle.copyWith(
                                             overflow: TextOverflow.ellipsis
                                           ),
@@ -185,12 +186,12 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         Text(
-                                          "UOM".tr,
+                                          "Time".tr,
                                           textAlign: TextAlign.center,
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
-                                          "Pcs",
+                                          "08:00-10:00",
                                           style: listSubTitleTextStyle.copyWith(
                                             overflow: TextOverflow.ellipsis
                                           ),
