@@ -334,7 +334,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                       style: listTitleTextStyle,
                                                     ),
                                                     Text(
-                                                      "${item.warehouseName}",
+                                                      item.warehouseName ?? "-",
                                                       style: listSubTitleTextStyle
                                                           .copyWith(
                                                               overflow:

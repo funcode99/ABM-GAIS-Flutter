@@ -79,6 +79,10 @@ class LanguageEN{
       "Empty List" : "Empty List",
       "Success Delete Data" : "Success Delete Data",
       "Booking Info" : "Booking Info",
+      "The request was successfully approved!" : "The request was successfully approved!",
+      "Request failed to be approved!" : "Request failed to be approved!",
+      "The request was successfully rejected!" : "The request was successfully rejected!",
+      "Request failed to be rejected!" : "Request failed to be rejected!",
     };
   }
 }
