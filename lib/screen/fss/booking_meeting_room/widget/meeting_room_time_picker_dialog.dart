@@ -164,17 +164,18 @@ class _MeetingRoomTimePickerDialogState
                       )
                     ],
                   ),
-                  const SizedBox(
-                    width: 8,
+                  SizedBox(
+                    width: widget.endDate != null ? 8 : 0,
                   ),
+                  widget.endDate != null ?
                   const Icon(
                     Icons.arrow_forward,
                     color: infoColor,
+                  ) : const SizedBox(),
+                  SizedBox(
+                    width: widget.endDate != null ? 8 : 0,
                   ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Column(
+                  widget.endDate != null ? Column(
                     children: [
                       Text(
                         "${widget.endDate?.toStringWithFormat(format: "EEE")}",
@@ -194,7 +195,7 @@ class _MeetingRoomTimePickerDialogState
                         ),
                       )
                     ],
-                  )
+                  ) : const SizedBox()
                 ],
               ),
             ),
