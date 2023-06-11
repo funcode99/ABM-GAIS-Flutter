@@ -8,6 +8,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_controller.dart';
 import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
@@ -115,18 +116,23 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                       readOnly: true,
                       suffixIcon: const Icon(IconlyLight.time_circle),
                       onTap: () {
-                        Get.dialog(MeetingRoomTimePickerDialog(
-                          startDate: controller.startDate.value,
-                          endDate: controller.endDate.value,
-                          startTime: controller.startTime.value,
-                          endTime: controller.endTime.value,
-                          onConfirmClick: (startTime, endTime) {
-                            controller.startTime.value = startTime;
-                            controller.endTime.value = endTime;
-                            controller.timeController.text =
-                                "${startTime?.toStringWithFormat()} ${endTime != null ? "-" : ""} ${endTime?.toStringWithFormat() ?? ""}";
-                          },
-                        ));
+                        if(controller.startDate.value == null && controller.endDate.value == null){
+                          Get.showSnackbar(CustomGetSnackBar(message: "Please choose date first",backgroundColor: redColor),);
+                        }else{
+                          Get.dialog(MeetingRoomTimePickerDialog(
+                            startDate: controller.startDate.value,
+                            endDate: controller.endDate.value,
+                            startTime: controller.startTime.value,
+                            endTime: controller.endTime.value,
+                            onConfirmClick: (startTime, endTime) {
+                              controller.startTime.value = startTime;
+                              controller.endTime.value = endTime;
+                              controller.timeController.text =
+                              "${startTime?.toStringWithFormat()} ${endTime != null ? "-" : ""} ${endTime?.toStringWithFormat() ?? ""}";
+                            },
+                          ));
+                        }
+
                       },
                       controller: controller.timeController,
                       label: "Time Detail".tr),
