@@ -10,12 +10,42 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/request_trip/form_request_trip/approval_form_request_trip_controller.dart';
+import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
+import 'package:gais/screen/tms/cash_advance/widget/approval_confirmation_dialog.dart';
+import 'package:gais/screen/tms/cash_advance/widget/reject_dialog.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-class ApprovalFormRequestTripScreen extends StatelessWidget {
-  const ApprovalFormRequestTripScreen({Key? key}) : super(key: key);
+class ApprovalFormRequestTripScreen extends StatefulWidget {
+  const ApprovalFormRequestTripScreen({Key? key, this.approvalActionEnum = ApprovalActionEnum.none}) : super(key: key);
+
+  final ApprovalActionEnum approvalActionEnum;
+
+  @override
+  State<ApprovalFormRequestTripScreen> createState() => _ApprovalFormRequestTripScreenState();
+}
+
+class _ApprovalFormRequestTripScreenState extends State<ApprovalFormRequestTripScreen> {
+  _openApproveDialog() {
+    Get.dialog(const ApprovalConfirmationDialog());
+  }
+
+  _openRejectDialog() {
+    Get.dialog(const RejectDialog());
+  }
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      if (widget.approvalActionEnum == ApprovalActionEnum.approve) {
+        _openApproveDialog();
+      } else if (widget.approvalActionEnum == ApprovalActionEnum.reject) {
+        _openRejectDialog();
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +79,11 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                         color: whiteColor,
                         child: Column(
                           children: [
-                            Text(controller.rtNumber.toString(), style: appTitle, textAlign: TextAlign.center,),
+                            Text(
+                              controller.rtNumber.toString(),
+                              style: appTitle,
+                              textAlign: TextAlign.center,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -60,107 +94,105 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                                   height: 40,
                                   width: 100,
                                   onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          scrollable: true,
-                                          titlePadding: EdgeInsets.zero,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
-                                          title: Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8))),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text("Approval\nConnfirmation", style: appTitle),
-                                                GestureDetector(
-                                                  onTap: () => Get.back(),
-                                                  child: Container(
-                                                    decoration:
-                                                        BoxDecoration(color: errorColor, borderRadius: BorderRadius.circular(5)),
-                                                    child: Icon(
-                                                      Icons.close,
-                                                      color: whiteColor,
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          content: GetBuilder<ApprovalFormRequestTripController>(
-                                              init: ApprovalFormRequestTripController(),
-                                              builder: (c) {
-                                                return Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text("Are you sure want to approve this document?"),
-                                                    Row(
-                                                      children: [
-                                                        Radio(
-                                                          value: c.approve[0],
-                                                          groupValue: c.approval,
-                                                          onChanged: (value) {
-                                                            c.approval = value ?? "";
-                                                            c.update();
-                                                          },
-                                                        ),
-                                                        Text('Behalf of  '),
-                                                        Container(
-                                                          padding: EdgeInsets.symmetric(horizontal: 8),
-                                                          height: 30,
-                                                          decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius.circular(8),
-                                                              border: Border.all(color: greyColor)),
-                                                          child: DropdownButton(
-                                                            underline: SizedBox(),
-                                                            hint: Text("Name"),
-                                                            icon: Icon(Icons.keyboard_arrow_down),
-                                                            items: [],
-                                                            onChanged: (value) {},
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Radio(
-                                                          value: c.approve[1],
-                                                          groupValue: c.approval,
-                                                          onChanged: (value) {
-                                                            c.approval = value ?? "";
-                                                            c.update();
-                                                          },
-                                                        ),
-                                                        Text('Fully Approve')
-                                                      ],
-                                                    ),
-                                                    Text("Notes"),
-                                                    TextField()
-                                                  ],
-                                                );
-                                              }),
-                                          actionsAlignment: MainAxisAlignment.center,
-                                          actions: [
-                                            CustomFilledButton(
-                                              color: Colors.transparent,
-                                              fontColor: infoColor,
-                                              borderColor: infoColor,
-                                              title: "Cancel",
-                                              width: 120,
-                                              onPressed: () => Get.back(),
-                                            ),
-                                            CustomFilledButton(
-                                              color: infoColor,
-                                              title: "Appprove",
-                                              width: 120,
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
+                                    _openRejectDialog();
+                                    // showDialog(
+                                    //   context: context,
+                                    //   builder: (BuildContext context) {
+                                    //     return AlertDialog(
+                                    //       scrollable: true,
+                                    //       titlePadding: EdgeInsets.zero,
+                                    //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
+                                    //       title: Container(
+                                    //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                    //         decoration: BoxDecoration(
+                                    //             borderRadius: BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8))),
+                                    //         child: Row(
+                                    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //           children: [
+                                    //             Text("Approval\nConnfirmation", style: appTitle),
+                                    //             GestureDetector(
+                                    //               onTap: () => Get.back(),
+                                    //               child: Container(
+                                    //                 decoration: BoxDecoration(color: errorColor, borderRadius: BorderRadius.circular(5)),
+                                    //                 child: Icon(
+                                    //                   Icons.close,
+                                    //                   color: whiteColor,
+                                    //                 ),
+                                    //               ),
+                                    //             )
+                                    //           ],
+                                    //         ),
+                                    //       ),
+                                    //       content: GetBuilder<ApprovalFormRequestTripController>(
+                                    //           init: ApprovalFormRequestTripController(),
+                                    //           builder: (c) {
+                                    //             return Column(
+                                    //               crossAxisAlignment: CrossAxisAlignment.start,
+                                    //               children: [
+                                    //                 Text("Are you sure want to approve this document?"),
+                                    //                 Row(
+                                    //                   children: [
+                                    //                     Radio(
+                                    //                       value: c.approve[0],
+                                    //                       groupValue: c.approval,
+                                    //                       onChanged: (value) {
+                                    //                         c.approval = value ?? "";
+                                    //                         c.update();
+                                    //                       },
+                                    //                     ),
+                                    //                     Text('Behalf of  '),
+                                    //                     Container(
+                                    //                       padding: EdgeInsets.symmetric(horizontal: 8),
+                                    //                       height: 30,
+                                    //                       decoration: BoxDecoration(
+                                    //                           borderRadius: BorderRadius.circular(8), border: Border.all(color: greyColor)),
+                                    //                       child: DropdownButton(
+                                    //                         underline: SizedBox(),
+                                    //                         hint: Text("Name"),
+                                    //                         icon: Icon(Icons.keyboard_arrow_down),
+                                    //                         items: [],
+                                    //                         onChanged: (value) {},
+                                    //                       ),
+                                    //                     )
+                                    //                   ],
+                                    //                 ),
+                                    //                 Row(
+                                    //                   children: [
+                                    //                     Radio(
+                                    //                       value: c.approve[1],
+                                    //                       groupValue: c.approval,
+                                    //                       onChanged: (value) {
+                                    //                         c.approval = value ?? "";
+                                    //                         c.update();
+                                    //                       },
+                                    //                     ),
+                                    //                     Text('Fully Approve')
+                                    //                   ],
+                                    //                 ),
+                                    //                 Text("Notes"),
+                                    //                 TextField()
+                                    //               ],
+                                    //             );
+                                    //           }),
+                                    //       actionsAlignment: MainAxisAlignment.center,
+                                    //       actions: [
+                                    //         CustomFilledButton(
+                                    //           color: Colors.transparent,
+                                    //           fontColor: infoColor,
+                                    //           borderColor: infoColor,
+                                    //           title: "Cancel",
+                                    //           width: 120,
+                                    //           onPressed: () => Get.back(),
+                                    //         ),
+                                    //         CustomFilledButton(
+                                    //           color: infoColor,
+                                    //           title: "Appprove",
+                                    //           width: 120,
+                                    //         ),
+                                    //       ],
+                                    //     );
+                                    //   },
+                                    // );
                                   },
                                 ),
                                 CustomFilledButton(
@@ -170,92 +202,91 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                                   height: 40,
                                   width: 100,
                                   onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          scrollable: true,
-                                          titlePadding: EdgeInsets.zero,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
-                                          title: Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8))),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text("Reject Reason", style: appTitle),
-                                                GestureDetector(
-                                                  onTap: () => Get.back(),
-                                                  child: Container(
-                                                    decoration:
-                                                        BoxDecoration(color: errorColor, borderRadius: BorderRadius.circular(5)),
-                                                    child: Icon(
-                                                      Icons.close,
-                                                      color: whiteColor,
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          content: GetBuilder<ApprovalFormRequestTripController>(
-                                              init: ApprovalFormRequestTripController(),
-                                              builder: (c) {
-                                                return Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Radio(
-                                                          value: c.reject[0],
-                                                          groupValue: c.rejection,
-                                                          onChanged: (value) {
-                                                            c.rejection = value ?? "";
-                                                            c.update();
-                                                          },
-                                                        ),
-                                                        Text('Rejected with Notes:  '),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Radio(
-                                                          value: c.reject[1],
-                                                          groupValue: c.rejection,
-                                                          onChanged: (value) {
-                                                            c.rejection = value ?? "";
-                                                            c.update();
-                                                          },
-                                                        ),
-                                                        Text('Fully Rejected')
-                                                      ],
-                                                    ),
-                                                    Text("Notes"),
-                                                    TextField()
-                                                  ],
-                                                );
-                                              }),
-                                          actionsAlignment: MainAxisAlignment.center,
-                                          actions: [
-                                            CustomFilledButton(
-                                              color: Colors.transparent,
-                                              fontColor: infoColor,
-                                              borderColor: infoColor,
-                                              title: "Cancel",
-                                              width: 120,
-                                              onPressed: () => Get.back(),
-                                            ),
-                                            CustomFilledButton(
-                                              color: infoColor,
-                                              title: "Confirm",
-                                              width: 120,
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
+                                    _openRejectDialog();
+                                    // showDialog(
+                                    //   context: context,
+                                    //   builder: (BuildContext context) {
+                                    //     return AlertDialog(
+                                    //       scrollable: true,
+                                    //       titlePadding: EdgeInsets.zero,
+                                    //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
+                                    //       title: Container(
+                                    //         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                    //         decoration: BoxDecoration(
+                                    //             borderRadius: BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8))),
+                                    //         child: Row(
+                                    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //           children: [
+                                    //             Text("Reject Reason", style: appTitle),
+                                    //             GestureDetector(
+                                    //               onTap: () => Get.back(),
+                                    //               child: Container(
+                                    //                 decoration: BoxDecoration(color: errorColor, borderRadius: BorderRadius.circular(5)),
+                                    //                 child: Icon(
+                                    //                   Icons.close,
+                                    //                   color: whiteColor,
+                                    //                 ),
+                                    //               ),
+                                    //             )
+                                    //           ],
+                                    //         ),
+                                    //       ),
+                                    //       content: GetBuilder<ApprovalFormRequestTripController>(
+                                    //           init: ApprovalFormRequestTripController(),
+                                    //           builder: (c) {
+                                    //             return Column(
+                                    //               crossAxisAlignment: CrossAxisAlignment.start,
+                                    //               children: [
+                                    //                 Row(
+                                    //                   children: [
+                                    //                     Radio(
+                                    //                       value: c.reject[0],
+                                    //                       groupValue: c.rejection,
+                                    //                       onChanged: (value) {
+                                    //                         c.rejection = value ?? "";
+                                    //                         c.update();
+                                    //                       },
+                                    //                     ),
+                                    //                     Text('Rejected with Notes:  '),
+                                    //                   ],
+                                    //                 ),
+                                    //                 Row(
+                                    //                   children: [
+                                    //                     Radio(
+                                    //                       value: c.reject[1],
+                                    //                       groupValue: c.rejection,
+                                    //                       onChanged: (value) {
+                                    //                         c.rejection = value ?? "";
+                                    //                         c.update();
+                                    //                       },
+                                    //                     ),
+                                    //                     Text('Fully Rejected')
+                                    //                   ],
+                                    //                 ),
+                                    //                 Text("Notes"),
+                                    //                 TextField()
+                                    //               ],
+                                    //             );
+                                    //           }),
+                                    //       actionsAlignment: MainAxisAlignment.center,
+                                    //       actions: [
+                                    //         CustomFilledButton(
+                                    //           color: Colors.transparent,
+                                    //           fontColor: infoColor,
+                                    //           borderColor: infoColor,
+                                    //           title: "Cancel",
+                                    //           width: 120,
+                                    //           onPressed: () => Get.back(),
+                                    //         ),
+                                    //         CustomFilledButton(
+                                    //           color: infoColor,
+                                    //           title: "Confirm",
+                                    //           width: 120,
+                                    //         ),
+                                    //       ],
+                                    //     );
+                                    //   },
+                                    // );
                                   },
                                 ),
                               ],
@@ -294,13 +325,17 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                                 readOnly: true,
                               ),
                               const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.site,
-                                label: "Site",
-                                isRequired: true,
-                                readOnly: true,
-                              ),
-                              const SizedBox(height: 8),
+                              controller.selectedPurpose == "1"
+                                  ? Container(
+                                      margin: EdgeInsets.only(bottom: 8),
+                                      child: CustomTextFormField(
+                                        controller: controller.site,
+                                        label: "Site",
+                                        isRequired: true,
+                                        readOnly: true,
+                                      ),
+                                    )
+                                  : Container(),
                               controller.isAttachment
                                   ? CustomTextFormField(
                                       controller: controller.attachment,
@@ -343,11 +378,9 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                                 height: 50,
                                 decoration: BoxDecoration(
                                   color: controller.isDetail ? whiteColor : neutralColor,
-                                  borderRadius:
-                                      const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
-                                  gradient: LinearGradient(
-                                      stops: const [0.1, 0],
-                                      colors: [controller.isDetail ? blackColor : whiteColor, Colors.white]),
+                                  borderRadius: const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
+                                  gradient:
+                                      LinearGradient(stops: const [0.1, 0], colors: [controller.isDetail ? blackColor : whiteColor, Colors.white]),
                                 ),
                                 child: const Text("Detail"),
                               ),
@@ -366,10 +399,8 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                                 height: 50,
                                 decoration: BoxDecoration(
                                   color: controller.isTLK ? whiteColor : neutralColor,
-                                  borderRadius:
-                                      const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
-                                  gradient: LinearGradient(
-                                      stops: const [0.1, 0], colors: [controller.isTLK ? blackColor : whiteColor, Colors.white]),
+                                  borderRadius: const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
+                                  gradient: LinearGradient(stops: const [0.1, 0], colors: [controller.isTLK ? blackColor : whiteColor, Colors.white]),
                                 ),
                                 child: const Text("TLK Info"),
                               ),
@@ -388,7 +419,7 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                   SliverList(
                     // SliverToBoxAdapter(
                     delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
+                      (BuildContext context, int index) {
                         if (controller.isDetail == true) {
                           // if(controller.items[index]['isFilled'] == true)
                           return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -438,355 +469,358 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                             //         )
                             //       : const SizedBox(),
                             // ),
-                            !controller.items[index]['isFilled'] ? Container() :
-                            ListTile(
-                              title: Row(
-                                children: [
-                                  Text(controller.items[index]['title']),
-                                  IconButton(
-                                      onPressed: () {
-                                        controller.items[index]['showList'] = controller.items[index]['showList'] == false ? true : false;
-                                        controller.update();
-                                      },
-                                      icon: controller.items[index]['showList'] == false
-                                          ? const Icon(Icons.keyboard_arrow_down)
-                                          : const Icon(Icons.keyboard_arrow_up))
-                                ],
-                              ),
-                              trailing: controller.isEdit
-                                  ? CustomFilledButton(
-                                color: successColor,
-                                icon: IconlyBold.plus,
-                                title: " Add",
-                                fontSize: 13,
-                                width: Get.width / 5,
-                                onPressed: () {
-                                  index == 1 || index == 4 || index == 5
-                                      ? Get.off(
-                                    controller.items[index]['screen'],
-                                    arguments: {
-                                      'purposeID': controller.purposeID,
-                                      'codeDocument': controller.codeDocument,
-                                      'formEdit': true,
-                                    },
-                                  )
-                                      : Get.to(
-                                    controller.items[index]['screen'],
-                                    arguments: {
-                                      'purposeID': controller.purposeID,
-                                      'codeDocument': controller.codeDocument,
-                                      'formEdit': true,
-                                    },
-                                  )?.then((value) {
-                                    controller.fetchList();
-                                    controller.update();
-                                  });
-                                },
-                              )
-                                  : const SizedBox(),
-                            ) ,
+                            !controller.items[index]['isFilled']
+                                ? Container()
+                                : ListTile(
+                                    title: Row(
+                                      children: [
+                                        Text(controller.items[index]['title']),
+                                        IconButton(
+                                            onPressed: () {
+                                              controller.items[index]['showList'] = controller.items[index]['showList'] == false ? true : false;
+                                              controller.update();
+                                            },
+                                            icon: controller.items[index]['showList'] == false
+                                                ? const Icon(Icons.keyboard_arrow_down)
+                                                : const Icon(Icons.keyboard_arrow_up))
+                                      ],
+                                    ),
+                                    trailing: controller.isEdit
+                                        ? CustomFilledButton(
+                                            color: successColor,
+                                            icon: IconlyBold.plus,
+                                            title: " Add",
+                                            fontSize: 13,
+                                            width: Get.width / 5,
+                                            onPressed: () {
+                                              index == 1 || index == 4 || index == 5
+                                                  ? Get.off(
+                                                      controller.items[index]['screen'],
+                                                      arguments: {
+                                                        'purposeID': controller.purposeID,
+                                                        'codeDocument': controller.codeDocument,
+                                                        'formEdit': true,
+                                                      },
+                                                    )
+                                                  : Get.to(
+                                                      controller.items[index]['screen'],
+                                                      arguments: {
+                                                        'purposeID': controller.purposeID,
+                                                        'codeDocument': controller.codeDocument,
+                                                        'formEdit': true,
+                                                      },
+                                                    )?.then((value) {
+                                                      controller.fetchList();
+                                                      controller.update();
+                                                    });
+                                            },
+                                          )
+                                        : const SizedBox(),
+                                  ),
                             const Divider(height: 1, thickness: 1),
                             controller.items[index]['title'] == "Traveller Guest"
                                 ? controller.items[index]['showList']
-                                ? Column(
-                                children: controller.guestList.isNotEmpty
-                                    ? controller.guestList
-                                    .mapIndexed(
-                                      (i, e) => CustomTripCard(
-                                    listNumber: i + 1,
-                                    title: e.nameGuest.toString(),
-                                    subtitle: e.nik,
-                                    info: "Guest",
-                                    content: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Gender", style: listTitleTextStyle),
-                                            Text(e.gender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Hotel Fare", style: listTitleTextStyle),
-                                            Text(e.hotelFare.toString(), style: listSubTitleTextStyle),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Flight Entitlement", style: listTitleTextStyle),
-                                            Text(e.flightClass.toString(), style: listSubTitleTextStyle),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                                    .toList()
-                                    : [
-                                  const Center(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: Text("no data yet"),
-                                    ),
-                                  )
-                                ])
-                                : Container()
+                                    ? Column(
+                                        children: controller.guestList.isNotEmpty
+                                            ? controller.guestList
+                                                .mapIndexed(
+                                                  (i, e) => CustomTripCard(
+                                                    listNumber: i + 1,
+                                                    title: e.nameGuest.toString(),
+                                                    subtitle: e.nik,
+                                                    info: "Guest",
+                                                    content: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text("Gender", style: listTitleTextStyle),
+                                                            Text(e.gender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
+                                                          ],
+                                                        ),
+                                                        Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text("Hotel Fare", style: listTitleTextStyle),
+                                                            Text(e.hotelFare.toString(), style: listSubTitleTextStyle),
+                                                          ],
+                                                        ),
+                                                        Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text("Flight Entitlement", style: listTitleTextStyle),
+                                                            Text(e.flightClass.toString(), style: listSubTitleTextStyle),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
+                                                .toList()
+                                            : [
+                                                const Center(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.all(10),
+                                                    child: Text("no data yet"),
+                                                  ),
+                                                )
+                                              ])
+                                    : Container()
                                 : controller.items[index]['title'] == "Airliness"
-                                ? controller.items[index]['showList']
-                                ? Column(
-                              children: controller.airlinessList.isNotEmpty
-                                  ? controller.airlinessList
-                                  .mapIndexed((i, e) => CustomTripCard(
-                                listNumber: i + 1,
-                                title: e.employeeName.toString(),
-                                subtitle: e.createdAt.toString().substring(0, 10),
-                                info: e.flightNo,
-                                content: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Departure", style: listTitleTextStyle),
-                                        Text("CGK (06.00)", style: listSubTitleTextStyle),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Arrival", style: listTitleTextStyle),
-                                        Text("SUB (09.00)", style: listSubTitleTextStyle),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Price", style: listTitleTextStyle),
-                                        Text(e.ticketPrice.toString(), style: listSubTitleTextStyle),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ))
-                                  .toList()
-                                  : [
-                                const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Text("no data yet"),
-                                  ),
-                                )
-                              ],
-                            )
-                                : Container()
-                                : controller.items[index]['title'] == "Taxi Voucher"
-                                ? controller.items[index]['showList']
-                                ? Column(
-                              children: controller.tvList.isNotEmpty
-                                  ? controller.tvList
-                                  .mapIndexed(
-                                    (i, e) => CustomTripCard(
-                                  listNumber: i + 1,
-                                  title: e.employeeName.toString(),
-                                  subtitle: e.date,
-                                  status: e.status.toString(),
-                                  info: int.parse(e.amount.toString()).toCurrency(),
-                                  content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Text("Departure", style: listTitleTextStyle),
-                                          Text(e.nameDepartureCity.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Text("Arrival", style: listTitleTextStyle),
-                                          Text(e.nameArrivalCity.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                                  .toList()
-                                  : [
-                                const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Text("no data yet"),
-                                  ),
-                                )
-                              ],
-                            )
-                                : Container()
-                                : controller.items[index]['title'] == "Other Transportation"
-                                ? controller.items[index]['showList']
-                                ? Column(
-                              children: controller.otList.isNotEmpty
-                                  ? controller.otList
-                                  .mapIndexed(
-                                    (i, e) => CustomTripCard(
-                                  listNumber: i + 1,
-                                  title: e.employeeName.toString(),
-                                  subtitle: e.typeTransportation.toString(),
-                                  status: e.status.toString(),
-                                  info: e.cityName.toString(),
-                                  content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("From Date", style: listTitleTextStyle),
-                                          Text(e.fromDate.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("To Date", style: listTitleTextStyle),
-                                          Text(e.toDate.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Text("Quantity", style: listTitleTextStyle),
-                                          Text(e.qty.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                                  .toList()
-                                  : [
-                                const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Text("no data yet"),
-                                  ),
-                                )
-                              ],
-                            )
-                                : Container()
-                                : controller.items[index]['title'] == "Accommodation"
-                                ? controller.items[index]['showList']
-                                ? Column(
-                              children: controller.accommodationsList.isNotEmpty
-                                  ? controller.accommodationsList
-                                  .mapIndexed(
-                                    (i, e) => CustomTripCard(
-                                  listNumber: i + 1,
-                                  title: e.employeeName.toString(),
-                                  status: e.status.toString(),
-                                  info: e.hotelName,
-                                  content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Check In", style: listTitleTextStyle),
-                                          Text(e.checkInDate.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Check Out", style: listTitleTextStyle),
-                                          Text(e.checkOutDate.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Price", style: listTitleTextStyle),
-                                          Text(e.price.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                                  .toList()
-                                  : [
-                                const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Text("no data yet"),
-                                  ),
-                                )
-                              ],
-                            )
-                                : Container()
-                                : controller.items[index]['title'] == "Cash Advance"
-                                ? controller.items[index]['showList']
-                                ? Column(
-                              children: controller.caList.isNotEmpty
-                                  ? controller.caList
-                                  .mapIndexed((i, e) => CustomTripCard(
-                                listNumber: i + 1,
-                                title: e.noCa ?? "",
-                                subtitle: e.createdAt.toString().substring(0,10),
-                                status: e.status.toString(),
-                                info:
-                                "${e.currencyCode} ${int.parse(e.grandTotal.toString()).toCurrency()}",
-                                isEdit: controller.isEdit,
-                                editAction: () {
-                                  // Get.off(
-                                  //   EditCashAdvanceTravelScreen(),
-                                  //   arguments: {
-                                  //     'purposeID': controller.purposeID,
-                                  //     'codeDocument': controller.codeDocument,
-                                  //     'formEdit': true,
-                                  //     'id': e.id,
-                                  //   },
-                                  // );
-                                },
-                                isDelete: controller.isEdit,
-                                content: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Text("Item", style: listTitleTextStyle),
-                                        Text(e.itemCount.toString(), style: listSubTitleTextStyle),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Text("Reference", style: listTitleTextStyle),
-                                        Text(e.noRequestTrip.toString(), style: listSubTitleTextStyle.copyWith(
-                                            overflow: TextOverflow.ellipsis
-                                        )),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ))
-                                  .toList()
-                                  : [
-                                const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Text("no data yet"),
-                                  ),
-                                )
-                              ],
-                            )
-                                : Container()
-                                : Container(),
+                                    ? controller.items[index]['showList']
+                                        ? Column(
+                                            children: controller.airlinessList.isNotEmpty
+                                                ? controller.airlinessList
+                                                    .mapIndexed((i, e) => CustomTripCard(
+                                                          listNumber: i + 1,
+                                                          title: e.employeeName.toString(),
+                                                          subtitle: controller.dateFormat.format(DateTime.parse(e.createdAt.toString())).toString(),
+                                                          info: e.flightNo,
+                                                          content: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text("Departure", style: listTitleTextStyle),
+                                                                  Text("CGK (06.00)", style: listSubTitleTextStyle),
+                                                                ],
+                                                              ),
+                                                              Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text("Arrival", style: listTitleTextStyle),
+                                                                  Text("SUB (09.00)", style: listSubTitleTextStyle),
+                                                                ],
+                                                              ),
+                                                              Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text("Price", style: listTitleTextStyle),
+                                                                  Text(e.ticketPrice.toString(), style: listSubTitleTextStyle),
+                                                                ],
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ))
+                                                    .toList()
+                                                : [
+                                                    const Center(
+                                                      child: Padding(
+                                                        padding: EdgeInsets.all(10),
+                                                        child: Text("no data yet"),
+                                                      ),
+                                                    )
+                                                  ],
+                                          )
+                                        : Container()
+                                    : controller.items[index]['title'] == "Taxi Voucher"
+                                        ? controller.items[index]['showList']
+                                            ? Column(
+                                                children: controller.tvList.isNotEmpty
+                                                    ? controller.tvList
+                                                        .mapIndexed(
+                                                          (i, e) => CustomTripCard(
+                                                            listNumber: i + 1,
+                                                            title: e.employeeName.toString(),
+                                                            subtitle: e.date,
+                                                            status: e.status.toString(),
+                                                            info: int.parse(e.amount.toString()).toCurrency(),
+                                                            content: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                              children: [
+                                                                Column(
+                                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                                  children: [
+                                                                    Text("Departure", style: listTitleTextStyle),
+                                                                    Text(e.nameDepartureCity.toString(), style: listSubTitleTextStyle),
+                                                                  ],
+                                                                ),
+                                                                Column(
+                                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                                  children: [
+                                                                    Text("Arrival", style: listTitleTextStyle),
+                                                                    Text(e.nameArrivalCity.toString(), style: listSubTitleTextStyle),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                        .toList()
+                                                    : [
+                                                        const Center(
+                                                          child: Padding(
+                                                            padding: EdgeInsets.all(10),
+                                                            child: Text("no data yet"),
+                                                          ),
+                                                        )
+                                                      ],
+                                              )
+                                            : Container()
+                                        : controller.items[index]['title'] == "Other Transportation"
+                                            ? controller.items[index]['showList']
+                                                ? Column(
+                                                    children: controller.otList.isNotEmpty
+                                                        ? controller.otList
+                                                            .mapIndexed(
+                                                              (i, e) => CustomTripCard(
+                                                                listNumber: i + 1,
+                                                                title: e.employeeName.toString(),
+                                                                subtitle: e.typeTransportation.toString(),
+                                                                status: e.status.toString(),
+                                                                info: e.cityName.toString(),
+                                                                content: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: [
+                                                                    Column(
+                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                      children: [
+                                                                        Text("From Date", style: listTitleTextStyle),
+                                                                        Text(e.fromDate.toString(), style: listSubTitleTextStyle),
+                                                                      ],
+                                                                    ),
+                                                                    Column(
+                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                      children: [
+                                                                        Text("To Date", style: listTitleTextStyle),
+                                                                        Text(e.toDate.toString(), style: listSubTitleTextStyle),
+                                                                      ],
+                                                                    ),
+                                                                    Column(
+                                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                                      children: [
+                                                                        Text("Quantity", style: listTitleTextStyle),
+                                                                        Text(e.qty.toString(), style: listSubTitleTextStyle),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )
+                                                            .toList()
+                                                        : [
+                                                            const Center(
+                                                              child: Padding(
+                                                                padding: EdgeInsets.all(10),
+                                                                child: Text("no data yet"),
+                                                              ),
+                                                            )
+                                                          ],
+                                                  )
+                                                : Container()
+                                            : controller.items[index]['title'] == "Accommodation"
+                                                ? controller.items[index]['showList']
+                                                    ? Column(
+                                                        children: controller.accommodationsList.isNotEmpty
+                                                            ? controller.accommodationsList
+                                                                .mapIndexed(
+                                                                  (i, e) => CustomTripCard(
+                                                                    listNumber: i + 1,
+                                                                    title: e.employeeName.toString(),
+                                                                    status: e.status.toString(),
+                                                                    info: e.hotelName,
+                                                                    content: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      children: [
+                                                                        Column(
+                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Text("Check In", style: listTitleTextStyle),
+                                                                            Text(e.checkInDate.toString(), style: listSubTitleTextStyle),
+                                                                          ],
+                                                                        ),
+                                                                        Column(
+                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Text("Check Out", style: listTitleTextStyle),
+                                                                            Text(e.checkOutDate.toString(), style: listSubTitleTextStyle),
+                                                                          ],
+                                                                        ),
+                                                                        Column(
+                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Text("Price", style: listTitleTextStyle),
+                                                                            Text(e.price.toString(), style: listSubTitleTextStyle),
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                                .toList()
+                                                            : [
+                                                                const Center(
+                                                                  child: Padding(
+                                                                    padding: EdgeInsets.all(10),
+                                                                    child: Text("no data yet"),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                      )
+                                                    : Container()
+                                                : controller.items[index]['title'] == "Cash Advance"
+                                                    ? controller.items[index]['showList']
+                                                        ? Column(
+                                                            children: controller.caList.isNotEmpty
+                                                                ? controller.caList
+                                                                    .mapIndexed((i, e) => CustomTripCard(
+                                                                          listNumber: i + 1,
+                                                                          title: e.noCa ?? "",
+                                                                          subtitle: controller.dateFormat
+                                                                              .format(DateTime.parse(e.createdAt.toString()))
+                                                                              .toString(),
+                                                                          status: e.status.toString(),
+                                                                          info:
+                                                                              "${e.currencyCode} ${int.parse(e.grandTotal.toString()).toCurrency()}",
+                                                                          isEdit: controller.isEdit,
+                                                                          editAction: () {
+                                                                            // Get.off(
+                                                                            //   EditCashAdvanceTravelScreen(),
+                                                                            //   arguments: {
+                                                                            //     'purposeID': controller.purposeID,
+                                                                            //     'codeDocument': controller.codeDocument,
+                                                                            //     'formEdit': true,
+                                                                            //     'id': e.id,
+                                                                            //   },
+                                                                            // );
+                                                                          },
+                                                                          isDelete: controller.isEdit,
+                                                                          content: Row(
+                                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                            children: [
+                                                                              Column(
+                                                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                children: [
+                                                                                  Text("Item", style: listTitleTextStyle),
+                                                                                  Text(e.itemCount.toString(), style: listSubTitleTextStyle),
+                                                                                ],
+                                                                              ),
+                                                                              Column(
+                                                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                children: [
+                                                                                  Text("Reference", style: listTitleTextStyle),
+                                                                                  Text(e.noRequestTrip.toString(),
+                                                                                      style: listSubTitleTextStyle.copyWith(
+                                                                                          overflow: TextOverflow.ellipsis)),
+                                                                                ],
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ))
+                                                                    .toList()
+                                                                : [
+                                                                    const Center(
+                                                                      child: Padding(
+                                                                        padding: EdgeInsets.all(10),
+                                                                        child: Text("no data yet"),
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                          )
+                                                        : Container()
+                                                    : Container(),
                           ]);
                         }
                         if (controller.isTLK == true) {

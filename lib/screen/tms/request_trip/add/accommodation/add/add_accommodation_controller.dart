@@ -21,7 +21,7 @@ class AddAccommodationController extends BaseController {
   final remarks = TextEditingController();
   final sharingName = TextEditingController();
 
-  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
 
   int? travellerID;
   int? jobBandID;
@@ -69,11 +69,10 @@ class AddAccommodationController extends BaseController {
         travellerGender.text =
             value.first.jenkel.toString() == "L" ? "Male" : "Female";
         jobBandID = int.parse(value.first.idJobBand.toString());
+        hotelFare.text = value.first.hotelFare.toString();
       });
 
-      var hotel = await repository.getJobBandList();
-      hotelFare.text =
-          "${int.parse(hotel.data?.data?.where((e) => e.id == jobBandID).first.hotelFare ?? "0").toCurrency()}";
+
 
       var dataCity = await repository.getCityList();
       cityModel = dataCity;
@@ -84,8 +83,9 @@ class AddAccommodationController extends BaseController {
       hotelTypeList.addAll(hotelType.data?.toSet().toList() ?? []);
 
       update();
-    } catch (e) {
+    } catch (e,i) {
       e.printError();
+      i.printError();
     }
   }
 

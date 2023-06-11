@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
-class DetailDocumentDeliveryController extends BaseController{
+class DetailDocumentDeliveryController extends BaseController {
   int? ddID = Get.arguments['id'];
 
   final formKey = GlobalKey<FormState>();
@@ -16,6 +17,7 @@ class DetailDocumentDeliveryController extends BaseController{
   final remarks = TextEditingController();
   final receiverName = TextEditingController();
 
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   int? senderID;
   int? siteID;
   int? companyID;
@@ -23,12 +25,10 @@ class DetailDocumentDeliveryController extends BaseController{
   int? codeStatusDoc;
   String? selectedReceiver;
 
-
   bool isEdit = false;
   bool isReceived = false;
   bool isDelivered = false;
   bool isDelivering = false;
-
 
   @override
   void onInit() {
@@ -39,6 +39,7 @@ class DetailDocumentDeliveryController extends BaseController{
   Future<void> fetchEdit() async {
     try {
       await documentDelivery.getByID(ddID!).then((value) {
+        DateTime? tempDate;
         senderID = value.data?.first.idEmployeeSender?.toInt();
         sender.text = value.data?.first.idEmployeeSender.toString() ?? "";
         selectedReceiver = value.data?.first.idEmployeeReceiver.toString();
@@ -51,7 +52,8 @@ class DetailDocumentDeliveryController extends BaseController{
         subjectDocument.text = value.data?.first.subject ?? "";
         attachment.text = value.data?.first.attachment ?? "";
         remarks.text = value.data?.first.remarks ?? "";
-        createdDate.text = value.data?.first.createdAt.toString().substring(0, 10) ?? "";
+        tempDate = DateTime.parse(value?.data?.first.createdAt ?? "");
+        createdDate.text = dateFormat.format(tempDate);
         createdBy.text = value.data?.first.createdBy ?? "";
         codeStatusDoc = value.data?.first.codeStatusDoc?.toInt();
         if (codeStatusDoc == 1) {
@@ -117,7 +119,4 @@ class DetailDocumentDeliveryController extends BaseController{
       );
     }
   }
-
-
-
 }

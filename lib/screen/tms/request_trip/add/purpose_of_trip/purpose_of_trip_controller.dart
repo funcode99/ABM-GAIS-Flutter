@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
-import 'package:gais/data/model/reference/get_document_code_model.dart'
-as purpose;
+import 'package:gais/data/model/reference/get_document_code_model.dart' as purpose;
+import 'package:gais/data/model/reference/get_site_model.dart' as site;
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/screen/tms/request_trip/add/traveller/traveller_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
@@ -16,7 +16,7 @@ class PurposeOfTripController extends BaseController {
   int? siteID;
   int? jobID;
 
-  DateFormat dateFormat = DateFormat("dd-MM-yyyy");
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy/MM/dd");
 
   final formKey = GlobalKey<FormState>();
@@ -29,6 +29,7 @@ class PurposeOfTripController extends BaseController {
   final totalTLK = TextEditingController();
 
   String? selectedPurpose = "3";
+  String? selectedPurposeName;
   int? idDocument = 1;
   DateTime departure = DateTime.now();
   DateTime arrival = DateTime.now();
@@ -44,9 +45,10 @@ class PurposeOfTripController extends BaseController {
   bool? isFilled = false;
   bool? isEnabledButton = false;
 
-
   purpose.GetDocumentCodeModel? purposeModel;
   List<purpose.Data> purposeList = [];
+  site.GetSiteModel? siteModel;
+  List<site.Data> siteList = [];
   city.GetCityModel? cityModel;
   List<city.Data> cityList = [];
 
@@ -107,7 +109,11 @@ class PurposeOfTripController extends BaseController {
     purposeModel = dataPurpose;
     purposeList.addAll(dataPurpose.data?.toSet().toList() ?? []);
 
-    await repository.getTLKJobByIDJob(jobID!).then((value){
+    var dataSite = await repository.getSiteList();
+    siteModel = dataSite;
+    siteList.addAll(dataSite.data?.toSet().toList() ?? []);
+
+    await repository.getTLKJobByIDJob(jobID!).then((value) {
       tlkDay.text = int.parse(value.data?.first.tlkRate ?? "0").toCurrency();
     });
 

@@ -12,6 +12,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/check_schedule/check_schedule_screen.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
 
 class AddAirlinessScreen extends StatelessWidget {
@@ -24,20 +25,19 @@ class AddAirlinessScreen extends StatelessWidget {
         builder: (controller) {
           return Scaffold(
             appBar: TopBar(
-                title: Text("Airliness", style: appTitle),
-                leading: IconButton(
-                    onPressed: () => Get.off(
-                          AirlinessScreen(),
-                          arguments: {
-                            'purposeID': controller.purposeID,
-                            'codeDocument': controller.codeDocument,
-                          },
-                        ),
-                    icon: Icon(
-                      Icons.chevron_left,
-                      color: Colors.black,
-                      size: 30,
-                    ))),
+              title: Text("Airliness", style: appTitle),
+              leading: CustomBackButton(
+                onPressed: () => controller.formEdit == true
+                    ? Get.off(FormRequestTripScreen(), arguments: {
+                        'id': controller.purposeID,
+                        'codeDocument': controller.codeDocument,
+                      })
+                    : Get.off(AirlinessScreen(), arguments: {
+                        'purposeID': controller.purposeID,
+                        'codeDocument': controller.codeDocument,
+                      }),
+              ),
+            ),
             body: Container(
               alignment: Alignment.topCenter,
               padding: const EdgeInsets.all(10),
@@ -55,9 +55,7 @@ class AddAirlinessScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                       child: SvgPicture.asset(
                         ImageConstant.airplane,
                         height: 25,
@@ -103,12 +101,10 @@ class AddAirlinessScreen extends StatelessWidget {
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
+                                      lastDate: DateTime.now().add(const Duration(days: 30)))
                                   .then((date) {
                                 controller.selectedDate = date!;
-                                controller.departureDate.text =
-                                    controller.dateFormat.format(date);
+                                controller.departureDate.text = controller.dateFormat.format(date);
                                 controller.update();
                               }),
                             ),
@@ -189,35 +185,30 @@ class AddAirlinessScreen extends StatelessWidget {
                                   borderColor: infoColor,
                                   title: "Cancel",
                                   width: 100,
-                                  onPressed: () =>
-                                      Get.off(AirlinessScreen(), arguments: {
-                                    'purposeID': controller.purposeID,
-                                    'codeDocument': controller.codeDocument,
-                                  }),
+                                  onPressed: () => controller.formEdit == true
+                                      ? Get.off(FormRequestTripScreen(), arguments: {
+                                          'id': controller.purposeID,
+                                          'codeDocument': controller.codeDocument,
+                                        })
+                                      : Get.off(AirlinessScreen(), arguments: {
+                                          'purposeID': controller.purposeID,
+                                          'codeDocument': controller.codeDocument,
+                                        }),
                                 ),
                                 CustomFilledButton(
                                   color: infoColor,
                                   title: "Check",
                                   width: 100,
                                   onPressed: () {
-                                    if (controller.formKey.currentState
-                                            ?.validate() ==
-                                        true)
-                                      Get.off(const CheckScheduleScreen(),
-                                          arguments: {
-                                            'purposeID': controller.purposeID,
-                                            'codeDocument':
-                                                controller.codeDocument,
-                                            'departure': int.parse(controller
-                                                .departure
-                                                .toString()),
-                                            'arrival': int.parse(
-                                                controller.arrival.toString()),
-                                            'flightClass': int.parse(controller
-                                                .flightClass
-                                                .toString()),
-                                            'formEdit': controller.formEdit,
-                                          });
+                                    if (controller.formKey.currentState?.validate() == true)
+                                      Get.off(const CheckScheduleScreen(), arguments: {
+                                        'purposeID': controller.purposeID,
+                                        'codeDocument': controller.codeDocument,
+                                        'departure': int.parse(controller.departure.toString()),
+                                        'arrival': int.parse(controller.arrival.toString()),
+                                        'flightClass': int.parse(controller.flightClass.toString()),
+                                        'formEdit': controller.formEdit,
+                                      });
                                   },
                                 ),
                               ],

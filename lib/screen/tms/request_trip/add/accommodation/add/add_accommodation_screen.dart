@@ -11,6 +11,7 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_controller.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
 
 class AddAccommodationScreen extends StatelessWidget {
@@ -23,21 +24,21 @@ class AddAccommodationScreen extends StatelessWidget {
         builder: (controller) {
           return Scaffold(
             appBar: TopBar(
-              title: Text("Accommodation", style: appTitle),
-              leading: IconButton(
-                  onPressed: () => Get.off(
-                    AccommodationScreen(),
-                    arguments: {
-                      'purposeID': controller.purposeID,
-                      'codeDocument': controller.codeDocument,
-                    },
-                  ),
-                  icon: Icon(
-                    Icons.chevron_left,
-                    color: Colors.black,
-                    size: 30,
-                  ))
-            ),
+                title: Text("Accommodation", style: appTitle),
+                leading: CustomBackButton(
+                  onPressed: () => controller.formEdit == true
+                      ? Get.off(FormRequestTripScreen(), arguments: {
+                          'id': controller.purposeID,
+                          'codeDocument': controller.codeDocument,
+                        })
+                      : Get.off(
+                          AccommodationScreen(),
+                          arguments: {
+                            'purposeID': controller.purposeID,
+                            'codeDocument': controller.codeDocument,
+                          },
+                        ),
+                )),
             body: Container(
               alignment: Alignment.topCenter,
               padding: const EdgeInsets.all(10),
@@ -55,11 +56,8 @@ class AddAccommodationScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
-                      child:
-                          SvgPicture.asset(ImageConstant.building, height: 25),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                      child: SvgPicture.asset(ImageConstant.building, height: 25),
                     ),
                     Text("Accommodation", style: appTitle),
                     const SizedBox(height: 14),
@@ -112,8 +110,7 @@ class AddAccommodationScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             const SizedBox(height: 35),
-                            Text("Requested Accommodation",
-                                style: formlabelTextStyle),
+                            Text("Requested Accommodation", style: formlabelTextStyle),
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
                               label: "City",
@@ -154,12 +151,10 @@ class AddAccommodationScreen extends StatelessWidget {
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
+                                      lastDate: DateTime.now().add(const Duration(days: 30)))
                                   .then((date) {
                                 controller.selectedDate = date!;
-                                controller.checkinDate.text =
-                                    controller.dateFormat.format(date);
+                                controller.checkinDate.text = controller.dateFormat.format(date);
                                 controller.update();
                               }),
                             ),
@@ -181,12 +176,10 @@ class AddAccommodationScreen extends StatelessWidget {
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
+                                      lastDate: DateTime.now().add(const Duration(days: 30)))
                                   .then((date) {
                                 controller.selectedDate = date!;
-                                controller.checkoutDate.text =
-                                    controller.dateFormat.format(date);
+                                controller.checkoutDate.text = controller.dateFormat.format(date);
                                 controller.update();
                               }),
                             ),
@@ -204,8 +197,7 @@ class AddAccommodationScreen extends StatelessWidget {
                               items: controller.hotelTypeList
                                   .map((e) => DropdownMenuItem(
                                         value: e.id.toString(),
-                                        child:
-                                            Text(e.typeAccomodation.toString()),
+                                        child: Text(e.typeAccomodation.toString()),
                                       ))
                                   .toList(),
                               onChanged: (value) {
@@ -264,20 +256,22 @@ class AddAccommodationScreen extends StatelessWidget {
                                   borderColor: infoColor,
                                   title: "Cancel",
                                   fontColor: infoColor,
-                                  onPressed: () => Get.off(
-                                      AccommodationScreen(),
-                                      arguments: {
-                                        'purposeID': controller.purposeID,
-                                        'codeDocument': controller.codeDocument,
-                                      }),
+                                  onPressed: () => controller.formEdit == true
+                                      ? Get.off(FormRequestTripScreen(), arguments: {
+                                          'id': controller.purposeID,
+                                          'codeDocument': controller.codeDocument,
+                                        })
+                                      : Get.off(AccommodationScreen(), arguments: {
+                                          'purposeID': controller.purposeID,
+                                          'codeDocument': controller.codeDocument,
+                                        }),
                                 ),
                                 CustomFilledButton(
                                   width: 100,
                                   color: infoColor,
                                   title: "Check",
                                   onPressed: () {
-                                    if(controller.formKey.currentState?.validate()==true)
-                                      controller.check();
+                                    if (controller.formKey.currentState?.validate() == true) controller.check();
                                   },
                                 ),
                               ],

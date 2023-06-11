@@ -13,6 +13,7 @@ import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/edit/edit_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/check_schedule/check_schedule_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/edit/edit_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/edit/edit_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
@@ -32,7 +33,7 @@ class FormRequestTripScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: baseColor,
             appBar: TopBar(
-              title: Text("Reques Trip", style: appTitle),
+              title: Text("Request Trip", style: appTitle),
               leading: const CustomBackButton(),
             ),
             body: Container(
@@ -171,13 +172,28 @@ class FormRequestTripScreen extends StatelessWidget {
                                       readOnly: true,
                                     ),
                               const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.site,
-                                label: "Site",
-                                isRequired: true,
-                                readOnly: true,
-                              ),
-                              const SizedBox(height: 8),
+                              controller.selectedPurpose == "1"
+                                  ? Container(
+                                      margin: EdgeInsets.only(bottom: 8),
+                                      child: CustomDropDownFormField(
+                                        label: "Site",
+                                        isRequired: true,
+                                        readOnly: !controller.isEdit,
+                                        value: controller.siteID.toString(),
+                                        selectedItem: controller.site.text,
+                                        items: controller.siteList
+                                            .map((e) => DropdownMenuItem(
+                                                  child: Text(e.siteName.toString()),
+                                                  value: e.id.toString(),
+                                                ))
+                                            .toList(),
+                                        onChanged: (value){
+
+                                          controller.update();
+                                        },
+                                      ),
+                                    )
+                                  : Container(),
                               controller.isAttachment
                                   ? controller.isEdit
                                       ? CustomTextFormField(
@@ -191,7 +207,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                         )
                                       : CustomTextFormField(
                                           controller: controller.attachment,
-                                          label: "attachment",
+                                          label: "Attachment",
                                           isRequired: true,
                                           readOnly: true,
                                         )
@@ -231,8 +247,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   color: controller.isDetail ? whiteColor : neutralColor,
                                   borderRadius: const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
-                                  gradient: LinearGradient(
-                                      stops: const [0.15, 0], colors: [controller.isDetail ? blackColor : whiteColor, Colors.white]),
+                                  gradient:
+                                      LinearGradient(stops: const [0.15, 0], colors: [controller.isDetail ? blackColor : whiteColor, Colors.white]),
                                 ),
                                 child: const Text("Detail"),
                               ),
@@ -274,8 +290,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   color: controller.isTLK ? whiteColor : neutralColor,
                                   borderRadius: const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
-                                  gradient: LinearGradient(
-                                      stops: const [0.1, 0], colors: [controller.isApproval ? blackColor : whiteColor, Colors.white]),
+                                  gradient:
+                                      LinearGradient(stops: const [0.1, 0], colors: [controller.isApproval ? blackColor : whiteColor, Colors.white]),
                                 ),
                                 child: const Text("Approval Info"),
                               ),
@@ -298,166 +314,157 @@ class FormRequestTripScreen extends StatelessWidget {
                         if (controller.isDetail == true) {
                           // if(controller.items[index]['isFilled'] == true)
                           return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            // ListTile(
-                            //   title: Row(
-                            //     children: [
-                            //       Text(controller.requestTrip[index]),
-                            //       IconButton(
-                            //           onPressed: () {
-                            //             controller.items[index]['showList'] = controller.items[index]['showList'] == false ? true : false;
-                            //             controller.update();
-                            //           },
-                            //           icon: controller.items[index]['showList'] == false
-                            //               ? const Icon(Icons.keyboard_arrow_down)
-                            //               : const Icon(Icons.keyboard_arrow_up))
-                            //     ],
-                            //   ),
-                            //   trailing: controller.isEdit
-                            //       ? CustomFilledButton(
-                            //           color: successColor,
-                            //           icon: IconlyBold.plus,
-                            //           title: " Add",
-                            //           fontSize: 13,
-                            //           width: Get.width / 5,
-                            //           onPressed: () {
-                            //             index == 1 || index == 4 || index == 5
-                            //                 ? Get.off(
-                            //                     controller.addScreen[index],
-                            //                     arguments: {
-                            //                       'purposeID': controller.purposeID,
-                            //                       'codeDocument': controller.codeDocument,
-                            //                       'formEdit': true,
-                            //                     },
-                            //                   )
-                            //                 : Get.to(
-                            //                     controller.addScreen[index],
-                            //                     arguments: {
-                            //                       'purposeID': controller.purposeID,
-                            //                       'codeDocument': controller.codeDocument,
-                            //                       'formEdit': true,
-                            //                     },
-                            //                   )?.then((value) {
-                            //                     controller.fetchList();
-                            //                     controller.update();
-                            //                   });
-                            //           },
-                            //         )
-                            //       : const SizedBox(),
-                            // ),
-                            !controller.items[index]['isFilled'] ? Container() :
-                            ListTile(
-                              title: Row(
-                                children: [
-                                  Text(controller.items[index]['title']),
-                                  IconButton(
-                                      onPressed: () {
-                                        controller.items[index]['showList'] = controller.items[index]['showList'] == false ? true : false;
-                                        controller.update();
-                                      },
-                                      icon: controller.items[index]['showList'] == false
-                                          ? const Icon(Icons.keyboard_arrow_down)
-                                          : const Icon(Icons.keyboard_arrow_up))
-                                ],
-                              ),
-                              trailing: controller.isEdit
-                                  ? CustomFilledButton(
-                                      color: successColor,
-                                      icon: IconlyBold.plus,
-                                      title: " Add",
-                                      fontSize: 13,
-                                      width: Get.width / 5,
-                                      onPressed: () {
-                                        index == 1 || index == 4 || index == 5
-                                            ? Get.off(
-                                                controller.items[index]['screen'],
-                                                arguments: {
-                                                  'purposeID': controller.purposeID,
-                                                  'codeDocument': controller.codeDocument,
-                                                  'formEdit': true,
-                                                },
-                                              )
-                                            : Get.to(
-                                                controller.items[index]['screen'],
-                                                arguments: {
-                                                  'purposeID': controller.purposeID,
-                                                  'codeDocument': controller.codeDocument,
-                                                  'formEdit': true,
-                                                },
-                                              )?.then((value) {
-                                                controller.fetchList();
-                                                controller.update();
-                                              });
-                                      },
-                                    )
-                                  : const SizedBox(),
-                            ) ,
+                            !controller.items[index]['isFilled']
+                                ? Container()
+                                : ListTile(
+                                    title: Row(
+                                      children: [
+                                        Text(controller.items[index]['title']),
+                                        IconButton(
+                                            onPressed: () {
+                                              controller.items[index]['showList'] = controller.items[index]['showList'] == false ? true : false;
+                                              controller.update();
+                                            },
+                                            icon: controller.items[index]['showList'] == false
+                                                ? const Icon(Icons.keyboard_arrow_down)
+                                                : const Icon(Icons.keyboard_arrow_up))
+                                      ],
+                                    ),
+                                    trailing: controller.isEdit
+                                        ? CustomFilledButton(
+                                            color: successColor,
+                                            icon: IconlyBold.plus,
+                                            title: " Add",
+                                            fontSize: 13,
+                                            width: Get.width / 5,
+                                            onPressed: () {
+                                              index == 1 || index == 4 || index == 5
+                                                  ? Get.off(
+                                                      controller.items[index]['screen'],
+                                                      arguments: {
+                                                        'purposeID': controller.purposeID,
+                                                        'codeDocument': controller.codeDocument,
+                                                        'formEdit': true,
+                                                      },
+                                                    )
+                                                  : Get.to(
+                                                      controller.items[index]['screen'],
+                                                      arguments: {
+                                                        'purposeID': controller.purposeID,
+                                                        'codeDocument': controller.codeDocument,
+                                                        'formEdit': true,
+                                                      },
+                                                    )?.then((value) {
+                                                      controller.fetchList();
+                                                      controller.update();
+                                                    });
+                                            },
+                                          )
+                                        : const SizedBox(),
+                                  ),
                             const Divider(height: 1, thickness: 1),
                             controller.items[index]['title'] == "Traveller Guest"
                                 ? controller.items[index]['showList']
                                     ? Column(
-                                        children: controller.guestList.isNotEmpty
-                                            ? controller.guestList
-                                                .mapIndexed(
-                                                  (i, e) => CustomTripCard(
-                                                    listNumber: i + 1,
-                                                    title: e.nameGuest.toString(),
-                                                    subtitle: e.nik,
-                                                    info: "Guest",
-                                                    isEdit: controller.isEdit,
-                                                    editAction: () => Get.to(
-                                                      const AddGuestScreen(),
-                                                      arguments: {
-                                                        'purposeID': controller.purposeID,
-                                                        'guestID': e.id,
-                                                        'formEdit': true,
-                                                      },
-                                                    )?.then((_) {
-                                                      controller.fetchList();
-                                                      controller.update();
-                                                    }),
-                                                    isDelete: controller.isEdit,
-                                                    deleteAction: () {
-                                                      controller.deleteGuest(int.parse(e.id.toString()));
-                                                      controller.update();
-                                                      print(e.id);
-                                                    },
-                                                    content: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      children: [
-                                                        Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            Text("Gender", style: listTitleTextStyle),
-                                                            Text(e.gender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
-                                                          ],
+                                        children: [
+                                          CustomTripCard(
+                                            listNumber: 1,
+                                            title: controller.travellerName ?? "",
+                                            subtitle: controller.travellerSN ?? "",
+                                            info: "Traveller",
+                                            content: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("Gender", style: listTitleTextStyle),
+                                                    Text(controller.travellerGender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("Hotel Fare", style: listTitleTextStyle),
+                                                    Text("${int.parse(controller.travellerHotel ?? "0").toCurrency()}", style: listSubTitleTextStyle),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("Flight Entitlement", style: listTitleTextStyle),
+                                                    Text(controller.travellerFlight ?? "", style: listSubTitleTextStyle),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Column(
+                                              children: controller.guestList.isNotEmpty
+                                                  ? controller.guestList
+                                                      .mapIndexed(
+                                                        (i, e) => CustomTripCard(
+                                                          listNumber: i + 2,
+                                                          title: e.nameGuest.toString(),
+                                                          subtitle: e.nik,
+                                                          info: "Guest",
+                                                          isEdit: controller.isEdit,
+                                                          editAction: () => Get.to(
+                                                            const AddGuestScreen(),
+                                                            arguments: {
+                                                              'purposeID': controller.purposeID,
+                                                              'guestID': e.id,
+                                                              'formEdit': true,
+                                                            },
+                                                          )?.then((_) {
+                                                            controller.fetchList();
+                                                            controller.update();
+                                                          }),
+                                                          isDelete: controller.isEdit,
+                                                          deleteAction: () {
+                                                            controller.deleteGuest(int.parse(e.id.toString()));
+                                                            controller.update();
+                                                            print(e.id);
+                                                          },
+                                                          content: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text("Gender", style: listTitleTextStyle),
+                                                                  Text(e.gender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
+                                                                ],
+                                                              ),
+                                                              Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text("Hotel Fare", style: listTitleTextStyle),
+                                                                  Text(e.hotelFare.toString(), style: listSubTitleTextStyle),
+                                                                ],
+                                                              ),
+                                                              Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text("Flight Entitlement", style: listTitleTextStyle),
+                                                                  Text(e.flightClass.toString(), style: listSubTitleTextStyle),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                        Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            Text("Hotel Fare", style: listTitleTextStyle),
-                                                            Text(e.hotelFare.toString(), style: listSubTitleTextStyle),
-                                                          ],
+                                                      )
+                                                      .toList()
+                                                  : [
+                                                      const Center(
+                                                        child: Padding(
+                                                          padding: EdgeInsets.all(10),
+                                                          child: Text("no data yet"),
                                                         ),
-                                                        Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            Text("Flight Entitlement", style: listTitleTextStyle),
-                                                            Text(e.flightClass.toString(), style: listSubTitleTextStyle),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                )
-                                                .toList()
-                                            : [
-                                                const Center(
-                                                  child: Padding(
-                                                    padding: EdgeInsets.all(10),
-                                                    child: Text("no data yet"),
-                                                  ),
-                                                )
-                                              ])
+                                                      )
+                                                    ]),
+                                        ],
+                                      )
                                     : Container()
                                 : controller.items[index]['title'] == "Airliness"
                                     ? controller.items[index]['showList']
@@ -467,7 +474,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                     .mapIndexed((i, e) => CustomTripCard(
                                                           listNumber: i + 1,
                                                           title: e.employeeName.toString(),
-                                                          subtitle: e.createdAt.toString().substring(0, 10),
+                                                          subtitle: controller.dateFormat.format(DateTime.parse(e.createdAt.toString())).toString(),
                                                           info: e.flightNo,
                                                           isEdit: controller.isEdit,
                                                           editAction: () {
@@ -527,7 +534,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                           (i, e) => CustomTripCard(
                                                             listNumber: i + 1,
                                                             title: e.employeeName.toString(),
-                                                            subtitle: e.date,
+                                                            subtitle: controller.dateFormat.format(DateTime.parse(e.date!)),
                                                             status: e.status.toString(),
                                                             info: int.parse(e.amount.toString()).toCurrency(),
                                                             isEdit: controller.isEdit,
@@ -706,21 +713,23 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                     .mapIndexed((i, e) => CustomTripCard(
                                                                           listNumber: i + 1,
                                                                           title: e.noCa ?? "",
-                                                                          subtitle: e.createdAt.toString().substring(0,10),
+                                                                          subtitle: controller.dateFormat
+                                                                              .format(DateTime.parse(e.createdAt.toString()))
+                                                                              .toString(),
                                                                           status: e.status.toString(),
                                                                           info:
                                                                               "${e.currencyCode} ${int.parse(e.grandTotal.toString()).toCurrency()}",
                                                                           isEdit: controller.isEdit,
                                                                           editAction: () {
-                                                                            // Get.off(
-                                                                            //   EditCashAdvanceTravelScreen(),
-                                                                            //   arguments: {
-                                                                            //     'purposeID': controller.purposeID,
-                                                                            //     'codeDocument': controller.codeDocument,
-                                                                            //     'formEdit': true,
-                                                                            //     'id': e.id,
-                                                                            //   },
-                                                                            // );
+                                                                            Get.to(
+                                                                              () => const AddCashAdvanceTravelScreen(),
+                                                                              arguments: {
+                                                                                "id": e.id,
+                                                                                "formEdit": true,
+                                                                                'purposeID': controller.purposeID,
+                                                                                'codeDocument': controller.codeDocument,
+                                                                              },
+                                                                            )?.then((value) => controller.fetchList());
                                                                           },
                                                                           isDelete: controller.isEdit,
                                                                           content: Row(
@@ -734,14 +743,14 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                                 ],
                                                                               ),
                                                                               SizedBox(
-                                                                                width: Get.width/3,
+                                                                                width: Get.width / 3,
                                                                                 child: Column(
                                                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                                                   children: [
                                                                                     Text("Reference", style: listTitleTextStyle),
-                                                                                    Text(e.noRequestTrip.toString(), style: listSubTitleTextStyle.copyWith(
-                                                                                        overflow: TextOverflow.ellipsis
-                                                                                    )),
+                                                                                    Text(e.noRequestTrip.toString(),
+                                                                                        style: listSubTitleTextStyle.copyWith(
+                                                                                            overflow: TextOverflow.ellipsis)),
                                                                                   ],
                                                                                 ),
                                                                               ),

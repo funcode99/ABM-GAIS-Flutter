@@ -30,26 +30,31 @@ class StorageCore {
   }
 
   void saveUser(
-      String id,
-      String name,
-      String phone,
-      String sn,
-      String email,
-      String nik,
-      String dob,
-      String startDate,
-      String endDate,
-      String gender,
-      String idDepartment,
-      String idCompany,
-      String companyName,
-      String idSite,
-      String site,
-      String idJobBand,
-      String? foto,
-      String? fotoPath,
-      String bandJobName,
-      String flightClass) async {
+    String id,
+    String name,
+    String phone,
+    String sn,
+    String email,
+    String nik,
+    String dob,
+    String startDate,
+    String endDate,
+    String gender,
+    String idDepartment,
+    String idCompany,
+    String companyName,
+    String companyCode,
+    String idSite,
+    String site,
+    String siteCode,
+    String idJobBand,
+    String? foto,
+    String? fotoPath,
+    String bandJobName,
+    String flightClass,
+    String hotelFare,
+    String mealsFare,
+  ) async {
     await storage.write(key: 'userID', value: id);
     await storage.write(key: 'name', value: name);
     await storage.write(key: 'phone', value: phone);
@@ -63,13 +68,17 @@ class StorageCore {
     await storage.write(key: 'departmentID', value: idDepartment);
     await storage.write(key: 'companyID', value: idCompany);
     await storage.write(key: 'companyName', value: companyName);
+    await storage.write(key: 'companyCode', value: companyCode);
     await storage.write(key: 'siteID', value: idSite);
     await storage.write(key: 'site', value: site);
+    await storage.write(key: 'siteCode', value: siteCode);
     await storage.write(key: 'jobBandID', value: idJobBand);
     await storage.write(key: 'jobBand', value: bandJobName);
     await storage.write(key: 'foto', value: foto);
     await storage.write(key: 'fotoPath', value: fotoPath);
     await storage.write(key: 'flightClass', value: flightClass);
+    await storage.write(key: 'hotelFare', value: hotelFare);
+    await storage.write(key: 'mealsFare', value: mealsFare);
   }
 
   void deleteToken() async {
@@ -90,26 +99,31 @@ class StorageCore {
   Future<List<info.Data>> readEmployeeInfo() async {
     List<info.Data> employee = [];
     employee.add(info.Data(
-        id: int.parse(await storage.read(key: 'userID') ?? "0"),
-        employeeName: await storage.read(key: 'name'),
-        snEmployee: await storage.read(key: 'sn'),
-        phoneNumber: await storage.read(key: 'phone'),
-        email: await storage.read(key: 'email'),
-        nik: await storage.read(key: 'nik'),
-        dob: await storage.read(key: 'dob'),
-        startDate: await storage.read(key: 'startDate'),
-        endDate: await storage.read(key: 'endDate'),
-        jenkel: await storage.read(key: 'gender'),
-        idDepartment: int.parse(await storage.read(key: 'departmentID') ?? "0"),
-        idCompany: int.parse(await storage.read(key: 'companyID') ?? "0"),
-        companyName: await storage.read(key: "companyName"),
-        idSite: int.parse(await storage.read(key: 'siteID') ?? "0"),
-        siteName: await storage.read(key: 'site'),
-        idJobBand: int.parse(await storage.read(key: 'jobBandID') ?? "0"),
-        bandJobName: await storage.read(key: 'jobBand'),
-        foto: await storage.read(key: 'foto'),
-        fotoPath: await storage.read(key: 'fotoPath'),
-        flightClass: await storage.read(key: 'flightClass')));
+      id: int.parse(await storage.read(key: 'userID') ?? "0"),
+      employeeName: await storage.read(key: 'name'),
+      snEmployee: await storage.read(key: 'sn'),
+      phoneNumber: await storage.read(key: 'phone'),
+      email: await storage.read(key: 'email'),
+      nik: await storage.read(key: 'nik'),
+      dob: await storage.read(key: 'dob'),
+      startDate: await storage.read(key: 'startDate'),
+      endDate: await storage.read(key: 'endDate'),
+      jenkel: await storage.read(key: 'gender'),
+      idDepartment: int.parse(await storage.read(key: 'departmentID') ?? "0"),
+      idCompany: int.parse(await storage.read(key: 'companyID') ?? "0"),
+      companyName: await storage.read(key: "companyName"),
+      companyCode: await storage.read(key: 'companyCode'),
+      idSite: int.parse(await storage.read(key: 'siteID') ?? "0"),
+      siteName: await storage.read(key: 'site'),
+      siteCode: await storage.read(key: 'siteCode'),
+      idJobBand: int.parse(await storage.read(key: 'jobBandID') ?? "0"),
+      bandJobName: await storage.read(key: 'jobBand'),
+      foto: await storage.read(key: 'foto'),
+      fotoPath: await storage.read(key: 'fotoPath'),
+      flightClass: await storage.read(key: 'flightClass'),
+      hotelFare: await storage.read(key: 'hotelFare'),
+      mealsRate: await storage.read(key: 'mealsFare'),
+    ));
     return employee;
   }
 
@@ -117,7 +131,7 @@ class StorageCore {
     return await storage.read(key: 'token') != null;
   }
 
-  Future<void> writeString(String key, String value)async{
+  Future<void> writeString(String key, String value) async {
     return await storage.write(key: key, value: value);
   }
 

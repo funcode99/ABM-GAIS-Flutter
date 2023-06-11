@@ -1,6 +1,6 @@
 /// success : true
 /// message : "Success Get Data"
-/// data : [{"id":1,"employee_name":"John Doe","phone_number":"0812345678","sn_employee":"12345","email":"12345@mail.com","nik":"1234123412341234123","dob":"1991-01-01 00:00:00","start_date":"1991-01-01 00:00:00","end_date":"1991-01-01 00:00:00","jenkel":"L","id_department":1,"id_company":1,"id_site":1,"id_job_band":1,"foto":null,"foto_path":null,"created_at":"2023-05-15 06:11:11","created_by":null,"updated_at":"2023-05-15 06:11:11","updated_by":null,"id_users":2,"site_name":null,"site_code":null,"company_name":"PT Cipta Kridatama","company_code":"3000","band_job_name":"Band Job Test","flight_class":null}]
+/// data : [{"id":1,"employee_name":"John Doe","phone_number":"0812345678","sn_employee":"12345","email":"12345@mail.com","nik":"1234123412341234123","dob":"1991-01-01 00:00:00","start_date":"1991-01-01 00:00:00","end_date":"1991-01-01 00:00:00","jenkel":"L","id_department":1,"id_company":1,"id_site":16,"id_job_band":76,"foto":null,"foto_path":null,"created_at":null,"created_by":null,"updated_at":null,"updated_by":null,"deleted_at":null,"id_users":2,"site_name":"Jakarta, Cilandak","site_code":"KYB01","company_name":"PT Cipta Kridatama x","company_code":"3000","band_job_name":"Test A","hotel_fare":"500000","meals_rate":"250000","flight_class":"Economy Premium"}]
 
 class EmployeeInfoModel {
   EmployeeInfoModel({
@@ -60,21 +60,24 @@ EmployeeInfoModel copyWith({  bool? success,
 /// jenkel : "L"
 /// id_department : 1
 /// id_company : 1
-/// id_site : 1
-/// id_job_band : 1
+/// id_site : 16
+/// id_job_band : 76
 /// foto : null
 /// foto_path : null
-/// created_at : "2023-05-15 06:11:11"
+/// created_at : null
 /// created_by : null
-/// updated_at : "2023-05-15 06:11:11"
+/// updated_at : null
 /// updated_by : null
+/// deleted_at : null
 /// id_users : 2
-/// site_name : null
-/// site_code : null
-/// company_name : "PT Cipta Kridatama"
+/// site_name : "Jakarta, Cilandak"
+/// site_code : "KYB01"
+/// company_name : "PT Cipta Kridatama x"
 /// company_code : "3000"
-/// band_job_name : "Band Job Test"
-/// flight_class : null
+/// band_job_name : "Test A"
+/// hotel_fare : "500000"
+/// meals_rate : "250000"
+/// flight_class : "Economy Premium"
 
 class Data {
   Data({
@@ -94,17 +97,20 @@ class Data {
       num? idJobBand, 
       dynamic foto, 
       dynamic fotoPath, 
-      String? createdAt, 
+      dynamic createdAt, 
       dynamic createdBy, 
-      String? updatedAt, 
+      dynamic updatedAt, 
       dynamic updatedBy, 
+      dynamic deletedAt, 
       num? idUsers, 
-      dynamic siteName, 
-      dynamic siteCode, 
+      String? siteName, 
+      String? siteCode, 
       String? companyName, 
       String? companyCode, 
       String? bandJobName, 
-      dynamic flightClass,}){
+      String? hotelFare, 
+      String? mealsRate, 
+      String? flightClass,}){
     _id = id;
     _employeeName = employeeName;
     _phoneNumber = phoneNumber;
@@ -125,12 +131,15 @@ class Data {
     _createdBy = createdBy;
     _updatedAt = updatedAt;
     _updatedBy = updatedBy;
+    _deletedAt = deletedAt;
     _idUsers = idUsers;
     _siteName = siteName;
     _siteCode = siteCode;
     _companyName = companyName;
     _companyCode = companyCode;
     _bandJobName = bandJobName;
+    _hotelFare = hotelFare;
+    _mealsRate = mealsRate;
     _flightClass = flightClass;
 }
 
@@ -155,12 +164,15 @@ class Data {
     _createdBy = json['created_by'];
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
+    _deletedAt = json['deleted_at'];
     _idUsers = json['id_users'];
     _siteName = json['site_name'];
     _siteCode = json['site_code'];
     _companyName = json['company_name'];
     _companyCode = json['company_code'];
     _bandJobName = json['band_job_name'];
+    _hotelFare = json['hotel_fare'];
+    _mealsRate = json['meals_rate'];
     _flightClass = json['flight_class'];
   }
   num? _id;
@@ -179,17 +191,20 @@ class Data {
   num? _idJobBand;
   dynamic _foto;
   dynamic _fotoPath;
-  String? _createdAt;
+  dynamic _createdAt;
   dynamic _createdBy;
-  String? _updatedAt;
+  dynamic _updatedAt;
   dynamic _updatedBy;
+  dynamic _deletedAt;
   num? _idUsers;
-  dynamic _siteName;
-  dynamic _siteCode;
+  String? _siteName;
+  String? _siteCode;
   String? _companyName;
   String? _companyCode;
   String? _bandJobName;
-  dynamic _flightClass;
+  String? _hotelFare;
+  String? _mealsRate;
+  String? _flightClass;
 Data copyWith({  num? id,
   String? employeeName,
   String? phoneNumber,
@@ -206,17 +221,20 @@ Data copyWith({  num? id,
   num? idJobBand,
   dynamic foto,
   dynamic fotoPath,
-  String? createdAt,
+  dynamic createdAt,
   dynamic createdBy,
-  String? updatedAt,
+  dynamic updatedAt,
   dynamic updatedBy,
+  dynamic deletedAt,
   num? idUsers,
-  dynamic siteName,
-  dynamic siteCode,
+  String? siteName,
+  String? siteCode,
   String? companyName,
   String? companyCode,
   String? bandJobName,
-  dynamic flightClass,
+  String? hotelFare,
+  String? mealsRate,
+  String? flightClass,
 }) => Data(  id: id ?? _id,
   employeeName: employeeName ?? _employeeName,
   phoneNumber: phoneNumber ?? _phoneNumber,
@@ -237,12 +255,15 @@ Data copyWith({  num? id,
   createdBy: createdBy ?? _createdBy,
   updatedAt: updatedAt ?? _updatedAt,
   updatedBy: updatedBy ?? _updatedBy,
+  deletedAt: deletedAt ?? _deletedAt,
   idUsers: idUsers ?? _idUsers,
   siteName: siteName ?? _siteName,
   siteCode: siteCode ?? _siteCode,
   companyName: companyName ?? _companyName,
   companyCode: companyCode ?? _companyCode,
   bandJobName: bandJobName ?? _bandJobName,
+  hotelFare: hotelFare ?? _hotelFare,
+  mealsRate: mealsRate ?? _mealsRate,
   flightClass: flightClass ?? _flightClass,
 );
   num? get id => _id;
@@ -261,17 +282,20 @@ Data copyWith({  num? id,
   num? get idJobBand => _idJobBand;
   dynamic get foto => _foto;
   dynamic get fotoPath => _fotoPath;
-  String? get createdAt => _createdAt;
+  dynamic get createdAt => _createdAt;
   dynamic get createdBy => _createdBy;
-  String? get updatedAt => _updatedAt;
+  dynamic get updatedAt => _updatedAt;
   dynamic get updatedBy => _updatedBy;
+  dynamic get deletedAt => _deletedAt;
   num? get idUsers => _idUsers;
-  dynamic get siteName => _siteName;
-  dynamic get siteCode => _siteCode;
+  String? get siteName => _siteName;
+  String? get siteCode => _siteCode;
   String? get companyName => _companyName;
   String? get companyCode => _companyCode;
   String? get bandJobName => _bandJobName;
-  dynamic get flightClass => _flightClass;
+  String? get hotelFare => _hotelFare;
+  String? get mealsRate => _mealsRate;
+  String? get flightClass => _flightClass;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -295,12 +319,15 @@ Data copyWith({  num? id,
     map['created_by'] = _createdBy;
     map['updated_at'] = _updatedAt;
     map['updated_by'] = _updatedBy;
+    map['deleted_at'] = _deletedAt;
     map['id_users'] = _idUsers;
     map['site_name'] = _siteName;
     map['site_code'] = _siteCode;
     map['company_name'] = _companyName;
     map['company_code'] = _companyCode;
     map['band_job_name'] = _bandJobName;
+    map['hotel_fare'] = _hotelFare;
+    map['meals_rate'] = _mealsRate;
     map['flight_class'] = _flightClass;
     return map;
   }

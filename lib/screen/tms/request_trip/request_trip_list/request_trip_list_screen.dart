@@ -167,7 +167,7 @@ class RequestTripListScreen extends StatelessWidget {
                                   listNumber: controller.currentPage > 1 ? (controller.rtlModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
                                   title: controller.requestList[index].noRequestTrip.toString(),
                                   status: controller.requestList[index].status,
-                                  subtitle: controller.requestList[index].createdAt?.substring(0, 10),
+                                  subtitle: controller.dateFormat.format(DateTime.parse(controller.requestList[index].createdAt.toString())).toString(),
                                   info: controller.requestList[index].documentName,
                                   isEdit: true,
                                   editAction: () => Get.to(

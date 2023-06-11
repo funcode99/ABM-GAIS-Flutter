@@ -128,13 +128,17 @@ class LoginController extends BaseController {
               value.data?.first.idDepartment.toString() ?? "",
               value.data?.first.idCompany.toString() ?? "",
               value.data?.first.companyName.toString() ?? "",
+              value.data?.first.companyCode.toString() ?? "",
               value.data?.first.idSite.toString() ?? "",
               value.data?.first.siteName.toString() ?? "",
+              value.data?.first.siteCode.toString() ?? "",
               value.data?.first.idJobBand.toString() ?? "",
               value.data?.first.bandJobName.toString() ?? "",
               value.data?.first.foto.toString() ?? "",
               value.data?.first.fotoPath.toString() ?? "",
               value.data?.first.flightClass.toString() ?? "",
+              value.data?.first.hotelFare.toString() ?? "",
+              value.data?.first.mealsRate.toString() ?? "",
             ),
           );
       // .then(

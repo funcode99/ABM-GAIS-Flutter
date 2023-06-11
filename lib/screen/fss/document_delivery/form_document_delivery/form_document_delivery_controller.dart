@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:get/get.dart';
 import 'package:gais/data/model/reference/get_employee_model.dart' as receiver;
+import 'package:intl/intl.dart';
 
 class FormDocumentDeliveryController extends BaseController {
   int? ddID = Get.arguments['id'];
@@ -19,6 +20,7 @@ class FormDocumentDeliveryController extends BaseController {
   final attachment = TextEditingController();
   final remarks = TextEditingController();
 
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   int? senderID;
   int? siteID;
   int? companyID;
@@ -55,8 +57,10 @@ class FormDocumentDeliveryController extends BaseController {
   }
 
   Future<void> fetchEdit() async {
+
     try {
       await documentDelivery.getByID(ddID!).then((value) {
+        DateTime? tempDate;
         senderID = value.data?.first.idEmployeeSender?.toInt();
         sender.text = value.data?.first.idEmployeeSender.toString() ?? "";
         selectedReceiver = value.data?.first.idEmployeeReceiver.toString();
@@ -69,7 +73,8 @@ class FormDocumentDeliveryController extends BaseController {
         subjectDocument.text = value.data?.first.subject ?? "";
         attachment.text = value.data?.first.attachment ?? "";
         remarks.text = value.data?.first.remarks ?? "";
-        createdDate.text = value.data?.first.createdAt.toString().substring(0, 10) ?? "";
+        tempDate = DateTime.parse(value.data?.first.createdAt ?? "");
+        createdDate.text = dateFormat.format(tempDate);
         createdBy.text = value.data?.first.createdBy ?? "";
         codeStatusDoc = value.data?.first.codeStatusDoc?.toInt();
         if (codeStatusDoc == 1) {

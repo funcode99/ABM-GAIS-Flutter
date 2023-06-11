@@ -4,16 +4,20 @@ import 'package:gais/base/base_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
-import 'package:gais/data/model/request_trip/request_trip_list_model.dart' as requests;
+import 'package:gais/data/model/approval_request_trip/get_approval_request_trip_model.dart' as requests;
 
 class ApprovalRequestTripListController extends BaseController {
-  final TextEditingController dateRange = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
+  final dateRange = TextEditingController();
+
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat rangeFormat = DateFormat("yyyy-MM-dd");
   String? purposeValue;
-  String searchValue = "All";
+  String? searchValue;
   String? startDate;
   String? endDate;
+  String? codeStatusDoc;
   bool isLoading = false;
   bool showFilter = false;
   bool dataisnull = false;
@@ -21,8 +25,8 @@ class ApprovalRequestTripListController extends BaseController {
   int currentPage = 1;
   int perPage = 5;
 
-  requests.RequestTripListModel? rtlModel;
-  List<requests.Data2> requestList = [];
+  requests.GetApprovalRequestTripModel? rtlModel;
+  List<requests.Data> requestList = [];
   List<doc.Data> documentList = <doc.Data>[].obs;
 
   @override
@@ -43,17 +47,18 @@ class ApprovalRequestTripListController extends BaseController {
     requestList = [];
     isLoading = true;
     try {
-      var requestTrip = await repository.getRequestTripList(
+      var requestTrip = await approvalRequestTrip.getList(
         perPage,
         currentPage,
-        searchValue == "All" ? "" : searchValue,
+        searchValue,
         startDate,
         endDate,
+        codeStatusDoc
       );
       rtlModel = requestTrip;
-      requestList.addAll(rtlModel?.data?.data?.toSet().toList() ?? []);
+      requestList.addAll(rtlModel?.data?.toSet().toList() ?? []);
       isLoading = false;
-      searchNotFound = rtlModel?.data?.data?.isEmpty ?? false;
+      // searchNotFound = rtlModel?.data?.isEmpty ?? false;
 
       if (searchNotFound == true) {
         Get.showSnackbar(
@@ -69,22 +74,11 @@ class ApprovalRequestTripListController extends BaseController {
           ),
         );
       }
-    } catch (e) {
-      Get.showSnackbar(
-        const GetSnackBar(
-          icon: Icon(
-            Icons.error,
-            color: Colors.white,
-          ),
-          message: 'Data Empty',
-          isDismissible: true,
-          duration: Duration(seconds: 3),
-          backgroundColor: Colors.red,
-        ),
-      );
+    } catch (e,i) {
       dataisnull = true;
       isLoading = false;
       e.printError();
+      i.printError();
     }
     update();
   }

@@ -7,6 +7,7 @@ import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AirlinessController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
@@ -18,6 +19,8 @@ class AirlinessController extends BaseController {
   GetStatusDocumentModel? statusModel;
   List<airliness.Data> airlinessList = [];
   airliness.GetAirlinessModel? airlinessModel;
+
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
 
   @override
   void onInit() {

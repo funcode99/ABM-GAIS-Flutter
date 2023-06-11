@@ -180,7 +180,7 @@ class RepositoryImpl implements Repository {
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       Response response = await network.dio.get(
-        "/api/site/",
+        "/api/site/get_data",
       );
       return GetSiteModel.fromJson(response.data);
     } on DioError catch (e) {
@@ -373,6 +373,7 @@ class RepositoryImpl implements Repository {
       );
       return SavePurposeOfTripModel.fromJson(response.data);
     } on DioError catch (e) {
+      e.error.printError();
       return SavePurposeOfTripModel.fromJson(e.message);
       // return e.error;
       // throw Exception();
@@ -1151,6 +1152,7 @@ class RepositoryImpl implements Repository {
       );
       return SubmitRequestTripModel.fromJson(response.data);
     } on DioError catch (e) {
+      e.error.printError();
       return e.error;
     }
   }
@@ -1178,7 +1180,7 @@ class RepositoryImpl implements Repository {
     });
     try {
       Response response = await network.dio.post(
-        "/api/cash_advance/update_data/175",
+        "/api/cash_advance/update_data/$id",
         data: formData,
       );
       return UpdateCashAdvanceTravelModel.fromJson(response.data);

@@ -169,9 +169,9 @@ class ListDocumentDeliveryScreen extends StatelessWidget {
                                   listNumber: controller.currentPage > 1 ? (controller.ddModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
                                   title: controller.ddList[index].id.toString(),
                                   //code document delivery
-                                  status: controller.ddList[index].codeStatusDoc.toString(),
+                                  status: controller.ddList[index].status.toString(),
                                   // status
-                                  subtitle: controller.ddList[index].createdAt?.substring(0, 10),
+                                  subtitle: controller.dateFormat.format(DateTime.parse(controller.ddList[index].createdAt.toString())).toString(),
                                   isEdit: true,
                                   editAction: () => Get.to(
                                     const DetailDocumentDeliveryScreen(),
@@ -189,14 +189,14 @@ class ListDocumentDeliveryScreen extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text("Receiver", style: listTitleTextStyle),
-                                          Text(controller.ddList[index].idEmployeeReceiver.toString() ?? "", style: listSubTitleTextStyle)
+                                          Text(controller.ddList[index].receiverName.toString() ?? "", style: listSubTitleTextStyle)
                                         ],
                                       ),
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text("Sender", style: listTitleTextStyle),
-                                          Text(controller.ddList[index].idEmployeeSender.toString() ?? "", style: listSubTitleTextStyle)
+                                          Text(controller.ddList[index].senderName.toString() ?? "", style: listSubTitleTextStyle)
                                         ],
                                       ),
                                       Column(

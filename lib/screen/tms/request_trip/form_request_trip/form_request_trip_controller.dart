@@ -11,6 +11,7 @@ import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as 
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as acc;
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart' as ca;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
+import 'package:gais/data/model/reference/get_site_model.dart' as st;
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
@@ -18,6 +19,7 @@ import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_t
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class FormRequestTripController extends BaseController {
   int purposeID = Get.arguments['id'];
@@ -39,6 +41,7 @@ class FormRequestTripController extends BaseController {
   final tlkTotal = TextEditingController();
   final tlkTotalMeals = TextEditingController();
 
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   String? tabName;
   bool isDetail = true;
   bool isTLK = false;
@@ -59,18 +62,11 @@ class FormRequestTripController extends BaseController {
   String? tlkDay;
   String? tlk;
 
-  List requestTrip = ["Traveller Guest", "Airliness", "Taxi Voucher", "Other Transportation", "Accommodation", "Cash Advance"];
-
-  List<bool> showList = [true, true, true, true, true, true];
-
-  List addScreen = [
-    const AddGuestScreen(),
-    const AddAirlinessScreen(),
-    const AddTaxiVoucherScreen(),
-    const AddOtherTransportScreen(),
-    const AddAccommodationScreen(),
-    const AddCashAdvanceTravelScreen(),
-  ];
+  String? travellerName;
+  String? travellerSN;
+  String? travellerGender;
+  String? travellerHotel;
+  String? travellerFlight;
 
   List items = [
     {
@@ -118,6 +114,7 @@ class FormRequestTripController extends BaseController {
   List<acc.Data> accommodationsList = [];
   List<ca.Data> caList = [];
   List<doc.Data> purposeList = [];
+  List<st.Data> siteList = [];
 
   GetRequestTripByidModel? rtModel;
 
@@ -206,13 +203,17 @@ class FormRequestTripController extends BaseController {
 
   Future<void> fetchRequestTrip() async {
     var rtData = await repository.getRequestTripByid(purposeID);
+    DateTime? tempDate;
+
     rtModel = rtData;
     rtStatus = rtModel?.data?.first.status ?? "";
     rtNumber = rtModel?.data?.first.noRequestTrip ?? "";
-    createdDate.text = rtModel?.data?.first.createdAt?.substring(0, 10) ?? "";
+    tempDate = DateTime.parse(rtModel?.data?.first.createdAt ?? "");
+    createdDate.text = dateFormat.format(tempDate);
     requestor.text = rtModel?.data?.first.employeeName ?? "";
     purpose.text = rtModel?.data?.first.documentName ?? "";
     // codeDocument = int.parse(rtModel?.data?.first.codeDocument ?? "");
+    siteID = rtModel?.data?.first.idSite?.toInt();
     site.text = rtModel?.data?.first.siteName ?? "";
     notes.text = rtModel?.data?.first.notes ?? "";
     attachment.text = rtModel?.data?.first.file ?? "";
@@ -234,9 +235,16 @@ class FormRequestTripController extends BaseController {
     checkItems();
 
     await storage.readEmployeeInfo().then((value) {
+      travellerName = value.first.employeeName;
+      travellerSN = value.first.snEmployee;
+      travellerGender = value.first.jenkel;
+      travellerHotel = value.first.hotelFare;
+      travellerFlight = value.first.flightClass;
+    });
+
+    await storage.readEmployeeInfo().then((value) {
       tlkJobBand.text = value.first.bandJobName != "null" ? value.first.bandJobName.toString() : "";
       requsetorID = value.first.id?.toInt();
-      siteID = value.first.idSite?.toInt();
       jobID = value.first.idJobBand?.toInt();
     });
 
@@ -254,6 +262,9 @@ class FormRequestTripController extends BaseController {
     try {
       var docData = await repository.getDocumentCodeList();
       purposeList.addAll(docData.data?.toSet().toList() ?? []);
+
+      var stData = await repository.getSiteList();
+      siteList.addAll(stData.data?.toSet().toList() ?? []);
 
       var guestData = await repository.getGuestBytripList(purposeID);
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
@@ -460,8 +471,9 @@ class FormRequestTripController extends BaseController {
           backgroundColor: greenColor,
         );
       });
-    } catch (e) {
+    } catch (e, i) {
       e.printError();
+      i.printError();
       const GetSnackBar(
         icon: Icon(
           Icons.error,

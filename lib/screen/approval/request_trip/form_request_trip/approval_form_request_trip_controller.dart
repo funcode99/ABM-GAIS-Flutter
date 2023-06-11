@@ -22,6 +22,7 @@ import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as 
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as acc;
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart' as ca;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
+import 'package:intl/intl.dart';
 
 class ApprovalFormRequestTripController extends BaseController {
   List<String> approve = ["Behalf of", "Fully Approve"];
@@ -44,6 +45,8 @@ class ApprovalFormRequestTripController extends BaseController {
   final tlkTotal = TextEditingController();
   final tlkTotalMeals = TextEditingController();
 
+
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   String? tabName;
   bool isDetail = true;
   bool isTLK = false;
@@ -189,10 +192,13 @@ class ApprovalFormRequestTripController extends BaseController {
 
   Future<void> fetchRequestTrip() async {
     var rtData = await repository.getRequestTripByid(purposeID);
+    DateTime? tempDate;
+
     rtModel = rtData;
     rtStatus = rtModel?.data?.first.status ?? "";
     rtNumber = rtModel?.data?.first.noRequestTrip ?? "";
-    createdDate.text = rtModel?.data?.first.createdAt?.substring(0, 10) ?? "";
+    tempDate = DateTime.parse(rtModel?.data?.first.createdAt ?? "");
+    createdDate.text = dateFormat.format(tempDate);
     requestor.text = rtModel?.data?.first.employeeName ?? "";
     purpose.text = rtModel?.data?.first.documentName ?? "";
     // codeDocument = int.parse(rtModel?.data?.first.codeDocument ?? "");

@@ -49,9 +49,7 @@ class AirlinessScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                       child: SvgPicture.asset(
                         ImageConstant.airplane,
                         height: 25,
@@ -64,57 +62,38 @@ class AirlinessScreen extends StatelessWidget {
                           .mapIndexed((i, e) => CustomTripCard(
                                 listNumber: i + 1,
                                 title: controller.travellerName,
-                                subtitle:
-                                    e.createdAt.toString().substring(0, 10),
-                                status: controller.statusModel?.data
-                                    ?.where((status) =>
-                                        status.code == e.codeStatusDoc)
-                                    .first
-                                    .status,
+                                subtitle: controller.dateFormat.format(DateTime.parse(e.createdAt.toString())).toString(),
+                                status: controller.statusModel?.data?.where((status) => status.code == e.codeStatusDoc).first.status,
                                 info: e.flightNo,
                                 isEdit: true,
-                                editAction: (){
-                                  Get.off(CheckScheduleScreen(), arguments: {
-                                    'id': e.id?.toInt(),
-                                    'purposeID': controller.purposeID,
-                                    'codeDocument': controller.codeDocument
-                                  });
+                                editAction: () {
+                                  Get.to(CheckScheduleScreen(),
+                                      arguments: {'id': e.id?.toInt(), 'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument});
                                 },
                                 isDelete: true,
-                                deleteAction: () => controller
-                                    .delete(int.parse(e.id.toString())),
+                                deleteAction: () => controller.delete(int.parse(e.id.toString())),
                                 content: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text("Departure",
-                                            style: listTitleTextStyle),
-                                        Text("CGK (06.00)",
-                                            style: listSubTitleTextStyle),
+                                        Text("Departure", style: listTitleTextStyle),
+                                        Text("CGK (06.00)", style: listSubTitleTextStyle),
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text("Arrival",
-                                            style: listTitleTextStyle),
-                                        Text("SUB (09.00)",
-                                            style: listSubTitleTextStyle),
+                                        Text("Arrival", style: listTitleTextStyle),
+                                        Text("SUB (09.00)", style: listSubTitleTextStyle),
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text("Price",
-                                            style: listTitleTextStyle),
-                                        Text("${int.parse(e.ticketPrice.toString()).toCurrency()}",
-                                            style: listSubTitleTextStyle),
+                                        Text("Price", style: listTitleTextStyle),
+                                        Text("${int.parse(e.ticketPrice.toString()).toCurrency()}", style: listSubTitleTextStyle),
                                       ],
                                     )
                                   ],
@@ -129,12 +108,11 @@ class AirlinessScreen extends StatelessWidget {
                         color: infoColor,
                         title: "Add Airliness",
                         icon: Icons.add,
-                        onPressed: () => Get.off(AddAirlinessScreen(),
-                            arguments: {
-                              'purposeID': controller.purposeID,
-                              'codeDocument': controller.codeDocument,
-                              'formEdit': controller.formEdit,
-                            })?.then((result) {
+                        onPressed: () => Get.off(AddAirlinessScreen(), arguments: {
+                          'purposeID': controller.purposeID,
+                          'codeDocument': controller.codeDocument,
+                          'formEdit': controller.formEdit,
+                        })?.then((result) {
                           controller.fetchList();
                           controller.update();
                           print(result);
@@ -150,17 +128,9 @@ class AirlinessScreen extends StatelessWidget {
                           borderColor: infoColor,
                           title: "Back",
                           fontColor: infoColor,
-                          onPressed: () => Get.back(result: {
-                            'purposeID': controller.purposeID,
-                            'codeDocument': controller.codeDocument
-                          }),
+                          onPressed: () => Get.back(result: {'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument}),
                         ),
-                        CustomFilledButton(
-                          width: 100,
-                          color: infoColor,
-                          title: "Next",
-                          onPressed: ()=> controller.next()
-                        ),
+                        CustomFilledButton(width: 100, color: infoColor, title: "Next", onPressed: () => controller.next()),
                       ],
                     )
                   ],

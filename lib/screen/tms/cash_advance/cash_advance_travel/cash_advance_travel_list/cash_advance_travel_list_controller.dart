@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 
 class CashAdvanceTravelListController extends BaseController {
   final TextEditingController dateRangeController = TextEditingController();
-  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   DateFormat formatFilter = DateFormat("yyyy-MM-dd");
 
   final startDate = Rxn<DateTime>();

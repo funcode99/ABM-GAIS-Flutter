@@ -6,6 +6,7 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
+import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customtripcard.dart';
@@ -17,6 +18,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/item_cash_advance_travel/add/add_item_cash_advance_travel_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_screen.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -33,16 +35,17 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: baseColor,
             appBar: TopBar(
-              leading: IconButton(
-                  onPressed: () => Get.off(
+              leading: CustomBackButton(
+                onPressed: () => controller.formEdit == true
+                    ? Get.off(FormRequestTripScreen(), arguments: {
+                        'id': controller.purposeID,
+                        'codeDocument': controller.codeDocument,
+                      })
+                    : Get.off(
                         CashAdvanceScreen(),
                         arguments: {'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument},
                       ),
-                  icon: Icon(
-                    Icons.chevron_left,
-                    color: Colors.black,
-                    size: 30,
-                  )),
+              ),
               title: Text("cash_advance_travel".tr, style: appTitle),
             ),
             body: Container(
@@ -215,10 +218,15 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                                   fontColor: infoColor,
                                   borderColor: infoColor,
                                   onPressed: () {
-                                    Get.off(
-                                      CashAdvanceScreen(),
-                                      arguments: {'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument},
-                                    );
+                                    controller.formEdit == true
+                                        ? Get.off(FormRequestTripScreen(), arguments: {
+                                            'id': controller.purposeID,
+                                            'codeDocument': controller.codeDocument,
+                                          })
+                                        : Get.off(
+                                            CashAdvanceScreen(),
+                                            arguments: {'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument},
+                                          );
                                   },
                                 ),
                                 CustomFilledButton(

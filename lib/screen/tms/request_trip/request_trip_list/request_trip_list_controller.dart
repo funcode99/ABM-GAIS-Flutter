@@ -14,7 +14,7 @@ class RequestTripListController extends BaseController {
   final formKey = GlobalKey<FormState>();
   final TextEditingController dateRange = TextEditingController();
 
-  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   DateFormat rangeFormat = DateFormat("yyyy-MM-dd");
   String purposeValue = "All";
   String? searchValue;
@@ -24,7 +24,7 @@ class RequestTripListController extends BaseController {
   bool dataisnull = false;
   bool searchNotFound = false;
   int currentPage = 1;
-  int perPage = 5;
+  int perPage = 10;
   int lastNumber = 1;
 
   requests.RequestTripListModel? rtlModel;
@@ -106,18 +106,6 @@ class RequestTripListController extends BaseController {
       //   );
       // }
     } catch (e) {
-      Get.showSnackbar(
-        const GetSnackBar(
-          icon: Icon(
-            Icons.error,
-            color: Colors.white,
-          ),
-          message: 'Data Empty',
-          isDismissible: true,
-          duration: Duration(seconds: 3),
-          backgroundColor: Colors.red,
-        ),
-      );
       dataisnull = true;
       searchNotFound = true;
       isLoading = false;

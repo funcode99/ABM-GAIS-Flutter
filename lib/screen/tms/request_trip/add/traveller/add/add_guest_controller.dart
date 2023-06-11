@@ -109,17 +109,16 @@ class AddGuestController extends BaseController {
 
       storage.readEmployeeInfo().then((value) {
         jobBandID = int.parse(value.first.idJobBand.toString());
-        flightEntitlement.text = value.first.flightClass;
+        flightEntitlement.text = value.first.flightClass.toString();
         travellerID = int.tryParse(value.first.id.toString());
+        hotelFare.text = int.parse(value.first.hotelFare ?? "").toCurrency();
+        idFlight = int.parse(value.first.idJobBand.toString());
       });
 
-      var dataHotel = await repository.getJobBandList();
-      hotelFare.text = int.parse(dataHotel.data?.data?.where((e) => e.id == jobBandID).first.hotelFare ?? " ").toCurrency();
-      idFlight = dataHotel.data?.data?.where((e) => e.id == jobBandID).first.idFlightClass?.toInt() ?? 0;
-
       update();
-    } catch (e) {
+    } catch (e,i) {
       e.printError();
+      i.printError();
     }
     print("purposeID : $purposeID");
   }

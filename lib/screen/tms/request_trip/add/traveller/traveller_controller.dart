@@ -38,15 +38,11 @@ class AirlinesController extends BaseController {
       travellerName = value.first.employeeName;
       travellerSN = value.first.snEmployee;
       travellerGender = value.first.jenkel;
+      travellerHotel = value.first.hotelFare;
       jobBandID = int.parse(value.first.idJobBand.toString());
       travellerFlight = value.first.flightClass;
     });
 
-    var hotel = await repository.getJobBandList();
-    travellerHotel = hotel.data?.data?.where((e) => e.id == jobBandID).first.hotelFare;
-    // var flight = await repository.getFlightList();
-    // travellerFlight =
-    //     flight.data?.where((e) => e.id == jobBandID).first.flightClass;
     update();
   }
 

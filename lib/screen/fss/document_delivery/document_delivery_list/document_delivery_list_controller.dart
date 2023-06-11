@@ -16,7 +16,7 @@ class DocumentDeliveryListController extends BaseController {
   final TextEditingController seacrch = TextEditingController();
 
 
-  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   DateFormat rangeFormat = DateFormat("yyyy-MM-dd");
   String filterStatus = "-1";
   String? searchValue;
@@ -91,18 +91,6 @@ class DocumentDeliveryListController extends BaseController {
       print("reqList: ${ddList.length.toString()}");
       update();
     } catch (e) {
-      Get.showSnackbar(
-        const GetSnackBar(
-          icon: Icon(
-            Icons.error,
-            color: Colors.white,
-          ),
-          message: 'Data Empty',
-          isDismissible: true,
-          duration: Duration(seconds: 3),
-          backgroundColor: Colors.red,
-        ),
-      );
       dataisnull = true;
       searchNotFound = true;
       isLoading = false;

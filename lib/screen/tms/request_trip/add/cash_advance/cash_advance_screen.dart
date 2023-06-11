@@ -119,7 +119,7 @@ class CashAdvanceScreen extends StatelessWidget {
                             width: 100,
                             color: infoColor,
                             title: "Draft",
-                            onPressed: () => Get.off(FormRequestTripScreen(), arguments: {
+                            onPressed: () => Get.offAll(FormRequestTripScreen(), arguments: {
                                   'id': controller.purposeID,
                                   'codeDocument': controller.codeDocument,
                                 })),

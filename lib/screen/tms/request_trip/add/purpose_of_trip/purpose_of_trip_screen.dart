@@ -59,11 +59,15 @@ class PurposeOfTripScreen extends StatelessWidget {
                             CustomDropDownFormField(
                               label: 'Purpose of Trip',
                               isRequired: true,
-                              hintText: "pick document type",
+                              hintText: "Purpose of Trip",
                               items: controller.purposeList
                                   .map((e) => DropdownMenuItem(
                                         value: e.id.toString(),
                                         child: Text(e.documentName.toString()),
+                                        onTap: () {
+                                          controller.selectedPurposeName = e.documentName.toString();
+                                          controller.update();
+                                        },
                                       ))
                                   .toList(),
                               onChanged: (value) {
@@ -74,13 +78,32 @@ class PurposeOfTripScreen extends StatelessWidget {
                               },
                             ),
                             const SizedBox(height: 8),
+                            controller.selectedPurpose == "1"
+                                ? Container(
+                                    margin: EdgeInsets.only(bottom: 8),
+                                    child: CustomDropDownFormField(
+                                      items: controller.siteList
+                                          .map((e) => DropdownMenuItem(
+                                                child: Text(e.siteName.toString()),
+                                                value: e.id.toString(),
+                                              ))
+                                          .toList(),
+                                      label: "Site",
+                                      isRequired: true,
+                                      onChanged: (value){
+                                        controller.siteID = value!.toInt();
+                                        controller.update();
+                                      },
+                                    ),
+                                  )
+                                : Container(),
                             controller.isAttachment!
                                 ? CustomTextFormField(
                                     controller: controller.fileName,
                                     label: 'File Attachment',
                                     isRequired: true,
                                     readOnly: true,
-                                    hintText: "Upload Form ${controller.selectedPurpose}",
+                                    hintText: "Upload Form ${controller.selectedPurposeName}",
                                     suffixIcon: const Icon(Icons.upload),
                                     onTap: () => controller.getSingleFile(),
                                   )
@@ -147,12 +170,12 @@ class PurposeOfTripScreen extends StatelessWidget {
                                   .then(
                                 (date) {
                                   controller.departure = date!;
-                                  controller.rangeDate = controller.arrival.difference(controller.departure).inDays.toInt();
-                                  controller.totalTLK.text = (controller.rangeDate.toInt() * (controller.tlkDay.text.digitOnly()).toInt()).toCurrency().toString();
+                                  controller.rangeDate = controller.arrival.difference(controller.departure).inDays.toInt() + 1;
+                                  controller.totalTLK.text =
+                                      (controller.rangeDate.toInt() * (controller.tlkDay.text.digitOnly()).toInt()).toCurrency().toString();
                                   controller.departureDate.text = controller.dateFormat.format(date);
                                   controller.selectedDepartureDate = controller.saveDateFormat.format(date);
                                   controller.update();
-
                                 },
                               ),
                             ),
@@ -177,8 +200,9 @@ class PurposeOfTripScreen extends StatelessWidget {
                                   .then(
                                 (date) {
                                   controller.arrival = date!;
-                                  controller.rangeDate = controller.arrival.difference(controller.departure).inDays.toInt();
-                                  controller.totalTLK.text = (controller.rangeDate.toInt() * (controller.tlkDay.text.digitOnly()).toInt()).toCurrency().toString();
+                                  controller.rangeDate = controller.arrival.difference(controller.departure).inDays.toInt() + 1;
+                                  controller.totalTLK.text =
+                                      (controller.rangeDate.toInt() * (controller.tlkDay.text.digitOnly()).toInt()).toCurrency().toString();
                                   controller.arrivalDate.text = controller.dateFormat.format(date);
                                   controller.selectedArrivalDate = controller.saveDateFormat.format(date);
                                   controller.update();

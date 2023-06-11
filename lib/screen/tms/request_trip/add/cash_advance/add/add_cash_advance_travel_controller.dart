@@ -26,7 +26,7 @@ class AddCashAdvanceTravelController extends BaseController {
   final TextEditingController travellerName = TextEditingController();
   final TextEditingController totalController = TextEditingController();
 
-  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   bool isButtonEnabled = false;
   String currencyCode = "";
   int? selectedCurrency;
@@ -227,18 +227,6 @@ class AddCashAdvanceTravelController extends BaseController {
         "1",
       )
           .then((value) {
-        Get.showSnackbar(
-          const GetSnackBar(
-            icon: Icon(
-              Icons.error,
-              color: Colors.white,
-            ),
-            message: 'Data Updated',
-            isDismissible: true,
-            duration: Duration(seconds: 3),
-            backgroundColor: successColor,
-          ),
-        );
         if (formEdit == true) {
           Get.off(
             () => FormRequestTripScreen(),

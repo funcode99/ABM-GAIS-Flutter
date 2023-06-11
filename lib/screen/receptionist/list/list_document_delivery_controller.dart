@@ -92,18 +92,6 @@ class ListDocumentDeliveryController extends BaseController{
       print("reqList: ${ddList.length.toString()}");
       update();
     } catch (e) {
-      Get.showSnackbar(
-        const GetSnackBar(
-          icon: Icon(
-            Icons.error,
-            color: Colors.white,
-          ),
-          message: 'Data Empty',
-          isDismissible: true,
-          duration: Duration(seconds: 3),
-          backgroundColor: Colors.red,
-        ),
-      );
       dataisnull = true;
       searchNotFound = true;
       isLoading = false;
