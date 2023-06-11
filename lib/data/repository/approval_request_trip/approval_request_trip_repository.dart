@@ -9,4 +9,8 @@ abstract class ApprovalRequestTripRepository {
     String? endDate,
     String? codeStatusDoc,
   );
+
+  Future approve(int id);
+
+  Future reject(int id);
 }

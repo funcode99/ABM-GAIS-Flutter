@@ -9,7 +9,7 @@ enum ApproveEnum { onBehalf, fullApprove }
 
 class ApprovalConfirmationDialog extends StatelessWidget {
 
-  const ApprovalConfirmationDialog(
+  const   ApprovalConfirmationDialog(
       {super.key, this.idCompany, this.idSite, this.idEmployee, this.idApprovalAuth});
 
   final int? idCompany;
@@ -83,7 +83,7 @@ class ApprovalConfirmationDialog extends StatelessWidget {
                               : Colors.transparent),
                       child: GestureDetector(
                         onTap: () {
-                          controller.selectedEnum.value = ApproveEnum.onBehalf;
+                          // controller.selectedEnum.value = ApproveEnum.onBehalf;
                         },
                       ),
                     ),
@@ -140,7 +140,7 @@ class ApprovalConfirmationDialog extends StatelessWidget {
                             : Colors.transparent),
                     child: GestureDetector(
                       onTap: () {
-                        controller.selectedEnum.value = ApproveEnum.fullApprove;
+                        // controller.selectedEnum.value = ApproveEnum.fullApprove;
                       },
                     ),
                   );

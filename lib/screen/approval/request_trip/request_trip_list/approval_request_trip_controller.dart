@@ -35,7 +35,7 @@ class ApprovalRequestTripListController extends BaseController {
     Future.wait([fetchData(), fetchList()]);
   }
 
-  Future<void> fetchData() async {
+    Future<void> fetchData() async {
     documentList = [];
     await repository.getDocumentCodeList().then((value) {
       documentList.add(doc.Data(id: 0, documentName: "All", isSelected: true));

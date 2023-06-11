@@ -11,41 +11,14 @@ import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/request_trip/form_request_trip/approval_form_request_trip_controller.dart';
 import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
-import 'package:gais/screen/tms/cash_advance/widget/approval_confirmation_dialog.dart';
-import 'package:gais/screen/tms/cash_advance/widget/reject_dialog.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-class ApprovalFormRequestTripScreen extends StatefulWidget {
-  const ApprovalFormRequestTripScreen({Key? key, this.approvalActionEnum = ApprovalActionEnum.none}) : super(key: key);
+class ApprovalFormRequestTripScreen extends StatelessWidget {
+    const ApprovalFormRequestTripScreen({Key? key, this.approvalActionEnum  = ApprovalActionEnum.none}) : super(key: key);
 
   final ApprovalActionEnum approvalActionEnum;
-
-  @override
-  State<ApprovalFormRequestTripScreen> createState() => _ApprovalFormRequestTripScreenState();
-}
-
-class _ApprovalFormRequestTripScreenState extends State<ApprovalFormRequestTripScreen> {
-  _openApproveDialog() {
-    Get.dialog(const ApprovalConfirmationDialog());
-  }
-
-  _openRejectDialog() {
-    Get.dialog(const RejectDialog());
-  }
-
-  @override
-  void initState() {
-    Future.delayed(Duration.zero, () {
-      if (widget.approvalActionEnum == ApprovalActionEnum.approve) {
-        _openApproveDialog();
-      } else if (widget.approvalActionEnum == ApprovalActionEnum.reject) {
-        _openRejectDialog();
-      }
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +67,7 @@ class _ApprovalFormRequestTripScreenState extends State<ApprovalFormRequestTripS
                                   height: 40,
                                   width: 100,
                                   onPressed: () {
-                                    _openRejectDialog();
+                                    controller.openApproveDialog();
                                     // showDialog(
                                     //   context: context,
                                     //   builder: (BuildContext context) {
@@ -202,7 +175,7 @@ class _ApprovalFormRequestTripScreenState extends State<ApprovalFormRequestTripS
                                   height: 40,
                                   width: 100,
                                   onPressed: () {
-                                    _openRejectDialog();
+                                    controller.openRejectDialog();
                                     // showDialog(
                                     //   context: context,
                                     //   builder: (BuildContext context) {

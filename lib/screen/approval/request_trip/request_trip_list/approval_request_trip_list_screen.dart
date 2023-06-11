@@ -183,18 +183,24 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                   approveAction: () {
                                     Get.to(
                                       ApprovalFormRequestTripScreen(
-                                        approvalActionEnum: ApprovalActionEnum.reject,
+                                        approvalActionEnum: ApprovalActionEnum.approve,
                                       ),
-                                      arguments: {'id': controller.requestList[index].id?.toInt()},
+                                      arguments: {
+                                        'id': controller.requestList[index].id?.toInt(),
+                                        'approvalEnum': ApprovalActionEnum.approve,
+                                      },
                                     );
                                   },
                                   isDelete: true,
                                   rejectAction: () {
                                     Get.to(
                                       ApprovalFormRequestTripScreen(
-                                        // approvalActionEnum: ApprovalActionEnum.reject,
+                                        approvalActionEnum: ApprovalActionEnum.reject,
                                       ),
-                                      arguments: {'id': controller.requestList[index].id?.toInt()},
+                                      arguments: {
+                                        'id': controller.requestList[index].id?.toInt(),
+                                        'approvalEnum': ApprovalActionEnum.reject,
+                                      },
                                     );
                                   },
                                   content: Column(

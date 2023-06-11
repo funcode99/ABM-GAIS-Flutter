@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/approval_model.dart';
+import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
+import 'package:gais/reusable/dialog/reject_dialog.dart';
+import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
@@ -31,6 +35,9 @@ class ApprovalFormRequestTripController extends BaseController {
   List<String> reject = ["With Notes", "Fully Rejected"];
   late String rejection = reject[0];
   int purposeID = Get.arguments['id'];
+  ApprovalActionEnum? approvalActionEnum = Get.arguments['approvalEnum'];
+
+  final approvalModel = Rxn<ApprovalModel>();
 
   final formKey = GlobalKey<FormState>();
   final createdDate = TextEditingController();
@@ -58,19 +65,6 @@ class ApprovalFormRequestTripController extends BaseController {
   int activeStep = 1;
   String? rtStatus;
   String? rtNumber;
-
-  List requestTrip = ["Traveller Guest", "Airliness", "Taxi Voucher", "Other Transportation", "Accommodation", "Cash Advance"];
-
-  List<bool> showList = [true, true, true, true, true, true];
-
-  List addScreen = [
-    const TravellerScreen(),
-    const AirlinessScreen(),
-    const TaxiVoucherScreen(),
-    const OtherTransportScreen(),
-    const AccommodationScreen(),
-    const CashAdvanceScreen(),
-  ];
 
   List items = [
     {
@@ -133,6 +127,14 @@ class ApprovalFormRequestTripController extends BaseController {
     tlkTotal.text;
     tlkTotalMeals.text;
     Future.wait([fetchRequestTrip(), fetchList()]);
+
+    Future.delayed(Duration.zero, () {
+      if (approvalActionEnum == ApprovalActionEnum.approve) {
+        openApproveDialog();
+      } else if (approvalActionEnum == ApprovalActionEnum.reject) {
+        openRejectDialog();
+      }
+    });
   }
 
   @override
@@ -247,6 +249,24 @@ class ApprovalFormRequestTripController extends BaseController {
       i.printError();
     }
     update();
+  }
+
+  openApproveDialog() async {
+    ApprovalModel? result = await Get.dialog(const ApprovalConfirmationDialog());
+
+    if(result!=null){
+      approvalModel(result);
+      await approvalRequestTrip.approve(purposeID);
+    }
+  }
+
+  openRejectDialog() async {
+    ApprovalModel? result = await Get.dialog(const RejectDialog());
+
+    if(result!=null){
+      approvalModel(result);
+      await approvalRequestTrip.reject(purposeID);
+    }
   }
 }
 

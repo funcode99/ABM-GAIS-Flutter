@@ -17,7 +17,7 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
     String? startDate,
     String? endDate,
     String? codeStatusDoc,
-  ) async{
+  ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     search.printInfo(info: "search");
@@ -36,6 +36,36 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
         // },
       );
       return GetApprovalRequestTripModel.fromJson(response.data);
+    } on DioError catch (e) {
+      e.error.printError();
+      return e.error;
+    }
+  }
+
+  Future approve(int id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/approval_request_trip/approve/$id",
+      );
+      response.data.printInfo(info: 'response');
+      return response.data;
+    } on DioError catch (e) {
+      e.error.printError();
+      return e.error;
+    }
+  }
+
+  Future reject(int id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/approval_request_trip/reject/$id",
+      );
+      response.data.printInfo(info: 'response');
+      return response.data;
     } on DioError catch (e) {
       e.error.printError();
       return e.error;
