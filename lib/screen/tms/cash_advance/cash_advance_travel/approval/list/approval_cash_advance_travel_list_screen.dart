@@ -223,7 +223,7 @@ class ApprovalCashAdvanceTravelListScreen extends StatelessWidget {
                                   ),
                                 ),
                                 action: item.codeStatusDoc ==
-                                        CashAdvanceTravelEnum
+                                    RequestTripEnum
                                             .waitingApproval.value
                                     ? [
                                         CustomIconButton(

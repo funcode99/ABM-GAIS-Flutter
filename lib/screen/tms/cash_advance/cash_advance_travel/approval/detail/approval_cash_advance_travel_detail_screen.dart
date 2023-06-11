@@ -132,7 +132,7 @@ class _ApprovalCashAdvanceTravelDetailScreenState
                 height: 12,
               ),
               Obx(() {
-                if(controller.selectedItem.value.codeStatusDoc == CashAdvanceTravelEnum.waitingApproval.value){
+                if(controller.selectedItem.value.codeStatusDoc == RequestTripEnum.waitingApproval.value){
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -265,7 +265,7 @@ class _ApprovalCashAdvanceTravelDetailScreenState
                                             height: 1.5),
                                       ),
                                       Text(
-                                        "${item.itemName}",
+                                        item.itemName ?? "-",
                                         style: Theme
                                             .of(context)
                                             .textTheme

@@ -25,3 +25,16 @@ enum CashAdvanceTravelEnum {
 
   final int value;
 }
+
+enum RequestTripEnum {
+  draft(0),
+  waitingApproval(1),
+  revision(2),
+  cancelled(3),
+  rejected(9),
+  completed(10);
+
+  const RequestTripEnum(this.value);
+
+  final int value;
+}
