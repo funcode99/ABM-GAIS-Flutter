@@ -11,7 +11,6 @@ import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
-import 'package:gais/reusable/error/empty_list_error.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -75,15 +74,15 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                                 .subtract(const Duration(days: 365)),
                             maximumDate:
                                 DateTime.now().add(const Duration(days: 365)),
-                            endDate: controller.endDate.value,
-                            startDate: controller.startDate.value,
+                            endDate: controller.endDateTemp.value,
+                            startDate: controller.startDateTemp.value,
                             backgroundColor: Colors.white,
                             primaryColor: Colors.green,
                             onApplyClick: (start, end) {
                               controller.endDateTemp.value = end;
                               controller.startDateTemp.value = start;
                               controller.dateRangeController.text =
-                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end!)}";
                               controller.update();
                             },
                             onCancelClick: () {

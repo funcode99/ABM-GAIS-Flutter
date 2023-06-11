@@ -1,17 +1,16 @@
-import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
+import 'package:gais/reusable/calendar/custom_calendar_picker.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_controller.dart';
-import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/widget/meeting_room_time_picker_dialog.dart';
 import 'package:gais/util/ext/date_ext.dart';
 import 'package:gais/util/validator/custom_validation_builder.dart';
@@ -86,9 +85,10 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                       isRequired: true,
                       suffixIcon: const Icon(IconlyLight.calendar),
                       onTap: () {
-                        showCustomDateRangePicker(
+                        showCustomCalendarPicker(
                           context,
                           dismissible: true,
+                          isRange: false,
                           minimumDate: DateTime.now(),
                           maximumDate:
                               DateTime.now().add(const Duration(days: 365)),
@@ -100,7 +100,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                             controller.startDate.value = start;
                             controller.endDate.value = end;
                             controller.dateController.text =
-                                "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                "${controller.dateFormat.format(start)} ${end!=null ? "-":""} ${end!=null ? controller.dateFormat.format(end) :""}";
                             controller.update();
                           },
                           onCancelClick: () {},

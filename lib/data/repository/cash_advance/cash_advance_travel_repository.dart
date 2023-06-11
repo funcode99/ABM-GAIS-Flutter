@@ -113,9 +113,24 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
   }
 
   @override
-  Future<Either<BaseError, CashAdvanceModel>> detailData(int id) {
-    // TODO: implement detailData
-    throw UnimplementedError();
+  Future<Either<BaseError, CashAdvanceModel>> detailData(int id) async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/cash_advance/travel/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceModel.fromJsonModelList);
+      List<CashAdvanceModel> list = apiResponseModel.data;
+      return right(list.first);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override

@@ -132,153 +132,155 @@ class _MeetingRoomTimePickerDialogState
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-            decoration: const BoxDecoration(
-                color: lightBlueColor,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(8))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      "${widget.startDate?.toStringWithFormat(format: "EEE")}",
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+              decoration: const BoxDecoration(
+                  color: lightBlueColor,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(8))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "${widget.startDate?.toStringWithFormat(format: "EEE")}",
+                        style: listTitleTextStyle,
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: infoColor),
+                        child: Text(
+                          "${widget.startDate?.toStringWithFormat(format: "d")}",
+                          style: const TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    width: widget.endDate != null ? 8 : 0,
+                  ),
+                  widget.endDate != null ?
+                  const Icon(
+                    Icons.arrow_forward,
+                    color: infoColor,
+                  ) : const SizedBox(),
+                  SizedBox(
+                    width: widget.endDate != null ? 8 : 0,
+                  ),
+                  widget.endDate != null ? Column(
+                    children: [
+                      Text(
+                        "${widget.endDate?.toStringWithFormat(format: "EEE")}",
+                        style: listTitleTextStyle,
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: infoColor),
+                        child: Text(
+                          "${widget.endDate?.toStringWithFormat(format: "d")}",
+                          style: const TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    ],
+                  ) : const SizedBox()
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  startTimeTemp != null ? Container(
+                    padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: infoColor),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Text(
+                      startTimeTemp!.toStringWithFormat(),
                       style: listTitleTextStyle,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: infoColor),
-                      child: Text(
-                        "${widget.startDate?.toStringWithFormat(format: "d")}",
-                        style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w600),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                const Icon(
-                  Icons.arrow_forward,
-                  color: infoColor,
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "${widget.endDate?.toStringWithFormat(format: "EEE")}",
+                  ) : Container(
+                    padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: infoColor),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Text(
+                      "Select Time",
                       style: listTitleTextStyle,
                     ),
-                    const SizedBox(
-                      height: 8,
+                  ),
+                  SizedBox(
+                    width: endTimeTemp != null ? 16 : 0,
+                  ),
+                  endTimeTemp != null ? const Icon(
+                    Icons.arrow_forward,
+                    size: 24,
+                    color: infoColor,
+                  ) : const SizedBox(),
+                  SizedBox(
+                    width: endTimeTemp != null ? 16 : 0,
+                  ),
+                  endTimeTemp != null ? Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: infoColor),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Text(
+                      "${endTimeTemp?.toStringWithFormat()}",
+                      style: listTitleTextStyle,
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: infoColor),
-                      child: Text(
-                        "${widget.endDate?.toStringWithFormat(format: "d")}",
-                        style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w600),
-                      ),
-                    )
-                  ],
-                )
-              ],
+                  ) : const SizedBox(),
+                ],
+              ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                startTimeTemp != null ? Container(
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: infoColor),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Text(
-                    startTimeTemp!.toStringWithFormat(),
-                    style: listTitleTextStyle,
-                  ),
-                ) : Container(
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: infoColor),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Text(
-                    "Select Time",
-                    style: listTitleTextStyle,
-                  ),
-                ),
-                SizedBox(
-                  width: endTimeTemp != null ? 16 : 0,
-                ),
-                endTimeTemp != null ? const Icon(
-                  Icons.arrow_forward,
-                  size: 24,
-                  color: infoColor,
-                ) : const SizedBox(),
-                SizedBox(
-                  width: endTimeTemp != null ? 16 : 0,
-                ),
-                endTimeTemp != null ? Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: infoColor),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Text(
-                    "${endTimeTemp?.toStringWithFormat()}",
-                    style: listTitleTextStyle,
-                  ),
-                ) : const SizedBox(),
-              ],
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Wrap(
+            runSpacing: 16,
+            spacing: 8,
+            children: list
+                .map((e) => MeetingRoomTimeItem(
+                      item: e,
+                      onSelected: (item) {
+                        _setSelected(item);
+                      },
+                      isThumb: _isThumb(e),
+                      selected: _isSelected(e),
+                    ))
+                .toList(),
+              ),
             ),
-          ),
-          Expanded(
-              child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Wrap(
-              runSpacing: 16,
-              spacing: 8,
-              children: list
-                  .map((e) => MeetingRoomTimeItem(
-                        item: e,
-                        onSelected: (item) {
-                          _setSelected(item);
-                        },
-                        isThumb: _isThumb(e),
-                        selected: _isSelected(e),
-                      ))
-                  .toList(),
-            ),
-          )),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: startTimeTemp != null ? () {
-                widget.onConfirmClick(startTimeTemp, endTimeTemp);
-                Get.back();
-              } : null,
-              style: ElevatedButton.styleFrom(backgroundColor: infoColor),
-              child: Text("Confirm".tr),
-            ),
-          )
-        ],
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: startTimeTemp != null ? () {
+                  widget.onConfirmClick(startTimeTemp, endTimeTemp);
+                  Get.back();
+                } : null,
+                style: ElevatedButton.styleFrom(backgroundColor: infoColor),
+                child: Text("Confirm".tr),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
