@@ -204,39 +204,45 @@ class _CashAdvanceTravelDetailScreenState
                             controller.selectedTab(TabEnum.detail);
                           },
                         ),
-                        GestureDetector(
-                          child: Obx(() {
-                            return Container(
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.only(top: 10, left: 5),
-                              width: 100,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: controller.selectedTab.value ==
-                                    TabEnum.approval
-                                    ? whiteColor
-                                    : neutralColor,
-                                borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(8),
-                                    topLeft: Radius.circular(8)),
-                                gradient: LinearGradient(stops: const [
-                                  0.1,
-                                  0
-                                ], colors: [
-                                  controller.selectedTab.value ==
+
+                        Obx(() {
+                          if(controller.selectedItem.value.code != RequestTripEnum.draft.value && controller.selectedItem.value.code != RequestTripEnum.revision.value){
+                            return GestureDetector(
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: const EdgeInsets.only(
+                                    top: 10, left: 5),
+                                width: 100,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: controller.selectedTab.value ==
                                       TabEnum.approval
-                                      ? blackColor
-                                      : whiteColor,
-                                  Colors.white
-                                ]),
+                                      ? whiteColor
+                                      : neutralColor,
+                                  borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(8),
+                                      topLeft: Radius.circular(8)),
+                                  gradient: LinearGradient(stops: const [
+                                    0.1,
+                                    0
+                                  ], colors: [
+                                    controller.selectedTab.value ==
+                                        TabEnum.approval
+                                        ? blackColor
+                                        : whiteColor,
+                                    Colors.white
+                                  ]),
+                                ),
+                                child: const Text("Approval"),
                               ),
-                              child: const Text("Approval"),
+                              onTap: () {
+                                controller.selectedTab(TabEnum.approval);
+                              },
                             );
-                          }),
-                          onTap: () {
-                            controller.selectedTab(TabEnum.approval);
-                          },
-                        ),
+                          }
+                          return const SizedBox();
+                        }),
+
                       ],
                     ),
                   ),
