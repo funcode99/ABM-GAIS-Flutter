@@ -71,7 +71,7 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController{
     }, (r) {
       detailSelectedItem(r);
       setValue();
-      getApprovalLog();Z
+      getApprovalLog();
     });
   }
 
