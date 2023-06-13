@@ -304,7 +304,7 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                             },
                           ),
                           Obx(() {
-                            if(controller.selectedItem.value.codeStatusDoc != CashAdvanceNonTravelEnum.draft.value && controller.selectedItem.value.codeStatusDoc != CashAdvanceNonTravelEnum.revision.value){
+                            if(controller.selectedItem.value.codeStatusDoc != CashAdvanceNonTravelEnum.draft.value){
                               return GestureDetector(
                                 child: Container(
                                   alignment: Alignment.center,

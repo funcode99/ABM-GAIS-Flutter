@@ -133,7 +133,7 @@ class _CashAdvanceTravelDetailScreenState
                           height: 8,
                         ),
                         Obx(() {
-                          if(controller.selectedItem.value.codeStatusDoc == CashAdvanceTravelEnum.rejected){
+                          if(controller.selectedItem.value.codeStatusDoc == RequestTripEnum.rejected || controller.selectedItem.value.codeStatusDoc == RequestTripEnum.revision){
                             return CustomTextFormField(
                                 readOnly: true,
                                 controller: controller.remarksController,
@@ -206,7 +206,7 @@ class _CashAdvanceTravelDetailScreenState
                         ),
 
                         Obx(() {
-                          if(controller.selectedItem.value.code != RequestTripEnum.draft.value && controller.selectedItem.value.code != RequestTripEnum.revision.value){
+                          if(controller.selectedItem.value.codeStatusDoc != RequestTripEnum.draft.value){
                             return GestureDetector(
                               child: Container(
                                 alignment: Alignment.center,
