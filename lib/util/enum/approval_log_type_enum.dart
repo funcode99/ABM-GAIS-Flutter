@@ -1,0 +1,4 @@
+enum ApprovalLogTypeEnum{
+  cashAdvanceTravel,
+  cashAdvanceNonTravel,
+}

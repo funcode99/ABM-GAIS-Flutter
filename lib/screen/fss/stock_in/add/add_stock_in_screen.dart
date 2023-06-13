@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
@@ -12,7 +11,6 @@ import 'package:gais/reusable/list_item/common_add_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/stock_in/add/add_stock_in_controller.dart';
 import 'package:gais/screen/fss/stock_in/add/item_stock_in/add/add_item_stock_in_screen.dart';
-import 'package:gais/screen/fss/stock_in/detail/detail_stock_in_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -231,8 +229,8 @@ class AddStockInATKScreen extends StatelessWidget {
                                 }
                               : null,
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: infoColor),
-                          child: Text("Book".tr),
+                              backgroundColor: successColor),
+                          child: Text("Save".tr),
                         ),
                       ),
                     ],

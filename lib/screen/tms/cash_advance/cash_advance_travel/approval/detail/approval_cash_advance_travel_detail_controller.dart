@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/approval_cash_advance/approval_cash_advance_model.dart';
+import 'package:gais/data/model/approval_log_model.dart';
 import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_travel_repository.dart';
+import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -23,30 +25,18 @@ class ApprovalCashAdvanceTravelDetailController extends BaseController{
   final selectedItem = ApprovalCashAdvanceModel().obs;
   final detailSelectedItem = CashAdvanceModel().obs;
 
+
+
   final approvalModel = Rxn<ApprovalModel>();
+  final selectedTab = Rx<TabEnum>(TabEnum.detail);
+
 
   final listDetail = <CashAdvanceDetailModel>[].obs;
 
+  final listLogApproval = <ApprovalLogModel>[].obs;
+
   final CashAdvanceTravelRepository _repository = Get.find();
 
-  /*@override
-  void onInit() {
-    createdDateController.text = "23/02/23";
-    requestorController.text = "John Smith";
-    referenceController.text = "TCA-ABM/1232/23.04";
-    itemController.text = "Transport";
-    frequencyController.text = "1";
-    currencyController.text = "Rupiah";
-    amountController.text = "Rp 150.000";
-    totalController.text = "Rp 150.000";
-    remarksController.text = "Remarks";
-    super.onInit();
-  }*/
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void onReady() {
@@ -54,7 +44,6 @@ class ApprovalCashAdvanceTravelDetailController extends BaseController{
     detailHeader();
     getDataDetail();
   }
-
 
   void setValue() {
     createdDateController.text =
@@ -77,6 +66,7 @@ class ApprovalCashAdvanceTravelDetailController extends BaseController{
     }, (r) {
       detailSelectedItem(r);
       setValue();
+      getApprovalLog();
     });
   }
 
@@ -110,4 +100,12 @@ class ApprovalCashAdvanceTravelDetailController extends BaseController{
     });
   }
 
+  void getApprovalLog()async{
+    final result = await _repository.getApprovalLog(detailSelectedItem.value.idRequestTrip!);
+
+    result.fold((l) => null, (r) {
+      listLogApproval.value = r;
+      listLogApproval.refresh();
+    });
+  }
 }

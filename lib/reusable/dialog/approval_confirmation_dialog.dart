@@ -83,7 +83,7 @@ class ApprovalConfirmationDialog extends StatelessWidget {
                               : Colors.transparent),
                       child: GestureDetector(
                         onTap: () {
-                          // controller.selectedEnum.value = ApproveEnum.onBehalf;
+                          controller.selectedEnum.value = ApproveEnum.onBehalf;
                         },
                       ),
                     ),
@@ -140,7 +140,7 @@ class ApprovalConfirmationDialog extends StatelessWidget {
                             : Colors.transparent),
                     child: GestureDetector(
                       onTap: () {
-                        // controller.selectedEnum.value = ApproveEnum.fullApprove;
+                        controller.selectedEnum.value = ApproveEnum.fullApprove;
                       },
                     ),
                   );

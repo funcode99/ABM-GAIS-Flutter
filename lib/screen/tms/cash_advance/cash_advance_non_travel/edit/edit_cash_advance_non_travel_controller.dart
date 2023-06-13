@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/approval_log_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
+import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
@@ -30,6 +32,10 @@ class EditCashAdvanceNonTravelController extends BaseController
 
   final listDetail = <CashAdvanceDetailModel>[].obs;
   final listCurrency = <CurrencyModel>[].obs;
+
+  final selectedTab = Rx<TabEnum>(TabEnum.detail);
+  final listLogApproval = <ApprovalLogModel>[].obs;
+
 
   final selectedCurrency = CurrencyModel().obs;
 
@@ -130,6 +136,8 @@ class EditCashAdvanceNonTravelController extends BaseController
     }, (r) {
       selectedItem(r);
       setValue();
+
+      getApprovalLog();
     });
   }
 
@@ -202,4 +210,14 @@ class EditCashAdvanceNonTravelController extends BaseController
         orElse: () => listCurrency.first);
     selectedCurrency(selected);
   }
+
+  void getApprovalLog()async{
+    final result = await _repository.getApprovalLog(selectedItem.value.id!);
+
+    result.fold((l) => null, (r) {
+      listLogApproval.value = r;
+      listLogApproval.refresh();
+    });
+  }
+
 }
