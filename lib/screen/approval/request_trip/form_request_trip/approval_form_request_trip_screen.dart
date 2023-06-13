@@ -10,7 +10,7 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/request_trip/form_request_trip/approval_form_request_trip_controller.dart';
-import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
+import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';

@@ -18,7 +18,7 @@ import 'package:gais/screen/approval/request_trip/form_request_trip/approval_for
 import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_controller.dart';
 import 'package:gais/screen/home/home_screen.dart';
 import 'package:gais/screen/menu/menu_screen.dart';
-import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
+import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/screen/tms/request_trip/add/requester_info/requester_info_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
