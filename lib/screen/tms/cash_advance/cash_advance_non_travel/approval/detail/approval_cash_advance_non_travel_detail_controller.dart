@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/approval_cash_advance/approval_cash_advance_model.dart';
+import 'package:gais/data/model/approval_log_model.dart';
 import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
@@ -10,6 +11,7 @@ import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
 import 'package:gais/reusable/dialog/fail_dialog.dart';
 import 'package:gais/reusable/dialog/success_dialog.dart';
+import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -29,7 +31,10 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController{
 
   final approvalModel = Rxn<ApprovalModel>();
 
+  final selectedTab = Rx<TabEnum>(TabEnum.detail);
+
   final listDetail = <CashAdvanceDetailModel>[].obs;
+  final listLogApproval = <ApprovalLogModel>[].obs;
 
   final CashAdvanceNonTravelRepository _repository = Get.find();
 
@@ -66,6 +71,7 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController{
     }, (r) {
       detailSelectedItem(r);
       setValue();
+      getApprovalLog();Z
     });
   }
 
@@ -96,6 +102,15 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController{
       }else{
         showApprovalFailDialog("Request failed to be approved!".tr).then((value) => Get.back(result: true));
       }
+    });
+  }
+
+  void getApprovalLog()async{
+    final result = await _repository.getApprovalLog(detailSelectedItem.value.id!);
+
+    result.fold((l) => null, (r) {
+      listLogApproval.value = r;
+      listLogApproval.refresh();
     });
   }
 
