@@ -244,7 +244,7 @@ class StockInListScreen extends StatelessWidget {
                                               style: listTitleTextStyle,
                                             ),
                                             Text(
-                                              "${item.itemCount}",
+                                              "${item.itemCount ?? "-"}",
                                               style: listSubTitleTextStyle
                                                   .copyWith(
                                                       overflow: TextOverflow
