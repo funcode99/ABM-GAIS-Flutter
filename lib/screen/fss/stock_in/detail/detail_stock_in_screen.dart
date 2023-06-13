@@ -73,7 +73,7 @@ class DetailStockInScreen extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .bodyText1
-                          ?.copyWith(fontSize: 16, fontWeight: FontWeight.w400),
+                          ?.copyWith(fontSize: 16, fontWeight: FontWeight.w400, overflow: TextOverflow.ellipsis),
                       textAlign: TextAlign.center,
                     ),
                   ),
