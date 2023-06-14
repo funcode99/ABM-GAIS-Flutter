@@ -11,7 +11,7 @@ import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/request_atk/detail/detail_approval_request_atk_controller.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
-import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
+import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:get/get.dart';
 

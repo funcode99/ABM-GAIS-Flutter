@@ -28,6 +28,7 @@ class DetailBookingMeetingRoomController extends BaseController
   final TextEditingController participantController = TextEditingController();
   final TextEditingController linkController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
+  late TextEditingController autocompleteController;
 
   TextfieldTagsController textfieldTagsController = TextfieldTagsController();
   final formKey = GlobalKey<FormState>();
@@ -90,6 +91,10 @@ class DetailBookingMeetingRoomController extends BaseController
     "Malani Barry",
   ];
 
+
+  final listSelectedEmails = <String>[].obs;
+  final showParticipantError = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -137,7 +142,7 @@ class DetailBookingMeetingRoomController extends BaseController
 
     if(selectedItem.value != null){
       for(String item in selectedItem.value.participants!){
-        textfieldTagsController.addTag = item;
+        listSelectedEmails.add(item);
       }
     }
 
@@ -171,6 +176,10 @@ class DetailBookingMeetingRoomController extends BaseController
 
   void updateOnEdit() {
     onEdit(!onEdit.value);
+  }
+
+  void deleteParticipantItem(String item){
+    listSelectedEmails.removeWhere((element) => item == element);
   }
 
 }

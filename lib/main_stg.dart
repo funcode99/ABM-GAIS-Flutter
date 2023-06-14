@@ -7,7 +7,7 @@ import 'package:gais/gais.dart';
 void main() {
   FlavorConfig(
       name: "STG",
-      color: Colors.blue,
+      color: Colors.green,
       location: BannerLocation.topEnd,
       variables: stgEnvironment
   );

@@ -3,7 +3,7 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:gais/reusable/dialog/reject_dialog.dart';
-import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
+import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';

@@ -19,6 +19,7 @@ class AddBookingMeetingRoomController extends BaseController
   final TextEditingController participantController = TextEditingController();
   final TextEditingController linkController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
+  late TextEditingController autocompleteController;
 
   TextfieldTagsController textfieldTagsController = TextfieldTagsController();
   final formKey = GlobalKey<FormState>();
@@ -75,6 +76,9 @@ class AddBookingMeetingRoomController extends BaseController
     "Zyaire Norman",
     "Malani Barry",
   ];
+
+  final listSelectedEmails = <String>[].obs;
+  final showParticipantError = false.obs;
 
   @override
   void onInit() {
@@ -136,7 +140,7 @@ class AddBookingMeetingRoomController extends BaseController
         endTime: endTime.toString(),
         idRoom: selectedRoom.value?.id.toString(),
         roomName: selectedRoom.value?.roomName.toString(),
-        participants: textfieldTagsController.getTags!,
+        participants: listSelectedEmails,
         link: linkController.text,
         remarks: remarksController.text,
         createdAt: "2023-06-12",
@@ -150,5 +154,9 @@ class AddBookingMeetingRoomController extends BaseController
       "item" : meetingRoomModel
     });
 
+  }
+
+  void deleteParticipantItem(String item){
+    listSelectedEmails.removeWhere((element) => item == element);
   }
 }

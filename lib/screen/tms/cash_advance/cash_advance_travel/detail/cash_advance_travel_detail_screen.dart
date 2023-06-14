@@ -11,7 +11,7 @@ import 'package:gais/reusable/list/approval_log_list.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_travel/cash_advance_travel_detail/cash_advance_travel_detail_controller.dart';
+import 'package:gais/screen/tms/cash_advance/cash_advance_travel/detail/cash_advance_travel_detail_controller.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';

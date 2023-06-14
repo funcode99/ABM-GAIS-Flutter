@@ -12,7 +12,7 @@ import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/request_atk/detail/detail_approval_request_atk_screen.dart';
 import 'package:gais/screen/approval/request_atk/list/approval_request_atk_list_controller.dart';
-import 'package:gais/screen/tms/cash_advance/enum/approval_action_enum.dart';
+import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:get/get.dart';
 
 class ApprovalRequestATKListScreen extends StatelessWidget {

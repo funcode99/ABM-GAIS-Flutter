@@ -11,7 +11,7 @@ class gais extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String env = FlavorConfig.instance.name ?? "prod";
+    String env = FlavorConfig.instance.name ?? "PROD";
     if (env == "DEV" || env == "STG") {
       return const FlavorBanner(
         location: BannerLocation.topEnd,
