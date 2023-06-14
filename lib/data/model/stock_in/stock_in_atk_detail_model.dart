@@ -10,6 +10,8 @@ class StockInATKDetailModel extends Equatable {
   int? idStockIn;
   int? idWarehouse;
   int? idItem;
+  int? idBrand;
+  int? idUom;
   int? qty;
   String? remarks;
   String? createdAt;
@@ -28,6 +30,8 @@ class StockInATKDetailModel extends Equatable {
     this.idStockIn,
     this.idWarehouse,
     this.idItem,
+    this.idBrand,
+    this.idUom,
     this.qty,
     this.remarks,
     this.createdAt,
