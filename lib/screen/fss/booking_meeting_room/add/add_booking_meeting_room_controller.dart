@@ -140,7 +140,7 @@ class AddBookingMeetingRoomController extends BaseController
         endTime: endTime.toString(),
         idRoom: selectedRoom.value?.id.toString(),
         roomName: selectedRoom.value?.roomName.toString(),
-        participants: textfieldTagsController.getTags!,
+        participants: listSelectedEmails,
         link: linkController.text,
         remarks: remarksController.text,
         createdAt: "2023-06-12",

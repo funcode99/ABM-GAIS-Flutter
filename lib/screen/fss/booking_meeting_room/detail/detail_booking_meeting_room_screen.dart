@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -342,243 +343,249 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                           const SizedBox(
                             height: 8,
                           ),
-                          Obx(() {
-                            if(controller.onEdit.value){
-                              return Autocomplete<String>(
-                                optionsViewBuilder: (context, onSelected,
-                                    options) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 10.0, vertical: 4.0),
-                                    child: Align(
-                                      alignment: Alignment.topCenter,
-                                      child: Material(
-                                        elevation: 4.0,
-                                        child: ConstrainedBox(
-                                          constraints: const BoxConstraints(
-                                              maxHeight: 200),
-                                          child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: options.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              final dynamic option = options
-                                                  .elementAt(
-                                                  index);
-                                              return TextButton(
-                                                onPressed: () {
-                                                  onSelected(option);
-                                                },
-                                                child: Align(
-                                                  alignment: Alignment.centerLeft,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 0.0),
-                                                    child: Text(
-                                                      "$option",
-                                                      textAlign: TextAlign.left,
-                                                      style: listSubTitleTextStyle
-                                                          .copyWith(
-                                                          color: Colors.black
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                optionsBuilder: (
-                                    TextEditingValue textEditingValue) {
-                                  if (textEditingValue.text == '') {
-                                    return const Iterable<String>.empty();
-                                  }
-                                  return controller.emails.where((String option) {
-                                    return option.contains(
-                                        textEditingValue.text.toLowerCase());
-                                  });
-                                },
-                                onSelected: (String selectedTag) {
-                                  controller.textfieldTagsController.addTag =
-                                      selectedTag;
-                                },
-                                fieldViewBuilder: (context, ttec, tfn,
-                                    onFieldSubmitted) {
-                                  return TextFieldTags(
-                                    textEditingController: ttec,
-                                    focusNode: tfn,
-                                    textfieldTagsController: controller
-                                        .textfieldTagsController,
-                                    initialTags: controller
-                                        .textfieldTagsController.getTags!.isNotEmpty ? controller
-                                        .textfieldTagsController.getTags : [],
-                                    textSeparators: const [' ', ','],
-                                    letterCase: LetterCase.normal,
-                                    validator: (String email) {
-                                      if (controller.textfieldTagsController
-                                          .getTags!
-                                          .contains(email)) {
-                                        return '$email already selected';
-                                      }
-                                      return null;
-                                    },
-                                    inputfieldBuilder:
-                                        (context, tec, fn, error, onChanged,
-                                        onSubmitted) {
-                                      return ((context, sc, tags, onTagDelete) {
-                                        return TextFormField(
-                                          validator: (item) {
-                                            if (controller.textfieldTagsController
-                                                .getTags!
-                                                .isEmpty) {
-                                              return "The field is required";
-                                            }
 
-                                            return null;
-                                          },
-                                          controller: tec,
-                                          focusNode: fn,
-                                          decoration: InputDecoration(
-                                            hintText: controller
-                                                .textfieldTagsController
-                                                .hasTags ? '' : "Participant".tr,
-                                            errorText: error,
-                                            prefixIconConstraints: BoxConstraints(
-                                                maxWidth: MediaQuery
-                                                    .of(context)
-                                                    .size
-                                                    .width * 0.74),
-                                            prefixIcon: tags.isNotEmpty
-                                                ? SingleChildScrollView(
-                                              controller: sc,
-                                              scrollDirection: Axis.horizontal,
-                                              child: Padding(
-                                                padding: const EdgeInsets
-                                                    .symmetric(
-                                                    horizontal: 8),
-                                                child: Row(
-                                                    children: tags.map((
-                                                        String email) {
-                                                      return Container(
-                                                        decoration: const BoxDecoration(
-                                                          borderRadius: BorderRadius
-                                                              .all(
-                                                            Radius.circular(4.0),
-                                                          ),
-                                                          color:
-                                                          Color(0xFFe4e4e4),
-                                                        ),
-                                                        margin:
-                                                        const EdgeInsets.only(
-                                                            right: 5.0, left: 5),
+                          Obx(() {
+                            print("TESTING");
+                            return Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 8),
+                              decoration: BoxDecoration(
+                                color: !controller.onEdit.value ? neutralColor : Colors.white,
+                                border: Border.all(
+                                  color: controller.showParticipantError.value
+                                      ? Colors.redAccent
+                                      : Colors.black,
+                                  width: 1,),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Obx(() {
+                                if (controller.onEdit.value) {
+                                  return Autocomplete<String>(
+                                    optionsViewBuilder: (context, onSelected,
+                                        options) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 10.0, vertical: 4.0),
+                                        child: Align(
+                                          alignment: Alignment.topCenter,
+                                          child: Material(
+                                            elevation: 4.0,
+                                            child: ConstrainedBox(
+                                              constraints: const BoxConstraints(
+                                                  maxHeight: 200),
+                                              child: ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: options.length,
+                                                itemBuilder: (
+                                                    BuildContext context,
+                                                    int index) {
+                                                  final dynamic option =
+                                                  options.elementAt(index);
+                                                  return TextButton(
+                                                    onPressed: () {
+                                                      onSelected(option);
+                                                    },
+                                                    child: Align(
+                                                      alignment: Alignment
+                                                          .centerLeft,
+                                                      child: Padding(
                                                         padding: const EdgeInsets
                                                             .symmetric(
-                                                            horizontal: 10.0,
-                                                            vertical: 4.0),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                          children: [
-                                                            InkWell(
-                                                              child: Text(
-                                                                email,
-                                                                style: listSubTitleTextStyle,
-                                                              ),
-                                                              onTap: () {
-                                                                //print("$tag selected");
-                                                              },
-                                                            ),
-                                                            const SizedBox(
-                                                                width: 4.0),
-                                                            InkWell(
-                                                              child: const Icon(
-                                                                Icons.cancel,
-                                                                size: 14.0,
-                                                                color: greyColor,
-                                                              ),
-                                                              onTap: () {
-                                                                onTagDelete(
-                                                                    email);
-                                                              },
-                                                            )
-                                                          ],
+                                                            vertical: 0.0),
+                                                        child: Text(
+                                                          "$option",
+                                                          textAlign: TextAlign
+                                                              .left,
+                                                          style: listSubTitleTextStyle
+                                                              .copyWith(
+                                                              color: Colors
+                                                                  .black),
                                                         ),
-                                                      );
-                                                    }).toList()),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    optionsBuilder: (
+                                        TextEditingValue textEditingValue) {
+                                      if (textEditingValue.text == '') {
+                                        return const Iterable<String>.empty();
+                                      }
+                                      return controller.emails.where((
+                                          String option) {
+                                        return option
+                                            .contains(
+                                            textEditingValue.text.toLowerCase());
+                                      });
+                                    },
+                                    onSelected: (String selectedTag) {
+                                      controller.listSelectedEmails.add(
+                                          selectedTag);
+                                      controller.autocompleteController.text = "";
+                                    },
+                                    fieldViewBuilder: (context, ttec, tfn,
+                                        onFieldSubmitted) {
+                                      controller.autocompleteController = ttec;
+                                      return Obx(() {
+                                        return Wrap(
+                                          runSpacing: 8,
+                                          runAlignment: WrapAlignment.center,
+                                          children: [
+                                            ...controller.listSelectedEmails
+                                                .mapIndexed((index, item) =>
+                                                Container(
+                                                  decoration: const BoxDecoration(
+                                                    borderRadius: BorderRadius
+                                                        .all(
+                                                      Radius.circular(4.0),
+                                                    ),
+                                                    color: Color(0xFFe4e4e4),
+                                                  ),
+                                                  margin: const EdgeInsets.only(
+                                                      right: 5.0, left: 5),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 10.0,
+                                                      vertical: 4.0),
+                                                  child: Row(
+                                                    mainAxisSize: MainAxisSize
+                                                        .min,
+                                                    children: [
+                                                      InkWell(
+                                                        child: Text(
+                                                          item,
+                                                          style: listSubTitleTextStyle,
+                                                        ),
+                                                        onTap: () {
+                                                          //print("$tag selected");
+                                                        },
+                                                      ),
+                                                      const SizedBox(width: 4.0),
+                                                      InkWell(
+                                                        child: const Icon(
+                                                          Icons.cancel,
+                                                          size: 14.0,
+                                                          color: greyColor,
+                                                        ),
+                                                        onTap: () {
+                                                          controller
+                                                              .deleteParticipantItem(
+                                                              item);
+                                                          controller
+                                                              .updateButton();
+                                                        },
+                                                      )
+                                                    ],
+                                                  ),
+                                                ))
+                                                .toList(),
+                                            SizedBox(
+                                              width: 100,
+                                              child: TextFormField(
+                                                controller: ttec,
+                                                focusNode: tfn,
+                                                validator: (value) {
+                                                  controller.showParticipantError(
+                                                      controller
+                                                          .listSelectedEmails
+                                                          .isEmpty);
+
+                                                  if (controller
+                                                      .listSelectedEmails
+                                                      .isEmpty) {
+                                                    return "";
+                                                  }
+                                                  return null;
+                                                },
+                                                decoration: InputDecoration(
+                                                    isDense: true,
+                                                    hintText: "Participant".tr,
+                                                    border: InputBorder.none,
+                                                    contentPadding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 4.0,
+                                                        vertical: 4.0),
+                                                    errorText: null,
+                                                    errorBorder: const OutlineInputBorder(
+                                                      borderSide: BorderSide.none,
+                                                      gapPadding: 0,
+                                                    ),
+                                                    errorStyle: const TextStyle(
+                                                        height: 0
+                                                    )
+                                                ),
+
                                               ),
                                             )
-                                                : null,
-                                          ),
-                                          onChanged: onChanged,
+                                          ],
                                         );
                                       });
                                     },
                                   );
-                                },
+                                }
+                                return Wrap(
+                                    runSpacing: 8,
+                                    runAlignment: WrapAlignment.center,
+                                    children: controller.listSelectedEmails
+                                        .map((String email) {
+                                      return Container(
+                                        decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius
+                                              .all(
+                                            Radius.circular(4.0),
+                                          ),
+                                          color:
+                                          Colors.white,
+                                        ),
+                                        margin:
+                                        const EdgeInsets.only(
+                                            right: 5.0, left: 5),
+                                        padding: const EdgeInsets
+                                            .symmetric(
+                                            horizontal: 10.0,
+                                            vertical: 4.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .spaceBetween,
+                                          children: [
+                                            InkWell(
+                                              child: Text(
+                                                email,
+                                                style: listSubTitleTextStyle,
+                                              ),
+                                              onTap: () {
+                                                //print("$tag selected");
+                                              },
+                                            ),
+                                            const SizedBox(
+                                                width: 4.0),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList());
+                              }),
+                            );
+                          }),
+                          Obx(() {
+                            if (controller.showParticipantError.value) {
+                              return const Padding(
+                                padding: EdgeInsets.only(left: 10, top: 8),
+                                child: Text(
+                                  "This field is required", style: TextStyle(
+                                    color: Colors.redAccent,
+                                    fontSize: 12
+                                ),),
                               );
                             }
-                            return Container(
-                              width: double.infinity,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: neutralColor,
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: greyColor, width: 1),
-                              ),
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Padding(
-                                  padding: const EdgeInsets
-                                      .symmetric(
-                                      horizontal: 8),
-                                  child: Row(
-                                      children: controller.textfieldTagsController.getTags!.map((
-                                          String email) {
-                                        return Container(
-                                          decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius
-                                                .all(
-                                              Radius.circular(4.0),
-                                            ),
-                                            color:
-                                            Colors.white,
-                                          ),
-                                          margin:
-                                          const EdgeInsets.only(
-                                              right: 5.0, left: 5),
-                                          padding: const EdgeInsets
-                                              .symmetric(
-                                              horizontal: 10.0,
-                                              vertical: 4.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment
-                                                .spaceBetween,
-                                            children: [
-                                              InkWell(
-                                                child: Text(
-                                                  email,
-                                                  style: listSubTitleTextStyle,
-                                                ),
-                                                onTap: () {
-                                                  //print("$tag selected");
-                                                },
-                                              ),
-                                              const SizedBox(
-                                                  width: 4.0),
-                                            ],
-                                          ),
-                                        );
-                                      }).toList()),
-                                ),
-                              ),
-                            );
+                            return const SizedBox();
                           }),
                           const SizedBox(
                             height: 8,
