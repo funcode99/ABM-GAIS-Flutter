@@ -89,6 +89,9 @@ class ManagementItemATKListController extends BaseController
       onChangeSelectedCompany("");
     }else{
       String idCompany = await storage.readString(StorageCore.companyID);
+      selectedCompany.value = CompanyModel(
+          id: idCompany
+      );
       onChangeSelectedCompany(idCompany);
     }
 

@@ -126,6 +126,8 @@ class AddItemStockInATKController extends BaseController with MasterDataMixin{
       stockInATKDetailModel.value?.qty = quantityController.text.toInt();
       stockInATKDetailModel.value?.idWarehouse = selectedWarehouse.value.id;
       stockInATKDetailModel.value?.idItem = selectedItem.value?.id;
+      stockInATKDetailModel.value?.idBrand = selectedItem.value?.idBrand;
+      stockInATKDetailModel.value?.idUom = selectedItem.value?.idUom;
       return stockInATKDetailModel.value!;
     }else{
       return StockInATKDetailModel(
@@ -139,6 +141,8 @@ class AddItemStockInATKController extends BaseController with MasterDataMixin{
         warehouseName : selectedWarehouse.value.warehouseName,
         itemName : selectedItem.value?.itemName,
         codeItem : selectedItem.value?.codeItem,
+        idBrand : selectedItem.value?.idBrand,
+        idUom : selectedItem.value?.idUom,
       );
     }
   }

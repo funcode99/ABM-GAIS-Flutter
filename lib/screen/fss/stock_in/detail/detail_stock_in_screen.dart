@@ -25,7 +25,8 @@ class DetailStockInScreen extends StatelessWidget {
     StockInATKModel selectedItem = Get.arguments["item"];
 
     final DetailStockInController controller =
-        Get.put(DetailStockInController())..selectedItem(selectedItem);
+    Get.put(DetailStockInController())
+      ..selectedItem(selectedItem);
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -53,32 +54,38 @@ class DetailStockInScreen extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        controller.selectedItem.value.status != null
-                            ? CustomStatusContainer(
-                                backgroundColor: greenColor,
-                                status:
-                                    controller.selectedItem.value.status ?? "-",
-                              )
-                            : const SizedBox()
-                      ],
-                    ),
+                    child: Obx(() {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          controller.selectedItem.value.status != null
+                              ? CustomStatusContainer(
+                            backgroundColor: greenColor,
+                            status:
+                            controller.selectedItem.value.status ?? "-",
+                          )
+                              : const SizedBox()
+                        ],
+                      );
+                    }),
                   ),
                   SizedBox(
                     width: double.infinity,
                     child: Text(
                       controller.selectedItem.value.noStockIn ?? "-",
-                      style: Theme.of(context)
+                      style: Theme
+                          .of(context)
                           .textTheme
                           .bodyText1
-                          ?.copyWith(fontSize: 16, fontWeight: FontWeight.w400, overflow: TextOverflow.ellipsis),
+                          ?.copyWith(fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          overflow: TextOverflow.ellipsis),
                       textAlign: TextAlign.center,
                     ),
                   ),
                   Obx(() {
-                    if (controller.selectedItem.value.codeStatusDoc.toString() ==
+                    if (controller.selectedItem.value.codeStatusDoc
+                        .toString() ==
                         "0") {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -99,25 +106,25 @@ class DetailStockInScreen extends StatelessWidget {
                           ),
                           controller.onEdit.value
                               ? ElevatedButton(
-                                  onPressed: controller.enableButton.value
-                                      ? () {
-                                          controller.onEdit(false);
-                                        }
-                                      : null,
-                                  style: ElevatedButton.styleFrom(
-                                      minimumSize: const Size(75, 30),
-                                      backgroundColor: successColor),
-                                  child: Text("Save".tr),
-                                )
+                            onPressed: controller.enableButton.value
+                                ? () {
+                              controller.onEdit(false);
+                            }
+                                : null,
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(75, 30),
+                                backgroundColor: successColor),
+                            child: Text("Save".tr),
+                          )
                               : ElevatedButton(
-                                  onPressed: () {
-                                    controller.submitHeader();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      minimumSize: const Size(75, 30),
-                                      backgroundColor: orangeColor),
-                                  child: Text("Submit".tr),
-                                ),
+                            onPressed: () {
+                              controller.submitHeader();
+                            },
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(75, 30),
+                                backgroundColor: orangeColor),
+                            child: Text("Submit".tr),
+                          ),
                         ],
                       );
                     }
@@ -132,7 +139,7 @@ class DetailStockInScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -154,7 +161,7 @@ class DetailStockInScreen extends StatelessWidget {
                         ),
                         Obx(() {
                           if (controller.selectedItem.value.status
-                                  ?.toLowerCase() ==
+                              ?.toLowerCase() ==
                               "reject") {
                             return CustomTextFormField(
                                 readOnly: true,
@@ -211,25 +218,25 @@ class DetailStockInScreen extends StatelessWidget {
                   Obx(() {
                     return controller.onEdit.value
                         ? Container(
-                            margin: const EdgeInsets.only(right: 8, bottom: 8),
-                            alignment: Alignment.topRight,
-                            child: SizedBox(
-                              width: 100,
-                              child: CustomIconButton(
-                                title: "Add".tr,
-                                iconData: IconlyBold.plus,
-                                backgroundColor: infoColor,
-                                onPressed: () async {
-                                  final addedItem = await Get.to(
-                                      () => const AddItemStockInATKScreen());
-                                  if (addedItem != null) {
-                                    //add item
-                                    controller.addDetail(addedItem);
-                                  }
-                                },
-                              ),
-                            ),
-                          )
+                      margin: const EdgeInsets.only(right: 8, bottom: 8),
+                      alignment: Alignment.topRight,
+                      child: SizedBox(
+                        width: 100,
+                        child: CustomIconButton(
+                          title: "Add".tr,
+                          iconData: IconlyBold.plus,
+                          backgroundColor: infoColor,
+                          onPressed: () async {
+                            final addedItem = await Get.to(
+                                    () => const AddItemStockInATKScreen());
+                            if (addedItem != null) {
+                              //add item
+                              controller.addDetail(addedItem);
+                            }
+                          },
+                        ),
+                      ),
+                    )
                         : const SizedBox();
                   }),
                   Padding(
@@ -238,113 +245,113 @@ class DetailStockInScreen extends StatelessWidget {
                       return controller.listDetail.isEmpty
                           ? const SizedBox()
                           : ListView(
-                              shrinkWrap: true,
-                              physics: const ScrollPhysics(),
-                              children: [
-                                ...controller.listDetail.mapIndexed((index,
-                                        item) =>
-                                    CommonListItem(
-                                      number: "${index + 1}",
-                                      title: item.itemName ?? "",
-                                      subtitle: item.brandName ?? "",
-                                      action: controller.onEdit.value
-                                          ? [
-                                              CustomIconButton(
-                                                title: "Edit".tr,
-                                                iconData: IconlyBold.edit,
-                                                backgroundColor: successColor,
-                                                onPressed: () async {
-                                                  final updatedItem =
-                                                      await Get.to(() =>
-                                                          AddItemStockInATKScreen(
-                                                              item: item));
-                                                  if (updatedItem != null) {
-                                                    //add item
-                                                    controller.updateDetail(
-                                                        updatedItem);
-                                                  }
-                                                },
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              CustomIconButton(
-                                                title: "Delete".tr,
-                                                iconData: IconlyBold.delete,
-                                                backgroundColor: redColor,
-                                                onPressed: () {
-                                                  Get.dialog(
-                                                      DeleteConfirmationDialog(
-                                                    onDeletePressed: () {
-                                                      controller
-                                                          .deleteDetail(item);
-                                                      Get.close(1);
-                                                    },
-                                                  ));
-                                                },
-                                              )
-                                            ]
-                                          : [],
-                                      content: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 8),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                        shrinkWrap: true,
+                        physics: const ScrollPhysics(),
+                        children: [
+                          ...controller.listDetail.mapIndexed((index,
+                              item) =>
+                              CommonListItem(
+                                number: "${index + 1}",
+                                title: item.itemName ?? "",
+                                subtitle: item.brandName ?? "",
+                                action: controller.onEdit.value
+                                    ? [
+                                  CustomIconButton(
+                                    title: "Edit".tr,
+                                    iconData: IconlyBold.edit,
+                                    backgroundColor: successColor,
+                                    onPressed: () async {
+                                      final updatedItem =
+                                      await Get.to(() =>
+                                          AddItemStockInATKScreen(
+                                              item: item));
+                                      if (updatedItem != null) {
+                                        //add item
+                                        controller.updateDetail(
+                                            updatedItem);
+                                      }
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  CustomIconButton(
+                                    title: "Delete".tr,
+                                    iconData: IconlyBold.delete,
+                                    backgroundColor: redColor,
+                                    onPressed: () {
+                                      Get.dialog(
+                                          DeleteConfirmationDialog(
+                                            onDeletePressed: () {
+                                              controller
+                                                  .deleteDetail(item);
+                                              Get.close(1);
+                                            },
+                                          ));
+                                    },
+                                  )
+                                ]
+                                    : [],
+                                content: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
                                           children: [
-                                            Expanded(
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    "Quantity".tr,
-                                                    style: listTitleTextStyle,
-                                                  ),
-                                                  Text(
-                                                    "${item.qty}",
-                                                    style: listSubTitleTextStyle,
-                                                  ),
-                                                ],
-                                              ),
+                                            Text(
+                                              "Quantity".tr,
+                                              style: listTitleTextStyle,
                                             ),
-                                            Expanded(
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    "UOM".tr,
-                                                    style: listTitleTextStyle,
-                                                  ),
-                                                  Text(
-                                                    item.uomName ?? "-",
-                                                    style: listSubTitleTextStyle,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    "Warehouse".tr,
-                                                    style: listTitleTextStyle,
-                                                  ),
-                                                  Text(
-                                                    item.warehouseName ?? "-",
-                                                    style: listSubTitleTextStyle,
-                                                  ),
-                                                ],
-                                              ),
+                                            Text(
+                                              "${item.qty}",
+                                              style: listSubTitleTextStyle,
                                             ),
                                           ],
                                         ),
                                       ),
-                                      onTap: () {
-                                        Get.dialog(
-                                          DetailItemStockInATKScreen(item: item)
-                                      );
-                                      },
-                                    ))
-                              ],
-                            );
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "UOM".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              item.uomName ?? "-",
+                                              style: listSubTitleTextStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Warehouse".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              item.warehouseName ?? "-",
+                                              style: listSubTitleTextStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onTap: () {
+                                  Get.dialog(
+                                      DetailItemStockInATKScreen(item: item)
+                                  );
+                                },
+                              ))
+                        ],
+                      );
                     }),
                   ),
                   const SizedBox(

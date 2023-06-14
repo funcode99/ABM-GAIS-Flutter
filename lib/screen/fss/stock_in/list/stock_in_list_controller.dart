@@ -86,6 +86,9 @@ class StockInListController extends BaseController with MasterDataMixin{
       onChangeSelectedCompany("");
     }else{
       String idCompany = await storage.readString(StorageCore.companyID);
+      selectedCompany.value = CompanyModel(
+        id: idCompany
+      );
       onChangeSelectedCompany(idCompany);
     }
     onChangeSelectedSite("");
@@ -99,7 +102,8 @@ class StockInListController extends BaseController with MasterDataMixin{
           "perPage" : limit,
           "search" : keyword.value,
           "id_warehouse" : selectedWarehouse.value?.id ?? "",
-          "id_company" : "", //TODO : ID COMPANY FILTER
+          "id_company" : selectedCompany.value?.id ?? "",
+          "id_site" : selectedSite.value?.id ?? "",
           "date" : startDate.value != null ? formatFilter.format(startDate.value!) : "",
           "start_date" : startDate.value != null ? formatFilter.format(startDate.value!) : "",
           "end_date" : endDate.value != null ? formatFilter.format(endDate.value!) : "",
@@ -221,14 +225,12 @@ class StockInListController extends BaseController with MasterDataMixin{
   }
 
   void _filterSite(String idCompany){
-    print("FILTER SITE ID COMPANY $idCompany");
     final filtered = listSite.where((item) => item.idCompany.toString() == idCompany);
     listSiteFiltered.removeWhere((element) => element.id != "");
     listSiteFiltered.addAll(filtered);
   }
 
   void _filterWarehouse(String idSite){
-    print("FILTER WAREHOUSE ID SITE $idSite");
     final filtered = listWarehouse.where((item) => item.idSite.toString() == idSite);
     listWarehouseFiltered.removeWhere((element) => element.id != "");
     listWarehouseFiltered.addAll(filtered);
