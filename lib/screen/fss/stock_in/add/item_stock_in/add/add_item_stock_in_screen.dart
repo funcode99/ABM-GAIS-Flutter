@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/data/model/stock_in/stock_in_atk_detail_model.dart';
@@ -10,6 +11,7 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/management_item_atk/list/management_item_atk_list_screen.dart';
 import 'package:gais/screen/fss/stock_in/add/item_stock_in/add/add_item_stock_in_controller.dart';
+import 'package:gais/util/validator/custom_validation_builder.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -140,6 +142,7 @@ class AddItemStockInATKScreen extends StatelessWidget{
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                       ],
+                      validator: ValidationBuilder().required().max(999).build(),
                       controller: controller.quantityController,
                       label: "Quantity".tr),
                   const SizedBox(
