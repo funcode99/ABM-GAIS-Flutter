@@ -1,8 +1,10 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:get/get.dart';
 
 class CustomDropDownFormField<T> extends StatelessWidget {
   CustomDropDownFormField({super.key,
@@ -29,6 +31,86 @@ class CustomDropDownFormField<T> extends StatelessWidget {
   FormFieldValidator<T>? validator;
   final List<DropdownMenuItem<T>>? items;
 
+
+  _getDropDown(){
+    if(items == null){
+      return const SizedBox();
+    }
+
+    /*if(items!.length <= 4){
+      return
+        DropdownButtonFormField(
+          // autovalidateMode: AutovalidateMode.always,
+          validator: validator,
+          decoration: const InputDecoration(
+              contentPadding:
+              EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
+          icon: const Icon(Icons.keyboard_arrow_down),
+          hint: Text(hintText ?? label, style: hintTextStyle,),
+          value: value,
+          isExpanded: true,
+          items: items,
+          onChanged: onChanged,
+
+        );
+    }*/
+
+    return DropdownSearch<String>(
+      validator: (value){
+        return validator!(value as T);
+      },
+      popupProps: PopupProps.menu(
+        constraints: const BoxConstraints(
+          maxHeight: 300
+        ),
+        fit: FlexFit.loose,
+        showSelectedItems: true,
+        showSearchBox: items!.length >= 15,
+        searchDelay: const Duration(milliseconds: 500),
+        itemBuilder: (context, item, bool){
+          return Container(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              child: Text(item));
+        },
+      ),
+      dropdownButtonProps: const DropdownButtonProps(
+        icon: Icon(Icons.keyboard_arrow_down),
+      ),
+
+      items: items!.map((DropdownMenuItem e) => (e.child as Text).data!).toList(),
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: InputDecoration(
+          hintText:hintText ??  label,
+          hintStyle: hintTextStyle,
+        ),
+      ),
+
+      onChanged: (value){
+        onChanged!(_getIdSelectedValue(value ?? "") as T?);
+      },
+      selectedItem: _getSelectedValue(),
+    );
+  }
+
+  String _getIdSelectedValue(String selected){
+    DropdownMenuItem? item = items?.firstWhere((DropdownMenuItem item) => (item.child as Text).data == selected) as DropdownMenuItem;
+    return item.value;
+  }
+
+  String _getSelectedValue(){
+    if(items != null){
+      if(items!.isNotEmpty){
+        DropdownMenuItem? item = items?.
+        firstWhere((DropdownMenuItem item) => item.value == value) as DropdownMenuItem;
+        Text textView = item.child as Text;
+        return textView.data ?? "";
+      }
+    }
+
+    return "";
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -41,7 +123,7 @@ class CustomDropDownFormField<T> extends StatelessWidget {
             children: <TextSpan>[
               TextSpan(
                   text: isRequired ? "*" : "",
-                  style: TextStyle(color: Colors.red)),
+                  style: const TextStyle(color: Colors.red)),
             ],
           ),
         ),
@@ -58,23 +140,10 @@ class CustomDropDownFormField<T> extends StatelessWidget {
               color: Colors.black,
               // fontWeight: FontWeight.w600,
             ),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               fillColor: neutralColor,
             ),
-          ):DropdownButtonFormField(
-            // autovalidateMode: AutovalidateMode.always,
-            validator: validator,
-            decoration: const InputDecoration(
-                contentPadding:
-                EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
-            icon: const Icon(Icons.keyboard_arrow_down),
-            hint: Text(hintText ?? label, style: hintTextStyle,),
-            value: value,
-            isExpanded: true,
-            items: items,
-            onChanged: onChanged,
-
-          ),
+          ): _getDropDown(),
         ),
       ],
     );

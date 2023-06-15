@@ -21,7 +21,7 @@ class DataEmpty extends StatelessWidget {
           children: [
             Image.asset("assets/img/data_notfound.png",),
             SizedBox(height: 20),
-            Text("Data Empty", style: appTitle)
+            Text("Data not Found" , style: appTitle)
           ],
         ),
       ),
