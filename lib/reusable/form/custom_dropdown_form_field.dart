@@ -65,7 +65,7 @@ class CustomDropDownFormField<T> extends StatelessWidget {
         ),
         fit: FlexFit.loose,
         showSelectedItems: true,
-        showSearchBox: items!.length >= 6,
+        showSearchBox: items!.length >= 15,
         searchDelay: const Duration(milliseconds: 500),
         itemBuilder: (context, item, bool){
           return Container(
