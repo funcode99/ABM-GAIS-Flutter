@@ -40,135 +40,106 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: SliverAppBarDelegate(
-                      minHeight: 150,
+                      minHeight: 140,
                       maxHeight: 32,
                       child: Container(
                         color: whiteColor,
                         child: Column(
                           children: [
-                            Text("Document No. 123231/ ${controller.ddID}", style: appTitle),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: !controller.isEdit ? MainAxisAlignment.center : MainAxisAlignment.spaceEvenly,
-                              children: [
-                                CustomFilledButton(
-                                  color: whiteColor,
-                                  width: Get.width / 4,
-                                  borderColor: infoColor,
-                                  fontColor: infoColor,
-                                  title: controller.isEdit ? "Cancel" : "Edit",
-                                  onPressed: () {
-                                    controller.isEdit = controller.isEdit == false ? true : false;
-                                    controller.update();
-                                  },
-                                ),
-                                controller.isEdit
-                                    ? CustomFilledButton(
-                                        color: successColor,
-                                        width: Get.width / 4,
-                                        title: "Save",
-                                        onPressed: () {
-                                          if(controller.formKey.currentState?.validate() == true){
-                                            controller.saveDocument();
-                                          }
-                                        },
-                                      )
-                                    : Container(),
-                              ],
-                            ),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(8),
-                                    margin: EdgeInsets.symmetric(horizontal: 5),
-                                    decoration: BoxDecoration(
-                                        color: successColor,
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(8),
-                                          topRight: Radius.circular(8),
-                                          bottomLeft: Radius.circular(24),
-                                          bottomRight: Radius.circular(8),
-                                        )),
-                                    child: Row(
-                                      children: [
-                                        Text("Created", style: TextStyle(color: whiteColor)),
-                                        Icon(
-                                          Icons.check_circle_outline_sharp,
-                                          color: whiteColor,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    child: Container(
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Container(
                                       padding: EdgeInsets.all(8),
                                       margin: EdgeInsets.symmetric(horizontal: 5),
                                       decoration: BoxDecoration(
-                                          color: controller.isReceived ? successColor : whiteColor,
+                                          color: successColor,
                                           borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(8),
                                             topRight: Radius.circular(8),
                                             bottomLeft: Radius.circular(24),
                                             bottomRight: Radius.circular(8),
-                                          ),
-                                          border: Border.all(color: controller.isReceived ? Colors.transparent : blackColor)),
+                                          )),
                                       child: Row(
                                         children: [
-                                          Text("Received", style: TextStyle(color: controller.isReceived ? whiteColor : blackColor)),
-                                          controller.isReceived
-                                              ? Icon(
-                                                  Icons.check_circle_outline_sharp,
-                                                  color: whiteColor,
-                                                )
-                                              : Container()
+                                          Text("Created", style: TextStyle(color: whiteColor)),
+                                          Icon(
+                                            Icons.check_circle_outline_sharp,
+                                            color: whiteColor,
+                                          )
                                         ],
                                       ),
                                     ),
-                                    onTap: () {
-                                      if (controller.isEdit == true) {
-                                        controller.codeStatusDoc = 1;
-                                        controller.isReceived = true;
-                                      }
-                                      controller.update();
-                                    },
-                                  ),
-                                  GestureDetector(
-                                    child: Container(
-                                      padding: EdgeInsets.all(8),
-                                      margin: EdgeInsets.symmetric(horizontal: 5),
-                                      decoration: BoxDecoration(
-                                          color: controller.isDelivering ? successColor : whiteColor,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8),
-                                            bottomLeft: Radius.circular(24),
-                                            bottomRight: Radius.circular(8),
-                                          ),
-                                          border: Border.all(color: controller.isDelivering ? Colors.transparent : blackColor)),
-                                      child: Row(
-                                        children: [
-                                          Text("Delivering", style: TextStyle(color: controller.isDelivering ? whiteColor : blackColor)),
-                                          controller.isDelivering
-                                              ? Icon(
-                                                  Icons.check_circle_outline_sharp,
-                                                  color: whiteColor,
-                                                )
-                                              : Container()
-                                        ],
+                                    GestureDetector(
+                                      child: Container(
+                                        padding: EdgeInsets.all(8),
+                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                                        decoration: BoxDecoration(
+                                            color: controller.isReceived ? successColor : whiteColor,
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              topRight: Radius.circular(8),
+                                              bottomLeft: Radius.circular(24),
+                                              bottomRight: Radius.circular(8),
+                                            ),
+                                            border: Border.all(color: controller.isReceived ? Colors.transparent : blackColor)),
+                                        child: Row(
+                                          children: [
+                                            Text("Received", style: TextStyle(color: controller.isReceived ? whiteColor : blackColor)),
+                                            controller.isReceived
+                                                ? Icon(
+                                                    Icons.check_circle_outline_sharp,
+                                                    color: whiteColor,
+                                                  )
+                                                : Container()
+                                          ],
+                                        ),
                                       ),
+                                      onTap: () {
+                                        if (controller.isEdit == true) {
+                                          controller.codeStatusDoc = 1;
+                                          controller.isReceived = true;
+                                        }
+                                        controller.update();
+                                      },
                                     ),
-                                    onTap: () {
-                                      if (controller.isEdit == true) {
-                                        controller.codeStatusDoc = 2;
-                                        controller.isDelivering = true;
-                                      }
-                                      controller.update();
-                                    },
-                                  ),
-                                  GestureDetector(
-                                    child: Container(
+                                    GestureDetector(
+                                      child: Container(
+                                        padding: EdgeInsets.all(8),
+                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                                        decoration: BoxDecoration(
+                                            color: controller.isDelivering ? successColor : whiteColor,
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              topRight: Radius.circular(8),
+                                              bottomLeft: Radius.circular(24),
+                                              bottomRight: Radius.circular(8),
+                                            ),
+                                            border: Border.all(color: controller.isDelivering ? Colors.transparent : blackColor)),
+                                        child: Row(
+                                          children: [
+                                            Text("Delivering", style: TextStyle(color: controller.isDelivering ? whiteColor : blackColor)),
+                                            controller.isDelivering
+                                                ? Icon(
+                                                    Icons.check_circle_outline_sharp,
+                                                    color: whiteColor,
+                                                  )
+                                                : Container()
+                                          ],
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        if (controller.isEdit == true && controller.codeStatusDoc == 1) {
+                                          controller.codeStatusDoc = 2;
+                                          controller.isDelivering = true;
+                                        }
+                                        controller.update();
+                                      },
+                                    ),
+                                    Container(
                                       padding: EdgeInsets.all(8),
                                       margin: EdgeInsets.symmetric(horizontal: 5),
                                       decoration: BoxDecoration(
@@ -192,17 +163,52 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    onTap: () {
-                                      if (controller.isEdit == true) {
-                                        controller.codeStatusDoc = 3;
-                                        controller.isDelivered = true;
-                                      }
-                                      controller.update();
-                                    },
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            )
+                            ),
+                            Text("Document No. 123231/ ${controller.ddID}", style: appTitle),
+                            Row(
+                              mainAxisAlignment: !controller.isEdit ? MainAxisAlignment.center : MainAxisAlignment.spaceEvenly,
+                              children: [
+                                CustomFilledButton(
+                                  color: whiteColor,
+                                  width: Get.width / 4,
+                                  borderColor: infoColor,
+                                  fontColor: infoColor,
+                                  title: controller.isEdit ? "Cancel" : "Edit",
+                                  onPressed: () {
+                                    if (controller.codeStatusDoc != 2) {
+                                      controller.isEdit = controller.isEdit == false ? true : false;
+                                      controller.update();
+                                    } else {
+                                      Get.showSnackbar(GetSnackBar(
+                                        icon: Icon(
+                                          Icons.error,
+                                          color: Colors.white,
+                                        ),
+                                        message: "Unable to edit document",
+                                        isDismissible: true,
+                                        duration: Duration(seconds: 3),
+                                        backgroundColor: Colors.red,
+                                      ));
+                                    }
+                                  },
+                                ),
+                                controller.isEdit
+                                    ? CustomFilledButton(
+                                        color: successColor,
+                                        width: Get.width / 4,
+                                        title: "Save",
+                                        onPressed: () {
+                                          if (controller.formKey.currentState?.validate() == true) {
+                                            controller.saveDocument();
+                                          }
+                                        },
+                                      )
+                                    : Container(),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -229,6 +235,15 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                 isRequired: true,
                                 readOnly: true,
                               ),
+                              SizedBox(height: 8),
+                              controller.codeStatusDoc == 3
+                                  ? CustomTextFormField(
+                                      controller: controller.receivedBy,
+                                      label: "Received By",
+                                      isRequired: true,
+                                      readOnly: true,
+                                    )
+                                  : Container(),
                               SizedBox(height: 8),
                             ],
                           ),
@@ -273,13 +288,28 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                         return Form(
                           key: controller.formKey,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 34),
+                            padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                SizedBox(height: 8),
                                 CustomTextFormField(
                                   controller: controller.sender,
                                   label: "Sender",
+                                  isRequired: true,
+                                  readOnly: true,
+                                ),
+                                SizedBox(height: 8),
+                                CustomTextFormField(
+                                  controller: controller.company,
+                                  label: "Receiver Company",
+                                  isRequired: true,
+                                  readOnly: true,
+                                ),
+                                SizedBox(height: 8),
+                                CustomTextFormField(
+                                  controller: controller.location,
+                                  label: "Location",
                                   isRequired: true,
                                   readOnly: true,
                                 ),
@@ -309,20 +339,6 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                     controller.selectedReceiver = value;
                                     controller.update();
                                   },
-                                ),
-                                SizedBox(height: 8),
-                                CustomTextFormField(
-                                  controller: controller.location,
-                                  label: "Location",
-                                  isRequired: true,
-                                  readOnly: true,
-                                ),
-                                SizedBox(height: 8),
-                                CustomTextFormField(
-                                  controller: controller.company,
-                                  label: "Receiver Company",
-                                  isRequired: true,
-                                  readOnly: true,
                                 ),
                                 SizedBox(height: 8),
                                 CustomTextFormField(

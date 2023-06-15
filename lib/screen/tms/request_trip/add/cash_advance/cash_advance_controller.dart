@@ -39,7 +39,7 @@ class CashAdvanceController extends BaseController {
         formEdit == true
             ? Get.off(FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
             : Get.offAll(RequestTripListScreen());
-        GetSnackBar(
+        Get.showSnackbar(GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -48,10 +48,10 @@ class CashAdvanceController extends BaseController {
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: greenColor,
-        );
+        ));
       });
     } catch (e) {
-      GetSnackBar(
+      Get.showSnackbar(GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -60,7 +60,7 @@ class CashAdvanceController extends BaseController {
         isDismissible: true,
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
-      );
+      ));
     }
   }
 
@@ -68,7 +68,7 @@ class CashAdvanceController extends BaseController {
     try {
       await repository.deleteCashAdvanceTravel(id).then((value) {
         fetchList();
-        GetSnackBar(
+        Get.showSnackbar(GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -77,11 +77,11 @@ class CashAdvanceController extends BaseController {
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: greenColor,
-        );
+        ));
       });
       update();
     } catch (e) {
-      GetSnackBar(
+      Get.showSnackbar(GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -90,7 +90,7 @@ class CashAdvanceController extends BaseController {
         isDismissible: true,
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
-      );
+      ));
     }
   }
 }

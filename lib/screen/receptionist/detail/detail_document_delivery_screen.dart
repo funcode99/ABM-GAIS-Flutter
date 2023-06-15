@@ -39,14 +39,143 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: SliverAppBarDelegate(
-                      minHeight: 150,
+                      minHeight: 140,
                       maxHeight: 32,
                       child: Container(
                         color: whiteColor,
                         child: Column(
                           children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(8),
+                                      margin: EdgeInsets.symmetric(horizontal: 5),
+                                      decoration: BoxDecoration(
+                                          color: successColor,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(8),
+                                            topRight: Radius.circular(8),
+                                            bottomLeft: Radius.circular(24),
+                                            bottomRight: Radius.circular(8),
+                                          )),
+                                      child: Row(
+                                        children: [
+                                          Text("Created", style: TextStyle(color: whiteColor)),
+                                          Icon(
+                                            Icons.check_circle_outline_sharp,
+                                            color: whiteColor,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      child: Container(
+                                        padding: EdgeInsets.all(8),
+                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                                        decoration: BoxDecoration(
+                                            color: controller.isReceived ? successColor : whiteColor,
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              topRight: Radius.circular(8),
+                                              bottomLeft: Radius.circular(24),
+                                              bottomRight: Radius.circular(8),
+                                            ),
+                                            border: Border.all(color: controller.isReceived ? Colors.transparent : blackColor)),
+                                        child: Row(
+                                          children: [
+                                            Text("Received", style: TextStyle(color: controller.isReceived ? whiteColor : blackColor)),
+                                            controller.isReceived
+                                                ? Icon(
+                                              Icons.check_circle_outline_sharp,
+                                              color: whiteColor,
+                                            )
+                                                : Container()
+                                          ],
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        if (controller.isEdit == true) {
+                                          controller.codeStatusDoc = 1;
+                                          controller.isReceived = true;
+                                        }
+                                        controller.update();
+                                      },
+                                    ),
+                                    GestureDetector(
+                                      child: Container(
+                                        padding: EdgeInsets.all(8),
+                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                                        decoration: BoxDecoration(
+                                            color: controller.isDelivering ? successColor : whiteColor,
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              topRight: Radius.circular(8),
+                                              bottomLeft: Radius.circular(24),
+                                              bottomRight: Radius.circular(8),
+                                            ),
+                                            border: Border.all(color: controller.isDelivering ? Colors.transparent : blackColor)),
+                                        child: Row(
+                                          children: [
+                                            Text("Delivering", style: TextStyle(color: controller.isDelivering ? whiteColor : blackColor)),
+                                            controller.isDelivering
+                                                ? Icon(
+                                              Icons.check_circle_outline_sharp,
+                                              color: whiteColor,
+                                            )
+                                                : Container()
+                                          ],
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        if (controller.isEdit == true) {
+                                          controller.codeStatusDoc = 2;
+                                          controller.isDelivering = true;
+                                        }
+                                        controller.update();
+                                      },
+                                    ),
+                                    GestureDetector(
+                                      child: Container(
+                                        padding: EdgeInsets.all(8),
+                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                                        decoration: BoxDecoration(
+                                            color: controller.isDelivered ? successColor : whiteColor,
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(8),
+                                              topRight: Radius.circular(8),
+                                              bottomLeft: Radius.circular(24),
+                                              bottomRight: Radius.circular(8),
+                                            ),
+                                            border: Border.all(color: controller.isDelivered ? Colors.transparent : blackColor)),
+                                        child: Row(
+                                          children: [
+                                            Text("Delivered", style: TextStyle(color: controller.isDelivered ? whiteColor : blackColor)),
+                                            controller.isDelivered
+                                                ? Icon(
+                                              Icons.check_circle_outline_sharp,
+                                              color: whiteColor,
+                                            )
+                                                : Container()
+                                          ],
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        if (controller.isEdit == true) {
+                                          controller.codeStatusDoc = 3;
+                                          controller.isDelivered = true;
+                                        }
+                                        controller.update();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                             Text("Document No. 123231/ ${controller.ddID}", style: appTitle),
-                            SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: !controller.isEdit ? MainAxisAlignment.center : MainAxisAlignment.spaceEvenly,
                               children: [
@@ -75,133 +204,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                     : Container(),
                               ],
                             ),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(8),
-                                    margin: EdgeInsets.symmetric(horizontal: 5),
-                                    decoration: BoxDecoration(
-                                        color: successColor,
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(8),
-                                          topRight: Radius.circular(8),
-                                          bottomLeft: Radius.circular(24),
-                                          bottomRight: Radius.circular(8),
-                                        )),
-                                    child: Row(
-                                      children: [
-                                        Text("Created", style: TextStyle(color: whiteColor)),
-                                        Icon(
-                                          Icons.check_circle_outline_sharp,
-                                          color: whiteColor,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    child: Container(
-                                      padding: EdgeInsets.all(8),
-                                      margin: EdgeInsets.symmetric(horizontal: 5),
-                                      decoration: BoxDecoration(
-                                          color: controller.isReceived ? successColor : whiteColor,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8),
-                                            bottomLeft: Radius.circular(24),
-                                            bottomRight: Radius.circular(8),
-                                          ),
-                                          border: Border.all(color: controller.isReceived ? Colors.transparent : blackColor)),
-                                      child: Row(
-                                        children: [
-                                          Text("Received", style: TextStyle(color: controller.isReceived ? whiteColor : blackColor)),
-                                          controller.isReceived
-                                              ? Icon(
-                                                  Icons.check_circle_outline_sharp,
-                                                  color: whiteColor,
-                                                )
-                                              : Container()
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      if (controller.isEdit == true) {
-                                        controller.codeStatusDoc = 1;
-                                        controller.isReceived = true;
-                                      }
-                                      controller.update();
-                                    },
-                                  ),
-                                  GestureDetector(
-                                    child: Container(
-                                      padding: EdgeInsets.all(8),
-                                      margin: EdgeInsets.symmetric(horizontal: 5),
-                                      decoration: BoxDecoration(
-                                          color: controller.isDelivering ? successColor : whiteColor,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8),
-                                            bottomLeft: Radius.circular(24),
-                                            bottomRight: Radius.circular(8),
-                                          ),
-                                          border: Border.all(color: controller.isDelivering ? Colors.transparent : blackColor)),
-                                      child: Row(
-                                        children: [
-                                          Text("Delivering", style: TextStyle(color: controller.isDelivering ? whiteColor : blackColor)),
-                                          controller.isDelivering
-                                              ? Icon(
-                                                  Icons.check_circle_outline_sharp,
-                                                  color: whiteColor,
-                                                )
-                                              : Container()
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      if (controller.isEdit == true) {
-                                        controller.codeStatusDoc = 2;
-                                        controller.isDelivering = true;
-                                      }
-                                      controller.update();
-                                    },
-                                  ),
-                                  GestureDetector(
-                                    child: Container(
-                                      padding: EdgeInsets.all(8),
-                                      margin: EdgeInsets.symmetric(horizontal: 5),
-                                      decoration: BoxDecoration(
-                                          color: controller.isDelivered ? successColor : whiteColor,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8),
-                                            bottomLeft: Radius.circular(24),
-                                            bottomRight: Radius.circular(8),
-                                          ),
-                                          border: Border.all(color: controller.isDelivered ? Colors.transparent : blackColor)),
-                                      child: Row(
-                                        children: [
-                                          Text("Delivered", style: TextStyle(color: controller.isDelivered ? whiteColor : blackColor)),
-                                          controller.isDelivered
-                                              ? Icon(
-                                                  Icons.check_circle_outline_sharp,
-                                                  color: whiteColor,
-                                                )
-                                              : Container()
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      if (controller.isEdit == true) {
-                                        controller.codeStatusDoc = 3;
-                                        controller.isDelivered = true;
-                                      }
-                                      controller.update();
-                                    },
-                                  ),
-                                ],
-                              ),
-                            )
+
                           ],
                         ),
                       ),

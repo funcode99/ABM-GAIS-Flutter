@@ -13,6 +13,7 @@ class FormDocumentDeliveryController extends BaseController {
   final formKey = GlobalKey<FormState>();
   final createdDate = TextEditingController();
   final createdBy = TextEditingController();
+  final receivedBy = TextEditingController();
   final sender = TextEditingController();
   final location = TextEditingController();
   final company = TextEditingController();
@@ -57,15 +58,14 @@ class FormDocumentDeliveryController extends BaseController {
   }
 
   Future<void> fetchEdit() async {
-
     try {
       await documentDelivery.getByID(ddID!).then((value) {
         DateTime? tempDate;
         senderID = value.data?.first.idEmployeeSender?.toInt();
-        sender.text = value.data?.first.idEmployeeSender.toString() ?? "";
+        sender.text = value.data?.first.senderName.toString() ?? "";
         selectedReceiver = value.data?.first.idEmployeeReceiver.toString();
         receiverID = value.data?.first.idEmployeeReceiver?.toInt();
-        receiverName = value.data?.first.idEmployeeReceiver.toString();
+        receiverName = value.data?.first.receiverName.toString();
         location.text = value.data?.first.siteName ?? "";
         siteID = value.data?.first.idSite?.toInt();
         company.text = value.data?.first.companyName ?? "";
@@ -75,7 +75,7 @@ class FormDocumentDeliveryController extends BaseController {
         remarks.text = value.data?.first.remarks ?? "";
         tempDate = DateTime.parse(value.data?.first.createdAt ?? "");
         createdDate.text = dateFormat.format(tempDate);
-        createdBy.text = value.data?.first.createdBy ?? "";
+        createdBy.text = value.data?.first.senderName ?? "";
         codeStatusDoc = value.data?.first.codeStatusDoc?.toInt();
         if (codeStatusDoc == 1) {
           isReceived = true;
@@ -114,7 +114,7 @@ class FormDocumentDeliveryController extends BaseController {
         print(value.message);
         isEdit = false;
         update();
-        const GetSnackBar(
+        Get.showSnackbar(const GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,
@@ -123,20 +123,22 @@ class FormDocumentDeliveryController extends BaseController {
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: Colors.green,
-        );
+        ));
       });
     } catch (e, i) {
       e.printError();
       i.printError();
-      const GetSnackBar(
-        icon: Icon(
-          Icons.error,
-          color: Colors.white,
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Update Failed',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
         ),
-        message: "Update Failed",
-        isDismissible: true,
-        duration: Duration(seconds: 3),
-        backgroundColor: Colors.red,
       );
     }
   }

@@ -26,7 +26,7 @@ class DocumentDeliveryListController extends BaseController {
   bool dataisnull = false;
   bool searchNotFound = false;
   int currentPage = 1;
-  int perPage = 5;
+  int perPage = 10;
   int lastNumber = 1;
 
   dd.GetDocumentDeliveryModel? ddModel;
@@ -103,7 +103,7 @@ class DocumentDeliveryListController extends BaseController {
     isLoading = true;
     try {
       await documentDelivery.delete(id).then((value) {
-        const GetSnackBar(
+        Get.showSnackbar(GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -112,13 +112,13 @@ class DocumentDeliveryListController extends BaseController {
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: greenColor,
-        );
+        ));
         fetchList();
       });
       isLoading = false;
       update();
     } catch (e) {
-      const GetSnackBar(
+      Get.showSnackbar(GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -127,7 +127,7 @@ class DocumentDeliveryListController extends BaseController {
         isDismissible: true,
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
-      );
+      ));
     }
   }
 }

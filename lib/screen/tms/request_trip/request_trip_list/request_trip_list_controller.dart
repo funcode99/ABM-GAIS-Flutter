@@ -120,7 +120,7 @@ class RequestTripListController extends BaseController {
       await repository.deletePurposeOfTrip(id).then((value) {
         fetchList();
       });
-      GetSnackBar(
+      Get.showSnackbar(GetSnackBar(
         icon: Icon(
           Icons.info,
           color: Colors.white,
@@ -129,10 +129,10 @@ class RequestTripListController extends BaseController {
         isDismissible: true,
         duration: Duration(seconds: 3),
         backgroundColor: greenColor,
-      );
+      ));
       isLoading = false;
     } catch (e) {
-      const GetSnackBar(
+      Get.showSnackbar(GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -141,7 +141,7 @@ class RequestTripListController extends BaseController {
         isDismissible: true,
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
-      );
+      ));
     }
     update();
   }

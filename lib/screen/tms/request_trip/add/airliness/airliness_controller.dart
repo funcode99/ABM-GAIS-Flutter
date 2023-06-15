@@ -53,7 +53,7 @@ class AirlinessController extends BaseController {
     isLoading = true;
     try {
       await repository.deleteAirliness(id).then((value) {
-        GetSnackBar(
+        Get.showSnackbar(GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -62,12 +62,12 @@ class AirlinessController extends BaseController {
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: greenColor,
-        );
+        ));
       });
       isLoading = false;
       fetchList();
     } catch (e) {
-      GetSnackBar(
+      Get.showSnackbar(GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -76,7 +76,7 @@ class AirlinessController extends BaseController {
         isDismissible: true,
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
-      );
+      ));
     }
     update();
   }

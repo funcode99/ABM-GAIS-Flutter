@@ -183,7 +183,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                     controller.fetchList();
                                     controller.update();
                                   }),
-                                  isDelete: true,
+                                  isDelete: controller.ddList[index].codeStatusDoc == 3 ? false : true,
                                   deleteAction: () {
                                     controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
                                     controller.deleteDocumentDelivery(int.parse(controller.ddList[index].id.toString()));

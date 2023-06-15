@@ -27,7 +27,7 @@ class ListDocumentDeliveryController extends BaseController{
   bool dataisnull = false;
   bool searchNotFound = false;
   int currentPage = 1;
-  int perPage = 5;
+  int perPage = 10;
   int lastNumber = 1;
 
   dd.GetDocumentDeliveryModel? ddModel;

@@ -66,7 +66,7 @@ class AddDocumentDeliveryController extends BaseController {
       )
           .then((value) {
         Get.off(DocumentDeliveryListScreen());
-        const GetSnackBar(
+        Get.showSnackbar(GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,
@@ -75,12 +75,12 @@ class AddDocumentDeliveryController extends BaseController {
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: Colors.green,
-        );
+        ));
       });
     } catch (e, i) {
       e.printError();
       i.printError();
-      const GetSnackBar(
+      Get.showSnackbar(GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -89,7 +89,7 @@ class AddDocumentDeliveryController extends BaseController {
         isDismissible: true,
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
-      );
+      ));
     }
   }
 

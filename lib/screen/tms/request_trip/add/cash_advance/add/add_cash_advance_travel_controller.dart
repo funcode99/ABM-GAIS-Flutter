@@ -199,7 +199,7 @@ class AddCashAdvanceTravelController extends BaseController {
     } catch (e) {
       e.printError();
       Get.showSnackbar(
-        const GetSnackBar(
+        GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,

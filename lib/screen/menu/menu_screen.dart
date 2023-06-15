@@ -6,6 +6,7 @@ import 'package:gais/screen/approval/request_atk/list/approval_request_atk_list_
 import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_list_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/list/booking_meeting_room_list_screen.dart';
 import 'package:gais/screen/fss/management_item_atk/list/management_item_atk_list_screen.dart';
+import 'package:gais/screen/fss/management_meeting_room/list/management_meeting_room_screen.dart';
 import 'package:gais/screen/fss/request_atk/list/request_atk_list_screen.dart';
 import 'package:gais/screen/fss/document_delivery/document_delivery_list/document_delivery_list_screen.dart';
 import 'package:gais/screen/fss/stock_in/list/stock_in_list_screen.dart';
@@ -33,13 +34,11 @@ class MenuScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Travel Management System",
-                          style: listTitleTextStyle),
+                      Text("Travel Management System", style: listTitleTextStyle),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -53,8 +52,7 @@ class MenuScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   padding: const EdgeInsets.all(10),
-                                  margin: const EdgeInsets.only(
-                                      top: 25, bottom: 5),
+                                  margin: const EdgeInsets.only(top: 25, bottom: 5),
                                   height: 50,
                                   width: 50,
                                   child: SvgPicture.asset(
@@ -65,8 +63,7 @@ class MenuScreen extends StatelessWidget {
                                 const Text("Request Trip"),
                               ],
                             ),
-                            onTap: () =>
-                                Get.off(const RequestTripListScreen()),
+                            onTap: () => Get.off(const RequestTripListScreen()),
                           ),
                           GestureDetector(
                             child: Column(
@@ -78,8 +75,7 @@ class MenuScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   padding: const EdgeInsets.all(10),
-                                  margin: const EdgeInsets.only(
-                                      top: 25, bottom: 5),
+                                  margin: const EdgeInsets.only(top: 25, bottom: 5),
                                   height: 50,
                                   width: 50,
                                   child: SvgPicture.asset(
@@ -102,8 +98,7 @@ class MenuScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   padding: const EdgeInsets.all(10),
-                                  margin: const EdgeInsets.only(
-                                      top: 25, bottom: 5),
+                                  margin: const EdgeInsets.only(top: 25, bottom: 5),
                                   height: 50,
                                   width: 50,
                                   child: SvgPicture.asset(
@@ -114,8 +109,7 @@ class MenuScreen extends StatelessWidget {
                                 const Text("Cash Advance"),
                               ],
                             ),
-                            onTap: () => Get.to(()=>const SubmenuScreen(),
-                                arguments: false),
+                            onTap: () => Get.to(() => const SubmenuScreen(), arguments: false),
                           ),
                         ],
                       ),
@@ -130,19 +124,17 @@ class MenuScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Facility Service System",
-                          style: listTitleTextStyle),
+                      Text("Facility Service System", style: listTitleTextStyle),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Get.to(()=>const BookingMeetingRoomListScreen());
+                              Get.to(() => const BookingMeetingRoomListScreen());
                             },
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -153,8 +145,7 @@ class MenuScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   padding: const EdgeInsets.all(10),
-                                  margin: const EdgeInsets.only(
-                                      top: 25, bottom: 5),
+                                  margin: const EdgeInsets.only(top: 25, bottom: 5),
                                   height: 50,
                                   width: 50,
                                   child: SvgPicture.asset(
@@ -182,8 +173,7 @@ class MenuScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   padding: const EdgeInsets.all(10),
-                                  margin: const EdgeInsets.only(
-                                      top: 25, bottom: 5),
+                                  margin: const EdgeInsets.only(top: 25, bottom: 5),
                                   height: 50,
                                   width: 50,
                                   child: SvgPicture.asset(
@@ -208,8 +198,7 @@ class MenuScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   padding: const EdgeInsets.all(10),
-                                  margin: const EdgeInsets.only(
-                                      top: 25, bottom: 5),
+                                  margin: const EdgeInsets.only(top: 25, bottom: 5),
                                   height: 50,
                                   width: 50,
                                   child: SvgPicture.asset(
@@ -239,30 +228,25 @@ class MenuScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 24, horizontal: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("Approval", style: listTitleTextStyle),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 GestureDetector(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
                                           color: infoColor,
-                                          borderRadius:
-                                              BorderRadius.circular(50),
+                                          borderRadius: BorderRadius.circular(50),
                                         ),
                                         padding: const EdgeInsets.all(10),
-                                        margin: const EdgeInsets.only(
-                                            top: 25, bottom: 5),
+                                        margin: const EdgeInsets.only(top: 25, bottom: 5),
                                         height: 50,
                                         width: 50,
                                         child: SvgPicture.asset(
@@ -273,23 +257,19 @@ class MenuScreen extends StatelessWidget {
                                       const Text("Request Trip"),
                                     ],
                                   ),
-                                  onTap: () => Get.off(
-                                      const ApprovalRequestTripListScreen()),
+                                  onTap: () => Get.off(const ApprovalRequestTripListScreen()),
                                 ),
                                 GestureDetector(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
                                           color: infoColor,
-                                          borderRadius:
-                                              BorderRadius.circular(50),
+                                          borderRadius: BorderRadius.circular(50),
                                         ),
                                         padding: const EdgeInsets.all(10),
-                                        margin: const EdgeInsets.only(
-                                            top: 25, bottom: 5),
+                                        margin: const EdgeInsets.only(top: 25, bottom: 5),
                                         height: 50,
                                         width: 50,
                                         child: SvgPicture.asset(
@@ -300,28 +280,22 @@ class MenuScreen extends StatelessWidget {
                                       const Text("Cash Advance"),
                                     ],
                                   ),
-                                  onTap: () => Get.to(const SubmenuScreen(),
-                                      arguments: true),
+                                  onTap: () => Get.to(const SubmenuScreen(), arguments: true),
                                 ),
                                 GestureDetector(
-                                  onTap: (){
-                                    Get.to(
-                                      const ApprovalRequestATKListScreen()
-                                    );
+                                  onTap: () {
+                                    Get.to(const ApprovalRequestATKListScreen());
                                   },
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
                                           color: infoColor,
-                                          borderRadius:
-                                              BorderRadius.circular(50),
+                                          borderRadius: BorderRadius.circular(50),
                                         ),
                                         padding: const EdgeInsets.all(10),
-                                        margin: const EdgeInsets.only(
-                                            top: 25, bottom: 5),
+                                        margin: const EdgeInsets.only(top: 25, bottom: 5),
                                         height: 50,
                                         width: 50,
                                         child: SvgPicture.asset(
@@ -343,7 +317,6 @@ class MenuScreen extends StatelessWidget {
                       ),
                     )
                   : Container(),
-
               Card(
                 elevation: 5,
                 margin: const EdgeInsets.all(10),
@@ -351,25 +324,22 @@ class MenuScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Padding(
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Facility Service System".tr,
-                          style: listTitleTextStyle),
+                      Text("Facility Service System".tr, style: listTitleTextStyle),
                       const SizedBox(
                         height: 4,
                       ),
-                      Text("ATK Supplies".tr,
-                          style: listSubTitleTextStyle),
+                      Text("ATK Supplies".tr, style: listSubTitleTextStyle),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 Get.to(const ManagementItemATKListScreen());
                               },
                               child: Column(
@@ -397,7 +367,7 @@ class MenuScreen extends StatelessWidget {
                               ),
                             ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 Get.to(const StockInListScreen());
                               },
                               child: Column(
@@ -431,65 +401,56 @@ class MenuScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
               controller.receptionis
                   ? Card(
-                elevation: 5,
-                margin: const EdgeInsets.all(10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 24, horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Document Delivery", style: listTitleTextStyle),
-                      Text("List Document Delivery",style: listSubTitleTextStyle),
-                      Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 18),
-                        child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
+                      elevation: 5,
+                      margin: const EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            GestureDetector(
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
+                            Text("Document Delivery", style: listTitleTextStyle),
+                            Text("List Document Delivery", style: listSubTitleTextStyle),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 18),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: infoColor,
-                                      borderRadius:
-                                      BorderRadius.circular(50),
+                                  GestureDetector(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: infoColor,
+                                            borderRadius: BorderRadius.circular(50),
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                          margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                          height: 50,
+                                          width: 50,
+                                          child: SvgPicture.asset(
+                                            ImageConstant.smsTracking,
+                                            height: 25,
+                                          ),
+                                        ),
+                                        const Text("Document\nDelivery", textAlign: TextAlign.center),
+                                      ],
                                     ),
-                                    padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(
-                                        top: 25, bottom: 5),
-                                    height: 50,
-                                    width: 50,
-                                    child: SvgPicture.asset(
-                                      ImageConstant.smsTracking,
-                                      height: 25,
-                                    ),
+                                    onTap: () => Get.to(const ListDocumentDeliveryScreen()),
                                   ),
-                                  const Text("Document\nDelivery", textAlign: TextAlign.center),
                                 ],
                               ),
-                              onTap: () => Get.to(
-                                  const ListDocumentDeliveryScreen()),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              )
+                    )
                   : Container(),
-
               Card(
                 elevation: 5,
                 margin: const EdgeInsets.all(10),
@@ -497,34 +458,28 @@ class MenuScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 24, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Facility Service System", style: listTitleTextStyle),
-                      Text("Meeting Room",style: listSubTitleTextStyle),
+                      Text("Meeting Room", style: listSubTitleTextStyle),
                       Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 18),
+                        padding: const EdgeInsets.symmetric(horizontal: 18),
                         child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             GestureDetector(
                               child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
                                       color: infoColor,
-                                      borderRadius:
-                                      BorderRadius.circular(50),
+                                      borderRadius: BorderRadius.circular(50),
                                     ),
                                     padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(
-                                        top: 25, bottom: 5),
+                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
                                     height: 50,
                                     width: 50,
                                     child: SvgPicture.asset(
@@ -535,8 +490,7 @@ class MenuScreen extends StatelessWidget {
                                   const Text("Management\nMeeting Room", textAlign: TextAlign.center),
                                 ],
                               ),
-                              // onTap: () => Get.to(
-                              //     const ListDocumentDeliveryScreen()),
+                              onTap: () => Get.to(const ManagementMeetingRoomScreen()),
                             ),
                           ],
                         ),

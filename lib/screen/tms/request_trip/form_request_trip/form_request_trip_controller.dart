@@ -460,7 +460,7 @@ class FormRequestTripController extends BaseController {
       await repository.submitRequestTrip(purposeID).then((value) {
         fetchRequestTrip();
         fetchList();
-        const GetSnackBar(
+        Get.showSnackbar(GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -469,12 +469,12 @@ class FormRequestTripController extends BaseController {
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: greenColor,
-        );
+        ));
       });
     } catch (e, i) {
       e.printError();
       i.printError();
-      const GetSnackBar(
+      Get.showSnackbar(GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -483,7 +483,7 @@ class FormRequestTripController extends BaseController {
         isDismissible: true,
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
-      );
+      ));
     }
     update();
   }

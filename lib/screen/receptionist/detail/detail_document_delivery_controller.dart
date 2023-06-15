@@ -41,10 +41,10 @@ class DetailDocumentDeliveryController extends BaseController {
       await documentDelivery.getByID(ddID!).then((value) {
         DateTime? tempDate;
         senderID = value.data?.first.idEmployeeSender?.toInt();
-        sender.text = value.data?.first.idEmployeeSender.toString() ?? "";
+        sender.text = value.data?.first.senderName.toString() ?? "";
         selectedReceiver = value.data?.first.idEmployeeReceiver.toString();
         receiverID = value.data?.first.idEmployeeReceiver?.toInt();
-        receiverName.text = value.data?.first.idEmployeeReceiver.toString() ?? "";
+        receiverName.text = value.data?.first.receiverName.toString() ?? "";
         location.text = value.data?.first.siteName ?? "";
         siteID = value.data?.first.idSite?.toInt();
         company.text = value.data?.first.companyName ?? "";
@@ -54,7 +54,7 @@ class DetailDocumentDeliveryController extends BaseController {
         remarks.text = value.data?.first.remarks ?? "";
         tempDate = DateTime.parse(value?.data?.first.createdAt ?? "");
         createdDate.text = dateFormat.format(tempDate);
-        createdBy.text = value.data?.first.createdBy ?? "";
+        createdBy.text = value.data?.first.senderName ?? "";
         codeStatusDoc = value.data?.first.codeStatusDoc?.toInt();
         if (codeStatusDoc == 1) {
           isReceived = true;
