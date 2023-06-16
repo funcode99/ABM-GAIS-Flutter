@@ -100,10 +100,11 @@ class CustomDropDownFormField<T> extends StatelessWidget {
   String _getSelectedValue(){
     if(items != null){
       if(items!.isNotEmpty){
-        DropdownMenuItem? item = items?.
-        firstWhere((DropdownMenuItem item) => item.value == value) as DropdownMenuItem;
-        Text textView = item.child as Text;
-        return textView.data ?? "";
+        if(value!=null){
+          DropdownMenuItem? item = items?.firstWhere((DropdownMenuItem item) => item.value == value) as DropdownMenuItem;
+          Text textView = item.child as Text;
+          return textView.data ?? "";
+        }
       }
     }
 
