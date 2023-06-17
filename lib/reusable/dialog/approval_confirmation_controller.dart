@@ -9,6 +9,8 @@ import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 
+enum ApproveEnum { onBehalf, fullApprove }
+
 class ApprovalConfirmationController extends BaseController with MasterDataMixin{
   final TextEditingController noteController = TextEditingController();
 
@@ -20,6 +22,7 @@ class ApprovalConfirmationController extends BaseController with MasterDataMixin
   final selectedEmployee= Rxn<EmployeeModel>();
   final enableOnBehalf = false.obs;
   final selectedEnum = Rx<ApproveEnum>(ApproveEnum.onBehalf);
+
 
   @override
   void onInit() {

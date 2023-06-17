@@ -6,6 +6,7 @@ TextStyle hintTextStyle = TextStyle(fontSize: 14, fontWeight: semiBold, color: n
 TextStyle listTitleTextStyle = TextStyle(fontSize: 14, fontWeight: bold, color: blackColor);
 TextStyle formlabelTextStyle = TextStyle(fontSize:16, fontWeight: bold, color: blackColor);
 TextStyle listSubTitleTextStyle = TextStyle(fontSize:14, fontWeight: regular);
+TextStyle menuSubTitleTextStyle = TextStyle(fontSize:12, fontWeight: regular);
 TextStyle appTitle = TextStyle(fontSize: 18, fontWeight: bold, color: blackColor);
 
 FontWeight light = FontWeight.w300;

@@ -172,12 +172,11 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                 CustomTripCard(
                                   // listNumber: controller.currentPage > 1 ? (controller.rtlModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
                                   listNumber: index + 1,
-                                  // title: controller.requestList[index].noRequestTrip.toString(),
-                                  title: controller.requestList[index].id.toString(),
+                                  title: controller.requestList[index].noRequestTrip.toString(),
                                   subtitle:
                                       controller.dateFormat.format(DateTime.parse(controller.requestList[index].createdAt.toString())).toString(),
-                                  // info: controller.requestList[index].documentName,
-                                  info: controller.requestList[index].codeDocument,
+                                  status: controller.requestList[index].status,
+                                  info: controller.requestList[index].documentName,
                                   approval: true,
                                   isEdit: true,
                                   approveAction: () {
@@ -187,6 +186,7 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                       ),
                                       arguments: {
                                         'id': controller.requestList[index].id?.toInt(),
+                                        'idRequestTrip': controller.requestList[index].idRequestTrip?.toInt(),
                                         'approvalEnum': ApprovalActionEnum.approve,
                                       },
                                     );
@@ -199,6 +199,7 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                       ),
                                       arguments: {
                                         'id': controller.requestList[index].id?.toInt(),
+                                        'idRequestTrip': controller.requestList[index].idRequestTrip?.toInt(),
                                         'approvalEnum': ApprovalActionEnum.reject,
                                       },
                                     );
@@ -207,8 +208,8 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Requestor", style: listTitleTextStyle),
-                                      // Text(controller.requestList[index].employeeName ?? "", style: listSubTitleTextStyle)
-                                      Text(controller.requestList[index].idEmployee.toString() ?? "", style: listSubTitleTextStyle)
+                                      Text(controller.requestList[index].employeeName ?? "", style: listSubTitleTextStyle)
+
                                     ],
                                   ),
                                 ),

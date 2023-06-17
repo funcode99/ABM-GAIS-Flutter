@@ -97,10 +97,10 @@ class RepositoryImpl implements Repository {
           "end_date": endDate,
         },
       );
-      RequestTripListModel.fromJson(response.data).data?.total.printInfo();
+      RequestTripListModel.fromJson(response.data).data?.total.printInfo(info: "=> response info");
       return RequestTripListModel.fromJson(response.data);
     } on DioError catch (e) {
-      return e.error;
+      return RequestTripListModel.fromJson(e.response?.data);
     }
   }
 
@@ -1152,8 +1152,9 @@ class RepositoryImpl implements Repository {
       );
       return SubmitRequestTripModel.fromJson(response.data);
     } on DioError catch (e) {
-      e.error.printError();
-      return e.error;
+      e.printError();
+      SubmitRequestTripModel.fromJson(e.response?.data).message.printError();
+      return SubmitRequestTripModel.fromJson(e.response?.data);
     }
   }
 

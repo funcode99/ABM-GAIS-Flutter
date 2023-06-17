@@ -35,7 +35,6 @@ class RequesterInfoScreen extends StatelessWidget {
                   color: whiteColor, borderRadius: BorderRadius.circular(8)),
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
                       alignment: Alignment.center,
@@ -48,7 +47,7 @@ class RequesterInfoScreen extends StatelessWidget {
                       child: const Icon(IconlyBold.info_square, color: whiteColor),
                     ),
                     Text("Requester Info", style: appTitle),
-                    const SizedBox(height: 39),
+                    SizedBox(height: 20),
                     Form(
                       key: controller.formKey,
                       child: Padding(
@@ -108,7 +107,8 @@ class RequesterInfoScreen extends StatelessWidget {
                                   ),
                                 ),
                               ],
-                            )
+                            ),
+                            SizedBox(height: 50)
                           ],
                         ),
                       ),

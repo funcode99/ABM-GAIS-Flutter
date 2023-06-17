@@ -36,7 +36,7 @@ class RequestTripListController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    Future.wait([fetchData(), fetchList()]);
+    Future.wait([fetchData(), fetchList(currentPage)]);
     print("height: ${Get.height}");
     print("width: ${Get.width}");
   }
@@ -68,14 +68,14 @@ class RequestTripListController extends BaseController {
     documentModel = document;
   }
 
-  Future<void> fetchList() async {
+  Future<void> fetchList(int page) async {
     requestList = [];
 
     isLoading = true;
     try {
       var requestTrip = await repository.getRequestTripList(
           perPage,
-          currentPage,
+          page,
           searchValue != null
               ? searchValue
               : purposeValue == "All"
@@ -105,11 +105,12 @@ class RequestTripListController extends BaseController {
       //     ),
       //   );
       // }
-    } catch (e) {
+    } catch (e,i) {
       dataisnull = true;
       searchNotFound = true;
       isLoading = false;
-      e.printError();
+      i.printError();
+      e.printError(info: "=> getError");
     }
     update();
   }
@@ -118,7 +119,7 @@ class RequestTripListController extends BaseController {
     isLoading = true;
     try {
       await repository.deletePurposeOfTrip(id).then((value) {
-        fetchList();
+        fetchList(currentPage);
       });
       Get.showSnackbar(GetSnackBar(
         icon: Icon(

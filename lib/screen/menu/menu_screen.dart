@@ -5,6 +5,7 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/screen/approval/request_atk/list/approval_request_atk_list_screen.dart';
 import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_list_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/list/booking_meeting_room_list_screen.dart';
+import 'package:gais/screen/fss/dashboard_meeting_room/dashboard_meeting_room_screen.dart';
 import 'package:gais/screen/fss/management_item_atk/list/management_item_atk_list_screen.dart';
 import 'package:gais/screen/fss/management_meeting_room/list/management_meeting_room_screen.dart';
 import 'package:gais/screen/fss/request_atk/list/request_atk_list_screen.dart';
@@ -60,7 +61,7 @@ class MenuScreen extends StatelessWidget {
                                     height: 25,
                                   ),
                                 ),
-                                const Text("Request Trip"),
+                                Text("Request Trip", style: menuSubTitleTextStyle),
                               ],
                             ),
                             onTap: () => Get.off(const RequestTripListScreen()),
@@ -83,7 +84,7 @@ class MenuScreen extends StatelessWidget {
                                     height: 25,
                                   ),
                                 ),
-                                const Text("Pool Car"),
+                                Text("Pool Car", style: menuSubTitleTextStyle),
                               ],
                             ),
                             onTap: () {},
@@ -106,7 +107,7 @@ class MenuScreen extends StatelessWidget {
                                     height: 25,
                                   ),
                                 ),
-                                const Text("Cash Advance"),
+                                Text("Cash Advance", style: menuSubTitleTextStyle),
                               ],
                             ),
                             onTap: () => Get.to(() => const SubmenuScreen(), arguments: false),
@@ -124,11 +125,14 @@ class MenuScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Facility Service System", style: listTitleTextStyle),
+                      Container(
+                        margin: EdgeInsets.only(left: 10),
+                        child: Text("Facility Service System", style: listTitleTextStyle),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -153,10 +157,36 @@ class MenuScreen extends StatelessWidget {
                                     height: 25,
                                   ),
                                 ),
-                                const Text(
+                                Text(
                                   "Booking\nMeeting Room",
                                   textAlign: TextAlign.center,
+                                  style: menuSubTitleTextStyle,
                                 )
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(() => const DashboardMeetingRoomScreen());
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: infoColor,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  padding: const EdgeInsets.all(10),
+                                  margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                  height: 50,
+                                  width: 50,
+                                  child: SvgPicture.asset(
+                                    ImageConstant.calendar,
+                                    height: 25,
+                                  ),
+                                ),
+                                Text("Dashboard\nMeeting Room", textAlign: TextAlign.center, style: menuSubTitleTextStyle)
                               ],
                             ),
                           ),
@@ -181,10 +211,7 @@ class MenuScreen extends StatelessWidget {
                                     height: 25,
                                   ),
                                 ),
-                                Text(
-                                  "${"ATK Request".tr}\n",
-                                  textAlign: TextAlign.center,
-                                )
+                                Text("${"ATK Request".tr}\n", textAlign: TextAlign.center, style: menuSubTitleTextStyle)
                               ],
                             ),
                           ),
@@ -206,10 +233,7 @@ class MenuScreen extends StatelessWidget {
                                     height: 25,
                                   ),
                                 ),
-                                const Text(
-                                  "Document\nDelivery",
-                                  textAlign: TextAlign.center,
-                                )
+                                Text("Document\nDelivery", textAlign: TextAlign.center, style: menuSubTitleTextStyle)
                               ],
                             ),
                             onTap: () => Get.off(DocumentDeliveryListScreen()),
@@ -254,7 +278,7 @@ class MenuScreen extends StatelessWidget {
                                           height: 25,
                                         ),
                                       ),
-                                      const Text("Request Trip"),
+                                      Text("Request Trip", style: menuSubTitleTextStyle),
                                     ],
                                   ),
                                   onTap: () => Get.off(const ApprovalRequestTripListScreen()),
@@ -277,7 +301,7 @@ class MenuScreen extends StatelessWidget {
                                           height: 25,
                                         ),
                                       ),
-                                      const Text("Cash Advance"),
+                                      Text("Cash Advance", style: menuSubTitleTextStyle),
                                     ],
                                   ),
                                   onTap: () => Get.to(const SubmenuScreen(), arguments: true),
@@ -303,10 +327,7 @@ class MenuScreen extends StatelessWidget {
                                           height: 25,
                                         ),
                                       ),
-                                      Text(
-                                        "ATK Request".tr,
-                                        textAlign: TextAlign.center,
-                                      )
+                                      Text("ATK Request".tr, textAlign: TextAlign.center, style: menuSubTitleTextStyle)
                                     ],
                                   ),
                                 ),
@@ -359,10 +380,7 @@ class MenuScreen extends StatelessWidget {
                                       height: 25,
                                     ),
                                   ),
-                                  Text(
-                                    "Management Item".tr,
-                                    textAlign: TextAlign.center,
-                                  )
+                                  Text("Management Item".tr, textAlign: TextAlign.center, style: menuSubTitleTextStyle)
                                 ],
                               ),
                             ),
@@ -387,10 +405,7 @@ class MenuScreen extends StatelessWidget {
                                       height: 25,
                                     ),
                                   ),
-                                  Text(
-                                    "Stock In".tr,
-                                    textAlign: TextAlign.center,
-                                  )
+                                  Text("Stock In".tr, textAlign: TextAlign.center, style: menuSubTitleTextStyle)
                                 ],
                               ),
                             ),
@@ -438,7 +453,7 @@ class MenuScreen extends StatelessWidget {
                                             height: 25,
                                           ),
                                         ),
-                                        const Text("Document\nDelivery", textAlign: TextAlign.center),
+                                        Text("Document\nDelivery", textAlign: TextAlign.center, style: menuSubTitleTextStyle),
                                       ],
                                     ),
                                     onTap: () => Get.to(const ListDocumentDeliveryScreen()),
@@ -487,7 +502,7 @@ class MenuScreen extends StatelessWidget {
                                       height: 25,
                                     ),
                                   ),
-                                  const Text("Management\nMeeting Room", textAlign: TextAlign.center),
+                                  Text("Management\nMeeting Room", textAlign: TextAlign.center, style: menuSubTitleTextStyle),
                                 ],
                               ),
                               onTap: () => Get.to(const ManagementMeetingRoomScreen()),

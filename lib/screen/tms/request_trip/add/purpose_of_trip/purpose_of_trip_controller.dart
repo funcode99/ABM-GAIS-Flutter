@@ -103,11 +103,16 @@ class PurposeOfTripController extends BaseController {
 
     var dataCity = await repository.getCityList();
     cityModel = dataCity;
+    // cityList.add(city.Data(id: 0, cityName: "City"));
     cityList.addAll(dataCity.data?.toSet().toList() ?? []);
+    // fromCity = "0";
+    // toCity = "0";
 
     var dataPurpose = await repository.getDocumentCodeList();
     purposeModel = dataPurpose;
+    // purposeList.add(purpose.Data(id: 0, documentName: "Purpose of Trip"));
     purposeList.addAll(dataPurpose.data?.toSet().toList() ?? []);
+    // selectedPurpose = "0";
 
     var dataSite = await repository.getSiteList();
     siteModel = dataSite;
@@ -126,6 +131,7 @@ class PurposeOfTripController extends BaseController {
     zonaID = datazona.data?.first.idZona.toString() ?? "";
     print("Zona : ${ datazona.data?.first.idZona}");
     update();
+
   }
 
   Future<void> postPurposeOfTrip() async {

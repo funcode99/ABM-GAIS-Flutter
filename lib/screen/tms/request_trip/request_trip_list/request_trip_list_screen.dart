@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
@@ -8,6 +10,7 @@ import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
+import 'package:gais/reusable/form/custom_dropdown_field.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/loadingdialog.dart';
@@ -32,13 +35,13 @@ class RequestTripListScreen extends StatelessWidget {
             backgroundColor: baseColor,
             appBar: TopBar(
               title: Text("Request Trip", style: appTitle),
-              leading: CustomBackButton(onPressed: ()=> Get.off(HomeScreen(), arguments: 1)),
+              leading: CustomBackButton(onPressed: () => Get.off(HomeScreen(), arguments: 1)),
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: RefreshIndicator(
                 onRefresh: () async {
-                  controller.fetchList();
+                  controller.fetchList(controller.currentPage);
                 },
                 child: CustomScrollView(
                   slivers: [
@@ -55,30 +58,36 @@ class RequestTripListScreen extends StatelessWidget {
                                 onSubmit: (value) {
                                   controller.searchValue = value;
                                   controller.purposeValue = "All";
-                                  controller.fetchList();
+                                  controller.fetchList(controller.currentPage);
                                 },
                                 onPressedFilter: () {
                                   Get.bottomSheet(StatefulBuilder(builder: (context, setState) {
+                                    PersistentBottomSheetController _controller; // <------ Instance variable
+                                    final _scaffoldKey = GlobalKey<ScaffoldState>();
+
                                     return FilterBottomSheet(
                                       onApplyFilter: () {
-                                        controller.fetchList();
+                                        controller.fetchList(controller.currentPage);
                                         controller.update();
                                         Get.back();
                                       },
                                       onResetFilter: () {
-                                        controller.formKey.currentState?.reset();
-                                        controller.purposeValue = "All";
-                                        controller.dateRange.text = "";
+                                        setState(() {
+                                          controller.formKey.currentState?.reset();
+                                          controller.searchValue = null;
+                                          controller.purposeValue = "All";
+                                          controller.dateRange.text = "";
+                                        });
                                         controller.update();
+                                        print(controller.purposeValue);
                                       },
                                       children: [
                                         Text("Filter", style: appTitle.copyWith(fontSize: 25)),
                                         const SizedBox(height: 10),
                                         Form(
                                           key: controller.formKey,
-                                          child: CustomDropDownFormField(
+                                          child: CustomDropDownField(
                                             label: "Purpose of Trip",
-                                            hintText: "Purpose of Trip",
                                             items: controller.documentList
                                                 .map((e) => DropdownMenuItem(
                                                       value: e.documentName,
@@ -140,7 +149,7 @@ class RequestTripListScreen extends StatelessWidget {
                                 colorPrimary: infoColor,
                                 onPageChanged: (int pageNumber) {
                                   controller.currentPage = pageNumber;
-                                  controller.fetchList();
+                                  controller.fetchList(pageNumber);
                                   controller.update();
                                 },
                                 threshold: 5,
@@ -149,7 +158,7 @@ class RequestTripListScreen extends StatelessWidget {
                               ),
                               controller.isLoading
                                   ? Container(height: Get.height / 2, child: const Center(child: CircularProgressIndicator()))
-                                  : controller.dataisnull
+                                  : controller.dataisnull == true
                                       ? SizedBox(height: Get.height / 2, child: const DataEmpty())
                                       : Container()
                             ],
@@ -167,7 +176,8 @@ class RequestTripListScreen extends StatelessWidget {
                                   listNumber: controller.currentPage > 1 ? (controller.rtlModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
                                   title: controller.requestList[index].noRequestTrip.toString(),
                                   status: controller.requestList[index].status,
-                                  subtitle: controller.dateFormat.format(DateTime.parse(controller.requestList[index].createdAt.toString())).toString(),
+                                  subtitle:
+                                      controller.dateFormat.format(DateTime.parse(controller.requestList[index].createdAt.toString())).toString(),
                                   info: controller.requestList[index].documentName,
                                   isEdit: true,
                                   editAction: () => Get.to(
@@ -177,7 +187,7 @@ class RequestTripListScreen extends StatelessWidget {
                                       'codeDocument': controller.requestList[index].idDocument,
                                     },
                                   )?.then((value) {
-                                    controller.fetchList();
+                                    controller.fetchList(controller.currentPage);
                                     controller.update();
                                   }),
                                   isDelete: true,
@@ -187,11 +197,98 @@ class RequestTripListScreen extends StatelessWidget {
 
                                     controller.update();
                                   },
-                                  content: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  content: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("Requestor", style: listTitleTextStyle),
-                                      Text(controller.requestList[index].employeeName ?? "", style: listSubTitleTextStyle)
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Requestor", style: listTitleTextStyle),
+                                          Text(controller.requestList[index].employeeName ?? "", style: listSubTitleTextStyle)
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          controller.requestList[index].documentReady?.travellerGuestTrip == 1
+                                              ? Container(
+                                                  alignment: Alignment.center,
+                                                  height: 35,
+                                                  width: 35,
+                                                  margin: EdgeInsets.symmetric(horizontal: 1),
+                                                  // padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                                  child: const Icon(Icons.groups, color: whiteColor),
+                                                )
+                                              : Container(),
+                                          controller.requestList[index].documentReady?.flightTrip == 1
+                                              ? Container(
+                                                  alignment: Alignment.center,
+                                                  height: 35,
+                                                  width: 35,
+                                                  margin: EdgeInsets.symmetric(horizontal: 1),
+                                                  // padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                                  child: SvgPicture.asset(
+                                                    ImageConstant.airplane,
+                                                    height: 25,
+                                                  ),
+                                                )
+                                              : Container(),
+                                          controller.requestList[index].documentReady?.taxiVoucher == 1
+                                              ? Container(
+                                                  alignment: Alignment.center,
+                                                  height: 35,
+                                                  width: 35,
+                                                  margin: EdgeInsets.symmetric(horizontal: 1),
+                                                  // padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                                  child: Icon(Icons.account_balance_wallet_rounded, color: whiteColor),
+                                                )
+                                              : Container(),
+                                          controller.requestList[index].documentReady?.otherTransportation == 1
+                                              ? Container(
+                                                  alignment: Alignment.center,
+                                                  height: 35,
+                                                  width: 35,
+                                                  margin: EdgeInsets.symmetric(horizontal: 1),
+                                                  // padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                                  child: SvgPicture.asset(
+                                                    ImageConstant.car,
+                                                    height: 25,
+                                                  ),
+                                                )
+                                              : Container(),
+                                          controller.requestList[index].documentReady?.accomodationTrip == 1
+                                              ? Container(
+                                                  alignment: Alignment.center,
+                                                  height: 35,
+                                                  width: 35,
+                                                  margin: EdgeInsets.symmetric(horizontal: 1),
+                                                  // padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                                  child: SvgPicture.asset(
+                                                    ImageConstant.building,
+                                                    height: 25,
+                                                  ),
+                                                )
+                                              : Container(),
+                                          controller.requestList[index].documentReady?.cashAdvance == 1
+                                              ? Container(
+                                                  alignment: Alignment.center,
+                                                  height: 35,
+                                                  width: 35,
+                                                  margin: EdgeInsets.symmetric(horizontal: 1),
+                                                  // padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                                  child: SvgPicture.asset(
+                                                    ImageConstant.emptyWalletTime,
+                                                    height: 25,
+                                                  ),
+                                                )
+                                              : Container(),
+                                        ],
+                                      )
                                     ],
                                   ),
                                 ),

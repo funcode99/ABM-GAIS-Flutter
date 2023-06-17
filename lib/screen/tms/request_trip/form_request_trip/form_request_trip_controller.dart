@@ -131,6 +131,7 @@ class FormRequestTripController extends BaseController {
     tlkTotalMeals.text;
     isEdit = false;
     Future.wait([fetchRequestTrip(), fetchList()]);
+    purposeID.printInfo(info: "purposeID");
   }
 
   @override
@@ -465,14 +466,13 @@ class FormRequestTripController extends BaseController {
             Icons.info,
             color: Colors.white,
           ),
-          message: "Data Submitted",
+          message: "${value.message}",
           isDismissible: true,
           duration: Duration(seconds: 3),
-          backgroundColor: greenColor,
+          backgroundColor: value.success == false ? redColor : greenColor,
         ));
       });
     } catch (e, i) {
-      e.printError();
       i.printError();
       Get.showSnackbar(GetSnackBar(
         icon: Icon(

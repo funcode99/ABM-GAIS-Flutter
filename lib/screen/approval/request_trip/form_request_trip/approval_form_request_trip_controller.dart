@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/const/color.dart';
 import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:gais/reusable/dialog/reject_dialog.dart';
@@ -34,7 +35,8 @@ class ApprovalFormRequestTripController extends BaseController {
 
   List<String> reject = ["With Notes", "Fully Rejected"];
   late String rejection = reject[0];
-  int purposeID = Get.arguments['id'];
+  int purposeID = Get.arguments['idRequestTrip'];
+  int approvalID = Get.arguments['id'];
   ApprovalActionEnum? approvalActionEnum = Get.arguments['approvalEnum'];
 
   final approvalModel = Rxn<ApprovalModel>();
@@ -51,7 +53,6 @@ class ApprovalFormRequestTripController extends BaseController {
   final tlkZona = TextEditingController();
   final tlkTotal = TextEditingController();
   final tlkTotalMeals = TextEditingController();
-
 
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   String? tabName;
@@ -156,32 +157,32 @@ class ApprovalFormRequestTripController extends BaseController {
         item['isFilled'] = item['title'] == "Taxi Voucher"
             ? true
             : item['title'] == "Traveller Guest"
-            ? true
-            : false;
+                ? true
+                : false;
 
         item['showList'] = item['title'] == "Taxi Voucher"
             ? true
             : item['title'] == "Traveller Guest"
-            ? true
-            : false;
+                ? true
+                : false;
       }
     } else if (selectedPurpose == "2") {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
             : item['title'] == "Airliness"
-            ? true
-            : item['title'] == "Other Transportation"
-            ? true
-            : false;
+                ? true
+                : item['title'] == "Other Transportation"
+                    ? true
+                    : false;
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
             : item['title'] == "Airliness"
-            ? true
-            : item['title'] == "Other Transportation"
-            ? true
-            : false;
+                ? true
+                : item['title'] == "Other Transportation"
+                    ? true
+                    : false;
       }
     } else {
       items.where((e) => e['isFilled'] == false).forEach((item) {
@@ -254,19 +255,40 @@ class ApprovalFormRequestTripController extends BaseController {
   openApproveDialog() async {
     ApprovalModel? result = await Get.dialog(const ApprovalConfirmationDialog());
 
-    if(result!=null){
+    if (result != null) {
       approvalModel(result);
-      await approvalRequestTrip.approve(purposeID);
+      await approvalRequestTrip.approve(approvalID).then((value) => Get.showSnackbar(
+            const GetSnackBar(
+              icon: Icon(
+                Icons.error,
+                color: Colors.white,
+              ),
+              message: 'Document Apporved',
+              isDismissible: true,
+              duration: Duration(seconds: 3),
+              backgroundColor: successColor,
+            ),
+          ));
     }
   }
 
   openRejectDialog() async {
     ApprovalModel? result = await Get.dialog(const RejectDialog());
 
-    if(result!=null){
+    if (result != null) {
       approvalModel(result);
-      await approvalRequestTrip.reject(purposeID);
+      await approvalRequestTrip.reject(approvalID).then((value) => Get.showSnackbar(
+            const GetSnackBar(
+              icon: Icon(
+                Icons.error,
+                color: Colors.white,
+              ),
+              message: 'Document Rejected',
+              isDismissible: true,
+              duration: Duration(seconds: 3),
+              backgroundColor: successColor,
+            ),
+          ));
     }
   }
 }
-

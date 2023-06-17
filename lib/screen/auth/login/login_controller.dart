@@ -141,31 +141,8 @@ class LoginController extends BaseController {
               value.data?.first.mealsRate.toString() ?? "",
             ),
           );
-      // .then(
-      //   (value) async => Get.showSnackbar(
-      //     GetSnackBar(
-      //       message:
-      //           'welcome ${await FlutterSecureStorage().read(key: 'userID')}',
-      //       isDismissible: true,
-      //       duration: Duration(seconds: 3),
-      //       backgroundColor: Colors.green,
-      //     ),
-      //   ),
-      // );
     } catch (e) {
       e.printError();
-      Get.showSnackbar(
-        const GetSnackBar(
-          icon: Icon(
-            Icons.error,
-            color: Colors.white,
-          ),
-          message: 'Failed To Load Data',
-          isDismissible: true,
-          duration: Duration(seconds: 3),
-          backgroundColor: Colors.red,
-        ),
-      );
     }
   }
 }

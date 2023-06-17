@@ -1,4 +1,6 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
@@ -60,6 +62,8 @@ class PurposeOfTripScreen extends StatelessWidget {
                               label: 'Purpose of Trip',
                               isRequired: true,
                               hintText: "Purpose of Trip",
+                              // value: controller.selectedPurpose,
+
                               items: controller.purposeList
                                   .map((e) => DropdownMenuItem(
                                         value: e.id.toString(),
@@ -90,7 +94,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                                           .toList(),
                                       label: "Site",
                                       isRequired: true,
-                                      onChanged: (value){
+                                      onChanged: (value) {
                                         controller.siteID = value!.toInt();
                                         controller.update();
                                       },
@@ -131,16 +135,22 @@ class PurposeOfTripScreen extends StatelessWidget {
                                 controller.fromCity = value;
                                 controller.update();
                               },
+                              // value: controller.fromCity,
                             ),
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
+                              // validator: ValidationBuilder().required().maxLength(9).minLength(9).build(),
                               label: "To",
                               isRequired: true,
                               hintText: "City",
+                              // value: controller.toCity,
                               items: controller.cityList
                                   .map((e) => DropdownMenuItem(
                                         value: e.id.toString(),
                                         child: Text(e.cityName.toString()),
+                                        onTap: () {
+                                          controller.getZonaCity();
+                                        },
                                       ))
                                   .toList(),
                               onChanged: (value) {
@@ -148,6 +158,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                                 controller.getZonaCity();
                                 controller.update();
                               },
+                              // value: controller.toCity != null ? controller.toCity : "",
                             ),
                             const SizedBox(height: 8),
                             CustomTextFormField(

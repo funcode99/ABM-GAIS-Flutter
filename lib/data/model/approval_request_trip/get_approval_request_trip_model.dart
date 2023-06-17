@@ -1,6 +1,6 @@
 /// success : true
 /// message : "Success Get Data"
-/// data : [{"id":1,"code_document":"SV","id_document":112,"level":1,"id_employee":5,"id_company":1,"id_site":38,"id_matrix":17,"id_approval_auth":2,"approved_by":null,"approved_behalf":null,"rejected_by":null,"is_approved":null,"notes":null,"code_status_doc":1,"is_request_trip":1,"code_sequence":"RTRIP","created_at":"2023-06-08 04:53:53","created_by":null,"updated_at":"2023-06-08 04:53:53","updated_by":null,"deleted_at":null,"current_level":1}]
+/// data : [{"id":143,"code_document":"SV","id_document":1,"level":3,"id_employee":1,"id_company":1,"id_site":18,"id_matrix":17,"id_approval_auth":4,"approved_by":null,"approved_behalf":null,"rejected_by":null,"is_approved":null,"notes":"tt","code_status_doc":1,"is_request_trip":1,"code_sequence":"RTRIP","created_at":"2023-06-12 13:38:20","created_by":null,"updated_at":"2023-06-12 13:38:20","updated_by":null,"deleted_at":null,"current_level":3,"id_request_trip":123,"no_request_trip":"RTRIP-2023-23-06/044/RTRIP-3000/06/2023","file":"http://103.165.130.157:8086/storage/files/request_trip/UfStk8FTWzNBRNpSDqs6DZd4cbfpp3T1bZaxM0ms.jpg","id_city_to":10,"id_city_from":3,"date_departure":"2023-06-21","date_arrival":"2023-06-23","id_zona":20,"code_status_rtrip":1,"tlk_per_day":"9999","total_tlk":"19998","employee_name":"John Doe","site_name":"Lahat, Kebur x","site_code":"LHT01","zona_name":null,"code_status":1,"status":"Waiting Approval","document_name":"Site Visit"}]
 
 class GetApprovalRequestTripModel {
   GetApprovalRequestTripModel({
@@ -48,29 +48,47 @@ GetApprovalRequestTripModel copyWith({  bool? success,
 
 }
 
-/// id : 1
+/// id : 143
 /// code_document : "SV"
-/// id_document : 112
-/// level : 1
-/// id_employee : 5
+/// id_document : 1
+/// level : 3
+/// id_employee : 1
 /// id_company : 1
-/// id_site : 38
+/// id_site : 18
 /// id_matrix : 17
-/// id_approval_auth : 2
+/// id_approval_auth : 4
 /// approved_by : null
 /// approved_behalf : null
 /// rejected_by : null
 /// is_approved : null
-/// notes : null
+/// notes : "tt"
 /// code_status_doc : 1
 /// is_request_trip : 1
 /// code_sequence : "RTRIP"
-/// created_at : "2023-06-08 04:53:53"
+/// created_at : "2023-06-12 13:38:20"
 /// created_by : null
-/// updated_at : "2023-06-08 04:53:53"
+/// updated_at : "2023-06-12 13:38:20"
 /// updated_by : null
 /// deleted_at : null
-/// current_level : 1
+/// current_level : 3
+/// id_request_trip : 123
+/// no_request_trip : "RTRIP-2023-23-06/044/RTRIP-3000/06/2023"
+/// file : "http://103.165.130.157:8086/storage/files/request_trip/UfStk8FTWzNBRNpSDqs6DZd4cbfpp3T1bZaxM0ms.jpg"
+/// id_city_to : 10
+/// id_city_from : 3
+/// date_departure : "2023-06-21"
+/// date_arrival : "2023-06-23"
+/// id_zona : 20
+/// code_status_rtrip : 1
+/// tlk_per_day : "9999"
+/// total_tlk : "19998"
+/// employee_name : "John Doe"
+/// site_name : "Lahat, Kebur x"
+/// site_code : "LHT01"
+/// zona_name : null
+/// code_status : 1
+/// status : "Waiting Approval"
+/// document_name : "Site Visit"
 
 class Data {
   Data({
@@ -87,7 +105,7 @@ class Data {
       dynamic approvedBehalf, 
       dynamic rejectedBy, 
       dynamic isApproved, 
-      dynamic notes, 
+      String? notes, 
       num? codeStatusDoc, 
       num? isRequestTrip, 
       String? codeSequence, 
@@ -96,7 +114,25 @@ class Data {
       String? updatedAt, 
       dynamic updatedBy, 
       dynamic deletedAt, 
-      num? currentLevel,}){
+      num? currentLevel, 
+      num? idRequestTrip, 
+      String? noRequestTrip, 
+      String? file, 
+      num? idCityTo, 
+      num? idCityFrom, 
+      String? dateDeparture, 
+      String? dateArrival, 
+      num? idZona, 
+      num? codeStatusRtrip, 
+      String? tlkPerDay, 
+      String? totalTlk, 
+      String? employeeName, 
+      String? siteName, 
+      String? siteCode, 
+      dynamic zonaName, 
+      num? codeStatus, 
+      String? status, 
+      String? documentName,}){
     _id = id;
     _codeDocument = codeDocument;
     _idDocument = idDocument;
@@ -120,6 +156,24 @@ class Data {
     _updatedBy = updatedBy;
     _deletedAt = deletedAt;
     _currentLevel = currentLevel;
+    _idRequestTrip = idRequestTrip;
+    _noRequestTrip = noRequestTrip;
+    _file = file;
+    _idCityTo = idCityTo;
+    _idCityFrom = idCityFrom;
+    _dateDeparture = dateDeparture;
+    _dateArrival = dateArrival;
+    _idZona = idZona;
+    _codeStatusRtrip = codeStatusRtrip;
+    _tlkPerDay = tlkPerDay;
+    _totalTlk = totalTlk;
+    _employeeName = employeeName;
+    _siteName = siteName;
+    _siteCode = siteCode;
+    _zonaName = zonaName;
+    _codeStatus = codeStatus;
+    _status = status;
+    _documentName = documentName;
 }
 
   Data.fromJson(dynamic json) {
@@ -146,6 +200,24 @@ class Data {
     _updatedBy = json['updated_by'];
     _deletedAt = json['deleted_at'];
     _currentLevel = json['current_level'];
+    _idRequestTrip = json['id_request_trip'];
+    _noRequestTrip = json['no_request_trip'];
+    _file = json['file'];
+    _idCityTo = json['id_city_to'];
+    _idCityFrom = json['id_city_from'];
+    _dateDeparture = json['date_departure'];
+    _dateArrival = json['date_arrival'];
+    _idZona = json['id_zona'];
+    _codeStatusRtrip = json['code_status_rtrip'];
+    _tlkPerDay = json['tlk_per_day'];
+    _totalTlk = json['total_tlk'];
+    _employeeName = json['employee_name'];
+    _siteName = json['site_name'];
+    _siteCode = json['site_code'];
+    _zonaName = json['zona_name'];
+    _codeStatus = json['code_status'];
+    _status = json['status'];
+    _documentName = json['document_name'];
   }
   num? _id;
   String? _codeDocument;
@@ -160,7 +232,7 @@ class Data {
   dynamic _approvedBehalf;
   dynamic _rejectedBy;
   dynamic _isApproved;
-  dynamic _notes;
+  String? _notes;
   num? _codeStatusDoc;
   num? _isRequestTrip;
   String? _codeSequence;
@@ -170,6 +242,24 @@ class Data {
   dynamic _updatedBy;
   dynamic _deletedAt;
   num? _currentLevel;
+  num? _idRequestTrip;
+  String? _noRequestTrip;
+  String? _file;
+  num? _idCityTo;
+  num? _idCityFrom;
+  String? _dateDeparture;
+  String? _dateArrival;
+  num? _idZona;
+  num? _codeStatusRtrip;
+  String? _tlkPerDay;
+  String? _totalTlk;
+  String? _employeeName;
+  String? _siteName;
+  String? _siteCode;
+  dynamic _zonaName;
+  num? _codeStatus;
+  String? _status;
+  String? _documentName;
 Data copyWith({  num? id,
   String? codeDocument,
   num? idDocument,
@@ -183,7 +273,7 @@ Data copyWith({  num? id,
   dynamic approvedBehalf,
   dynamic rejectedBy,
   dynamic isApproved,
-  dynamic notes,
+  String? notes,
   num? codeStatusDoc,
   num? isRequestTrip,
   String? codeSequence,
@@ -193,6 +283,24 @@ Data copyWith({  num? id,
   dynamic updatedBy,
   dynamic deletedAt,
   num? currentLevel,
+  num? idRequestTrip,
+  String? noRequestTrip,
+  String? file,
+  num? idCityTo,
+  num? idCityFrom,
+  String? dateDeparture,
+  String? dateArrival,
+  num? idZona,
+  num? codeStatusRtrip,
+  String? tlkPerDay,
+  String? totalTlk,
+  String? employeeName,
+  String? siteName,
+  String? siteCode,
+  dynamic zonaName,
+  num? codeStatus,
+  String? status,
+  String? documentName,
 }) => Data(  id: id ?? _id,
   codeDocument: codeDocument ?? _codeDocument,
   idDocument: idDocument ?? _idDocument,
@@ -216,6 +324,24 @@ Data copyWith({  num? id,
   updatedBy: updatedBy ?? _updatedBy,
   deletedAt: deletedAt ?? _deletedAt,
   currentLevel: currentLevel ?? _currentLevel,
+  idRequestTrip: idRequestTrip ?? _idRequestTrip,
+  noRequestTrip: noRequestTrip ?? _noRequestTrip,
+  file: file ?? _file,
+  idCityTo: idCityTo ?? _idCityTo,
+  idCityFrom: idCityFrom ?? _idCityFrom,
+  dateDeparture: dateDeparture ?? _dateDeparture,
+  dateArrival: dateArrival ?? _dateArrival,
+  idZona: idZona ?? _idZona,
+  codeStatusRtrip: codeStatusRtrip ?? _codeStatusRtrip,
+  tlkPerDay: tlkPerDay ?? _tlkPerDay,
+  totalTlk: totalTlk ?? _totalTlk,
+  employeeName: employeeName ?? _employeeName,
+  siteName: siteName ?? _siteName,
+  siteCode: siteCode ?? _siteCode,
+  zonaName: zonaName ?? _zonaName,
+  codeStatus: codeStatus ?? _codeStatus,
+  status: status ?? _status,
+  documentName: documentName ?? _documentName,
 );
   num? get id => _id;
   String? get codeDocument => _codeDocument;
@@ -230,7 +356,7 @@ Data copyWith({  num? id,
   dynamic get approvedBehalf => _approvedBehalf;
   dynamic get rejectedBy => _rejectedBy;
   dynamic get isApproved => _isApproved;
-  dynamic get notes => _notes;
+  String? get notes => _notes;
   num? get codeStatusDoc => _codeStatusDoc;
   num? get isRequestTrip => _isRequestTrip;
   String? get codeSequence => _codeSequence;
@@ -240,6 +366,24 @@ Data copyWith({  num? id,
   dynamic get updatedBy => _updatedBy;
   dynamic get deletedAt => _deletedAt;
   num? get currentLevel => _currentLevel;
+  num? get idRequestTrip => _idRequestTrip;
+  String? get noRequestTrip => _noRequestTrip;
+  String? get file => _file;
+  num? get idCityTo => _idCityTo;
+  num? get idCityFrom => _idCityFrom;
+  String? get dateDeparture => _dateDeparture;
+  String? get dateArrival => _dateArrival;
+  num? get idZona => _idZona;
+  num? get codeStatusRtrip => _codeStatusRtrip;
+  String? get tlkPerDay => _tlkPerDay;
+  String? get totalTlk => _totalTlk;
+  String? get employeeName => _employeeName;
+  String? get siteName => _siteName;
+  String? get siteCode => _siteCode;
+  dynamic get zonaName => _zonaName;
+  num? get codeStatus => _codeStatus;
+  String? get status => _status;
+  String? get documentName => _documentName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -266,6 +410,24 @@ Data copyWith({  num? id,
     map['updated_by'] = _updatedBy;
     map['deleted_at'] = _deletedAt;
     map['current_level'] = _currentLevel;
+    map['id_request_trip'] = _idRequestTrip;
+    map['no_request_trip'] = _noRequestTrip;
+    map['file'] = _file;
+    map['id_city_to'] = _idCityTo;
+    map['id_city_from'] = _idCityFrom;
+    map['date_departure'] = _dateDeparture;
+    map['date_arrival'] = _dateArrival;
+    map['id_zona'] = _idZona;
+    map['code_status_rtrip'] = _codeStatusRtrip;
+    map['tlk_per_day'] = _tlkPerDay;
+    map['total_tlk'] = _totalTlk;
+    map['employee_name'] = _employeeName;
+    map['site_name'] = _siteName;
+    map['site_code'] = _siteCode;
+    map['zona_name'] = _zonaName;
+    map['code_status'] = _codeStatus;
+    map['status'] = _status;
+    map['document_name'] = _documentName;
     return map;
   }
 

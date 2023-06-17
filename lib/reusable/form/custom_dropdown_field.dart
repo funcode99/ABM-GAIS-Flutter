@@ -6,8 +6,8 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:get/get.dart';
 
-class CustomDropDownFormField<T> extends StatelessWidget {
-  CustomDropDownFormField(
+class CustomDropDownField<T> extends StatelessWidget {
+  CustomDropDownField(
       {super.key,
       required this.items,
       required this.label,
@@ -37,59 +37,22 @@ class CustomDropDownFormField<T> extends StatelessWidget {
     if (items == null) {
       return const SizedBox();
     }
+      return
+        DropdownButtonFormField(
+          // autovalidateMode: AutovalidateMode.always,
+          validator: validator,
+          decoration: const InputDecoration(
+              contentPadding:
+              EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
+          icon: const Icon(Icons.keyboard_arrow_down),
+          hint: Text(hintText ?? label, style: hintTextStyle,),
+          value: value,
+          isExpanded: true,
+          items: items,
+          onChanged: onChanged,
 
-    // if(items!.length <= 4){
-    //   return
-    //     DropdownButtonFormField(
-    //       // autovalidateMode: AutovalidateMode.always,
-    //       validator: validator,
-    //       decoration: const InputDecoration(
-    //           contentPadding:
-    //           EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
-    //       icon: const Icon(Icons.keyboard_arrow_down),
-    //       hint: Text(hintText ?? label, style: hintTextStyle,),
-    //       value: value,
-    //       isExpanded: true,
-    //       items: items,
-    //       onChanged: onChanged,
-    //
-    //     );
-    // }
+        );
 
-    return DropdownSearch<String>(
-      validator: (value) {
-        if (value == null || value.isEmpty || value == hintText || value == label) {
-          // return validator!(value as T);
-          return "This field is required";
-        }
-      },
-
-      popupProps: PopupProps.menu(
-        constraints: const BoxConstraints(maxHeight: 300),
-        fit: FlexFit.loose,
-        showSelectedItems: true,
-        showSearchBox: items!.length >= 15,
-        searchDelay: const Duration(milliseconds: 500),
-        itemBuilder: (context, item, bool) {
-          return Container(padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16), child: Text(item));
-        },
-      ),
-
-      dropdownButtonProps: const DropdownButtonProps(
-        icon: Icon(Icons.keyboard_arrow_down),
-      ),
-      items: items!.map((DropdownMenuItem e) => (e.child as Text).data!).toList(),
-      dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: InputDecoration(
-          hintText: hintText ?? label,
-          hintStyle: hintTextStyle,
-        ),
-      ),
-      onChanged: (value) {
-        onChanged!(_getIdSelectedValue(value ?? "") as T?);
-      },
-      selectedItem: _getSelectedValue(),
-    );
   }
 
   String _getIdSelectedValue(String selected) {

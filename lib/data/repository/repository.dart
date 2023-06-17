@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:gais/data/model/document_delivery/get_document_delivery_model.dart';
-import 'package:gais/data/model/document_delivery/save_document_delivery_model.dart';
-import 'package:gais/data/model/document_delivery/submit_document_delivery_model.dart';
-import 'package:gais/data/model/document_delivery/update_document_delivery_model.dart';
+
 import 'package:gais/data/model/employee_info_model.dart';
 import 'package:gais/data/model/login_model.dart';
 import 'package:gais/data/model/reference/get_city_model.dart';
@@ -308,6 +305,4 @@ abstract class Repository {
   );
 
   Future<SubmitRequestTripModel> submitRequestTrip(int id);
-
-
 }
