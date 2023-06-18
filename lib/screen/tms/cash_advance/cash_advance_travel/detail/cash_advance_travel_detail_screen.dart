@@ -233,7 +233,7 @@ class _CashAdvanceTravelDetailScreenState
                                     Colors.white
                                   ]),
                                 ),
-                                child: const Text("Approval"),
+                                child: const Text("Approval Info"),
                               ),
                               onTap: () {
                                 controller.selectedTab(TabEnum.approval);
