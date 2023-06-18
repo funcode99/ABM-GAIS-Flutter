@@ -5,18 +5,12 @@ import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:gais/reusable/dialog/reject_dialog.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
-import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_transport_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/traveller/traveller_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
@@ -27,6 +21,7 @@ import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as 
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as acc;
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart' as ca;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
+import 'package:gais/data/model/reference/get_site_model.dart' as st;
 import 'package:intl/intl.dart';
 
 class ApprovalFormRequestTripController extends BaseController {
@@ -37,6 +32,10 @@ class ApprovalFormRequestTripController extends BaseController {
   late String rejection = reject[0];
   int purposeID = Get.arguments['idRequestTrip'];
   int approvalID = Get.arguments['id'];
+  int? requsetorID;
+  int? siteID;
+  int? jobID;
+
   ApprovalActionEnum? approvalActionEnum = Get.arguments['approvalEnum'];
 
   final approvalModel = Rxn<ApprovalModel>();
@@ -66,6 +65,18 @@ class ApprovalFormRequestTripController extends BaseController {
   int activeStep = 1;
   String? rtStatus;
   String? rtNumber;
+  String? fromCity;
+  String? toCity;
+  String? departureDate;
+  String? arrivalDate;
+  String? zonaID;
+  String? tlkDay;
+  String? tlk;
+  String? travellerName;
+  String? travellerSN;
+  String? travellerGender;
+  String? travellerHotel;
+  String? travellerFlight;
 
   List items = [
     {
@@ -113,6 +124,7 @@ class ApprovalFormRequestTripController extends BaseController {
   List<acc.Data> accommodationsList = [];
   List<ca.Data> caList = [];
   List<doc.Data> purposeList = [];
+  List<st.Data> siteList = [];
 
   GetRequestTripByidModel? rtModel;
 
@@ -205,18 +217,39 @@ class ApprovalFormRequestTripController extends BaseController {
     requestor.text = rtModel?.data?.first.employeeName ?? "";
     purpose.text = rtModel?.data?.first.documentName ?? "";
     // codeDocument = int.parse(rtModel?.data?.first.codeDocument ?? "");
+    siteID = rtModel?.data?.first.idSite?.toInt();
     site.text = rtModel?.data?.first.siteName ?? "";
+    notes.text = rtModel?.data?.first.notes ?? "";
+    attachment.text = rtModel?.data?.first.file ?? "";
     selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
+    isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
     tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";
     // tlkJobBand.text = rtModel?.data?.first.
     tlkZona.text = rtModel?.data?.first.zonaName ?? "";
-    tlkTotal.text = int.parse(rtModel?.data?.first.tlkPerDay ?? "0").toCurrency();
-    tlkTotalMeals.text = int.parse(rtModel?.data?.first.totalTlk ?? "0").toCurrency();
+    tlkTotal.text = rtModel?.data?.first.totalTlk ?? "";
+    // tlkTotalMeals.text = rtModel?.data?.first. ?? "";
+    fromCity = rtModel?.data?.first.idCityFrom.toString();
+    toCity = rtModel?.data?.first.idCityTo.toString();
+    departureDate = rtModel?.data?.first.dateDeparture;
+    arrivalDate = rtModel?.data?.first.dateArrival;
+    zonaID = rtModel?.data?.first.idZona.toString();
+    tlkDay = rtModel?.data?.first.tlkPerDay.toString();
+    tlk = rtModel?.data?.first.totalTlk;
 
     checkItems();
 
-    var docData = await repository.getDocumentCodeList();
-    purposeList.addAll(docData.data?.toSet().toList() ?? []);
+    await storage.readEmployeeInfo().then((value) {
+      tlkJobBand.text = value.first.bandJobName != "null" ? value.first.bandJobName.toString() : "";
+      requsetorID = value.first.id?.toInt();
+      jobID = value.first.idJobBand?.toInt();
+      travellerName = value.first.employeeName;
+      travellerSN = value.first.snEmployee;
+      travellerGender = value.first.jenkel;
+      travellerHotel = value.first.hotelFare;
+      travellerFlight = value.first.flightClass;
+    });
+
+    update();
   }
 
   Future<void> fetchList() async {
@@ -228,6 +261,12 @@ class ApprovalFormRequestTripController extends BaseController {
     caList = [];
     purposeList = [];
     try {
+      var docData = await repository.getDocumentCodeList();
+      purposeList.addAll(docData.data?.toSet().toList() ?? []);
+
+      var stData = await repository.getSiteList();
+      siteList.addAll(stData.data?.toSet().toList() ?? []);
+
       var guestData = await repository.getGuestBytripList(purposeID);
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
@@ -243,8 +282,8 @@ class ApprovalFormRequestTripController extends BaseController {
       var accData = await repository.getAccommodationBytripList(purposeID);
       accommodationsList.addAll(accData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      // var caData = await repository.getCashAdvanceTravelList();
-      // caList.addAll(caData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+      var caData = await repository.getCashAdvanceTravelList(purposeID);
+      caList.addAll(caData.data?.toSet().toList() ?? []);
     } catch (e, i) {
       e.printError();
       i.printError();
@@ -257,7 +296,11 @@ class ApprovalFormRequestTripController extends BaseController {
 
     if (result != null) {
       approvalModel(result);
-      await approvalRequestTrip.approve(approvalID).then((value) => Get.showSnackbar(
+      print('result : ${result.isRevision}');
+      try {
+        await approvalRequestTrip.approve(approvalID, result).then((value) {
+          Get.back();
+          Get.showSnackbar(
             const GetSnackBar(
               icon: Icon(
                 Icons.error,
@@ -268,7 +311,24 @@ class ApprovalFormRequestTripController extends BaseController {
               duration: Duration(seconds: 3),
               backgroundColor: successColor,
             ),
-          ));
+          );
+        });
+      } catch (e, i) {
+        e.printError();
+        i.printError();
+        Get.showSnackbar(
+          const GetSnackBar(
+            icon: Icon(
+              Icons.error,
+              color: Colors.white,
+            ),
+            message: "Failed update Data",
+            isDismissible: true,
+            duration: Duration(seconds: 3),
+            backgroundColor: redColor,
+          ),
+        );
+      }
     }
   }
 
@@ -277,18 +337,36 @@ class ApprovalFormRequestTripController extends BaseController {
 
     if (result != null) {
       approvalModel(result);
-      await approvalRequestTrip.reject(approvalID).then((value) => Get.showSnackbar(
-            const GetSnackBar(
-              icon: Icon(
-                Icons.error,
-                color: Colors.white,
+      print('result : ${result.isRevision}');
+      try {
+        await approvalRequestTrip.reject(approvalID, result).then((value) => Get.showSnackbar(
+              const GetSnackBar(
+                icon: Icon(
+                  Icons.error,
+                  color: Colors.white,
+                ),
+                message: 'Document Rejected',
+                isDismissible: true,
+                duration: Duration(seconds: 3),
+                backgroundColor: successColor,
               ),
-              message: 'Document Rejected',
-              isDismissible: true,
-              duration: Duration(seconds: 3),
-              backgroundColor: successColor,
+            ));
+      } catch (e, i) {
+        e.printError();
+        i.printError();
+        Get.showSnackbar(
+          const GetSnackBar(
+            icon: Icon(
+              Icons.error,
+              color: Colors.white,
             ),
-          ));
+            message: "Failed update Data",
+            isDismissible: true,
+            duration: Duration(seconds: 3),
+            backgroundColor: redColor,
+          ),
+        );
+      }
     }
   }
 }

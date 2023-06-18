@@ -19,6 +19,7 @@ import 'package:gais/screen/tms/request_trip/add/taxi_voucher/edit/edit_taxi_vou
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_controller.dart';
 import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -188,7 +189,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                 ))
                                             .toList(),
                                         onChanged: (value){
-
+                                          controller.siteID = value!.toInt();
                                           controller.update();
                                         },
                                       ),

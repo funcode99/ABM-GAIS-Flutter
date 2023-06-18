@@ -295,18 +295,18 @@ class FormRequestTripController extends BaseController {
     try {
       await repository.deleteTravellerGuest(id).then((value) {
         fetchList();
-        Get.showSnackbar(
-          const GetSnackBar(
-            icon: Icon(
-              Icons.error,
-              color: Colors.white,
+          Get.showSnackbar(
+            const GetSnackBar(
+              icon: Icon(
+                Icons.error,
+                color: Colors.white,
+              ),
+              message: 'Data Deleted',
+              isDismissible: true,
+              duration: Duration(seconds: 3),
+              backgroundColor: successColor,
             ),
-            message: 'Data Deleted',
-            isDismissible: true,
-            duration: Duration(seconds: 3),
-            backgroundColor: successColor,
-          ),
-        );
+          );
       });
     } catch (e) {
       Get.showSnackbar(
