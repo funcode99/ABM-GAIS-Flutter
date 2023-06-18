@@ -294,7 +294,7 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
                                   Colors.white
                                 ]),
                               ),
-                              child: const Text("Approval"),
+                              child: const Text("Approval Info"),
                             );
                           }),
                           onTap: () {
