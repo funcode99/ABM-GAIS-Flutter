@@ -209,10 +209,10 @@ class _CashAdvanceTravelDetailScreenState
                           if(controller.selectedItem.value.codeStatusDoc != RequestTripEnum.draft.value){
                             return GestureDetector(
                               child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
                                 alignment: Alignment.center,
                                 margin: const EdgeInsets.only(
                                     top: 10, left: 5),
-                                width: 100,
                                 height: 50,
                                 decoration: BoxDecoration(
                                   color: controller.selectedTab.value ==
@@ -233,7 +233,7 @@ class _CashAdvanceTravelDetailScreenState
                                     Colors.white
                                   ]),
                                 ),
-                                child: const Text("Approval"),
+                                child: const Text("Approval Info"),
                               ),
                               onTap: () {
                                 controller.selectedTab(TabEnum.approval);

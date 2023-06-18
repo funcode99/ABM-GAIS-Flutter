@@ -273,10 +273,10 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                           GestureDetector(
                             child: Obx(() {
                               return Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
                                 alignment: Alignment.center,
                                 margin: const EdgeInsets.only(top: 10, left: 5),
                                 width: 100,
-                                height: 50,
                                 decoration: BoxDecoration(
                                   color: controller.selectedTab.value ==
                                       TabEnum.detail
@@ -307,11 +307,10 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                             if(controller.selectedItem.value.codeStatusDoc != CashAdvanceNonTravelEnum.draft.value){
                               return GestureDetector(
                                 child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
                                   alignment: Alignment.center,
                                   margin: const EdgeInsets.only(
                                       top: 10, left: 5),
-                                  width: 100,
-                                  height: 50,
                                   decoration: BoxDecoration(
                                     color: controller.selectedTab.value ==
                                         TabEnum.approval
@@ -331,7 +330,7 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                                       Colors.white
                                     ]),
                                   ),
-                                  child: const Text("Approval"),
+                                  child: const Text("Approval Info"),
                                 ),
                                 onTap: () {
                                   controller.selectedTab(TabEnum.approval);
