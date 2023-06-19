@@ -50,6 +50,9 @@ class ManagementItemATKListScreen extends StatelessWidget {
               onPressedFilter: () {
                 controller.openFilter();
                 Get.bottomSheet(
+                  enableDrag: true,
+                persistent: false,
+                isScrollControlled: true,
                 FilterBottomSheet(
                   onApplyFilter: () {
                     controller.applyFilter();

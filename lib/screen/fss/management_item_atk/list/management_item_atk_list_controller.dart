@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
-import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
@@ -10,6 +9,7 @@ import 'package:gais/data/repository/management_item_atk/management_item_atk_rep
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/enum/role_enum.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -209,7 +209,6 @@ class ManagementItemATKListController extends BaseController
   }
 
   void onChangeSelectedItem(String id) {
-    print("LIST ITEMs ${listItem.toJson()}");
     final selected = listItem.firstWhere(
             (item) => item.id.toString() == id.toString(),
         orElse: () => listItem.first);
@@ -224,22 +223,24 @@ class ManagementItemATKListController extends BaseController
       listItem.addAll(items);
     }
     onChangeSelectedItem("");
-
-    print("LIISTT ITEM ${listItem}");
   }
 
 
-  void _filterSite(String idCompany){
-    print("FILTER SITE ID COMPANY $idCompany");
-    final filtered = listSite.where((item) => item.idCompany.toString() == idCompany);
+  void _filterSite(String idCompany)async{
     listSiteFiltered.removeWhere((element) => element.id != "");
-    listSiteFiltered.addAll(filtered);
+    if(idCompany.isNotEmpty){
+      final filtered = await getListSiteByCompanyId(idCompany.toInt());
+      // final filtered = listSite.where((item) => item.idCompany.toString() == idCompany);
+      listSiteFiltered.addAll(filtered);
+    }
   }
 
-  void _filterWarehouse(String idSite){
-    print("FILTER WAREHOUSE ID SITE $idSite");
-    final filtered = listWarehouse.where((item) => item.idSite.toString() == idSite);
+  void _filterWarehouse(String idSite)async{
     listWarehouseFiltered.removeWhere((element) => element.id != "");
-    listWarehouseFiltered.addAll(filtered);
+    if(idSite.isNotEmpty){
+      final filtered = await getListWarehouseBySiteId(idSite.toInt());
+      // final filtered = listWarehouse.where((item) => item.idSite.toString() == idSite);
+      listWarehouseFiltered.addAll(filtered);
+    }
   }
 }
