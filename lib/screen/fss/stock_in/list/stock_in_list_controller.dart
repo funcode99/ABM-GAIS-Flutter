@@ -97,6 +97,14 @@ class StockInListController extends BaseController with MasterDataMixin{
   }
 
   void getHeader({int page = 1}) async {
+    String codeRole = await storage.readString(StorageCore.codeRole);
+
+    if(codeRole != RoleEnum.administrator.value){
+      String idCompany = await storage.readString(StorageCore.companyID);
+      selectedCompany.value = CompanyModel(
+          id: idCompany
+      );
+    }
     final result = await _repository.getPaginationData(
         data: {
           "page" : page,
