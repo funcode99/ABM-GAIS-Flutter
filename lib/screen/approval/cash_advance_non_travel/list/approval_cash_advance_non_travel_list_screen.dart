@@ -64,7 +64,11 @@ class _ApprovalCashAdvanceNonTravelListScreenState
                 controller.openFilter();
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {
+                    controller.applyFilter();
                     Get.back();
+                  },
+                  onResetFilter: (){
+                    controller.resetFilter();
                   },
                   children: [
                     CustomTextFormField(
@@ -79,13 +83,13 @@ class _ApprovalCashAdvanceNonTravelListScreenState
                                 .subtract(const Duration(days: 365)),
                             maximumDate:
                                 DateTime.now().add(const Duration(days: 365)),
-                            endDate: controller.endDate.value,
-                            startDate: controller.startDate.value,
+                            endDate: controller.endDateTemp.value,
+                            startDate: controller.startDateTemp.value,
                             backgroundColor: Colors.white,
                             primaryColor: Colors.green,
                             onApplyClick: (start, end) {
-                              controller.endDate.value = end;
-                              controller.startDate.value = start;
+                              controller.endDateTemp.value = end;
+                              controller.startDateTemp.value = start;
                               controller.dateRangeController.text =
                                   "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                             },
