@@ -52,6 +52,9 @@ class StockInListScreen extends StatelessWidget {
               onPressedFilter: () {
                 controller.openFilter();
                 Get.bottomSheet(
+                    enableDrag: true,
+                    persistent: false,
+                    isScrollControlled: true,
                     FilterBottomSheet(
                       onApplyFilter: () {
                         controller.applyFilter();
@@ -82,6 +85,12 @@ class StockInListScreen extends StatelessWidget {
                                   ? controller.selectedCompanyTemp.value?.id
                                   .toString()
                                   : "",
+                            );
+                          }else{
+                            return CustomTextFormField(
+                              controller: controller.companyTextEditingController,
+                              label: "Company",
+                              readOnly: true,
                             );
                           }
 
@@ -165,8 +174,7 @@ class StockInListScreen extends StatelessWidget {
                           height: 8,
                         ),
                       ],
-                    ),
-                    enableDrag: true);
+                    ));
               },
             ),
             Obx(() {

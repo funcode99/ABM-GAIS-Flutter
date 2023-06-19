@@ -11,6 +11,7 @@ import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/management_item_atk/add/add_management_item_atk_screen.dart';
@@ -50,6 +51,9 @@ class ManagementItemATKListScreen extends StatelessWidget {
               onPressedFilter: () {
                 controller.openFilter();
                 Get.bottomSheet(
+                  enableDrag: true,
+                persistent: false,
+                isScrollControlled: true,
                 FilterBottomSheet(
                   onApplyFilter: () {
                     controller.applyFilter();
@@ -78,6 +82,12 @@ class ManagementItemATKListScreen extends StatelessWidget {
                           value: controller.selectedCompanyTemp.value != null
                               ? controller.selectedCompanyTemp.value?.id.toString()
                               : "",
+                        );
+                      }else{
+                        return CustomTextFormField(
+                          controller: controller.companyTextEditingController,
+                          label: "Company",
+                          readOnly: true,
                         );
                       }
 

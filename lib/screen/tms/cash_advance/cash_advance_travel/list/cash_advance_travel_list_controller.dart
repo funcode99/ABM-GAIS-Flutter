@@ -50,7 +50,7 @@ class CashAdvanceTravelListController extends BaseController {
             (l) {
           Get.showSnackbar(
               CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
-          listHeader.clear(); //clear first, because when not found its not [] but error 404 :)
+          listHeader.clear();
           totalPage(1);
           currentPage(1);
         },

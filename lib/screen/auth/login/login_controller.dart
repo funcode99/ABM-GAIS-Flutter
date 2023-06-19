@@ -70,6 +70,9 @@ class LoginController extends BaseController {
             );
             storage.writeString(StorageCore.roleName, value.users?.roleName ?? "");
             storage.writeString(StorageCore.codeRole, value.users?.codeRole ?? "");
+            storage.writeString(StorageCore.companyID, value.users?.idCompany.toString() ?? "");
+            storage.writeString(StorageCore.snEmployee, value.users?.snEmployee.toString() ?? "");
+            storage.writeString(StorageCore.employeeName, value.users?.employeeName.toString() ?? "");
             saveEmployeeInfo();
           })
           .then(

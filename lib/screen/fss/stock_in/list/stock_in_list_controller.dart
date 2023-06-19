@@ -9,6 +9,7 @@ import 'package:gais/data/repository/stock_in/stock_in_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/enum/role_enum.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -22,6 +23,7 @@ class StockInListController extends BaseController with MasterDataMixin{
   final listCompany = <CompanyModel>[].obs;
   final selectedCompany = Rxn<CompanyModel>();
   final selectedCompanyTemp = Rxn<CompanyModel>();
+  final companyTextEditingController = TextEditingController();
 
   final listSite = <SiteModel>[].obs;
   final listSiteFiltered = <SiteModel>[].obs;
@@ -81,14 +83,16 @@ class StockInListController extends BaseController with MasterDataMixin{
     final warehouses = await getListWarehouse();
     listWarehouse.addAll(warehouses);
 
-    if(codeRole == RoleEnum.superAdmin.value){
+    if(codeRole == RoleEnum.administrator.value){
       enableSelectCompany(true);
       onChangeSelectedCompany("");
     }else{
       String idCompany = await storage.readString(StorageCore.companyID);
+      String companyName = await storage.readString(StorageCore.companyName);
       selectedCompany.value = CompanyModel(
         id: idCompany
       );
+      companyTextEditingController.text = companyName;
       onChangeSelectedCompany(idCompany);
     }
     onChangeSelectedSite("");
@@ -96,6 +100,14 @@ class StockInListController extends BaseController with MasterDataMixin{
   }
 
   void getHeader({int page = 1}) async {
+    String codeRole = await storage.readString(StorageCore.codeRole);
+
+    if(codeRole != RoleEnum.administrator.value){
+      String idCompany = await storage.readString(StorageCore.companyID);
+      selectedCompany.value = CompanyModel(
+          id: idCompany
+      );
+    }
     final result = await _repository.getPaginationData(
         data: {
           "page" : page,
@@ -224,15 +236,21 @@ class StockInListController extends BaseController with MasterDataMixin{
     selectedWarehouseTemp(selected);
   }
 
-  void _filterSite(String idCompany){
-    final filtered = listSite.where((item) => item.idCompany.toString() == idCompany);
+  void _filterSite(String idCompany)async{
     listSiteFiltered.removeWhere((element) => element.id != "");
-    listSiteFiltered.addAll(filtered);
+    if(idCompany.isNotEmpty){
+      final filtered = await getListSiteByCompanyId(idCompany.toInt());
+      // final filtered = listSite.where((item) => item.idCompany.toString() == idCompany);
+      listSiteFiltered.addAll(filtered);
+    }
   }
 
-  void _filterWarehouse(String idSite){
-    final filtered = listWarehouse.where((item) => item.idSite.toString() == idSite);
+  void _filterWarehouse(String idSite)async{
     listWarehouseFiltered.removeWhere((element) => element.id != "");
-    listWarehouseFiltered.addAll(filtered);
+    if(idSite.isNotEmpty){
+      final filtered = await getListWarehouseBySiteId(idSite.toInt());
+      // final filtered = listWarehouse.where((item) => item.idSite.toString() == idSite);
+      listWarehouseFiltered.addAll(filtered);
+    }
   }
 }

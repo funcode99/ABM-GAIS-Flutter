@@ -65,7 +65,7 @@ class CustomDropDownFormField<T> extends StatelessWidget {
       },
 
       popupProps: PopupProps.menu(
-        constraints: const BoxConstraints(maxHeight: 300),
+        constraints: const BoxConstraints(maxHeight: 200),
         fit: FlexFit.loose,
         showSelectedItems: true,
         showSearchBox: items!.length >= 15,

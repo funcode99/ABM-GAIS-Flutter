@@ -59,12 +59,8 @@ class ApprovalCashAdvanceTravelListController extends BaseController{
           totalPage(tempTotalPage);
           currentPage(paginationModel?.currentPage);
 
-          /*listHeader.value = paginationModel!.data!
-              .map((e) => CashAdvanceModel.fromJson(e))
-              .toList();
-          listHeader.refresh();*/
           listHeader.value = paginationModel!.data!
-              .map((e) => e as ApprovalCashAdvanceModel)
+              .map((e) => ApprovalCashAdvanceModel.fromJson(e))
               .toList();
           listHeader.refresh();
         });

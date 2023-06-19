@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
-import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
@@ -10,6 +9,7 @@ import 'package:gais/data/repository/management_item_atk/management_item_atk_rep
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/enum/role_enum.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -22,6 +22,8 @@ class ManagementItemATKListController extends BaseController
   final listCompany = <CompanyModel>[].obs;
   final selectedCompany = Rxn<CompanyModel>();
   final selectedCompanyTemp = Rxn<CompanyModel>();
+  final companyTextEditingController = TextEditingController();
+
 
   final listSite = <SiteModel>[].obs;
   final listSiteFiltered = <SiteModel>[].obs;
@@ -66,7 +68,6 @@ class ManagementItemATKListController extends BaseController
     initData();
   }
 
-
   void initData() async {
     String codeRole = await storage.readString(StorageCore.codeRole);
 
@@ -84,14 +85,16 @@ class ManagementItemATKListController extends BaseController
 
     listItem.add(emptyItem);
 
-    if(codeRole == RoleEnum.superAdmin.value){
+    if(codeRole == RoleEnum.administrator.value){
       enableSelectCompany(true);
       onChangeSelectedCompany("");
     }else{
       String idCompany = await storage.readString(StorageCore.companyID);
+      String companyName = await storage.readString(StorageCore.companyName);
       selectedCompany.value = CompanyModel(
           id: idCompany
       );
+      companyTextEditingController.text = companyName;
       onChangeSelectedCompany(idCompany);
     }
 
@@ -100,8 +103,15 @@ class ManagementItemATKListController extends BaseController
   }
 
   void getHeader({int page = 1}) async {
-    listHeader
-        .clear(); //clear first, because when not found its not [] but error 404 :)
+    String codeRole = await storage.readString(StorageCore.codeRole);
+
+    if(codeRole != RoleEnum.administrator.value){
+      String idCompany = await storage.readString(StorageCore.companyID);
+      selectedCompany.value = CompanyModel(
+          id: idCompany
+      );
+    }
+
     final result = await _repository.getPaginationData(
         data: {
           "page": page,
@@ -117,6 +127,7 @@ class ManagementItemATKListController extends BaseController
     result.fold((l) {
       Get.showSnackbar(
           CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+      listHeader.clear();
       totalPage(1);
       currentPage(1);
     }, (r) {
@@ -210,7 +221,6 @@ class ManagementItemATKListController extends BaseController
   }
 
   void onChangeSelectedItem(String id) {
-    print("LIST ITEMs ${listItem.toJson()}");
     final selected = listItem.firstWhere(
             (item) => item.id.toString() == id.toString(),
         orElse: () => listItem.first);
@@ -225,22 +235,24 @@ class ManagementItemATKListController extends BaseController
       listItem.addAll(items);
     }
     onChangeSelectedItem("");
-
-    print("LIISTT ITEM ${listItem}");
   }
 
 
-  void _filterSite(String idCompany){
-    print("FILTER SITE ID COMPANY $idCompany");
-    final filtered = listSite.where((item) => item.idCompany.toString() == idCompany);
+  void _filterSite(String idCompany)async{
     listSiteFiltered.removeWhere((element) => element.id != "");
-    listSiteFiltered.addAll(filtered);
+    if(idCompany.isNotEmpty){
+      final filtered = await getListSiteByCompanyId(idCompany.toInt());
+      // final filtered = listSite.where((item) => item.idCompany.toString() == idCompany);
+      listSiteFiltered.addAll(filtered);
+    }
   }
 
-  void _filterWarehouse(String idSite){
-    print("FILTER WAREHOUSE ID SITE $idSite");
-    final filtered = listWarehouse.where((item) => item.idSite.toString() == idSite);
+  void _filterWarehouse(String idSite)async{
     listWarehouseFiltered.removeWhere((element) => element.id != "");
-    listWarehouseFiltered.addAll(filtered);
+    if(idSite.isNotEmpty){
+      final filtered = await getListWarehouseBySiteId(idSite.toInt());
+      // final filtered = listWarehouse.where((item) => item.idSite.toString() == idSite);
+      listWarehouseFiltered.addAll(filtered);
+    }
   }
 }
