@@ -159,15 +159,9 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
     try {
       Dio.Response response = await network.dio.get(
         '/api/approval_cash_advance/get_data',
+        queryParameters: data
       );
-      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalCashAdvanceModel.fromJsonModelList);
-      PaginationModel paginationModel = PaginationModel();
-      paginationModel.data = apiResponseModel.data;
-      paginationModel.perPage = "1000";
-      paginationModel.currentPage = 1;
-      paginationModel.total = 1;
-      // ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
-      return right(paginationModel);
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
       return right(apiResponseModel.data);
     } on DioError catch (e) {
       print("DioError $e");
