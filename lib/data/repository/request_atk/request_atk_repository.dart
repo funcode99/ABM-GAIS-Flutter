@@ -246,7 +246,7 @@ class RequestATKRepository
     //TODO : temporary, using approval non travel, should use approval request atk
     try {
       Dio.Response response = await network.dio.get(
-          '/api/approval_non_travel/get_data',
+          '/api/approval_request_atk/get_data',
           queryParameters: data
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);

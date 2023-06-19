@@ -36,7 +36,7 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
           },
         ),
         backgroundColor: whiteColor,
-        title: Text("approval_cash_advance_non_travel".tr, style: appTitle),
+        title: Text("Approval ATK Request".tr, style: appTitle),
         centerTitle: true,
         flexibleSpace: const TopBar(),
       ),
@@ -135,48 +135,40 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
                             Get.to(const DetailApprovalRequestATKScreen(approvalActionEnum: ApprovalActionEnum.none,));
                           },
                           number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
-                          title: "OUT-ABM/1859/23.0$index",
-                          subtitle: "12/05/23",
+                          title: "${item.noAtkRequest}",
+                          subtitle:"${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                           content: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                      "Requestor".tr,
-                                      style: listTitleTextStyle,
-                                    ),
-                                    Text(
-                                      "John Smith",
-                                      style: listSubTitleTextStyle,
-                                    ),
-                                  ],
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "Requestor".tr,
+                                        style: listTitleTextStyle,
+                                      ),
+                                      Text(
+                                        item.employeeName ?? "-",
+                                        style: listSubTitleTextStyle,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      "Warehouse".tr,
-                                      style: listTitleTextStyle,
-                                    ),
-                                    Text(
-                                      "Warehouse A",
-                                      style: listSubTitleTextStyle,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      "Item Count".tr,
-                                      style: listTitleTextStyle,
-                                    ),
-                                    Text(
-                                      "100",
-                                      style: listSubTitleTextStyle,
-                                    ),
-                                  ],
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "Item Count".tr,
+                                        style: listTitleTextStyle,
+                                      ),
+                                      Text(
+                                        "${item.itemCount ?? "-"}",
+                                        style: listSubTitleTextStyle,
+                                      ),
+                                    ],
+                                  ),
                                 )
                               ],
                             ),
@@ -202,7 +194,7 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
                               },
                             )
                           ],
-                          status: "Booked".tr,
+                          status: item.status ?? "-",
                         ))
                       ],
                     );

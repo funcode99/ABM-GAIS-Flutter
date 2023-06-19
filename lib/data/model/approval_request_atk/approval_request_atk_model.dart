@@ -5,81 +5,49 @@ part 'approval_request_atk_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class ApprovalRequestATKModel {
+  int? no;
   int? id;
-  String? codeDocument;
-  int? idDocument;
-  int? level;
-  int? idEmployee;
   int? idCompany;
   int? idSite;
-  int? idMatrix;
-  int? idApprovalAuth;
-  dynamic approvedBy;
-  dynamic approvedBehalf;
-  dynamic rejectedBy;
-  dynamic isApproved;
-  String? notes;
+  int? idEmployee;
+  String? noAtkRequest;
+  String? remarks;
   int? codeStatusDoc;
-  int? isRequestTrip;
-  String? codeSequence;
   String? createdAt;
   dynamic createdBy;
   String? updatedAt;
   dynamic updatedBy;
   String? deletedAt;
-  int? currentLevel;
-  int? itemCount;
-  String? noCa;
-  int? idCa;
-  int? codeStatusCa;
-  int? idCurrency;
-  String? grandTotal;
-  String? event;
-  String? status;
-  String? currencyName;
-  String? currencySymbol;
-  String? currencyCode;
   String? employeeName;
-  String? noRequestTrip;
+  String? companyName;
+  String? companyCode;
+  String? siteName;
+  String? siteCode;
+  String? status;
+  int? itemCount;
 
   ApprovalRequestATKModel(
       {
+        this.no,
         this.id,
-        this.codeDocument,
-        this.idDocument,
-        this.level,
-        this.idEmployee,
         this.idCompany,
         this.idSite,
-        this.idMatrix,
-        this.idApprovalAuth,
-        this.approvedBy,
-        this.approvedBehalf,
-        this.rejectedBy,
-        this.isApproved,
-        this.notes,
+        this.idEmployee,
+        this.noAtkRequest,
+        this.remarks,
         this.codeStatusDoc,
-        this.isRequestTrip,
-        this.codeSequence,
         this.createdAt,
         this.createdBy,
         this.updatedAt,
         this.updatedBy,
         this.deletedAt,
-        this.currentLevel,
-        this.noCa,
-        this.idCa,
-        this.codeStatusCa,
-        this.grandTotal,
-        this.event,
-        this.status,
-        this.idCurrency,
-        this.currencyName,
-        this.currencySymbol,
-        this.currencyCode,
         this.employeeName,
+        this.companyName,
+        this.companyCode,
+        this.siteName,
+        this.siteCode,
+        this.status,
         this.itemCount,
-        this.noRequestTrip,
       });
 
   static ApprovalRequestATKModel fromJsonModel(Object? json) =>
