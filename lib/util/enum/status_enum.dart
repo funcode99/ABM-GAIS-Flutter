@@ -38,3 +38,14 @@ enum RequestTripEnum {
 
   final int value;
 }
+
+enum RequestATKEnum {
+  draft(0),
+  waitingApproval(1),
+  cancelled(9),
+  done(10);
+
+  const RequestATKEnum(this.value);
+
+  final int value;
+}
