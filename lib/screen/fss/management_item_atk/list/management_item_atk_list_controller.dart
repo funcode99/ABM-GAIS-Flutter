@@ -22,6 +22,8 @@ class ManagementItemATKListController extends BaseController
   final listCompany = <CompanyModel>[].obs;
   final selectedCompany = Rxn<CompanyModel>();
   final selectedCompanyTemp = Rxn<CompanyModel>();
+  final companyTextEditingController = TextEditingController();
+
 
   final listSite = <SiteModel>[].obs;
   final listSiteFiltered = <SiteModel>[].obs;
@@ -88,9 +90,11 @@ class ManagementItemATKListController extends BaseController
       onChangeSelectedCompany("");
     }else{
       String idCompany = await storage.readString(StorageCore.companyID);
+      String companyName = await storage.readString(StorageCore.companyName);
       selectedCompany.value = CompanyModel(
           id: idCompany
       );
+      companyTextEditingController.text = companyName;
       onChangeSelectedCompany(idCompany);
     }
 

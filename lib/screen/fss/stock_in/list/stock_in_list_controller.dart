@@ -23,6 +23,7 @@ class StockInListController extends BaseController with MasterDataMixin{
   final listCompany = <CompanyModel>[].obs;
   final selectedCompany = Rxn<CompanyModel>();
   final selectedCompanyTemp = Rxn<CompanyModel>();
+  final companyTextEditingController = TextEditingController();
 
   final listSite = <SiteModel>[].obs;
   final listSiteFiltered = <SiteModel>[].obs;
@@ -87,9 +88,11 @@ class StockInListController extends BaseController with MasterDataMixin{
       onChangeSelectedCompany("");
     }else{
       String idCompany = await storage.readString(StorageCore.companyID);
+      String companyName = await storage.readString(StorageCore.companyName);
       selectedCompany.value = CompanyModel(
         id: idCompany
       );
+      companyTextEditingController.text = companyName;
       onChangeSelectedCompany(idCompany);
     }
     onChangeSelectedSite("");

@@ -6,12 +6,13 @@ class StorageCore {
   static const String userID = "userID";
   static const String companyID = "companyID";
   static const String departmentID = "departmentID";
-  static const String employeeName = "employeeName";
+  static const String employeeName = "name";
   static const String companyName = "companyName";
   static const String siteName = "site";
   static const String siteID = "siteID";
   static const String roleName = "roleName";
   static const String codeRole = "codeRole";
+  static const String snEmployee = "sn";
 
   final storage = const FlutterSecureStorage();
 

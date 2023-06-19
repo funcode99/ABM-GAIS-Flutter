@@ -86,6 +86,12 @@ class StockInListScreen extends StatelessWidget {
                                   .toString()
                                   : "",
                             );
+                          }else{
+                            return CustomTextFormField(
+                              controller: controller.companyTextEditingController,
+                              label: "Company",
+                              readOnly: true,
+                            );
                           }
 
                           return const SizedBox();
