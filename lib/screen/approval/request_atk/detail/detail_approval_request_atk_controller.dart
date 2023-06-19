@@ -50,7 +50,7 @@ class DetailApprovalRequestATKController extends BaseController {
   }
 
   void setValue() {
-    createdByController.text = detailSelectedItem.value.createdAt?.toDateFormat(
+    createdDateController.text = detailSelectedItem.value.createdAt?.toDateFormat(
         originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
         "-";
     createdByController.text = detailSelectedItem.value.employeeName ?? "-";
@@ -58,7 +58,7 @@ class DetailApprovalRequestATKController extends BaseController {
   }
 
   void detailHeader() async {
-    final result = await _repository.detailData(selectedItem.value.idCa!);
+    final result = await _repository.detailData(selectedItem.value.id!);
 
     result.fold((l) {
       print("ERROR DETAIL HEADER ${l.message}");
@@ -70,7 +70,7 @@ class DetailApprovalRequestATKController extends BaseController {
   }
 
   void getDataDetail() async {
-    final result = await _repository.getDataDetails(selectedItem.value.idCa!);
+    final result = await _repository.getDataDetails(selectedItem.value.id!);
     result.fold((l) => null, (r) {
       listDetail.value = r;
       listDetail.refresh();

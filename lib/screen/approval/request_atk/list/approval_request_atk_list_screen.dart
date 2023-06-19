@@ -25,7 +25,8 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ApprovalRequestATKListController controller = Get.put(ApprovalRequestATKListController());
+    final ApprovalRequestATKListController controller =
+        Get.put(ApprovalRequestATKListController());
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -51,50 +52,48 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
               onClearFilter: () {
                 controller.applySearch("");
               },
-              onPressedFilter: (){
+              onPressedFilter: () {
                 controller.openFilter();
-                Get.bottomSheet(
-                    FilterBottomSheet(
-                      onApplyFilter: () {
-                        controller.applyFilter();
-                        Get.back();
-                      },
-                      onResetFilter: (){
-                        controller.resetFilter();
-                      },
-                      children: [
-                        CustomTextFormField(
-                            readOnly: true,
-                            controller: controller.dateRangeController,
-                            suffixIcon: const Icon(Icons.calendar_month),
-                            onTap: () {
-                              showCustomDateRangePicker(
-                                context,
-                                dismissible: true,
-                                minimumDate: DateTime.now()
-                                    .subtract(const Duration(days: 365)),
-                                maximumDate:
+                Get.bottomSheet(FilterBottomSheet(
+                  onApplyFilter: () {
+                    controller.applyFilter();
+                    Get.back();
+                  },
+                  onResetFilter: () {
+                    controller.resetFilter();
+                  },
+                  children: [
+                    CustomTextFormField(
+                        readOnly: true,
+                        controller: controller.dateRangeController,
+                        suffixIcon: const Icon(Icons.calendar_month),
+                        onTap: () {
+                          showCustomDateRangePicker(
+                            context,
+                            dismissible: true,
+                            minimumDate: DateTime.now()
+                                .subtract(const Duration(days: 365)),
+                            maximumDate:
                                 DateTime.now().add(const Duration(days: 365)),
-                                endDate: controller.endDateTemp.value,
-                                startDate: controller.startDateTemp.value,
-                                backgroundColor: Colors.white,
-                                primaryColor: Colors.green,
-                                onApplyClick: (start, end) {
-                                  controller.endDateTemp.value = end;
-                                  controller.startDateTemp.value = start;
-                                  controller.dateRangeController.text =
+                            endDate: controller.endDateTemp.value,
+                            startDate: controller.startDateTemp.value,
+                            backgroundColor: Colors.white,
+                            primaryColor: Colors.green,
+                            onApplyClick: (start, end) {
+                              controller.endDateTemp.value = end;
+                              controller.startDateTemp.value = start;
+                              controller.dateRangeController.text =
                                   "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
-                                },
-                                onCancelClick: () {},
-                              );
                             },
-                            label: "Date Range".tr),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                      ],
-                    )
-                );
+                            onCancelClick: () {},
+                          );
+                        },
+                        label: "Date Range".tr),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                  ],
+                ));
               },
             ),
             Obx(() {
@@ -121,86 +120,116 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
             ),
             Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () async {
-                    controller.getHeader();
-                  },
-                  child: Obx(() {
-                    return controller.listHeader.isEmpty
-                        ? const DataEmpty()
-                        : ListView(
-                      children: [
-                        ...controller.listHeader
-                            .mapIndexed((index, item) => CommonListItem(
-                          onTap: (){
-                            Get.to(const DetailApprovalRequestATKScreen(approvalActionEnum: ApprovalActionEnum.none,));
-                          },
-                          number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
-                          title: "${item.noAtkRequest}",
-                          subtitle:"${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
-                          content: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(
-                                  child: Column(
+              onRefresh: () async {
+                controller.getHeader();
+              },
+              child: Obx(() {
+                return controller.listHeader.isEmpty
+                    ? const DataEmpty()
+                    : ListView(
+                        children: [
+                          ...controller.listHeader.mapIndexed((index, item) =>
+                              CommonListItem(
+                                onTap: () {
+                                  Get.to(
+                                      () =>
+                                          const DetailApprovalRequestATKScreen(
+                                            approvalActionEnum:
+                                                ApprovalActionEnum.none,
+                                          ),
+                                      arguments: {
+                                        "item": item
+                                      })?.then(
+                                      (value) => controller.getHeader());
+                                },
+                                number:
+                                    "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
+                                title: "${item.noAtkRequest}",
+                                subtitle:
+                                    "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                content: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Text(
-                                        "Requestor".tr,
-                                        style: listTitleTextStyle,
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Requestor".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              item.employeeName ?? "-",
+                                              style: listSubTitleTextStyle,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      Text(
-                                        item.employeeName ?? "-",
-                                        style: listSubTitleTextStyle,
-                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Item Count".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              "${item.itemCount ?? "-"}",
+                                              style: listSubTitleTextStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "Item Count".tr,
-                                        style: listTitleTextStyle,
-                                      ),
-                                      Text(
-                                        "${item.itemCount ?? "-"}",
-                                        style: listSubTitleTextStyle,
-                                      ),
-                                    ],
+                                action: [
+                                  CustomIconButton(
+                                    title: "Confirm".tr,
+                                    iconData: Icons.check,
+                                    backgroundColor: successColor,
+                                    onPressed: () {
+                                      Get.to(
+                                          () =>
+                                              const DetailApprovalRequestATKScreen(
+                                                approvalActionEnum:
+                                                    ApprovalActionEnum.approve,
+                                              ),
+                                          arguments: {
+                                            "item": item
+                                          })?.then(
+                                          (value) => controller.getHeader());
+                                    },
                                   ),
-                                )
-                              ],
-                            ),
-                          ),
-                          action: [
-                            CustomIconButton(
-                              title: "Confirm".tr,
-                              iconData: Icons.check,
-                              backgroundColor: successColor,
-                              onPressed: (){
-                                Get.to(const DetailApprovalRequestATKScreen(approvalActionEnum: ApprovalActionEnum.approve,));
-                              },
-                            ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            CustomIconButton(
-                              title: "Reject".tr,
-                              iconData: Icons.close,
-                              backgroundColor: redColor,
-                              onPressed: () {
-                                Get.to(const DetailApprovalRequestATKScreen(approvalActionEnum: ApprovalActionEnum.reject,));
-                              },
-                            )
-                          ],
-                          status: item.status ?? "-",
-                        ))
-                      ],
-                    );
-                  }),
-                )),
-
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  CustomIconButton(
+                                    title: "Reject".tr,
+                                    iconData: Icons.close,
+                                    backgroundColor: redColor,
+                                    onPressed: () {
+                                      Get.to(
+                                          () =>
+                                              const DetailApprovalRequestATKScreen(
+                                                approvalActionEnum:
+                                                    ApprovalActionEnum.reject,
+                                              ),
+                                          arguments: {
+                                            "item": item
+                                          })?.then(
+                                          (value) => controller.getHeader());
+                                    },
+                                  )
+                                ],
+                                status: item.status ?? "-",
+                              ))
+                        ],
+                      );
+              }),
+            )),
           ],
         ),
       ),

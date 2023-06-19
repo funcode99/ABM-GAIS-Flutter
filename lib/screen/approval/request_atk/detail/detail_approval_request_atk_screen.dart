@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/approval_request_atk/approval_request_atk_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
@@ -35,8 +36,13 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
     Get.dialog(const ApprovalConfirmationDialog());
   }
 
-  _openRejectDialog(){
-    Get.dialog(const RejectDialog(rejectFormEnum: RejectFormEnum.onlyFullReject));
+  _openRejectDialog()async{
+    DetailApprovalRequestATKController controller = Get.find();
+    ApprovalModel result = await Get.dialog(const RejectDialog(rejectFormEnum: RejectFormEnum.onlyFullReject));
+    if (result != null) {
+      controller.approvalModel(result);
+      controller.reject();
+    }
   }
 
   @override
@@ -227,7 +233,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                             controller.selectedTab(TabEnum.detail);
                           },
                         ),
-                        GestureDetector(
+                        /*GestureDetector(
                           child: Obx(() {
                             return Container(
                               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -259,7 +265,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                           onTap: () {
                             controller.selectedTab(TabEnum.approval);
                           },
-                        ),
+                        ),*/
                       ],
                     ),
                   ),

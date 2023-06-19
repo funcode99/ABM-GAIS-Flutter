@@ -269,7 +269,7 @@ class RequestATKRepository
       final approvalModel = model as ApprovalModel;
 
       Dio.Response response = await network.dio.post(
-          '/api/approval_non_travel/reject/$id',
+          '/api/approval_request_atk/reject/$id',
           data: approvalModel.toJson()
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalRequestATKModel.fromJsonModel);
@@ -292,7 +292,7 @@ class RequestATKRepository
       final approvalModel = model as ApprovalModel;
 
       Dio.Response response = await network.dio.post(
-          '/api/approval_non_travel/approve/$id',
+          '/api/approval_request_atk/approve/$id',
           data: approvalModel.toJson()
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalRequestATKModel.fromJsonModel);
@@ -311,7 +311,8 @@ class RequestATKRepository
 
   @override
   Future<Either<BaseError, List<ApprovalLogModel>>> getApprovalLog(int id) async{
-    try {
+    throw UnimplementedError();
+    /*try {
       Dio.Response response = await network.dio.get(
         '/api/cash_advance/get_history_non_travel/$id',
       );
@@ -326,6 +327,6 @@ class RequestATKRepository
     }catch (e){
       print("catch error $e");
       return left(BaseError(message: "General error occurred"));
-    }
+    }*/
   }
 }
