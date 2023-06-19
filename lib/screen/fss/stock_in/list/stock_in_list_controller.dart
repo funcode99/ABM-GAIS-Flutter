@@ -9,6 +9,7 @@ import 'package:gais/data/repository/stock_in/stock_in_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/enum/role_enum.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -224,15 +225,21 @@ class StockInListController extends BaseController with MasterDataMixin{
     selectedWarehouseTemp(selected);
   }
 
-  void _filterSite(String idCompany){
-    final filtered = listSite.where((item) => item.idCompany.toString() == idCompany);
+  void _filterSite(String idCompany)async{
     listSiteFiltered.removeWhere((element) => element.id != "");
-    listSiteFiltered.addAll(filtered);
+    if(idCompany.isNotEmpty){
+      final filtered = await getListSiteByCompanyId(idCompany.toInt());
+      // final filtered = listSite.where((item) => item.idCompany.toString() == idCompany);
+      listSiteFiltered.addAll(filtered);
+    }
   }
 
-  void _filterWarehouse(String idSite){
-    final filtered = listWarehouse.where((item) => item.idSite.toString() == idSite);
+  void _filterWarehouse(String idSite)async{
     listWarehouseFiltered.removeWhere((element) => element.id != "");
-    listWarehouseFiltered.addAll(filtered);
+    if(idSite.isNotEmpty){
+      final filtered = await getListWarehouseBySiteId(idSite.toInt());
+      // final filtered = listWarehouse.where((item) => item.idSite.toString() == idSite);
+      listWarehouseFiltered.addAll(filtered);
+    }
   }
 }
