@@ -84,7 +84,7 @@ class ManagementItemATKListController extends BaseController
 
     listItem.add(emptyItem);
 
-    if(codeRole == RoleEnum.superAdmin.value){
+    if(codeRole == RoleEnum.administrator.value){
       enableSelectCompany(true);
       onChangeSelectedCompany("");
     }else{

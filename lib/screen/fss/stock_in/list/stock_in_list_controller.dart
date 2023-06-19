@@ -82,7 +82,7 @@ class StockInListController extends BaseController with MasterDataMixin{
     final warehouses = await getListWarehouse();
     listWarehouse.addAll(warehouses);
 
-    if(codeRole == RoleEnum.superAdmin.value){
+    if(codeRole == RoleEnum.administrator.value){
       enableSelectCompany(true);
       onChangeSelectedCompany("");
     }else{
