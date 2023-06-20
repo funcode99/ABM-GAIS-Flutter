@@ -15,23 +15,19 @@ import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class DetailApprovalRequestATKController extends BaseController {
+class ConfirmApprovalRequestATKController extends BaseController {
   final TextEditingController createdDateController = TextEditingController();
   final TextEditingController createdByController = TextEditingController();
-  final TextEditingController rejectNoteController = TextEditingController();
+  final TextEditingController noteController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
   DateFormat dateFormat = DateFormat("dd/MM/yy");
 
   final selectedItem = ApprovalRequestATKModel().obs;
-  final detailSelectedItem = RequestAtkModel().obs;
-
   final approvalModel = Rxn<ApprovalModel>();
 
-  final selectedTab = Rx<TabEnum>(TabEnum.detail);
-
   final listDetail = <RequestATKDetailModel>[].obs;
-  final listLogApproval = <ApprovalLogModel>[].obs;
+  final listEditedDetail = <RequestATKDetailModel>[].obs;
 
   final RequestATKRepository _repository = Get.find();
 
@@ -43,45 +39,16 @@ class DetailApprovalRequestATKController extends BaseController {
   @override
   void onReady() {
     super.onReady();
-    detailHeader();
     getDataDetail();
-  }
-
-  void setValue() {
-    createdDateController.text = detailSelectedItem.value.createdAt?.toDateFormat(
-        originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
-        "-";
-    createdByController.text = detailSelectedItem.value.employeeName ?? "-";
-    rejectNoteController.text = detailSelectedItem.value.remarks ?? "-";
-  }
-
-  void detailHeader() async {
-    final result = await _repository.detailData(selectedItem.value.id!);
-
-    result.fold((l) {
-      print("ERROR DETAIL HEADER ${l.message}");
-    }, (r) {
-      detailSelectedItem(r);
-      setValue();
-      // getApprovalLog();
-    });
   }
 
   void getDataDetail() async {
     final result = await _repository.getDataDetails(selectedItem.value.id!);
     result.fold((l) => null, (r) {
-      listDetail.value = r;
-      listDetail.refresh();
-    });
-  }
+      listDetail.value = [...r];
 
-  void reject()async{
-    final result = await _repository.reject(approvalModel.value, selectedItem.value.id!);
-    result.fold((l) => null, (r) {
-      if(r){
-        showApprovalSuccessDialog("The request was successfully rejected!".tr).then((value) => Get.back(result: true));
-      }else{
-        showApprovalFailDialog("Request failed to be rejected!".tr).then((value) => Get.back(result: true));
+      for(RequestATKDetailModel item in r){
+        listEditedDetail.add(RequestATKDetailModel(id: item.id, qty: item.qty));
       }
     });
   }
@@ -94,15 +61,6 @@ class DetailApprovalRequestATKController extends BaseController {
       }else{
         showApprovalFailDialog("Request failed to be approved!".tr).then((value) => Get.back(result: true));
       }
-    });
-  }
-
-  void getApprovalLog()async{
-    final result = await _repository.getApprovalLog(detailSelectedItem.value.id!);
-
-    result.fold((l) => null, (r) {
-      listLogApproval.value = r;
-      listLogApproval.refresh();
     });
   }
 }

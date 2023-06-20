@@ -120,6 +120,8 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
       requestATKDetailModel.value?.qty = quantityController.text.toInt();
       requestATKDetailModel.value?.idWarehouse = selectedWarehouse.value.id;
       requestATKDetailModel.value?.idItem = selectedItem.value?.id;
+      requestATKDetailModel.value?.idBrand = selectedItem.value?.idBrand;
+      requestATKDetailModel.value?.idUom = selectedItem.value?.idUom;
       return requestATKDetailModel.value!;
     }else{
       return RequestATKDetailModel(
@@ -133,6 +135,8 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
         warehouseName : selectedWarehouse.value.warehouseName,
         itemName : selectedItem.value?.itemName,
         codeItem : selectedItem.value?.codeItem,
+        idBrand : selectedItem.value?.idBrand,
+        idUom : selectedItem.value?.idUom,
       );
     }
   }
