@@ -14,6 +14,7 @@ import 'package:gais/reusable/list/approval_log_list.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/approval/request_atk/confirm/confirm_approval_request_atk_screen.dart';
 import 'package:gais/screen/approval/request_atk/detail/detail_approval_request_atk_controller.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
@@ -32,8 +33,18 @@ class DetailApprovalRequestATKScreen extends StatefulWidget {
 }
 
 class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestATKScreen> {
-  _openApproveDialog(){
-    Get.dialog(const ApprovalConfirmationDialog());
+  _goToConfirmPage(ApprovalRequestATKModel? selectedItem)async{
+    DetailApprovalRequestATKController controller = Get.find();
+    ApprovalModel result = await  Get.to(
+        ()=>const ConfirmApprovalRequestATKScreen(),
+      arguments: {
+          "item" : selectedItem
+      }
+    );
+    if (result != null) {
+      controller.approvalModel(result);
+      controller.approve();
+    }
   }
 
   _openRejectDialog()async{
@@ -49,7 +60,11 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
   void initState() {
     Future.delayed(Duration.zero, (){
       if(widget.approvalActionEnum == ApprovalActionEnum.approve){
-        _openApproveDialog();
+        ApprovalRequestATKModel? selectedItem;
+        if (Get.arguments != null) {
+          selectedItem = Get.arguments["item"];
+        }
+        _goToConfirmPage(selectedItem);
       }else if(widget.approvalActionEnum == ApprovalActionEnum.reject){
         _openRejectDialog();
       }
@@ -124,7 +139,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                             iconData: Icons.check,
                             backgroundColor: successColor,
                             onPressed: () {
-                              _openApproveDialog();
+                              _goToConfirmPage(controller.selectedItem.value);
                             },
                           ),
                           const SizedBox(

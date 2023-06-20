@@ -10,6 +10,8 @@ class RequestATKDetailModel extends Equatable {
   int? idAtkRequest;
   int? idItem;
   int? idWarehouse;
+  int? idBrand;
+  int? idUom;
   int? qty;
   String? remarks;
   String? createdAt;
@@ -28,6 +30,8 @@ class RequestATKDetailModel extends Equatable {
     this.idWarehouse,
     this.idAtkRequest,
     this.idItem,
+    this.idBrand,
+    this.idUom,
     this.qty,
     this.remarks,
     this.createdAt,

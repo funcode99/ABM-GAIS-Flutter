@@ -13,6 +13,7 @@ class CommonListItem extends StatelessWidget {
         this.status,
         required this.content,
         required this.action,
+        this.padding,
         this.total,
         this.onTap
       });
@@ -25,6 +26,7 @@ class CommonListItem extends StatelessWidget {
   final List<Widget> action;
   final VoidCallback? onTap;
   final String? total;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class CommonListItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
+          padding: padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

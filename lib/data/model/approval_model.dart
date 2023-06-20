@@ -7,11 +7,13 @@ class ApprovalModel {
   int? approvedBehalf;
   String? notes;
   bool? isRevision;
+  List<dynamic>? arrayDetail;
 
   ApprovalModel({
     this.approvedBehalf,
     this.notes,
-    this.isRevision
+    this.isRevision,
+    this.arrayDetail
   });
 
   static ApprovalModel fromJsonModel(Object? json) =>
