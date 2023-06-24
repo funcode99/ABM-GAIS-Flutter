@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/data/model/approval_model.dart';
+import 'package:gais/data/model/approval_request_trip/approval_info_model.dart';
 import 'package:gais/data/model/approval_request_trip/get_approval_request_trip_model.dart';
+import 'package:gais/data/model/approval_request_trip/post_approve_request_trip_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:gais/data/repository/approval_request_trip/approval_request_trip_repository.dart';
 import 'package:get/get.dart' hide Response, FormData, MultipartFile;
@@ -46,11 +48,16 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
   Future approve(int id, ApprovalModel approval) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
+
+    var formData = FormData.fromMap({
+      "approved_behalf": approval.approvedBehalf,
+    });
     try {
       Response response = await network.dio.post(
         "/api/approval_request_trip/approve/$id",
+        data: formData,
       );
-      response.data.printInfo(info: 'response');
+      PostApproveRequestTripModel.fromJson(response.data).success.printInfo(info: 'response');
       return response.data;
     } on DioError catch (e) {
       e.error.printError();
@@ -61,7 +68,11 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
   Future reject(int id, ApprovalModel rejection) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
-    var formData = FormData.fromMap({"is_revision": rejection.isRevision});
+
+    var formData = FormData.fromMap({
+      "is_revision": rejection.isRevision,
+      "notes": rejection.notes,
+    });
 
     try {
       Response response = await network.dio.post(
@@ -72,6 +83,23 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
     } on DioError catch (e) {
       e.error.printError();
       return e.response?.data;
+    }
+  }
+
+  @override
+  Future<ApprovalInfoModel> approval_info(int id) async{
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+
+    try {
+      Response response = await network.dio.get(
+        "/api/request_trip/get_history_approval/$id",
+      );
+      ApprovalInfoModel.fromJson(response.data).data?.first.notes.printInfo(info: 'response');
+      return ApprovalInfoModel.fromJson(response.data);
+    } on DioError catch (e) {
+      e.error.printError();
+      return e.error;
     }
   }
 }

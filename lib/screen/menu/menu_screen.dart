@@ -28,96 +28,98 @@ class MenuScreen extends StatelessWidget {
         builder: (controller) {
           return ListView(
             children: [
-              Card(
-                elevation: 5,
-                margin: const EdgeInsets.all(10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Travel Management System", style: listTitleTextStyle),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          GestureDetector(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: infoColor,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  padding: const EdgeInsets.all(10),
-                                  margin: const EdgeInsets.only(top: 25, bottom: 5),
-                                  height: 50,
-                                  width: 50,
-                                  child: SvgPicture.asset(
-                                    ImageConstant.locationTick,
-                                    height: 25,
-                                  ),
-                                ),
-                                Text("Request Trip", style: menuSubTitleTextStyle),
-                              ],
-                            ),
-                            onTap: () => Get.off(const RequestTripListScreen()),
-                          ),
-                          GestureDetector(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: infoColor,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  padding: const EdgeInsets.all(10),
-                                  margin: const EdgeInsets.only(top: 25, bottom: 5),
-                                  height: 50,
-                                  width: 50,
-                                  child: SvgPicture.asset(
-                                    ImageConstant.car,
-                                    height: 25,
-                                  ),
-                                ),
-                                Text("Pool Car", style: menuSubTitleTextStyle),
-                              ],
-                            ),
-                            onTap: () {},
-                          ),
-                          GestureDetector(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: infoColor,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  padding: const EdgeInsets.all(10),
-                                  margin: const EdgeInsets.only(top: 25, bottom: 5),
-                                  height: 50,
-                                  width: 50,
-                                  child: SvgPicture.asset(
-                                    ImageConstant.emptyWalletTime,
-                                    height: 25,
-                                  ),
-                                ),
-                                Text("Cash Advance", style: menuSubTitleTextStyle),
-                              ],
-                            ),
-                            onTap: () => Get.to(() => const SubmenuScreen(), arguments: false),
-                          ),
-                        ],
+              controller.receptionis
+                  ? Container()
+                  : Card(
+                      elevation: 5,
+                      margin: const EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Travel Management System", style: listTitleTextStyle),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                GestureDetector(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: infoColor,
+                                          borderRadius: BorderRadius.circular(50),
+                                        ),
+                                        padding: const EdgeInsets.all(10),
+                                        margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                        height: 50,
+                                        width: 50,
+                                        child: SvgPicture.asset(
+                                          ImageConstant.locationTick,
+                                          height: 25,
+                                        ),
+                                      ),
+                                      Text("Request Trip", style: menuSubTitleTextStyle),
+                                    ],
+                                  ),
+                                  onTap: () => Get.off(const RequestTripListScreen()),
+                                ),
+                                GestureDetector(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: infoColor,
+                                          borderRadius: BorderRadius.circular(50),
+                                        ),
+                                        padding: const EdgeInsets.all(10),
+                                        margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                        height: 50,
+                                        width: 50,
+                                        child: SvgPicture.asset(
+                                          ImageConstant.car,
+                                          height: 25,
+                                        ),
+                                      ),
+                                      Text("Pool Car", style: menuSubTitleTextStyle),
+                                    ],
+                                  ),
+                                  onTap: () {},
+                                ),
+                                GestureDetector(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: infoColor,
+                                          borderRadius: BorderRadius.circular(50),
+                                        ),
+                                        padding: const EdgeInsets.all(10),
+                                        margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                        height: 50,
+                                        width: 50,
+                                        child: SvgPicture.asset(
+                                          ImageConstant.emptyWalletTime,
+                                          height: 25,
+                                        ),
+                                      ),
+                                      Text("Cash Advance", style: menuSubTitleTextStyle),
+                                    ],
+                                  ),
+                                  onTap: () => Get.to(() => const SubmenuScreen(), arguments: false),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
               Card(
                 elevation: 5,
                 margin: const EdgeInsets.all(10),
@@ -338,85 +340,87 @@ class MenuScreen extends StatelessWidget {
                       ),
                     )
                   : Container(),
-              Card(
-                elevation: 5,
-                margin: const EdgeInsets.all(10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Facility Service System".tr, style: listTitleTextStyle),
-                      const SizedBox(
-                        height: 4,
+              !controller.approvalAuth
+                  ? Container()
+                  : Card(
+                      elevation: 5,
+                      margin: const EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      Text("ATK Supplies".tr, style: listSubTitleTextStyle),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                Get.to(const ManagementItemATKListScreen());
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: infoColor,
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
-                                    height: 50,
-                                    width: 50,
-                                    child: SvgPicture.asset(
-                                      ImageConstant.editSquare,
-                                      height: 25,
-                                    ),
-                                  ),
-                                  Text("Management Item".tr, textAlign: TextAlign.center, style: menuSubTitleTextStyle)
-                                ],
-                              ),
+                            Text("Facility Service System".tr, style: listTitleTextStyle),
+                            const SizedBox(
+                              height: 4,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                Get.to(const StockInListScreen());
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                            Text("ATK Supplies".tr, style: listSubTitleTextStyle),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: infoColor,
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
-                                    height: 50,
-                                    width: 50,
-                                    child: SvgPicture.asset(
-                                      ImageConstant.paperPlus,
-                                      height: 25,
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(const ManagementItemATKListScreen());
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: infoColor,
+                                            borderRadius: BorderRadius.circular(50),
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                          margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                          height: 50,
+                                          width: 50,
+                                          child: SvgPicture.asset(
+                                            ImageConstant.editSquare,
+                                            height: 25,
+                                          ),
+                                        ),
+                                        Text("Management Item".tr, textAlign: TextAlign.center, style: menuSubTitleTextStyle)
+                                      ],
                                     ),
                                   ),
-                                  Text("Stock In".tr, textAlign: TextAlign.center, style: menuSubTitleTextStyle)
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(const StockInListScreen());
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: infoColor,
+                                            borderRadius: BorderRadius.circular(50),
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                          margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                          height: 50,
+                                          width: 50,
+                                          child: SvgPicture.asset(
+                                            ImageConstant.paperPlus,
+                                            height: 25,
+                                          ),
+                                        ),
+                                        Text("Stock In".tr, textAlign: TextAlign.center, style: menuSubTitleTextStyle)
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              controller.receptionis
+                    ),
+              controller.receptionis || controller.approvalAuth
                   ? Card(
                       elevation: 5,
                       margin: const EdgeInsets.all(10),
@@ -466,54 +470,56 @@ class MenuScreen extends StatelessWidget {
                       ),
                     )
                   : Container(),
-              Card(
-                elevation: 5,
-                margin: const EdgeInsets.all(10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Facility Service System", style: listTitleTextStyle),
-                      Text("Meeting Room", style: listSubTitleTextStyle),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 18),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+              !controller.approvalAuth
+                  ? Container()
+                  : Card(
+                      elevation: 5,
+                      margin: const EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            GestureDetector(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                            Text("Facility Service System", style: listTitleTextStyle),
+                            Text("Meeting Room", style: listSubTitleTextStyle),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 18),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: infoColor,
-                                      borderRadius: BorderRadius.circular(50),
+                                  GestureDetector(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: infoColor,
+                                            borderRadius: BorderRadius.circular(50),
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                          margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                          height: 50,
+                                          width: 50,
+                                          child: SvgPicture.asset(
+                                            ImageConstant.editSquare,
+                                            height: 25,
+                                          ),
+                                        ),
+                                        Text("Management\nMeeting Room", textAlign: TextAlign.center, style: menuSubTitleTextStyle),
+                                      ],
                                     ),
-                                    padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.only(top: 25, bottom: 5),
-                                    height: 50,
-                                    width: 50,
-                                    child: SvgPicture.asset(
-                                      ImageConstant.editSquare,
-                                      height: 25,
-                                    ),
+                                    onTap: () => Get.to(const ManagementMeetingRoomScreen()),
                                   ),
-                                  Text("Management\nMeeting Room", textAlign: TextAlign.center, style: menuSubTitleTextStyle),
                                 ],
                               ),
-                              onTap: () => Get.to(const ManagementMeetingRoomScreen()),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              )
+                    )
             ],
           );
         });

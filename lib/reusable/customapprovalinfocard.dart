@@ -9,6 +9,7 @@ class CustomApprovalInfoCard extends StatelessWidget {
   final String? name;
   final String? position;
   final String? message;
+  final String? notes;
   final DateTime? approvalDate;
   final DateTime? approvalTime;
 
@@ -20,6 +21,7 @@ class CustomApprovalInfoCard extends StatelessWidget {
     this.message,
     this.approvalDate,
     this.approvalTime,
+    this.notes,
   }) : super(key: key);
 
   @override
@@ -30,9 +32,8 @@ class CustomApprovalInfoCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-      width: Get.width/1.5,
-      decoration: BoxDecoration(
-          color: lightBlueColor, borderRadius: BorderRadius.circular(12)),
+      width: Get.width / 1.5,
+      decoration: BoxDecoration(color: lightBlueColor, borderRadius: BorderRadius.circular(12)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,14 +42,13 @@ class CustomApprovalInfoCard extends StatelessWidget {
             alignment: Alignment.center,
             height: 30,
             width: 30,
-            decoration: BoxDecoration(
-                color: greyColor, borderRadius: BorderRadius.circular(50)),
+            decoration: BoxDecoration(color: greyColor, borderRadius: BorderRadius.circular(50)),
             child: const Icon(Icons.person, color: whiteColor),
           ),
           Column(
             children: [
               Container(
-                width: Get.width/2,
+                width: Get.width / 2,
                 child: RichText(
                   text: TextSpan(
                     text: status ?? "",
@@ -59,7 +59,7 @@ class CustomApprovalInfoCard extends StatelessWidget {
                         style: listTitleTextStyle,
                       ),
                       TextSpan(
-                        text: "($position) ",
+                        text: position,
                         style: listTitleTextStyle.copyWith(color: Colors.blue),
                       ),
                       TextSpan(text: message, style: listTitleTextStyle),
@@ -69,14 +69,32 @@ class CustomApprovalInfoCard extends StatelessWidget {
               ),
               SizedBox(height: 10),
               Container(
-                width: Get.width/2,
-                child: Text(approvalDate== null ? "-": dateFormat.format(approvalDate!)),
+                width: Get.width / 2,
+                child: Text(approvalDate == null ? "-" : dateFormat.format(approvalDate!)),
               ),
               SizedBox(height: 10),
               Container(
-                width: Get.width/2,
-                child: Text(approvalDate == null ? "-" : timeFormat.format(approvalDate!) ),
+                width: Get.width / 2,
+                child: Text(approvalDate == null ? "-" : timeFormat.format(approvalDate!)),
               ),
+              notes != null
+                  ? Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: Get.width / 2,
+                      child: RichText(
+                        text: TextSpan(
+                          text: "Notes: ",
+                          style: listTitleTextStyle,
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: notes,
+                              style: listSubTitleTextStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         ],

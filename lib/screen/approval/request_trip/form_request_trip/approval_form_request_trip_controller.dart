@@ -69,7 +69,7 @@ class ApprovalFormRequestTripController extends BaseController {
   String? toCity;
   String? departureDate;
   String? arrivalDate;
-  String? zonaID;
+  String? zonaID  ;
   String? tlkDay;
   String? tlk;
   String? travellerName;
@@ -140,7 +140,8 @@ class ApprovalFormRequestTripController extends BaseController {
     tlkTotal.text;
     tlkTotalMeals.text;
     Future.wait([fetchRequestTrip(), fetchList()]);
-
+    approvalID.printInfo(info: "approvalID");
+    purposeID.printInfo(info: "purposeID");
     Future.delayed(Duration.zero, () {
       if (approvalActionEnum == ApprovalActionEnum.approve) {
         openApproveDialog();
@@ -296,7 +297,8 @@ class ApprovalFormRequestTripController extends BaseController {
 
     if (result != null) {
       approvalModel(result);
-      print('result : ${result.isRevision}');
+      print('result : ${result.approvedBehalf}');
+      print('approveID: $approvalID');
       try {
         await approvalRequestTrip.approve(approvalID, result).then((value) {
           Get.back();
@@ -337,7 +339,7 @@ class ApprovalFormRequestTripController extends BaseController {
 
     if (result != null) {
       approvalModel(result);
-      print('result : ${result.isRevision}');
+      print('result : ${result.notes}');
       try {
         await approvalRequestTrip.reject(approvalID, result).then((value) => Get.showSnackbar(
               const GetSnackBar(
