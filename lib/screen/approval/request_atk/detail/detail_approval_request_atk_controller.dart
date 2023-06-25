@@ -56,7 +56,7 @@ class DetailApprovalRequestATKController extends BaseController {
   }
 
   void detailHeader() async {
-    final result = await _repository.detailData(selectedItem.value.id!);
+    final result = await _repository.detailDataApproval(selectedItem.value.id!);
 
     result.fold((l) {
       print("ERROR DETAIL HEADER ${l.message}");
