@@ -13,6 +13,7 @@ class RequestTripListController extends BaseController {
 
   final formKey = GlobalKey<FormState>();
   final TextEditingController dateRange = TextEditingController();
+  final keyword = "".obs;
 
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   DateFormat rangeFormat = DateFormat("yyyy-MM-dd");
@@ -53,6 +54,13 @@ class RequestTripListController extends BaseController {
     update();
   }
 
+  void clearSearch(String search) {
+    keyword(search);
+    currentPage = 1;
+    fetchList(1);
+    update();
+  }
+
   Future<void> fetchData() async {
     await storage.readEmployeeInfo().then((value) {
       requestorID = value.first.id?.toInt();
@@ -87,7 +95,7 @@ class RequestTripListController extends BaseController {
       requestList.addAll(rtlModel?.data?.data?.toSet().toList() ?? []);
       isLoading = false;
       searchNotFound = rtlModel?.data?.data?.isEmpty ?? false;
-      dataisnull = rtlModel?.data?.data?.isEmpty ?? false;
+      dataisnull = rtlModel!.success == false ? true : false;
       print("data null $dataisnull");
       print("reqList: ${requestList.length.toString()}");
 
@@ -105,7 +113,7 @@ class RequestTripListController extends BaseController {
       //     ),
       //   );
       // }
-    } catch (e,i) {
+    } catch (e, i) {
       dataisnull = true;
       searchNotFound = true;
       isLoading = false;

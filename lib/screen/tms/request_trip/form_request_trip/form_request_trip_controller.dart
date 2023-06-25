@@ -12,6 +12,7 @@ import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as ac
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart' as ca;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
 import 'package:gais/data/model/reference/get_site_model.dart' as st;
+import 'package:gais/data/model/approval_request_trip/approval_info_model.dart' as ai;
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
@@ -115,6 +116,7 @@ class FormRequestTripController extends BaseController {
   List<ca.Data> caList = [];
   List<doc.Data> purposeList = [];
   List<st.Data> siteList = [];
+  List<ai.Data> approvalInfoList = [];
 
   GetRequestTripByidModel? rtModel;
 
@@ -260,6 +262,7 @@ class FormRequestTripController extends BaseController {
     accommodationsList = [];
     caList = [];
     purposeList = [];
+    approvalInfoList = [];
     try {
       var docData = await repository.getDocumentCodeList();
       purposeList.addAll(docData.data?.toSet().toList() ?? []);
@@ -284,6 +287,9 @@ class FormRequestTripController extends BaseController {
 
       var caData = await repository.getCashAdvanceTravelList(purposeID);
       caList.addAll(caData.data?.toSet().toList() ?? []);
+
+      var approvalInfoData = await approvalRequestTrip.approval_info(purposeID);
+      approvalInfoList.addAll(approvalInfoData.data?.toSet().toList() ?? []);
     } catch (e, i) {
       e.printError();
       i.printError();
@@ -295,18 +301,18 @@ class FormRequestTripController extends BaseController {
     try {
       await repository.deleteTravellerGuest(id).then((value) {
         fetchList();
-          Get.showSnackbar(
-            const GetSnackBar(
-              icon: Icon(
-                Icons.error,
-                color: Colors.white,
-              ),
-              message: 'Data Deleted',
-              isDismissible: true,
-              duration: Duration(seconds: 3),
-              backgroundColor: successColor,
+        Get.showSnackbar(
+          const GetSnackBar(
+            icon: Icon(
+              Icons.error,
+              color: Colors.white,
             ),
-          );
+            message: 'Data Deleted',
+            isDismissible: true,
+            duration: Duration(seconds: 3),
+            backgroundColor: successColor,
+          ),
+        );
       });
     } catch (e) {
       Get.showSnackbar(

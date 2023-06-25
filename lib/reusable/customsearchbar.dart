@@ -6,14 +6,7 @@ import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
 class CustomSearchBar extends StatefulWidget {
-  const CustomSearchBar(
-      {super.key,
-      this.onChanged,
-      this.onPressedFilter,
-      this.onClearFilter,
-      this.margin,
-      this.padding,
-      this.onSubmit});
+  const CustomSearchBar({super.key, this.onChanged, this.onPressedFilter, this.onClearFilter, this.margin, this.padding, this.onSubmit});
 
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmit;
@@ -28,6 +21,7 @@ class CustomSearchBar extends StatefulWidget {
 
 class _CustomSearchBarState extends State<CustomSearchBar> {
   Timer? _debounce;
+  bool _showclearsearch = false;
   final _controller = TextEditingController();
 
   @override
@@ -37,6 +31,10 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   }
 
   _onSearchChanged(String query) {
+    setState(() {
+      _showclearsearch = query == "" ? false : true;
+    });
+
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 1000), () {
       if (widget.onChanged != null) {
@@ -72,9 +70,9 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                   // contentPadding: const EdgeInsets.symmetric(vertical: 8),
                   hintText: "Search".tr,
                   prefixIcon: const Icon(IconlyLight.search),
-                  suffixIcon: widget.onClearFilter != null
+                  suffixIcon: widget.onClearFilter != null && _showclearsearch == true
                       ? IconButton(
-                          onPressed: (){
+                          onPressed: () {
                             _controller.text = "";
                             widget.onClearFilter!();
                           },
@@ -88,9 +86,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           widget.onPressedFilter != null
               ? ElevatedButton(
                   onPressed: widget.onPressedFilter,
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: successColor,
-                      minimumSize: const Size(48, 48)),
+                  style: ElevatedButton.styleFrom(backgroundColor: successColor, minimumSize: const Size(48, 48)),
                   child: const Icon(IconlyBold.filter_2),
                 )
               : const SizedBox()

@@ -1,4 +1,5 @@
 import 'package:gais/data/model/approval_model.dart';
+import 'package:gais/data/model/approval_request_trip/approval_info_model.dart';
 import 'package:gais/data/model/approval_request_trip/get_approval_request_trip_model.dart';
 
 abstract class ApprovalRequestTripRepository {
@@ -14,4 +15,6 @@ abstract class ApprovalRequestTripRepository {
   Future approve(int id, ApprovalModel approval);
 
   Future reject(int id, ApprovalModel rejection);
+
+  Future<ApprovalInfoModel> approval_info(int id);
 }

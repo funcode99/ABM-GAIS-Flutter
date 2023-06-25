@@ -30,7 +30,7 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: baseColor,
             appBar: TopBar(
-              title: Text("Reques Trip", style: appTitle),
+              title: Text("Request Trip", style: appTitle),
               leading: CustomBackButton(),
             ),
             body: Container(

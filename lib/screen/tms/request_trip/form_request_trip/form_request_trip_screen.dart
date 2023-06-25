@@ -62,7 +62,7 @@ class FormRequestTripScreen extends StatelessWidget {
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                              margin: EdgeInsets.only(bottom: 4),
+                              margin: const EdgeInsets.only(bottom: 4),
                               decoration: BoxDecoration(color: greenColor, borderRadius: BorderRadius.circular(8)),
                               child: Text(controller.rtStatus.toString()),
                             ),
@@ -110,7 +110,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                               controller.update();
                                             },
                                           )
-                                        : SizedBox()
+                                        : const SizedBox()
                               ],
                             )
                           ],
@@ -175,7 +175,7 @@ class FormRequestTripScreen extends StatelessWidget {
                               const SizedBox(height: 8),
                               controller.selectedPurpose == "1"
                                   ? Container(
-                                      margin: EdgeInsets.only(bottom: 8),
+                                      margin: const EdgeInsets.only(bottom: 8),
                                       child: CustomDropDownFormField(
                                         label: "Site",
                                         isRequired: true,
@@ -184,11 +184,11 @@ class FormRequestTripScreen extends StatelessWidget {
                                         selectedItem: controller.site.text,
                                         items: controller.siteList
                                             .map((e) => DropdownMenuItem(
-                                                  child: Text(e.siteName.toString()),
                                                   value: e.id.toString(),
+                                                  child: Text(e.siteName.toString()),
                                                 ))
                                             .toList(),
-                                        onChanged: (value){
+                                        onChanged: (value) {
                                           controller.siteID = value!.toInt();
                                           controller.update();
                                         },
@@ -285,7 +285,7 @@ class FormRequestTripScreen extends StatelessWidget {
                               child: Container(
                                 alignment: Alignment.center,
                                 margin: const EdgeInsets.only(top: 10, left: 3),
-                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
                                 width: Get.width / 2.6,
                                 height: 50,
                                 decoration: BoxDecoration(
@@ -387,7 +387,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text("Hotel Fare", style: listTitleTextStyle),
-                                                    Text("${int.parse(controller.travellerHotel ?? "0").toCurrency()}", style: listSubTitleTextStyle),
+                                                    Text(int.parse(controller.travellerHotel ?? "0").toCurrency(), style: listSubTitleTextStyle),
                                                   ],
                                                 ),
                                                 Column(
@@ -425,7 +425,6 @@ class FormRequestTripScreen extends StatelessWidget {
                                                           deleteAction: () {
                                                             controller.deleteGuest(int.parse(e.id.toString()));
                                                             controller.update();
-                                                            print(e.id);
                                                           },
                                                           content: Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -479,7 +478,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                           info: e.flightNo,
                                                           isEdit: controller.isEdit,
                                                           editAction: () {
-                                                            Get.off(CheckScheduleScreen(), arguments: {
+                                                            Get.off(const CheckScheduleScreen(), arguments: {
                                                               'id': e.id?.toInt(),
                                                               'purposeID': controller.purposeID,
                                                               'codeDocument': controller.codeDocument,
@@ -592,7 +591,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 status: e.status.toString(),
                                                                 info: e.cityName.toString(),
                                                                 isEdit: controller.isEdit,
-                                                                editAction: () => Get.to(EditOtherTransportScreen(), arguments: {
+                                                                editAction: () => Get.to(const EditOtherTransportScreen(), arguments: {
                                                                   'purposeID': controller.purposeID,
                                                                   'codeDocument': controller.codeDocument,
                                                                   'otID': e.id,
@@ -600,7 +599,6 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 })?.then((result) {
                                                                   controller.fetchList();
                                                                   controller.update();
-                                                                  print(result);
                                                                 }),
                                                                 isDelete: controller.isEdit,
                                                                 deleteAction: () => controller.deleteOtherTransport(int.parse(e.id.toString())),
@@ -663,7 +661,6 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                     })?.then((result) {
                                                                       controller.fetchList();
                                                                       controller.update();
-                                                                      print(result);
                                                                     }),
                                                                     isDelete: controller.isEdit,
                                                                     deleteAction: () => controller.deleteAccommodation(e.id!.toInt()),
@@ -820,7 +817,7 @@ class FormRequestTripScreen extends StatelessWidget {
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: Get.width / 4,
                                 child: EasyStepper(
                                   activeStep: controller.activeStep,
@@ -830,24 +827,29 @@ class FormRequestTripScreen extends StatelessWidget {
                                   stepBorderRadius: 10,
                                   borderThickness: 2,
                                   showTitle: false,
-                                  finishedStepBackgroundColor: infoColor,
+                                  finishedStepBackgroundColor: Colors.transparent,
+                                  finishedStepBorderColor: Colors.blue,
+                                  finishedStepIconColor: Colors.blue,
                                   activeStepBorderColor: Colors.blue,
                                   activeStepIconColor: Colors.blue,
                                   unreachedStepBorderColor: Colors.blue,
                                   unreachedStepIconColor: Colors.blue,
                                   showLoadingAnimation: false,
-                                  padding: EdgeInsetsDirectional.only(top: 10),
-                                  steps: const [
-                                    EasyStep(
-                                      icon: Icon(Icons.groups),
-                                    ),
-                                    EasyStep(
-                                      icon: Icon(Icons.groups),
-                                    ),
-                                    EasyStep(
-                                      icon: Icon(Icons.groups),
-                                    ),
-                                  ],
+                                  padding: const EdgeInsetsDirectional.only(top: 10),
+                                  steps: controller.approvalInfoList
+                                      .map(
+                                        (e) => EasyStep(
+                                            // icon: Icon(Icons.groups),
+                                            customStep: Container(
+                                          width: 100,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                              color: e.text?.substring(0, 7) == "Waiting" ? Colors.transparent : infoColor,
+                                              borderRadius: BorderRadius.circular(50)),
+                                          child: Icon(Icons.groups, color: e.text?.substring(0, 7) == "Waiting" ? Colors.blue : whiteColor),
+                                        )),
+                                      )
+                                      .toList(),
                                   // onStepReached: (index) {
                                   //   controller.activeStep = index;
                                   //   controller.update();
@@ -855,26 +857,15 @@ class FormRequestTripScreen extends StatelessWidget {
                                 ),
                               ),
                               Column(
-                                children: [
-                                  CustomApprovalInfoCard(
-                                    name: "Rayhan ",
-                                    position: "Atasan",
-                                    message: "was approve your document",
-                                    approvalDate: DateTime.now(),
-                                  ),
-                                  const CustomApprovalInfoCard(
-                                    status: "Waiting ",
-                                    name: "Arya ",
-                                    position: "HR",
-                                    message: "approve your document",
-                                  ),
-                                  const CustomApprovalInfoCard(
-                                    status: "Waiting ",
-                                    name: "Melisa",
-                                    position: "GA",
-                                    message: "approve your document",
-                                  ),
-                                ],
+                                children: controller.approvalInfoList
+                                    .map(
+                                      (e) => CustomApprovalInfoCard(
+                                        message: e.text,
+                                        approvalDate: e.date != null ? DateTime.parse(e.date.toString()) : null,
+                                        notes: e.notes,
+                                      ),
+                                    )
+                                    .toList(),
                               )
                             ],
                           );

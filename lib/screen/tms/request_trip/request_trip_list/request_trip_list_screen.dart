@@ -58,7 +58,11 @@ class RequestTripListScreen extends StatelessWidget {
                                 onSubmit: (value) {
                                   controller.searchValue = value;
                                   controller.purposeValue = "All";
+                                  controller.currentPage = 1;
                                   controller.fetchList(controller.currentPage);
+                                },
+                                onClearFilter: () {
+                                  controller.clearSearch("");
                                 },
                                 onPressedFilter: () {
                                   Get.bottomSheet(StatefulBuilder(builder: (context, setState) {
@@ -67,7 +71,7 @@ class RequestTripListScreen extends StatelessWidget {
 
                                     return FilterBottomSheet(
                                       onApplyFilter: () {
-                                        controller.fetchList(controller.currentPage);
+                                        controller.fetchList(1);
                                         controller.update();
                                         Get.back();
                                       },
