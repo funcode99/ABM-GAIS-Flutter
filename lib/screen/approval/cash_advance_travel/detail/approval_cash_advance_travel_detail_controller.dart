@@ -11,7 +11,7 @@ import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
-class ApprovalCashAdvanceTravelDetailController extends BaseController{
+class ApprovalCashAdvanceTravelDetailController extends BaseController {
   final TextEditingController createdDateController = TextEditingController();
   final TextEditingController requestorController = TextEditingController();
   final TextEditingController referenceController = TextEditingController();
@@ -25,18 +25,14 @@ class ApprovalCashAdvanceTravelDetailController extends BaseController{
   final selectedItem = ApprovalCashAdvanceModel().obs;
   final detailSelectedItem = CashAdvanceModel().obs;
 
-
-
   final approvalModel = Rxn<ApprovalModel>();
   final selectedTab = Rx<TabEnum>(TabEnum.detail);
-
 
   final listDetail = <CashAdvanceDetailModel>[].obs;
 
   final listLogApproval = <ApprovalLogModel>[].obs;
 
   final CashAdvanceTravelRepository _repository = Get.find();
-
 
   @override
   void onReady() {
@@ -46,16 +42,16 @@ class ApprovalCashAdvanceTravelDetailController extends BaseController{
   }
 
   void setValue() {
-    createdDateController.text =
-        detailSelectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ?? "-";
+    createdDateController.text = detailSelectedItem.value.createdAt
+            ?.toDateFormat(
+                originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
+        "-";
     requestorController.text = detailSelectedItem.value.employeeName ?? "-";
     referenceController.text = detailSelectedItem.value.noRequestTrip ?? "-";
     totalController.text =
-    "${detailSelectedItem.value.currencyCode ?? ""} ${detailSelectedItem.value.grandTotal?.toInt().toCurrency()}";
+        "${detailSelectedItem.value.currencyCode ?? ""} ${detailSelectedItem.value.grandTotal?.toInt().toCurrency()}";
     currencyController.text = "${detailSelectedItem.value.currencyName ?? "-"}";
-    remarksController.text =
-        detailSelectedItem.value.remarks ?? "-";
-
+    remarksController.text = detailSelectedItem.value.remarks ?? "-";
   }
 
   void detailHeader() async {
@@ -78,30 +74,41 @@ class ApprovalCashAdvanceTravelDetailController extends BaseController{
     });
   }
 
-  void reject()async{
-    final result = await _repository.reject(approvalModel.value, selectedItem.value.id!);
-    result.fold((l) => null, (r) {
-      if(r){
-        showApprovalSuccessDialog("The request was successfully rejected!".tr).then((value) => Get.back(result: true));
-      }else{
-        showApprovalFailDialog("Request failed to be rejected!".tr).then((value) => Get.back(result: true));
+  void reject() async {
+    final result =
+        await _repository.reject(approvalModel.value, selectedItem.value.id!);
+    result.fold(
+        (l) => showApprovalFailDialog("Request failed to be approved!".tr)
+            .then((value) => Get.back(result: true)), (r) {
+      if (r) {
+        showApprovalSuccessDialog("The request was successfully rejected!".tr)
+            .then((value) => Get.back(result: true));
+      } else {
+        showApprovalFailDialog("Request failed to be rejected!".tr)
+            .then((value) => Get.back(result: true));
       }
     });
   }
 
-  void approve()async{
-    final result = await _repository.approve(approvalModel.value, selectedItem.value.id!);
-    result.fold((l) => null, (r) {
-      if(r){
-        showApprovalSuccessDialog("The request was successfully approved!".tr).then((value) => Get.back(result: true));
-      }else{
-        showApprovalFailDialog("Request failed to be approved!".tr).then((value) => Get.back(result: true));
+  void approve() async {
+    final result =
+        await _repository.approve(approvalModel.value, selectedItem.value.id!);
+    result.fold(
+        (l) => showApprovalFailDialog("Request failed to be approved!".tr)
+            .then((value) => Get.back(result: true)), (r) {
+      if (r) {
+        showApprovalSuccessDialog("The request was successfully approved!".tr)
+            .then((value) => Get.back(result: true));
+      } else {
+        showApprovalFailDialog("Request failed to be approved!".tr)
+            .then((value) => Get.back(result: true));
       }
     });
   }
 
-  void getApprovalLog()async{
-    final result = await _repository.getApprovalLog(detailSelectedItem.value.idRequestTrip!);
+  void getApprovalLog() async {
+    final result = await _repository
+        .getApprovalLog(detailSelectedItem.value.idRequestTrip!);
 
     result.fold((l) => null, (r) {
       listLogApproval.value = r;

@@ -16,9 +16,7 @@ import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/request_atk/confirm/confirm_approval_request_atk_screen.dart';
 import 'package:gais/screen/approval/request_atk/detail/detail_approval_request_atk_controller.dart';
-import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
-import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:get/get.dart';
@@ -296,17 +294,18 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                   Obx(() {
                     if (controller.selectedTab.value == TabEnum.detail) {
                       return Obx(() {
-                        return controller.listDetail.isEmpty
-                            ? const SizedBox()
-                            : ListView(
+                        if (controller.listDetail.isEmpty) {
+                          return const SizedBox();
+                        } else {
+                          return ListView(
                           shrinkWrap: true,
                           physics: const ScrollPhysics(),
                           children: [
                             ...controller.listDetail.mapIndexed(
                                     (index, item) => CommonListItem(
                                       number: "${index + 1}",
-                                      title: "title",
-                                      subtitle: "subtitle",
+                                      title: "${item.codeItem ?? ""} -  ${item.itemName ?? ""}",
+                                      subtitle: item.brandName ?? "",
                                       action: [],
                                       content: Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -321,7 +320,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                                                       fontSize: 14, color: Colors.black, height: 1.5),
                                                 ),
                                                 Text(
-                                                  "10",
+                                                  "${item.qty ?? ""}",
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .bodyText1
@@ -337,7 +336,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                                                       fontSize: 14, color: Colors.black, height: 1.5),
                                                 ),
                                                 Text(
-                                                  "UOM",
+                                                  item.uomName ?? "",
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .bodyText1
@@ -353,7 +352,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                                                       fontSize: 14, color: Colors.black, height: 1.5),
                                                 ),
                                                 Text(
-                                                 "Warehouse",
+                                                  item.warehouseName ?? "",
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .bodyText1
@@ -372,6 +371,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                                     ))
                           ],
                         );
+                        }
                       });
                     } else if (controller.selectedTab.value ==
                         TabEnum.approval) {

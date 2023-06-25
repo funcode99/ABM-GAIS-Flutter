@@ -47,19 +47,16 @@ class ConfirmApprovalRequestATKController extends BaseController {
     result.fold((l) => null, (r) {
       listDetail.value = [...r];
 
-      for(RequestATKDetailModel item in r){
-        listEditedDetail.add(RequestATKDetailModel(id: item.id, qty: item.qty));
-      }
-    });
-  }
-
-  void approve()async{
-    final result = await _repository.approve(approvalModel.value, selectedItem.value.id!);
-    result.fold((l) => null, (r) {
-      if(r){
-        showApprovalSuccessDialog("The request was successfully approved!".tr).then((value) => Get.back(result: true));
-      }else{
-        showApprovalFailDialog("Request failed to be approved!".tr).then((value) => Get.back(result: true));
+      for (RequestATKDetailModel item in r) {
+        listEditedDetail.add(RequestATKDetailModel(
+          id: item.id,
+          qty: item.qty,
+          idItem: item.idItem,
+          idAtkRequest: item.idAtkRequest,
+          idWarehouse: item.idWarehouse,
+          idBrand: item.idBrand,
+          idUom: item.idUom
+        ));
       }
     });
   }
