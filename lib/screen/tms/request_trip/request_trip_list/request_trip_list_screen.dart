@@ -63,6 +63,8 @@ class RequestTripListScreen extends StatelessWidget {
                                 },
                                 onClearFilter: () {
                                   controller.clearSearch("");
+                                  controller.searchValue = "";
+                                  controller.fetchList(1);
                                 },
                                 onPressedFilter: () {
                                   Get.bottomSheet(StatefulBuilder(builder: (context, setState) {

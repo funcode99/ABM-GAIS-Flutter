@@ -7,6 +7,7 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/check_schedule/check_schedule_controller.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -40,7 +41,13 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                 style: appTitle,
               ),
               centerTitle: true,
-              leading: const CustomBackButton(),
+              leading: CustomBackButton(
+                onPressed: () => Get.off(AirlinessScreen(), arguments: {
+                  'purposeID': controller.purposeID,
+                  'codeDocument': controller.codeDocument,
+                  'formEdit': controller.formEdit,
+                }),
+              ),
               flexibleSpace: const TopBar(),
             ),
             body: Container(

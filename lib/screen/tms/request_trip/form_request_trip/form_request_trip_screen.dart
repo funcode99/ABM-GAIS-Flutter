@@ -52,7 +52,7 @@ class FormRequestTripScreen extends StatelessWidget {
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: SliverAppBarDelegate(
-                      minHeight: 120,
+                      minHeight: controller.rtStatus == "Draft" || controller.rtStatus == "Revision" ? 120 : 80,
                       maxHeight: 32,
                       child: Container(
                         color: whiteColor,
@@ -75,21 +75,23 @@ class FormRequestTripScreen extends StatelessWidget {
                               ),
                             ),
                             Row(
-                              mainAxisAlignment: controller.isEdit == true || controller.rtStatus == "Draft"
+                              mainAxisAlignment: controller.isEdit == true || controller.rtStatus == "Draft" || controller.rtStatus == "Revision"
                                   ? MainAxisAlignment.spaceEvenly
                                   : MainAxisAlignment.center,
                               children: [
-                                CustomFilledButton(
-                                  color: Colors.transparent,
-                                  title: controller.isEdit ? "Cancel" : "Edit",
-                                  borderColor: infoColor,
-                                  fontColor: infoColor,
-                                  width: Get.width / 4,
-                                  onPressed: () {
-                                    controller.isEdit = controller.isEdit == false ? true : false;
-                                    controller.update();
-                                  },
-                                ),
+                                controller.rtStatus == "Draft" || controller.rtStatus == "Revision"
+                                    ? CustomFilledButton(
+                                        color: Colors.transparent,
+                                        title: controller.isEdit ? "Cancel" : "Edit",
+                                        borderColor: infoColor,
+                                        fontColor: infoColor,
+                                        width: Get.width / 4,
+                                        onPressed: () {
+                                          controller.isEdit = controller.isEdit == false ? true : false;
+                                          controller.update();
+                                        },
+                                      )
+                                    : Container(),
                                 controller.isEdit
                                     ? CustomFilledButton(
                                         color: successColor,
@@ -100,7 +102,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                           controller.update();
                                         },
                                       )
-                                    : controller.rtStatus == "Draft"
+                                    : controller.rtStatus == "Draft" || controller.rtStatus == "Revision"
                                         ? CustomFilledButton(
                                             color: successColor,
                                             title: "Submit",
@@ -159,7 +161,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                           .toList(),
                                       onChanged: (value) {
                                         controller.selectedPurpose = value.toString();
-                                        value == "1" || value == "2" ? controller.isAttachment = true : controller.isAttachment = false;
+                                        controller.isAttachment = value == "1" || value == "2" ? true : false;
                                         controller.update();
                                         controller.checkItems();
                                         controller.update();
@@ -211,6 +213,9 @@ class FormRequestTripScreen extends StatelessWidget {
                                           label: "Attachment",
                                           isRequired: true,
                                           readOnly: true,
+                                          onTap: () {
+                                           controller.viewFile();
+                                          },
                                         )
                                   : Container(),
                               const SizedBox(height: 8),
@@ -814,61 +819,69 @@ class FormRequestTripScreen extends StatelessWidget {
                           );
                         }
                         if (controller.isApproval == true) {
-                          return Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: Get.width / 4,
-                                child: EasyStepper(
-                                  activeStep: controller.activeStep,
-                                  lineLength: 75,
-                                  direction: Axis.vertical,
-                                  stepShape: StepShape.circle,
-                                  stepBorderRadius: 10,
-                                  borderThickness: 2,
-                                  showTitle: false,
-                                  finishedStepBackgroundColor: Colors.transparent,
-                                  finishedStepBorderColor: Colors.blue,
-                                  finishedStepIconColor: Colors.blue,
-                                  activeStepBorderColor: Colors.blue,
-                                  activeStepIconColor: Colors.blue,
-                                  unreachedStepBorderColor: Colors.blue,
-                                  unreachedStepIconColor: Colors.blue,
-                                  showLoadingAnimation: false,
-                                  padding: const EdgeInsetsDirectional.only(top: 10),
-                                  steps: controller.approvalInfoList
+                          if (controller.approvalInfoList.isEmpty) {
+                            return Container(
+                              margin: EdgeInsets.only(top: 20, bottom: 30),
+                              alignment: Alignment.center,
+                              child: Text("No data yet"),
+                            );
+                          } else {
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: Get.width / 4,
+                                  child: EasyStepper(
+                                    activeStep: controller.activeStep,
+                                    lineLength: 75,
+                                    direction: Axis.vertical,
+                                    stepShape: StepShape.circle,
+                                    stepBorderRadius: 10,
+                                    borderThickness: 2,
+                                    showTitle: false,
+                                    finishedStepBackgroundColor: Colors.transparent,
+                                    finishedStepBorderColor: Colors.blue,
+                                    finishedStepIconColor: Colors.blue,
+                                    activeStepBorderColor: Colors.blue,
+                                    activeStepIconColor: Colors.blue,
+                                    unreachedStepBorderColor: Colors.blue,
+                                    unreachedStepIconColor: Colors.blue,
+                                    showLoadingAnimation: false,
+                                    padding: const EdgeInsetsDirectional.only(top: 10),
+                                    steps: controller.approvalInfoList
+                                        .map(
+                                          (e) => EasyStep(
+                                              // icon: Icon(Icons.groups),
+                                              customStep: Container(
+                                            width: 100,
+                                            height: 100,
+                                            decoration: BoxDecoration(
+                                                color: e.text?.substring(0, 7) == "Waiting" ? Colors.transparent : infoColor,
+                                                borderRadius: BorderRadius.circular(50)),
+                                            child: Icon(Icons.groups, color: e.text?.substring(0, 7) == "Waiting" ? Colors.blue : whiteColor),
+                                          )),
+                                        )
+                                        .toList(),
+                                    // onStepReached: (index) {
+                                    //   controller.activeStep = index;
+                                    //   controller.update();
+                                    // },
+                                  ),
+                                ),
+                                Column(
+                                  children: controller.approvalInfoList
                                       .map(
-                                        (e) => EasyStep(
-                                            // icon: Icon(Icons.groups),
-                                            customStep: Container(
-                                          width: 100,
-                                          height: 100,
-                                          decoration: BoxDecoration(
-                                              color: e.text?.substring(0, 7) == "Waiting" ? Colors.transparent : infoColor,
-                                              borderRadius: BorderRadius.circular(50)),
-                                          child: Icon(Icons.groups, color: e.text?.substring(0, 7) == "Waiting" ? Colors.blue : whiteColor),
-                                        )),
+                                        (e) => CustomApprovalInfoCard(
+                                          message: e.text,
+                                          approvalDate: e.date != null ? DateTime.parse(e.date.toString()) : null,
+                                          notes: e.notes,
+                                        ),
                                       )
                                       .toList(),
-                                  // onStepReached: (index) {
-                                  //   controller.activeStep = index;
-                                  //   controller.update();
-                                  // },
-                                ),
-                              ),
-                              Column(
-                                children: controller.approvalInfoList
-                                    .map(
-                                      (e) => CustomApprovalInfoCard(
-                                        message: e.text,
-                                        approvalDate: e.date != null ? DateTime.parse(e.date.toString()) : null,
-                                        notes: e.notes,
-                                      ),
-                                    )
-                                    .toList(),
-                              )
-                            ],
-                          );
+                                )
+                              ],
+                            );
+                          }
                         }
                         return null;
                       },

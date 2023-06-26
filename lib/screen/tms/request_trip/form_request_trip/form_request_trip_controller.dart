@@ -50,6 +50,7 @@ class FormRequestTripController extends BaseController {
   bool isEdit = false;
   bool isAttachment = false;
   String? selectedPurpose;
+  String filePath = "";
 
   int activeStep = 1;
   String? rtStatus;
@@ -204,6 +205,9 @@ class FormRequestTripController extends BaseController {
     }
   }
 
+  viewFile() async {
+  }
+
   Future<void> fetchRequestTrip() async {
     var rtData = await repository.getRequestTripByid(purposeID);
     DateTime? tempDate;
@@ -215,12 +219,18 @@ class FormRequestTripController extends BaseController {
     createdDate.text = dateFormat.format(tempDate);
     requestor.text = rtModel?.data?.first.employeeName ?? "";
     purpose.text = rtModel?.data?.first.documentName ?? "";
-    // codeDocument = int.parse(rtModel?.data?.first.codeDocument ?? "");
+    // codeDocument = int.parse(rtModel?.data?.first.idDocument ?? "");
     siteID = rtModel?.data?.first.idSite?.toInt();
     site.text = rtModel?.data?.first.siteName ?? "";
     notes.text = rtModel?.data?.first.notes ?? "";
-    attachment.text = rtModel?.data?.first.file ?? "";
+    if(selectedPurpose == "1" || selectedPurpose == "2"){
+      filePath = rtModel?.data?.first.file;
+      attachment.text = filePath;
+    }
+    // rtModel?.data?.first.idDocument.printInfo();
     selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
+    // selectedPurpose = codeDocument.toString();
+    print("selected purpose : $selectedPurpose");
     isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
     tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";
     // tlkJobBand.text = rtModel?.data?.first.
@@ -294,6 +304,7 @@ class FormRequestTripController extends BaseController {
       e.printError();
       i.printError();
     }
+
     update();
   }
 

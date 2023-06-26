@@ -1,6 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/data/model/employee_info_model.dart' as info;
 import 'package:gais/data/model/temp_filled_model.dart';
+import 'package:gais/util/ext/string_ext.dart';
 
 class StorageCore {
   static const String userID = "userID";
@@ -80,6 +81,7 @@ class StorageCore {
     await storage.write(key: 'flightClass', value: flightClass);
     await storage.write(key: 'hotelFare', value: hotelFare);
     await storage.write(key: 'mealsFare', value: mealsFare);
+
   }
 
   void deleteToken() async {
@@ -95,6 +97,11 @@ class StorageCore {
   Future<String?> readRole() async {
     var role = await storage.read(key: 'roleID');
     return role;
+  }
+
+  Future<int?> readID() async{
+    var id = await storage.read(key: 'userID');
+    return id!.toInt();
   }
 
   Future<List<info.Data>> readEmployeeInfo() async {

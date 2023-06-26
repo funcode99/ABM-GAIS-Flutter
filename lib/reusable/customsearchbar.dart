@@ -73,7 +73,10 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                   suffixIcon: widget.onClearFilter != null && _showclearsearch == true
                       ? IconButton(
                           onPressed: () {
-                            _controller.text = "";
+                            setState(() {
+                              _controller.text = "";
+                              _showclearsearch = false;
+                            });
                             widget.onClearFilter!();
                           },
                           icon: const Icon(Icons.close))

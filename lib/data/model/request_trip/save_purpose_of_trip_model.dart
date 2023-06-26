@@ -1,11 +1,16 @@
 /// success : true
 /// message : "Success Create Menu"
+///  "error": {
+///         "id_site": [
+///             "The id site field is required."
+///         ]
+///     }
 /// data : {"id_employee":"1","no_request_trip":"REQ/ABM/123","code_document":"1","id_site":"1","notes":"1","id_city_from":"1","id_city_to":"1","date_departure":"01-01-2023","date_arrival":"02-01-2023","id_zona":"1","tlk_per_day":100000.12,"total_tlk":600000,"file":"http://103.165.130.157:8086/storage/files/request_trip/SfKxcsBX9KN9Y74VMtAazpJF4sNCHQD5QYzl6WEC.png","created_at":"2023-05-17T06:42:16.000000Z","created_by":2,"code_status_doc":"0","updated_at":"2023-05-17T06:42:16.000000Z","id":78}
 
 class SavePurposeOfTripModel {
   SavePurposeOfTripModel({
-      bool? success, 
-      String? message, 
+      bool? success,
+      String? message,
       Data? data,}){
     _success = success;
     _message = message;
@@ -64,23 +69,23 @@ SavePurposeOfTripModel copyWith({  bool? success,
 
 class Data {
   Data({
-      String? idEmployee, 
-      String? noRequestTrip, 
-      String? codeDocument, 
-      String? idSite, 
-      String? notes, 
-      String? idCityFrom, 
-      String? idCityTo, 
-      String? dateDeparture, 
-      String? dateArrival, 
-      String? idZona, 
-      num? tlkPerDay, 
-      num? totalTlk, 
-      String? file, 
-      String? createdAt, 
-      num? createdBy, 
-      String? codeStatus, 
-      String? updatedAt, 
+      String? idEmployee,
+      String? noRequestTrip,
+      String? codeDocument,
+      String? idSite,
+      String? notes,
+      String? idCityFrom,
+      String? idCityTo,
+      String? dateDeparture,
+      String? dateArrival,
+      String? idZona,
+      num? tlkPerDay,
+      num? totalTlk,
+      String? file,
+      String? createdAt,
+      num? createdBy,
+      String? codeStatus,
+      String? updatedAt,
       num? id,}){
     _idEmployee = idEmployee;
     _noRequestTrip = noRequestTrip;
@@ -220,3 +225,4 @@ Data copyWith({  String? idEmployee,
   }
 
 }
+

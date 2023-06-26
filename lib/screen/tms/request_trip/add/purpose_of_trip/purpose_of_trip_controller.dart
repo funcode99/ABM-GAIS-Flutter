@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
 class PurposeOfTripController extends BaseController {
-  int? requsetorID;
+  int? requestorID;
   int? siteID;
   int? jobID;
 
@@ -44,6 +44,7 @@ class PurposeOfTripController extends BaseController {
   String? zonaID;
   bool? isFilled = false;
   bool? isEnabledButton = false;
+  String? fileExtension;
 
   purpose.GetDocumentCodeModel? purposeModel;
   List<purpose.Data> purposeList = [];
@@ -59,6 +60,7 @@ class PurposeOfTripController extends BaseController {
       gettedFile = File(result.files.single.path ?? "Not Attached");
       PlatformFile nameFile = result.files.first;
       fileName.text = nameFile.name;
+      fileExtension = result.files.first.extension;
       update();
     } else {
       // User canceled the picker
@@ -77,7 +79,6 @@ class PurposeOfTripController extends BaseController {
     Future.wait([
       fetchList(),
     ]);
-    requsetorID.printInfo(info: "requestorID");
   }
 
   @override
@@ -95,8 +96,10 @@ class PurposeOfTripController extends BaseController {
     cityList = [];
     purposeList = [];
 
+    requestorID = await storage.readID();
+    requestorID.printInfo(info: "requestorID");
     await storage.readEmployeeInfo().then((value) {
-      requsetorID = value.first.id?.toInt();
+      // requsetorID = value.first.id?.toInt();
       siteID = value.first.idSite?.toInt();
       jobID = value.first.idJobBand?.toInt();
     });
@@ -139,7 +142,7 @@ class PurposeOfTripController extends BaseController {
       try {
         await repository
             .saveRequestTrip(
-          requsetorID.toString(),
+          requestorID.toString(),
           "1",
           selectedPurpose ?? "0",
           siteID.toString(),
@@ -158,7 +161,7 @@ class PurposeOfTripController extends BaseController {
               (value) {
             purposeID = int.parse(value.data!.id.toString());
             isFilled = value.success;
-            print("requsetorID: $requsetorID");
+            print("requsetorID: $requestorID");
             print("purposeID : $purposeID");
             print("isFilled : $isFilled");
           },
