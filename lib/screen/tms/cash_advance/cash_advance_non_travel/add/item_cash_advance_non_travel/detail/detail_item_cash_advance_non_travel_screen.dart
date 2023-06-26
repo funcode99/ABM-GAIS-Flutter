@@ -5,6 +5,7 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
+import 'package:iconly/iconly.dart';
 
 class DetailItemCashAdvanceNonTravelScreen extends StatefulWidget{
   const DetailItemCashAdvanceNonTravelScreen({super.key, required this.item});
@@ -35,47 +36,59 @@ class _DetailItemCashAdvanceNonTravelScreenState extends State<DetailItemCashAdv
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Card(
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(
-              horizontal: 32, vertical: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 16,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(onPressed: (){
+                    Get.back();
+                  }, icon: const Icon(IconlyBold.close_square))
+                ],
               ),
-              CustomTextFormField(
-                  readOnly: true,
-                  controller: _itemCenterController,
-                  label: "Item".tr),
-              const SizedBox(
-                height: 8,
+            ),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 32, vertical: 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomTextFormField(
+                      readOnly: true,
+                      controller: _itemCenterController,
+                      label: "Item".tr),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  CustomTextFormField(
+                      readOnly: true,
+                      controller: _costCenterController,
+                      label: "Cost Center".tr),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  CustomTextFormField(
+                      readOnly: true,
+                      controller: _nominalController,
+                      label: "Nominal".tr),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  CustomTextFormField(
+                      multiLine: true,
+                      controller: _remarksController,
+                      label: "Remarks".tr),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                ],
               ),
-              CustomTextFormField(
-                  readOnly: true,
-                  controller: _costCenterController,
-                  label: "Cost Center".tr),
-              const SizedBox(
-                height: 8,
-              ),
-              CustomTextFormField(
-                  readOnly: true,
-                  controller: _nominalController,
-                  label: "Nominal".tr),
-              const SizedBox(
-                height: 8,
-              ),
-              CustomTextFormField(
-                  multiLine: true,
-                  controller: _remarksController,
-                  label: "Remarks".tr),
-              const SizedBox(
-                height: 32,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
