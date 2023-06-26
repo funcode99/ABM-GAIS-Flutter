@@ -58,6 +58,7 @@ class LanguageEN{
       "Warehouse" : "Warehouse",
       "form_min_value" : "The field should be greater or equal to @min",
       "form_max_value" : "The field should be less or equal to @max",
+      "Out of stock" : "Out of stock",
       "Book" : "Book",
       "ATK Info" : "ATK Info",
       "Created By" : "Created By",
