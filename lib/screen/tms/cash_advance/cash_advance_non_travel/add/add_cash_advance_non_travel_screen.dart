@@ -215,7 +215,7 @@ class _AddCashAdvanceNonTravelScreenState
                               child: Text("Cancel".tr),
                             ),
                             ElevatedButton(
-                              onPressed: _isButtonEnabled
+                              onPressed: _isButtonEnabled && controller.listDetail.isNotEmpty
                                   ? () {
                                       controller.saveData();
                                     }
