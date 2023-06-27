@@ -36,7 +36,7 @@ class DetailStockInController extends BaseController {
   }
 
   void setValue() {
-    createdByController.text = selectedItem.value.employeeName ?? "-";
+    createdByController.text = selectedItem.value.nameCreated ?? "-";
     createdDateController.text = selectedItem.value.createdAt?.toDateFormat(
             originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
         "-";

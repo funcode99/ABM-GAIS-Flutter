@@ -21,6 +21,8 @@ class StockInATKModel extends Equatable {
   String? updatedAt;
   dynamic updatedBy;
   String? employeeName;
+  String? nameCreated;
+  String? nameUpdated;
   String? warehouseName;
   String? departementName;
   String? companyName;
@@ -54,6 +56,8 @@ class StockInATKModel extends Equatable {
     this.siteCode,
     this.itemCount,
     this.arrayDetail,
+    this.nameCreated,
+    this.nameUpdated,
   });
 
   factory StockInATKModel.fromJson(Map<String, dynamic> json) =>
