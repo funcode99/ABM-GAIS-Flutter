@@ -34,6 +34,8 @@ StockInATKModel _$StockInATKModelFromJson(Map<String, dynamic> json) =>
           ?.map(
               (e) => StockInATKDetailModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      nameCreated: json['name_created'] as String?,
+      nameUpdated: json['name_updated'] as String?,
     );
 
 Map<String, dynamic> _$StockInATKModelToJson(StockInATKModel instance) =>
@@ -53,6 +55,8 @@ Map<String, dynamic> _$StockInATKModelToJson(StockInATKModel instance) =>
       'updated_at': instance.updatedAt,
       'updated_by': instance.updatedBy,
       'employee_name': instance.employeeName,
+      'name_created': instance.nameCreated,
+      'name_updated': instance.nameUpdated,
       'warehouse_name': instance.warehouseName,
       'departement_name': instance.departementName,
       'company_name': instance.companyName,

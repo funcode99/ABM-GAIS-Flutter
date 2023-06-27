@@ -223,7 +223,7 @@ class AddStockInATKScreen extends StatelessWidget {
                       ),
                       Obx(
                         () => ElevatedButton(
-                          onPressed: controller.enableButton.value
+                          onPressed: controller.enableButton.value && controller.listDetail.isNotEmpty
                               ? () {
                                   controller.saveData();
                                 }

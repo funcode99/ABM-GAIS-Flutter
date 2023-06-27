@@ -12,9 +12,9 @@ extension CustomValidationBuilder on ValidationBuilder {
     return null;
   });
 
-  max(int maxValue) => add((value) {
+  max(int maxValue, [String? message]) => add((value) {
     if(int.parse(value!) > maxValue){
-      return "form_max_value".trParams({
+      return message ?? "form_max_value".trParams({
         "max" : maxValue.toString()
       });
     }

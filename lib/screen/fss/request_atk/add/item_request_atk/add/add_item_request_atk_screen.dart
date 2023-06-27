@@ -128,7 +128,7 @@ class AddItemRequestATKScreen extends StatelessWidget {
                         validator: controller.selectedItem.value != null
                             ? ValidationBuilder()
                             .required()
-                            .max(controller.selectedItem.value?.currentStock ?? 0)
+                            .max(controller.selectedItem.value?.currentStock ?? 0, "Out of stock".tr)
                             .build()
                             : ValidationBuilder()
                             .required()

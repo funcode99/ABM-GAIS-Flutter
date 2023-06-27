@@ -4,6 +4,7 @@ import 'package:gais/data/model/stock_in/stock_in_atk_detail_model.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:get/get.dart';
+import 'package:iconly/iconly.dart';
 
 class DetailItemStockInATKScreen extends StatefulWidget{
   const DetailItemStockInATKScreen({super.key, required this.item});
@@ -51,15 +52,26 @@ class _DetailItemStockInATKScreenState extends State<DetailItemStockInATKScreen>
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Card(
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(
-              horizontal: 32, vertical: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(onPressed: (){
+                    Get.back();
+                  }, icon: Icon(IconlyBold.close_square))
+                ],
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 32, vertical: 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomTextFormField(
                       readOnly: true,
@@ -101,13 +113,13 @@ class _DetailItemStockInATKScreenState extends State<DetailItemStockInATKScreen>
                       multiLine: true,
                       controller: _remarksController,
                       label: "Remarks".tr),
-                ],
+                  const SizedBox(
+                    height: 32,
+                  ),
+                ]
               ),
-              const SizedBox(
-                height: 32,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
