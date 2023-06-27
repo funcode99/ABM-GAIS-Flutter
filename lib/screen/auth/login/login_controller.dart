@@ -110,7 +110,7 @@ class LoginController extends BaseController {
       );
     }
     print("role : ${await storage.readRole()}");
-    if (await storage.readRole() == "1") {
+    if (await storage.readRole() == "5") {
       // await repository.getEmployeeInfo();
       // saveEmployeeInfo();
     }
@@ -119,34 +119,35 @@ class LoginController extends BaseController {
 
   Future<void> saveEmployeeInfo() async {
     try {
-      await repository.getEmployeeInfo().then(
-            (value) => storage.saveUser(
-              value.data?.first.id.toString() ?? "",
-              value.data?.first.employeeName ?? "",
-              value.data?.first.phoneNumber ?? "",
-              value.data?.first.snEmployee ?? "",
-              value.data?.first.email ?? "",
-              value.data?.first.nik ?? "",
-              value.data?.first.dob ?? "",
-              value.data?.first.startDate ?? "",
-              value.data?.first.endDate ?? "",
-              value.data?.first.jenkel ?? "",
-              value.data?.first.idDepartment.toString() ?? "",
-              value.data?.first.idCompany.toString() ?? "",
-              value.data?.first.companyName.toString() ?? "",
-              value.data?.first.companyCode.toString() ?? "",
-              value.data?.first.idSite.toString() ?? "",
-              value.data?.first.siteName.toString() ?? "",
-              value.data?.first.siteCode.toString() ?? "",
-              value.data?.first.idJobBand.toString() ?? "",
-              value.data?.first.bandJobName.toString() ?? "",
-              value.data?.first.foto.toString() ?? "",
-              value.data?.first.fotoPath.toString() ?? "",
-              value.data?.first.flightClass.toString() ?? "",
-              value.data?.first.hotelFare.toString() ?? "",
-              value.data?.first.mealsRate.toString() ?? "",
-            ),
-          );
+      await repository.getEmployeeInfo().then((value) {
+        print("value: ${value.data?.first.id}");
+        storage.saveUser(
+          value.data?.first.id.toString() ?? "",
+          value.data?.first.employeeName ?? "",
+          value.data?.first.phoneNumber ?? "",
+          value.data?.first.snEmployee ?? "",
+          value.data?.first.email ?? "",
+          value.data?.first.nik ?? "",
+          value.data?.first.dob ?? "",
+          value.data?.first.startDate ?? "",
+          value.data?.first.endDate ?? "",
+          value.data?.first.jenkel ?? "",
+          value.data?.first.idDepartment.toString() ?? "",
+          value.data?.first.idCompany.toString() ?? "",
+          value.data?.first.companyName.toString() ?? "",
+          value.data?.first.companyCode.toString() ?? "",
+          value.data?.first.idSite.toString() ?? "",
+          value.data?.first.siteName.toString() ?? "",
+          value.data?.first.siteCode.toString() ?? "",
+          value.data?.first.idJobBand.toString() ?? "",
+          value.data?.first.bandJobName.toString() ?? "",
+          value.data?.first.foto.toString() ?? "",
+          value.data?.first.fotoPath.toString() ?? "",
+          value.data?.first.flightClass.toString() ?? "",
+          value.data?.first.hotelFare.toString() ?? "",
+          value.data?.first.mealsRate.toString() ?? "",
+        );
+      });
     } catch (e) {
       e.printError();
     }

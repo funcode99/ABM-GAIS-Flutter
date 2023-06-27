@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 
+
 class RequesterInfoController extends BaseController {
   final formKey = GlobalKey<FormState>();
   final requester = TextEditingController();
@@ -34,19 +35,17 @@ class RequesterInfoController extends BaseController {
   }
 
   Future<void> getRequesterInfo() async {
+    requestorID = await storage.readID();
     await storage.readEmployeeInfo().then((value) {
       print(value.isNotEmpty);
-      requestorID = int.parse(value.first.id.toString());
+      // requestorID = int.parse(value.first.id.toString());
       requester.text = value.first.employeeName.toString();
       phone.text = value.first.phoneNumber.toString();
       sn.text = value.first.snEmployee.toString();
       siteID = int.parse(value.first.idSite.toString());
       location.text = value.first.siteName.toString();
+      location.text = value.first.siteName.toString();
     });
-
-    var site = await repository.getSiteList();
-    location.text =
-        site.data?.where((e) => e.id == siteID).first.siteName ?? "";
 
     update();
   }

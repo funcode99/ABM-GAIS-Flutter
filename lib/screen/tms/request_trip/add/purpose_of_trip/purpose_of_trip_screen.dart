@@ -106,6 +106,15 @@ class PurposeOfTripScreen extends StatelessWidget {
                                     controller: controller.fileName,
                                     label: 'File Attachment',
                                     isRequired: true,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "This field is required";
+                                      }
+                                      // if(controller.fileExtension != "pdf"){
+                                      //   return "Files must be pdf";
+                                      // }
+                                      return null;
+                                    },
                                     readOnly: true,
                                     hintText: "Upload Form ${controller.selectedPurposeName}",
                                     suffixIcon: const Icon(Icons.upload),

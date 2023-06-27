@@ -66,7 +66,7 @@ class EditAccommodationController extends BaseController {
         print(value.isNotEmpty);
         travellerID = int.parse(value.first.id.toString());
         travellerName.text = value.first.employeeName.toString();
-        // hotelFare.text = value.first.hotelFare.toString();
+        hotelFare.text = value.first.hotelFare.toString();
         travellerGender.text =
             value.first.jenkel.toString() == "L" ? "Male" : "Female";
         jobBandID = int.parse(value.first.idJobBand.toString());

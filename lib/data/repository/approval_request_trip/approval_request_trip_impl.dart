@@ -98,8 +98,8 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
       ApprovalInfoModel.fromJson(response.data).data?.first.notes.printInfo(info: 'response');
       return ApprovalInfoModel.fromJson(response.data);
     } on DioError catch (e) {
-      e.error.printError();
-      return e.error;
+      print("response error: ${e.response?.data}");
+      return ApprovalInfoModel.fromJson(e.response?.data);
     }
   }
 }
