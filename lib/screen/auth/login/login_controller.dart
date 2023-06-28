@@ -45,9 +45,11 @@ class LoginController extends BaseController {
   Future cekToken() async {
     isLoading = true;
     update();
-    print("token : ${await storage.readToken()}");
-    print("role : ${await storage.readRole()}");
-    if (await storage.readToken() != null) {
+    String? token = await storage.readToken();
+    String? role = await storage.readRole();
+    print("token : $token");
+    print("role : $role");
+    if (token != null) {
       Get.offAll(HomeScreen());
     }
     isLoading = false;
