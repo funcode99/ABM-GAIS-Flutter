@@ -155,7 +155,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                         height: 8,
                       ),
                       Obx(() {
-                        if (controller.selectedItem.value.status == "Reject") {
+                        if (controller.selectedItem.value.notes != null) {
                           return CustomTextFormField(
                               readOnly: true,
                               controller: controller.rejectNoteController,
