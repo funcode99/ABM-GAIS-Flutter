@@ -44,8 +44,8 @@ class RequestATKDetailController extends BaseController {
     createdDateController.text = selectedItem.value.createdAt?.toDateFormat(
         originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
         "-";
-    if (selectedItem.value.status?.toLowerCase() == "reject") {
-      rejectNoteController.text = selectedItem.value.remarks ?? "-";
+    if (selectedItem.value.notes != null) {
+      rejectNoteController.text = selectedItem.value.notes ?? "-";
     }
   }
 

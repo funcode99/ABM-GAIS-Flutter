@@ -13,6 +13,7 @@ class RequestAtkModel {
   int? idEmployee;
   String? noAtkRequest;
   String? remarks;
+  String? notes;
   dynamic codeStatusDoc;
   String? status;
   String? createdAt;
@@ -39,6 +40,7 @@ class RequestAtkModel {
         this.idEmployee,
         this.noAtkRequest,
         this.remarks,
+        this.notes,
         this.codeStatusDoc,
         this.status,
         this.createdAt,
