@@ -9,6 +9,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/management_item_atk/add/add_management_item_atk_controller.dart';
+import 'package:gais/util/input_formatter/min_value_text_input_formatter.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -175,6 +176,8 @@ class AddManagementItemATKScreen extends StatelessWidget {
                       inputType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(3),
+                        MinValueTextInputFormatter(0)
                       ],
                       controller: controller.alertQuantityController,
                       label: "Alert Quantity".tr),

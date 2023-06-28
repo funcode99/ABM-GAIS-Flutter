@@ -14,6 +14,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_controller.dart';
 import 'package:gais/screen/fss/booking_meeting_room/widget/meeting_room_time_picker_dialog.dart';
 import 'package:gais/util/ext/date_ext.dart';
+import 'package:gais/util/input_formatter/min_value_text_input_formatter.dart';
 import 'package:gais/util/validator/custom_validation_builder.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -178,6 +179,8 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                       readOnly: true,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(3),
+                        MinValueTextInputFormatter(0)
                       ],
                       inputType: TextInputType.number,
                       controller: controller.floorController,
@@ -191,6 +194,8 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                       suffixIcon: const Icon(IconlyLight.user),
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(3),
+                        MinValueTextInputFormatter(0)
                       ],
                       inputType: TextInputType.number,
                       controller: controller.capacityController,

@@ -9,8 +9,8 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
-import 'package:gais/screen/fss/management_item_atk/list/management_item_atk_list_screen.dart';
 import 'package:gais/screen/fss/stock_in/add/item_stock_in/add/add_item_stock_in_controller.dart';
+import 'package:gais/util/input_formatter/min_value_text_input_formatter.dart';
 import 'package:gais/util/validator/custom_validation_builder.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -141,6 +141,8 @@ class AddItemStockInATKScreen extends StatelessWidget{
                       inputType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(3),
+                        MinValueTextInputFormatter(0)
                       ],
                       validator: ValidationBuilder().required().max(999).build(),
                       controller: controller.quantityController,

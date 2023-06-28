@@ -10,6 +10,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/add/add_item_request_atk_controller.dart';
+import 'package:gais/util/input_formatter/min_value_text_input_formatter.dart';
 import 'package:gais/util/validator/custom_validation_builder.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -128,15 +129,19 @@ class AddItemRequestATKScreen extends StatelessWidget {
                         validator: controller.selectedItem.value != null
                             ? ValidationBuilder()
                             .required()
+                            .maxLength(3)
                             .max(controller.selectedItem.value?.currentStock ?? 0, "Out of stock".tr)
                             .build()
                             : ValidationBuilder()
                             .required()
+                            .maxLength(3)
                             .build(),
                         isRequired: true,
                         inputType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(3),
+                          MinValueTextInputFormatter(0)
                         ],
                         controller: controller.quantityController,
                         label: "Quantity".tr);
