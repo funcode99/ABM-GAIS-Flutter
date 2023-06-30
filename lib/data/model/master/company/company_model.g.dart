@@ -15,7 +15,7 @@ CompanyModel _$CompanyModelFromJson(Map<String, dynamic> json) => CompanyModel(
       groupCompany: json['group_company'] as String?,
       codeErp: json['code_erp'] as String?,
       logo: json['logo'] as String?,
-      logoPath: json['logo_path'] as String?,
+      logoPath: json['logo_path'],
       idVendor: json['id_vendor'] as int?,
       createdAt: json['created_at'] as String?,
       createdBy: json['created_by'],

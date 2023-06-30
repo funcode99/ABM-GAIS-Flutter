@@ -12,7 +12,7 @@ class CompanyModel {
   String? groupCompany;
   String? codeErp;
   String? logo;
-  String? logoPath;
+  dynamic logoPath;
   int? idVendor;
   String? createdAt;
   dynamic createdBy;
