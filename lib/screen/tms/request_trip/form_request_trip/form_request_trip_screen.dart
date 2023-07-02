@@ -6,9 +6,11 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/customapprovalinfocard.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/customformlabel.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/pdf_screen.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/edit/edit_accommodation_screen.dart';
@@ -191,7 +193,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                 ))
                                             .toList(),
                                         onChanged: (value) {
-                                          controller.siteID = value!.toInt();
+                                          controller.siteID = value.toString().toInt();
                                           controller.update();
                                         },
                                       ),
@@ -208,14 +210,24 @@ class FormRequestTripScreen extends StatelessWidget {
                                           suffixIcon: const Icon(Icons.upload),
                                           onTap: () => controller.getSingleFile(),
                                         )
-                                      : CustomTextFormField(
-                                          controller: controller.attachment,
-                                          label: "Attachment",
-                                          isRequired: true,
-                                          readOnly: true,
-                                          onTap: () {
-                                           controller.viewFile();
-                                          },
+                                      : Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            CustomFormLabel(label: "Attachment", showRequired: true),
+                                            GestureDetector(
+                                              onTap: () => controller.viewFile(),
+                                              child: Container(
+                                                  width: Get.width,
+                                                  margin: EdgeInsets.only(top: 10),
+                                                  padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    border: Border.all(color: blackColor),
+                                                    color: baseColor
+                                                  ),
+                                                  child: Text(controller.attachment.text, style: listSubTitleTextStyle.copyWith(color: blackColor))),
+                                            ),
+                                          ],
                                         )
                                   : Container(),
                               const SizedBox(height: 8),

@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
@@ -13,6 +15,8 @@ import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart'
 import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
 import 'package:gais/data/model/reference/get_site_model.dart' as st;
 import 'package:gais/data/model/approval_request_trip/approval_info_model.dart' as ai;
+import 'package:path_provider/path_provider.dart';
+import 'package:gais/reusable/pdf_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
@@ -50,7 +54,8 @@ class FormRequestTripController extends BaseController {
   bool isEdit = false;
   bool isAttachment = false;
   String? selectedPurpose;
-  String filePath = "";
+  String fileURL = "";
+  String pdfPath = "";
 
   int activeStep = 1;
   String? rtStatus;
@@ -206,6 +211,34 @@ class FormRequestTripController extends BaseController {
   }
 
   viewFile() async {
+    Get.to(PDFScreen(
+      path: pdfPath,
+      fileURL: fileURL,
+    ));
+    print("go to preview file");
+  }
+
+  Future<File> getFileFromUrl({name}) async {
+    Completer<File> completer = Completer();
+    print("Start download file from internet!");
+    try {
+      final url = fileURL;
+      final filename = url.substring(url.lastIndexOf("/") + 1);
+      var request = await HttpClient().getUrl(Uri.parse(url));
+      var response = await request.close();
+      var bytes = await consolidateHttpClientResponseBytes(response);
+      var dir = await getApplicationDocumentsDirectory();
+      print("Download files");
+      print("${dir.path}/$filename");
+      File file = File("${dir.path}/$filename");
+      await file.writeAsBytes(bytes, flush: true);
+      completer.complete(file);
+      update();
+    } catch (e) {
+      throw Exception('Error parsing asset file!');
+    }
+
+    return completer.future;
   }
 
   Future<void> fetchRequestTrip() async {
@@ -223,15 +256,22 @@ class FormRequestTripController extends BaseController {
     siteID = rtModel?.data?.first.idSite?.toInt();
     site.text = rtModel?.data?.first.siteName ?? "";
     notes.text = rtModel?.data?.first.notes ?? "";
-    if(selectedPurpose == "1" || selectedPurpose == "2"){
-      filePath = rtModel?.data?.first.file;
-      attachment.text = filePath;
-    }
-    // rtModel?.data?.first.idDocument.printInfo();
     selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
+    isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
+    if (isAttachment == true) {
+      attachment.text = rtModel?.data?.first.file;
+      fileURL = rtModel?.data?.first.file;
+      getFileFromUrl().then((f) {
+        pdfPath = f.path;
+        gettedFile = f;
+        update();
+      });
+      update();
+    }
     // selectedPurpose = codeDocument.toString();
     print("selected purpose : $selectedPurpose");
-    isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
+    print("file : $fileURL");
+    print("pdfPath : $pdfPath");
     tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";
     // tlkJobBand.text = rtModel?.data?.first.
     tlkZona.text = rtModel?.data?.first.zonaName ?? "";
@@ -479,19 +519,19 @@ class FormRequestTripController extends BaseController {
         fetchRequestTrip();
         fetchList();
         Get.showSnackbar(GetSnackBar(
-          icon: Icon(
+          icon: const Icon(
             Icons.info,
             color: Colors.white,
           ),
           message: "${value.message}",
           isDismissible: true,
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
           backgroundColor: value.success == false ? redColor : greenColor,
         ));
       });
     } catch (e, i) {
       i.printError();
-      Get.showSnackbar(GetSnackBar(
+      Get.showSnackbar(const GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -506,6 +546,7 @@ class FormRequestTripController extends BaseController {
   }
 
   Future<void> updateRequestTrip() async {
+    print("getted file: $gettedFile");
     try {
       await repository
           .updateRequestTrip(
@@ -526,6 +567,8 @@ class FormRequestTripController extends BaseController {
       )
           .then((value) {
         fetchList();
+        fetchRequestTrip();
+        isEdit = false;
         Get.showSnackbar(
           const GetSnackBar(
             icon: Icon(

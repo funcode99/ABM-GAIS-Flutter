@@ -104,7 +104,7 @@ class RequestTripListScreen extends StatelessWidget {
                                             value: controller.purposeValue,
                                             onChanged: (value) {
                                               controller.searchValue = null;
-                                              controller.purposeValue = value ?? "";
+                                              controller.purposeValue = value.toString();
                                               controller.update();
                                             },
                                           ),
