@@ -93,10 +93,12 @@ class CheckScheduleController extends BaseController {
               "899000", // ticket price
             )
             .then(
-              (value) => Get.off(
-                const AirlinessScreen(),
-                arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit},
-              ),
+              (value) => formEdit == true
+                  ? Get.off(FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+                  : Get.off(
+                      const AirlinessScreen(),
+                      arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit},
+                    ),
             );
       } catch (e, i) {
         e.printError();
@@ -125,8 +127,7 @@ class CheckScheduleController extends BaseController {
               "899000", // ticket price
             )
             .then(
-              (value) => Get.off(const AirlinessScreen(),
-                  arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
+              (value) => Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
             );
       } catch (e) {
         Get.showSnackbar(

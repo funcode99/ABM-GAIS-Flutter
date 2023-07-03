@@ -1,6 +1,6 @@
 /// success : true
 /// message : "Success Get Data"
-/// data : [{"id":1,"employee_name":"John Doe","phone_number":"0812345678","sn_employee":"12345","email":"12345@mail.com","nik":"1234123412341234123","dob":"1991-01-01 00:00:00","start_date":"1991-01-01 00:00:00","end_date":"1991-01-01 00:00:00","jenkel":"L","id_department":1,"id_company":1,"id_site":18,"foto":null,"foto_path":null,"created_at":null,"created_by":null,"updated_at":null,"updated_by":null,"deleted_at":null,"sn_atasan_1":null,"sn_atasan_2":null,"is_registered":null,"id_cost_center":null,"is_terminated":null,"position_code":null,"position_level":null,"position_tittle":null,"id_job_band":1,"band_job_name":"A","id_users":2,"site_name":"Lahat, Kebur x","site_code":"LHT01","company_name":"PT Cipta Kridatama","company_code":"3000","company_logo_path":null,"cost_center_name":null,"cost_center_code":null,"group_company_code":"MVC","group_company_name":"MVC","group_company_logo":"mvc.png","group_company_logo_path":"http://38.47.76.138:8013/storage/files/group_company/xctsQEdTjKg8TnPhNRePxie7boyRUyCpQxY7ToYZ.png","hotel_fare":"15000","meals_rate":"25000","flight_class":"First Class","tlk_rate":[{"tlk":"120000","zona_name":"A"},{"tlk":"10000","zona_name":"B"}]}]
+/// data : [{"id":8,"employee_name":"Atasan Langsung - Sofyan","phone_number":"08654321678","sn_employee":"654321","email":"AL@mail.com","nik":"1234123412341234123","dob":"1991-01-01 00:00:00","start_date":"1991-01-01 00:00:00","end_date":"1991-01-01 00:00:00","jenkel":"L","id_department":1,"id_company":1,"id_site":18,"foto":null,"foto_path":null,"created_at":null,"created_by":null,"updated_at":null,"updated_by":null,"deleted_at":null,"sn_atasan_1":null,"sn_atasan_2":null,"is_registered":null,"id_cost_center":null,"is_terminated":null,"position_code":null,"position_level":null,"position_tittle":null,"id_job_band":1,"band_job_name":"A","id_users":8,"site_name":"Lahat, Kebur x","site_code":"LHT01","company_name":"PT Cipta Kridatama","company_code":"3000","company_logo_path":"http://38.47.76.138:8013/storage/files/company/tDmg9U1JS9B6e3sCnX6eGgNk6o4HhmRGh2mFLnsy.png","cost_center_name":null,"cost_center_code":null,"group_company_code":"MVC","group_company_name":"MVC","group_company_logo":"mvc.png","group_company_logo_path":"http://38.47.76.138:8013/storage/files/group_company/xctsQEdTjKg8TnPhNRePxie7boyRUyCpQxY7ToYZ.png","hotel_fare":"15000","meals_rate":"25000","id_flight_class":63,"flight_class":"First Class","tlk_rate":[{"tlk":"120000","zona_name":"A"},{"tlk":"10000","zona_name":"B"}]}]
 
 class EmployeeInfoModel {
   EmployeeInfoModel({
@@ -48,11 +48,11 @@ EmployeeInfoModel copyWith({  bool? success,
 
 }
 
-/// id : 1
-/// employee_name : "John Doe"
-/// phone_number : "0812345678"
-/// sn_employee : "12345"
-/// email : "12345@mail.com"
+/// id : 8
+/// employee_name : "Atasan Langsung - Sofyan"
+/// phone_number : "08654321678"
+/// sn_employee : "654321"
+/// email : "AL@mail.com"
 /// nik : "1234123412341234123"
 /// dob : "1991-01-01 00:00:00"
 /// start_date : "1991-01-01 00:00:00"
@@ -78,12 +78,12 @@ EmployeeInfoModel copyWith({  bool? success,
 /// position_tittle : null
 /// id_job_band : 1
 /// band_job_name : "A"
-/// id_users : 2
+/// id_users : 8
 /// site_name : "Lahat, Kebur x"
 /// site_code : "LHT01"
 /// company_name : "PT Cipta Kridatama"
 /// company_code : "3000"
-/// company_logo_path : null
+/// company_logo_path : "http://38.47.76.138:8013/storage/files/company/tDmg9U1JS9B6e3sCnX6eGgNk6o4HhmRGh2mFLnsy.png"
 /// cost_center_name : null
 /// cost_center_code : null
 /// group_company_code : "MVC"
@@ -92,6 +92,7 @@ EmployeeInfoModel copyWith({  bool? success,
 /// group_company_logo_path : "http://38.47.76.138:8013/storage/files/group_company/xctsQEdTjKg8TnPhNRePxie7boyRUyCpQxY7ToYZ.png"
 /// hotel_fare : "15000"
 /// meals_rate : "25000"
+/// id_flight_class : 63
 /// flight_class : "First Class"
 /// tlk_rate : [{"tlk":"120000","zona_name":"A"},{"tlk":"10000","zona_name":"B"}]
 
@@ -132,7 +133,7 @@ class Data {
       String? siteCode, 
       String? companyName, 
       String? companyCode, 
-      dynamic companyLogoPath, 
+      String? companyLogoPath, 
       dynamic costCenterName, 
       dynamic costCenterCode, 
       String? groupCompanyCode, 
@@ -141,6 +142,7 @@ class Data {
       String? groupCompanyLogoPath, 
       String? hotelFare, 
       String? mealsRate, 
+      num? idFlightClass, 
       String? flightClass, 
       List<TlkRate>? tlkRate,}){
     _id = id;
@@ -187,6 +189,7 @@ class Data {
     _groupCompanyLogoPath = groupCompanyLogoPath;
     _hotelFare = hotelFare;
     _mealsRate = mealsRate;
+    _idFlightClass = idFlightClass;
     _flightClass = flightClass;
     _tlkRate = tlkRate;
 }
@@ -236,6 +239,7 @@ class Data {
     _groupCompanyLogoPath = json['group_company_logo_path'];
     _hotelFare = json['hotel_fare'];
     _mealsRate = json['meals_rate'];
+    _idFlightClass = json['id_flight_class'];
     _flightClass = json['flight_class'];
     if (json['tlk_rate'] != null) {
       _tlkRate = [];
@@ -279,7 +283,7 @@ class Data {
   String? _siteCode;
   String? _companyName;
   String? _companyCode;
-  dynamic _companyLogoPath;
+  String? _companyLogoPath;
   dynamic _costCenterName;
   dynamic _costCenterCode;
   String? _groupCompanyCode;
@@ -288,6 +292,7 @@ class Data {
   String? _groupCompanyLogoPath;
   String? _hotelFare;
   String? _mealsRate;
+  num? _idFlightClass;
   String? _flightClass;
   List<TlkRate>? _tlkRate;
 Data copyWith({  num? id,
@@ -325,7 +330,7 @@ Data copyWith({  num? id,
   String? siteCode,
   String? companyName,
   String? companyCode,
-  dynamic companyLogoPath,
+  String? companyLogoPath,
   dynamic costCenterName,
   dynamic costCenterCode,
   String? groupCompanyCode,
@@ -334,6 +339,7 @@ Data copyWith({  num? id,
   String? groupCompanyLogoPath,
   String? hotelFare,
   String? mealsRate,
+  num? idFlightClass,
   String? flightClass,
   List<TlkRate>? tlkRate,
 }) => Data(  id: id ?? _id,
@@ -380,6 +386,7 @@ Data copyWith({  num? id,
   groupCompanyLogoPath: groupCompanyLogoPath ?? _groupCompanyLogoPath,
   hotelFare: hotelFare ?? _hotelFare,
   mealsRate: mealsRate ?? _mealsRate,
+  idFlightClass: idFlightClass ?? _idFlightClass,
   flightClass: flightClass ?? _flightClass,
   tlkRate: tlkRate ?? _tlkRate,
 );
@@ -418,7 +425,7 @@ Data copyWith({  num? id,
   String? get siteCode => _siteCode;
   String? get companyName => _companyName;
   String? get companyCode => _companyCode;
-  dynamic get companyLogoPath => _companyLogoPath;
+  String? get companyLogoPath => _companyLogoPath;
   dynamic get costCenterName => _costCenterName;
   dynamic get costCenterCode => _costCenterCode;
   String? get groupCompanyCode => _groupCompanyCode;
@@ -427,6 +434,7 @@ Data copyWith({  num? id,
   String? get groupCompanyLogoPath => _groupCompanyLogoPath;
   String? get hotelFare => _hotelFare;
   String? get mealsRate => _mealsRate;
+  num? get idFlightClass => _idFlightClass;
   String? get flightClass => _flightClass;
   List<TlkRate>? get tlkRate => _tlkRate;
 
@@ -476,6 +484,7 @@ Data copyWith({  num? id,
     map['group_company_logo_path'] = _groupCompanyLogoPath;
     map['hotel_fare'] = _hotelFare;
     map['meals_rate'] = _mealsRate;
+    map['id_flight_class'] = _idFlightClass;
     map['flight_class'] = _flightClass;
     if (_tlkRate != null) {
       map['tlk_rate'] = _tlkRate?.map((v) => v.toJson()).toList();

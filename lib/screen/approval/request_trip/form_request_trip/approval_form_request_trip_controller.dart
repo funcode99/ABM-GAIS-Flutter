@@ -4,6 +4,7 @@ import 'package:gais/const/color.dart';
 import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:gais/reusable/dialog/reject_dialog.dart';
+import 'package:gais/reusable/dialog/success_dialog.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
@@ -69,7 +70,8 @@ class ApprovalFormRequestTripController extends BaseController {
   String? toCity;
   String? departureDate;
   String? arrivalDate;
-  String? zonaID  ;
+  String? zonaID;
+
   String? tlkDay;
   String? tlk;
   String? travellerName;
@@ -301,35 +303,47 @@ class ApprovalFormRequestTripController extends BaseController {
       print('approveID: $approvalID');
       try {
         await approvalRequestTrip.approve(approvalID, result).then((value) {
-          Get.back();
-          Get.showSnackbar(
-            const GetSnackBar(
-              icon: Icon(
-                Icons.error,
-                color: Colors.white,
-              ),
-              message: 'Document Apporved',
-              isDismissible: true,
-              duration: Duration(seconds: 3),
-              backgroundColor: successColor,
-            ),
-          );
+          // Get.back(result: true);
+          Get.dialog(SuccessDialog(
+            message: "The request was successfully approved!",
+            onClosePressed: () {
+              Get.back(result: true);
+            },
+          ));
+          //   Get.showSnackbar(
+          //     const GetSnackBar(
+          //       icon: Icon(
+          //         Icons.error,
+          //         color: Colors.white,
+          //       ),
+          //       message: 'Document Apporved',
+          //       isDismissible: true,
+          //       duration: Duration(seconds: 3),
+          //       backgroundColor: successColor,
+          //     ),
+          //   );
         });
       } catch (e, i) {
         e.printError();
         i.printError();
-        Get.showSnackbar(
-          const GetSnackBar(
-            icon: Icon(
-              Icons.error,
-              color: Colors.white,
-            ),
-            message: "Failed update Data",
-            isDismissible: true,
-            duration: Duration(seconds: 3),
-            backgroundColor: redColor,
-          ),
-        );
+        Get.dialog(SuccessDialog(
+          message: "Request failed to be approved!",
+          onClosePressed: () {
+            Get.back(result: true);
+          },
+        ));
+        // Get.showSnackbar(
+        //   const GetSnackBar(
+        //     icon: Icon(
+        //       Icons.error,
+        //       color: Colors.white,
+        //     ),
+        //     message: "Failed update Data",
+        //     isDismissible: true,
+        //     duration: Duration(seconds: 3),
+        //     backgroundColor: redColor,
+        //   ),
+        // );
       }
     }
   }
@@ -341,33 +355,46 @@ class ApprovalFormRequestTripController extends BaseController {
       approvalModel(result);
       print('result : ${result.notes}');
       try {
-        await approvalRequestTrip.reject(approvalID, result).then((value) => Get.showSnackbar(
-              const GetSnackBar(
-                icon: Icon(
-                  Icons.error,
-                  color: Colors.white,
-                ),
-                message: 'Document Rejected',
-                isDismissible: true,
-                duration: Duration(seconds: 3),
-                backgroundColor: successColor,
-              ),
-            ));
+        await approvalRequestTrip.reject(approvalID, result).then((value) => Get.dialog(SuccessDialog(
+                  message: "The request was successfully rejected!",
+                  onClosePressed: () {
+                    Get.back(result: true);
+                  },
+                ))
+            //     Get.showSnackbar(
+            //   const GetSnackBar(
+            //     icon: Icon(
+            //       Icons.error,
+            //       color: Colors.white,
+            //     ),
+            //     message: 'Document Rejected',
+            //     isDismissible: true,
+            //     duration: Duration(seconds: 3),
+            //     backgroundColor: successColor,
+            //   ),
+            // ),
+            );
       } catch (e, i) {
         e.printError();
         i.printError();
-        Get.showSnackbar(
-          const GetSnackBar(
-            icon: Icon(
-              Icons.error,
-              color: Colors.white,
-            ),
-            message: "Failed update Data",
-            isDismissible: true,
-            duration: Duration(seconds: 3),
-            backgroundColor: redColor,
-          ),
-        );
+        Get.dialog(SuccessDialog(
+          message: "Request failed to be rejected!",
+          onClosePressed: () {
+            Get.back(result: true);
+          },
+        ));
+        // Get.showSnackbar(
+        //   const GetSnackBar(
+        //     icon: Icon(
+        //       Icons.error,
+        //       color: Colors.white,
+        //     ),
+        //     message: "Failed update Data",
+        //     isDismissible: true,
+        //     duration: Duration(seconds: 3),
+        //     backgroundColor: redColor,
+        //   ),
+        // );
       }
     }
   }

@@ -109,28 +109,29 @@ class AddAirlinessScreen extends StatelessWidget {
                               }),
                             ),
                             const SizedBox(height: 8),
-                            CustomDropDownFormField(
+                            CustomTextFormField(
+                              controller: controller.travellerflightClass,
                               label: "Flight Class",
-                              hintText: "Class",
                               isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
-                              items: controller.flightList
-                                  .map((e) => DropdownMenuItem(
-                                        value: e.id.toString(),
-                                        child: Text(e.flightClass.toString()),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                controller.flightClass = value;
-                                controller.update();
-                                print(controller.flightClass);
-                              },
+                              readOnly: true,
                             ),
+                            // CustomDropDownFormField(
+                            //   label: "Flight Class",
+                            //   hintText: "Class",
+                            //   isRequired: true,
+                            //   // value: controller.flightClassID.toString(),
+                            //   items: controller.flightList
+                            //       .map((e) => DropdownMenuItem(
+                            //             value: e.id.toString(),
+                            //             child: Text(e.flightClass.toString()),
+                            //           ))
+                            //       .toList(),
+                            //   onChanged: (value) {
+                            //     controller.flightClass = value;
+                            //     controller.update();
+                            //     print(controller.flightClass);
+                            //   },
+                            // ),
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
                               label: "Departure",
@@ -206,7 +207,8 @@ class AddAirlinessScreen extends StatelessWidget {
                                         'codeDocument': controller.codeDocument,
                                         'departure': int.parse(controller.departure.toString()),
                                         'arrival': int.parse(controller.arrival.toString()),
-                                        'flightClass': int.parse(controller.flightClass.toString()),
+                                        // 'flightClass': int.parse(controller.flightClass.toString()),
+                                        'flightClass': controller.flightClassID,
                                         'formEdit': controller.formEdit,
                                       });
                                   },

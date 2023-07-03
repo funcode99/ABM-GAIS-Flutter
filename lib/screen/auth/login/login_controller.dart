@@ -3,7 +3,6 @@ import 'package:gais/base/base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/data/model/login_model.dart';
 import 'package:gais/data/storage_core.dart';
-import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/screen/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -122,7 +121,7 @@ class LoginController extends BaseController {
   Future<void> saveEmployeeInfo() async {
     try {
       await repository.getEmployeeInfo().then((value) {
-        print("value: ${value.data?.first.id}");
+        print("value: ${value.data?.first.idFlightClass}");
         storage.saveUser(
           value.data?.first.id.toString() ?? "",
           value.data?.first.employeeName ?? "",
@@ -145,6 +144,7 @@ class LoginController extends BaseController {
           value.data?.first.bandJobName.toString() ?? "",
           value.data?.first.foto.toString() ?? "",
           value.data?.first.fotoPath.toString() ?? "",
+          value.data?.first.idFlightClass.toString() ?? "",
           value.data?.first.flightClass.toString() ?? "",
           value.data?.first.hotelFare.toString() ?? "",
           value.data?.first.mealsRate.toString() ?? "",

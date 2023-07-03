@@ -14,10 +14,12 @@ class AddAirlinessController extends BaseController {
   final formKey = GlobalKey<FormState>();
   final travellerName = TextEditingController();
   final departureDate = TextEditingController();
+  final travellerflightClass = TextEditingController();
 
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
   int? travellerID;
+  int? flightClassID;
   DateTime? selectedDate;
   String? flightClass;
   String? departure;
@@ -50,13 +52,14 @@ class AddAirlinessController extends BaseController {
     if (airlinessID != null) {
       await repository.getAirlinessByid(airlinessID!).then((value) {
         travellerName.text = value.data?.first.employeeName ?? "";
-
       });
     } else {
       await storage.readEmployeeInfo().then((value) {
         print(value);
         travellerID = int.parse(value.first.id.toString());
         travellerName.text = value.first.employeeName.toString();
+        flightClassID = value.first.idFlightClass?.toInt();
+        travellerflightClass.text = value.first.flightClass ?? "";
       });
     }
 

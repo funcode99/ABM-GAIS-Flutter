@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -244,7 +245,6 @@ class FormRequestTripController extends BaseController {
   Future<void> fetchRequestTrip() async {
     var rtData = await repository.getRequestTripByid(purposeID);
     DateTime? tempDate;
-
     rtModel = rtData;
     rtStatus = rtModel?.data?.first.status ?? "";
     rtNumber = rtModel?.data?.first.noRequestTrip ?? "";
@@ -258,16 +258,17 @@ class FormRequestTripController extends BaseController {
     notes.text = rtModel?.data?.first.notes ?? "";
     selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
     isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
-    if (isAttachment == true) {
-      attachment.text = rtModel?.data?.first.file;
-      fileURL = rtModel?.data?.first.file;
-      getFileFromUrl().then((f) {
-        pdfPath = f.path;
-        gettedFile = f;
-        update();
-      });
-      update();
-    }
+    print("attachment : ${rtModel?.data?.first.file}");
+    // if (isAttachment == true) {
+    //   attachment.text = rtModel?.data?.first.file;
+    //   fileURL = rtModel?.data?.first.file;
+    //   getFileFromUrl().then((f) {
+    //     pdfPath = f.path;
+    //     gettedFile = f;
+    //     update();
+    //   });
+    //   update();
+    // }
     // selectedPurpose = codeDocument.toString();
     print("selected purpose : $selectedPurpose");
     print("file : $fileURL");
@@ -275,6 +276,7 @@ class FormRequestTripController extends BaseController {
     tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";
     // tlkJobBand.text = rtModel?.data?.first.
     tlkZona.text = rtModel?.data?.first.zonaName ?? "";
+    print(rtModel?.data?.first.totalTlk);
     tlkTotal.text = rtModel?.data?.first.totalTlk ?? "";
     // tlkTotalMeals.text = rtModel?.data?.first. ?? "";
     fromCity = rtModel?.data?.first.idCityFrom.toString();

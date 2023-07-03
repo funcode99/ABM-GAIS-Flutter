@@ -212,18 +212,21 @@ class AddAccommodationScreen extends StatelessWidget {
                               hintText: "Remarks",
                               multiLine: true,
                             ),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: Colors.white,
-                                  value: controller.isSharing,
-                                  onChanged: (bool? value) {
-                                    controller.isSharing = value!;
-                                    controller.update();
-                                  },
-                                ),
-                                Text("Sharing with", style: listTitleTextStyle)
-                              ],
+                            Container(
+                              height: 50,
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    checkColor: Colors.white,
+                                    value: controller.isSharing,
+                                    onChanged: (bool? value) {
+                                      controller.isSharing = value!;
+                                      controller.update();
+                                    },
+                                  ),
+                                  Text("Sharing with", style: listTitleTextStyle)
+                                ],
+                              ),
                             ),
                             controller.isSharing == true
                                 ? CustomTextFormField(

@@ -53,6 +53,7 @@ class StorageCore {
     String? foto,
     String? fotoPath,
     String bandJobName,
+    String idFlightClass,
     String flightClass,
     String hotelFare,
     String mealsFare,
@@ -78,6 +79,7 @@ class StorageCore {
     await storage.write(key: 'jobBand', value: bandJobName);
     await storage.write(key: 'foto', value: foto);
     await storage.write(key: 'fotoPath', value: fotoPath);
+    await storage.write(key: 'flightClassID', value: idFlightClass);
     await storage.write(key: 'flightClass', value: flightClass);
     await storage.write(key: 'hotelFare', value: hotelFare);
     await storage.write(key: 'mealsFare', value: mealsFare);
@@ -128,6 +130,7 @@ class StorageCore {
       bandJobName: await storage.read(key: 'jobBand'),
       foto: await storage.read(key: 'foto'),
       fotoPath: await storage.read(key: 'fotoPath'),
+      idFlightClass: int.parse(await storage.read(key: 'flightClassID') ?? "0"),
       flightClass: await storage.read(key: 'flightClass'),
       hotelFare: await storage.read(key: 'hotelFare'),
       mealsRate: await storage.read(key: 'mealsFare'),

@@ -1147,7 +1147,7 @@ class RepositoryImpl implements Repository {
       GetCashAdvanceTravelModel.fromJson(response.data).data?.first.noCa.printInfo();
       return GetCashAdvanceTravelModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
+      print("response error cash advance: ${e.response?.data}");
       return e.response?.data;
     }
   }

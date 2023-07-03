@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/check_accommodation/check_accommodation_screen.dart';
-import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/data/model/reference/get_hotel_type_model.dart' as type;
+import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
 
 class AddAccommodationController extends BaseController {
   int purposeID = Get.arguments['purposeID'];
@@ -38,6 +38,7 @@ class AddAccommodationController extends BaseController {
   List<city.Data> cityList = [];
   type.GetHotelTypeModel? hotelTypeModel;
   List<type.Data> hotelTypeList = [];
+  List<guest.Data> shareList = [];
 
   @override
   void onInit() {
@@ -72,8 +73,6 @@ class AddAccommodationController extends BaseController {
 
       });
 
-
-
       var dataCity = await repository.getCityList();
       cityModel = dataCity;
       cityList.addAll(dataCity.data?.toSet().toList() ?? []);
@@ -81,6 +80,10 @@ class AddAccommodationController extends BaseController {
       var hotelType = await repository.getHotelTypeList();
       hotelTypeModel = hotelType;
       hotelTypeList.addAll(hotelType.data?.toSet().toList() ?? []);
+
+      var share = await repository.getGuestBytripList(purposeID);
+      shareList.addAll(share.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+      sharingName.text = shareList.first.nameGuest ?? "";
 
       update();
     } catch (e,i) {

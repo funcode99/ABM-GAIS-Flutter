@@ -792,7 +792,7 @@ class FormRequestTripScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 CustomTextFormField(
-                                  controller: controller.tlkRequestor,
+                                  controller: controller.requestor,
                                   label: "Requestor",
                                   isRequired: true,
                                   readOnly: true,
