@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/approval_request_trip/approval_info_model.dart';
+import 'package:gais/data/model/approval_request_trip/get_approval_request_trip_byid_model.dart';
 import 'package:gais/data/model/approval_request_trip/get_approval_request_trip_model.dart';
 import 'package:gais/data/model/approval_request_trip/post_approve_request_trip_model.dart';
 import 'package:gais/data/network_core.dart';
@@ -100,6 +101,21 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
     } on DioError catch (e) {
       print("response error: ${e.response?.data}");
       return ApprovalInfoModel.fromJson(e.response?.data);
+    }
+  }
+
+  @override
+  Future<GetApprovalRequestTripByidModel> getByID(int id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/approval_request_trip/get_data/$id",
+      );
+      return GetApprovalRequestTripByidModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print("response error: ${e.response?.data}");
+      return e.error;
     }
   }
 }

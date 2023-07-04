@@ -154,7 +154,10 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(e.airlines.toString(), style: listTitleTextStyle,),
+                                                  Text(
+                                                    e.airlines.toString(),
+                                                    style: listTitleTextStyle,
+                                                  ),
                                                   Row(
                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -173,7 +176,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                             Icons.arrow_forward,
                                                             size: 19,
                                                           ),
-                                                          Text(e.stops.toString().substring(0,7)),
+                                                          Text(e.stops.toString().substring(0, 7)),
                                                           Text(e.flightClass.toString())
                                                         ],
                                                       ),
@@ -185,7 +188,8 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                         children: [
                                                           Text(e.price!.toInt().toCurrency().toString(), style: listTitleTextStyle),
                                                           GestureDetector(
-                                                            onTap: () => controller.selectAirlines("1"),
+                                                            onTap: () =>
+                                                                controller.selectAirlines("1", "QG", e.flightNo.toString(), e.price.toString()),
                                                             child: Container(
                                                               padding: EdgeInsets.all(8),
                                                               margin: EdgeInsets.only(top: 5),

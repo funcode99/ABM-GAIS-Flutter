@@ -188,6 +188,7 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                         'id': controller.requestList[index].id?.toInt(),
                                         'idRequestTrip': controller.requestList[index].idRequestTrip?.toInt(),
                                         'approvalEnum': ApprovalActionEnum.approve,
+                                        'approvalData': controller.requestList[index],
                                       },
                                     );
                                   },
@@ -201,6 +202,7 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                         'id': controller.requestList[index].id?.toInt(),
                                         'idRequestTrip': controller.requestList[index].idRequestTrip?.toInt(),
                                         'approvalEnum': ApprovalActionEnum.reject,
+                                        'approvalData': controller.requestList[index],
                                       },
                                     );
                                   },

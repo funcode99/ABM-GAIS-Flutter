@@ -4,6 +4,7 @@ import 'package:gais/data/model/reference/get_city_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_schedule_model.dart' as schedule;
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -80,7 +81,12 @@ class CheckScheduleController extends BaseController {
     }
   }
 
-  Future<void> selectAirlines(String idFlight) async {
+  Future<void> selectAirlines(
+    String idFlight,
+    String codeAirliness,
+    String flightNo,
+    String price,
+  ) async {
     if (airlinessID != null) {
       try {
         await repository
@@ -88,9 +94,9 @@ class CheckScheduleController extends BaseController {
               airlinessID!,
               purposeID.toString(),
               idFlight,
-              "QG829", // flight_no
-              "QG", // code airliness
-              "899000", // ticket price
+              flightNo, // flight_no
+              codeAirliness, // code airliness
+              price.digitOnly(), // ticket price
             )
             .then(
               (value) => formEdit == true
