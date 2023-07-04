@@ -85,6 +85,10 @@ class LanguageID{
       "Request failed to be approved!" : "Request failed to be approved!",
       "The request was successfully rejected!" : "The request was successfully rejected!",
       "Request failed to be rejected!" : "Request failed to be rejected!",
+      "Pool Car Request" : "Pool Car Request",
+      "Driver" : "Driver",
+      "To Date" : "To Date",
+      "From Date" : "From Date",
     };
   }
 }

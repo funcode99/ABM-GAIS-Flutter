@@ -11,7 +11,7 @@ PaginationModel _$PaginationModelFromJson(Map<String, dynamic> json) =>
       currentPage: json['current_page'] as int?,
       from: json['from'] as int?,
       lastPage: json['last_page'] as int?,
-      perPage: json['per_page'] as String?,
+      perPage: json['per_page'],
       to: json['to'] as int?,
       total: json['total'] as int?,
       data: json['data'] as List<dynamic>?,
