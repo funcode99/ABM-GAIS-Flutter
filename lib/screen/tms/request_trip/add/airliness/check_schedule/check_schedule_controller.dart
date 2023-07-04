@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_city_model.dart';
-import 'package:gais/data/model/request_trip/get_airliness_vendor_model.dart' as vendor;
+import 'package:gais/data/model/request_trip/get_airliness_schedule_model.dart' as schedule;
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -19,8 +20,8 @@ class CheckScheduleController extends BaseController {
   String? departureCity;
   String? arrivalCity;
 
-  vendor.GetAirlinessVendorModel? vendorModel;
-  List<vendor.Data> vendorList = [];
+  schedule.GetAirlinessScheduleModel? flightscheduleModel;
+  List<schedule.Data> flightscheduleList = [];
   GetCityModel? cityModel;
 
   @override
@@ -46,11 +47,11 @@ class CheckScheduleController extends BaseController {
   }
 
   Future<void> fetchList() async {
-    vendorList = [];
+    flightscheduleList = [];
     try {
-      var response = await repository.getAirlinessVendorList();
-      vendorModel = response;
-      vendorList.addAll(response.data?.toSet().toList() ?? []);
+      var response = await repository.getAirlinessScheduleList();
+      flightscheduleModel = response;
+      flightscheduleList.addAll(response.data?.toSet().toList() ?? []);
 
       var cityData = await repository.getCityList();
       cityModel = cityData;
@@ -80,17 +81,22 @@ class CheckScheduleController extends BaseController {
     }
   }
 
-  Future<void> selectAirlines(String idVendor) async {
+  Future<void> selectAirlines(
+    String idFlight,
+    String codeAirliness,
+    String flightNo,
+    String price,
+  ) async {
     if (airlinessID != null) {
       try {
         await repository
             .updateAirlines(
               airlinessID!,
               purposeID.toString(),
-              idVendor,
-              "QG829", // flight_no
-              "QG", // code airliness
-              "899000", // ticket price
+              idFlight,
+              flightNo, // flight_no
+              codeAirliness, // code airliness
+              price.digitOnly(), // ticket price
             )
             .then(
               (value) => formEdit == true
@@ -121,7 +127,7 @@ class CheckScheduleController extends BaseController {
         await repository
             .saveAirlines(
               purposeID.toString(),
-              idVendor,
+              idFlight,
               "QG828", // flight_no
               "QG", // code airliness
               "899000", // ticket price

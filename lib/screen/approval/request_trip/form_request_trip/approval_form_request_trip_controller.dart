@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
@@ -5,6 +9,7 @@ import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:gais/reusable/dialog/reject_dialog.dart';
 import 'package:gais/reusable/dialog/success_dialog.dart';
+import 'package:gais/reusable/pdf_screen.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
@@ -23,7 +28,9 @@ import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as ac
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart' as ca;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
 import 'package:gais/data/model/reference/get_site_model.dart' as st;
+import 'package:gais/data/model/approval_request_trip/get_approval_request_trip_model.dart' as rt;
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ApprovalFormRequestTripController extends BaseController {
   List<String> approve = ["Behalf of", "Fully Approve"];
@@ -31,13 +38,15 @@ class ApprovalFormRequestTripController extends BaseController {
 
   List<String> reject = ["With Notes", "Fully Rejected"];
   late String rejection = reject[0];
+
+  ApprovalActionEnum? approvalActionEnum = Get.arguments['approvalEnum'];
+  rt.Data approvalData = Get.arguments['approvalData'];
   int purposeID = Get.arguments['idRequestTrip'];
   int approvalID = Get.arguments['id'];
   int? requsetorID;
   int? siteID;
   int? jobID;
 
-  ApprovalActionEnum? approvalActionEnum = Get.arguments['approvalEnum'];
 
   final approvalModel = Rxn<ApprovalModel>();
 
@@ -71,6 +80,8 @@ class ApprovalFormRequestTripController extends BaseController {
   String? departureDate;
   String? arrivalDate;
   String? zonaID;
+  String fileURL = "";
+  String pdfPath = "";
 
   String? tlkDay;
   String? tlk;
@@ -129,6 +140,7 @@ class ApprovalFormRequestTripController extends BaseController {
   List<st.Data> siteList = [];
 
   GetRequestTripByidModel? rtModel;
+  rt.Data? getApprovalModel;
 
   @override
   void onInit() {
@@ -172,32 +184,32 @@ class ApprovalFormRequestTripController extends BaseController {
         item['isFilled'] = item['title'] == "Taxi Voucher"
             ? true
             : item['title'] == "Traveller Guest"
-                ? true
-                : false;
+            ? true
+            : false;
 
         item['showList'] = item['title'] == "Taxi Voucher"
             ? true
             : item['title'] == "Traveller Guest"
-                ? true
-                : false;
+            ? true
+            : false;
       }
     } else if (selectedPurpose == "2") {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
             : item['title'] == "Airliness"
-                ? true
-                : item['title'] == "Other Transportation"
-                    ? true
-                    : false;
+            ? true
+            : item['title'] == "Other Transportation"
+            ? true
+            : false;
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
             : item['title'] == "Airliness"
-                ? true
-                : item['title'] == "Other Transportation"
-                    ? true
-                    : false;
+            ? true
+            : item['title'] == "Other Transportation"
+            ? true
+            : false;
       }
     } else {
       items.where((e) => e['isFilled'] == false).forEach((item) {
@@ -208,27 +220,67 @@ class ApprovalFormRequestTripController extends BaseController {
     update();
   }
 
+  Future<File> getFileFromUrl({name}) async {
+    Completer<File> completer = Completer();
+    print("Start download file from internet!");
+    try {
+      final url = fileURL;
+      final filename = url.substring(url.lastIndexOf("/") + 1);
+      var request = await HttpClient().getUrl(Uri.parse(url));
+      var response = await request.close();
+      var bytes = await consolidateHttpClientResponseBytes(response);
+      var dir = await getApplicationDocumentsDirectory();
+      print("Download files");
+      print("${dir.path}/$filename");
+      File file = File("${dir.path}/$filename");
+      await file.writeAsBytes(bytes, flush: true);
+      completer.complete(file);
+      update();
+    } catch (e) {
+      throw Exception('Error parsing asset file!');
+    }
+
+    return completer.future;
+  }
+
   Future<void> fetchRequestTrip() async {
     var rtData = await repository.getRequestTripByid(purposeID);
+    var rtApproval = await approvalRequestTrip.getByID(approvalID);
+    print(rtApproval.data);
     DateTime? tempDate;
-
     rtModel = rtData;
+    // getApprovalModel = rtApproval.data?.first as rt.Data?;
     rtStatus = rtModel?.data?.first.status ?? "";
     rtNumber = rtModel?.data?.first.noRequestTrip ?? "";
     tempDate = DateTime.parse(rtModel?.data?.first.createdAt ?? "");
     createdDate.text = dateFormat.format(tempDate);
     requestor.text = rtModel?.data?.first.employeeName ?? "";
     purpose.text = rtModel?.data?.first.documentName ?? "";
-    // codeDocument = int.parse(rtModel?.data?.first.codeDocument ?? "");
+    // codeDocument = int.parse(rtModel?.data?.first.idDocument ?? "");
     siteID = rtModel?.data?.first.idSite?.toInt();
     site.text = rtModel?.data?.first.siteName ?? "";
     notes.text = rtModel?.data?.first.notes ?? "";
-    attachment.text = rtModel?.data?.first.file ?? "";
     selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
     isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
+    print("attachment : ${rtModel?.data?.first.file}");
+    // if (isAttachment == true) {
+    //   attachment.text = rtModel?.data?.first.file;
+    //   fileURL = rtModel?.data?.first.file;
+    //   getFileFromUrl().then((f) {
+    //     pdfPath = f.path;
+    //     // gettedFile = f;
+    //     update();
+    //   });
+    //   update();
+    // }
+    selectedPurpose = codeDocument.toString();
+    print("selected purpose : $selectedPurpose");
+    print("file : $fileURL");
+    print("pdfPath : $pdfPath");
     tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";
     // tlkJobBand.text = rtModel?.data?.first.
     tlkZona.text = rtModel?.data?.first.zonaName ?? "";
+    print(rtModel?.data?.first.totalTlk);
     tlkTotal.text = rtModel?.data?.first.totalTlk ?? "";
     // tlkTotalMeals.text = rtModel?.data?.first. ?? "";
     fromCity = rtModel?.data?.first.idCityFrom.toString();
@@ -253,6 +305,14 @@ class ApprovalFormRequestTripController extends BaseController {
     });
 
     update();
+  }
+
+  viewFile() async {
+    Get.to(PDFScreen(
+      path: pdfPath,
+      fileURL: fileURL,
+    ));
+    print("go to preview file");
   }
 
   Future<void> fetchList() async {
@@ -295,8 +355,18 @@ class ApprovalFormRequestTripController extends BaseController {
   }
 
   openApproveDialog() async {
-    ApprovalModel? result = await Get.dialog(const ApprovalConfirmationDialog());
+    ApprovalModel? result = await Get.dialog(ApprovalConfirmationDialog(
+      // idEmployee: getApprovalModel?.idEmployee?.toInt(),
+      // idSite: getApprovalModel?.idSite?.toInt(),
+      // idCompany: getApprovalModel?.idCompany?.toInt(),
+      // idApprovalAuth: getApprovalModel?.idApprovalAuth?.toInt(),
+      idEmployee: approvalData.idEmployee?.toInt(),
+      idSite: approvalData.idSite?.toInt(),
+      idCompany: approvalData.idCompany?.toInt(),
+      idApprovalAuth: approvalData.idApprovalAuth?.toInt(),
+    ));
 
+    update();
     if (result != null) {
       approvalModel(result);
       print('result : ${result.approvedBehalf}');
@@ -310,6 +380,7 @@ class ApprovalFormRequestTripController extends BaseController {
               Get.back(result: true);
             },
           ));
+          fetchRequestTrip();
           //   Get.showSnackbar(
           //     const GetSnackBar(
           //       icon: Icon(
@@ -355,25 +426,28 @@ class ApprovalFormRequestTripController extends BaseController {
       approvalModel(result);
       print('result : ${result.notes}');
       try {
-        await approvalRequestTrip.reject(approvalID, result).then((value) => Get.dialog(SuccessDialog(
-                  message: "The request was successfully rejected!",
-                  onClosePressed: () {
-                    Get.back(result: true);
-                  },
-                ))
-            //     Get.showSnackbar(
-            //   const GetSnackBar(
-            //     icon: Icon(
-            //       Icons.error,
-            //       color: Colors.white,
-            //     ),
-            //     message: 'Document Rejected',
-            //     isDismissible: true,
-            //     duration: Duration(seconds: 3),
-            //     backgroundColor: successColor,
-            //   ),
-            // ),
-            );
+        await approvalRequestTrip.reject(approvalID, result).then((value) {
+          Get.dialog(SuccessDialog(
+            message: "The request was successfully rejected!",
+            onClosePressed: () {
+              Get.back(result: true);
+            },
+          ));
+          fetchRequestTrip();
+        }
+          //     Get.showSnackbar(
+          //   const GetSnackBar(
+          //     icon: Icon(
+          //       Icons.error,
+          //       color: Colors.white,
+          //     ),
+          //     message: 'Document Rejected',
+          //     isDismissible: true,
+          //     duration: Duration(seconds: 3),
+          //     backgroundColor: successColor,
+          //   ),
+          // ),
+        );
       } catch (e, i) {
         e.printError();
         i.printError();

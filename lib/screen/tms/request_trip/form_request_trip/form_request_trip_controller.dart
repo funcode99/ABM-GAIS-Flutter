@@ -259,17 +259,17 @@ class FormRequestTripController extends BaseController {
     selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
     isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
     print("attachment : ${rtModel?.data?.first.file}");
-    // if (isAttachment == true) {
-    //   attachment.text = rtModel?.data?.first.file;
-    //   fileURL = rtModel?.data?.first.file;
-    //   getFileFromUrl().then((f) {
-    //     pdfPath = f.path;
-    //     gettedFile = f;
-    //     update();
-    //   });
-    //   update();
-    // }
-    // selectedPurpose = codeDocument.toString();
+    if (isAttachment == true) {
+      attachment.text = rtModel?.data?.first.file;
+      fileURL = rtModel?.data?.first.file;
+      getFileFromUrl().then((f) {
+        pdfPath = f.path;
+        gettedFile = f;
+        update();
+      });
+      update();
+    }
+    selectedPurpose = codeDocument.toString();
     print("selected purpose : $selectedPurpose");
     print("file : $fileURL");
     print("pdfPath : $pdfPath");
