@@ -161,7 +161,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                                   Get.to(() => const RequestATKDetailScreen(),
                                       arguments: {"item": item});
                                 },
-                                number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
+                                number: "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
                                 title: "${item.noAtkRequest}",
                                 subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                 content: Padding(
