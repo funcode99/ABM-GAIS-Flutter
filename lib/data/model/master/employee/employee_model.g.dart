@@ -22,7 +22,7 @@ EmployeeModel _$EmployeeModelFromJson(Map<String, dynamic> json) =>
       idDepartment: json['id_department'] as int?,
       idCompany: json['id_company'] as int?,
       idSite: json['id_site'] as int?,
-      idJobBand: json['id_job_band'] as int?,
+      idJobBand: json['id_job_band'],
       foto: json['foto'] as String?,
       fotoPath: json['foto_path'] as String?,
       createdAt: json['created_at'] as String?,

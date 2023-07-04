@@ -18,7 +18,7 @@ class EmployeeModel {
   int? idDepartment;
   int? idCompany;
   int? idSite;
-  int? idJobBand;
+  dynamic idJobBand;
   String? foto;
   String? fotoPath;
   String? createdAt;
