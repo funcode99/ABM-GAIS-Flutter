@@ -193,7 +193,7 @@ class ManagementItemATKListScreen extends StatelessWidget {
                         children: [
                           ...controller.listHeader
                               .mapIndexed((index, item) => CommonListItem(
-                                      number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
+                                      number: "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
                                       subtitle: "${item.codeItem}",
                                       title: item.itemName,
                                       total: "${item.currentStock ?? "-"}",
