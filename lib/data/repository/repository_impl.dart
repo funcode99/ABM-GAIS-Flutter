@@ -23,6 +23,7 @@ import 'package:gais/data/model/reference/get_type_transportation_model.dart';
 import 'package:gais/data/model/reference/get_zona_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart';
+import 'package:gais/data/model/request_trip/get_airliness_schedule_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_vendor_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart';
@@ -829,6 +830,21 @@ class RepositoryImpl implements Repository {
   }
 
   @override
+  Future<GetAirlinessScheduleModel> getAirlinessScheduleList() async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/flight_schedule",
+      );
+      return GetAirlinessScheduleModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print("response error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+  @override
   Future<GetAirlinessModel> getAirlinessBytripList() async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -1247,5 +1263,4 @@ class RepositoryImpl implements Repository {
       return e.error;
     }
   }
-
 }

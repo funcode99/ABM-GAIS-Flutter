@@ -9,6 +9,7 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/check_schedule/check_schedule_controller.dart';
+import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -144,55 +145,61 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                         children: controller.listOfDates
                             .map((e) => SingleChildScrollView(
                                   child: Column(
-                                    children: controller.vendorList
+                                    children: controller.flightscheduleList
                                         .map(
                                           (e) => Card(
                                             elevation: 4,
                                             child: Padding(
                                               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Image.asset(
-                                                    "assets/img/citilink.png",
-                                                    width: 50,
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: const [Text("6.00"), Text("CGK"), Text("QG828")],
-                                                  ),
-                                                  Column(
-                                                    children: const [
-                                                      Icon(
-                                                        Icons.arrow_forward,
-                                                        size: 19,
-                                                      ),
-                                                      Text("3h 0m"),
-                                                      Text("Economy")
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: const [Text("9.00"), Text("SUB"), Text("")],
-                                                  ),
-                                                  Column(
+                                                  Text(e.airlines.toString(), style: listTitleTextStyle,),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
                                                     children: [
-                                                      Text("899.000", style: listTitleTextStyle),
-                                                      GestureDetector(
-                                                        onTap: () => controller.selectAirlines(e.id.toString()),
-                                                        child: Container(
-                                                          padding: EdgeInsets.all(8),
-                                                          margin: EdgeInsets.only(top: 5),
-                                                          decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(5)),
-                                                          child: Text(
-                                                            "Select",
-                                                            style: TextStyle(color: whiteColor, fontWeight: FontWeight.bold),
+                                                      Image.asset(
+                                                        "assets/img/citilink.png",
+                                                        width: 50,
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [Text("6.00"), Text("CGK"), Text(e.flightNo.toString())],
+                                                      ),
+                                                      Column(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.arrow_forward,
+                                                            size: 19,
                                                           ),
-                                                        ),
+                                                          Text(e.stops.toString().substring(0,7)),
+                                                          Text(e.flightClass.toString())
+                                                        ],
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: const [Text("9.00"), Text("SUB"), Text("")],
+                                                      ),
+                                                      Column(
+                                                        children: [
+                                                          Text(e.price!.toInt().toCurrency().toString(), style: listTitleTextStyle),
+                                                          GestureDetector(
+                                                            onTap: () => controller.selectAirlines("1"),
+                                                            child: Container(
+                                                              padding: EdgeInsets.all(8),
+                                                              margin: EdgeInsets.only(top: 5),
+                                                              decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(5)),
+                                                              child: Text(
+                                                                "Select",
+                                                                style: TextStyle(color: whiteColor, fontWeight: FontWeight.bold),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
                                                       )
                                                     ],
-                                                  )
+                                                  ),
                                                 ],
                                               ),
                                             ),

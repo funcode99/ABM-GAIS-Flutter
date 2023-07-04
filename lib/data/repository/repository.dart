@@ -21,6 +21,7 @@ import 'package:gais/data/model/reference/get_type_transportation_model.dart';
 import 'package:gais/data/model/reference/get_zona_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart';
+import 'package:gais/data/model/request_trip/get_airliness_schedule_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_vendor_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart';
@@ -213,6 +214,8 @@ abstract class Repository {
   Future deleteAirliness(int id);
 
   Future<GetAirlinessVendorModel> getAirlinessVendorList();
+
+  Future<GetAirlinessScheduleModel> getAirlinessScheduleList();
 
   Future<GetAirlinessModel> getAirlinessBytripList();
 
