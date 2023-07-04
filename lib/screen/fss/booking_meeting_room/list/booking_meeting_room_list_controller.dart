@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
+import 'package:gais/data/model/master/meeting_room/meeting_room_model.dart';
 import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
+import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class BookingMeetingRoomListController extends BaseController {
+class BookingMeetingRoomListController extends BaseController with MasterDataMixin {
   final TextEditingController dateRangeController = TextEditingController();
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat formatFilter = DateFormat("yyyy-MM-dd");
@@ -19,11 +21,15 @@ class BookingMeetingRoomListController extends BaseController {
   final endDateTemp = Rxn<DateTime>();
   final selectedStatus = Rxn<StatusDocModel>();
   final selectedStatusTemp = Rxn<StatusDocModel>();
+  final selectedMeetingRoom = Rxn<MeetingRoomModel>();
+  final selectedMeetingRoomTemp = Rxn<MeetingRoomModel>();
 
   final keyword = "".obs;
 
   final listHeader = <BookingMeetingRoomModel>[].obs;
   final listStatus = <StatusDocModel>[].obs;
+  final listMeetingRoom = <MeetingRoomModel>[].obs;
+
   final BookingMeetingRoomRepository _repository = Get.find();
   late PaginationModel? paginationModel;
   final totalPage = 1.obs;
@@ -50,6 +56,11 @@ class BookingMeetingRoomListController extends BaseController {
     // final statuses = await getListStatusDoc();
     // listStatus.addAll(statuses);
     onChangeSelectedStatus("");
+
+    listMeetingRoom.add(MeetingRoomModel(id: "", nameMeetingRoom: "Room Name"));
+    final meetingRooms = await getListMeetingRoom();
+    listMeetingRoom.addAll(meetingRooms);
+    onChangeSelectedMeetingRoom("");
   }
 
   void getHeader({int page = 1}) async {
@@ -58,7 +69,7 @@ class BookingMeetingRoomListController extends BaseController {
           "page" : page,
           "perPage" : limit,
           "search" : keyword.value,
-          "id_meeting_room" : selectedStatus.value?.code ?? "",
+          "id_meeting_room" : selectedMeetingRoom.value?.id ?? "",
           "code_status_doc" : selectedStatus.value?.code ?? "",
           "start_date" : startDate.value != null ? formatFilter.format(startDate.value!) : "",
           "end_date" : endDate.value != null ? formatFilter.format(endDate.value!) : "",
@@ -91,6 +102,11 @@ class BookingMeetingRoomListController extends BaseController {
     selectedStatusTemp(selected);
   }
 
+  void onChangeSelectedMeetingRoom(String id) {
+    final selected = listMeetingRoom.firstWhere((item) => item.id.toString() == id.toString());
+    selectedMeetingRoomTemp(selected);
+  }
+
   void deleteHeader(BookingMeetingRoomModel item) async {
     final result = await _repository.deleteData(item.id!);
     result.fold(
@@ -113,6 +129,7 @@ class BookingMeetingRoomListController extends BaseController {
     endDateTemp.value = null;
     startDateTemp.value = null;
     onChangeSelectedStatus("");
+    onChangeSelectedMeetingRoom("");
     dateRangeController.text = "";
   }
 
@@ -120,6 +137,7 @@ class BookingMeetingRoomListController extends BaseController {
     startDateTemp.value = startDate.value;
     endDateTemp.value = endDate.value;
     selectedStatusTemp.value = selectedStatus.value;
+    selectedMeetingRoomTemp.value = selectedMeetingRoom.value;
     if(startDateTemp.value!=null){
       dateRangeController.text = "${dateFormat.format(startDateTemp.value!)} - ${dateFormat.format(endDateTemp.value!)}";
     }else{
@@ -132,6 +150,7 @@ class BookingMeetingRoomListController extends BaseController {
     startDate.value = startDateTemp.value;
     endDate.value = endDateTemp.value;
     selectedStatus.value = selectedStatusTemp.value;
+    selectedMeetingRoom.value = selectedMeetingRoomTemp.value;
 
     getHeader();
   }

@@ -66,18 +66,18 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                     ),
                     Obx(() {
                       return CustomDropDownFormField(
-                        items: controller.listStatus
+                        items: controller.listMeetingRoom
                             .map((e) => DropdownMenuItem(
-                          value: e.code.toString(),
-                          child: Text("${e.status}"),
+                          value: e.id.toString(),
+                          child: Text("${e.nameMeetingRoom}"),
                         ))
                             .toList(),
-                        onChanged: (item) {
-                          controller.onChangeSelectedStatus(item.toString());
+                        onChanged: (id) {
+                          controller.onChangeSelectedMeetingRoom(id.toString());
                         },
-                        label: "Status".tr,
-                        value: controller.selectedStatusTemp.value != null
-                            ? controller.selectedStatusTemp.value?.code.toString()
+                        label: "Room".tr,
+                        value: controller.selectedMeetingRoomTemp.value != null
+                            ? controller.selectedMeetingRoomTemp.value?.id.toString()
                             : "",
                       );
                     }),
