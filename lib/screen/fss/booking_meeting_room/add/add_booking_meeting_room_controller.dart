@@ -138,16 +138,16 @@ class AddBookingMeetingRoomController extends BaseController
         endDate: endDate.toString(),
         startTime: startTime.toString(),
         endTime: endTime.toString(),
-        idRoom: selectedRoom.value?.id.toString(),
-        roomName: selectedRoom.value?.roomName.toString(),
-        participants: listSelectedEmails,
+        idMeetingRoom: selectedRoom.value?.id,
+        nameMeetingRoom: selectedRoom.value?.roomName.toString(),
+        participant: listSelectedEmails.length,
         link: linkController.text,
         remarks: remarksController.text,
         createdAt: "2023-06-12",
         employeeName: "John Doe",
-      codeStatusDoc: "0",
-      noBookingRoom: "NOMOR BOOKING ROOM",
-      status: "Draft"
+        codeStatusDoc: 0,
+        noBookingMeeting: "NOMOR BOOKING ROOM",
+        status: "Draft"
     );
 
     Get.off(() => const DetailBookingMeetingRoomScreen(), arguments: {

@@ -1,46 +1,138 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
-import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
+import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
+import 'package:gais/data/model/pagination_model.dart';
+import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class BookingMeetingRoomListController extends BaseController {
-  final TextEditingController dateRange = TextEditingController();
+  final TextEditingController dateRangeController = TextEditingController();
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
-  DateTime? startDate;
-  DateTime? endDate;
-  String tempSelectedValue = "";
-  String selectedValue = "";
+  DateFormat formatFilter = DateFormat("yyyy-MM-dd");
 
-  List<BookingMeetingRoomModel> listItem = <BookingMeetingRoomModel>[].obs;
+  final startDate = Rxn<DateTime>();
+  final endDate = Rxn<DateTime>();
+  final startDateTemp = Rxn<DateTime>();
+  final endDateTemp = Rxn<DateTime>();
+  final selectedStatus = Rxn<StatusDocModel>();
+  final selectedStatusTemp = Rxn<StatusDocModel>();
 
-  void applyFilter() {
-    selectedValue = tempSelectedValue;
-  }
+  final keyword = "".obs;
+
+  final listHeader = <BookingMeetingRoomModel>[].obs;
+  final listStatus = <StatusDocModel>[].obs;
+  final BookingMeetingRoomRepository _repository = Get.find();
+  late PaginationModel? paginationModel;
+  final totalPage = 1.obs;
+  final currentPage = 1.obs;
+  int limit = 10;
 
   @override
   void onInit() {
     super.onInit();
-    dateRange.text = "10/03/2023 - 17/03/2023";
+    getHeader();
+  }
 
-    for (int i = 1; i <= 10; i++) {
-      listItem.add(BookingMeetingRoomModel(
-        idRoom: "$i",
-        title: "Meet n Greet",
-        startDate: "12/12/23",
-        endDate: "15/12/23",
-        startTime: "09:00",
-        endTime: "1:00",
-        roomName: "Room Bali 123",
-        floor: 4,
-        capacity: 100,
-        participants: ["John Doe", "Slamet Riyadi"],
-        link: "https://meet.google.com",
-        remarks: "",
-        status: "Booked",
-        noBookingRoom: "BMR-ABM/1232/30.$i",
-      ));
+  @override
+  void onReady() {
+    super.onReady();
+    initData();
+  }
+  void initData()async{
+    listStatus.add(StatusDocModel(code: "", status: "Status"));
+    listStatus.add(StatusDocModel(code: 0, status: "Draft"));
+    listStatus.add(StatusDocModel(code: 1, status: "Booked"));
+    listStatus.add(StatusDocModel(code: 10, status: "Done"));
+    listStatus.add(StatusDocModel(code: 9, status: "Cancelled"));
+    // final statuses = await getListStatusDoc();
+    // listStatus.addAll(statuses);
+    onChangeSelectedStatus("");
+  }
+
+  void getHeader({int page = 1}) async {
+    final result = await _repository.getPaginationData(
+        data: {
+          "page" : page,
+          "perPage" : limit,
+          "search" : keyword.value,
+          "id_meeting_room" : selectedStatus.value?.code ?? "",
+          "code_status_doc" : selectedStatus.value?.code ?? "",
+          "start_date" : startDate.value != null ? formatFilter.format(startDate.value!) : "",
+          "end_date" : endDate.value != null ? formatFilter.format(endDate.value!) : "",
+        }
+    );
+
+    result.fold(
+            (l) {
+          Get.showSnackbar(
+              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+          listHeader.clear();
+          totalPage(1);
+          currentPage(1);
+        },
+            (r) {
+          paginationModel = r;
+          int tempTotalPage = (paginationModel!.total!/limit).ceil();
+          totalPage(tempTotalPage);
+          currentPage(paginationModel?.currentPage);
+
+          listHeader.value = paginationModel!.data!
+              .map((e) => BookingMeetingRoomModel.fromJson(e))
+              .toList();
+          listHeader.refresh();
+        });
+  }
+
+  void onChangeSelectedStatus(String id) {
+    final selected = listStatus.firstWhere((item) => item.code.toString() == id.toString());
+    selectedStatusTemp(selected);
+  }
+
+  void deleteHeader(BookingMeetingRoomModel item) async {
+    final result = await _repository.deleteData(item.id!);
+    result.fold(
+            (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (r) {
+          Get.showSnackbar(CustomGetSnackBar(
+            message: "Success Delete Data".tr,
+          ));
+          getHeader();
+        });
+  }
+
+  void applySearch(String search){
+    keyword(search);
+    getHeader(page: 1);
+  }
+
+  void resetFilter(){
+    endDateTemp.value = null;
+    startDateTemp.value = null;
+    onChangeSelectedStatus("");
+    dateRangeController.text = "";
+  }
+
+  void openFilter(){
+    startDateTemp.value = startDate.value;
+    endDateTemp.value = endDate.value;
+    selectedStatusTemp.value = selectedStatus.value;
+    if(startDateTemp.value!=null){
+      dateRangeController.text = "${dateFormat.format(startDateTemp.value!)} - ${dateFormat.format(endDateTemp.value!)}";
+    }else{
+      dateRangeController.text = "";
     }
+
+  }
+
+  void applyFilter(){
+    startDate.value = startDateTemp.value;
+    endDate.value = endDateTemp.value;
+    selectedStatus.value = selectedStatusTemp.value;
+
+    getHeader();
   }
 }

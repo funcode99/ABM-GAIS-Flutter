@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
@@ -7,14 +8,17 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/list/booking_meeting_room_list_controller.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -40,65 +44,93 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomSearchBar(
-              onChanged: (string) {},
+              onSubmit: (string) {
+                controller.applySearch(string);
+              },
               onClearFilter: (){
-
+                controller.applySearch("");
               },
               onPressedFilter: () {
+                controller.openFilter();
                 Get.bottomSheet(FilterBottomSheet(
                   onApplyFilter: () {
                     controller.applyFilter();
                     Get.back();
                   },
+                  onResetFilter: () {
+                    controller.resetFilter();
+                  },
                   children: [
                     const SizedBox(
                       height: 8,
                     ),
-                    CustomDropDownFormField(
-                      items: [
-                        DropdownMenuItem(
-                          value: "",
-                          child: Text("Item".tr),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Pen",
-                          child: Text("Pen"),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Book",
-                          child: Text("Book"),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        controller.tempSelectedValue = value!;
-                      },
-                      label: "Item".tr,
-                      value: controller.selectedValue,
-                    ),
+                    Obx(() {
+                      return CustomDropDownFormField(
+                        items: controller.listStatus
+                            .map((e) => DropdownMenuItem(
+                          value: e.code.toString(),
+                          child: Text("${e.status}"),
+                        ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller.onChangeSelectedStatus(item.toString());
+                        },
+                        label: "Status".tr,
+                        value: controller.selectedStatusTemp.value != null
+                            ? controller.selectedStatusTemp.value?.code.toString()
+                            : "",
+                      );
+                    }),
                     const SizedBox(
                       height: 8,
                     ),
-                    CustomDropDownFormField(
-                      items: [
-                        DropdownMenuItem(
-                          value: "",
-                          child: Text("Warehouse".tr),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Warehouse A",
-                          child: Text("Warehouse A"),
-                        ),
-                        const DropdownMenuItem(
-                          value: "Warehouse B",
-                          child: Text("Warehouse B"),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        controller.tempSelectedValue = value!;
-                      },
-                      label: "Warehouse".tr,
-                      value: controller.selectedValue,
+                    Obx(() {
+                      return CustomDropDownFormField(
+                        items: controller.listStatus
+                            .map((e) => DropdownMenuItem(
+                          value: e.code.toString(),
+                          child: Text("${e.status}"),
+                        ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller.onChangeSelectedStatus(item.toString());
+                        },
+                        label: "Status".tr,
+                        value: controller.selectedStatusTemp.value != null
+                            ? controller.selectedStatusTemp.value?.code.toString()
+                            : "",
+                      );
+                    }),
+                    const SizedBox(
+                      height: 8,
                     ),
+                    CustomTextFormField(
+                        readOnly: true,
+                        controller: controller.dateRangeController,
+                        suffixIcon: const Icon(Icons.calendar_month),
+                        onTap: () {
+                          showCustomDateRangePicker(
+                            context,
+                            dismissible: true,
+                            minimumDate: DateTime.now()
+                                .subtract(const Duration(days: 365)),
+                            maximumDate:
+                            DateTime.now().add(const Duration(days: 365)),
+                            endDate: controller.endDate.value,
+                            startDate: controller.startDate.value,
+                            backgroundColor: Colors.white,
+                            primaryColor: Colors.green,
+                            onApplyClick: (start, end) {
+                              controller.endDateTemp.value = end;
+                              controller.startDateTemp.value = start;
+                              controller.dateRangeController.text =
+                              "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                              controller.update();
+                            },
+                            onCancelClick: () {},
+                          );
+                        },
+                        label: "Date Range".tr),
                     const SizedBox(
                       height: 8,
                     ),
@@ -106,129 +138,151 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                 ));
               },
             ),
-            CustomPagination(
-              onPageChanged: (int) {},
-              pageTotal: 5,
-              margin: EdgeInsets.zero,
-              colorSub: whiteColor,
-              colorPrimary: infoColor,
-            ),
+            Obx(() {
+              if (controller.listHeader.isEmpty) {
+                return const SizedBox();
+              }
+
+              return CustomPagination(
+                colorSub: whiteColor,
+                colorPrimary: infoColor,
+                key: UniqueKey(),
+                onPageChanged: (page) {
+                  if(page != controller.currentPage.value){
+                    controller.getHeader(page: page);
+                  }
+                },
+                pageTotal: controller.totalPage.value,
+                margin: EdgeInsets.zero,
+                pageInit: controller.currentPage.value,
+              );
+            }),
             const SizedBox(
               height: 12,
             ),
-            Expanded(
-                child: ListView(
-                  children: [
-                    ...controller.listItem.mapIndexed((index, element) =>
-                        CommonListItem(
-                            number: "${index+1}",
-                            subtitle: "${element.startDate}-${element.endDate}",
-                            title: element.title,
-                            total: element.roomName,
-                            status: element.status,
-                            content: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          "Title".tr,
-                                          textAlign: TextAlign.center,
-                                          style: listTitleTextStyle,
-                                        ),
-                                        Text(
-                                          "Weekly Meeting",
-                                          style: listSubTitleTextStyle.copyWith(
-                                            overflow: TextOverflow.ellipsis
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          "Requestor".tr,
-                                          textAlign: TextAlign.center,
-                                          style: listTitleTextStyle,
-                                        ),
-                                        Text(
-                                          "Fahri",
-                                          style: listSubTitleTextStyle.copyWith(
-                                            overflow: TextOverflow.ellipsis
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          "Date".tr,
-                                          textAlign: TextAlign.center,
-                                          style: listTitleTextStyle,
-                                        ),
-                                        Text(
-                                          "20/06/2023 - 21/06/2023",
-                                          style: listSubTitleTextStyle.copyWith(
-                                            overflow: TextOverflow.ellipsis
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          "Time".tr,
-                                          textAlign: TextAlign.center,
-                                          style: listTitleTextStyle,
-                                        ),
-                                        Text(
-                                          "08:00-10:00",
-                                          style: listSubTitleTextStyle.copyWith(
-                                            overflow: TextOverflow.ellipsis
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            action: [
-                              CustomIconButton(
-                                title: "Edit".tr,
-                                iconData: IconlyBold.edit,
-                                backgroundColor: successColor,
-                                onPressed: () {
 
-                                },
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              CustomIconButton(
-                                title: "Delete".tr,
-                                iconData: IconlyBold.delete,
-                                backgroundColor: redColor,
-                                onPressed: () {
-                                  Get.dialog(DeleteConfirmationDialog(
-                                    onDeletePressed: (){
-                                      Get.back();
+            Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    controller.getHeader();
+                  },
+                  child: Obx(() {
+                    return controller.listHeader.isEmpty
+                        ? const DataEmpty()
+                        : ListView(
+                      children: [
+                        ...controller.listHeader.mapIndexed((index, item) =>
+                            CommonListItem(
+                                number: "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
+                                subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                title: item.noBookingMeeting,
+                                total: item.nameMeetingRoom,
+                                status: item.status,
+                                content: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Title".tr,
+                                              textAlign: TextAlign.center,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              item.title ?? "-",
+                                              style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Requestor".tr,
+                                              textAlign: TextAlign.center,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              item.employeeName ?? "-",
+                                              style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Date".tr,
+                                              textAlign: TextAlign.center,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              "${item.startDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                              style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Time".tr,
+                                              textAlign: TextAlign.center,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              "${item.startTime?.toDateFormat(originFormat: "HH:mm:ss", targetFormat: "HH:mm")} - ${item.endTime?.toDateFormat(originFormat: "HH:mm:ss", targetFormat: "HH:mm")}",
+                                              style: listSubTitleTextStyle.copyWith(
+                                                  overflow: TextOverflow.ellipsis
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                action: item.codeStatusDoc == 0 ? [
+                                  CustomIconButton(
+                                    title: "Edit".tr,
+                                    iconData: IconlyBold.edit,
+                                    backgroundColor: successColor,
+                                    onPressed: () {
+
                                     },
-                                  ));
-                                },
-                              )
-                            ]))
-                  ],
-                ))
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  CustomIconButton(
+                                    title: "Delete".tr,
+                                    iconData: IconlyBold.delete,
+                                    backgroundColor: redColor,
+                                    onPressed: () {
+                                      Get.dialog(DeleteConfirmationDialog(
+                                        onDeletePressed: (){
+                                          Get.back();
+                                        },
+                                      ));
+                                    },
+                                  )
+                                ] : []))
+                      ],
+                    );
+                  }),
+                )),
           ],
         ),
       ),
