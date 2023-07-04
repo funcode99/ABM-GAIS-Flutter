@@ -22,6 +22,7 @@ class SubmenuScreen extends StatelessWidget {
         init: SubmenuController(),
         builder: (controller) {
           return Scaffold(
+            backgroundColor: baseColor,
             appBar: TopBar(
               title: Text("Menu", style: appTitle),
               leading: CustomBackButton(),
