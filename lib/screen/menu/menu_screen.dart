@@ -69,6 +69,7 @@ class MenuScreen extends StatelessWidget {
                                   ),
                                   onTap: () => Get.off(const RequestTripListScreen()),
                                 ),
+                                controller.receptionis ? const SizedBox() :
                                 GestureDetector(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.center,

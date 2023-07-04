@@ -25,6 +25,7 @@ PoolCarModel _$PoolCarModelFromJson(Map<String, dynamic> json) => PoolCarModel(
       plate: json['plate'] as String?,
       status: json['status'] as String?,
       driverName: json['driver_name'] as String?,
+      odometer: json['odometer'],
     );
 
 Map<String, dynamic> _$PoolCarModelToJson(PoolCarModel instance) =>
@@ -47,4 +48,5 @@ Map<String, dynamic> _$PoolCarModelToJson(PoolCarModel instance) =>
       'plate': instance.plate,
       'status': instance.status,
       'driver_name': instance.driverName,
+      'odometer': instance.odometer,
     };

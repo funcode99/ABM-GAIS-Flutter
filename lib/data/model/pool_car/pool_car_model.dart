@@ -23,6 +23,7 @@ class PoolCarModel {
   String? plate;
   String? status;
   String? driverName;
+  dynamic odometer;
 
   PoolCarModel(
       {
@@ -44,6 +45,7 @@ class PoolCarModel {
         this.plate,
         this.status,
         this.driverName,
+        this.odometer,
       });
 
   static PoolCarModel fromJsonModel(Object? json) =>

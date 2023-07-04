@@ -13,9 +13,8 @@ import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
-import 'package:gais/screen/tms/cash_advance/cash_advance_travel/detail/cash_advance_travel_detail_screen.dart';
+import 'package:gais/screen/tms/pool_car/detail/pool_car_detail_screen.dart';
 import 'package:gais/screen/tms/pool_car/list/pool_car_list_controller.dart';
-import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -216,7 +215,7 @@ class PoolCarListScreen extends StatelessWidget {
                               onPressed: () {
                                 Get.to(
                                         () =>
-                                    const CashAdvanceTravelDetailScreen(),
+                                    const PoolCarDetailScreen(),
                                     arguments: {"item": item});
                               },
                             )
