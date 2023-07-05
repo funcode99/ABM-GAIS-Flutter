@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/data/model/approval_model.dart';
+import 'package:gais/data/model/approval_request_trip/get_approval_request_trip_byid_model.dart';
 import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:gais/reusable/dialog/reject_dialog.dart';
 import 'package:gais/reusable/dialog/success_dialog.dart';
@@ -43,10 +44,11 @@ class ApprovalFormRequestTripController extends BaseController {
   rt.Data approvalData = Get.arguments['approvalData'];
   int purposeID = Get.arguments['idRequestTrip'];
   int approvalID = Get.arguments['id'];
+  int approvalAuthID = Get.arguments['idApprovalAuth'];
+  int companyID = Get.arguments['idCompany'];
   int? requsetorID;
   int? siteID;
   int? jobID;
-
 
   final approvalModel = Rxn<ApprovalModel>();
 
@@ -140,7 +142,7 @@ class ApprovalFormRequestTripController extends BaseController {
   List<st.Data> siteList = [];
 
   GetRequestTripByidModel? rtModel;
-  rt.Data? getApprovalModel;
+  GetApprovalRequestTripByidModel? getApprovalModel;
 
   @override
   void onInit() {
@@ -184,32 +186,32 @@ class ApprovalFormRequestTripController extends BaseController {
         item['isFilled'] = item['title'] == "Taxi Voucher"
             ? true
             : item['title'] == "Traveller Guest"
-            ? true
-            : false;
+                ? true
+                : false;
 
         item['showList'] = item['title'] == "Taxi Voucher"
             ? true
             : item['title'] == "Traveller Guest"
-            ? true
-            : false;
+                ? true
+                : false;
       }
     } else if (selectedPurpose == "2") {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
             : item['title'] == "Airliness"
-            ? true
-            : item['title'] == "Other Transportation"
-            ? true
-            : false;
+                ? true
+                : item['title'] == "Other Transportation"
+                    ? true
+                    : false;
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
             : item['title'] == "Airliness"
-            ? true
-            : item['title'] == "Other Transportation"
-            ? true
-            : false;
+                ? true
+                : item['title'] == "Other Transportation"
+                    ? true
+                    : false;
       }
     } else {
       items.where((e) => e['isFilled'] == false).forEach((item) {
@@ -246,10 +248,10 @@ class ApprovalFormRequestTripController extends BaseController {
   Future<void> fetchRequestTrip() async {
     var rtData = await repository.getRequestTripByid(purposeID);
     var rtApproval = await approvalRequestTrip.getByID(approvalID);
-    print(rtApproval.data);
+    print(rtApproval.data?.first.idApprovalAuth);
     DateTime? tempDate;
     rtModel = rtData;
-    // getApprovalModel = rtApproval.data?.first as rt.Data?;
+    getApprovalModel = rtApproval;
     rtStatus = rtModel?.data?.first.status ?? "";
     rtNumber = rtModel?.data?.first.noRequestTrip ?? "";
     tempDate = DateTime.parse(rtModel?.data?.first.createdAt ?? "");
@@ -278,6 +280,7 @@ class ApprovalFormRequestTripController extends BaseController {
     print("file : $fileURL");
     print("pdfPath : $pdfPath");
     tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";
+    requsetorID = rtModel?.data?.first.idEmployee?.toInt();
     // tlkJobBand.text = rtModel?.data?.first.
     tlkZona.text = rtModel?.data?.first.zonaName ?? "";
     print(rtModel?.data?.first.totalTlk);
@@ -295,7 +298,7 @@ class ApprovalFormRequestTripController extends BaseController {
 
     await storage.readEmployeeInfo().then((value) {
       tlkJobBand.text = value.first.bandJobName != "null" ? value.first.bandJobName.toString() : "";
-      requsetorID = value.first.id?.toInt();
+      // requsetorID = value.first.id?.toInt();
       jobID = value.first.idJobBand?.toInt();
       travellerName = value.first.employeeName;
       travellerSN = value.first.snEmployee;
@@ -355,18 +358,14 @@ class ApprovalFormRequestTripController extends BaseController {
   }
 
   openApproveDialog() async {
+    print("approval model: ${approvalAuthID} $requsetorID $siteID $companyID");
     ApprovalModel? result = await Get.dialog(ApprovalConfirmationDialog(
-      // idEmployee: getApprovalModel?.idEmployee?.toInt(),
-      // idSite: getApprovalModel?.idSite?.toInt(),
-      // idCompany: getApprovalModel?.idCompany?.toInt(),
-      // idApprovalAuth: getApprovalModel?.idApprovalAuth?.toInt(),
-      idEmployee: approvalData.idEmployee?.toInt(),
-      idSite: approvalData.idSite?.toInt(),
-      idCompany: approvalData.idCompany?.toInt(),
-      idApprovalAuth: approvalData.idApprovalAuth?.toInt(),
+      // idEmployee: requsetorID,
+      // idSite: siteID,
+      idCompany: companyID,
+      idApprovalAuth: approvalAuthID,
     ));
 
-    update();
     if (result != null) {
       approvalModel(result);
       print('result : ${result.approvedBehalf}');
@@ -435,19 +434,19 @@ class ApprovalFormRequestTripController extends BaseController {
           ));
           fetchRequestTrip();
         }
-          //     Get.showSnackbar(
-          //   const GetSnackBar(
-          //     icon: Icon(
-          //       Icons.error,
-          //       color: Colors.white,
-          //     ),
-          //     message: 'Document Rejected',
-          //     isDismissible: true,
-          //     duration: Duration(seconds: 3),
-          //     backgroundColor: successColor,
-          //   ),
-          // ),
-        );
+            //     Get.showSnackbar(
+            //   const GetSnackBar(
+            //     icon: Icon(
+            //       Icons.error,
+            //       color: Colors.white,
+            //     ),
+            //     message: 'Document Rejected',
+            //     isDismissible: true,
+            //     duration: Duration(seconds: 3),
+            //     backgroundColor: successColor,
+            //   ),
+            // ),
+            );
       } catch (e, i) {
         e.printError();
         i.printError();
