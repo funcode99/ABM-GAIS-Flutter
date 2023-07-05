@@ -15,6 +15,7 @@ import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_travel/detail/cash_advance_travel_detail_controller.dart';
 import 'package:gais/screen/tms/pool_car/detail/pool_car_detail_controller.dart';
+import 'package:gais/screen/tms/pool_car/p2h/pool_car_p2h_screen.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
@@ -323,6 +324,9 @@ class _PoolCarDetailScreenState
                                     iconData: IconlyBold.edit,
                                     backgroundColor: orangeColor,
                                     onPressed: () {
+                                      Get.to(()=>const PoolCarP2HScreen(), arguments: {
+                                        "item" : controller.selectedItem.value
+                                      });
                                     },
                                   );
                                 }

@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
       {super.key,
       required this.controller,
       required this.label,
+      this.helperText,
       this.hintText,
       this.readOnly = false,
       this.onChanged,
@@ -27,6 +28,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final String? hintText;
+  final String? helperText;
   final bool readOnly;
   final ValueChanged<String>? onChanged;
   bool isRequired;
@@ -53,8 +55,15 @@ class CustomTextFormField extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(
-          height: 8,
+        SizedBox(
+          height: helperText != null ? 16 : 8,
+        ),
+        helperText != null ?
+            Text(
+                helperText ?? ""
+            ) : SizedBox(),
+        SizedBox(
+          height: helperText != null ? 16 : 0,
         ),
         Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),

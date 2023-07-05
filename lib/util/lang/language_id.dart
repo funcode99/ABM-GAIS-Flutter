@@ -89,6 +89,8 @@ class LanguageID{
       "Driver" : "Driver",
       "To Date" : "To Date",
       "From Date" : "From Date",
+      "Formulir P2H" : "Formulir P2H",
+      "No Plat Kendaraan" : "No Plat Kendaraan",
     };
   }
 }
