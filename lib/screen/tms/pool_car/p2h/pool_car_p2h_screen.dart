@@ -11,6 +11,7 @@ import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_add_item.dart';
+import 'package:gais/reusable/radio/custom_radio_group.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/add_cash_advance_non_travel_controller.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_cash_advance_non_travel/add/add_item_cash_advance_non_travel_screen.dart';
@@ -129,11 +130,33 @@ class _PoolCarP2HScreenState
                           }else if(element.idDetail != null){
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: Text(
-                                "${element.detailName}",
-                                style: listTitleTextStyle.copyWith(
-                                  fontWeight: FontWeight.w500
-                                ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${element.detailName}",
+                                    style: listTitleTextStyle.copyWith(
+                                      fontWeight: FontWeight.w500
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                  CustomRadioGroup<int>(
+                                    listLabel: [
+                                      "Good",
+                                      "Bad",
+                                      "N/A"
+                                    ],
+                                    listValue: [
+                                      1, 2, 3
+                                    ],
+                                    onChanged: (value){
+
+                                    },
+                                    selectedValue: 1,
+                                  )
+                                ],
                               ),
                             );
                           }
