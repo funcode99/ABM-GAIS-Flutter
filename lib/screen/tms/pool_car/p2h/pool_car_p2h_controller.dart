@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
+import 'package:gais/data/model/master/check_item/check_item_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
 import 'package:gais/data/model/pool_car/pool_car_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
@@ -28,6 +29,9 @@ class PoolCarP2HController extends BaseController with MasterDataMixin{
 
   final selectedItem = PoolCarModel().obs;
 
+  final listCheckItem = <CheckItemModel>[].obs;
+
+
   @override
   void onInit() {
     super.onInit();
@@ -40,6 +44,8 @@ class PoolCarP2HController extends BaseController with MasterDataMixin{
   }
 
   void initData()async{
+    final items = await getListCheckItem();
+    listCheckItem.addAll(items);
   }
 
   void saveData() async {

@@ -95,6 +95,59 @@ class _PoolCarP2HScreenState
                   const SizedBox(
                     height: 12,
                   ),
+
+
+
+                  Obx(() {
+                    if(controller.listCheckItem.isEmpty){
+                      return const SizedBox();
+                    }
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: controller.listCheckItem.map(
+                        (element){
+                          if(element.isHeader != null){
+                            if(element.isHeader! == 1){
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8),
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: "${element.headerName}",
+                                    style: formlabelTextStyle,
+                                    children: const <TextSpan>[
+                                      TextSpan(
+                                          text: "*",
+                                          style: TextStyle(color: Colors.red)),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }else{
+                              return const SizedBox();
+                            }
+                          }else if(element.idDetail != null){
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Text(
+                                "${element.detailName}",
+                                style: listTitleTextStyle.copyWith(
+                                  fontWeight: FontWeight.w500
+                                ),
+                              ),
+                            );
+                          }
+                          return const SizedBox();
+                        }
+                      ).toList(),
+                    );
+                  }),
+
+
+
+                  const SizedBox(
+                    height: 12,
+                  ),
                   CustomTextFormField(
                       isRequired: true,
                       multiLine: true,
@@ -104,6 +157,7 @@ class _PoolCarP2HScreenState
                   const SizedBox(
                     height: 12,
                   ),
+
                   const SizedBox(
                     height: 64,
                   ),
