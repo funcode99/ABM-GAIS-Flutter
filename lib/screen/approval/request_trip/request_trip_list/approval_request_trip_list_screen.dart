@@ -9,6 +9,7 @@ import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
+import 'package:gais/reusable/form/custom_dropdown_field.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/loadingdialog.dart';
@@ -43,7 +44,7 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: RefreshIndicator(
                 onRefresh: () async {
-                  controller.fetchList();
+                  controller.fetchList(controller.currentPage);
                 },
                 child: CustomScrollView(
                   slivers: [
@@ -60,41 +61,55 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                 onSubmit: (value) {
                                   controller.searchValue = value;
                                   controller.purposeValue = "All";
-                                  controller.fetchList();
+                                  controller.currentPage = 1;
+                                  controller.fetchList(1);
+                                },
+                                onClearFilter: () {
+                                  controller.clearSearch("");
+                                  controller.searchValue = "";
+                                  controller.fetchList(1);
                                 },
                                 onPressedFilter: () {
                                   Get.bottomSheet(StatefulBuilder(builder: (context, setState) {
+                                    PersistentBottomSheetController _controller; // <------ Instance variable
+                                    final _scaffoldKey = GlobalKey<ScaffoldState>();
+
                                     return FilterBottomSheet(
                                       onApplyFilter: () {
-                                        controller.fetchList();
+                                        controller.fetchList(1);
                                         controller.update();
                                         Get.back();
                                       },
                                       onResetFilter: () {
-                                        controller.formKey.currentState?.reset();
-                                        controller.purposeValue = "All";
-                                        controller.dateRange.text = "";
+                                        setState(() {
+                                          controller.formKey.currentState?.reset();
+                                          controller.searchValue = null;
+                                          controller.purposeValue = "All";
+                                          controller.dateRange.text = "";
+                                          controller.startDate = null;
+                                          controller.endDate = null;
+                                        });
                                         controller.update();
+                                        print(controller.purposeValue);
                                       },
                                       children: [
                                         Text("Filter", style: appTitle.copyWith(fontSize: 25)),
                                         const SizedBox(height: 10),
                                         Form(
                                           key: controller.formKey,
-                                          child: CustomDropDownFormField(
+                                          child: CustomDropDownField(
                                             label: "Purpose of Trip",
-                                            hintText: "Purpose of Trip",
                                             items: controller.documentList
                                                 .map((e) => DropdownMenuItem(
-                                                      value: e.documentName,
-                                                      child: Text(e.documentName.toString()),
-                                                    ))
+                                              value: e.codeDocument,
+                                              child: Text(e.documentName.toString()),
+                                            ))
                                                 .toSet()
                                                 .toList(),
                                             value: controller.purposeValue,
                                             onChanged: (value) {
                                               controller.searchValue = null;
-                                              controller.purposeValue = value ?? "";
+                                              controller.purposeValue = value.toString();
                                               controller.update();
                                             },
                                           ),
@@ -121,7 +136,7 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                                   controller.startDate = controller.rangeFormat.format(start);
 
                                                   controller.dateRange.text =
-                                                      "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                                                   controller.update();
                                                 },
                                                 onCancelClick: () {
@@ -145,12 +160,12 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                 colorPrimary: infoColor,
                                 onPageChanged: (int pageNumber) {
                                   controller.currentPage = pageNumber;
-                                  controller.fetchList();
+                                  controller.fetchList(controller.currentPage);
                                   controller.update();
                                 },
                                 threshold: 5,
-                                // pageTotal: controller.rtlModel?.data?.lastPage?.toInt() ?? 1,
-                                pageTotal: controller.rtlModel?.data?.length?.toInt() ?? 1,
+                                pageTotal: controller.rtlModel?.data?.lastPage?.toInt() ?? 1,
+                                // pageTotal: controller.rtlModel?.data?.data?.length?.toInt() ?? 1,
                                 pageInit: controller.currentPage,
                               ),
                               controller.isLoading
@@ -170,8 +185,8 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 CustomTripCard(
-                                  // listNumber: controller.currentPage > 1 ? (controller.rtlModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
-                                  listNumber: index + 1,
+                                  listNumber: controller.currentPage > 1 ? (controller.rtlModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
+                                  // listNumber: index + 1,
                                   title: controller.requestList[index].noRequestTrip.toString(),
                                   subtitle:
                                       controller.dateFormat.format(DateTime.parse(controller.requestList[index].createdAt.toString())).toString(),

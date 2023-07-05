@@ -199,6 +199,21 @@ class RepositoryImpl implements Repository {
   }
 
   @override
+  Future<GetSiteModel> getSiteListByCompanyID(int id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/company/get_site/$id",
+      );
+      return GetSiteModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print("response error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+  @override
   Future<GetHotelModel> getHotelList() async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -274,6 +289,21 @@ class RepositoryImpl implements Repository {
   }
 
   @override
+  Future<GetEmployeeModel> getEmployeeListBySiteID(int id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/employee/get_by_site/$id",
+      );
+      return GetEmployeeModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print("response error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+  @override
   Future<GetDepartmentModel> getDepartmentList() async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -294,7 +324,7 @@ class RepositoryImpl implements Repository {
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       Response response = await network.dio.get(
-        "/api/company/get",
+        "/api/company/get/",
       );
       return GetCompanyModel.fromJson(response.data);
     } on DioError catch (e) {

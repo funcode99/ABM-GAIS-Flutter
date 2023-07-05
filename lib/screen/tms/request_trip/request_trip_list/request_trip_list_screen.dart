@@ -83,6 +83,8 @@ class RequestTripListScreen extends StatelessWidget {
                                           controller.searchValue = null;
                                           controller.purposeValue = "All";
                                           controller.dateRange.text = "";
+                                          controller.startDate = null;
+                                          controller.endDate = null;
                                         });
                                         controller.update();
                                         print(controller.purposeValue);

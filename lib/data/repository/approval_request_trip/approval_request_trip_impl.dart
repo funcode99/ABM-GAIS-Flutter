@@ -20,7 +20,7 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
     String? search,
     String? startDate,
     String? endDate,
-    String? codeStatusDoc,
+    String? codeDoc,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -30,14 +30,14 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
     try {
       Response response = await network.dio.get(
         "/api/approval_request_trip/get_data",
-        // queryParameters: {
-        //   "perPage": perPage,
-        //   "page": page,
-        //   "search": search,
-        //   "start_date": startDate,
-        //   "end_date": endDate,
-        //   "code_status_doc": codeStatusDoc
-        // },
+        queryParameters: {
+          "perPage": perPage,
+          "page": page,
+          "search": search,
+          "start_date": startDate,
+          "end_date": endDate,
+          "code_doc": codeDoc
+        },
       );
       return GetApprovalRequestTripModel.fromJson(response.data);
     } on DioError catch (e) {

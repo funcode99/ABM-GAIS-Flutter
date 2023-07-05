@@ -71,6 +71,8 @@ abstract class Repository {
 
   Future<GetSiteModel> getSiteList();
 
+  Future<GetSiteModel> getSiteListByCompanyID(int id);
+
   Future<GetHotelModel> getHotelList();
 
   Future<GetCurrencyModel> getCurrencyList();
@@ -113,6 +115,8 @@ abstract class Repository {
   Future<GetTravellerTypeModel> getTravellerTypeList();
 
   Future<GetEmployeeModel> getEmployeeList();
+
+  Future<GetEmployeeModel> getEmployeeListBySiteID(int id);
 
   Future<GetDepartmentModel> getDepartmentList();
 

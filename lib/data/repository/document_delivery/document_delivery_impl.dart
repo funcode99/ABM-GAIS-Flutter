@@ -21,7 +21,7 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       Response response = await network.dio.delete(
-        "/api/document_delivery/delete_data/$id",
+        "/api/employee_doc_delivery/delete_data/$id",
       );
       return response.data;
     } on DioError catch (e) {
@@ -45,7 +45,7 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
     endDate.printInfo(info: "end date");
     try {
       Response response = await network.dio.get(
-        "/api/document_delivery/get/",
+        "/api/employee_doc_delivery/get",
         queryParameters: {
           "perPage": perPage,
           "page": page,
@@ -86,17 +86,16 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
 
     if (attachment != null) {
       formData.files.addAll([MapEntry("attachment", await MultipartFile.fromFile(attachment.path))]);
-    } else {
-      formData.fields.add(MapEntry("attachment", "no attachment"));
     }
 
     try {
       Response response = await network.dio.post(
-        "/api/document_delivery/store/",
+        "/api/employee_doc_delivery/store/",
         data: formData,
       );
       return SaveDocumentDeliveryModel.fromJson(response.data);
     } on DioError catch (e) {
+      print("response error: ${e.response?.data}");
       return SaveDocumentDeliveryModel.fromJson(e.message);
       // return e.error;
       // throw Exception();
@@ -109,7 +108,7 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       Response response = await network.dio.post(
-        "/api/document_delivery/submit/$id",
+        "/api/employee_doc_delivery/submit/$id",
       );
       return response.data;
     } on DioError catch (e) {
@@ -150,7 +149,7 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
 
     try {
       Response response = await network.dio.post(
-        "/api/document_delivery/update_data/$id",
+        "/api/employee_doc_delivery/update_data/$id",
         data: formData,
       );
       return UpdateDocumentDeliveryModel.fromJson(response.data);
@@ -168,7 +167,7 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
 
     try {
       Response response = await network.dio.get(
-        "/api/document_delivery/get/$id",
+        "/api/employee_doc_delivery/get/$id",
       );
       return GetDocumentDeliveryByidModel.fromJson(response.data);
     } on DioError catch (e) {

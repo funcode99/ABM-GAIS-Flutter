@@ -4,11 +4,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_employee_model.dart' as receiver;
+import 'package:gais/data/model/reference/get_company_model.dart' as comp;
+import 'package:gais/data/model/reference/get_site_model.dart' as site;
 import 'package:gais/screen/fss/document_delivery/document_delivery_list/document_delivery_list_screen.dart';
 import 'package:get/get.dart';
 
 class AddDocumentDeliveryController extends BaseController {
-
   final formKey = GlobalKey<FormState>();
   final sender = TextEditingController();
   final location = TextEditingController();
@@ -23,10 +24,13 @@ class AddDocumentDeliveryController extends BaseController {
   int? receiverID;
   String? selectedReceiver;
   File? gettedFile;
-
-  // String? location;
+  bool loadCompany = false;
+  bool loadLocation = false;
+  bool loadReceiver = false;
 
   List<receiver.Data> receiverList = [];
+  List<comp.Data> companyList = [];
+  List<site.Data> locationList = [];
 
   @override
   void onInit() {
@@ -35,20 +39,51 @@ class AddDocumentDeliveryController extends BaseController {
   }
 
   Future<void> fetchList() async {
-    receiverList = [];
+    loadCompany = true;
+    companyList = [];
     try {
       await storage.readEmployeeInfo().then((value) {
         sender.text = value.first.employeeName ?? "";
         senderID = value.first.id?.toInt();
       });
 
-      await repository.getEmployeeList().then((value) {
-        receiverList.addAll(value.data?.where((e) => e.id != senderID).toSet().toList() ?? []);
+      await repository.getCompanyList().then((value) {
+        companyList.addAll(value.data?.toSet().toList() ?? []);
+      });
+    } catch (e,i) {
+      e.printError();
+      i.printError();
+    }
+    loadCompany = false;
+    update();
+  }
+
+  Future<void> fetchLocationList(int id) async {
+    loadLocation = true;
+    locationList = [];
+    try {
+      await repository.getSiteListByCompanyID(id).then((value) {
+        locationList.addAll(value.data?.toSet().toList() ?? []);
       });
     } catch (e) {
       e.printError();
     }
+    loadLocation = false;
+    update();
+  }
 
+  Future<void> fetchReceiverList(int id) async {
+    loadReceiver = true;
+    receiverList = [];
+    try {
+      await repository.getEmployeeListBySiteID(id).then((value) {
+        receiverList.addAll(value.data?.toSet().toList() ?? []);
+      });
+    } catch (e,i) {
+      e.printError();
+      i.printError();
+    }
+    loadReceiver = false;
     update();
   }
 
