@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/pool_car/pool_car_model.dart';
 import 'package:gais/data/repository/pool_car/pool_car_repository.dart';
+import 'package:gais/data/storage_core.dart';
+import 'package:gais/util/enum/role_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -17,6 +19,8 @@ class PoolCarDetailController extends BaseController {
 
   final PoolCarRepository _repository = Get.find();
 
+  final showP2H = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -31,8 +35,12 @@ class PoolCarDetailController extends BaseController {
     // getDataDetail();
   }
 
-  void initData() {
+  void initData() async{
+    String codeRole = await storage.readString(StorageCore.codeRole);
+    showP2H.value = codeRole == RoleEnum.driver.value;
+
     setValue();
+
   }
 
   void setValue(){

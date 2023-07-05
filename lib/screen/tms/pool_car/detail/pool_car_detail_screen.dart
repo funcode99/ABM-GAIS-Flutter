@@ -6,6 +6,7 @@ import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/model/pool_car/pool_car_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
+import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list/approval_log_list.dart';
@@ -19,6 +20,7 @@ import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
+import 'package:iconly/iconly.dart';
 
 class PoolCarDetailScreen extends StatefulWidget {
   const PoolCarDetailScreen({Key? key}) : super(key: key);
@@ -313,7 +315,20 @@ class _PoolCarDetailScreenState
                                 ],
                               ),
                             ),
-                            action: const [],
+                            action: [
+                              Obx((){
+                                if(controller.showP2H.value){
+                                  return CustomIconButton(
+                                    title: "P2H",
+                                    iconData: IconlyBold.edit,
+                                    backgroundColor: orangeColor,
+                                    onPressed: () {
+                                    },
+                                  );
+                                }
+                                return const SizedBox();
+                              })
+                            ],
                           );
                         }),
                       );
