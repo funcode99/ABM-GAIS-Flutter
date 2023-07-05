@@ -80,7 +80,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                     width: double.infinity,
                     child: Obx(() {
                       return Text(
-                        controller.selectedItem.value.noBookingRoom ?? "-",
+                        controller.selectedItem.value.noBookingMeeting ?? "-",
                         style: Theme
                             .of(context)
                             .textTheme

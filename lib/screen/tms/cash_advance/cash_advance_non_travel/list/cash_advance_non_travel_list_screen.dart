@@ -131,7 +131,7 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                         children: [
                           ...controller.listHeader.mapIndexed((index, item) =>
                               CommonListItem(
-                                number: "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
+                                number: "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
                                 title: "${item.noCa}",
                                 onTap: item.codeStatusDoc == CashAdvanceNonTravelEnum.draft.value ||  item.codeStatusDoc == CashAdvanceNonTravelEnum.revision.value ? null : (){
                                   Get.to(()=> const EditCashAdvanceNonTravelScreen(), arguments: {

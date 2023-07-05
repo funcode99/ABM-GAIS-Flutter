@@ -137,19 +137,19 @@ class DetailBookingMeetingRoomController extends BaseController
     timeController.text = "${selectedItem.value.endTime?.toDateFormat(targetFormat: "HH:mm", originFormat: "yyyy-MM-dd HH:mm:ss")} - ${selectedItem.value.endTime?.toDateFormat(targetFormat: "HH:mm", originFormat: "yyyy-MM-dd HH:mm:ss")}";
     linkController.text = selectedItem.value.link ?? "";
     remarksController.text = selectedItem.value.remarks ?? "";
-    meetingRoomController.text = selectedItem.value.roomName ?? "";
+    meetingRoomController.text = selectedItem.value.nameMeetingRoom ?? "";
 
 
-    if(selectedItem.value != null){
+    /*if(selectedItem.value != null){
       for(String item in selectedItem.value.participants!){
         listSelectedEmails.add(item);
       }
-    }
+    }*/
 
     /*final warehouses = await getListWarehouseByCompanyId(idCompany.toInt());
     listWarehouse(warehouses);
     onChangeSelectedWarehouse(managementItemATK.value.idWarehouse.toString());*/
-    onChangeSelectedRoom(selectedItem.value.idRoom ?? "");
+    onChangeSelectedRoom(selectedItem.value.idMeetingRoom.toString());
   }
 
   void onChangeSelectedRoom(String id) {
