@@ -6,6 +6,7 @@ import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
 import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/model/master/meeting_room/meeting_room_model.dart';
+import 'package:gais/data/model/master/room/room_model.dart';
 import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
@@ -89,6 +90,16 @@ mixin MasterDataMixin{
 
   Future<List<CheckItemModel>> getListCheckItem(int id)async{
     final result = await _repository.getListCheckItem(id);
+    return result.fold((l) => [], (list) => list);
+  }
+
+  Future<List<RoomModel>> getListRoomBySite(int idSite)async{
+    final result = await _repository.getListRoomBySite(idSite);
+    return result.fold((l) => [], (list) => list);
+  }
+
+  Future<List<EmployeeModel>> getListEmployee()async{
+    final result = await _repository.getListEmployee();
     return result.fold((l) => [], (list) => list);
   }
 

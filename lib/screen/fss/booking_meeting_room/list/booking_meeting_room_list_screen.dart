@@ -288,7 +288,7 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
-        onPressed: () => Get.to(()=>const AddBookingMeetingRoomScreen()),
+        onPressed: () => Get.to(()=>const AddBookingMeetingRoomScreen())?.then((value) => controller.getHeader()),
         child: const Icon(Icons.add_rounded, size: 45),
       ),
       bottomNavigationBar: const BottomBar(menu: 1),

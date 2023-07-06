@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
+import 'package:gais/data/model/master/company/company_model.dart';
+import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/model/master/room/room_model.dart';
+import 'package:gais/data/model/master/site/site_model.dart';
+import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
+import 'package:gais/data/storage_core.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +26,9 @@ class AddBookingMeetingRoomController extends BaseController
   final TextEditingController participantController = TextEditingController();
   final TextEditingController linkController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
+  final TextEditingController siteController = TextEditingController();
+  final TextEditingController companyController = TextEditingController();
+
   late TextEditingController autocompleteController;
 
   TextfieldTagsController textfieldTagsController = TextfieldTagsController();
@@ -36,6 +46,17 @@ class AddBookingMeetingRoomController extends BaseController
 
   final listRoom = <RoomModel>[].obs;
   final selectedRoom = Rxn<RoomModel>();
+
+  final listCompany = <CompanyModel>[].obs;
+  final selectedCompany = Rxn<CompanyModel>();
+
+  final listSite = <SiteModel>[].obs;
+  final selectedSite = Rxn<SiteModel>();
+
+  final listEmployee = <EmployeeModel>[].obs;
+  final selectedEmployee = Rxn<EmployeeModel>();
+  final listSelectedEmployee = <EmployeeModel>[].obs;
+
 
   final List<String> emails = [
     "Kaitlyn Beck",
@@ -80,48 +101,53 @@ class AddBookingMeetingRoomController extends BaseController
   final listSelectedEmails = <String>[].obs;
   final showParticipantError = false.obs;
 
+  final BookingMeetingRoomRepository _repository = Get.find();
+
   @override
   void onInit() {
     super.onInit();
-    final temp = <RoomModel>[];
-    temp.add(
-      RoomModel(
-          id: "",
-          capacity: 0,
-          floor: 0,
-          roomName: "Meeting Room"
-      )
-    );
-    for (int i = 0; i<10; i++){
-      temp.add(
-        RoomModel(
-          id: i,
-          capacity: (i + 1) * 10,
-          floor: i + 1,
-          roomName: "Room Number $i"
-        )
-      );
-    }
-    listRoom.addAll(temp);
-    onChangeSelectedRoom("");
   }
 
   @override
   void onReady() {
     super.onReady();
+    initData();
+  }
+
+  initData() async {
+    String companyName = await storage.readString(StorageCore.companyName);
+    String siteName = await storage.readString(StorageCore.siteName);
+    String idSite = await storage.readString(StorageCore.siteID);
+    companyController.text = companyName;
+    siteController.text = siteName;
+
+    listCompany.add(CompanyModel(id: "", companyName: "Company"));
+    final companies = await getListCompany();
+    listCompany.addAll(companies);
+
+    listSite.add(SiteModel(id: "", siteName: "Site"));
+    final sites = await getListSite();
+    listSite.addAll(sites);
+
+    final rooms = await getListRoomBySite(idSite.toInt());
+    listRoom.addAll(rooms);
+    onChangeSelectedRoom("");
+
+    final employees = await getListEmployee();
+    listEmployee.addAll(employees);
   }
 
   void onChangeSelectedRoom(String id) {
     final selected = listRoom.firstWhere(
-            (item) => item.id.toString() == id.toString(),
+        (item) => item.id.toString() == id.toString(),
         orElse: () => listRoom.first);
 
     selectedRoom(selected);
 
-    if(selected.id != ""){
+    if (selected.id != "") {
       floorController.text = selected.floor.toString();
       capacityController.text = selected.capacity.toString();
-    }else{
+    } else {
       floorController.text = "";
       capacityController.text = "";
     }
@@ -131,32 +157,40 @@ class AddBookingMeetingRoomController extends BaseController
     enableButton(formKey.currentState!.validate());
   }
 
-  void saveData(){
+  void saveData() async {
+    String idCompany = await storage.readString(StorageCore.companyID);
+    String idSite = await storage.readString(StorageCore.siteID);
+
     BookingMeetingRoomModel meetingRoomModel = BookingMeetingRoomModel(
+        idCompany: idCompany.toInt(),
+        idSite: idSite.toInt(),
+        floor: floorController.text.toInt() ?? 0,
+        capacity: capacityController.text.toInt() ?? 0,
         title: titleController.text,
         startDate: startDate.toString(),
         endDate: endDate.toString(),
         startTime: startTime.toString(),
         endTime: endTime.toString(),
         idMeetingRoom: selectedRoom.value?.id,
-        nameMeetingRoom: selectedRoom.value?.roomName.toString(),
-        participant: listSelectedEmails.length,
+        session: null,
+        participant: listSelectedEmployee.map((element) => element.id!).toList(),
         link: linkController.text,
-        remarks: remarksController.text,
-        createdAt: "2023-06-12",
-        employeeName: "John Doe",
-        codeStatusDoc: 0,
-        noBookingMeeting: "NOMOR BOOKING ROOM",
-        status: "Draft"
-    );
+        remarks: remarksController.text);
 
-    Get.off(() => const DetailBookingMeetingRoomScreen(), arguments: {
-      "item" : meetingRoomModel
+
+    final result = await _repository.saveData(meetingRoomModel);
+
+    result.fold(
+        (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (meetingRoomModel) {
+      /*Get.off(() => const DetailBookingMeetingRoomScreen(),
+          arguments: {"item": meetingRoomModel});*/
+          Get.back(result: true);
     });
-
   }
 
-  void deleteParticipantItem(String item){
-    listSelectedEmails.removeWhere((element) => item == element);
+  void deleteParticipantItem(EmployeeModel item) {
+    listSelectedEmployee.removeWhere((element) => item.id == element.id);
   }
 }

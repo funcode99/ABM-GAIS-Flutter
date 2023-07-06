@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/calendar/custom_calendar_picker.dart';
 import 'package:gais/reusable/custombackbutton.dart';
@@ -75,6 +76,22 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   ),
                   const SizedBox(
                     height: 32,
+                  ),
+                  CustomTextFormField(
+                      isRequired: true,
+                      readOnly: true,
+                      controller: controller.companyController,
+                      label: "Company".tr),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  CustomTextFormField(
+                      isRequired: true,
+                      readOnly: true,
+                      controller: controller.siteController,
+                      label: "Site".tr),
+                  const SizedBox(
+                    height: 8,
                   ),
                   CustomTextFormField(
                       isRequired: true,
@@ -161,7 +178,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                           .map((e) =>
                           DropdownMenuItem(
                             value: e.id.toString(),
-                            child: Text("${e.roomName}"),
+                            child: Text("${e.nameMeetingRoom}"),
                           ))
                           .toList(),
                       onChanged: (item) {
@@ -226,7 +243,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                           width: 1,),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Autocomplete<String>(
+                      child: Autocomplete<EmployeeModel>(
                         optionsViewBuilder: (context, onSelected, options) {
                           return Container(
                             margin: const EdgeInsets.symmetric(
@@ -243,8 +260,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                     itemCount: options.length,
                                     itemBuilder: (BuildContext context,
                                         int index) {
-                                      final dynamic option =
-                                      options.elementAt(index);
+                                      final EmployeeModel option = options.elementAt(index);
                                       return TextButton(
                                         onPressed: () {
                                           onSelected(option);
@@ -255,7 +271,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 0.0),
                                             child: Text(
-                                              "$option",
+                                              "${option.employeeName}",
                                               textAlign: TextAlign.left,
                                               style: listSubTitleTextStyle
                                                   .copyWith(
@@ -273,15 +289,14 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                         },
                         optionsBuilder: (TextEditingValue textEditingValue) {
                           if (textEditingValue.text == '') {
-                            return const Iterable<String>.empty();
+                            return const Iterable<EmployeeModel>.empty();
                           }
-                          return controller.emails.where((String option) {
-                            return option
-                                .contains(textEditingValue.text.toLowerCase());
+                          return controller.listEmployee.where((EmployeeModel option) {
+                            return option.employeeName!.contains(textEditingValue.text.toLowerCase()) || option.email!.contains(textEditingValue.text.toLowerCase());
                           });
                         },
-                        onSelected: (String selectedTag) {
-                          controller.listSelectedEmails.add(selectedTag);
+                        onSelected: (EmployeeModel selected) {
+                          controller.listSelectedEmployee.add(selected);
                           controller.autocompleteController.text = "";
                         },
                         fieldViewBuilder: (context, ttec, tfn,
@@ -292,7 +307,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                               runSpacing: 8,
                               runAlignment: WrapAlignment.center,
                               children: [
-                                ...controller.listSelectedEmails
+                                ...controller.listSelectedEmployee
                                     .mapIndexed((index, item) =>
                                     Container(
                                       decoration: const BoxDecoration(
@@ -310,7 +325,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                         children: [
                                           InkWell(
                                             child: Text(
-                                              item,
+                                              item.employeeName ?? "",
                                               style: listSubTitleTextStyle,
                                             ),
                                             onTap: () {
@@ -340,10 +355,10 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                     focusNode: tfn,
                                     validator: (value) {
                                       controller.showParticipantError(
-                                          controller.listSelectedEmails
+                                          controller.listSelectedEmployee
                                               .isEmpty);
 
-                                      if(controller.listSelectedEmails
+                                      if(controller.listSelectedEmployee
                                           .isEmpty){
                                         return "";
                                       }

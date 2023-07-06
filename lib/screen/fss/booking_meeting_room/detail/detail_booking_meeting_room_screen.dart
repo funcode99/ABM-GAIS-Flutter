@@ -281,7 +281,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                     .map((e) =>
                                     DropdownMenuItem(
                                       value: e.id.toString(),
-                                      child: Text("${e.roomName}"),
+                                      child: Text("${e.nameMeetingRoom}"),
                                     ))
                                     .toList(),
                                 onChanged: (item) {

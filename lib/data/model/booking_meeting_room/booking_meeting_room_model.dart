@@ -29,7 +29,7 @@ class BookingMeetingRoomModel {
   String? updatedAt;
   dynamic updatedBy;
   String? deletedAt;
-  int? participant;
+  final List<int>? participant;
   String? nameMeetingRoom;
   String? employeeName;
   String? companyName;

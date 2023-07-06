@@ -4,18 +4,34 @@ part 'room_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class RoomModel {
-  int? no;
   dynamic id;
-  String? roomName;
+  int? idCompany;
+  int? idSite;
+  String? nameMeetingRoom;
   int? capacity;
   int? floor;
+  String? availableStatus;
+  String? createdAt;
+  dynamic createdBy;
+  String? updatedAt;
+  dynamic updatedBy;
+  String? deletedAt;
+  String? codeMeetingRoom;
 
   RoomModel({
-    this.no,
     this.id,
-    this.roomName,
+    this.idCompany,
+    this.idSite,
+    this.nameMeetingRoom,
     this.capacity,
-    this.floor
+    this.floor,
+    this.availableStatus,
+    this.createdAt,
+    this.createdBy,
+    this.updatedAt,
+    this.updatedBy,
+    this.deletedAt,
+    this.codeMeetingRoom,
   });
 
   static RoomModel fromJsonModel(Object? json) =>
