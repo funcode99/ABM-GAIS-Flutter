@@ -8,6 +8,7 @@ import 'package:gais/data/repository/document_delivery/document_delivery_impl.da
 import 'package:gais/data/repository/document_delivery/document_delivery_repository.dart';
 import 'package:gais/data/repository/management_item_atk/management_item_atk_repository.dart';
 import 'package:gais/data/repository/master/master_repository.dart';
+import 'package:gais/data/repository/pool_car/pool_car_repository.dart';
 import 'package:gais/data/repository/repository.dart';
 import 'package:gais/data/repository/repository_impl.dart';
 import 'package:gais/data/repository/request_atk/request_atk_repository.dart';
@@ -31,6 +32,7 @@ class GlobalBinding extends Bindings {
     Get.put(ManagementItemATKRepository(), permanent: false);
     Get.put(StockInATKRepository(), permanent: false);
     Get.put(BookingMeetingRoomRepository(), permanent: false);
+    Get.put(PoolCarRepository(), permanent: false);
 
 
     Get.put(MasterRepository(), permanent: true);

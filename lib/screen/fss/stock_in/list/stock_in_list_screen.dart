@@ -216,7 +216,7 @@ class StockInListScreen extends StatelessWidget {
                                       arguments: {"item": item});
                                 },
                                 number:
-                                    "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
+                                    "${((controller.currentPage.value - 1) *  controller.limit) + (index + 1)}",
                                 subtitle:
                                     "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                 title: item.noStockIn,

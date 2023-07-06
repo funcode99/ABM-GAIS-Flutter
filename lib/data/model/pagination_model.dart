@@ -7,7 +7,7 @@ class PaginationModel {
   int? currentPage;
   int? from;
   int? lastPage;
-  String? perPage;
+  dynamic perPage;
   int? to;
   int? total;
   List<dynamic>? data;
