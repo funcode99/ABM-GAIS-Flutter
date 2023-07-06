@@ -88,6 +88,26 @@ class _PoolCarDetailScreenState
                   const SizedBox(
                     height: 16,
                   ),
+                  Obx(() {
+                    if (controller.showSubmitButton.value) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              controller.submitHeader();
+                            },
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(75, 30),
+                                backgroundColor: orangeColor),
+                            child: Text("Submit".tr),
+                          ),
+                        ],
+                      );
+                    }
+
+                    return const SizedBox();
+                  }),
                   const Divider(
                     height: 20,
                     color: greyColor,

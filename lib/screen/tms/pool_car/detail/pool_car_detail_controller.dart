@@ -3,6 +3,7 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/pool_car/pool_car_model.dart';
 import 'package:gais/data/repository/pool_car/pool_car_repository.dart';
 import 'package:gais/data/storage_core.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/enum/role_enum.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
@@ -21,6 +22,7 @@ class PoolCarDetailController extends BaseController {
   final PoolCarRepository _repository = Get.find();
 
   final showP2H = false.obs;
+  final showSubmitButton = false.obs;
 
   @override
   void onInit() {
@@ -36,17 +38,21 @@ class PoolCarDetailController extends BaseController {
     // getDataDetail();
   }
 
-  void initData() async{
+  void initData() async {
     String codeRole = await storage.readString(StorageCore.codeRole);
-    showP2H.value = codeRole == RoleEnum.driver.value || selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value;
+    showP2H.value = codeRole == RoleEnum.driver.value ||
+        selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value;
+
+    showSubmitButton.value = codeRole == RoleEnum.driver.value &&
+        selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value;
 
     setValue();
-
   }
 
-  void setValue(){
-    createdDateController.text =
-        selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ?? "-";
+  void setValue() {
+    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(
+            originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
+        "-";
     requestorController.text = selectedItem.value.requestorName ?? "-";
     referenceController.text = selectedItem.value.noRequestTrip ?? "-";
   }
@@ -63,24 +69,13 @@ class PoolCarDetailController extends BaseController {
     });
   }
 
-  /*void getDataDetail() async {
-    final result = await _repository.getDataDetails(selectedItem.value.id!);
+  void submitHeader() async {
+    final result = await _repository.submitData(selectedItem.value.id!);
     result.fold(
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-        (r) {
-      listDetail.value = r;
-      listDetail.refresh();
+        (cashAdvanceModel) {
+      Get.back(result: true);
     });
-  }*/
-
-  /*void getApprovalLog()async{
-    final result = await _repository.getApprovalLog(selectedItem.value.idRequestTrip!);
-
-    result.fold((l) => null, (r) {
-      listLogApproval.value = r;
-      listLogApproval.refresh();
-    });
-  }*/
-
+  }
 }
