@@ -1,3 +1,4 @@
+import 'package:gais/data/model/master/check_item/choice_item_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'check_item_model.g.dart';
@@ -9,8 +10,10 @@ class CheckItemModel {
   int? idGroup;
   int? fillable;
   int? idHeader;
+  int? value;
   String? headerName;
   int? isHeader;
+  List<ChoiceItemModel>? choices;
 
   CheckItemModel({
     this.idDetail,
@@ -18,8 +21,10 @@ class CheckItemModel {
     this.idGroup,
     this.fillable,
     this.idHeader,
+    this.value,
     this.headerName,
     this.isHeader,
+    this.choices,
   });
 
   static CheckItemModel fromJsonModel(Object? json) =>

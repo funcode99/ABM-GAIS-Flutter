@@ -18,6 +18,7 @@ import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/add/item_ca
 import 'package:gais/screen/tms/pool_car/p2h/pool_car_p2h_controller.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
+import 'package:gais/util/input_formatter/min_value_text_input_formatter.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -92,6 +93,12 @@ class _PoolCarP2HScreenState
                   CustomTextFormField(
                       isRequired: true,
                       controller: controller.odometerController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(8),
+                        MinValueTextInputFormatter(0)
+                      ],
+                      inputType: TextInputType.number,
                       label: "Odometer"),
                   const SizedBox(
                     height: 12,
@@ -106,8 +113,8 @@ class _PoolCarP2HScreenState
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: controller.listCheckItem.map(
-                        (element){
+                      children: controller.listCheckItem.mapIndexed(
+                        (index, element){
                           if(element.isHeader != null){
                             if(element.isHeader! == 1){
                               return Padding(
@@ -127,7 +134,7 @@ class _PoolCarP2HScreenState
                             }else{
                               return const SizedBox();
                             }
-                          }else if(element.idDetail != null){
+                          }else if(element.fillable == 1){
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: Column(
@@ -143,18 +150,12 @@ class _PoolCarP2HScreenState
                                     height: 16,
                                   ),
                                   CustomRadioGroup<int>(
-                                    listLabel: [
-                                      "Good",
-                                      "Bad",
-                                      "N/A"
-                                    ],
-                                    listValue: [
-                                      1, 2, 3
-                                    ],
+                                    listLabel: element.choices!.map((e) => e.text!).toList(),
+                                    listValue: element.choices!.map((e) => e.value!).toList(),
                                     onChanged: (value){
-
+                                      controller.updateChecklistValue(index, value);
                                     },
-                                    selectedValue: 1,
+                                    selectedValue: element.value!,
                                   )
                                 ],
                               ),

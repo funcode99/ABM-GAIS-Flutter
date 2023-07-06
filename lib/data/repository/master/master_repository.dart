@@ -317,10 +317,10 @@ class MasterRepository{
     }
   }
 
-  Future<Either<BaseError, List<CheckItemModel>>> getListCheckItem()async{
+  Future<Either<BaseError, List<CheckItemModel>>> getListCheckItem(int id)async{
     try {
       Dio.Response response = await network.dio.get(
-        '/api/pool_car/get_check',
+        '/api/pool_car/get_check/$id',
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CheckItemModel.fromJsonModelList);
       return right(apiResponseModel.data);

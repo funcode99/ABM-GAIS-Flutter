@@ -13,8 +13,12 @@ CheckItemModel _$CheckItemModelFromJson(Map<String, dynamic> json) =>
       idGroup: json['id_group'] as int?,
       fillable: json['fillable'] as int?,
       idHeader: json['id_header'] as int?,
+      value: json['value'] as int?,
       headerName: json['header_name'] as String?,
       isHeader: json['is_header'] as int?,
+      choices: (json['choices'] as List<dynamic>?)
+          ?.map((e) => ChoiceItemModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$CheckItemModelToJson(CheckItemModel instance) =>
@@ -24,6 +28,8 @@ Map<String, dynamic> _$CheckItemModelToJson(CheckItemModel instance) =>
       'id_group': instance.idGroup,
       'fillable': instance.fillable,
       'id_header': instance.idHeader,
+      'value': instance.value,
       'header_name': instance.headerName,
       'is_header': instance.isHeader,
+      'choices': instance.choices?.map((e) => e.toJson()).toList(),
     };

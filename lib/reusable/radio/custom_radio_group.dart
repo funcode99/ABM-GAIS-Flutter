@@ -54,28 +54,28 @@ class CustomRadio<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          height: 30,
-          width: 30,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: blackColor),
-              color: isSelected ? infoColor : Colors.transparent),
-          child: GestureDetector(
-            onTap: () {
-              onChanged(value);
-            },
+    return GestureDetector(
+      onTap: () {
+        onChanged(value);
+      },
+      child: Row(
+        children: [
+          Container(
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: blackColor),
+                color: isSelected ? infoColor : Colors.transparent),
           ),
-        ),
-        const SizedBox(
-          width: 16,
-        ),
-        Expanded(
-          child: Text(text),
-        ),
-      ],
+          const SizedBox(
+            width: 16,
+          ),
+          Expanded(
+            child: Text(text),
+          ),
+        ],
+      ),
     );
   }
 }

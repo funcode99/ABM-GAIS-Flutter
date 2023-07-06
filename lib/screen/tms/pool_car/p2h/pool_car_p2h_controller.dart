@@ -5,6 +5,8 @@ import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/model/master/check_item/check_item_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
 import 'package:gais/data/model/pool_car/pool_car_model.dart';
+import 'package:gais/data/model/pool_car/submit_check_data_model.dart';
+import 'package:gais/data/model/pool_car/submit_check_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
 import 'package:gais/data/repository/pool_car/pool_car_repository.dart';
 import 'package:gais/data/storage_core.dart';
@@ -16,7 +18,7 @@ import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class PoolCarP2HController extends BaseController with MasterDataMixin{
+class PoolCarP2HController extends BaseController with MasterDataMixin {
   final TextEditingController odometerController = TextEditingController();
   final TextEditingController driverNameController = TextEditingController();
   final TextEditingController plateController = TextEditingController();
@@ -43,34 +45,57 @@ class PoolCarP2HController extends BaseController with MasterDataMixin{
     initData();
   }
 
-  void initData()async{
-    final items = await getListCheckItem();
+  void initData() async {
+    final items = await getListCheckItem(selectedItem.value.id!);
     listCheckItem.addAll(items);
+
+    setValue();
+  }
+
+  void setValue() {
+    odometerController.text = selectedItem.value.odometer ?? "";
+    plateController.text = selectedItem.value.plate ?? "-";
+    driverNameController.text = selectedItem.value.driverName ?? "-";
+    noteController.text = selectedItem.value.note ?? "";
   }
 
   void saveData() async {
-    /*String userId = await storage.readString(StorageCore.userID);
-    CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
-      idEmployee: userId.toInt(),
-      typeCa: "2",
-      event: eventController.text,
-      idCurrency: selectedCurrency.value.id,
-      date: dateController.text
-          .toDateFormat(targetFormat: "yyyy-MM-dd", originFormat: "dd/MM/yyyy"),
-      arrayDetail: listDetail,
-      grandTotal: totalController.text.digitOnly(),
+    List<SubmitCheckDataModel> data = [];
+    for(CheckItemModel checkItemModel in listCheckItem){
+      if(checkItemModel.fillable != null && checkItemModel.fillable == 1){
+        data.add(
+          SubmitCheckDataModel(
+            idDetailCheck: checkItemModel.idDetail,
+            value: checkItemModel.value
+          )
+        );
+      }
+    }
+
+    SubmitCheckModel submitCheckModel = SubmitCheckModel(
+        idPoolCar: selectedItem.value.id,
+        odometer: odometerController.text.toInt(),
+        isUsable: 1,
+        note: noteController.text,
+        data:data
     );
 
-    final result =
-    await _repository.saveData(cashAdvanceModel);
+    final result = await _repository.submitCheck(submitCheckModel);
     result.fold(
-            (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-            (cashAdvanceModel) {
-          //update list
-          Get.off(() => const EditCashAdvanceNonTravelScreen(),
-              arguments: {"item": cashAdvanceModel});
-        });*/
+      (l) => Get.showSnackbar(
+                CustomGetSnackBar(
+                    message: l.message,
+                    backgroundColor: Colors.red
+                )
+              ),
+      (cashAdvanceModel) {
+          Get.back(result: true);
+      });
+  }
+
+  void updateChecklistValue(int index, int newValue) {
+    listCheckItem[index].value = newValue;
+    listCheckItem.refresh();
   }
 
 }

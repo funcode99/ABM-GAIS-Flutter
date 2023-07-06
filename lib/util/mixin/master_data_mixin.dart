@@ -87,8 +87,8 @@ mixin MasterDataMixin{
     return result.fold((l) => [], (list) => list);
   }
 
-  Future<List<CheckItemModel>> getListCheckItem()async{
-    final result = await _repository.getListCheckItem();
+  Future<List<CheckItemModel>> getListCheckItem(int id)async{
+    final result = await _repository.getListCheckItem(id);
     return result.fold((l) => [], (list) => list);
   }
 

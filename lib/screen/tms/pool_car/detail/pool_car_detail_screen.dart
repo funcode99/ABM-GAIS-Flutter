@@ -323,10 +323,14 @@ class _PoolCarDetailScreenState
                                     title: "P2H",
                                     iconData: IconlyBold.edit,
                                     backgroundColor: orangeColor,
-                                    onPressed: () {
-                                      Get.to(()=>const PoolCarP2HScreen(), arguments: {
+                                    onPressed: () async{
+                                      bool result = await Get.to(()=>const PoolCarP2HScreen(), arguments: {
                                         "item" : controller.selectedItem.value
                                       });
+
+                                      if(result){
+                                        controller.detailHeader();
+                                      }
                                     },
                                   );
                                 }

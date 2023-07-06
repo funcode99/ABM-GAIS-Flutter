@@ -5,6 +5,7 @@ import 'package:gais/base/base_repository.dart';
 import 'package:gais/data/model/api_response_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/model/pool_car/pool_car_model.dart';
+import 'package:gais/data/model/pool_car/submit_check_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:get/get.dart';
 
@@ -107,5 +108,22 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
     throw UnimplementedError();
   }
 
+  Future<Either<BaseError, bool>> submitCheck(model) async{
+    final submitCheckModel = model as SubmitCheckModel;
+
+    try {
+      Dio.Response response = await network.dio
+          .post('/api/pool_car/store_check', data: submitCheckModel.toJson());
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, SubmitCheckModel.fromJsonModel);
+      return right(apiResponseModel.success ?? false);
+    } on Dio.DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e) {
+      return left(BaseError(message: e.message));
+    } catch (e) {
+      print("Error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
 
 }
