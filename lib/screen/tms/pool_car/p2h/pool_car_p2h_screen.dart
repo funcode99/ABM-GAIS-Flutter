@@ -29,8 +29,7 @@ class PoolCarP2HScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     PoolCarModel selectedItem = Get.arguments["item"];
 
-    final PoolCarP2HController controller =
-    Get.put(PoolCarP2HController())
+    final PoolCarP2HController controller = Get.put(PoolCarP2HController())
       ..selectedItem(selectedItem);
 
     return Scaffold(
@@ -53,8 +52,7 @@ class PoolCarP2HScreen extends StatelessWidget {
             },
             child: Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 32, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,21 +76,22 @@ class PoolCarP2HScreen extends StatelessWidget {
                   const SizedBox(
                     height: 12,
                   ),
-                  CustomTextFormField(
-                      isRequired: true,
-                      controller: controller.odometerController,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(8),
-                        MinValueTextInputFormatter(0)
-                      ],
-                      inputType: TextInputType.number,
-                      label: "Odometer"),
+                  Obx(() {
+                    return CustomTextFormField(
+                        isRequired: true,
+                        controller: controller.odometerController,
+                        readOnly: !controller.showButton.value,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(8),
+                          MinValueTextInputFormatter(0)
+                        ],
+                        inputType: TextInputType.number,
+                        label: "Odometer");
+                  }),
                   const SizedBox(
                     height: 12,
                   ),
-
-
                   Obx(() {
                     if (controller.listCheckItem.isEmpty) {
                       return const SizedBox();
@@ -100,86 +99,110 @@ class PoolCarP2HScreen extends StatelessWidget {
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: controller.listCheckItem.mapIndexed(
-                              (index, element) {
-                            if (element.isHeader != null) {
-                              if (element.isHeader! == 1) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 8),
-                                  child: RichText(
-                                    text: TextSpan(
-                                      text: "${element.headerName}",
-                                      style: formlabelTextStyle,
-                                      children: const <TextSpan>[
-                                        TextSpan(
-                                            text: "*",
-                                            style: TextStyle(
-                                                color: Colors.red)),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                return const SizedBox();
-                              }
-                            } else if (element.fillable == 1) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${element.detailName}",
-                                      style: listTitleTextStyle.copyWith(
-                                          fontWeight: FontWeight.w500
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 16,
-                                    ),
-                                    CustomRadioGroup<int>(
-                                      listLabel: element.choices!.map((e) =>
-                                      e.text!).toList(),
-                                      listValue: element.choices!.map((e) =>
-                                      e.value!).toList(),
-                                      onChanged: (value) {
-                                        controller.updateChecklistValue(
-                                            index, value);
-                                      },
-                                      selectedValue: element.value!,
-                                    )
+                      children:
+                      controller.listCheckItem.mapIndexed((index, element) {
+                        if (element.isHeader != null) {
+                          if (element.isHeader! == 1) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: RichText(
+                                text: TextSpan(
+                                  text: "${element.headerName}",
+                                  style: formlabelTextStyle,
+                                  children: const <TextSpan>[
+                                    TextSpan(
+                                        text: "*",
+                                        style: TextStyle(color: Colors.red)),
                                   ],
                                 ),
-                              );
-                            }
+                              ),
+                            );
+                          } else {
                             return const SizedBox();
                           }
-                      ).toList(),
+                        } else if (element.fillable == 1) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${element.detailName}",
+                                  style: listTitleTextStyle.copyWith(
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                Obx(() {
+                                  return CustomRadioGroup<int>(
+                                    readOnly: !controller.showButton.value,
+                                    listLabel: element.choices!
+                                        .map((e) => e.text!)
+                                        .toList(),
+                                    listValue: element.choices!
+                                        .map((e) => e.value!)
+                                        .toList(),
+                                    onChanged: (value) {
+                                      controller.updateChecklistValue(
+                                          index, value);
+                                    },
+                                    selectedValue: element.value!,
+                                  );
+                                })
+                              ],
+                            ),
+                          );
+                        }
+                        return const SizedBox();
+                      }).toList(),
                     );
                   }),
-
-
+                  RichText(
+                    text: TextSpan(
+                      text: "Kendaraan Layak Digunakan",
+                      style: formlabelTextStyle,
+                      children: const <TextSpan>[
+                        TextSpan(
+                            text: "*", style: TextStyle(color: Colors.red)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Obx(() {
+                    return CustomRadioGroup<int>(
+                      listLabel: ["Yes", "No"].map((e) => e).toList(),
+                      listValue: [1, 0].map((e) => e).toList(),
+                      onChanged: (value) {
+                        controller.isUsable.value = value == 1;
+                      },
+                      selectedValue: controller.isUsable.value ? 1 : 0,
+                      readOnly: !controller.showButton.value,
+                    );
+                  }),
                   const SizedBox(
                     height: 12,
                   ),
-                  CustomTextFormField(
-                      isRequired: true,
-                      multiLine: true,
-                      controller: controller.noteController,
-                      helperText: "Masukan catatan untuk kondisi pengecekan yang memerlukan tindakan perbaikan",
-                      label: "Catatan"),
+                  Obx(() {
+                    return CustomTextFormField(
+                        isRequired: true,
+                        multiLine: true,
+                        readOnly: !controller.showButton.value,
+                        controller: controller.noteController,
+                        helperText:
+                        "Masukan catatan untuk kondisi pengecekan yang memerlukan tindakan perbaikan",
+                        label: "Catatan");
+                  }),
                   const SizedBox(
                     height: 12,
                   ),
-
                   const SizedBox(
                     height: 64,
                   ),
-
                   Obx(() {
-                    if(controller.showButton.value){
+                    if (controller.showButton.value) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -206,9 +229,8 @@ class PoolCarP2HScreen extends StatelessWidget {
                       );
                     }
 
-                    return SizedBox();
+                    return const SizedBox();
                   }),
-
                   const SizedBox(
                     height: 16,
                   ),

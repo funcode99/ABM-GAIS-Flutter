@@ -2,41 +2,37 @@ import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/pool_car/submit_check_data_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'submit_check_model.g.dart';
+part 'data_existing_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class SubmitCheckModel {
-  int? idPoolCar;
-  int? odometer;
+class DataExistingModel {
   int? isUsable;
+  int? odometer;
   String? notes;
-  List<SubmitCheckDataModel>? data;
 
-  SubmitCheckModel(
+  DataExistingModel(
       {
-        this.idPoolCar,
         this.odometer,
         this.isUsable,
-        this.data,
         this.notes,
       });
 
-  static SubmitCheckModel fromJsonModel(Object? json) =>
-      SubmitCheckModel.fromJson(json as Map<String, dynamic>);
+  static DataExistingModel fromJsonModel(Object? json) =>
+      DataExistingModel.fromJson(json as Map<String, dynamic>);
 
-  static Map<String, dynamic> toJsonModel(SubmitCheckModel model) =>
+  static Map<String, dynamic> toJsonModel(DataExistingModel model) =>
       model.toJson();
 
-  static List<SubmitCheckModel> fromJsonModelList(Object? jsonList) {
+  static List<DataExistingModel> fromJsonModelList(Object? jsonList) {
     if (jsonList == null) return [];
 
     if (jsonList is List) {
-      return jsonList.map((json) => SubmitCheckModel.fromJson(json)).toList();
+      return jsonList.map((json) => DataExistingModel.fromJson(json)).toList();
     }
 
     // We shouldn't be here
     if (jsonList is Map<String, dynamic>) {
-      return [SubmitCheckModel.fromJson(jsonList)];
+      return [DataExistingModel.fromJson(jsonList)];
     }
 
     // We really shouldn't be here
@@ -49,14 +45,14 @@ class SubmitCheckModel {
   }
 
   static List<Map<String, dynamic>> toJsonModelList(Object list) {
-    if (list is List<SubmitCheckModel>) {
+    if (list is List<DataExistingModel>) {
       return list.map((item) => item.toJson()).toList();
     }
     return [];
   }
 
-  factory SubmitCheckModel.fromJson(Map<String, dynamic> json) =>
-      _$SubmitCheckModelFromJson(json);
+  factory DataExistingModel.fromJson(Map<String, dynamic> json) =>
+      _$DataExistingModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SubmitCheckModelToJson(this);
+  Map<String, dynamic> toJson() => _$DataExistingModelToJson(this);
 }

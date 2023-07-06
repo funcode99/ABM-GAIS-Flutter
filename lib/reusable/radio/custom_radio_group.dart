@@ -8,6 +8,7 @@ class CustomRadioGroup<T> extends StatelessWidget {
       required this.onChanged,
       required this.listLabel,
       required this.listValue,
+      this.readOnly = false,
       required this.selectedValue})
       : assert(listLabel.length == listValue.length,
             "listLabel length must be == listValue length");
@@ -16,26 +17,27 @@ class CustomRadioGroup<T> extends StatelessWidget {
   final List<T> listValue;
   final T selectedValue;
   final ValueChanged<T> onChanged;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children:
-        listValue.mapIndexed(
-          (index, item) => Column(
-            children: [
-              CustomRadio<T>(
-                text: listLabel[index],
-                isSelected: item == selectedValue,
-                onChanged: onChanged,
-                value: item,
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-            ],
-          )).toList()
-    );
+        children: listValue
+            .mapIndexed((index, item) => Column(
+                  children: [
+                    CustomRadio<T>(
+                      text: listLabel[index],
+                      isSelected: item == selectedValue,
+                      onChanged: onChanged,
+                      value: item,
+                      readOnly: readOnly,
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                  ],
+                ))
+            .toList());
   }
 }
 
@@ -45,19 +47,23 @@ class CustomRadio<T> extends StatelessWidget {
       required this.isSelected,
       required this.text,
       required this.value,
+      this.readOnly = false,
       required this.onChanged});
 
   final bool isSelected;
   final String text;
   final T value;
   final ValueChanged<T> onChanged;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        onChanged(value);
-      },
+      onTap: readOnly
+          ? null
+          : () {
+              onChanged(value);
+            },
       child: Row(
         children: [
           Container(

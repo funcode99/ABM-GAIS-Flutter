@@ -39,6 +39,9 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
 
   final enableButton = false.obs;
 
+  String odometer = "";
+  String note = "";
+  final isUsable = true.obs;
 
   @override
   void onInit() {
@@ -59,14 +62,33 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
 
     showButton.value = codeRole == RoleEnum.driver.value && selectedItem.value.codeStatusDoc == PoolCarEnum.driverCheck.value;
 
-    setValue();
+    getCheckData();
+  }
+
+  void getCheckData() async {
+    final result = await _repository.getCheckData(selectedItem.value.id!);
+
+    result.fold((l) {
+      print("ERROR GET CHECK DATA${l.message}");
+    }, (r) {
+      listCheckItem.addAll(r.data!);
+      odometer = r.dataExisting?.odometer.toString() ?? "";
+      note = r.dataExisting?.notes ?? "";
+      isUsable.value = r.dataExisting?.isUsable == null ? true :  r.dataExisting?.isUsable == 1;
+
+      setValue();
+    });
   }
 
   void setValue() {
-    odometerController.text = selectedItem.value.odometer ?? "";
+    odometerController.text = selectedItem.value.odometer.toString() ?? "";
     plateController.text = selectedItem.value.plate ?? "-";
     driverNameController.text = selectedItem.value.driverName ?? "-";
-    noteController.text = selectedItem.value.note ?? "";
+    if(!showButton.value){
+      noteController.text = note.isNotEmpty ? note : "-";
+    }else{
+      noteController.text = note.isNotEmpty ? note : "";
+    }
   }
 
   void saveData() async {
@@ -85,8 +107,8 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
     SubmitCheckModel submitCheckModel = SubmitCheckModel(
         idPoolCar: selectedItem.value.id,
         odometer: odometerController.text.toInt(),
-        isUsable: 1,
-        note: noteController.text,
+        isUsable: isUsable.value ? 1 : 0,
+        notes: noteController.text,
         data:data
     );
 
