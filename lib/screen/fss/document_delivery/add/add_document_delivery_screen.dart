@@ -8,6 +8,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/document_delivery/add/add_document_delivery_controller.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -58,41 +59,55 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 8),
                             CustomDropDownFormField(
-                              items: controller.receiverList
+                              label: "Receiver Company",
+                              hintText: controller.loadCompany ? "Loading..." : "Receiver Company",
+                              isRequired: true,
+                              items: controller.companyList
                                   .map((e) => DropdownMenuItem(
-                                        child: Text(e.employeeName.toString()),
+                                        child: Text(e.companyName.toString()),
                                         value: e.id.toString(),
-                                        onTap: () {
-                                          controller.location.text = e.siteName.toString();
-                                          controller.company.text = e.companyName.toString();
-                                          controller.siteID = e.idSite?.toInt();
-                                          controller.companyID = e.idCompany?.toInt();
-                                          controller.receiverID = e.id?.toInt();
-                                          controller.update();
-                                        },
                                       ))
                                   .toList(),
-                              label: "Receiver",
-                              hintText: "Receiver",
-                              isRequired: true,
                               onChanged: (value) {
-                                controller.selectedReceiver = value;
+                                controller.companyID = value!.toInt();
+                                controller.fetchLocationList(value!.toInt());
                                 controller.update();
                               },
                             ),
                             SizedBox(height: 8),
-                            CustomTextFormField(
-                              controller: controller.location,
+                            CustomDropDownFormField(
                               label: "Location",
+                              hintText: controller.loadLocation ? "Loading..." : "Location",
                               isRequired: true,
-                              readOnly: true,
+                              items: controller.locationList
+                                  .map((e) => DropdownMenuItem(
+                                        child: Text(e.siteName.toString()),
+                                        value: e.id.toString(),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                controller.siteID = value!.toInt();
+                                controller.fetchReceiverList(value!.toInt());
+                                controller.update();
+                              },
                             ),
                             SizedBox(height: 8),
-                            CustomTextFormField(
-                              controller: controller.company,
-                              label: "Receiver Company",
+                            CustomDropDownFormField(
+                              label: "Receiver",
+                              hintText: controller.loadReceiver ? "Loading..." : "Receiver",
                               isRequired: true,
-                              readOnly: true,
+                              items: controller.receiverList
+                                  .map((e) => DropdownMenuItem(
+                                        child: Text(e.employeeName.toString()),
+                                        value: e.id.toString(),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                controller.selectedReceiver = value;
+                                controller.receiverID = value!.toInt();
+                                print(controller.receiverID);
+                                controller.update();
+                              },
                             ),
                             SizedBox(height: 8),
                             CustomTextFormField(
@@ -106,7 +121,7 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                               label: "Attachment (Optional)",
                               suffixIcon: Icon(Icons.upload),
                               readOnly: true,
-                              onTap: (){
+                              onTap: () {
                                 controller.getSingleFile();
                               },
                             ),
@@ -118,11 +133,11 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                             ),
                             Center(
                               child: CustomFilledButton(
-                                width: Get.width/2,
+                                width: Get.width / 2,
                                 color: successColor,
                                 title: "Save",
-                                onPressed: (){
-                                  if(controller.formKey.currentState?.validate() == true){
+                                onPressed: () {
+                                  if (controller.formKey.currentState?.validate() == true) {
                                     controller.saveDocument();
                                   }
                                 },

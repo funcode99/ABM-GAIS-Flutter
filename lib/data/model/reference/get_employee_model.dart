@@ -93,7 +93,7 @@ class Data {
       num? idDepartment, 
       num? idCompany, 
       num? idSite, 
-      num? idJobBand, 
+      String? idJobBand,
       dynamic foto, 
       dynamic fotoPath, 
       dynamic createdAt, 
@@ -181,7 +181,7 @@ class Data {
   num? _idDepartment;
   num? _idCompany;
   num? _idSite;
-  num? _idJobBand;
+  String? _idJobBand;
   dynamic _foto;
   dynamic _fotoPath;
   dynamic _createdAt;
@@ -209,7 +209,7 @@ Data copyWith({  num? no,
   num? idDepartment,
   num? idCompany,
   num? idSite,
-  num? idJobBand,
+  String? idJobBand,
   dynamic foto,
   dynamic fotoPath,
   dynamic createdAt,
@@ -266,7 +266,7 @@ Data copyWith({  num? no,
   num? get idDepartment => _idDepartment;
   num? get idCompany => _idCompany;
   num? get idSite => _idSite;
-  num? get idJobBand => _idJobBand;
+  String? get idJobBand => _idJobBand;
   dynamic get foto => _foto;
   dynamic get fotoPath => _fotoPath;
   dynamic get createdAt => _createdAt;

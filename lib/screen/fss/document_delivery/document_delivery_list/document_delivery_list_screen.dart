@@ -168,7 +168,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                               children: [
                                 CustomTripCard(
                                   listNumber: controller.currentPage > 1 ? (controller.ddModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
-                                  title: controller.ddList[index].id.toString(),
+                                  title: controller.ddList[index].noDocumentDelivery.toString(),
                                   //code document delivery
                                   status: controller.ddList[index].status.toString(),
                                   // status
@@ -192,27 +192,37 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                   },
                                   content: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Receiver", style: listTitleTextStyle),
-                                          Text(controller.ddList[index].receiverName.toString() ?? "", style: listSubTitleTextStyle)
-                                        ],
+                                      Container(
+                                        width: Get.width/3,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Receiver", style: listTitleTextStyle),
+                                            Text(controller.ddList[index].receiverName.toString() ?? "", style: listSubTitleTextStyle)
+                                          ],
+                                        ),
                                       ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Sender", style: listTitleTextStyle),
-                                          Text(controller.ddList[index].senderName.toString() ?? "", style: listSubTitleTextStyle)
-                                        ],
+                                      Container(
+                                        width: Get.width/4,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Sender", style: listTitleTextStyle),
+                                            Text(controller.ddList[index].senderName.toString() ?? "", style: listSubTitleTextStyle)
+                                          ],
+                                        ),
                                       ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Location", style: listTitleTextStyle),
-                                          Text("${controller.ddList[index].siteCode} - ${controller.ddList[index].siteName.toString() ?? " "}", style: listSubTitleTextStyle)
-                                        ],
+                                      Container(
+                                        width: Get.width/3.8,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Location", style: listTitleTextStyle),
+                                            Text("${controller.ddList[index].siteCode} - ${controller.ddList[index].siteName.toString() ?? " "}", style: listSubTitleTextStyle)
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),

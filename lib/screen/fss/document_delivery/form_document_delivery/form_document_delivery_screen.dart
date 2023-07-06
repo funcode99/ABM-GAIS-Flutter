@@ -167,7 +167,11 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Text("Document No. 123231/ ${controller.ddID}", style: appTitle),
+                            Text(
+                              controller.noDocument.toString(),
+                              style: appTitle,
+                              textAlign: TextAlign.center,
+                            ),
                             Row(
                               mainAxisAlignment: !controller.isEdit ? MainAxisAlignment.center : MainAxisAlignment.spaceEvenly,
                               children: [
@@ -180,6 +184,9 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   onPressed: () {
                                     if (controller.codeStatusDoc != 2) {
                                       controller.isEdit = controller.isEdit == false ? true : false;
+                                      !controller.isEdit
+                                          ? controller.fetchEdit()
+                                          : null;
                                       controller.update();
                                     } else {
                                       Get.showSnackbar(GetSnackBar(

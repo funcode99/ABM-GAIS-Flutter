@@ -1,6 +1,6 @@
 /// success : true
 /// message : "Success Get Data"
-/// data : {"current_page":1,"data":[{"id":1,"id_company":1,"id_employee_sender":1,"id_employee_receiver":1,"id_site":1,"subject":"SUB","attachment":"FILE","remarks":"note","code_status_doc":0,"created_at":"2023-06-06 00:33:03","created_by":"1","updated_at":"2023-06-06 00:33:03","updated_by":null,"company_name":"PT Cipta Kridatama","company_code":"3000","site_name":null,"site_code":null}],"first_page_url":"http://103.165.130.157:8086/api/document_delivery/get?page=1","from":1,"last_page":1,"last_page_url":"http://103.165.130.157:8086/api/document_delivery/get?page=1","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http://103.165.130.157:8086/api/document_delivery/get?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"next_page_url":null,"path":"http://103.165.130.157:8086/api/document_delivery/get","per_page":"10","prev_page_url":null,"to":1,"total":1}
+/// data : {"current_page":1,"data":[{"id":14,"id_company":1,"id_employee_sender":1,"id_employee_receiver":1,"id_site":1,"subject":"SUB","attachment":"/tmp/php934qSG","remarks":null,"code_status_doc":0,"created_at":"2023-07-05 16:33:43","created_by":"2","updated_at":"2023-07-05 16:33:43","updated_by":null,"deleted_at":null,"no_document_delivery":"2023-07-DOCDL/001/ DOCDL-07-23","sender_name":"John Doe","receiver_name":"John Doe","company_name":"PT Cipta Kridatama","company_code":"3000","site_name":null,"site_code":null,"code_document":"DOCDL","status":"Created"},{"id":13,"id_company":1,"id_employee_sender":1,"id_employee_receiver":1,"id_site":1,"subject":"SUB","attachment":null,"remarks":null,"code_status_doc":0,"created_at":"2023-07-05 16:33:00","created_by":"2","updated_at":"2023-07-05 16:33:00","updated_by":null,"deleted_at":null,"no_document_delivery":"2023-07-DOCDL/001/ DOCDL-07-23","sender_name":"John Doe","receiver_name":"John Doe","company_name":"PT Cipta Kridatama","company_code":"3000","site_name":null,"site_code":null,"code_document":"DOCDL","status":"Created"},{"id":12,"id_company":1,"id_employee_sender":1,"id_employee_receiver":1,"id_site":1,"subject":"SUB","attachment":"/tmp/phpb39LBL","remarks":null,"code_status_doc":0,"created_at":"2023-07-04 11:09:39","created_by":"2","updated_at":"2023-07-04 11:09:39","updated_by":null,"deleted_at":null,"no_document_delivery":"2023-07-DOCDL/001/ DOCDL-07-23","sender_name":"John Doe","receiver_name":"John Doe","company_name":"PT Cipta Kridatama","company_code":"3000","site_name":null,"site_code":null,"code_document":"DOCDL","status":"Created"},{"id":11,"id_company":1,"id_employee_sender":1,"id_employee_receiver":1,"id_site":1,"subject":"SUB","attachment":null,"remarks":null,"code_status_doc":0,"created_at":"2023-07-04 11:09:24","created_by":"2","updated_at":"2023-07-04 11:09:24","updated_by":null,"deleted_at":null,"no_document_delivery":"2023-07-DOCDL/001/ DOCDL-07-23","sender_name":"John Doe","receiver_name":"John Doe","company_name":"PT Cipta Kridatama","company_code":"3000","site_name":null,"site_code":null,"code_document":"DOCDL","status":"Created"},{"id":10,"id_company":1,"id_employee_sender":1,"id_employee_receiver":1,"id_site":1,"subject":"SUB","attachment":null,"remarks":null,"code_status_doc":0,"created_at":"2023-07-04 11:08:54","created_by":"2","updated_at":"2023-07-04 11:08:54","updated_by":null,"deleted_at":null,"no_document_delivery":"2023-07-DOCDL/001/ DOCDL-07-23","sender_name":"John Doe","receiver_name":"John Doe","company_name":"PT Cipta Kridatama","company_code":"3000","site_name":null,"site_code":null,"code_document":"DOCDL","status":"Created"}],"first_page_url":"http://38.47.76.138:8013/api/employee_doc_delivery/get?page=1","from":1,"last_page":3,"last_page_url":"http://38.47.76.138:8013/api/employee_doc_delivery/get?page=3","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http://38.47.76.138:8013/api/employee_doc_delivery/get?page=1","label":"1","active":true},{"url":"http://38.47.76.138:8013/api/employee_doc_delivery/get?page=2","label":"2","active":false},{"url":"http://38.47.76.138:8013/api/employee_doc_delivery/get?page=3","label":"3","active":false},{"url":"http://38.47.76.138:8013/api/employee_doc_delivery/get?page=2","label":"Next &raquo;","active":false}],"next_page_url":"http://38.47.76.138:8013/api/employee_doc_delivery/get?page=2","path":"http://38.47.76.138:8013/api/employee_doc_delivery/get","per_page":"5","prev_page_url":null,"to":5,"total":14}
 
 class GetDocumentDeliveryModel {
   GetDocumentDeliveryModel({
@@ -52,18 +52,18 @@ class GetDocumentDeliveryModel {
 }
 
 /// current_page : 1
-/// data : [{"id":1,"id_company":1,"id_employee_sender":1,"id_employee_receiver":1,"id_site":1,"subject":"SUB","attachment":"FILE","remarks":"note","code_status_doc":0,"created_at":"2023-06-06 00:33:03","created_by":"1","updated_at":"2023-06-06 00:33:03","updated_by":null,"company_name":"PT Cipta Kridatama","company_code":"3000","site_name":null,"site_code":null}]
-/// first_page_url : "http://103.165.130.157:8086/api/document_delivery/get?page=1"
+/// data : [{"id":14,"id_company":1,"id_employee_sender":1,"id_employee_receiver":1,"id_site":1,"subject":"SUB","attachment":"/tmp/php934qSG","remarks":null,"code_status_doc":0,"created_at":"2023-07-05 16:33:43","created_by":"2","updated_at":"2023-07-05 16:33:43","updated_by":null,"deleted_at":null,"no_document_delivery":"2023-07-DOCDL/001/ DOCDL-07-23","sender_name":"John Doe","receiver_name":"John Doe","company_name":"PT Cipta Kridatama","company_code":"3000","site_name":null,"site_code":null,"code_document":"DOCDL","status":"Created"},{"id":13,"id_company":1,"id_employee_sender":1,"id_employee_receiver":1,"id_site":1,"subject":"SUB","attachment":null,"remarks":null,"code_status_doc":0,"created_at":"2023-07-05 16:33:00","created_by":"2","updated_at":"2023-07-05 16:33:00","updated_by":null,"deleted_at":null,"no_document_delivery":"2023-07-DOCDL/001/ DOCDL-07-23","sender_name":"John Doe","receiver_name":"John Doe","company_name":"PT Cipta Kridatama","company_code":"3000","site_name":null,"site_code":null,"code_document":"DOCDL","status":"Created"},{"id":12,"id_company":1,"id_employee_sender":1,"id_employee_receiver":1,"id_site":1,"subject":"SUB","attachment":"/tmp/phpb39LBL","remarks":null,"code_status_doc":0,"created_at":"2023-07-04 11:09:39","created_by":"2","updated_at":"2023-07-04 11:09:39","updated_by":null,"deleted_at":null,"no_document_delivery":"2023-07-DOCDL/001/ DOCDL-07-23","sender_name":"John Doe","receiver_name":"John Doe","company_name":"PT Cipta Kridatama","company_code":"3000","site_name":null,"site_code":null,"code_document":"DOCDL","status":"Created"},{"id":11,"id_company":1,"id_employee_sender":1,"id_employee_receiver":1,"id_site":1,"subject":"SUB","attachment":null,"remarks":null,"code_status_doc":0,"created_at":"2023-07-04 11:09:24","created_by":"2","updated_at":"2023-07-04 11:09:24","updated_by":null,"deleted_at":null,"no_document_delivery":"2023-07-DOCDL/001/ DOCDL-07-23","sender_name":"John Doe","receiver_name":"John Doe","company_name":"PT Cipta Kridatama","company_code":"3000","site_name":null,"site_code":null,"code_document":"DOCDL","status":"Created"},{"id":10,"id_company":1,"id_employee_sender":1,"id_employee_receiver":1,"id_site":1,"subject":"SUB","attachment":null,"remarks":null,"code_status_doc":0,"created_at":"2023-07-04 11:08:54","created_by":"2","updated_at":"2023-07-04 11:08:54","updated_by":null,"deleted_at":null,"no_document_delivery":"2023-07-DOCDL/001/ DOCDL-07-23","sender_name":"John Doe","receiver_name":"John Doe","company_name":"PT Cipta Kridatama","company_code":"3000","site_name":null,"site_code":null,"code_document":"DOCDL","status":"Created"}]
+/// first_page_url : "http://38.47.76.138:8013/api/employee_doc_delivery/get?page=1"
 /// from : 1
-/// last_page : 1
-/// last_page_url : "http://103.165.130.157:8086/api/document_delivery/get?page=1"
-/// links : [{"url":null,"label":"&laquo; Previous","active":false},{"url":"http://103.165.130.157:8086/api/document_delivery/get?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}]
-/// next_page_url : null
-/// path : "http://103.165.130.157:8086/api/document_delivery/get"
-/// per_page : "10"
+/// last_page : 3
+/// last_page_url : "http://38.47.76.138:8013/api/employee_doc_delivery/get?page=3"
+/// links : [{"url":null,"label":"&laquo; Previous","active":false},{"url":"http://38.47.76.138:8013/api/employee_doc_delivery/get?page=1","label":"1","active":true},{"url":"http://38.47.76.138:8013/api/employee_doc_delivery/get?page=2","label":"2","active":false},{"url":"http://38.47.76.138:8013/api/employee_doc_delivery/get?page=3","label":"3","active":false},{"url":"http://38.47.76.138:8013/api/employee_doc_delivery/get?page=2","label":"Next &raquo;","active":false}]
+/// next_page_url : "http://38.47.76.138:8013/api/employee_doc_delivery/get?page=2"
+/// path : "http://38.47.76.138:8013/api/employee_doc_delivery/get"
+/// per_page : "5"
 /// prev_page_url : null
-/// to : 1
-/// total : 1
+/// to : 5
+/// total : 14
 
 class Data {
   Data({
@@ -74,7 +74,7 @@ class Data {
     num? lastPage,
     String? lastPageUrl,
     List<Links>? links,
-    dynamic nextPageUrl,
+    String? nextPageUrl,
     String? path,
     String? perPage,
     dynamic prevPageUrl,
@@ -129,7 +129,7 @@ class Data {
   num? _lastPage;
   String? _lastPageUrl;
   List<Links>? _links;
-  dynamic _nextPageUrl;
+  String? _nextPageUrl;
   String? _path;
   String? _perPage;
   dynamic _prevPageUrl;
@@ -144,7 +144,7 @@ class Data {
     num? lastPage,
     String? lastPageUrl,
     List<Links>? links,
-    dynamic nextPageUrl,
+    String? nextPageUrl,
     String? path,
     String? perPage,
     dynamic prevPageUrl,
@@ -181,7 +181,7 @@ class Data {
 
   List<Links>? get links => _links;
 
-  dynamic get nextPageUrl => _nextPageUrl;
+  String? get nextPageUrl => _nextPageUrl;
 
   String? get path => _path;
 
@@ -267,27 +267,29 @@ class Links {
   }
 }
 
-/// id : 1
+/// id : 14
 /// id_company : 1
 /// id_employee_sender : 1
 /// id_employee_receiver : 1
 /// id_site : 1
 /// subject : "SUB"
-/// attachment : "FILE"
-/// remarks : "note"
+/// attachment : "/tmp/php934qSG"
+/// remarks : null
 /// code_status_doc : 0
-/// created_at : "2023-06-06 00:33:03"
-/// created_by : "1"
-/// updated_at : "2023-06-06 00:33:03"
+/// created_at : "2023-07-05 16:33:43"
+/// created_by : "2"
+/// updated_at : "2023-07-05 16:33:43"
 /// updated_by : null
-/// sender_name: "Admin",
-/// receiver_name: "John Doe",
-/// code_document: "DOCDL",
-/// status: "Delivering"
+/// deleted_at : null
+/// no_document_delivery : "2023-07-DOCDL/001/ DOCDL-07-23"
+/// sender_name : "John Doe"
+/// receiver_name : "John Doe"
 /// company_name : "PT Cipta Kridatama"
 /// company_code : "3000"
 /// site_name : null
 /// site_code : null
+/// code_document : "DOCDL"
+/// status : "Created"
 
 class Data2 {
   Data2({
@@ -298,20 +300,22 @@ class Data2 {
     num? idSite,
     String? subject,
     String? attachment,
-    String? remarks,
+    dynamic remarks,
     num? codeStatusDoc,
     String? createdAt,
     String? createdBy,
     String? updatedAt,
     dynamic updatedBy,
+    dynamic deletedAt,
+    String? noDocumentDelivery,
     String? senderName,
     String? receiverName,
-    String? codeDocument,
-    String? status,
     String? companyName,
     String? companyCode,
     dynamic siteName,
     dynamic siteCode,
+    String? codeDocument,
+    String? status,
   }) {
     _id = id;
     _idCompany = idCompany;
@@ -326,14 +330,16 @@ class Data2 {
     _createdBy = createdBy;
     _updatedAt = updatedAt;
     _updatedBy = updatedBy;
+    _deletedAt = deletedAt;
+    _noDocumentDelivery = noDocumentDelivery;
     _senderName = senderName;
     _receiverName = receiverName;
-    _codeDocument = codeDocument;
-    _status = status;
     _companyName = companyName;
     _companyCode = companyCode;
     _siteName = siteName;
     _siteCode = siteCode;
+    _codeDocument = codeDocument;
+    _status = status;
   }
 
   Data2.fromJson(dynamic json) {
@@ -350,14 +356,16 @@ class Data2 {
     _createdBy = json['created_by'];
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
+    _deletedAt = json['deleted_at'];
+    _noDocumentDelivery = json['no_document_delivery'];
     _senderName = json['sender_name'];
     _receiverName = json['receiver_name'];
-    _codeDocument = json['code_document'];
-    _status = json['status'];
     _companyName = json['company_name'];
     _companyCode = json['company_code'];
     _siteName = json['site_name'];
     _siteCode = json['site_code'];
+    _codeDocument = json['code_document'];
+    _status = json['status'];
   }
 
   num? _id;
@@ -367,20 +375,22 @@ class Data2 {
   num? _idSite;
   String? _subject;
   String? _attachment;
-  String? _remarks;
+  dynamic _remarks;
   num? _codeStatusDoc;
   String? _createdAt;
   String? _createdBy;
   String? _updatedAt;
   dynamic _updatedBy;
+  dynamic _deletedAt;
+  String? _noDocumentDelivery;
   String? _senderName;
   String? _receiverName;
-  String? _codeDocument;
-  String? _status;
   String? _companyName;
   String? _companyCode;
   dynamic _siteName;
   dynamic _siteCode;
+  String? _codeDocument;
+  String? _status;
 
   Data2 copyWith({
     num? id,
@@ -390,20 +400,22 @@ class Data2 {
     num? idSite,
     String? subject,
     String? attachment,
-    String? remarks,
+    dynamic remarks,
     num? codeStatusDoc,
     String? createdAt,
     String? createdBy,
     String? updatedAt,
     dynamic updatedBy,
+    dynamic deletedAt,
+    String? noDocumentDelivery,
     String? senderName,
     String? receiverName,
-    String? codeDocument,
-    String? status,
     String? companyName,
     String? companyCode,
     dynamic siteName,
     dynamic siteCode,
+    String? codeDocument,
+    String? status,
   }) =>
       Data2(
         id: id ?? _id,
@@ -419,14 +431,16 @@ class Data2 {
         createdBy: createdBy ?? _createdBy,
         updatedAt: updatedAt ?? _updatedAt,
         updatedBy: updatedBy ?? _updatedBy,
+        deletedAt: deletedAt ?? _deletedAt,
+        noDocumentDelivery: noDocumentDelivery ?? _noDocumentDelivery,
         senderName: senderName ?? _senderName,
         receiverName: receiverName ?? _receiverName,
-        codeDocument: codeDocument ?? _codeDocument,
-        status: status ?? _status,
         companyName: companyName ?? _companyName,
         companyCode: companyCode ?? _companyCode,
         siteName: siteName ?? _siteName,
         siteCode: siteCode ?? _siteCode,
+        codeDocument: codeDocument ?? _codeDocument,
+        status: status ?? _status,
       );
 
   num? get id => _id;
@@ -443,7 +457,7 @@ class Data2 {
 
   String? get attachment => _attachment;
 
-  String? get remarks => _remarks;
+  dynamic get remarks => _remarks;
 
   num? get codeStatusDoc => _codeStatusDoc;
 
@@ -455,13 +469,13 @@ class Data2 {
 
   dynamic get updatedBy => _updatedBy;
 
+  dynamic get deletedAt => _deletedAt;
+
+  String? get noDocumentDelivery => _noDocumentDelivery;
+
   String? get senderName => _senderName;
 
   String? get receiverName => _receiverName;
-
-  String? get codeDocument => _codeDocument;
-
-  String? get status => _status;
 
   String? get companyName => _companyName;
 
@@ -470,6 +484,10 @@ class Data2 {
   dynamic get siteName => _siteName;
 
   dynamic get siteCode => _siteCode;
+
+  String? get codeDocument => _codeDocument;
+
+  String? get status => _status;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -486,14 +504,16 @@ class Data2 {
     map['created_by'] = _createdBy;
     map['updated_at'] = _updatedAt;
     map['updated_by'] = _updatedBy;
+    map['deleted_at'] = _deletedAt;
+    map['no_document_delivery'] = _noDocumentDelivery;
     map['sender_name'] = _senderName;
     map['receiver_name'] = _receiverName;
-    map['code_document'] = _codeDocument;
-    map['status'] = _status;
     map['company_name'] = _companyName;
     map['company_code'] = _companyCode;
     map['site_name'] = _siteName;
     map['site_code'] = _siteCode;
+    map['code_document'] = _codeDocument;
+    map['status'] = _status;
     return map;
   }
 }

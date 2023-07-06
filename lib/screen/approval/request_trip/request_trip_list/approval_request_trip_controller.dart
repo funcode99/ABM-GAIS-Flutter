@@ -7,13 +7,13 @@ import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
 import 'package:gais/data/model/approval_request_trip/get_approval_request_trip_model.dart' as requests;
 
 class ApprovalRequestTripListController extends BaseController {
-
   final formKey = GlobalKey<FormState>();
   final dateRange = TextEditingController();
+  final keyword = "".obs;
 
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat rangeFormat = DateFormat("yyyy-MM-dd");
-  String? purposeValue;
+  String purposeValue = "All";
   String? searchValue;
   String? startDate;
   String? endDate;
@@ -26,37 +26,44 @@ class ApprovalRequestTripListController extends BaseController {
   int perPage = 10;
 
   requests.GetApprovalRequestTripModel? rtlModel;
-  List<requests.Data> requestList = [];
+  List<requests.Data2> requestList = [];
   List<doc.Data> documentList = <doc.Data>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    Future.wait([fetchData(), fetchList()]);
+    Future.wait([fetchData(), fetchList(1)]);
   }
 
-    Future<void> fetchData() async {
+  void resetFilter() {
+    formKey.currentState?.reset();
+    purposeValue = "All";
+    dateRange.text = "";
+    update();
+  }
+
+  void clearSearch(String search) {
+    keyword(search);
+    currentPage = 1;
+    fetchList(1);
+    update();
+  }
+
+  Future<void> fetchData() async {
     documentList = [];
     await repository.getDocumentCodeList().then((value) {
-      documentList.add(doc.Data(id: 0, documentName: "All", isSelected: true));
+      documentList.add(doc.Data(id: 0, codeDocument: "All", documentName: "All", isSelected: true));
       documentList.addAll(value.data?.toSet().toList() ?? []);
     });
   }
 
-  Future<void> fetchList() async {
+  Future<void> fetchList(int page) async {
     requestList = [];
     isLoading = true;
     try {
-      var requestTrip = await approvalRequestTrip.getList(
-        perPage,
-        currentPage,
-        searchValue,
-        startDate,
-        endDate,
-        codeStatusDoc
-      );
+      var requestTrip = await approvalRequestTrip.getList(perPage, currentPage, searchValue, startDate, endDate, codeStatusDoc);
       rtlModel = requestTrip;
-      requestList.addAll(rtlModel?.data?.toSet().toList() ?? []);
+      requestList.addAll(rtlModel?.data?.data?.toSet().toList() ?? []);
       isLoading = false;
       // searchNotFound = rtlModel?.data?.isEmpty ?? false;
 
@@ -74,7 +81,7 @@ class ApprovalRequestTripListController extends BaseController {
           ),
         );
       }
-    } catch (e,i) {
+    } catch (e, i) {
       dataisnull = true;
       isLoading = false;
       e.printError();

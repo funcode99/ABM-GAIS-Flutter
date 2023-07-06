@@ -29,6 +29,7 @@ class FormDocumentDeliveryController extends BaseController {
   int? codeStatusDoc;
   String? selectedReceiver;
   String? receiverName;
+  String? noDocument;
   File? gettedFile;
 
   bool isEdit = false;
@@ -58,9 +59,15 @@ class FormDocumentDeliveryController extends BaseController {
   }
 
   Future<void> fetchEdit() async {
+    codeStatusDoc = null;
+    isReceived = false;
+    isDelivering = false;
+    isDelivered = false;
+
     try {
       await documentDelivery.getByID(ddID!).then((value) {
         DateTime? tempDate;
+        noDocument = value.data?.first.noDocumentDelivery;
         senderID = value.data?.first.idEmployeeSender?.toInt();
         sender.text = value.data?.first.senderName.toString() ?? "";
         selectedReceiver = value.data?.first.idEmployeeReceiver.toString();
