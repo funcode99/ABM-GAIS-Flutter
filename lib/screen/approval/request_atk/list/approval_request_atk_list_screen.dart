@@ -16,6 +16,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/request_atk/detail/detail_approval_request_atk_screen.dart';
 import 'package:gais/screen/approval/request_atk/list/approval_request_atk_list_controller.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
+import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
@@ -127,104 +128,109 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
                     ? const DataEmpty()
                     : ListView(
                         children: [
-                          ...controller.listHeader.mapIndexed((index, item) =>
-                              CommonListItem(
-                                onTap: () {
-                                  Get.to(
-                                      () =>
-                                          const DetailApprovalRequestATKScreen(
-                                            approvalActionEnum:
-                                                ApprovalActionEnum.none,
+                          ...controller.listHeader
+                              .mapIndexed((index, item) => CommonListItem(
+                                    onTap: () {
+                                      Get.to(
+                                          () =>
+                                              const DetailApprovalRequestATKScreen(
+                                                approvalActionEnum:
+                                                    ApprovalActionEnum.none,
+                                              ),
+                                          arguments: {
+                                            "item": item
+                                          })?.then(
+                                          (value) => controller.getHeader());
+                                    },
+                                    number:
+                                        "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
+                                    title: "${item.noAtkRequest}",
+                                    subtitle:
+                                        "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                    content: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "Requestor".tr,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                  item.employeeName ?? "-",
+                                                  style: listSubTitleTextStyle,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                      arguments: {
-                                        "item": item
-                                      })?.then(
-                                      (value) => controller.getHeader());
-                                },
-                                number:
-                                    "${((controller.currentPage.value - 1) *  controller.limit) + (index + 1)}",
-                                title: "${item.noAtkRequest}",
-                                subtitle:
-                                    "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
-                                content: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 8),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Requestor".tr,
-                                              style: listTitleTextStyle,
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "Item Count".tr,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                  "${item.itemCount ?? "-"}",
+                                                  style: listSubTitleTextStyle,
+                                                ),
+                                              ],
                                             ),
-                                            Text(
-                                              item.employeeName ?? "-",
-                                              style: listSubTitleTextStyle,
-                                            ),
-                                          ],
-                                        ),
+                                          )
+                                        ],
                                       ),
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Item Count".tr,
-                                              style: listTitleTextStyle,
+                                    ),
+                                    action: item.codeStatusDoc ==
+                                            RequestATKEnum.waitingApproval.value
+                                        ? [
+                                            CustomIconButton(
+                                              title: "Confirm".tr,
+                                              iconData: Icons.check,
+                                              backgroundColor: successColor,
+                                              onPressed: () {
+                                                Get.to(
+                                                    () =>
+                                                        const DetailApprovalRequestATKScreen(
+                                                          approvalActionEnum:
+                                                              ApprovalActionEnum
+                                                                  .approve,
+                                                        ),
+                                                    arguments: {
+                                                      "item": item
+                                                    })?.then((value) =>
+                                                    controller.getHeader());
+                                              },
                                             ),
-                                            Text(
-                                              "${item.itemCount ?? "-"}",
-                                              style: listSubTitleTextStyle,
+                                            const SizedBox(
+                                              width: 4,
                                             ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                action: [
-                                  CustomIconButton(
-                                    title: "Confirm".tr,
-                                    iconData: Icons.check,
-                                    backgroundColor: successColor,
-                                    onPressed: () {
-                                      Get.to(
-                                          () =>
-                                              const DetailApprovalRequestATKScreen(
-                                                approvalActionEnum:
-                                                    ApprovalActionEnum.approve,
-                                              ),
-                                          arguments: {
-                                            "item": item
-                                          })?.then(
-                                          (value) => controller.getHeader());
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  CustomIconButton(
-                                    title: "Reject".tr,
-                                    iconData: Icons.close,
-                                    backgroundColor: redColor,
-                                    onPressed: () {
-                                      Get.to(
-                                          () =>
-                                              const DetailApprovalRequestATKScreen(
-                                                approvalActionEnum:
-                                                    ApprovalActionEnum.reject,
-                                              ),
-                                          arguments: {
-                                            "item": item
-                                          })?.then(
-                                          (value) => controller.getHeader());
-                                    },
-                                  )
-                                ],
-                                status: item.status ?? "-",
-                              ))
+                                            CustomIconButton(
+                                              title: "Reject".tr,
+                                              iconData: Icons.close,
+                                              backgroundColor: redColor,
+                                              onPressed: () {
+                                                Get.to(
+                                                    () =>
+                                                        const DetailApprovalRequestATKScreen(
+                                                          approvalActionEnum:
+                                                              ApprovalActionEnum
+                                                                  .reject,
+                                                        ),
+                                                    arguments: {
+                                                      "item": item
+                                                    })?.then((value) =>
+                                                    controller.getHeader());
+                                              },
+                                            )
+                                          ]
+                                        : [],
+                                    status: item.status ?? "-",
+                                  ))
                         ],
                       );
               }),
