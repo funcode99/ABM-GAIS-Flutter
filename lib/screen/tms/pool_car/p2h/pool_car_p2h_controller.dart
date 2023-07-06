@@ -12,6 +12,8 @@ import 'package:gais/data/repository/pool_car/pool_car_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/screen/tms/cash_advance/cash_advance_non_travel/edit/edit_cash_advance_non_travel_screen.dart';
+import 'package:gais/util/enum/role_enum.dart';
+import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
@@ -33,6 +35,10 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
 
   final listCheckItem = <CheckItemModel>[].obs;
 
+  final showButton = false.obs;
+
+  final enableButton = false.obs;
+
 
   @override
   void onInit() {
@@ -48,6 +54,10 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
   void initData() async {
     final items = await getListCheckItem(selectedItem.value.id!);
     listCheckItem.addAll(items);
+
+    String codeRole = await storage.readString(StorageCore.codeRole);
+
+    showButton.value = codeRole == RoleEnum.driver.value && selectedItem.value.codeStatusDoc == PoolCarEnum.driverCheck.value;
 
     setValue();
   }
@@ -96,6 +106,10 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
   void updateChecklistValue(int index, int newValue) {
     listCheckItem[index].value = newValue;
     listCheckItem.refresh();
+  }
+
+  void updateButton() {
+    enableButton(formKey.currentState!.validate());
   }
 
 }

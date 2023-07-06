@@ -49,3 +49,14 @@ enum RequestATKEnum {
 
   final int value;
 }
+
+enum PoolCarEnum {
+  waitingCarAndDriver(0),
+  driverCheck(1),
+  ready(2),
+  done(3);
+
+  const PoolCarEnum(this.value);
+
+  final int value;
+}

@@ -4,6 +4,7 @@ import 'package:gais/data/model/pool_car/pool_car_model.dart';
 import 'package:gais/data/repository/pool_car/pool_car_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/util/enum/role_enum.dart';
+import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,7 @@ class PoolCarDetailController extends BaseController {
 
   void initData() async{
     String codeRole = await storage.readString(StorageCore.codeRole);
-    showP2H.value = codeRole == RoleEnum.driver.value;
+    showP2H.value = codeRole == RoleEnum.driver.value || selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value;
 
     setValue();
 

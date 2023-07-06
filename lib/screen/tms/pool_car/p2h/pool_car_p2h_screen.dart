@@ -22,17 +22,8 @@ import 'package:gais/util/input_formatter/min_value_text_input_formatter.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-class PoolCarP2HScreen extends StatefulWidget {
+class PoolCarP2HScreen extends StatelessWidget {
   const PoolCarP2HScreen({Key? key}) : super(key: key);
-
-  @override
-  State<PoolCarP2HScreen> createState() =>
-      _PoolCarP2HScreenState();
-}
-
-class _PoolCarP2HScreenState
-    extends State<PoolCarP2HScreen> {
-  bool _isButtonEnabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +49,7 @@ class _PoolCarP2HScreenState
             key: controller.formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             onChanged: () {
-              setState(() {
-                _isButtonEnabled =
-                    controller.formKey.currentState!.validate();
-              });
+              controller.updateButton();
             },
             child: Container(
               width: double.infinity,
@@ -105,68 +93,72 @@ class _PoolCarP2HScreenState
                   ),
 
 
-
                   Obx(() {
-                    if(controller.listCheckItem.isEmpty){
+                    if (controller.listCheckItem.isEmpty) {
                       return const SizedBox();
                     }
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: controller.listCheckItem.mapIndexed(
-                        (index, element){
-                          if(element.isHeader != null){
-                            if(element.isHeader! == 1){
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8),
-                                child: RichText(
-                                  text: TextSpan(
-                                    text: "${element.headerName}",
-                                    style: formlabelTextStyle,
-                                    children: const <TextSpan>[
-                                      TextSpan(
-                                          text: "*",
-                                          style: TextStyle(color: Colors.red)),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }else{
-                              return const SizedBox();
-                            }
-                          }else if(element.fillable == 1){
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${element.detailName}",
-                                    style: listTitleTextStyle.copyWith(
-                                      fontWeight: FontWeight.w500
+                              (index, element) {
+                            if (element.isHeader != null) {
+                              if (element.isHeader! == 1) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: "${element.headerName}",
+                                      style: formlabelTextStyle,
+                                      children: const <TextSpan>[
+                                        TextSpan(
+                                            text: "*",
+                                            style: TextStyle(
+                                                color: Colors.red)),
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 16,
-                                  ),
-                                  CustomRadioGroup<int>(
-                                    listLabel: element.choices!.map((e) => e.text!).toList(),
-                                    listValue: element.choices!.map((e) => e.value!).toList(),
-                                    onChanged: (value){
-                                      controller.updateChecklistValue(index, value);
-                                    },
-                                    selectedValue: element.value!,
-                                  )
-                                ],
-                              ),
-                            );
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            } else if (element.fillable == 1) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 8),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${element.detailName}",
+                                      style: listTitleTextStyle.copyWith(
+                                          fontWeight: FontWeight.w500
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 16,
+                                    ),
+                                    CustomRadioGroup<int>(
+                                      listLabel: element.choices!.map((e) =>
+                                      e.text!).toList(),
+                                      listValue: element.choices!.map((e) =>
+                                      e.value!).toList(),
+                                      onChanged: (value) {
+                                        controller.updateChecklistValue(
+                                            index, value);
+                                      },
+                                      selectedValue: element.value!,
+                                    )
+                                  ],
+                                ),
+                              );
+                            }
+                            return const SizedBox();
                           }
-                          return const SizedBox();
-                        }
                       ).toList(),
                     );
                   }),
-
 
 
                   const SizedBox(
@@ -186,30 +178,37 @@ class _PoolCarP2HScreenState
                     height: 64,
                   ),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size(100, 40),
-                        ),
-                        child: Text("Cancel".tr),
-                      ),
-                      ElevatedButton(
-                        onPressed: _isButtonEnabled
-                            ? () {
-                          controller.saveData();
-                        }
-                            : null,
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: successColor),
-                        child: Text("Save".tr),
-                      ),
-                    ],
-                  ),
+                  Obx(() {
+                    if(controller.showButton.value){
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          OutlinedButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            style: OutlinedButton.styleFrom(
+                              minimumSize: const Size(100, 40),
+                            ),
+                            child: Text("Cancel".tr),
+                          ),
+                          ElevatedButton(
+                            onPressed: controller.enableButton.value
+                                ? () {
+                              controller.saveData();
+                            }
+                                : null,
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: successColor),
+                            child: Text("Save".tr),
+                          ),
+                        ],
+                      );
+                    }
+
+                    return SizedBox();
+                  }),
+
                   const SizedBox(
                     height: 16,
                   ),
