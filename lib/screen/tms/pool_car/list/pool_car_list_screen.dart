@@ -213,10 +213,11 @@ class PoolCarListScreen extends StatelessWidget {
                               title: "View".tr,
                               iconData: IconlyBold.show,
                               onPressed: () {
-                                Get.to(
-                                        () =>
+                                Get.to(() =>
                                     const PoolCarDetailScreen(),
-                                    arguments: {"item": item});
+                                    arguments: {"item": item}
+                                )?.then((value) =>
+                                    controller.getHeader());
                               },
                             )
                           ],
