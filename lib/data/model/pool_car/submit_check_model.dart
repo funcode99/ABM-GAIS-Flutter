@@ -9,7 +9,7 @@ class SubmitCheckModel {
   int? idPoolCar;
   int? odometer;
   int? isUsable;
-  String? note;
+  String? notes;
   List<SubmitCheckDataModel>? data;
 
   SubmitCheckModel(
@@ -18,7 +18,7 @@ class SubmitCheckModel {
         this.odometer,
         this.isUsable,
         this.data,
-        this.note,
+        this.notes,
       });
 
   static SubmitCheckModel fromJsonModel(Object? json) =>

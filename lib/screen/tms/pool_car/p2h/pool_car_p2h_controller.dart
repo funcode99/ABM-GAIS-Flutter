@@ -75,7 +75,6 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
       odometer = r.dataExisting?.odometer.toString() ?? "";
       note = r.dataExisting?.notes ?? "";
       isUsable.value = r.dataExisting?.isUsable == null ? true :  r.dataExisting?.isUsable == 1;
-      print("r.dataExisting?.isUsable ${r.dataExisting?.isUsable}");
 
       setValue();
     });
@@ -86,9 +85,9 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
     plateController.text = selectedItem.value.plate ?? "-";
     driverNameController.text = selectedItem.value.driverName ?? "-";
     if(!showButton.value){
-      noteController.text = selectedItem.value.note ?? "-";
+      noteController.text = note.isNotEmpty ? note : "-";
     }else{
-      noteController.text = selectedItem.value.note ?? "";
+      noteController.text = note.isNotEmpty ? note : "";
     }
   }
 
@@ -108,8 +107,8 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
     SubmitCheckModel submitCheckModel = SubmitCheckModel(
         idPoolCar: selectedItem.value.id,
         odometer: odometerController.text.toInt(),
-        isUsable: 1,
-        note: noteController.text,
+        isUsable: isUsable.value ? 1 : 0,
+        notes: noteController.text,
         data:data
     );
 
