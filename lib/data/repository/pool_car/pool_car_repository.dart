@@ -92,9 +92,21 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
   }
 
   @override
-  Future<Either<BaseError, PoolCarModel>> submitData(int id) {
-    // TODO: implement submitData
-    throw UnimplementedError();
+  Future<Either<BaseError, PoolCarModel>> submitData(int id) async{
+    try {
+      Dio.Response response = await network.dio.post(
+        '/api/pool_car/update_status/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PoolCarModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on Dio.DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
