@@ -77,9 +77,26 @@ class BookingMeetingRoomRepository
   }
 
   @override
-  Future<Either<BaseError, BookingMeetingRoomModel>> saveData(model) {
-    // TODO: implement saveData
-    throw UnimplementedError();
+  Future<Either<BaseError, BookingMeetingRoomModel>> saveData(model) async{
+    final bookingMeetingRoomModel = model as BookingMeetingRoomModel;
+
+    var formData = Dio.FormData.fromMap(bookingMeetingRoomModel.toJson());
+
+    try {
+      Dio.Response response = await network.dio.post(
+          '/api/book_meeting_room/store/',
+          data: formData
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, BookingMeetingRoomModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
