@@ -43,6 +43,7 @@ class FormDocumentDeliveryController extends BaseController {
   void onInit() {
     super.onInit();
     Future.wait([fetchEdit(), fetchList()]);
+    print('ddID : $ddID');
   }
 
   Future<void> fetchList() async {

@@ -13,6 +13,6 @@ void main() {
 
   WidgetsFlutterBinding.ensureInitialized();
   GlobalBinding().dependencies();
-  runApp(const gais());
+  runApp(const Gais());
 
 }

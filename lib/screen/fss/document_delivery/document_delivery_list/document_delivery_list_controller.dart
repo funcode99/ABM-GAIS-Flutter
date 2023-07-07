@@ -14,7 +14,7 @@ class DocumentDeliveryListController extends BaseController {
   final formKey = GlobalKey<FormState>();
   final TextEditingController dateRange = TextEditingController();
   final TextEditingController seacrch = TextEditingController();
-
+  final keyword = "".obs;
 
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   DateFormat rangeFormat = DateFormat("yyyy-MM-dd");
@@ -36,7 +36,7 @@ class DocumentDeliveryListController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    Future.wait([fetchData(), fetchList()]);
+    Future.wait([fetchData(), fetchList(1)]);
   }
 
   @override
@@ -55,6 +55,13 @@ class DocumentDeliveryListController extends BaseController {
     print(filterStatus);
   }
 
+  void clearSearch(String search) {
+    keyword(search);
+    currentPage = 1;
+    fetchList(1);
+    update();
+  }
+
   Future<void> fetchData() async {
     await storage.readEmployeeInfo().then((value) {
       requestorID = value.first.id?.toInt();
@@ -70,13 +77,13 @@ class DocumentDeliveryListController extends BaseController {
     });
   }
 
-  Future<void> fetchList() async {
+  Future<void> fetchList(int page) async {
     ddList = [];
     isLoading = true;
     try {
       var response = await documentDelivery.getList(
         perPage,
-        currentPage,
+        page,
         searchValue,
         startDate,
         endDate,
@@ -113,7 +120,7 @@ class DocumentDeliveryListController extends BaseController {
           duration: Duration(seconds: 3),
           backgroundColor: greenColor,
         ));
-        fetchList();
+        fetchList(currentPage);
       });
       isLoading = false;
       update();

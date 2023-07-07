@@ -1,4 +1,3 @@
-import 'package:gais/data/model/request_atk/request_atk_detail_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'booking_meeting_room_model.g.dart';

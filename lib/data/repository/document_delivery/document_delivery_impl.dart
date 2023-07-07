@@ -43,6 +43,7 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
     search.printInfo(info: "search");
     startDate.printInfo(info: "star date");
     endDate.printInfo(info: "end date");
+    codeStatusDoc.printInfo(info: "filter");
     try {
       Response response = await network.dio.get(
         "/api/employee_doc_delivery/get",
@@ -58,7 +59,8 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
       GetDocumentDeliveryModel.fromJson(response.data).data?.total.printInfo();
       return GetDocumentDeliveryModel.fromJson(response.data);
     } on DioError catch (e) {
-      return e.error;
+      print("response error: ${e.response?.data}");
+      return e.response?.data;
     }
   }
 

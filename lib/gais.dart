@@ -6,8 +6,8 @@ import 'package:gais/screen/auth/login/login_screen.dart';
 import 'package:gais/util/lang/app_translation.dart';
 import 'package:get/get.dart';
 
-class gais extends StatelessWidget {
-  const gais({Key? key}) : super(key: key);
+class Gais extends StatelessWidget {
+  const Gais({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

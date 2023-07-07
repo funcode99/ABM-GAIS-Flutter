@@ -7,6 +7,7 @@ class ImageConstant{
   static const String locationTick = "assets/icons/location-tick.svg";
   static const String calendarTick = "assets/icons/calendar-tick.svg";
   static const String car = "assets/icons/car.svg";
+  static const String carEdit = "assets/icons/car-edit.svg";
   static const String airplane = "assets/icons/airplane.svg";
   static const String ticketStar = "assets/icons/Ticket Star.svg";
   static const String building = "assets/icons/building.svg";

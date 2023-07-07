@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:gais/data/model/api_response_error_model.dart';
 import 'package:gais/data/model/employee_info_model.dart';
 import 'package:gais/data/model/login_model.dart';
 import 'package:gais/data/model/reference/get_city_model.dart';
@@ -69,8 +68,6 @@ class RepositoryImpl implements Repository {
       );
       return LoginModel.fromJson(response.data);
     } on DioError catch (e) {
-      // debugPrint("error login : ${LoginModel.fromJson(e?.response?.data)}");
-      print("response error: ${e.response?.data}");
       return e.response?.data!;
     }
   }
@@ -103,7 +100,6 @@ class RepositoryImpl implements Repository {
       RequestTripListModel.fromJson(response.data).data?.total.printInfo(info: "=> response info");
       return RequestTripListModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return RequestTripListModel.fromJson(e.response?.data);
     }
   }
@@ -118,7 +114,6 @@ class RepositoryImpl implements Repository {
       );
       return GetRequestTripByidModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -133,7 +128,6 @@ class RepositoryImpl implements Repository {
       );
       return EmployeeInfoModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -148,7 +142,6 @@ class RepositoryImpl implements Repository {
       );
       return GetDocumentCodeModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -163,7 +156,6 @@ class RepositoryImpl implements Repository {
       );
       return GetCityModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -178,7 +170,6 @@ class RepositoryImpl implements Repository {
       );
       return GetZonaByidModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -193,7 +184,6 @@ class RepositoryImpl implements Repository {
       );
       return GetSiteModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -208,7 +198,6 @@ class RepositoryImpl implements Repository {
       );
       return GetSiteModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -223,7 +212,6 @@ class RepositoryImpl implements Repository {
       );
       return GetHotelModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -238,7 +226,6 @@ class RepositoryImpl implements Repository {
       );
       return GetCurrencyModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -253,7 +240,6 @@ class RepositoryImpl implements Repository {
       );
       return GetTlkJobModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -268,7 +254,6 @@ class RepositoryImpl implements Repository {
       );
       return GetTravellerTypeModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -283,7 +268,6 @@ class RepositoryImpl implements Repository {
       );
       return GetEmployeeModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -298,7 +282,6 @@ class RepositoryImpl implements Repository {
       );
       return GetEmployeeModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -313,7 +296,6 @@ class RepositoryImpl implements Repository {
       );
       return GetDepartmentModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -328,7 +310,6 @@ class RepositoryImpl implements Repository {
       );
       return GetCompanyModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -343,7 +324,6 @@ class RepositoryImpl implements Repository {
       );
       return GetFlightClassModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -358,7 +338,6 @@ class RepositoryImpl implements Repository {
       );
       return GetStatusDocumentModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -374,7 +353,6 @@ class RepositoryImpl implements Repository {
       GetJobBandModel.fromJson(response.data).success.printInfo();
       return GetJobBandModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -424,7 +402,7 @@ class RepositoryImpl implements Repository {
       return SavePurposeOfTripModel.fromJson(response.data);
     } on DioError catch (e) {
       // e.error.printError();
-      print("response error: ${e.response?.data}");
+
       return e.response?.data;
       // return e.error;
       // throw Exception();
@@ -477,7 +455,6 @@ class RepositoryImpl implements Repository {
       );
       return UpdatePurposeOfTripModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return UpdatePurposeOfTripModel.fromJson(e.message);
       // return e.error;
       // throw Exception();
@@ -523,7 +500,6 @@ class RepositoryImpl implements Repository {
       );
       return SaveTravellerGuestModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -568,7 +544,6 @@ class RepositoryImpl implements Repository {
       );
       return UpdateTravellerGuestModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -583,7 +558,6 @@ class RepositoryImpl implements Repository {
       );
       return GetGuestBytripModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -598,7 +572,6 @@ class RepositoryImpl implements Repository {
       );
       return GetGuestByidModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -613,7 +586,6 @@ class RepositoryImpl implements Repository {
       );
       return response.data;
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -649,7 +621,6 @@ class RepositoryImpl implements Repository {
       );
       return SaveTaxiVoucherModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -686,7 +657,6 @@ class RepositoryImpl implements Repository {
       );
       return UpdateTaxiVoucherModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -701,7 +671,6 @@ class RepositoryImpl implements Repository {
       );
       return GetTaxiVoucherModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -716,7 +685,6 @@ class RepositoryImpl implements Repository {
       );
       return GetTaxiVoucherModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -731,7 +699,6 @@ class RepositoryImpl implements Repository {
       );
       return response.data;
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -746,7 +713,6 @@ class RepositoryImpl implements Repository {
       );
       return response.data;
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -761,7 +727,6 @@ class RepositoryImpl implements Repository {
       );
       return StatusDocumentModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -792,7 +757,6 @@ class RepositoryImpl implements Repository {
       );
       return SaveAirlinesModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -824,7 +788,6 @@ class RepositoryImpl implements Repository {
       );
       return UpdateAirlinessModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -839,7 +802,6 @@ class RepositoryImpl implements Repository {
       );
       return response.data;
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -854,7 +816,6 @@ class RepositoryImpl implements Repository {
       );
       return GetAirlinessVendorModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -869,7 +830,6 @@ class RepositoryImpl implements Repository {
       );
       return GetAirlinessScheduleModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -884,7 +844,6 @@ class RepositoryImpl implements Repository {
       );
       return GetAirlinessModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -899,7 +858,6 @@ class RepositoryImpl implements Repository {
       );
       return GetAirlinessModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -934,7 +892,6 @@ class RepositoryImpl implements Repository {
       );
       return SaveOtherTransportationModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -970,7 +927,6 @@ class RepositoryImpl implements Repository {
       );
       return UpdateOtherTransportModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -985,7 +941,6 @@ class RepositoryImpl implements Repository {
       );
       return GetOtherTransportModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1000,7 +955,6 @@ class RepositoryImpl implements Repository {
       );
       return GetOtherTransportModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1015,7 +969,6 @@ class RepositoryImpl implements Repository {
       );
       return GetTypeTransportationModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1030,7 +983,6 @@ class RepositoryImpl implements Repository {
       );
       return response.data;
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1045,7 +997,6 @@ class RepositoryImpl implements Repository {
       );
       return response.data;
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1060,7 +1011,6 @@ class RepositoryImpl implements Repository {
       );
       return GetAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1075,7 +1025,6 @@ class RepositoryImpl implements Repository {
       );
       return GetAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1118,7 +1067,6 @@ class RepositoryImpl implements Repository {
       );
       return SaveAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1162,7 +1110,6 @@ class RepositoryImpl implements Repository {
       );
       return UpdateAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1177,7 +1124,6 @@ class RepositoryImpl implements Repository {
       );
       return GetHotelTypeModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1193,7 +1139,6 @@ class RepositoryImpl implements Repository {
       GetCashAdvanceTravelModel.fromJson(response.data).data?.first.noCa.printInfo();
       return GetCashAdvanceTravelModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error cash advance: ${e.response?.data}");
       return e.response?.data;
     }
   }
@@ -1208,7 +1153,6 @@ class RepositoryImpl implements Repository {
       );
       return GetCashAdvanceByidModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1223,7 +1167,6 @@ class RepositoryImpl implements Repository {
       );
       return GetDetailcaBycashidModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1238,7 +1181,6 @@ class RepositoryImpl implements Repository {
       );
       return GetCashAdvanceTravelModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1255,7 +1197,7 @@ class RepositoryImpl implements Repository {
     } on DioError catch (e) {
       e.printError();
       SubmitRequestTripModel.fromJson(e.response?.data).message.printError();
-      print("response error: ${e.response?.data}");
+
       return SubmitRequestTripModel.fromJson(e.response?.data);
     }
   }
@@ -1288,7 +1230,6 @@ class RepositoryImpl implements Repository {
       );
       return UpdateCashAdvanceTravelModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error: ${e.response?.data}");
       e.error.printError();
       return e.error;
     }

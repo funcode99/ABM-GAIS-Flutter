@@ -41,7 +41,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: RefreshIndicator(
                 onRefresh: () async {
-                  controller.fetchList();
+                  controller.fetchList(controller.currentPage);
                   controller.update();
                 },
                 child: CustomScrollView(
@@ -59,13 +59,18 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                 onSubmit: (value) {
                                   controller.searchValue = value;
                                   controller.filterStatus = "-1";
-                                  controller.fetchList();
+                                  controller.fetchList(1);
+                                },
+                                onClearFilter: () {
+                                  controller.clearSearch("");
+                                  controller.searchValue = "";
+                                  controller.fetchList(1);
                                 },
                                 onPressedFilter: () {
                                   Get.bottomSheet(StatefulBuilder(builder: (context, setState) {
                                     return FilterBottomSheet(
                                       onApplyFilter: () {
-                                        controller.fetchList();
+                                        controller.fetchList(1);
                                         controller.update();
                                         Get.back();
                                       },
@@ -143,7 +148,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                 colorPrimary: infoColor,
                                 onPageChanged: (int pageNumber) {
                                   controller.currentPage = pageNumber;
-                                  controller.fetchList();
+                                  controller.fetchList(controller.currentPage);
                                   controller.update();
                                 },
                                 threshold: 5,
@@ -180,7 +185,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                       'id': controller.ddList[index].id?.toInt(),
                                     },
                                   )?.then((value) {
-                                    controller.fetchList();
+                                    controller.fetchList(controller.currentPage);
                                     controller.update();
                                   }),
                                   isDelete: controller.ddList[index].codeStatusDoc == 3 ? false : true,
@@ -243,7 +248,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
               child: Icon(Icons.add_rounded, size: 45),
               backgroundColor: successColor,
               onPressed: () => Get.to(AddDocumentDeliveryScreen())?.then((value) {
-                controller.fetchList();
+                controller.fetchList(1);
                 controller.update();
               }),
             ),
