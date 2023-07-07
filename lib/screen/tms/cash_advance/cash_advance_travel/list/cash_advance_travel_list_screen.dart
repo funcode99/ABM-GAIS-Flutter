@@ -135,7 +135,7 @@ class _CashAdvanceTravelListScreenState
                           ...controller.listHeader
                               .mapIndexed((index, item) => CommonListItem(
                                     number:
-                                        "${((controller.currentPage.value - 1) * 10) + (index + 1)}",
+                                        "${((controller.currentPage.value - 1) *  controller.limit) + (index + 1)}",
                                     title: item.noCa ?? "-",
                                     subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                     total:

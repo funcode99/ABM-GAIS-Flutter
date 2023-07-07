@@ -15,6 +15,7 @@ import 'package:gais/screen/menu/menu_controller.dart';
 import 'package:gais/screen/menu/poolcar_menu_screen.dart';
 import 'package:gais/screen/menu/submenu_screen.dart';
 import 'package:gais/screen/receptionist/list/list_document_delivery_screen.dart';
+import 'package:gais/screen/tms/pool_car/list/pool_car_list_screen.dart';
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -92,7 +93,7 @@ class MenuScreen extends StatelessWidget {
                                   ),
                                   onTap: () => controller.approvalAuth
                                       ? Get.to(() => const PoolcarMenuScreen(), arguments: false)
-                                      : null, // null untuk navigate yang bukan super admin/admin
+                                      : Get.to(() => const PoolCarListScreen(), arguments: false) // null untuk navigate yang bukan super admin/admin
                                 ),
                                 GestureDetector(
                                   child: Column(

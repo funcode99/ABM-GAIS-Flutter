@@ -104,7 +104,7 @@ class DetailBookingMeetingRoomController extends BaseController
             id: "",
             capacity: 0,
             floor: 0,
-            roomName: "Meeting Room"
+            nameMeetingRoom: "Meeting Room"
         )
     );
     for (int i = 0; i<10; i++){
@@ -113,7 +113,7 @@ class DetailBookingMeetingRoomController extends BaseController
               id: i,
               capacity: (i + 1) * 10,
               floor: i + 1,
-              roomName: "Room Number $i"
+              nameMeetingRoom: "Room Number $i"
           )
       );
     }
@@ -162,7 +162,7 @@ class DetailBookingMeetingRoomController extends BaseController
     if(selected.id != ""){
       floorController.text = selected.floor.toString();
       capacityController.text = selected.capacity.toString();
-      meetingRoomController.text = selected.roomName.toString();
+      meetingRoomController.text = selected.nameMeetingRoom.toString();
     }else{
       floorController.text = "";
       capacityController.text = "";

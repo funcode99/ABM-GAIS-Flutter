@@ -33,7 +33,9 @@ BookingMeetingRoomModel _$BookingMeetingRoomModelFromJson(
       updatedAt: json['updated_at'] as String?,
       updatedBy: json['updated_by'],
       deletedAt: json['deleted_at'] as String?,
-      participant: json['participant'] as int?,
+      participant: (json['participant'] as List<dynamic>?)
+          ?.map((e) => e as int)
+          .toList(),
       nameMeetingRoom: json['name_meeting_room'] as String?,
       employeeName: json['employee_name'] as String?,
       companyName: json['company_name'] as String?,

@@ -85,6 +85,12 @@ class LanguageID{
       "Request failed to be approved!" : "Request failed to be approved!",
       "The request was successfully rejected!" : "The request was successfully rejected!",
       "Request failed to be rejected!" : "Request failed to be rejected!",
+      "Pool Car Request" : "Pool Car Request",
+      "Driver" : "Driver",
+      "To Date" : "To Date",
+      "From Date" : "From Date",
+      "Formulir P2H" : "Formulir P2H",
+      "No Plat Kendaraan" : "No Plat Kendaraan",
     };
   }
 }
