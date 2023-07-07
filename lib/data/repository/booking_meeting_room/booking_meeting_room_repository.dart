@@ -80,10 +80,12 @@ class BookingMeetingRoomRepository
   Future<Either<BaseError, BookingMeetingRoomModel>> saveData(model) async{
     final bookingMeetingRoomModel = model as BookingMeetingRoomModel;
 
+    var formData = Dio.FormData.fromMap(bookingMeetingRoomModel.toJson());
+
     try {
       Dio.Response response = await network.dio.post(
           '/api/book_meeting_room/store/',
-          data: bookingMeetingRoomModel.toJson()
+          data: formData
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, BookingMeetingRoomModel.fromJsonModel);
       return right(apiResponseModel.data);
