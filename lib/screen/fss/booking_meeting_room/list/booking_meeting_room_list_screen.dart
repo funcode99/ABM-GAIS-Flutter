@@ -18,6 +18,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/list/booking_meeting_room_list_controller.dart';
+import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -254,7 +255,7 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                action: item.codeStatusDoc == 0 ? [
+                                action: item.codeStatusDoc == BookingMeetingRoomEnum.draft.value ? [
                                   CustomIconButton(
                                     title: "Edit".tr,
                                     iconData: IconlyBold.edit,
@@ -272,8 +273,9 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                     backgroundColor: redColor,
                                     onPressed: () {
                                       Get.dialog(DeleteConfirmationDialog(
-                                        onDeletePressed: (){
-                                          Get.back();
+                                        onDeletePressed: () {
+                                          Get.close(1);
+                                          controller.deleteHeader(item);
                                         },
                                       ));
                                     },

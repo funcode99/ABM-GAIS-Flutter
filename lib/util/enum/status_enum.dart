@@ -60,3 +60,14 @@ enum PoolCarEnum {
 
   final int value;
 }
+
+enum BookingMeetingRoomEnum {
+  draft(0),
+  booked(1),
+  done(10),
+  cancelled(9);
+
+  const BookingMeetingRoomEnum(this.value);
+
+  final int value;
+}
