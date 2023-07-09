@@ -1,3 +1,4 @@
+import 'package:gais/data/model/booking_meeting_room/participant_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'booking_meeting_room_model.g.dart';
@@ -28,7 +29,8 @@ class BookingMeetingRoomModel {
   String? updatedAt;
   dynamic updatedBy;
   String? deletedAt;
-  final List<int>? participant;
+  String? participant;
+  List<ParticipantModel>? participantArray;
   String? nameMeetingRoom;
   String? employeeName;
   String? companyName;
@@ -63,7 +65,7 @@ class BookingMeetingRoomModel {
         this.updatedAt,
         this.updatedBy,
         this.deletedAt,
-        this.participant,
+        this.participantArray,
         this.nameMeetingRoom,
         this.employeeName,
         this.companyName,
@@ -71,6 +73,7 @@ class BookingMeetingRoomModel {
         this.siteName,
         this.siteCode,
         this.status,
+        this.participant,
       });
 
   static BookingMeetingRoomModel fromJsonModel(Object? json) =>

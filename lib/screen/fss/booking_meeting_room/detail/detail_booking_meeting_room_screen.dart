@@ -6,6 +6,7 @@ import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
+import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
@@ -99,7 +100,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                         children: [
                           OutlinedButton(
                             onPressed: () {
-                              controller.updateOnEdit();
+                              // controller.updateOnEdit();
                             },
                             style: OutlinedButton.styleFrom(
                               minimumSize: const Size(75, 30),
@@ -115,7 +116,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                               ? ElevatedButton(
                             onPressed: controller.enableButton.value
                                 ? () {
-                              controller.onEdit(false);
+                              // controller.onEdit(false);
                             }
                                 : null,
                             style: ElevatedButton.styleFrom(
@@ -344,7 +345,6 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                           ),
 
                           Obx(() {
-                            print("TESTING");
                             return Container(
                               width: double.infinity,
                               padding: const EdgeInsets.symmetric(
@@ -360,7 +360,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                               ),
                               child: Obx(() {
                                 if (controller.onEdit.value) {
-                                  return Autocomplete<String>(
+                                  return Autocomplete<EmployeeModel>(
                                     optionsViewBuilder: (context, onSelected,
                                         options) {
                                       return Container(
@@ -379,8 +379,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                                 itemBuilder: (
                                                     BuildContext context,
                                                     int index) {
-                                                  final dynamic option =
-                                                  options.elementAt(index);
+                                                  final EmployeeModel option = options.elementAt(index);
                                                   return TextButton(
                                                     onPressed: () {
                                                       onSelected(option);
@@ -393,7 +392,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                                             .symmetric(
                                                             vertical: 0.0),
                                                         child: Text(
-                                                          "$option",
+                                                          "${option.employeeName}",
                                                           textAlign: TextAlign
                                                               .left,
                                                           style: listSubTitleTextStyle
@@ -414,18 +413,14 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                     optionsBuilder: (
                                         TextEditingValue textEditingValue) {
                                       if (textEditingValue.text == '') {
-                                        return const Iterable<String>.empty();
+                                        return const Iterable<EmployeeModel>.empty();
                                       }
-                                      return controller.emails.where((
-                                          String option) {
-                                        return option
-                                            .contains(
-                                            textEditingValue.text.toLowerCase());
+                                      return controller.listEmployee.where((EmployeeModel option) {
+                                        return option.employeeName!.contains(textEditingValue.text.toLowerCase()) || option.email!.contains(textEditingValue.text.toLowerCase());
                                       });
                                     },
-                                    onSelected: (String selectedTag) {
-                                      controller.listSelectedEmails.add(
-                                          selectedTag);
+                                    onSelected: (EmployeeModel selected) {
+                                      controller.listSelectedEmployee.add(selected);
                                       controller.autocompleteController.text = "";
                                     },
                                     fieldViewBuilder: (context, ttec, tfn,
@@ -436,7 +431,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                           runSpacing: 8,
                                           runAlignment: WrapAlignment.center,
                                           children: [
-                                            ...controller.listSelectedEmails
+                                            ...controller.listSelectedEmployee
                                                 .mapIndexed((index, item) =>
                                                 Container(
                                                   decoration: const BoxDecoration(
@@ -458,7 +453,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                                     children: [
                                                       InkWell(
                                                         child: Text(
-                                                          item,
+                                                          item.employeeName ?? "",
                                                           style: listSubTitleTextStyle,
                                                         ),
                                                         onTap: () {
@@ -473,11 +468,8 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                                           color: greyColor,
                                                         ),
                                                         onTap: () {
-                                                          controller
-                                                              .deleteParticipantItem(
-                                                              item);
-                                                          controller
-                                                              .updateButton();
+                                                          controller.deleteParticipantItem(item);
+                                                          controller.updateButton();
                                                         },
                                                       )
                                                     ],
@@ -491,13 +483,11 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                                 focusNode: tfn,
                                                 validator: (value) {
                                                   controller.showParticipantError(
-                                                      controller
-                                                          .listSelectedEmails
+                                                      controller.listSelectedEmployee
                                                           .isEmpty);
 
-                                                  if (controller
-                                                      .listSelectedEmails
-                                                      .isEmpty) {
+                                                  if(controller.listSelectedEmployee
+                                                      .isEmpty){
                                                     return "";
                                                   }
                                                   return null;
@@ -531,8 +521,8 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                 return Wrap(
                                     runSpacing: 8,
                                     runAlignment: WrapAlignment.center,
-                                    children: controller.listSelectedEmails
-                                        .map((String email) {
+                                    children: controller.listSelectedEmployee
+                                        .map((EmployeeModel item) {
                                       return Container(
                                         decoration: const BoxDecoration(
                                           borderRadius: BorderRadius
@@ -557,7 +547,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                           children: [
                                             InkWell(
                                               child: Text(
-                                                email,
+                                                item.employeeName ?? "",
                                                 style: listSubTitleTextStyle,
                                               ),
                                               onTap: () {

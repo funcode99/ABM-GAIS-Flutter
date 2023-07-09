@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
+import 'package:gais/data/model/booking_meeting_room/participant_model.dart';
+import 'package:gais/data/model/master/company/company_model.dart';
+import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/model/master/room/room_model.dart';
+import 'package:gais/data/model/master/site/site_model.dart';
+import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
@@ -21,6 +27,8 @@ class DetailBookingMeetingRoomController extends BaseController
   final TextEditingController participantController = TextEditingController();
   final TextEditingController linkController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
+  final TextEditingController siteController = TextEditingController();
+  final TextEditingController companyController = TextEditingController();
   late TextEditingController autocompleteController;
 
   TextfieldTagsController textfieldTagsController = TextfieldTagsController();
@@ -41,86 +49,60 @@ class DetailBookingMeetingRoomController extends BaseController
   final listRoom = <RoomModel>[].obs;
   final selectedRoom = Rxn<RoomModel>();
 
+  final listCompany = <CompanyModel>[].obs;
+  final selectedCompany = Rxn<CompanyModel>();
+
+  final listSite = <SiteModel>[].obs;
+  final selectedSite = Rxn<SiteModel>();
+
+  final listEmployee = <EmployeeModel>[].obs;
+  final selectedEmployee = Rxn<EmployeeModel>();
+  final listSelectedEmployee = <EmployeeModel>[].obs;
+
   final selectedItem = BookingMeetingRoomModel().obs;
 
+  final BookingMeetingRoomRepository _repository = Get.find();
 
-  final List<String> emails = [
-    "Kaitlyn Beck",
-    "Eduardo Pearson",
-    "Kiara Hendricks",
-    "Dash Lawson",
-    "Phoebe Miranda",
-    "Rory Dejesus",
-    "Julissa Macdonald",
-    "Hugh Bond",
-    "Alena Stein",
-    "Creed Garner",
-    "Jacqueline Harrington",
-    "Omari Stafford",
-    "Bridget Ortega",
-    "Kobe Owens",
-    "Amaya Lim",
-    "Cal Hammond",
-    "Holly Rosas",
-    "Remi Gillespie",
-    "Alianna Vazquez",
-    "Jesse Sherman",
-    "Addilyn Daniel",
-    "Grady Abbott",
-    "Melany Reynolds",
-    "Vincent Erickson",
-    "Sabrina Orozco",
-    "Keanu Mann",
-    "Paislee Madden",
-    "Everest Cuevas",
-    "Adele Bryant",
-    "Jonah Branch",
-    "Luisa Cisneros",
-    "Alden Barber",
-    "Cassidy Rasmussen",
-    "Will Rosario",
-    "Louisa Blake",
-    "Zyaire Norman",
-    "Malani Barry",
-  ];
-
-
-  final listSelectedEmails = <String>[].obs;
   final showParticipantError = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    final temp = <RoomModel>[];
-    temp.add(
-        RoomModel(
-            id: "",
-            capacity: 0,
-            floor: 0,
-            nameMeetingRoom: "Meeting Room"
-        )
-    );
-    for (int i = 0; i<10; i++){
-      temp.add(
-          RoomModel(
-              id: i,
-              capacity: (i + 1) * 10,
-              floor: i + 1,
-              nameMeetingRoom: "Room Number $i"
-          )
-      );
-    }
-    listRoom.addAll(temp);
-    onChangeSelectedRoom("");
   }
 
   @override
   void onReady() {
     super.onReady();
     initData();
+    detailHeader();
   }
 
   void initData()async{
+    String companyName = await storage.readString(StorageCore.companyName);
+    String siteName = await storage.readString(StorageCore.siteName);
+    String idSite = await storage.readString(StorageCore.siteID);
+    companyController.text = companyName;
+    siteController.text = siteName;
+
+    listCompany.add(CompanyModel(id: "", companyName: "Company"));
+    final companies = await getListCompany();
+    listCompany.addAll(companies);
+
+    listSite.add(SiteModel(id: "", siteName: "Site"));
+    final sites = await getListSite();
+    listSite.addAll(sites);
+
+    final rooms = await getListRoomBySite(idSite.toInt());
+    listRoom.addAll(rooms);
+    onChangeSelectedRoom("");
+
+    final employees = await getListEmployee();
+    listEmployee.addAll(employees);
+
+    setValue();
+  }
+
+  void setValue() {
     createdByController.text = selectedItem.value.employeeName ?? "-";
     createdAtController.text = selectedItem.value.createdAt?.toDateFormat(
         originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
@@ -132,18 +114,33 @@ class DetailBookingMeetingRoomController extends BaseController
     remarksController.text = selectedItem.value.remarks ?? "";
     meetingRoomController.text = selectedItem.value.nameMeetingRoom ?? "";
 
+    listSelectedEmployee.clear();
+    for(ParticipantModel item in selectedItem.value.participantArray!){
+      listSelectedEmployee.add(EmployeeModel(id: item.idEmployee, employeeName: item.employeeName, email: item.email));
+    }
 
-    /*if(selectedItem.value != null){
-      for(String item in selectedItem.value.participants!){
-        listSelectedEmails.add(item);
-      }
-    }*/
-
-    /*final warehouses = await getListWarehouseByCompanyId(idCompany.toInt());
-    listWarehouse(warehouses);
-    onChangeSelectedWarehouse(managementItemATK.value.idWarehouse.toString());*/
-    onChangeSelectedRoom(selectedItem.value.idMeetingRoom.toString());
   }
+
+  void detailHeader() async {
+    final result = await _repository.detailData(selectedItem.value.id!);
+
+    result.fold((l) {
+      print("ERROR DETAIL HEADER ${l.message}");
+    }, (r) {
+      selectedItem(r);
+      setValue();
+    });
+  }
+
+  /*void submitHeader() async {
+    final result = await _repository.submitData(selectedItem.value.id!);
+    result.fold(
+            (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (cashAdvanceModel) {
+          detailHeader();
+        });
+  }*/
 
   void onChangeSelectedRoom(String id) {
     final selected = listRoom.firstWhere(
@@ -171,8 +168,8 @@ class DetailBookingMeetingRoomController extends BaseController
     onEdit(!onEdit.value);
   }
 
-  void deleteParticipantItem(String item){
-    listSelectedEmails.removeWhere((element) => item == element);
+  void deleteParticipantItem(EmployeeModel item){
+    listSelectedEmployee.removeWhere((element) => item.id == element.id);
   }
 
 }

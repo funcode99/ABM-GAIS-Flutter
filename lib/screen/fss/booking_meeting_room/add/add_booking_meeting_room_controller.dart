@@ -56,48 +56,6 @@ class AddBookingMeetingRoomController extends BaseController
   final selectedEmployee = Rxn<EmployeeModel>();
   final listSelectedEmployee = <EmployeeModel>[].obs;
 
-
-  final List<String> emails = [
-    "Kaitlyn Beck",
-    "Eduardo Pearson",
-    "Kiara Hendricks",
-    "Dash Lawson",
-    "Phoebe Miranda",
-    "Rory Dejesus",
-    "Julissa Macdonald",
-    "Hugh Bond",
-    "Alena Stein",
-    "Creed Garner",
-    "Jacqueline Harrington",
-    "Omari Stafford",
-    "Bridget Ortega",
-    "Kobe Owens",
-    "Amaya Lim",
-    "Cal Hammond",
-    "Holly Rosas",
-    "Remi Gillespie",
-    "Alianna Vazquez",
-    "Jesse Sherman",
-    "Addilyn Daniel",
-    "Grady Abbott",
-    "Melany Reynolds",
-    "Vincent Erickson",
-    "Sabrina Orozco",
-    "Keanu Mann",
-    "Paislee Madden",
-    "Everest Cuevas",
-    "Adele Bryant",
-    "Jonah Branch",
-    "Luisa Cisneros",
-    "Alden Barber",
-    "Cassidy Rasmussen",
-    "Will Rosario",
-    "Louisa Blake",
-    "Zyaire Norman",
-    "Malani Barry",
-  ];
-
-  final listSelectedEmails = <String>[].obs;
   final showParticipantError = false.obs;
 
   final BookingMeetingRoomRepository _repository = Get.find();
@@ -172,7 +130,7 @@ class AddBookingMeetingRoomController extends BaseController
         endTime: endTime.toString(),
         idMeetingRoom: selectedRoom.value?.id,
         session: null,
-        participant: listSelectedEmployee.map((element) => element.id!).toList(),
+        participant: listSelectedEmployee.map((element) => element.id!).toList().toString(),
         link: linkController.text,
         remarks: remarksController.text);
 

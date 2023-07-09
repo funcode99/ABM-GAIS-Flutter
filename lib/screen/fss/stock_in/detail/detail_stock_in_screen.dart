@@ -283,9 +283,9 @@ class DetailStockInScreen extends StatelessWidget {
                                       Get.dialog(
                                           DeleteConfirmationDialog(
                                             onDeletePressed: () {
+                                              Get.close(1);
                                               controller
                                                   .deleteDetail(item);
-                                              Get.close(1);
                                             },
                                           ));
                                     },

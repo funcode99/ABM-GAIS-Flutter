@@ -33,8 +33,8 @@ BookingMeetingRoomModel _$BookingMeetingRoomModelFromJson(
       updatedAt: json['updated_at'] as String?,
       updatedBy: json['updated_by'],
       deletedAt: json['deleted_at'] as String?,
-      participant: (json['participant'] as List<dynamic>?)
-          ?.map((e) => e as int)
+      participantArray: (json['participant_array'] as List<dynamic>?)
+          ?.map((e) => ParticipantModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       nameMeetingRoom: json['name_meeting_room'] as String?,
       employeeName: json['employee_name'] as String?,
@@ -43,6 +43,7 @@ BookingMeetingRoomModel _$BookingMeetingRoomModelFromJson(
       siteName: json['site_name'] as String?,
       siteCode: json['site_code'] as String?,
       status: json['status'] as String?,
+      participant: json['participant'] as String?,
     );
 
 Map<String, dynamic> _$BookingMeetingRoomModelToJson(
@@ -73,6 +74,8 @@ Map<String, dynamic> _$BookingMeetingRoomModelToJson(
       'updated_by': instance.updatedBy,
       'deleted_at': instance.deletedAt,
       'participant': instance.participant,
+      'participant_array':
+          instance.participantArray?.map((e) => e.toJson()).toList(),
       'name_meeting_room': instance.nameMeetingRoom,
       'employee_name': instance.employeeName,
       'company_name': instance.companyName,
