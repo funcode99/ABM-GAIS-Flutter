@@ -99,7 +99,7 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                           SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.odometer,
-                            label: "Odometer",
+                            label: "Odometer (In KM)",
                             isRequired: true,
                           ),
                           SizedBox(height: 8),
@@ -128,7 +128,7 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                               ),
                               DropdownMenuItem(
                                 child: Text("Automatic"),
-                                value: "Auto",
+                                value: "Automatic",
                               ),
                             ],
                             label: "Transmision",
@@ -169,7 +169,6 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                                 .toList(),
                             label: "Driver",
                             value: controller.isEdit ? controller.selectedDriver.text : null,
-                            isRequired: true,
                             onChanged: (value) {
                               controller.driverID = value!.toInt();
                               controller.update();

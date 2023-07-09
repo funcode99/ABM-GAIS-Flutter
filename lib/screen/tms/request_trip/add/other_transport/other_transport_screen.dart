@@ -4,18 +4,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
-import 'package:gais/data/model/request_trip/request_trip_list_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/topbar.dart';
-import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/edit/edit_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_controller.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
-import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
 
 class OtherTransportScreen extends StatelessWidget {

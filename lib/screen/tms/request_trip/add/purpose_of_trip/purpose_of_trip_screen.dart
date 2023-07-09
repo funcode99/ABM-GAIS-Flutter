@@ -1,6 +1,4 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';

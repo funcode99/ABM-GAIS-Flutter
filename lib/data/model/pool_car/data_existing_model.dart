@@ -1,5 +1,3 @@
-import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
-import 'package:gais/data/model/pool_car/submit_check_data_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'data_existing_model.g.dart';

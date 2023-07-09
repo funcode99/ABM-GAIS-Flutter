@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:gais/data/model/reference/get_city_model.dart' as city;
 
 class AddTaxiVoucherController extends BaseController {
   int purposeID = Get.arguments['purposeID'] ?? 1;

@@ -1,15 +1,16 @@
 import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as purpose;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
-import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/screen/tms/request_trip/add/traveller/traveller_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
-import 'package:intl/intl.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class PurposeOfTripController extends BaseController {
   int? requestorID;

@@ -19,8 +19,10 @@ class DetailDocumentDeliveryController extends BaseController {
 
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   int? senderID;
-  int? siteID;
-  int? companyID;
+  int? receiverSiteID;
+  int? receiverCompanyID;
+  int? senderSiteID;
+  int? senderCompanyID;
   int? receiverID;
   int? codeStatusDoc;
   String? selectedReceiver;
@@ -45,10 +47,10 @@ class DetailDocumentDeliveryController extends BaseController {
         selectedReceiver = value.data?.first.idEmployeeReceiver.toString();
         receiverID = value.data?.first.idEmployeeReceiver?.toInt();
         receiverName.text = value.data?.first.receiverName.toString() ?? "";
-        location.text = value.data?.first.siteName ?? "";
-        siteID = value.data?.first.idSite?.toInt();
-        company.text = value.data?.first.companyName ?? "";
-        companyID = value.data?.first.idCompany?.toInt();
+        location.text = value.data?.first.nameSiteReceiver ?? "";
+        receiverSiteID = value.data?.first.idSiteReceiver?.toInt();
+        company.text = value.data?.first.nameCompanyReceiver ?? "";
+        receiverCompanyID = value.data?.first.idCompanyReceiver?.toInt();
         subjectDocument.text = value.data?.first.subject ?? "";
         attachment.text = value.data?.first.attachment ?? "";
         remarks.text = value.data?.first.remarks ?? "";
@@ -76,34 +78,36 @@ class DetailDocumentDeliveryController extends BaseController {
 
   Future<void> saveDocument() async {
     try {
-      await documentDelivery
-          .update(
-        ddID!.toInt(),
-        companyID!.toInt(),
-        senderID!.toInt(),
-        receiverID!.toInt(),
-        siteID!.toInt(),
-        subjectDocument.text,
-        null,
-        remarks.text,
-        codeStatusDoc!.toInt(),
-      )
-          .then((value) {
-        // Get.off(DocumentDeliveryListScreen());
-        print(value.message);
-        isEdit = false;
-        update();
-        const GetSnackBar(
-          icon: Icon(
-            Icons.error,
-            color: Colors.white,
-          ),
-          message: "Update Success",
-          isDismissible: true,
-          duration: Duration(seconds: 3),
-          backgroundColor: Colors.green,
-        );
-      });
+      // await documentDelivery
+      //     .update(
+      //   ddID!.toInt(),
+      //   receiverCompanyID!,
+      //   receiverSiteID!,
+      //   senderID!,
+      //   receiverID!,
+      //   senderCompanyID!,
+      //   senderSiteID!,
+      //   subjectDocument.text,
+      //   gettedFile,
+      //   remarks.text,
+      //   codeStatusDoc!.toInt(),
+      // )
+      //     .then((value) {
+      //   // Get.off(DocumentDeliveryListScreen());
+      //   print(value.message);
+      //   isEdit = false;
+      //   update();
+      //   const GetSnackBar(
+      //     icon: Icon(
+      //       Icons.error,
+      //       color: Colors.white,
+      //     ),
+      //     message: "Update Success",
+      //     isDismissible: true,
+      //     duration: Duration(seconds: 3),
+      //     backgroundColor: Colors.green,
+      //   );
+      // });
     } catch (e, i) {
       e.printError();
       i.printError();

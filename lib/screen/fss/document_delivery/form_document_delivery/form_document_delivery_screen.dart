@@ -9,8 +9,8 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/document_delivery/form_document_delivery/form_document_delivery_controller.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
-import 'package:iconly/iconly.dart';
 
 class FormDocumentDeliveryScreen extends StatelessWidget {
   const FormDocumentDeliveryScreen({Key? key}) : super(key: key);
@@ -307,18 +307,45 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   readOnly: true,
                                 ),
                                 SizedBox(height: 8),
-                                CustomTextFormField(
-                                  controller: controller.company,
+                                SizedBox(height: 8),
+                                CustomDropDownFormField(
                                   label: "Receiver Company",
+                                  hintText: controller.loadCompany ? "Loading..." : "Receiver Company",
                                   isRequired: true,
-                                  readOnly: true,
+                                  items: controller.companyList
+                                      .map((e) => DropdownMenuItem(
+                                    child: Text(e.companyName.toString()),
+                                    value: e.id.toString(),
+                                  ))
+                                      .toList(),
+                                  readOnly: !controller.isEdit,
+                                  selectedItem: controller.receiverCompany,
+                                  value: controller.receiverCompanyID.toString(),
+                                  onChanged: (value) {
+                                    controller.receiverCompanyID = value!.toInt();
+                                    controller.fetchLocationList(value!.toInt());
+                                    controller.update();
+                                  },
                                 ),
                                 SizedBox(height: 8),
-                                CustomTextFormField(
-                                  controller: controller.location,
+                                CustomDropDownFormField(
                                   label: "Location",
+                                  hintText: controller.loadLocation ? "Loading..." : "Location",
                                   isRequired: true,
-                                  readOnly: true,
+                                  items: controller.locationList
+                                      .map((e) => DropdownMenuItem(
+                                    child: Text(e.siteName.toString()),
+                                    value: e.id.toString(),
+                                  ))
+                                      .toList(),
+                                  value: controller.receiverSiteID.toString(),
+                                  readOnly: !controller.isEdit,
+                                  selectedItem: controller.receiverSite,
+                                  onChanged: (value) {
+                                    controller.receiverSiteID = value!.toInt();
+                                    controller.fetchReceiverList(value!.toInt());
+                                    controller.update();
+                                  },
                                 ),
                                 SizedBox(height: 8),
                                 CustomDropDownFormField(
@@ -329,8 +356,8 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                             onTap: () {
                                               controller.location.text = e.siteName.toString();
                                               controller.company.text = e.companyName.toString();
-                                              controller.siteID = e.idSite?.toInt();
-                                              controller.companyID = e.idCompany?.toInt();
+                                              controller.receiverSiteID = e.idSite?.toInt();
+                                              controller.receiverCompanyID = e.idCompany?.toInt();
                                               controller.receiverID = e.id?.toInt();
                                               controller.update();
                                             },

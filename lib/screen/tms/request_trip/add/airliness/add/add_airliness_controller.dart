@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/data/model/reference/get_flight_class_model.dart' as flight;
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AddAirlinessController extends BaseController {
   int purposeID = Get.arguments['purposeID'];

@@ -4,7 +4,6 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
-import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/cutompagination.dart';
@@ -12,15 +11,12 @@ import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
-import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/document_delivery/add/add_document_delivery_screen.dart';
-import 'package:gais/screen/fss/document_delivery/form_document_delivery/form_document_delivery_screen.dart';
 import 'package:gais/screen/receptionist/detail/detail_document_delivery_screen.dart';
 import 'package:gais/screen/receptionist/list/list_document_delivery_controller.dart';
 import 'package:get/get.dart';
-import 'package:iconly/iconly.dart';
 
 class ListDocumentDeliveryScreen extends StatelessWidget {
   const ListDocumentDeliveryScreen({Key? key}) : super(key: key);
@@ -203,7 +199,7 @@ class ListDocumentDeliveryScreen extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text("Location", style: listTitleTextStyle),
-                                          Text("${controller.ddList[index].siteCode} - ${controller.ddList[index].siteName.toString() ?? " "}", style: listSubTitleTextStyle)
+                                          Text("${controller.ddList[index].nameSiteSender} - ${controller.ddList[index].nameSiteReceiver.toString() ?? " "}", style: listSubTitleTextStyle)
                                         ],
                                       ),
                                     ],

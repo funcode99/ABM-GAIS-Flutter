@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
-import 'package:gais/screen/tms/request_trip/add/accommodation/check_accommodation/check_accommodation_screen.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/data/model/reference/get_hotel_type_model.dart' as type;
 import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
+import 'package:gais/screen/tms/request_trip/add/accommodation/check_accommodation/check_accommodation_screen.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AddAccommodationController extends BaseController {
   int purposeID = Get.arguments['purposeID'];

@@ -3,8 +3,6 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as acc;
 import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_screen.dart';
-import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
-import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
 
 class AccommodationController extends BaseController {

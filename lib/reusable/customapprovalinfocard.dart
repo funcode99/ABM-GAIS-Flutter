@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
-import 'package:intl/intl.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class CustomApprovalInfoCard extends StatelessWidget {
   final String? status;

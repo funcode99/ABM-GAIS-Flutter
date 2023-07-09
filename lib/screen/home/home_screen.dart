@@ -1,4 +1,3 @@
-import 'package:datepicker_dropdown/datepicker_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
@@ -8,7 +7,6 @@ import 'package:gais/data/model/trip_purpose_model.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/home/home_controller.dart';
-import 'package:gais/util/responsive/text_scale_factor.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';

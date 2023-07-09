@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
-import 'package:get/get.dart';
+import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_employee_model.dart' as receiver;
+import 'package:gais/data/model/reference/get_site_model.dart' as site;
+
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class FormDocumentDeliveryController extends BaseController {
@@ -23,21 +26,31 @@ class FormDocumentDeliveryController extends BaseController {
 
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   int? senderID;
-  int? siteID;
-  int? companyID;
+  int? receiverSiteID;
+  int? receiverCompanyID;
   int? receiverID;
   int? codeStatusDoc;
+  int? senderCompanyID;
+  int? senderSiteID;
   String? selectedReceiver;
   String? receiverName;
   String? noDocument;
+  String? receiverCompany;
+  String? receiverSite;
   File? gettedFile;
 
   bool isEdit = false;
   bool isReceived = false;
   bool isDelivered = false;
   bool isDelivering = false;
+  bool loadCompany = false;
+  bool loadLocation = false;
+  bool loadReceiver = false;
 
   List<receiver.Data> receiverList = [];
+  List<comp.Data> companyList = [];
+  List<site.Data> locationList = [];
+
 
   @override
   void onInit() {
@@ -47,15 +60,29 @@ class FormDocumentDeliveryController extends BaseController {
   }
 
   Future<void> fetchList() async {
-    receiverList = [];
+    loadCompany = true;
+    companyList = [];
     try {
-      await repository.getEmployeeList().then((value) {
-        receiverList.addAll(value.data?.where((e) => e.id != senderID).toSet().toList() ?? []);
+      await storage.readEmployeeInfo().then((value) {
+        sender.text = value.first.employeeName ?? "";
+        senderID = value.first.id?.toInt();
+        senderCompanyID = value.first.idCompany?.toInt();
+        senderSiteID = value.first.idSite?.toInt();
       });
-    } catch (e) {
-      e.printError();
-    }
 
+      await repository.getCompanyList().then((value) {
+        companyList.addAll(value.data?.toSet().toList() ?? []);
+      });
+
+      await repository.getSiteList().then((value) {
+        locationList.addAll(value.data?.toSet().toList() ?? []);
+      });
+
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+    }
+    loadCompany = false;
     update();
   }
 
@@ -74,17 +101,21 @@ class FormDocumentDeliveryController extends BaseController {
         selectedReceiver = value.data?.first.idEmployeeReceiver.toString();
         receiverID = value.data?.first.idEmployeeReceiver?.toInt();
         receiverName = value.data?.first.receiverName.toString();
-        location.text = value.data?.first.siteName ?? "";
-        siteID = value.data?.first.idSite?.toInt();
-        company.text = value.data?.first.companyName ?? "";
-        companyID = value.data?.first.idCompany?.toInt();
+        location.text = value.data?.first.nameSiteReceiver ?? "";
+        receiverSiteID = value.data?.first.idSiteReceiver?.toInt();
+        company.text = value.data?.first.nameCompanyReceiver ?? "";
+        receiverCompanyID = value.data?.first.idCompanyReceiver?.toInt();
         subjectDocument.text = value.data?.first.subject ?? "";
-        attachment.text = value.data?.first.attachment ?? "";
+        attachment.text = (value.data?.first.attachment != "{}" ? value.data?.first.attachment :  "no attachment").toString();
         remarks.text = value.data?.first.remarks ?? "";
         tempDate = DateTime.parse(value.data?.first.createdAt ?? "");
         createdDate.text = dateFormat.format(tempDate);
         createdBy.text = value.data?.first.senderName ?? "";
         codeStatusDoc = value.data?.first.codeStatusDoc?.toInt();
+        receiverSite = value.data?.first.nameSiteReceiver ?? "";
+        receiverCompany = value.data?.first.nameCompanyReceiver ?? "";
+        senderCompanyID = value.data?.first.idCompany?.toInt();
+        senderSiteID = value.data?.first.idSite?.toInt();
         if (codeStatusDoc == 1) {
           isReceived = true;
         } else if (codeStatusDoc == 2) {
@@ -96,10 +127,41 @@ class FormDocumentDeliveryController extends BaseController {
           isDelivered = true;
         }
       });
+    } catch (e,i) {
+      e.printError();
+      i.printError();
+    }
+    fetchReceiverList(receiverSiteID!);
+    update();
+
+  }
+
+  Future<void> fetchLocationList(int id) async {
+    loadLocation = true;
+    locationList = [];
+    try {
+      await repository.getSiteListByCompanyID(id).then((value) {
+        locationList.addAll(value.data?.toSet().toList() ?? []);
+      });
     } catch (e) {
       e.printError();
     }
+    loadLocation = false;
+    update();
+  }
 
+  Future<void> fetchReceiverList(int id) async {
+    loadReceiver = true;
+    receiverList = [];
+    try {
+      await repository.getEmployeeListBySiteID(id).then((value) {
+        receiverList.addAll(value.data?.toSet().toList() ?? []);
+      });
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+    }
+    loadReceiver = false;
     update();
   }
 
@@ -108,12 +170,14 @@ class FormDocumentDeliveryController extends BaseController {
       await documentDelivery
           .update(
         ddID!.toInt(),
-        companyID!.toInt(),
+        receiverCompanyID!,
+        receiverSiteID!,
         senderID!.toInt(),
         receiverID!.toInt(),
-        siteID!.toInt(),
-        subjectDocument.text,
-        gettedFile,
+        senderCompanyID!,
+        senderSiteID!,
+        subjectDocument.text.toString(),
+        gettedFile!,
         remarks.text,
         codeStatusDoc!.toInt(),
       )
@@ -122,6 +186,7 @@ class FormDocumentDeliveryController extends BaseController {
         print(value.message);
         isEdit = false;
         update();
+        fetchEdit();
         Get.showSnackbar(const GetSnackBar(
           icon: Icon(
             Icons.error,
@@ -149,6 +214,7 @@ class FormDocumentDeliveryController extends BaseController {
         ),
       );
     }
+    update();
   }
 
   getSingleFile() async {

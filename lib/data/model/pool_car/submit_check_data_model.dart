@@ -1,4 +1,3 @@
-import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'submit_check_data_model.g.dart';

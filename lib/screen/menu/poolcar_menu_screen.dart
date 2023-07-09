@@ -7,6 +7,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/menu/poolcar_menu_controller.dart';
+import 'package:gais/screen/tms/pool_car/list/pool_car_list_screen.dart';
 import 'package:gais/screen/tms/pool_car/management_poolcar/list/management_poolcar_list_screen.dart';
 import 'package:get/get.dart';
 
@@ -88,7 +89,7 @@ class PoolcarMenuScreen extends StatelessWidget {
                                     )
                                   ],
                                 ),
-                                onTap: () {},
+                                onTap: () => Get.to(() => const PoolCarListScreen(), arguments: false),
                               ),
                             ],
                           ),

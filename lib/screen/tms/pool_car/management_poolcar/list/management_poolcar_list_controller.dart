@@ -5,7 +5,6 @@ import 'package:gais/data/model/pool_car/management_poolcar/get_car_list_model.d
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 
 class ManagementPoolCarListController extends BaseController {
   final formKey = GlobalKey<FormState>();
@@ -33,6 +32,7 @@ class ManagementPoolCarListController extends BaseController {
   void clearSearch(String search) {
     keyword(search);
     currentPage = 1;
+    searchValue = null;
     fetchList(1);
     update();
   }
@@ -66,6 +66,7 @@ class ManagementPoolCarListController extends BaseController {
 
   Future<void> fetchList(int page) async {
     isLoading = true;
+    dataisnull = false;
     carList = [];
     try {
       await managementPoolCar
@@ -82,6 +83,7 @@ class ManagementPoolCarListController extends BaseController {
       });
     } catch (e) {
       e.printError();
+      dataisnull = true;
     }
     isLoading = false;
     update();

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gais/screen/home/home_controller.dart';
 import 'package:gais/screen/home/home_screen.dart';
-import 'package:iconly/iconly.dart';
 import 'package:get/get.dart';
+import 'package:iconly/iconly.dart';
 
 class BottomBar extends StatelessWidget {
   final int menu;
@@ -44,7 +43,7 @@ class BottomBar extends StatelessWidget {
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
-          Get.offAll(HomeScreen(), arguments: index);
+          Get.offAll(const HomeScreen(), arguments: index);
         },
       );
     });

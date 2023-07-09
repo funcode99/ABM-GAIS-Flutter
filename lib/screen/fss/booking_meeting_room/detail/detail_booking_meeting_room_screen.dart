@@ -18,7 +18,6 @@ import 'package:gais/util/ext/date_ext.dart';
 import 'package:gais/util/validator/custom_validation_builder.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
-import 'package:textfield_tags/textfield_tags.dart';
 
 class DetailBookingMeetingRoomScreen extends StatelessWidget {
   const DetailBookingMeetingRoomScreen({super.key});
