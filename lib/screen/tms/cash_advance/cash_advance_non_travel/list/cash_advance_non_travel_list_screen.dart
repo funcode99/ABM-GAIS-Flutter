@@ -195,8 +195,8 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                                           onPressed: () {
                                             Get.dialog(DeleteConfirmationDialog(
                                               onDeletePressed: () {
+                                                Get.close(1);
                                                 controller.deleteHeader(item);
-                                                Get.back();
                                               },
                                             ));
                                           },

@@ -275,8 +275,8 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                     Get.dialog(
                                                         DeleteConfirmationDialog(
                                                       onDeletePressed: () {
-                                                        controller.deleteDetail(item);
                                                         Get.close(1);
+                                                        controller.deleteDetail(item);
                                                       },
                                                     ));
                                                   },
