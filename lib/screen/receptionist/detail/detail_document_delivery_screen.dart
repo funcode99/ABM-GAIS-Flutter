@@ -4,10 +4,12 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/receptionist/detail/detail_document_delivery_controller.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
 class DetailDocumentDeliveryScreen extends StatelessWidget {
@@ -130,51 +132,46 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                         ),
                                       ),
                                       onTap: () {
-                                        if (controller.isEdit == true) {
+                                        if (controller.isEdit == true && controller.codeStatusDoc == 1) {
                                           controller.codeStatusDoc = 2;
                                           controller.isDelivering = true;
                                         }
                                         controller.update();
                                       },
                                     ),
-                                    GestureDetector(
-                                      child: Container(
-                                        padding: EdgeInsets.all(8),
-                                        margin: EdgeInsets.symmetric(horizontal: 5),
-                                        decoration: BoxDecoration(
-                                            color: controller.isDelivered ? successColor : whiteColor,
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(8),
-                                              topRight: Radius.circular(8),
-                                              bottomLeft: Radius.circular(24),
-                                              bottomRight: Radius.circular(8),
-                                            ),
-                                            border: Border.all(color: controller.isDelivered ? Colors.transparent : blackColor)),
-                                        child: Row(
-                                          children: [
-                                            Text("Delivered", style: TextStyle(color: controller.isDelivered ? whiteColor : blackColor)),
-                                            controller.isDelivered
-                                                ? Icon(
-                                              Icons.check_circle_outline_sharp,
-                                              color: whiteColor,
-                                            )
-                                                : Container()
-                                          ],
-                                        ),
+                                    Container(
+                                      padding: EdgeInsets.all(8),
+                                      margin: EdgeInsets.symmetric(horizontal: 5),
+                                      decoration: BoxDecoration(
+                                          color: controller.isDelivered ? successColor : whiteColor,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(8),
+                                            topRight: Radius.circular(8),
+                                            bottomLeft: Radius.circular(24),
+                                            bottomRight: Radius.circular(8),
+                                          ),
+                                          border: Border.all(color: controller.isDelivered ? Colors.transparent : blackColor)),
+                                      child: Row(
+                                        children: [
+                                          Text("Delivered", style: TextStyle(color: controller.isDelivered ? whiteColor : blackColor)),
+                                          controller.isDelivered
+                                              ? Icon(
+                                            Icons.check_circle_outline_sharp,
+                                            color: whiteColor,
+                                          )
+                                              : Container()
+                                        ],
                                       ),
-                                      onTap: () {
-                                        if (controller.isEdit == true) {
-                                          controller.codeStatusDoc = 3;
-                                          controller.isDelivered = true;
-                                        }
-                                        controller.update();
-                                      },
                                     ),
                                   ],
                                 ),
                               ),
                             ),
-                            Text("Document No. 123231/ ${controller.ddID}", style: appTitle),
+                            Text(
+                              controller.noDocument.toString(),
+                              style: appTitle,
+                              textAlign: TextAlign.center,
+                            ),
                             Row(
                               mainAxisAlignment: !controller.isEdit ? MainAxisAlignment.center : MainAxisAlignment.spaceEvenly,
                               children: [
@@ -185,25 +182,40 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                   fontColor: infoColor,
                                   title: controller.isEdit ? "Cancel" : "Edit",
                                   onPressed: () {
-                                    controller.isEdit = controller.isEdit == false ? true : false;
-                                    controller.update();
+                                    if (controller.codeStatusDoc != 2) {
+                                      controller.isEdit = controller.isEdit == false ? true : false;
+                                      true
+                                          ? controller.fetchEdit()
+                                          : null;
+                                      controller.update();
+                                    } else {
+                                      Get.showSnackbar(GetSnackBar(
+                                        icon: Icon(
+                                          Icons.error,
+                                          color: Colors.white,
+                                        ),
+                                        message: "Unable to edit document",
+                                        isDismissible: true,
+                                        duration: Duration(seconds: 3),
+                                        backgroundColor: Colors.red,
+                                      ));
+                                    }
                                   },
                                 ),
                                 controller.isEdit
                                     ? CustomFilledButton(
-                                        color: successColor,
-                                        width: Get.width / 4,
-                                        title: "Save",
-                                        onPressed: () {
-                                          if (controller.formKey.currentState?.validate() == true) {
-                                            controller.saveDocument();
-                                          }
-                                        },
-                                      )
+                                  color: successColor,
+                                  width: Get.width / 4,
+                                  title: "Save",
+                                  onPressed: () {
+                                    if (controller.formKey.currentState?.validate() == true) {
+                                      controller.saveDocument();
+                                    }
+                                  },
+                                )
                                     : Container(),
                               ],
                             ),
-
                           ],
                         ),
                       ),
@@ -211,7 +223,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                   ),
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
+                          (BuildContext context, int index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 55),
                           child: Column(
@@ -230,6 +242,15 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                 isRequired: true,
                                 readOnly: true,
                               ),
+                              SizedBox(height: 8),
+                              controller.codeStatusDoc == 3
+                                  ? CustomTextFormField(
+                                controller: controller.receivedBy,
+                                label: "Received By",
+                                isRequired: true,
+                                readOnly: true,
+                              )
+                                  : Container(),
                               SizedBox(height: 8),
                             ],
                           ),
@@ -270,14 +291,15 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                   SliverList(
                     // SliverToBoxAdapter(
                     delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
+                          (BuildContext context, int index) {
                         return Form(
                           key: controller.formKey,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 34),
+                            padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                SizedBox(height: 8),
                                 CustomTextFormField(
                                   controller: controller.sender,
                                   label: "Sender",
@@ -285,25 +307,72 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                   readOnly: true,
                                 ),
                                 SizedBox(height: 8),
-                                CustomTextFormField(
-                                  controller: controller.receiverName,
-                                  label: "Receiver",
-                                  isRequired: true,
-                                  readOnly: true,
-                                ),
                                 SizedBox(height: 8),
-                                CustomTextFormField(
-                                  controller: controller.location,
-                                  label: "Location",
-                                  isRequired: true,
-                                  readOnly: true,
-                                ),
-                                SizedBox(height: 8),
-                                CustomTextFormField(
-                                  controller: controller.company,
+                                CustomDropDownFormField(
                                   label: "Receiver Company",
+                                  hintText: controller.loadCompany ? "Loading..." : "Receiver Company",
+                                  isRequired: true,
+                                  items: controller.companyList
+                                      .map((e) => DropdownMenuItem(
+                                    child: Text(e.companyName.toString()),
+                                    value: e.id.toString(),
+                                  ))
+                                      .toList(),
+                                  readOnly: true,
+                                  selectedItem: controller.receiverCompany,
+                                  value: controller.receiverCompanyID.toString(),
+                                  onChanged: (value) {
+                                    controller.receiverCompanyID = value!.toInt();
+                                    controller.fetchLocationList(value!.toInt());
+                                    controller.update();
+                                  },
+                                ),
+                                SizedBox(height: 8),
+                                CustomDropDownFormField(
+                                  label: "Location",
+                                  hintText: controller.loadLocation ? "Loading..." : "Location",
+                                  isRequired: true,
+                                  items: controller.locationList
+                                      .map((e) => DropdownMenuItem(
+                                    child: Text(e.siteName.toString()),
+                                    value: e.id.toString(),
+                                  ))
+                                      .toList(),
+                                  value: controller.receiverSiteID.toString(),
+                                  readOnly: true,
+                                  selectedItem: controller.receiverSite,
+                                  onChanged: (value) {
+                                    controller.receiverSiteID = value!.toInt();
+                                    controller.fetchReceiverList(value!.toInt());
+                                    controller.update();
+                                  },
+                                ),
+                                SizedBox(height: 8),
+                                CustomDropDownFormField(
+                                  items: controller.receiverList
+                                      .map((e) => DropdownMenuItem(
+                                    child: Text(e.employeeName.toString()),
+                                    value: e.id.toString(),
+                                    onTap: () {
+                                      controller.location.text = e.siteName.toString();
+                                      controller.company.text = e.companyName.toString();
+                                      controller.receiverSiteID = e.idSite?.toInt();
+                                      controller.receiverCompanyID = e.idCompany?.toInt();
+                                      controller.receiverID = e.id?.toInt();
+                                      controller.update();
+                                    },
+                                  ))
+                                      .toList(),
+                                  label: "Receiver",
+                                  hintText: "Receiver",
                                   isRequired: true,
                                   readOnly: true,
+                                  selectedItem: controller.receiverName,
+                                  value: controller.selectedReceiver,
+                                  onChanged: (value) {
+                                    controller.selectedReceiver = value;
+                                    controller.update();
+                                  },
                                 ),
                                 SizedBox(height: 8),
                                 CustomTextFormField(
@@ -316,7 +385,11 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                 CustomTextFormField(
                                   controller: controller.attachment,
                                   label: "Attachment (Optional)",
+                                  suffixIcon: true ? null : Icon(Icons.upload),
                                   readOnly: true,
+                                  onTap: () {
+                                    if (controller.isEdit == true) controller.getSingleFile();
+                                  },
                                 ),
                                 SizedBox(height: 8),
                                 CustomTextFormField(
