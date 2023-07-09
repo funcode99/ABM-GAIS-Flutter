@@ -1,6 +1,6 @@
 /// success : true
 /// message : "Success Get Data"
-/// data : [{"id":14,"id_company":1,"id_employee_sender":1,"id_employee_receiver":1,"id_site":1,"subject":"SUB","attachment":"/tmp/php934qSG","remarks":null,"code_status_doc":0,"created_at":"2023-07-05 16:33:43","created_by":"2","updated_at":"2023-07-05 16:33:43","updated_by":null,"deleted_at":null,"no_document_delivery":"2023-07-DOCDL/001/ DOCDL-07-23","sender_name":"John Doe","receiver_name":"John Doe","company_name":"PT Cipta Kridatama","company_code":"3000","site_name":null,"site_code":null,"code_document":"DOCDL","status":"Created"}]
+/// data : [{"id":32,"id_company":1,"id_employee_sender":1,"id_employee_receiver":37,"id_site":18,"subject":"tes 21","attachment":"http://38.47.76.138:8013/storage/files/document_delivery/p75naN9kV12IjYkl99VSkzUw8cVHOjbPQMoEZkG3.pdf","remarks":"cek remarks21","code_status_doc":0,"created_at":"2023-07-09 23:47:59","created_by":"2","updated_at":"2023-07-10 00:08:35","updated_by":"2","deleted_at":null,"no_document_delivery":"2023-07-DOCDL/010/ DOCDL-07-23","id_company_receiver":1,"id_site_receiver":44,"sender_name":"John Doe","receiver_name":"Eka Sherry","name_company_sender":"PT Cipta Kridatama","code_company_sender":"3000","name_site_sender":"Lahat, Kebur x","code_site_sender":"LHT01","name_company_receiver":"PT Cipta Kridatama","code_company_receiver":"3000","name_site_receiver":"Jakarta, Cilandak","code_site_receiver":"KYB01","code_document":"DOCDL","status":"Created"}]
 
 class GetDocumentDeliveryByidModel {
   GetDocumentDeliveryByidModel({
@@ -48,27 +48,33 @@ GetDocumentDeliveryByidModel copyWith({  bool? success,
 
 }
 
-/// id : 14
+/// id : 32
 /// id_company : 1
 /// id_employee_sender : 1
-/// id_employee_receiver : 1
-/// id_site : 1
-/// subject : "SUB"
-/// attachment : "/tmp/php934qSG"
-/// remarks : null
+/// id_employee_receiver : 37
+/// id_site : 18
+/// subject : "tes 21"
+/// attachment : "http://38.47.76.138:8013/storage/files/document_delivery/p75naN9kV12IjYkl99VSkzUw8cVHOjbPQMoEZkG3.pdf"
+/// remarks : "cek remarks21"
 /// code_status_doc : 0
-/// created_at : "2023-07-05 16:33:43"
+/// created_at : "2023-07-09 23:47:59"
 /// created_by : "2"
-/// updated_at : "2023-07-05 16:33:43"
-/// updated_by : null
+/// updated_at : "2023-07-10 00:08:35"
+/// updated_by : "2"
 /// deleted_at : null
-/// no_document_delivery : "2023-07-DOCDL/001/ DOCDL-07-23"
+/// no_document_delivery : "2023-07-DOCDL/010/ DOCDL-07-23"
+/// id_company_receiver : 1
+/// id_site_receiver : 44
 /// sender_name : "John Doe"
-/// receiver_name : "John Doe"
-/// company_name : "PT Cipta Kridatama"
-/// company_code : "3000"
-/// site_name : null
-/// site_code : null
+/// receiver_name : "Eka Sherry"
+/// name_company_sender : "PT Cipta Kridatama"
+/// code_company_sender : "3000"
+/// name_site_sender : "Lahat, Kebur x"
+/// code_site_sender : "LHT01"
+/// name_company_receiver : "PT Cipta Kridatama"
+/// code_company_receiver : "3000"
+/// name_site_receiver : "Jakarta, Cilandak"
+/// code_site_receiver : "KYB01"
 /// code_document : "DOCDL"
 /// status : "Created"
 
@@ -81,20 +87,26 @@ class Data {
       num? idSite, 
       String? subject, 
       String? attachment, 
-      dynamic remarks, 
+      String? remarks, 
       num? codeStatusDoc, 
       String? createdAt, 
       String? createdBy, 
       String? updatedAt, 
-      dynamic updatedBy, 
+      String? updatedBy, 
       dynamic deletedAt, 
       String? noDocumentDelivery, 
+      num? idCompanyReceiver, 
+      num? idSiteReceiver, 
       String? senderName, 
       String? receiverName, 
-      String? companyName, 
-      String? companyCode, 
-      dynamic siteName, 
-      dynamic siteCode, 
+      String? nameCompanySender, 
+      String? codeCompanySender, 
+      String? nameSiteSender, 
+      String? codeSiteSender, 
+      String? nameCompanyReceiver, 
+      String? codeCompanyReceiver, 
+      String? nameSiteReceiver, 
+      String? codeSiteReceiver, 
       String? codeDocument, 
       String? status,}){
     _id = id;
@@ -112,12 +124,18 @@ class Data {
     _updatedBy = updatedBy;
     _deletedAt = deletedAt;
     _noDocumentDelivery = noDocumentDelivery;
+    _idCompanyReceiver = idCompanyReceiver;
+    _idSiteReceiver = idSiteReceiver;
     _senderName = senderName;
     _receiverName = receiverName;
-    _companyName = companyName;
-    _companyCode = companyCode;
-    _siteName = siteName;
-    _siteCode = siteCode;
+    _nameCompanySender = nameCompanySender;
+    _codeCompanySender = codeCompanySender;
+    _nameSiteSender = nameSiteSender;
+    _codeSiteSender = codeSiteSender;
+    _nameCompanyReceiver = nameCompanyReceiver;
+    _codeCompanyReceiver = codeCompanyReceiver;
+    _nameSiteReceiver = nameSiteReceiver;
+    _codeSiteReceiver = codeSiteReceiver;
     _codeDocument = codeDocument;
     _status = status;
 }
@@ -129,7 +147,7 @@ class Data {
     _idEmployeeReceiver = json['id_employee_receiver'];
     _idSite = json['id_site'];
     _subject = json['subject'];
-    _attachment = json['attachment'];
+    _attachment = json['attachment'].toString();
     _remarks = json['remarks'];
     _codeStatusDoc = json['code_status_doc'];
     _createdAt = json['created_at'];
@@ -138,12 +156,18 @@ class Data {
     _updatedBy = json['updated_by'];
     _deletedAt = json['deleted_at'];
     _noDocumentDelivery = json['no_document_delivery'];
+    _idCompanyReceiver = json['id_company_receiver'];
+    _idSiteReceiver = json['id_site_receiver'];
     _senderName = json['sender_name'];
     _receiverName = json['receiver_name'];
-    _companyName = json['company_name'];
-    _companyCode = json['company_code'];
-    _siteName = json['site_name'];
-    _siteCode = json['site_code'];
+    _nameCompanySender = json['name_company_sender'];
+    _codeCompanySender = json['code_company_sender'];
+    _nameSiteSender = json['name_site_sender'];
+    _codeSiteSender = json['code_site_sender'];
+    _nameCompanyReceiver = json['name_company_receiver'];
+    _codeCompanyReceiver = json['code_company_receiver'];
+    _nameSiteReceiver = json['name_site_receiver'];
+    _codeSiteReceiver = json['code_site_receiver'];
     _codeDocument = json['code_document'];
     _status = json['status'];
   }
@@ -154,20 +178,26 @@ class Data {
   num? _idSite;
   String? _subject;
   String? _attachment;
-  dynamic _remarks;
+  String? _remarks;
   num? _codeStatusDoc;
   String? _createdAt;
   String? _createdBy;
   String? _updatedAt;
-  dynamic _updatedBy;
+  String? _updatedBy;
   dynamic _deletedAt;
   String? _noDocumentDelivery;
+  num? _idCompanyReceiver;
+  num? _idSiteReceiver;
   String? _senderName;
   String? _receiverName;
-  String? _companyName;
-  String? _companyCode;
-  dynamic _siteName;
-  dynamic _siteCode;
+  String? _nameCompanySender;
+  String? _codeCompanySender;
+  String? _nameSiteSender;
+  String? _codeSiteSender;
+  String? _nameCompanyReceiver;
+  String? _codeCompanyReceiver;
+  String? _nameSiteReceiver;
+  String? _codeSiteReceiver;
   String? _codeDocument;
   String? _status;
 Data copyWith({  num? id,
@@ -177,20 +207,26 @@ Data copyWith({  num? id,
   num? idSite,
   String? subject,
   String? attachment,
-  dynamic remarks,
+  String? remarks,
   num? codeStatusDoc,
   String? createdAt,
   String? createdBy,
   String? updatedAt,
-  dynamic updatedBy,
+  String? updatedBy,
   dynamic deletedAt,
   String? noDocumentDelivery,
+  num? idCompanyReceiver,
+  num? idSiteReceiver,
   String? senderName,
   String? receiverName,
-  String? companyName,
-  String? companyCode,
-  dynamic siteName,
-  dynamic siteCode,
+  String? nameCompanySender,
+  String? codeCompanySender,
+  String? nameSiteSender,
+  String? codeSiteSender,
+  String? nameCompanyReceiver,
+  String? codeCompanyReceiver,
+  String? nameSiteReceiver,
+  String? codeSiteReceiver,
   String? codeDocument,
   String? status,
 }) => Data(  id: id ?? _id,
@@ -208,12 +244,18 @@ Data copyWith({  num? id,
   updatedBy: updatedBy ?? _updatedBy,
   deletedAt: deletedAt ?? _deletedAt,
   noDocumentDelivery: noDocumentDelivery ?? _noDocumentDelivery,
+  idCompanyReceiver: idCompanyReceiver ?? _idCompanyReceiver,
+  idSiteReceiver: idSiteReceiver ?? _idSiteReceiver,
   senderName: senderName ?? _senderName,
   receiverName: receiverName ?? _receiverName,
-  companyName: companyName ?? _companyName,
-  companyCode: companyCode ?? _companyCode,
-  siteName: siteName ?? _siteName,
-  siteCode: siteCode ?? _siteCode,
+  nameCompanySender: nameCompanySender ?? _nameCompanySender,
+  codeCompanySender: codeCompanySender ?? _codeCompanySender,
+  nameSiteSender: nameSiteSender ?? _nameSiteSender,
+  codeSiteSender: codeSiteSender ?? _codeSiteSender,
+  nameCompanyReceiver: nameCompanyReceiver ?? _nameCompanyReceiver,
+  codeCompanyReceiver: codeCompanyReceiver ?? _codeCompanyReceiver,
+  nameSiteReceiver: nameSiteReceiver ?? _nameSiteReceiver,
+  codeSiteReceiver: codeSiteReceiver ?? _codeSiteReceiver,
   codeDocument: codeDocument ?? _codeDocument,
   status: status ?? _status,
 );
@@ -224,20 +266,26 @@ Data copyWith({  num? id,
   num? get idSite => _idSite;
   String? get subject => _subject;
   String? get attachment => _attachment;
-  dynamic get remarks => _remarks;
+  String? get remarks => _remarks;
   num? get codeStatusDoc => _codeStatusDoc;
   String? get createdAt => _createdAt;
   String? get createdBy => _createdBy;
   String? get updatedAt => _updatedAt;
-  dynamic get updatedBy => _updatedBy;
+  String? get updatedBy => _updatedBy;
   dynamic get deletedAt => _deletedAt;
   String? get noDocumentDelivery => _noDocumentDelivery;
+  num? get idCompanyReceiver => _idCompanyReceiver;
+  num? get idSiteReceiver => _idSiteReceiver;
   String? get senderName => _senderName;
   String? get receiverName => _receiverName;
-  String? get companyName => _companyName;
-  String? get companyCode => _companyCode;
-  dynamic get siteName => _siteName;
-  dynamic get siteCode => _siteCode;
+  String? get nameCompanySender => _nameCompanySender;
+  String? get codeCompanySender => _codeCompanySender;
+  String? get nameSiteSender => _nameSiteSender;
+  String? get codeSiteSender => _codeSiteSender;
+  String? get nameCompanyReceiver => _nameCompanyReceiver;
+  String? get codeCompanyReceiver => _codeCompanyReceiver;
+  String? get nameSiteReceiver => _nameSiteReceiver;
+  String? get codeSiteReceiver => _codeSiteReceiver;
   String? get codeDocument => _codeDocument;
   String? get status => _status;
 
@@ -258,12 +306,18 @@ Data copyWith({  num? id,
     map['updated_by'] = _updatedBy;
     map['deleted_at'] = _deletedAt;
     map['no_document_delivery'] = _noDocumentDelivery;
+    map['id_company_receiver'] = _idCompanyReceiver;
+    map['id_site_receiver'] = _idSiteReceiver;
     map['sender_name'] = _senderName;
     map['receiver_name'] = _receiverName;
-    map['company_name'] = _companyName;
-    map['company_code'] = _companyCode;
-    map['site_name'] = _siteName;
-    map['site_code'] = _siteCode;
+    map['name_company_sender'] = _nameCompanySender;
+    map['code_company_sender'] = _codeCompanySender;
+    map['name_site_sender'] = _nameSiteSender;
+    map['code_site_sender'] = _codeSiteSender;
+    map['name_company_receiver'] = _nameCompanyReceiver;
+    map['code_company_receiver'] = _codeCompanyReceiver;
+    map['name_site_receiver'] = _nameSiteReceiver;
+    map['code_site_receiver'] = _codeSiteReceiver;
     map['code_document'] = _codeDocument;
     map['status'] = _status;
     return map;

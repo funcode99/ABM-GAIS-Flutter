@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/data/model/reference/get_type_transportation_model.dart'
     as type;
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AddOtherTransportController extends BaseController {
   int purposeID = Get.arguments['purposeID'];

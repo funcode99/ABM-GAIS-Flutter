@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
-import 'package:get/get.dart';
 
 class DataEmpty extends StatelessWidget {
   const DataEmpty({Key? key}) : super(key: key);

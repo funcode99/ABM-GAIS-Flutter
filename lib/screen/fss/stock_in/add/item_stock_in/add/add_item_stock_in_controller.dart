@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
-import 'package:gais/data/model/stock_in/item_stock_in_atk_model.dart';
 import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
 import 'package:gais/data/model/stock_in/stock_in_atk_detail_model.dart';
 import 'package:gais/data/storage_core.dart';

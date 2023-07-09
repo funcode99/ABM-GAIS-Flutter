@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gais/data/model/stock_in/item_stock_in_atk_model.dart';
 import 'package:gais/data/model/stock_in/stock_in_atk_detail_model.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';

@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
-import 'package:gais/data/model/reference/get_employee_model.dart' as receiver;
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
+import 'package:gais/data/model/reference/get_employee_model.dart' as receiver;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
 import 'package:gais/screen/fss/document_delivery/document_delivery_list/document_delivery_list_screen.dart';
 import 'package:get/get.dart';
@@ -19,9 +19,11 @@ class AddDocumentDeliveryController extends BaseController {
   final remarks = TextEditingController();
 
   int? senderID;
-  int? siteID;
-  int? companyID;
+  int? senderCompanyID;
+  int? senderSiteID;
   int? receiverID;
+  int? receiverCompanyID;
+  int? receiverSiteID;
   String? selectedReceiver;
   File? gettedFile;
   bool loadCompany = false;
@@ -45,12 +47,14 @@ class AddDocumentDeliveryController extends BaseController {
       await storage.readEmployeeInfo().then((value) {
         sender.text = value.first.employeeName ?? "";
         senderID = value.first.id?.toInt();
+        senderCompanyID = value.first.idCompany?.toInt();
+        senderSiteID = value.first.idSite?.toInt();
       });
 
       await repository.getCompanyList().then((value) {
         companyList.addAll(value.data?.toSet().toList() ?? []);
       });
-    } catch (e,i) {
+    } catch (e, i) {
       e.printError();
       i.printError();
     }
@@ -79,7 +83,7 @@ class AddDocumentDeliveryController extends BaseController {
       await repository.getEmployeeListBySiteID(id).then((value) {
         receiverList.addAll(value.data?.toSet().toList() ?? []);
       });
-    } catch (e,i) {
+    } catch (e, i) {
       e.printError();
       i.printError();
     }
@@ -91,10 +95,12 @@ class AddDocumentDeliveryController extends BaseController {
     try {
       await documentDelivery
           .save(
-        companyID!.toInt(),
+        receiverCompanyID!.toInt(),
+        receiverSiteID!.toInt(),
         senderID!.toInt(),
         receiverID!.toInt(),
-        siteID!.toInt(),
+        senderCompanyID!.toInt(),
+        senderSiteID!.toInt(),
         subjectDocument.text,
         gettedFile,
         remarks.text,

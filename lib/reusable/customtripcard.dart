@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gais/util/responsive/text_scale_factor.dart';
-import 'package:get/get.dart';
-import 'package:iconly/iconly.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:get/get.dart';
+import 'package:iconly/iconly.dart';
 
 class CustomTripCard extends StatelessWidget {
   final int listNumber;

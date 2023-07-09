@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/reusable/dialog/approval_confirmation_controller.dart';
-import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';

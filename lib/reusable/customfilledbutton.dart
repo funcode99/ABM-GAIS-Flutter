@@ -1,8 +1,7 @@
-import 'package:gais/const/color.dart';
 import 'package:flutter/material.dart';
 
 class CustomFilledButton extends StatelessWidget {
-  final String title;
+  final String? title;
   final IconData? icon;
   final Color color;
   final Color? borderColor;
@@ -37,8 +36,8 @@ class CustomFilledButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         alignment: Alignment.center,
-        margin: margin ?? EdgeInsets.symmetric(vertical: 10),
-        padding: padding ?? EdgeInsets.symmetric(vertical: 10),
+        margin: margin ?? const EdgeInsets.symmetric(vertical: 10),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: 10),
         width: width,
         height: height ?? 40,
         decoration: BoxDecoration(

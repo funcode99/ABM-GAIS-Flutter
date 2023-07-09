@@ -1,5 +1,4 @@
 import 'package:gais/base/base_controller.dart';
-import 'package:get/get.dart';
 
 class PoolcarMenuController extends BaseController {
   bool isAdministrator = false;

@@ -19,10 +19,12 @@ abstract class DocumentDeliveryRepository {
   Future<GetDocumentDeliveryByidModel> getByID(int id);
 
   Future<SaveDocumentDeliveryModel> save(
-    int idCompany,
+    int idCompanyReceiver,
+    int idSiteReceiver,
     int idEmployeeSender,
     int idEmployeeReceiver,
-    int idSite,
+    int idCompanySender,
+    int idSiteSender,
     String subject,
     File? attachment,
     String remarks,
@@ -30,10 +32,12 @@ abstract class DocumentDeliveryRepository {
 
   Future<UpdateDocumentDeliveryModel> update(
     int id,
-    int idCompany,
+    int idCompanyReceiver,
+    int idSiteReceiver,
     int idEmployeeSender,
     int idEmployeeReceiver,
-    int idSite,
+    int idCompanySender,
+    int idSiteSender,
     String subject,
     File? attachment,
     String remarks,

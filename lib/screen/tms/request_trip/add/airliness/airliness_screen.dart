@@ -12,8 +12,6 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/check_schedule/check_schedule_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 

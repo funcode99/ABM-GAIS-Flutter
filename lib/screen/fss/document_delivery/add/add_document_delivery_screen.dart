@@ -69,7 +69,7 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                                       ))
                                   .toList(),
                               onChanged: (value) {
-                                controller.companyID = value!.toInt();
+                                controller.receiverCompanyID = value!.toInt();
                                 controller.fetchLocationList(value!.toInt());
                                 controller.update();
                               },
@@ -86,7 +86,7 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                                       ))
                                   .toList(),
                               onChanged: (value) {
-                                controller.siteID = value!.toInt();
+                                controller.receiverSiteID = value!.toInt();
                                 controller.fetchReceiverList(value!.toInt());
                                 controller.update();
                               },

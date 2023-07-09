@@ -4,13 +4,8 @@ import 'package:gais/data/model/approval_cash_advance/approval_cash_advance_mode
 import 'package:gais/data/model/approval_log_model.dart';
 import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
-import 'package:gais/data/model/cash_advance/item_cash_advance_non_travel_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
-import 'package:gais/reusable/dialog/fail_dialog.dart';
-import 'package:gais/reusable/dialog/success_dialog.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';

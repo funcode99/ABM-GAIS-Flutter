@@ -4,8 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:gais/base/base_error.dart';
 import 'package:gais/base/base_repository.dart';
 import 'package:gais/data/model/api_response_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/network_core.dart';

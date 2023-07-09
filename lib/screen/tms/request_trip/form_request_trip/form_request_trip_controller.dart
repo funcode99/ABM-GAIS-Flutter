@@ -6,17 +6,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
-import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
-import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airliness;
-import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
-import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart' as tv;
-import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as ot;
-import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as acc;
-import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart' as ca;
+import 'package:gais/data/model/approval_request_trip/approval_info_model.dart' as ai;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
 import 'package:gais/data/model/reference/get_site_model.dart' as st;
-import 'package:gais/data/model/approval_request_trip/approval_info_model.dart' as ai;
-import 'package:path_provider/path_provider.dart';
+import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as acc;
+import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airliness;
+import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart' as ca;
+import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
+import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as ot;
+import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
+import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart' as tv;
 import 'package:gais/reusable/pdf_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
@@ -26,6 +25,7 @@ import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_vouch
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FormRequestTripController extends BaseController {
   int purposeID = Get.arguments['id'];

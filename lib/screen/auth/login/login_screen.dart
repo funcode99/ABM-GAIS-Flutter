@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
-import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/auth/forgotpassword/forgot_password_screen.dart';
-import 'package:get/get.dart';
 import 'package:gais/screen/auth/login/login_controller.dart';
+import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
 class LoginScreen extends StatelessWidget {

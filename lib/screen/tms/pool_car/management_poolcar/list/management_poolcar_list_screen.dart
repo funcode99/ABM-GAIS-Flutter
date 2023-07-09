@@ -34,7 +34,7 @@ class ManagementPoolCarListScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: RefreshIndicator(
                 onRefresh: () async {
-                  controller.fetchList(controller.currentPage);
+                  controller.fetchList(1);
                   controller.update();
                 },
                 child: CustomScrollView(
@@ -156,7 +156,7 @@ class ManagementPoolCarListScreen extends StatelessWidget {
                                   // listNumber: controller.currentPage > 1 ? (controller.ddModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
                                   listNumber: (index + 1),
                                   title: controller.carList[index].plate.toString(),
-                                  subtitle: controller.carList[index].typeCar,
+                                  subtitle: controller.carList[index].carName,
                                   info: controller.carList[index].odometer.toString(),
                                   isEdit: true,
                                   editAction: () => Get.to(AddManagementPoolCarScreen(), arguments: {

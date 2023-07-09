@@ -1,5 +1,4 @@
 import 'package:gais/util/lang/language_en.dart';
-import 'package:gais/util/lang/language_id.dart';
 import 'package:get/get.dart';
 
 class AppTranslation extends Translations{

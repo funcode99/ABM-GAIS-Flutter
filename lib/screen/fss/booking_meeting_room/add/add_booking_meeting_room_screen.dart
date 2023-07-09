@@ -19,7 +19,6 @@ import 'package:gais/util/input_formatter/min_value_text_input_formatter.dart';
 import 'package:gais/util/validator/custom_validation_builder.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
-import 'package:textfield_tags/textfield_tags.dart';
 
 class AddBookingMeetingRoomScreen extends StatelessWidget {
   const AddBookingMeetingRoomScreen({super.key});
