@@ -108,8 +108,8 @@ class DetailBookingMeetingRoomController extends BaseController
         originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
         "-";
     titleController.text = selectedItem.value.title ?? "";
-    dateController.text = "${selectedItem.value.startDate?.toDateFormat(targetFormat: "dd/MM/yyyy", originFormat: "yyyy-MM-dd HH:mm:ss")} - ${selectedItem.value.endDate?.toDateFormat(targetFormat: "dd/MM/yyyy", originFormat: "yyyy-MM-dd HH:mm:ss")}";
-    timeController.text = "${selectedItem.value.endTime?.toDateFormat(targetFormat: "HH:mm", originFormat: "yyyy-MM-dd HH:mm:ss")} - ${selectedItem.value.endTime?.toDateFormat(targetFormat: "HH:mm", originFormat: "yyyy-MM-dd HH:mm:ss")}";
+    dateController.text = "${selectedItem.value.startDate?.toDateFormat(targetFormat: "dd/MM/yyyy", originFormat: "yyyy-MM-dd")} - ${selectedItem.value.endDate?.toDateFormat(targetFormat: "dd/MM/yyyy", originFormat: "yyyy-MM-dd")}";
+    timeController.text = "${selectedItem.value.startTime?.toDateFormat(targetFormat: "HH:mm", originFormat: "HH:mm:ss")} - ${selectedItem.value.endTime?.toDateFormat(targetFormat: "HH:mm", originFormat: "HH:mm:ss")}";
     linkController.text = selectedItem.value.link ?? "";
     remarksController.text = selectedItem.value.remarks ?? "";
     meetingRoomController.text = selectedItem.value.nameMeetingRoom ?? "";
