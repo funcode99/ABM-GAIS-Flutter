@@ -261,7 +261,13 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                     iconData: IconlyBold.edit,
                                     backgroundColor: successColor,
                                     onPressed: () {
-
+                                      Get.to(
+                                              () =>
+                                          const DetailBookingMeetingRoomScreen(),
+                                          arguments: {
+                                            "item": item
+                                          })?.then((value) =>
+                                          controller.getHeader());
                                     },
                                   ),
                                   const SizedBox(

@@ -43,7 +43,9 @@ BookingMeetingRoomModel _$BookingMeetingRoomModelFromJson(
       siteName: json['site_name'] as String?,
       siteCode: json['site_code'] as String?,
       status: json['status'] as String?,
-      participant: json['participant'] as String?,
+      participant: (json['participant'] as List<dynamic>?)
+          ?.map((e) => e as int)
+          .toList(),
     );
 
 Map<String, dynamic> _$BookingMeetingRoomModelToJson(
