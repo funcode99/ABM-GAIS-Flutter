@@ -130,7 +130,7 @@ class AddBookingMeetingRoomController extends BaseController
         endTime: endTime.toString(),
         idMeetingRoom: selectedRoom.value?.id,
         session: null,
-        participant: listSelectedEmployee.map((element) => element.id!).toList(),
+        participant: listSelectedEmployee.map((element) => element.id.toString().toInt()).toList(),
         link: linkController.text,
         remarks: remarksController.text);
 

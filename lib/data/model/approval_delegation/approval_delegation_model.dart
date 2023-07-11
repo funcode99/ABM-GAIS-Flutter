@@ -7,11 +7,13 @@ part 'approval_delegation_model.g.dart';
 class ApprovalDelegationModel {
   int? no;
   int? id;
+  dynamic idEmployeeTo;
+  dynamic idEmployee;
   String? delegator;
   String? delegateTo;
-  String? remarks;
-  String? activeFrom;
-  String? activeTo;
+  String? notes;
+  String? startDate;
+  String? endDate;
   String? createdAt;
   dynamic createdBy;
   String? updatedAt;
@@ -22,11 +24,13 @@ class ApprovalDelegationModel {
       {
         this.no,
         this.id,
+        this.idEmployee,
+        this.idEmployeeTo,
         this.delegator,
         this.delegateTo,
-        this.remarks,
-        this.activeFrom,
-        this.activeTo,
+        this.notes,
+        this.startDate,
+        this.endDate,
         this.createdAt,
         this.createdBy,
         this.updatedAt,

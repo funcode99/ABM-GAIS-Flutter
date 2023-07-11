@@ -64,10 +64,25 @@ class AddApprovalDelegationScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomTextFormField(
-                      isRequired: true,
-                      controller: controller.delegateToController,
-                      label: "Delegate To".tr),
+                  Obx(() {
+                    return CustomDropDownFormField(
+                      items: controller.listDelegateTo
+                          .map((e) => DropdownMenuItem(
+                        value: e.id.toString(),
+                        child: Text("${e.employeeName}"),
+                      ))
+                          .toList(),
+                      onChanged: (item) {
+                        controller
+                            .onChangeSelectedDelegateTo(item.toString());
+                      },
+                      label: "Delegate To".tr,
+                      value: controller.selectedDelegateTo.value != null
+                          ? controller.selectedDelegateTo.value?.id
+                          .toString()
+                          : "",
+                    );
+                  }),
                   const SizedBox(
                     height: 8,
                   ),

@@ -47,53 +47,6 @@ class ApprovalDelegationListScreen extends StatelessWidget {
               onClearFilter: (){
                 controller.applySearch("");
               },
-              onPressedFilter: () {
-                controller.openFilter();
-                Get.bottomSheet(FilterBottomSheet(
-                  onApplyFilter: () {
-                    controller.applyFilter();
-                    Get.back();
-                  },
-                  onResetFilter: () {
-                    controller.resetFilter();
-                  },
-                  children: [
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    CustomTextFormField(
-                        readOnly: true,
-                        controller: controller.dateRangeController,
-                        suffixIcon: const Icon(Icons.calendar_month),
-                        onTap: () {
-                          showCustomDateRangePicker(
-                            context,
-                            dismissible: true,
-                            minimumDate: DateTime.now()
-                                .subtract(const Duration(days: 365)),
-                            maximumDate:
-                            DateTime.now().add(const Duration(days: 365)),
-                            endDate: controller.endDate.value,
-                            startDate: controller.startDate.value,
-                            backgroundColor: Colors.white,
-                            primaryColor: Colors.green,
-                            onApplyClick: (start, end) {
-                              controller.endDateTemp.value = end;
-                              controller.startDateTemp.value = start;
-                              controller.dateRangeController.text =
-                              "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
-                              controller.update();
-                            },
-                            onCancelClick: () {},
-                          );
-                        },
-                        label: "Date Range".tr),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                  ],
-                ));
-              },
             ),
             Obx(() {
               if (controller.listHeader.isEmpty) {
@@ -131,29 +84,13 @@ class ApprovalDelegationListScreen extends StatelessWidget {
                         ...controller.listHeader.mapIndexed((index, item) =>
                             CommonListItem(
                                 number: "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
+                                title: "${item.delegator}",
                                 subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                 content: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Delegator".tr,
-                                              textAlign: TextAlign.center,
-                                              style: listTitleTextStyle,
-                                            ),
-                                            Text(
-                                              item.delegator ?? "-",
-                                              style: listSubTitleTextStyle.copyWith(
-                                                  overflow: TextOverflow.ellipsis
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
                                       Expanded(
                                         child: Column(
                                           children: [
@@ -180,7 +117,7 @@ class ApprovalDelegationListScreen extends StatelessWidget {
                                               style: listTitleTextStyle,
                                             ),
                                             Text(
-                                              "${item.activeFrom?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")} - ${item.activeTo?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                              "${item.startDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")} - ${item.endDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                               style: listSubTitleTextStyle.copyWith(
                                                   overflow: TextOverflow.ellipsis
                                               ),
@@ -232,8 +169,7 @@ class ApprovalDelegationListScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
-        // onPressed: () => Get.to(()=>const AddApprovalDelegationScreen())?.then((value) => controller.getHeader()),
-        onPressed: () => Get.to(()=>const AddApprovalDelegationScreen())?.then((value) => controller.addHeader(value)),
+        onPressed: () => Get.to(()=>const AddApprovalDelegationScreen())?.then((value) => controller.getHeader()),
         child: const Icon(Icons.add_rounded, size: 45),
       ),
       bottomNavigationBar: const BottomBar(menu: 1),

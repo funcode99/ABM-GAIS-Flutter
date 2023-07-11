@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/approval_delegation/approval_delegation_model.dart';
-import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
-import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/employee/employee_model.dart';
-import 'package:gais/data/model/master/room/room_model.dart';
-import 'package:gais/data/model/master/site/site_model.dart';
-import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
+import 'package:gais/data/repository/approval_delegation/approval_delegation_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -17,7 +13,8 @@ import 'package:textfield_tags/textfield_tags.dart';
 
 class AddApprovalDelegationController extends BaseController
     with MasterDataMixin {
-  final TextEditingController activeFromDateController = TextEditingController();
+  final TextEditingController activeFromDateController =
+      TextEditingController();
   final TextEditingController activeToDateController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
   final TextEditingController delegateToController = TextEditingController();
@@ -34,11 +31,14 @@ class AddApprovalDelegationController extends BaseController
   final startTime = Rxn<DateTime>();
   final endTime = Rxn<DateTime>();
 
+  final listDelegateTo = <EmployeeModel>[].obs;
+  final selectedDelegateTo = Rxn<EmployeeModel>();
+
   final enableButton = false.obs;
 
   final showParticipantError = false.obs;
 
-  final BookingMeetingRoomRepository _repository = Get.find();
+  final ApprovalDelegationRepository _repository = Get.find();
 
   @override
   void onInit() {
@@ -52,9 +52,23 @@ class AddApprovalDelegationController extends BaseController
   }
 
   initData() async {
+    String idEmployee = await storage.readString(StorageCore.userID);
     String employeeName = await storage.readString(StorageCore.employeeName);
 
     delegatorController.text = employeeName;
+
+    listDelegateTo.add(EmployeeModel(id: "", employeeName: "Delegate To"));
+    final employees = await getListDelegateTo(idEmployee.toInt());
+    listDelegateTo.addAll(employees);
+
+    onChangeSelectedDelegateTo("");
+  }
+
+  void onChangeSelectedDelegateTo(String id) {
+    final selected = listDelegateTo.firstWhere(
+        (item) => item.id.toString() == id.toString(),
+        orElse: () => listDelegateTo.first);
+    selectedDelegateTo(selected);
   }
 
   void updateButton() {
@@ -62,31 +76,25 @@ class AddApprovalDelegationController extends BaseController
   }
 
   void saveData() async {
+    String idEmployee = await storage.readString(StorageCore.userID);
     String employeeName = await storage.readString(StorageCore.employeeName);
     String idCompany = await storage.readString(StorageCore.companyID);
     String idSite = await storage.readString(StorageCore.siteID);
 
     ApprovalDelegationModel approvalDelegationModel = ApprovalDelegationModel(
-        delegator: employeeName,
-        delegateTo: delegateToController.text,
-        activeTo: endDate.toString(),
-        activeFrom: startDate.toString(),
-        createdAt: "2023-07-10",
-        remarks: remarksController.text);
+        idEmployee: idEmployee.toInt(),
+        idEmployeeTo: selectedDelegateTo.value?.id,
+        endDate: endDate.toString(),
+        startDate: startDate.toString(),
+        notes: remarksController.text);
 
-
-    Get.back(result: approvalDelegationModel);
-
-    /*final result = await _repository.saveData(meetingRoomModel);
+    final result = await _repository.saveData(approvalDelegationModel);
 
     result.fold(
-            (l) => Get.showSnackbar(
+        (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-            (meetingRoomModel) {
-          *//*Get.off(() => const DetailBookingMeetingRoomScreen(),
-          arguments: {"item": meetingRoomModel});*//*
-          Get.back(result: true);
-        });*/
+        (result) {
+      Get.back(result: true);
+    });
   }
-
 }

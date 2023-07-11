@@ -5,7 +5,6 @@ import 'package:gais/base/base_error.dart';
 import 'package:gais/base/base_repository.dart';
 import 'package:gais/data/model/api_response_model.dart';
 import 'package:gais/data/model/approval_delegation/approval_delegation_model.dart';
-import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:get/get.dart';
@@ -52,30 +51,47 @@ class ApprovalDelegationRepository
 
   @override
   Future<Either<BaseError, PaginationModel>> getPaginationData({Map<String, dynamic>? data}) async{
-    List<Map<String, dynamic>> data = [
-      {
-        "no" : 1,
-        "delegator" : "John Doe",
-        "delegate_to" : "Optimus Prime",
-        "created_at" : "2022-12-01",
-        "active_from" : "2023-01-01",
-        "active_to" : "2024-01-01",
-      }
-    ];
+    try {
+      Dio.Response response = await network.dio.get(
+          '/api/approval_delegation/get_data',
+          queryParameters: data
+      );
 
-    return right(
-      PaginationModel(
-        data: data,
-        currentPage: 1,
-        total: data.length
-      )
-    );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
-  Future<Either<BaseError, ApprovalDelegationModel>> saveData(model) {
-    // TODO: implement saveData
-    throw UnimplementedError();
+  Future<Either<BaseError, ApprovalDelegationModel>> saveData(model) async{
+    final bookingMeetingRoomModel = model as ApprovalDelegationModel;
+
+    var formData = Dio.FormData.fromMap(bookingMeetingRoomModel.toJson());
+
+    try {
+      Dio.Response response = await network.dio.post(
+          '/api/approval_delegation/store',
+          data: formData
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalDelegationModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
