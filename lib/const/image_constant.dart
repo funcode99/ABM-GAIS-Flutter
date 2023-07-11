@@ -12,4 +12,5 @@ class ImageConstant{
   static const String ticketStar = "assets/icons/Ticket Star.svg";
   static const String building = "assets/icons/building.svg";
   static const String calendar = "assets/icons/calendar.svg";
+  static const String clipboard = "assets/icons/clipboard.svg";
 }
