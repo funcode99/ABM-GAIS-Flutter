@@ -9,16 +9,12 @@ import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
-import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
-import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/approval_delegation/add/add_approval_delegation_screen.dart';
 import 'package:gais/screen/approval_delegation/list/approval_delegation_list_controller.dart';
-import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_screen.dart';
-import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
-import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -236,7 +232,8 @@ class ApprovalDelegationListScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
-        onPressed: () => Get.to(()=>const AddBookingMeetingRoomScreen())?.then((value) => controller.getHeader()),
+        // onPressed: () => Get.to(()=>const AddApprovalDelegationScreen())?.then((value) => controller.getHeader()),
+        onPressed: () => Get.to(()=>const AddApprovalDelegationScreen())?.then((value) => controller.addHeader(value)),
         child: const Icon(Icons.add_rounded, size: 45),
       ),
       bottomNavigationBar: const BottomBar(menu: 1),

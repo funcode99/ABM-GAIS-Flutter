@@ -42,6 +42,12 @@ class ApprovalDelegationListController extends BaseController with MasterDataMix
   void initData()async{
   }
 
+
+  void addHeader(ApprovalDelegationModel item){
+    listHeader.add(item);
+    listHeader.refresh();
+  }
+
   void getHeader({int page = 1}) async {
     final result = await _repository.getPaginationData(
         data: {
