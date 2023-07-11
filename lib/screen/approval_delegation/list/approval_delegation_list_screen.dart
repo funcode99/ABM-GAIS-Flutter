@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
@@ -9,11 +8,10 @@ import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
-import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
-import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval_delegation/add/add_approval_delegation_screen.dart';
+import 'package:gais/screen/approval_delegation/edit/edit_approval_delegation_screen.dart';
 import 'package:gais/screen/approval_delegation/list/approval_delegation_list_controller.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -22,10 +20,10 @@ import 'package:iconly/iconly.dart';
 class ApprovalDelegationListScreen extends StatelessWidget {
   const ApprovalDelegationListScreen({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-    final ApprovalDelegationListController controller = Get.put(ApprovalDelegationListController());
+    final ApprovalDelegationListController controller =
+        Get.put(ApprovalDelegationListController());
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -44,7 +42,7 @@ class ApprovalDelegationListScreen extends StatelessWidget {
               onSubmit: (string) {
                 controller.applySearch(string);
               },
-              onClearFilter: (){
+              onClearFilter: () {
                 controller.applySearch("");
               },
             ),
@@ -58,7 +56,7 @@ class ApprovalDelegationListScreen extends StatelessWidget {
                 colorPrimary: infoColor,
                 key: UniqueKey(),
                 onPageChanged: (page) {
-                  if(page != controller.currentPage.value){
+                  if (page != controller.currentPage.value) {
                     controller.getHeader(page: page);
                   }
                 },
@@ -70,26 +68,40 @@ class ApprovalDelegationListScreen extends StatelessWidget {
             const SizedBox(
               height: 12,
             ),
-
             Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () async {
-                    controller.getHeader();
-                  },
-                  child: Obx(() {
-                    return controller.listHeader.isEmpty
-                        ? const DataEmpty()
-                        : ListView(
-                      children: [
-                        ...controller.listHeader.mapIndexed((index, item) =>
-                            CommonListItem(
-                                number: "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
+              onRefresh: () async {
+                controller.getHeader();
+              },
+              child: Obx(() {
+                return controller.listHeader.isEmpty
+                    ? const DataEmpty()
+                    : ListView(
+                        children: [
+                          ...controller.listHeader.mapIndexed((index, item) {
+                            bool showEditButton = false;
+
+                            if (item.endDate != null) {
+                              DateTime? dateTime = item.endDate
+                                  ?.toDate(originFormat: "yyyy-MM-dd");
+                              if (dateTime != null) {
+                                if (dateTime.isAfter(DateTime.now())) {
+                                  showEditButton = true;
+                                }
+                              }
+                            }
+                            return CommonListItem(
+                                number:
+                                    "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
                                 title: "${item.delegator}",
-                                subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                subtitle:
+                                    "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                 content: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 8),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: [
                                       Expanded(
                                         child: Column(
@@ -101,9 +113,10 @@ class ApprovalDelegationListScreen extends StatelessWidget {
                                             ),
                                             Text(
                                               item.delegateTo ?? "-",
-                                              style: listSubTitleTextStyle.copyWith(
-                                                  overflow: TextOverflow.ellipsis
-                                              ),
+                                              style: listSubTitleTextStyle
+                                                  .copyWith(
+                                                      overflow: TextOverflow
+                                                          .ellipsis),
                                             ),
                                           ],
                                         ),
@@ -118,9 +131,10 @@ class ApprovalDelegationListScreen extends StatelessWidget {
                                             ),
                                             Text(
                                               "${item.startDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")} - ${item.endDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
-                                              style: listSubTitleTextStyle.copyWith(
-                                                  overflow: TextOverflow.ellipsis
-                                              ),
+                                              style: listSubTitleTextStyle
+                                                  .copyWith(
+                                                      overflow: TextOverflow
+                                                          .ellipsis),
                                             ),
                                           ],
                                         ),
@@ -128,48 +142,36 @@ class ApprovalDelegationListScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                action: [
-                                  CustomIconButton(
-                                    title: "Edit".tr,
-                                    iconData: IconlyBold.edit,
-                                    backgroundColor: successColor,
-                                    onPressed: () {
-                                      /*Get.to(
-                                              () =>
-                                          const DetailBookingMeetingRoomScreen(),
-                                          arguments: {
-                                            "item": item
-                                          })?.then((value) =>
-                                          controller.getHeader());*/
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    width: 8,
-                                  ),
-                                  CustomIconButton(
-                                    title: "Delete".tr,
-                                    iconData: IconlyBold.delete,
-                                    backgroundColor: redColor,
-                                    onPressed: () {
-                                      /*Get.dialog(DeleteConfirmationDialog(
-                                        onDeletePressed: () {
-                                          Get.close(1);
-                                          controller.deleteHeader(item);
-                                        },
-                                      ));*/
-                                    },
-                                  )
-                                ]))
-                      ],
-                    );
-                  }),
-                )),
+                                action: showEditButton
+                                    ? [
+                                        CustomIconButton(
+                                          title: "Edit".tr,
+                                          iconData: IconlyBold.edit,
+                                          backgroundColor: successColor,
+                                          onPressed: () {
+                                            Get.to(
+                                                () =>
+                                                    const EditApprovalDelegationScreen(),
+                                                arguments: {
+                                                  "item": item
+                                                })?.then((value) =>
+                                                controller.getHeader());
+                                          },
+                                        ),
+                                      ]
+                                    : []);
+                          })
+                        ],
+                      );
+              }),
+            )),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
-        onPressed: () => Get.to(()=>const AddApprovalDelegationScreen())?.then((value) => controller.getHeader()),
+        onPressed: () => Get.to(() => const AddApprovalDelegationScreen())
+            ?.then((value) => controller.getHeader()),
         child: const Icon(Icons.add_rounded, size: 45),
       ),
       bottomNavigationBar: const BottomBar(menu: 1),

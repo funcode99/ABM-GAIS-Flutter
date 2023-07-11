@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
-class AddApprovalDelegationController extends BaseController
+class EditApprovalDelegationController extends BaseController
     with MasterDataMixin {
   final TextEditingController activeFromDateController =
       TextEditingController();
@@ -36,30 +36,56 @@ class AddApprovalDelegationController extends BaseController
 
   final enableButton = false.obs;
 
-  final ApprovalDelegationRepository _repository = Get.find();
+  final selectedItem = ApprovalDelegationModel().obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  final ApprovalDelegationRepository _repository = Get.find();
 
   @override
   void onReady() {
     super.onReady();
     initData();
+    detailHeader();
   }
 
-  initData() async {
+  void initData() async{
     String idEmployee = await storage.readString(StorageCore.userID);
-    String employeeName = await storage.readString(StorageCore.employeeName);
-
-    delegatorController.text = employeeName;
 
     listDelegateTo.add(EmployeeModel(id: "", employeeName: "Delegate To"));
     final employees = await getListDelegateTo(idEmployee.toInt());
     listDelegateTo.addAll(employees);
 
-    onChangeSelectedDelegateTo("");
+    setValue();
+  }
+
+  void detailHeader() async {
+    final result = await _repository.detailData(selectedItem.value.id!);
+
+    result.fold((l) {
+      print("ERROR DETAIL HEADER ${l.message}");
+    }, (r) {
+      selectedItem(r);
+      setValue();
+    });
+  }
+
+  void setValue() {
+    delegatorController.text = selectedItem.value.delegator ?? "-";
+
+    if(selectedItem.value.idEmployeeTo != null){
+      onChangeSelectedDelegateTo(selectedItem.value.idEmployeeTo.toString());
+    }else{
+      onChangeSelectedDelegateTo("");
+    }
+
+    startDate.value = selectedItem.value.startDate?.toDate(originFormat: "yyyy-MM-dd");
+    endDate.value = selectedItem.value.endDate?.toDate(originFormat: "yyyy-MM-dd");
+    activeFromDateController.text = selectedItem.value.startDate?.toDateFormat(
+        originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+        "-";
+    activeToDateController.text = selectedItem.value.endDate?.toDateFormat(
+        originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+        "-";
+    remarksController.text = selectedItem.value.notes ?? "";
   }
 
   void onChangeSelectedDelegateTo(String id) {
@@ -73,11 +99,8 @@ class AddApprovalDelegationController extends BaseController
     enableButton(formKey.currentState!.validate());
   }
 
-  void saveData() async {
+  void updateData() async {
     String idEmployee = await storage.readString(StorageCore.userID);
-    String employeeName = await storage.readString(StorageCore.employeeName);
-    String idCompany = await storage.readString(StorageCore.companyID);
-    String idSite = await storage.readString(StorageCore.siteID);
 
     ApprovalDelegationModel approvalDelegationModel = ApprovalDelegationModel(
         idEmployee: idEmployee.toInt(),
@@ -86,13 +109,14 @@ class AddApprovalDelegationController extends BaseController
         startDate: startDate.toString(),
         notes: remarksController.text);
 
-    final result = await _repository.saveData(approvalDelegationModel);
-
+    final result = await _repository.updateData(approvalDelegationModel, selectedItem.value.id!);
     result.fold(
-        (l) => Get.showSnackbar(
+            (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-        (result) {
-      Get.back(result: true);
-    });
+            (result) {
+          //update list
+          Get.back(result: true);
+        });
   }
+
 }

@@ -32,9 +32,24 @@ class ApprovalDelegationRepository
   }
 
   @override
-  Future<Either<BaseError, ApprovalDelegationModel>> detailData(int id) {
-    // TODO: implement detailData
-    throw UnimplementedError();
+  Future<Either<BaseError, ApprovalDelegationModel>> detailData(int id) async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/approval_delegation/get_data/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalDelegationModel.fromJsonModelList);
+      List<ApprovalDelegationModel> list = apiResponseModel.data;
+      return right(list.first);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
@@ -101,9 +116,24 @@ class ApprovalDelegationRepository
   }
 
   @override
-  Future<Either<BaseError, ApprovalDelegationModel>> updateData(model, int id) {
-    // TODO: implement updateData
-    throw UnimplementedError();
+  Future<Either<BaseError, ApprovalDelegationModel>> updateData(model, int id) async{
+    final approvalDelegationModel = model as ApprovalDelegationModel;
+
+    try {
+      Dio.Response response = await network.dio.post(
+          '/api/approval_delegation/update_data/$id',
+          data: approvalDelegationModel.toJson()
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalDelegationModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override

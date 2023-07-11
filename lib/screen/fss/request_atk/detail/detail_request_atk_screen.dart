@@ -22,7 +22,10 @@ class RequestATKDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RequestAtkModel selectedItem = Get.arguments["item"];
+    RequestAtkModel? selectedItem;
+    if (Get.arguments != null) {
+      selectedItem = Get.arguments["item"];
+    }
 
     final RequestATKDetailController controller =
         Get.put(RequestATKDetailController())..selectedItem(selectedItem);
