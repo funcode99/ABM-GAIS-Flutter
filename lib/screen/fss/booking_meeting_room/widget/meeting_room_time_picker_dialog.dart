@@ -271,7 +271,7 @@ class _MeetingRoomTimePickerDialogState
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: startTimeTemp != null ? () {
+                onPressed: startTimeTemp != null && endTimeTemp != null ? () {
                   widget.onConfirmClick(startTimeTemp, endTimeTemp);
                   Get.back();
                 } : null,
