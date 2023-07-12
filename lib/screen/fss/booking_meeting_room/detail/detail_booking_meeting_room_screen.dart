@@ -117,7 +117,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                               ? ElevatedButton(
                             onPressed: controller.enableButton.value
                                 ? () {
-                              // controller.onEdit(false);
+                              controller.updateData();
                             }
                                 : null,
                             style: ElevatedButton.styleFrom(
@@ -195,6 +195,22 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          CustomTextFormField(
+                              isRequired: true,
+                              readOnly: true,
+                              controller: controller.companyController,
+                              label: "Company".tr),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          CustomTextFormField(
+                              isRequired: true,
+                              readOnly: true,
+                              controller: controller.siteController,
+                              label: "Site".tr),
+                          const SizedBox(
+                            height: 8,
+                          ),
                           Obx(() {
                             return CustomTextFormField(
                                 isRequired: true,
@@ -278,7 +294,6 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                             if (controller.onEdit.value) {
                               return CustomDropDownFormField(
                                 isRequired: true,
-                                readOnly: true,
                                 items: controller.listRoom
                                     .map((e) =>
                                     DropdownMenuItem(
@@ -302,6 +317,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                 suffixIcon: const Icon(IconlyLight.lock),
                                 controller: controller.meetingRoomController,
                                 label: "Meeting Room".tr);
+
                           }),
                           const SizedBox(
                             height: 8,

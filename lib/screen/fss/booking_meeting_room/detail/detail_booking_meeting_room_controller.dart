@@ -8,6 +8,7 @@ import 'package:gais/data/model/master/room/room_model.dart';
 import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
 import 'package:gais/data/storage_core.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/ext/date_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
@@ -93,9 +94,14 @@ class DetailBookingMeetingRoomController extends BaseController
     final sites = await getListSite();
     listSite.addAll(sites);
 
+    listRoom.add(RoomModel(id: "", nameMeetingRoom: "Meeting Room"));
     final rooms = await getListRoomBySite(idSite.toInt());
     listRoom.addAll(rooms);
-    onChangeSelectedRoom("");
+    if(selectedItem.value.idMeetingRoom != null){
+      onChangeSelectedRoom(selectedItem.value.idMeetingRoom.toString());
+    }else{
+      onChangeSelectedRoom("");
+    }
 
     final employees = await getListEmployee();
     listEmployee.addAll(employees);
@@ -131,6 +137,8 @@ class DetailBookingMeetingRoomController extends BaseController
     linkController.text = selectedItem.value.link ?? "";
     remarksController.text = selectedItem.value.remarks ?? "";
     meetingRoomController.text = selectedItem.value.nameMeetingRoom ?? "";
+    floorController.text = "${selectedItem.value.floor ?? ""}";
+    capacityController.text = "${selectedItem.value.capacity ?? ""}";
 
     listSelectedEmployee.clear();
     for(ParticipantModel item in selectedItem.value.participantArray!){
@@ -189,5 +197,40 @@ class DetailBookingMeetingRoomController extends BaseController
   void deleteParticipantItem(EmployeeModel item){
     listSelectedEmployee.removeWhere((element) => item.id == element.id);
   }
+
+  void updateData() async {
+    String idCompany = await storage.readString(StorageCore.companyID);
+    String idEmployee = await storage.readString(StorageCore.userID);
+    String idSite = await storage.readString(StorageCore.siteID);
+
+    BookingMeetingRoomModel meetingRoomModel = BookingMeetingRoomModel(
+        idCompany: idCompany.toInt(),
+        idEmployee: idEmployee.toInt(),
+        idSite: idSite.toInt(),
+        codeStatusDoc: selectedItem.value.codeStatusDoc,
+        floor: floorController.text.toInt() ?? 0,
+        capacity: capacityController.text.toInt() ?? 0,
+        title: titleController.text,
+        startDate: startDate.value.toString(),
+        endDate: endDate.value != null ? endDate.value.toString() : startDate.value.toString(),
+        startTime: startTime.toString(),
+        endTime: endTime.value != null ? endTime.value.toString() : startTime.value.toString(),
+        idMeetingRoom: selectedRoom.value?.id,
+        noBookingMeeting: selectedItem.value.noBookingMeeting,
+        session: null,
+        participant: listSelectedEmployee.map((element) => element.id.toString().toInt()).toList(),
+        link: linkController.text,
+        remarks: remarksController.text);
+
+    final result = await _repository.updateData(meetingRoomModel, selectedItem.value.id!);
+    result.fold(
+            (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (cashAdvanceModel) {
+          detailHeader();
+          onEdit.value = false;
+        });
+  }
+
 
 }
