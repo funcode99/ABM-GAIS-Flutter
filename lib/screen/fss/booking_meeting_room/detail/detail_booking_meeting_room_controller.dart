@@ -8,6 +8,7 @@ import 'package:gais/data/model/master/room/room_model.dart';
 import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
 import 'package:gais/data/storage_core.dart';
+import 'package:gais/util/ext/date_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
@@ -103,13 +104,30 @@ class DetailBookingMeetingRoomController extends BaseController
   }
 
   void setValue() {
+    startDate.value = selectedItem.value.startDate?.toDate(originFormat: "yyyy-MM-dd");
+    endDate.value = selectedItem.value.endDate?.toDate(originFormat: "yyyy-MM-dd");
+    if(DateUtils.isSameDay(startDate.value, endDate.value)){
+      endDate.value = null;
+    }
+
+    startTime.value = selectedItem.value.startTime?.toDate(originFormat: "HH:mm:ss");
+    endTime.value = selectedItem.value.endTime?.toDate(originFormat: "HH:mm:ss");
+
+    if(startTime.value!.isAtSameMomentAs(endTime.value!)){
+      endTime.value = null;
+    }
+
     createdByController.text = selectedItem.value.employeeName ?? "-";
     createdAtController.text = selectedItem.value.createdAt?.toDateFormat(
         originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
         "-";
     titleController.text = selectedItem.value.title ?? "";
-    dateController.text = "${selectedItem.value.startDate?.toDateFormat(targetFormat: "dd/MM/yyyy", originFormat: "yyyy-MM-dd")} - ${selectedItem.value.endDate?.toDateFormat(targetFormat: "dd/MM/yyyy", originFormat: "yyyy-MM-dd")}";
-    timeController.text = "${selectedItem.value.startTime?.toDateFormat(targetFormat: "HH:mm", originFormat: "HH:mm:ss")} - ${selectedItem.value.endTime?.toDateFormat(targetFormat: "HH:mm", originFormat: "HH:mm:ss")}";
+
+    dateController.text = "${dateFormat.format(startDate.value!)} ${endDate.value != null ? "-" : ""} ${endDate.value != null ? dateFormat.format(endDate.value!) : ""}";
+
+    timeController.text = "${startTime.value?.toStringWithFormat()} ${endTime.value != null ? "-" : ""} ${endTime.value?.toStringWithFormat() ?? ""}";
+
+
     linkController.text = selectedItem.value.link ?? "";
     remarksController.text = selectedItem.value.remarks ?? "";
     meetingRoomController.text = selectedItem.value.nameMeetingRoom ?? "";

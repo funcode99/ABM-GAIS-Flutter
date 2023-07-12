@@ -144,6 +144,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                 backgroundColor: redColor),
                           );
                         } else {
+                          FocusScope.of(context).requestFocus(FocusNode());
                           Get.dialog(MeetingRoomTimePickerDialog(
                             startDate: controller.startDate.value,
                             endDate: controller.endDate.value,

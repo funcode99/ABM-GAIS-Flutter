@@ -8,6 +8,7 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
 import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/reusable/bottombar.dart';
+import 'package:gais/reusable/calendar/custom_calendar_picker.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
@@ -100,7 +101,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                         children: [
                           OutlinedButton(
                             onPressed: () {
-                              // controller.updateOnEdit();
+                              controller.updateOnEdit();
                             },
                             style: OutlinedButton.styleFrom(
                               minimumSize: const Size(75, 30),
@@ -210,7 +211,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                 readOnly: !controller.onEdit.value,
                                 suffixIcon: const Icon(IconlyLight.calendar),
                                 onTap: controller.onEdit.value ? () {
-                                  showCustomDateRangePicker(
+                                  showCustomCalendarPicker(
                                     context,
                                     dismissible: true,
                                     minimumDate: DateTime.now(),
@@ -225,9 +226,9 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                       controller.startDate.value = start;
                                       controller.endDate.value = end;
                                       controller.dateController.text =
-                                      "${controller.dateFormat.format(
-                                          start)} - ${controller.dateFormat
-                                          .format(end)}";
+                                      "${controller.dateFormat.format(start)} ${end !=
+                                          null ? "-" : ""} ${end != null ? controller
+                                          .dateFormat.format(end) : ""}";
                                       controller.update();
                                     },
                                     onCancelClick: () {},
@@ -245,6 +246,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                 readOnly: !controller.onEdit.value,
                                 suffixIcon: const Icon(IconlyLight.time_circle),
                                 onTap: controller.onEdit.value ? () {
+                                  FocusScope.of(context).requestFocus(FocusNode());
                                   Get.dialog(MeetingRoomTimePickerDialog(
                                     startDate: controller.startDate.value,
                                     endDate: controller.endDate.value,
