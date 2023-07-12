@@ -158,15 +158,25 @@ class DetailBookingMeetingRoomController extends BaseController
     });
   }
 
-  /*void submitHeader() async {
+  void submitHeader() async {
     final result = await _repository.submitData(selectedItem.value.id!);
     result.fold(
             (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-            (cashAdvanceModel) {
+            (result) {
           detailHeader();
         });
-  }*/
+  }
+
+  void cancelHeader() async {
+    final result = await _repository.cancelData(selectedItem.value.id!);
+    result.fold(
+            (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (result) {
+          detailHeader();
+        });
+  }
 
   void onChangeSelectedRoom(String id) {
     final selected = listRoom.firstWhere(
@@ -226,7 +236,7 @@ class DetailBookingMeetingRoomController extends BaseController
     result.fold(
             (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-            (cashAdvanceModel) {
+            (result) {
           detailHeader();
           onEdit.value = false;
         });

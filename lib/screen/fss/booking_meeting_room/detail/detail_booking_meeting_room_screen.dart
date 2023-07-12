@@ -16,6 +16,7 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_controller.dart';
 import 'package:gais/screen/fss/booking_meeting_room/widget/meeting_room_time_picker_dialog.dart';
+import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/date_ext.dart';
 import 'package:gais/util/validator/custom_validation_builder.dart';
 import 'package:get/get.dart';
@@ -127,7 +128,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                           )
                               : ElevatedButton(
                             onPressed: () {
-
+                              controller.submitHeader();
                             },
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(75, 30),
@@ -136,15 +137,13 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                           ),
                         ],
                       );
-                    } else if (controller.selectedItem.value.codeStatusDoc
-                        .toString() ==
-                        "1") {
+                    } else if (controller.selectedItem.value.codeStatusDoc == BookingMeetingRoomEnum.booked.value) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
                             onPressed: () {
-
+                              controller.cancelHeader();
                             },
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(75, 30),

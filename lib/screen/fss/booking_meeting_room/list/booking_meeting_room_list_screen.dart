@@ -174,6 +174,11 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                       children: [
                         ...controller.listHeader.mapIndexed((index, item) =>
                             CommonListItem(
+                                onTap: item.codeStatusDoc == BookingMeetingRoomEnum.draft.value ? null : (){
+                                  Get.to(()=> const DetailBookingMeetingRoomScreen(), arguments: {
+                                    "item": item
+                                  });
+                                },
                                 number: "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
                                 subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                 title: item.noBookingMeeting,
