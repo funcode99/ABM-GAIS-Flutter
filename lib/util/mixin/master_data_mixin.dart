@@ -103,4 +103,9 @@ mixin MasterDataMixin{
     return result.fold((l) => [], (list) => list);
   }
 
+  Future<List<EmployeeModel>> getListDelegateTo(int id)async{
+    final result = await _repository.getListDelegateTo(id);
+    return result.fold((l) => [], (list) => list);
+  }
+
 }

@@ -4,6 +4,7 @@ import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/screen/approval/request_atk/list/approval_request_atk_list_screen.dart';
 import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_list_screen.dart';
+import 'package:gais/screen/approval_delegation/list/approval_delegation_list_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/list/booking_meeting_room_list_screen.dart';
 import 'package:gais/screen/fss/dashboard_meeting_room/dashboard_meeting_room_screen.dart';
 import 'package:gais/screen/fss/management_item_atk/list/management_item_atk_list_screen.dart';
@@ -284,7 +285,7 @@ class MenuScreen extends StatelessWidget {
                                           height: 25,
                                         ),
                                       ),
-                                      Text("Request Trip", style: menuSubTitleTextStyle),
+                                      Text("Request Trip\n", style: menuSubTitleTextStyle),
                                     ],
                                   ),
                                   onTap: () => Get.off(const ApprovalRequestTripListScreen()),
@@ -307,7 +308,7 @@ class MenuScreen extends StatelessWidget {
                                           height: 25,
                                         ),
                                       ),
-                                      Text("Cash Advance", style: menuSubTitleTextStyle),
+                                      Text("Cash Advance\n", style: menuSubTitleTextStyle),
                                     ],
                                   ),
                                   onTap: () => Get.to(const SubmenuScreen(), arguments: true),
@@ -333,7 +334,32 @@ class MenuScreen extends StatelessWidget {
                                           height: 25,
                                         ),
                                       ),
-                                      Text("ATK Request".tr, textAlign: TextAlign.center, style: menuSubTitleTextStyle)
+                                      Text("ATK Request\n".tr, textAlign: TextAlign.center, style: menuSubTitleTextStyle)
+                                    ],
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.to(const ApprovalDelegationListScreen());
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: infoColor,
+                                          borderRadius: BorderRadius.circular(50),
+                                        ),
+                                        padding: const EdgeInsets.all(10),
+                                        margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                        height: 50,
+                                        width: 50,
+                                        child: SvgPicture.asset(
+                                          ImageConstant.clipboard,
+                                          height: 25,
+                                        ),
+                                      ),
+                                      Text("Approval\nDelegation".tr, textAlign: TextAlign.center, style: menuSubTitleTextStyle)
                                     ],
                                   ),
                                 ),

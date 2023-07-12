@@ -1,4 +1,5 @@
 import 'package:gais/data/network_core.dart';
+import 'package:gais/data/repository/approval_delegation/approval_delegation_repository.dart';
 import 'package:gais/data/repository/approval_request_trip/approval_request_trip_impl.dart';
 import 'package:gais/data/repository/approval_request_trip/approval_request_trip_repository.dart';
 import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
@@ -39,5 +40,6 @@ class GlobalBinding extends Bindings {
 
 
     Get.put(MasterRepository(), permanent: true);
+    Get.put(ApprovalDelegationRepository(), permanent: true);
   }
 }

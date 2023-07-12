@@ -5,7 +5,7 @@ part 'employee_model.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class EmployeeModel {
   int? no;
-  int? id;
+  dynamic id;
   String? employeeName;
   String? phoneNumber;
   String? snEmployee;

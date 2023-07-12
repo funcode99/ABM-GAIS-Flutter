@@ -19,4 +19,15 @@ extension StringExt on String{
       return "-";
     }
   }
+
+  DateTime? toDate({String originFormat = "dd/MM/yyyy"}){
+    try{
+      DateTime dateTime = DateFormat(originFormat).parse(this);
+
+      return dateTime;
+    }catch(e){
+      print("ERROR toDateFormat $e");
+      return null;
+    }
+  }
 }
