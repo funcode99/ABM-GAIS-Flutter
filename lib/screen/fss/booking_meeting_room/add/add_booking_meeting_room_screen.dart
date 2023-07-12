@@ -185,7 +185,9 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                         controller.onChangeSelectedRoom(item.toString());
                       },
                       label: "Meeting Room".tr,
-                      value: controller.selectedRoom.value?.id.toString(),
+                      value:  controller.selectedRoom.value != null
+                          ? controller.selectedRoom.value?.id.toString()
+                          : "",
                     );
                   }),
                   const SizedBox(

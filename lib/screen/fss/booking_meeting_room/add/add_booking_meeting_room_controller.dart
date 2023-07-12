@@ -86,6 +86,7 @@ class AddBookingMeetingRoomController extends BaseController
     final sites = await getListSite();
     listSite.addAll(sites);
 
+    listRoom.add(RoomModel(id: "", nameMeetingRoom: "Meeting Room"));
     final rooms = await getListRoomBySite(idSite.toInt());
     listRoom.addAll(rooms);
     onChangeSelectedRoom("");
