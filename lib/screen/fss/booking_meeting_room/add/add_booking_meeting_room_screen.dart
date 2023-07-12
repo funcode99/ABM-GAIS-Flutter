@@ -133,7 +133,6 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   ),
                   CustomTextFormField(
                       isRequired: true,
-                      readOnly: true,
                       suffixIcon: const Icon(IconlyLight.time_circle),
                       onTap: () {
                         if (controller.startDate.value == null &&
