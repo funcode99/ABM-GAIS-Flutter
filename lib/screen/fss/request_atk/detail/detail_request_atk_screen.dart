@@ -73,7 +73,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                   width: double.infinity,
                   child: Obx(() {
                     return Text(
-                      controller.selectedItem.value.noAtkRequest ?? "-",
+                      controller.selectedItem.value.noAtkRequest ?? "",
                       style: Theme.of(context)
                           .textTheme
                           .bodyText1
