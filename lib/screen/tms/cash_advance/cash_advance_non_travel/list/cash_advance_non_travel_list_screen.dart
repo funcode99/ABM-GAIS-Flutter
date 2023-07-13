@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
+import 'package:gais/reusable/calendar/custom_calendar_picker.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
@@ -67,7 +68,10 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                         controller: controller.dateRangeController,
                         suffixIcon: const Icon(Icons.calendar_month),
                         onTap: () {
-                          showCustomDateRangePicker(
+                          if(DateUtils.isSameDay(controller.startDateTemp.value, controller.endDateTemp.value)){
+                            controller.endDateTemp.value = null;
+                          }
+                          showCustomCalendarPicker(
                             context,
                             dismissible: true,
                             minimumDate: DateTime.now()
@@ -78,14 +82,17 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                             startDate: controller.startDateTemp.value,
                             backgroundColor: Colors.white,
                             primaryColor: Colors.green,
+                            isRange: false,
                             onApplyClick: (start, end) {
-                              controller.endDateTemp.value = end;
+                              controller.endDateTemp.value = end ?? start;
                               controller.startDateTemp.value = start;
                               controller.dateRangeController.text =
-                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end!)}";
-                              controller.update();
+                              "${controller.dateFormat.format(controller.startDateTemp.value!)} - ${controller.dateFormat.format(controller.endDateTemp.value!)}";
                             },
                             onCancelClick: () {
+                              if(controller.startDateTemp.value != null){
+                                controller.endDateTemp.value ??= controller.startDateTemp.value;
+                              }
                             },
                           );
                         },
