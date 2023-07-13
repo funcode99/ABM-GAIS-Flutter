@@ -136,13 +136,18 @@ class BookingMeetingRoomListController extends BaseController with MasterDataMix
   void openFilter(){
     startDateTemp.value = startDate.value;
     endDateTemp.value = endDate.value;
-    selectedStatusTemp.value = selectedStatus.value;
-    selectedMeetingRoomTemp.value = selectedMeetingRoom.value;
+    if(DateUtils.isSameDay(startDateTemp.value, endDateTemp.value)){
+      endDateTemp.value = null;
+    }
+
     if(startDateTemp.value!=null){
-      dateRangeController.text = "${dateFormat.format(startDateTemp.value!)} - ${dateFormat.format(endDateTemp.value!)}";
+      dateRangeController.text = "${dateFormat.format(startDate.value!)} - ${dateFormat.format(endDate.value!)}";
     }else{
       dateRangeController.text = "";
     }
+
+    selectedStatusTemp.value = selectedStatus.value;
+    selectedMeetingRoomTemp.value = selectedMeetingRoom.value;
 
   }
 
