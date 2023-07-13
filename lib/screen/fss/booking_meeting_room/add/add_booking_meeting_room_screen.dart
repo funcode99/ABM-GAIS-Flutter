@@ -133,7 +133,6 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   ),
                   CustomTextFormField(
                       isRequired: true,
-                      readOnly: true,
                       suffixIcon: const Icon(IconlyLight.time_circle),
                       onTap: () {
                         if (controller.startDate.value == null &&
@@ -144,6 +143,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                 backgroundColor: redColor),
                           );
                         } else {
+                          FocusScope.of(context).requestFocus(FocusNode());
                           Get.dialog(MeetingRoomTimePickerDialog(
                             startDate: controller.startDate.value,
                             endDate: controller.endDate.value,
@@ -184,7 +184,9 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                         controller.onChangeSelectedRoom(item.toString());
                       },
                       label: "Meeting Room".tr,
-                      value: controller.selectedRoom.value?.id.toString(),
+                      value:  controller.selectedRoom.value != null
+                          ? controller.selectedRoom.value?.id.toString()
+                          : "",
                     );
                   }),
                   const SizedBox(
@@ -431,7 +433,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                 : null,
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: successColor),
-                            child: Text("Save".tr),
+                            child: Text("Book".tr),
                           )),
                     ],
                   ),

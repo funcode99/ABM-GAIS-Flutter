@@ -159,7 +159,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
                               CommonListItem(
                                 onTap: item.codeStatusDoc == 0 ? null : (){
                                   Get.to(() => const RequestATKDetailScreen(),
-                                      arguments: {"item": item});
+                                      arguments: {"item": item})?.then((value) => controller.getHeader());
                                 },
                                 number: "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
                                 title: "${item.noAtkRequest}",

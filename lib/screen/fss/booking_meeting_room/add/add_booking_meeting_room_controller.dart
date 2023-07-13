@@ -8,6 +8,7 @@ import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
+import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
@@ -86,6 +87,7 @@ class AddBookingMeetingRoomController extends BaseController
     final sites = await getListSite();
     listSite.addAll(sites);
 
+    listRoom.add(RoomModel(id: "", nameMeetingRoom: "Meeting Room"));
     final rooms = await getListRoomBySite(idSite.toInt());
     listRoom.addAll(rooms);
     onChangeSelectedRoom("");
@@ -124,10 +126,10 @@ class AddBookingMeetingRoomController extends BaseController
         floor: floorController.text.toInt() ?? 0,
         capacity: capacityController.text.toInt() ?? 0,
         title: titleController.text,
-        startDate: startDate.toString(),
-        endDate: endDate.toString(),
+        startDate: startDate.value.toString(),
+        endDate: endDate.value != null ? endDate.value.toString() : startDate.value.toString(),
         startTime: startTime.toString(),
-        endTime: endTime.toString(),
+        endTime: endTime.value != null ? endTime.value.toString() : startTime.value.toString(),
         idMeetingRoom: selectedRoom.value?.id,
         session: null,
         participant: listSelectedEmployee.map((element) => element.id.toString().toInt()).toList(),
@@ -141,9 +143,9 @@ class AddBookingMeetingRoomController extends BaseController
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (meetingRoomModel) {
-      /*Get.off(() => const DetailBookingMeetingRoomScreen(),
-          arguments: {"item": meetingRoomModel});*/
-          Get.back(result: true);
+      Get.off(() => const DetailBookingMeetingRoomScreen(),
+          arguments: {"item": meetingRoomModel});
+
     });
   }
 
