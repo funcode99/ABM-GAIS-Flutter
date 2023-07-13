@@ -433,7 +433,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                 : null,
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: successColor),
-                            child: Text("Save".tr),
+                            child: Text("Book".tr),
                           )),
                     ],
                   ),
