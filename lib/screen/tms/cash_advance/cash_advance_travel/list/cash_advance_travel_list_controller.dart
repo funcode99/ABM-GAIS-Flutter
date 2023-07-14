@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 
 class CashAdvanceTravelListController extends BaseController {
   final TextEditingController dateRangeController = TextEditingController();
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat formatFilter = DateFormat("yyyy-MM-dd");
 
   final startDate = Rxn<DateTime>();
@@ -81,8 +81,12 @@ class CashAdvanceTravelListController extends BaseController {
   void openFilter(){
     startDateTemp.value = startDate.value;
     endDateTemp.value = endDate.value;
+    if(DateUtils.isSameDay(startDateTemp.value, endDateTemp.value)){
+      endDateTemp.value = null;
+    }
+
     if(startDateTemp.value!=null){
-      dateRangeController.text = "${dateFormat.format(startDateTemp.value!)} - ${dateFormat.format(endDateTemp.value!)}";
+      dateRangeController.text = "${dateFormat.format(startDate.value!)} - ${dateFormat.format(endDate.value!)}";
     }else{
       dateRangeController.text = "";
     }

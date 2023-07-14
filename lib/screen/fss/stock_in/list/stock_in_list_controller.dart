@@ -182,16 +182,19 @@ class StockInListController extends BaseController with MasterDataMixin{
   void openFilter(){
     startDateTemp.value = startDate.value;
     endDateTemp.value = endDate.value;
+    if(DateUtils.isSameDay(startDateTemp.value, endDateTemp.value)){
+      endDateTemp.value = null;
+    }
+
+    if(startDateTemp.value!=null){
+      dateRangeController.text = "${dateFormat.format(startDate.value!)} - ${dateFormat.format(endDate.value!)}";
+    }else{
+      dateRangeController.text = "";
+    }
 
     selectedCompanyTemp.value = selectedCompany.value;
     selectedSiteTemp.value = selectedSite.value;
     selectedWarehouseTemp.value = selectedWarehouse.value;
-
-    if(startDateTemp.value!=null){
-      dateRangeController.text = "${dateFormat.format(startDateTemp.value!)} - ${dateFormat.format(endDateTemp.value!)}";
-    }else{
-      dateRangeController.text = "";
-    }
 
   }
 
