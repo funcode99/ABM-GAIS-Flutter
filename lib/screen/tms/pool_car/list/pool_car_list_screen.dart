@@ -136,7 +136,7 @@ class PoolCarListScreen extends StatelessWidget {
                             .mapIndexed((index, item) => CommonListItem(
                           number: "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
                           title: item.noPoolCar ?? "-",
-                          subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                          subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss")}",
                           total: item.plate ?? "-",
                           content: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -188,7 +188,7 @@ class PoolCarListScreen extends StatelessWidget {
                                         style: listTitleTextStyle,
                                       ),
                                       Text(
-                                          "${item.fromDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                          "${item.fromDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
                                           style: listSubTitleTextStyle.copyWith(
                                               overflow: TextOverflow.ellipsis
                                           )
@@ -205,7 +205,7 @@ class PoolCarListScreen extends StatelessWidget {
                                         style: listTitleTextStyle,
                                       ),
                                       Text(
-                                        "${item.toDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                        "${item.toDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
                                         style: listSubTitleTextStyle.copyWith(
                                             overflow: TextOverflow.ellipsis
                                         ),

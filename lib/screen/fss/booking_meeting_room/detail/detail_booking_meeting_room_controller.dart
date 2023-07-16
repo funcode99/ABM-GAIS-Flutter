@@ -124,8 +124,7 @@ class DetailBookingMeetingRoomController extends BaseController
     }
 
     createdByController.text = selectedItem.value.employeeName ?? "-";
-    createdAtController.text = selectedItem.value.createdAt?.toDateFormat(
-        originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
+    createdAtController.text = selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss") ??
         "-";
     titleController.text = selectedItem.value.title ?? "";
 

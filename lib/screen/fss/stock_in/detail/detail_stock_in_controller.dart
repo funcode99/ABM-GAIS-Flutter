@@ -37,8 +37,7 @@ class DetailStockInController extends BaseController {
 
   void setValue() {
     createdByController.text = selectedItem.value.nameCreated ?? "-";
-    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(
-            originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
+    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss") ??
         "-";
     if (selectedItem.value.status?.toLowerCase() == "reject") {
       rejectNoteController.text = selectedItem.value.remarks ?? "-";

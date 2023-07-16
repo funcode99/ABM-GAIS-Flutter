@@ -50,8 +50,7 @@ class PoolCarDetailController extends BaseController {
   }
 
   void setValue() {
-    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(
-            originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
+    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss") ??
         "-";
     requestorController.text = selectedItem.value.requestorName ?? "-";
     referenceController.text = selectedItem.value.noRequestTrip ?? "-";

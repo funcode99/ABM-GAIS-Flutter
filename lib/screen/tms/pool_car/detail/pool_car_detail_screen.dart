@@ -285,7 +285,7 @@ class _PoolCarDetailScreenState
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
-                                            "${controller.selectedItem.value.fromDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                            "${controller.selectedItem.value.fromDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
                                             style: listSubTitleTextStyle.copyWith(
                                                 overflow: TextOverflow.ellipsis
                                             )
@@ -302,7 +302,7 @@ class _PoolCarDetailScreenState
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
-                                          "${controller.selectedItem.value.toDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                          "${controller.selectedItem.value.toDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
                                           style: listSubTitleTextStyle.copyWith(
                                               overflow: TextOverflow.ellipsis
                                           ),

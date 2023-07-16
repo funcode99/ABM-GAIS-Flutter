@@ -19,7 +19,7 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController {
   final TextEditingController totalController = TextEditingController();
   final TextEditingController currencyController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  DateFormat dateFormat = DateFormat("dd/MM/yy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
   final selectedItem = ApprovalCashAdvanceModel().obs;
   final detailSelectedItem = CashAdvanceModel().obs;

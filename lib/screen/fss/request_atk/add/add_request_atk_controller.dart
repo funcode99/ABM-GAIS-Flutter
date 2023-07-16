@@ -14,7 +14,7 @@ class AddRequestATKController extends BaseController {
   final TextEditingController companyController = TextEditingController();
   final TextEditingController siteController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  DateFormat dateFormat = DateFormat("dd/MM/yy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
   List<RequestATKDetailModel> listDetail = [];
 

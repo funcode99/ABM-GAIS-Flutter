@@ -95,7 +95,7 @@ class ApprovalDelegationListScreen extends StatelessWidget {
                                     "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
                                 title: "${item.delegator}",
                                 subtitle:
-                                    "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                    "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
                                 content: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 8),
@@ -130,7 +130,7 @@ class ApprovalDelegationListScreen extends StatelessWidget {
                                               style: listTitleTextStyle,
                                             ),
                                             Text(
-                                              "${item.startDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")} - ${item.endDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                              "${item.startDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")} - ${item.endDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
                                               style: listSubTitleTextStyle
                                                   .copyWith(
                                                       overflow: TextOverflow

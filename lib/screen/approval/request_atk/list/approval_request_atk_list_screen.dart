@@ -155,7 +155,7 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
                                         "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
                                     title: "${item.noAtkRequest}",
                                     subtitle:
-                                        "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                        "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss")}",
                                     content: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 8),

@@ -37,8 +37,7 @@ class RequestATKDetailController extends BaseController {
 
   void setValue(){
     createdByController.text = selectedItem.value.employeeName ?? "-";
-    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(
-        originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
+    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss") ??
         "-";
     if (selectedItem.value.notes != null) {
       rejectNoteController.text = selectedItem.value.notes ?? "-";

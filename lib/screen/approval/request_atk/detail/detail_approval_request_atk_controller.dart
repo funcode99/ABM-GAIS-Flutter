@@ -17,7 +17,7 @@ class DetailApprovalRequestATKController extends BaseController {
   final TextEditingController rejectNoteController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
-  DateFormat dateFormat = DateFormat("dd/MM/yy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
   final selectedItem = ApprovalRequestATKModel().obs;
   final detailSelectedItem = RequestAtkModel().obs;
@@ -45,8 +45,7 @@ class DetailApprovalRequestATKController extends BaseController {
 
   void setValue() {
     createdDateController.text = detailSelectedItem.value.createdAt
-            ?.toDateFormat(
-                originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+            ?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss") ??
         "-";
     createdByController.text = detailSelectedItem.value.employeeName ?? "-";
     rejectNoteController.text = detailSelectedItem.value.remarks ?? "-";

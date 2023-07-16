@@ -47,7 +47,7 @@ class CashAdvanceTravelDetailController extends BaseController {
 
   void setValue(){
     createdDateController.text =
-        selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ?? "-";
+        selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss") ?? "-";
     requestorController.text = selectedItem.value.employeeName ?? "-";
     referenceController.text = selectedItem.value.noRequestTrip ?? "-";
     totalController.text =
