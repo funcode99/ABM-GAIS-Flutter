@@ -259,7 +259,6 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                     itemBuilder: (BuildContext context,
                                         int index) {
                                       final EmployeeModel option = controller.listEmployee.elementAt(index);
-                                      print("OPTION ${option.toJson()}");
                                       return TextButton(
                                         onPressed: () {
                                           onSelected(option);
@@ -290,7 +289,6 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                           if (textEditingValue.text == '') {
                             return const Iterable<EmployeeModel>.empty();
                           }
-                          print("TESTINGGGG");
                           final list = await controller.getEmployeeByKeyword(textEditingValue.text);
                           return list;
                           */ /*return controller.listEmployee.where((EmployeeModel option) {
@@ -431,9 +429,6 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                             item.employeeName ?? "",
                                             style: listSubTitleTextStyle,
                                           ),
-                                          onTap: () {
-                                            //print("$tag selected");
-                                          },
                                         ),
                                         const SizedBox(width: 4.0),
                                         InkWell(
@@ -454,7 +449,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                               .toList(),
                           SizedBox(
                             width: double.infinity,
-                            child: TypeAheadField<EmployeeModel>(
+                            child: TypeAheadFormField<EmployeeModel>(
                               textFieldConfiguration: TextFieldConfiguration(
                                 controller: controller.autocompleteController,
                                 autofocus: false,
@@ -492,7 +487,17 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                               hideSuggestionsOnKeyboardHide: true,
                               keepSuggestionsOnLoading: false,
                               minCharsForSuggestions: 1,
+                              validator: (value) {
+                                controller.showParticipantError(
+                                    controller.listSelectedEmployee
+                                        .isEmpty);
 
+                                if(controller.listSelectedEmployee
+                                    .isEmpty){
+                                  return "";
+                                }
+                                return null;
+                              },
                             ),
                           )
                         ],

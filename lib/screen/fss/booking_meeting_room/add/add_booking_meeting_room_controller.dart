@@ -95,8 +95,8 @@ class AddBookingMeetingRoomController extends BaseController
     listRoom.addAll(rooms);
     onChangeSelectedRoom("");
 
-    final employees = await getListEmployee();
-    listEmployee.addAll(employees);
+    /*final employees = await getListEmployee();
+    listEmployee.addAll(employees);*/
   }
 
   void onChangeSelectedRoom(String id) {
