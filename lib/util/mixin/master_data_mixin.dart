@@ -108,4 +108,9 @@ mixin MasterDataMixin{
     return result.fold((l) => [], (list) => list);
   }
 
+  Future<List<EmployeeModel>> getListEmployeeByKeyword(String keyword)async{
+    final result = await _repository.getListEmployeeByKeyword(keyword);
+    return result.fold((l) => [], (list) => list);
+  }
+
 }

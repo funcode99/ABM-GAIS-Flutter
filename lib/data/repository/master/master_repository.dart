@@ -15,6 +15,7 @@ import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
 import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
+import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:get/get.dart';
 
@@ -406,6 +407,38 @@ class MasterRepository{
     }
   }
 
+
+  Future<Either<BaseError, List<EmployeeModel>>> getListEmployeeByKeyword(String keyword)async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/employee/get_by_keyword',
+        queryParameters: {
+          "perPage" : 20,
+          "search" : keyword
+        }
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
+      PaginationModel paginationModel = apiResponseModel.data;
+      List<EmployeeModel> result = [];
+      result = paginationModel.data!
+          .map((e) => EmployeeModel.fromJson(e))
+          .toList();
+
+      return right(result);
+
+    } on Dio.DioError catch (e) {
+      print(e);
+
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print(e);
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print(e);
+
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
 
 
 }
