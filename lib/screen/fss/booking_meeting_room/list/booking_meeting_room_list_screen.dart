@@ -188,7 +188,7 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                   })?.then((value) => controller.getHeader());
                                 },
                                 number: "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
-                                subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                subtitle: "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss")}",
                                 title: item.noBookingMeeting,
                                 total: item.nameMeetingRoom,
                                 status: item.status,
@@ -240,7 +240,7 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                               style: listTitleTextStyle,
                                             ),
                                             Text(
-                                              "${item.startDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                              "${item.startDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
                                               style: listSubTitleTextStyle.copyWith(
                                                   overflow: TextOverflow.ellipsis
                                               ),
@@ -312,7 +312,7 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
         onPressed: () => Get.to(()=>const AddBookingMeetingRoomScreen())?.then((value) => controller.getHeader()),
         child: const Icon(Icons.add_rounded, size: 45),
       ),
-      bottomNavigationBar: const BottomBar(menu: 1),
+      bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
 }

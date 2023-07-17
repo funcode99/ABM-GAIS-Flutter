@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
@@ -29,7 +30,9 @@ class AddBookingMeetingRoomController extends BaseController
   final TextEditingController siteController = TextEditingController();
   final TextEditingController companyController = TextEditingController();
 
-  late TextEditingController autocompleteController;
+
+  late TextEditingController autocompleteController = TextEditingController();
+  final SuggestionsBoxController suggestionsBoxController = SuggestionsBoxController();
 
   TextfieldTagsController textfieldTagsController = TextfieldTagsController();
   final formKey = GlobalKey<FormState>();
@@ -92,8 +95,8 @@ class AddBookingMeetingRoomController extends BaseController
     listRoom.addAll(rooms);
     onChangeSelectedRoom("");
 
-    final employees = await getListEmployee();
-    listEmployee.addAll(employees);
+    /*final employees = await getListEmployee();
+    listEmployee.addAll(employees);*/
   }
 
   void onChangeSelectedRoom(String id) {
@@ -151,5 +154,15 @@ class AddBookingMeetingRoomController extends BaseController
 
   void deleteParticipantItem(EmployeeModel item) {
     listSelectedEmployee.removeWhere((element) => item.id == element.id);
+  }
+
+  Future<List<EmployeeModel>> getEmployeeByKeyword(String keyword)async{
+
+    listEmployee.clear();
+    final employees = await getListEmployeeByKeyword(keyword);
+    listEmployee.addAll(employees);
+    print("LEEENGTH ${listEmployee.length}");
+
+    return listEmployee;
   }
 }

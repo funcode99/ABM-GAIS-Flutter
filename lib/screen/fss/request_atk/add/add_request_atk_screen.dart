@@ -261,7 +261,7 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                 ),
               ),
             ),
-            bottomNavigationBar: const BottomBar(menu: 1),
+            bottomNavigationBar: const BottomBar(menu: 0),
           );
         });
   }

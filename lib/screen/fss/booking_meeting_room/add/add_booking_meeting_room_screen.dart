@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
@@ -26,7 +27,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AddBookingMeetingRoomController controller =
-    Get.put(AddBookingMeetingRoomController());
+        Get.put(AddBookingMeetingRoomController());
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -109,7 +110,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                           isRange: false,
                           minimumDate: DateTime.now(),
                           maximumDate:
-                          DateTime.now().add(const Duration(days: 365)),
+                              DateTime.now().add(const Duration(days: 365)),
                           endDate: controller.endDate.value,
                           startDate: controller.startDate.value,
                           backgroundColor: Colors.white,
@@ -118,9 +119,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                             controller.startDate.value = start;
                             controller.endDate.value = end;
                             controller.dateController.text =
-                            "${controller.dateFormat.format(start)} ${end !=
-                                null ? "-" : ""} ${end != null ? controller
-                                .dateFormat.format(end) : ""}";
+                                "${controller.dateFormat.format(start)} ${end != null ? "-" : ""} ${end != null ? controller.dateFormat.format(end) : ""}";
                             controller.update();
                           },
                           onCancelClick: () {},
@@ -153,9 +152,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                               controller.startTime.value = startTime;
                               controller.endTime.value = endTime;
                               controller.timeController.text =
-                              "${startTime?.toStringWithFormat()} ${endTime !=
-                                  null ? "-" : ""} ${endTime
-                                  ?.toStringWithFormat() ?? ""}";
+                                  "${startTime?.toStringWithFormat()} ${endTime != null ? "-" : ""} ${endTime?.toStringWithFormat() ?? ""}";
                             },
                           ));
                         }
@@ -174,17 +171,16 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                     return CustomDropDownFormField(
                       isRequired: true,
                       items: controller.listRoom
-                          .map((e) =>
-                          DropdownMenuItem(
-                            value: e.id.toString(),
-                            child: Text("${e.nameMeetingRoom}"),
-                          ))
+                          .map((e) => DropdownMenuItem(
+                                value: e.id.toString(),
+                                child: Text("${e.nameMeetingRoom}"),
+                              ))
                           .toList(),
                       onChanged: (item) {
                         controller.onChangeSelectedRoom(item.toString());
                       },
                       label: "Meeting Room".tr,
-                      value:  controller.selectedRoom.value != null
+                      value: controller.selectedRoom.value != null
                           ? controller.selectedRoom.value?.id.toString()
                           : "",
                     );
@@ -234,7 +230,8 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Obx(() {
+
+                  /*Obx(() {
                     return Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(
@@ -261,7 +258,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                     itemCount: options.length,
                                     itemBuilder: (BuildContext context,
                                         int index) {
-                                      final EmployeeModel option = options.elementAt(index);
+                                      final EmployeeModel option = controller.listEmployee.elementAt(index);
                                       return TextButton(
                                         onPressed: () {
                                           onSelected(option);
@@ -288,13 +285,15 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                             ),
                           );
                         },
-                        optionsBuilder: (TextEditingValue textEditingValue) {
+                        optionsBuilder: (TextEditingValue textEditingValue) async{
                           if (textEditingValue.text == '') {
                             return const Iterable<EmployeeModel>.empty();
                           }
-                          return controller.listEmployee.where((EmployeeModel option) {
+                          final list = await controller.getEmployeeByKeyword(textEditingValue.text);
+                          return list;
+                          */ /*return controller.listEmployee.where((EmployeeModel option) {
                             return option.employeeName!.contains(textEditingValue.text.toLowerCase()) || option.email!.contains(textEditingValue.text.toLowerCase());
-                          });
+                          });*/ /*
                         },
                         onSelected: (EmployeeModel selected) {
                           controller.listSelectedEmployee.add(selected);
@@ -390,25 +389,142 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                         },
                       ),
                     );
+                  }),*/
+
+                  Obx(() {
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 8),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: controller.showParticipantError.value
+                              ? Colors.redAccent
+                              : Colors.black,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Wrap(
+                        runSpacing: 8,
+                        runAlignment: WrapAlignment.center,
+                        children: [
+                          ...controller.listSelectedEmployee
+                              .mapIndexed((index, item) => Container(
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(4.0),
+                                      ),
+                                      color: Color(0xFFe4e4e4),
+                                    ),
+                                    margin: const EdgeInsets.only(
+                                        right: 5.0, left: 5),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0, vertical: 4.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        InkWell(
+                                          child: Text(
+                                            item.employeeName ?? "",
+                                            style: listSubTitleTextStyle,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 4.0),
+                                        InkWell(
+                                          child: const Icon(
+                                            Icons.cancel,
+                                            size: 14.0,
+                                            color: greyColor,
+                                          ),
+                                          onTap: () {
+                                            controller
+                                                .deleteParticipantItem(item);
+                                            controller.updateButton();
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                  ))
+                              .toList(),
+                          SizedBox(
+                            width: double.infinity,
+                            child: TypeAheadFormField<EmployeeModel>(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                controller: controller.autocompleteController,
+                                autofocus: false,
+                                style: Theme.of(context).textTheme.titleMedium,
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    hintText: "Participant".tr,
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0, vertical: 4.0),
+                                    errorText: null,
+                                    errorBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      gapPadding: 0,
+                                    ),
+                                    errorStyle: const TextStyle(height: 0)),
+                              ),
+                              suggestionsCallback: (pattern) async {
+                                final list = await controller
+                                    .getEmployeeByKeyword(pattern);
+                                return list;
+                              },
+                              itemBuilder: (context, suggestion) {
+                                return ListTile(
+                                  title: Text("${suggestion.employeeName}"),
+                                  subtitle: Text("${suggestion.email}"),
+                                );
+                              },
+                              onSuggestionSelected: (suggestion) {
+                                controller.listSelectedEmployee.add(suggestion);
+                                controller.autocompleteController.text = "";
+                              },
+                              debounceDuration: const Duration(milliseconds: 1500),
+                              hideOnLoading: true,
+                              hideSuggestionsOnKeyboardHide: true,
+                              keepSuggestionsOnLoading: false,
+                              minCharsForSuggestions: 1,
+                              validator: (value) {
+                                controller.showParticipantError(
+                                    controller.listSelectedEmployee
+                                        .isEmpty);
+
+                                if(controller.listSelectedEmployee
+                                    .isEmpty){
+                                  return "";
+                                }
+                                return null;
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    );
                   }),
                   Obx(() {
                     if (controller.showParticipantError.value) {
                       return const Padding(
                         padding: EdgeInsets.only(left: 10, top: 8),
-                        child: Text("This field is required", style: TextStyle(
-                            color: Colors.redAccent,
-                            fontSize: 12
-                        ),),
+                        child: Text(
+                          "This field is required",
+                          style:
+                          TextStyle(color: Colors.redAccent, fontSize: 12),
+                        ),
                       );
                     }
                     return const SizedBox();
                   }),
+
+
                   const SizedBox(
                     height: 8,
                   ),
                   CustomTextFormField(
                       validator:
-                      ValidationBuilder(optional: true).validLink().build(),
+                          ValidationBuilder(optional: true).validLink().build(),
                       controller: controller.linkController,
                       label: "Link".tr),
                   const SizedBox(
@@ -424,12 +540,11 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Obx(() =>
-                          ElevatedButton(
+                      Obx(() => ElevatedButton(
                             onPressed: controller.enableButton.value
                                 ? () {
-                              controller.saveData();
-                            }
+                                    controller.saveData();
+                                  }
                                 : null,
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: successColor),
@@ -446,7 +561,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomBar(menu: 1),
+      bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
 }

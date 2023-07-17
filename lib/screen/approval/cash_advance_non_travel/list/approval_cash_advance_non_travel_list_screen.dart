@@ -161,7 +161,7 @@ class _ApprovalCashAdvanceNonTravelListScreenState
                                         "${((controller.currentPage.value - 1) *  controller.limit) + (index + 1)}",
                                     title: item.noCa ?? "-",
                                     subtitle:
-                                        "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                        "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss")}",
                                     total:
                                         "${item.currencyCode ?? ""} ${item.grandTotal?.toInt().toCurrency()}",
                                     content: Padding(
@@ -250,7 +250,7 @@ class _ApprovalCashAdvanceNonTravelListScreenState
           ],
         ),
       ),
-      bottomNavigationBar: const BottomBar(menu: 1),
+      bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
 }

@@ -222,7 +222,7 @@ class ListDocumentDeliveryScreen extends StatelessWidget {
               backgroundColor: successColor,
               onPressed: () => Get.to(AddDocumentDeliveryScreen()),
             ),
-            bottomNavigationBar: BottomBar(menu: 1),
+            bottomNavigationBar: BottomBar(menu: 0),
           );
         });
   }

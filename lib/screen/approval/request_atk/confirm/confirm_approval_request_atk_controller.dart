@@ -13,7 +13,7 @@ class ConfirmApprovalRequestATKController extends BaseController {
   final TextEditingController noteController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
-  DateFormat dateFormat = DateFormat("dd/MM/yy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
   final selectedItem = ApprovalRequestATKModel().obs;
   final approvalModel = Rxn<ApprovalModel>();

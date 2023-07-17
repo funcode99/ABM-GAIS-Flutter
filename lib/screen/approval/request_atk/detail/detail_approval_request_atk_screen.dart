@@ -401,7 +401,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
           ),
         ),
       ),
-      bottomNavigationBar: const BottomBar(menu: 1),
+      bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
 }

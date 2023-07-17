@@ -43,8 +43,7 @@ class ApprovalCashAdvanceTravelDetailController extends BaseController {
 
   void setValue() {
     createdDateController.text = detailSelectedItem.value.createdAt
-            ?.toDateFormat(
-                originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy") ??
+            ?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss") ??
         "-";
     requestorController.text = detailSelectedItem.value.employeeName ?? "-";
     referenceController.text = detailSelectedItem.value.noRequestTrip ?? "-";

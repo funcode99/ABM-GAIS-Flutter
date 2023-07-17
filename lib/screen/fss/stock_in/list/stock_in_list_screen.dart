@@ -226,7 +226,7 @@ class StockInListScreen extends StatelessWidget {
                                 number:
                                     "${((controller.currentPage.value - 1) *  controller.limit) + (index + 1)}",
                                 subtitle:
-                                    "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yy")}",
+                                    "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss")}",
                                 title: item.noStockIn,
                                 content: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -323,7 +323,7 @@ class StockInListScreen extends StatelessWidget {
         },
         child: const Icon(Icons.add_rounded, size: 45),
       ),
-      bottomNavigationBar: const BottomBar(menu: 1),
+      bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
 }

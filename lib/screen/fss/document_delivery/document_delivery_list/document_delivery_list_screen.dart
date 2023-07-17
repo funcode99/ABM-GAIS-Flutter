@@ -32,7 +32,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
             backgroundColor: baseColor,
             appBar: TopBar(
               title: Text("Document Delivery", style: appTitle),
-              leading: CustomBackButton(onPressed: ()=> Get.off(HomeScreen(), arguments: 1),),
+              leading: CustomBackButton(onPressed: ()=> Get.off(HomeScreen(), arguments: 0),),
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -249,7 +249,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                 controller.update();
               }),
             ),
-            bottomNavigationBar: BottomBar(menu: 1),
+            bottomNavigationBar: BottomBar(menu: 0),
           );
         });
   }

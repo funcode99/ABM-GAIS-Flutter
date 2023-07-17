@@ -234,7 +234,7 @@ class _AddCashAdvanceNonTravelScreenState
                 ),
               ),
             ),
-            bottomNavigationBar: const BottomBar(menu: 1),
+            bottomNavigationBar: const BottomBar(menu: 0),
           );
         });
   }

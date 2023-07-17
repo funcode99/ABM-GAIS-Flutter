@@ -285,7 +285,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                 ),
               ),
             ),
-            bottomSheet: const BottomBar(menu: 1),
+            bottomSheet: const BottomBar(menu: 0),
           );
         });
   }
