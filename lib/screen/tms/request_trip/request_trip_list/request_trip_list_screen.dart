@@ -35,7 +35,7 @@ class RequestTripListScreen extends StatelessWidget {
             backgroundColor: baseColor,
             appBar: TopBar(
               title: Text("Request Trip", style: appTitle),
-              leading: CustomBackButton(onPressed: () => Get.off(HomeScreen(), arguments: 1)),
+              leading: CustomBackButton(onPressed: () => Get.off(HomeScreen(), arguments: 0)),
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -317,7 +317,7 @@ class RequestTripListScreen extends StatelessWidget {
               onPressed: () => Get.to(const RequesterInfoScreen()),
               child: const Icon(Icons.add_rounded, size: 45),
             ),
-            bottomNavigationBar: const BottomBar(menu: 1),
+            bottomNavigationBar: const BottomBar(menu: 0),
           );
         });
   }

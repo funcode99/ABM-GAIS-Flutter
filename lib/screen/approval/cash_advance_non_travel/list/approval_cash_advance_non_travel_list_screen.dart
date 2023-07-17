@@ -250,7 +250,7 @@ class _ApprovalCashAdvanceNonTravelListScreenState
           ],
         ),
       ),
-      bottomNavigationBar: const BottomBar(menu: 1),
+      bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
 }

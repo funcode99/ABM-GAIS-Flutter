@@ -338,7 +338,7 @@ class MenuScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                GestureDetector(
+                                /*GestureDetector(
                                   onTap: () {
                                     Get.to(const ApprovalDelegationListScreen());
                                   },
@@ -362,7 +362,7 @@ class MenuScreen extends StatelessWidget {
                                       Text("Approval\nDelegation".tr, textAlign: TextAlign.center, style: menuSubTitleTextStyle)
                                     ],
                                   ),
-                                ),
+                                ),*/
                               ],
                             ),
                           ],

@@ -4,6 +4,7 @@ import 'package:gais/const/color.dart';
 import 'package:gais/data/model/meeting_room_used.dart';
 import 'package:gais/data/model/supplies_out_model.dart';
 import 'package:gais/data/model/trip_purpose_model.dart';
+import 'package:gais/screen/dashboard/dashboard_screen.dart';
 import 'package:gais/screen/home/home_screen.dart';
 import 'package:gais/screen/menu/menu_screen.dart';
 import 'package:gais/screen/notification/notification_screen.dart';
@@ -25,15 +26,15 @@ class HomeController extends BaseController {
   // late List<dynamic> listMonths = [];
 
   static const List<Widget> widgetOptions = <Widget>[
-    HomeScreen(),
     MenuScreen(),
+    DashboardScreen(),
     NotificationScreen(),
     ProfilScreen()
   ];
 
   static const List<String> appTitle = <String>[
     "Home",
-    "Menu",
+    "Dashboard",
     "Notification",
     "Profil"
   ];

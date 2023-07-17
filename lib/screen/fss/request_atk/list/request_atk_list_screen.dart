@@ -263,7 +263,7 @@ class _RequestATKListScreenState extends State<RequestATKListScreen> {
         },
         child: const Icon(Icons.add_rounded, size: 45),
       ),
-      bottomNavigationBar: const BottomBar(menu: 1),
+      bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
 }

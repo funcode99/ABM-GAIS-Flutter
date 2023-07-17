@@ -217,7 +217,7 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                 controller.update();
               }),
             ),
-            bottomNavigationBar: BottomBar(menu: 1),
+            bottomNavigationBar: BottomBar(menu: 0),
           );
         });
   }

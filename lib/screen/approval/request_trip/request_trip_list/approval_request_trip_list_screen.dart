@@ -38,7 +38,7 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
             backgroundColor: baseColor,
             appBar: TopBar(
               title: Text("Request Trip", style: appTitle),
-              leading: CustomBackButton(onPressed: () => Get.off(HomeScreen(), arguments: 1)),
+              leading: CustomBackButton(onPressed: () => Get.off(HomeScreen(), arguments: 0)),
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -246,7 +246,7 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: BottomBar(menu: 1),
+            bottomNavigationBar: BottomBar(menu: 0),
           );
         });
   }

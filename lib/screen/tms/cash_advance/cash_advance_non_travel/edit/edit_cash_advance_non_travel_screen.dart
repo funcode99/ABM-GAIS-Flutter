@@ -485,7 +485,7 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomBar(menu: 1),
+      bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
 }

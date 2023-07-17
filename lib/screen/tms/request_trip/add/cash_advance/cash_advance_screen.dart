@@ -135,7 +135,7 @@ class CashAdvanceScreen extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: BottomBar(menu: 1),
+            bottomNavigationBar: BottomBar(menu: 0),
           );
         });
   }

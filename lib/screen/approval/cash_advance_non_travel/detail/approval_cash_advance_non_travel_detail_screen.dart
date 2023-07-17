@@ -359,7 +359,7 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
           ),
         ),
       ),
-      bottomNavigationBar: const BottomBar(menu: 1),
+      bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
 }

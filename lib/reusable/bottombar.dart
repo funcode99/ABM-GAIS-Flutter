@@ -25,8 +25,8 @@ class BottomBar extends StatelessWidget {
               label: ""),
           BottomNavigationBarItem(
               icon: Icon(menu != 1
-                  ? IconlyLight.category
-                  : IconlyBold.category),
+                  ? IconlyLight.chart
+                  : IconlyBold.chart),
               label: ""),
           BottomNavigationBarItem(
               icon: Icon(menu != 2

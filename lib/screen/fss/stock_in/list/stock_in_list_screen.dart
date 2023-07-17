@@ -323,7 +323,7 @@ class StockInListScreen extends StatelessWidget {
         },
         child: const Icon(Icons.add_rounded, size: 45),
       ),
-      bottomNavigationBar: const BottomBar(menu: 1),
+      bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
 }
