@@ -5,6 +5,7 @@ import 'package:gais/data/repository/approval_request_trip/approval_request_trip
 import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_travel_repository.dart';
+import 'package:gais/data/repository/dashboard/dashboard_repository.dart';
 import 'package:gais/data/repository/document_delivery/document_delivery_impl.dart';
 import 'package:gais/data/repository/document_delivery/document_delivery_repository.dart';
 import 'package:gais/data/repository/management_item_atk/management_item_atk_repository.dart';
@@ -37,9 +38,10 @@ class GlobalBinding extends Bindings {
     Get.put(StockInATKRepository(), permanent: false);
     Get.put(BookingMeetingRoomRepository(), permanent: false);
     Get.put(PoolCarRepository(), permanent: false);
+    Get.put(ApprovalDelegationRepository(), permanent: false);
 
 
+    Get.put(DashboardRepository(), permanent: true);
     Get.put(MasterRepository(), permanent: true);
-    Get.put(ApprovalDelegationRepository(), permanent: true);
   }
 }
