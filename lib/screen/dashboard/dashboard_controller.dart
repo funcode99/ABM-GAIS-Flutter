@@ -20,7 +20,7 @@ class DashboardController extends BaseController with MasterDataMixin {
   DateFormat formatFilter = DateFormat("yyyy-MM-dd");
 
   final selectedMonth = "".obs;
-  final selectedYear = "0".obs;
+  final selectedYear = "".obs;
   int daysIn = 32;
 
   final DashboardRepository _repository = Get.find();
@@ -46,27 +46,6 @@ class DashboardController extends BaseController with MasterDataMixin {
     {"id": 12, "value": "December"}
   ];
 
-  List<TripPurposeModel> tpData = [
-    TripPurposeModel('Company\nBusiness', 15, brownColor),
-    TripPurposeModel('Field Break', 2, infoColor),
-    TripPurposeModel('Site Visit', 3, successColor),
-    TripPurposeModel('Taxi Voucher Only', 1, warningColor),
-    TripPurposeModel('Taxi Voucher Only', 1, warningColor),
-  ];
-
-  List<MeetRoomUsedModel> mrData = [
-    MeetRoomUsedModel("Room 999", 4, const Color(0xffFFCC06)),
-    MeetRoomUsedModel("Room ABC", 8, const Color(0xff6B95D2)),
-    MeetRoomUsedModel("Room 123", 10, const Color(0xffC4E87D)),
-    MeetRoomUsedModel("Room A", 2, const Color(0xffE0F1E3)),
-  ];
-
-  List<SuppliesOutModel> soData = [
-    SuppliesOutModel("Paper Clip", 4, const Color(0xff5B9BD5)),
-    SuppliesOutModel("Pen", 6, const Color(0xff66AD2D)),
-    SuppliesOutModel("Pencil", 12, const Color(0xffED7D31)),
-  ];
-
   List<Color> tripColors = [
     successColor,
     warningColor,
@@ -87,13 +66,7 @@ class DashboardController extends BaseController with MasterDataMixin {
   void onInit() {
     super.onInit();
 
-    listyears = Iterable<int>.generate((DateTime.now().year) + 1)
-        .skip(1900)
-        .toList();
-    listyears.add(0);
-    listyears = listyears.reversed
-        .toList();
-
+    initData();
     getData();
   }
 
@@ -102,10 +75,20 @@ class DashboardController extends BaseController with MasterDataMixin {
     super.onReady();
   }
 
+  void initData(){
+    listyears = Iterable<int>.generate((DateTime.now().year) + 1)
+        .skip(1900)
+        .toList();
+    listyears = listyears.reversed
+        .toList();
+
+    selectedYear.value = listyears.first.toString();
+  }
+
   void getData() async {
     final result = await _repository.getData(data: {
-      "month": selectedMonth,
-      "year": selectedYear.value == "0" ? "" : selectedYear.value,
+      "month": selectedMonth.value,
+      "year": selectedYear.value,
     });
 
     result.fold((l) {
@@ -113,7 +96,6 @@ class DashboardController extends BaseController with MasterDataMixin {
           CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
     }, (r) {
       dashboardData.value = r;
-      print("DASHBOARD ${dashboardData.value.toJson()}");
       setValue();
     });
   }
