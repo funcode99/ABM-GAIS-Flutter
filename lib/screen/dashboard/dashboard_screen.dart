@@ -61,7 +61,6 @@ class DashboardScreen extends StatelessWidget {
                       value: controller.selectedMonth.value.toString(),
                       onChanged: (value) {
                         controller.selectedMonth.value = value!;
-                        print("ONCHANGEDD $value");
                         controller.getData();
                       },
                     ),
@@ -84,7 +83,7 @@ class DashboardScreen extends StatelessWidget {
                         return DropdownMenuItem<String>(
                           value: item.toString(),
                           child: Text(
-                            item == 0 ? "Year" : item.toString(),
+                            item.toString(),
                             style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -95,7 +94,6 @@ class DashboardScreen extends StatelessWidget {
                       value: controller.selectedYear.value.toString(),
                       onChanged: (value) {
                         controller.selectedYear.value = value!;
-                        print("ONCHANGEDD $value");
                         controller.getData();
                       },
                     ),
