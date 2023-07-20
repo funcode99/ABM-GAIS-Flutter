@@ -8,7 +8,7 @@ part of 'submit_check_model.dart';
 
 SubmitCheckModel _$SubmitCheckModelFromJson(Map<String, dynamic> json) =>
     SubmitCheckModel(
-      idPoolCar: json['id_pool_car'] as int?,
+      idPoolCar: json['id_pool_car'] as String?,
       odometer: json['odometer'] as int?,
       isUsable: json['is_usable'] as int?,
       data: (json['data'] as List<dynamic>?)

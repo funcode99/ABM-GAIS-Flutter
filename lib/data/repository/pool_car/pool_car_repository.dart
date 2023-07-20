@@ -32,7 +32,7 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
   }
 
   @override
-  Future<Either<BaseError, PoolCarModel>> detailData(int id) async{
+  Future<Either<BaseError, PoolCarModel>> detailData(dynamic id) async{
     try {
       Dio.Response response = await network.dio.get(
         '/api/pool_car/get_data/$id',
@@ -92,7 +92,7 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
   }
 
   @override
-  Future<Either<BaseError, PoolCarModel>> submitData(int id) async{
+  Future<Either<BaseError, PoolCarModel>> submitData(dynamic id) async{
     try {
       Dio.Response response = await network.dio.post(
         '/api/pool_car/update_status/$id',
@@ -139,7 +139,7 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
     }
   }
 
-  Future<Either<BaseError, GetCheckModel>> getCheckData(int id) async{
+  Future<Either<BaseError, GetCheckModel>> getCheckData(dynamic id) async{
     try {
       Dio.Response response = await network.dio.get(
         '/api/pool_car/get_check/$id',

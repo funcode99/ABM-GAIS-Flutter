@@ -5,7 +5,7 @@ part 'data_existing_model.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class DataExistingModel {
   int? isUsable;
-  int? odometer;
+  dynamic odometer;
   String? notes;
 
   DataExistingModel(

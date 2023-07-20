@@ -8,7 +8,7 @@ part of 'data_existing_model.dart';
 
 DataExistingModel _$DataExistingModelFromJson(Map<String, dynamic> json) =>
     DataExistingModel(
-      odometer: json['odometer'] as int?,
+      odometer: json['odometer'],
       isUsable: json['is_usable'] as int?,
       notes: json['notes'] as String?,
     );
