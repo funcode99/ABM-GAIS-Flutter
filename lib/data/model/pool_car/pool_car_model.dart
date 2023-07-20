@@ -4,11 +4,11 @@ part 'pool_car_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class PoolCarModel {
-  int? id;
+  String? id;
   int? idCar;
   int? idEmployee;
   int? idDrivers;
-  int? idRequestTrip;
+  String? idRequestTrip;
   String? fromDate;
   String? toDate;
   String? noPoolCar;

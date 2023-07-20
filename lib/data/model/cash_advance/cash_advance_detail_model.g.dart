@@ -9,9 +9,9 @@ part of 'cash_advance_detail_model.dart';
 CashAdvanceDetailModel _$CashAdvanceDetailModelFromJson(
         Map<String, dynamic> json) =>
     CashAdvanceDetailModel(
-      id: json['id'] as int?,
+      id: json['id'] as String?,
       key: json['key'] as String?,
-      idCa: json['id_ca'] as int?,
+      idCa: json['id_ca'] as String?,
       idItemCa: json['id_item_ca'] as int?,
       frequency: json['frequency'] as int?,
       nominal: json['nominal'] as String?,

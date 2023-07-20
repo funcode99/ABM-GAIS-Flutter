@@ -38,7 +38,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, List<CashAdvanceDetailModel>>> getDataDetails(int id) async{
+  Future<Either<BaseError, List<CashAdvanceDetailModel>>> getDataDetails(dynamic id) async{
     try {
       Dio.Response response = await network.dio.get(
         '/api/cash_advance/get_by_cash_id/$id',
@@ -77,7 +77,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, CashAdvanceModel>> updateData(model, id) async{
+  Future<Either<BaseError, CashAdvanceModel>> updateData(model, dynamic id) async{
     final cashAdvanceModel = model as CashAdvanceModel;
 
     try {
@@ -98,7 +98,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteDetail(int id) async{
+  Future<Either<BaseError, bool>> deleteDetail(dynamic id) async{
     try {
       Dio.Response response = await network.dio.delete(
           '/api/cash_advance/delete_data_detail/$id',
@@ -155,7 +155,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, CashAdvanceDetailModel>> updateDetail(model, int id) async{
+  Future<Either<BaseError, CashAdvanceDetailModel>> updateDetail(model, dynamic id) async{
     final cashAdvanceDetailModel = model as CashAdvanceDetailModel;
 
     try {
@@ -197,7 +197,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, CashAdvanceModel>> submitData(int id) async{
+  Future<Either<BaseError, CashAdvanceModel>> submitData(dynamic id) async{
     try {
       Dio.Response response = await network.dio.post(
           '/api/cash_advance/submit/$id',
@@ -215,7 +215,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, CashAdvanceModel>> detailData(int id) async{
+  Future<Either<BaseError, CashAdvanceModel>> detailData(dynamic id) async{
     try {
       Dio.Response response = await network.dio.get(
         '/api/cash_advance/non_travel/$id',
@@ -277,7 +277,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, bool>> reject(model, int id) async{
+  Future<Either<BaseError, bool>> reject(model, dynamic id) async{
     try {
       final approvalModel = model as ApprovalModel;
 
@@ -300,7 +300,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, bool>> approve(model, int id) async{
+  Future<Either<BaseError, bool>> approve(model, dynamic id) async{
     try {
       final approvalModel = model as ApprovalModel;
 
@@ -323,7 +323,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, List<ApprovalLogModel>>> getApprovalLog(int id) async{
+  Future<Either<BaseError, List<ApprovalLogModel>>> getApprovalLog(dynamic id) async{
     try {
       Dio.Response response = await network.dio.get(
         '/api/cash_advance/get_history_non_travel/$id',

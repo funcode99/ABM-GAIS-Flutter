@@ -7,11 +7,11 @@ part of 'pool_car_model.dart';
 // **************************************************************************
 
 PoolCarModel _$PoolCarModelFromJson(Map<String, dynamic> json) => PoolCarModel(
-      id: json['id'] as int?,
+      id: json['id'] as String?,
       idCar: json['id_car'] as int?,
       idEmployee: json['id_employee'] as int?,
       idDrivers: json['id_drivers'] as int?,
-      idRequestTrip: json['id_request_trip'] as int?,
+      idRequestTrip: json['id_request_trip'] as String?,
       fromDate: json['from_date'] as String?,
       toDate: json['to_date'] as String?,
       noPoolCar: json['no_pool_car'] as String?,

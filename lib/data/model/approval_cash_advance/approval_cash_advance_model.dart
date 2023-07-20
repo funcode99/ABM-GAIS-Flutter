@@ -4,9 +4,9 @@ part 'approval_cash_advance_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class ApprovalCashAdvanceModel {
-  int? id;
+  String? id;
   String? codeDocument;
-  int? idDocument;
+  String? idDocument;
   int? level;
   int? idEmployee;
   int? idCompany;
@@ -19,7 +19,7 @@ class ApprovalCashAdvanceModel {
   dynamic isApproved;
   String? notes;
   int? codeStatusDoc;
-  int? isRequestTrip;
+  dynamic isRequestTrip;
   String? codeSequence;
   String? createdAt;
   dynamic createdBy;
@@ -29,7 +29,7 @@ class ApprovalCashAdvanceModel {
   int? currentLevel;
   int? itemCount;
   String? noCa;
-  int? idCa;
+  String? idCa;
   int? codeStatusCa;
   int? idCurrency;
   String? grandTotal;
