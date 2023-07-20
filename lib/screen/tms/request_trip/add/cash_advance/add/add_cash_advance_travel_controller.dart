@@ -66,13 +66,13 @@ class AddCashAdvanceTravelController extends BaseController {
     var detailData = await repository.getDetailCashAdvanceTravelByid(idCA!);
     detailData.data?.forEach((e) {
       listDetail.add(CashAdvanceDetailModel(
-        id: e.id?.toInt(),
+        id: e.id.toString(),
         idItemCa: e.idItemCa,
         nominal: e.nominal,
         remarks: e.remarks,
         total: e.total,
         frequency: e.frequency,
-        idCa: e.idCa?.toInt(),
+        idCa: e.idCa?.toString(),
       ));
     });
 
@@ -92,7 +92,7 @@ class AddCashAdvanceTravelController extends BaseController {
 
   void addItem(CashAdvanceDetailModel item) async {
     if (idCA != null) {
-      item.idCa = idCA;
+      item.idCa = idCA.toString();
       final result = await _cashAdvanceTravelNonRepository.addDetail(item);
       result.fold((l) => Get.showSnackbar(CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)), (cashAdvanceDetailModel) {
         listDetail.add(cashAdvanceDetailModel);
@@ -109,7 +109,7 @@ class AddCashAdvanceTravelController extends BaseController {
 
   void editItem(CashAdvanceDetailModel item) async {
     if (idCA != null) {
-      item.idCa = idCA;
+      item.idCa = idCA.toString();
       final result = await _cashAdvanceTravelNonRepository.updateDetail(item, item.id!);
       result.fold((l) => Get.showSnackbar(CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)), (cashAdvanceDetailModel) {
         int index = listDetail.indexWhere((element) => element.id == item.id);

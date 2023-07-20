@@ -98,7 +98,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteDetail(int id) async{
+  Future<Either<BaseError, bool>> deleteDetail(dynamic id) async{
     try {
       Dio.Response response = await network.dio.delete(
           '/api/cash_advance/delete_data_detail/$id',
@@ -155,7 +155,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, CashAdvanceDetailModel>> updateDetail(model, int id) async{
+  Future<Either<BaseError, CashAdvanceDetailModel>> updateDetail(model, dynamic id) async{
     final cashAdvanceDetailModel = model as CashAdvanceDetailModel;
 
     try {
