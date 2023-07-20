@@ -81,7 +81,8 @@ class ManagementPoolCarListController extends BaseController {
         carList.addAll(value.data?.data?.toSet().toList() ?? []);
         carModel = value;
       });
-    } catch (e) {
+    } catch (e, i) {
+      i.printError();
       e.printError();
       dataisnull = true;
     }

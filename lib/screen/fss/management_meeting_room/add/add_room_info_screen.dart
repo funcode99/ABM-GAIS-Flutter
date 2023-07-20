@@ -8,6 +8,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/management_meeting_room/add/add_room_info_controller.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -22,12 +23,12 @@ class AddRoomInfoScreen extends StatelessWidget {
           return Scaffold(
             appBar: TopBar(
               title: Text("Management\nMeeting Room", style: appTitle, textAlign: TextAlign.center),
-              leading: CustomBackButton(),
+              leading: const CustomBackButton(),
             ),
             body: Container(
               alignment: Alignment.topCenter,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.all(7),
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(7),
               decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(8)),
               child: SingleChildScrollView(
                 child: Column(
@@ -39,10 +40,10 @@ class AddRoomInfoScreen extends StatelessWidget {
                       width: 42,
                       // padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
-                      child: Icon(IconlyBold.info_square, color: whiteColor),
+                      child: const Icon(IconlyBold.info_square, color: whiteColor),
                     ),
                     Text(controller.isEdit ? "Edit Room Info" : "Room Info", style: appTitle),
-                    SizedBox(height: 39),
+                    const SizedBox(height: 39),
                     Form(
                       key: controller.formKey,
                       child: Padding(
@@ -50,60 +51,97 @@ class AddRoomInfoScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomTextFormField(
-                              controller: controller.company,
+                            CustomDropDownFormField(
+                              // controller: controller.companyID,
                               label: "Company",
+                              hintText: controller.loadCompany ? "Loading..." : "Company",
                               isRequired: true,
+                              items: controller.companyList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.companyName.toString()),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                controller.companyID.text = value!;
+                                controller.fetchSiteList(value.toInt());
+                                controller.update();
+                              },
                             ),
-                            SizedBox(height: 8),
-                            CustomTextFormField(
-                              controller: controller.site,
+                            const SizedBox(height: 8),
+                            CustomDropDownFormField(
+                              // controller: controller.siteID,
                               label: "Site",
+                              hintText: controller.loadSite ? "Loading..." : "Site",
                               isRequired: true,
+                              items: controller.siteList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.siteName.toString()),
+                                      ))
+                                  .toList(),
+                              onChanged: (value){
+                                controller.siteID.text = value!;
+                                controller.update();
+                              },
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             CustomTextFormField(
-                              controller: controller.company,
-                              label: "ID Meeting Room",
+                              controller: controller.mrName,
+                              label: "Name Meeting Room",
                               isRequired: true,
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.mrCode,
+                              label: "Code Meeting Room",
+                              isRequired: true,
+                            ),
+                            const SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.capacity,
                               label: "Capacity",
                               isRequired: true,
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.floor,
                               label: "Floor",
                               isRequired: true,
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             CustomDropDownFormField(
-                              items: [
-                                DropdownMenuItem(child: Text(""), value: "",)
+                              items: const [
+                                DropdownMenuItem(
+                                  value: "Available",
+                                  child: Text("Available"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "Booked",
+                                  child: Text("Booked"),
+                                ),
                               ],
                               label: "Available Status",
                               isRequired: true,
                               onChanged: (value) {
-
+                                controller.availableStatus.text = value!;
+                                controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
-                            CustomTextFormField(
-                              controller: controller.remarks,
-                              label: "Remarks",
-                              multiLine: true,
-                            ),
+                            const SizedBox(height: 8),
+                            // CustomTextFormField(
+                            //   controller: controller.remarks,
+                            //   label: "Remarks",
+                            //   multiLine: true,
+                            // ),
                             Center(
                               child: CustomFilledButton(
-                                width: Get.width/2,
+                                width: Get.width / 2,
                                 color: successColor,
                                 title: "Save",
-                                onPressed: (){
-                                  if(controller.formKey.currentState?.validate() == true){
-                                    // controller.saveDocument();
+                                onPressed: () {
+                                  if (controller.formKey.currentState?.validate() == true) {
+                                    controller.saveMeetingRoom();
                                   }
                                 },
                               ),
@@ -116,7 +154,7 @@ class AddRoomInfoScreen extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: BottomBar(menu: 0),
+            bottomNavigationBar: const BottomBar(menu: 1),
           );
         });
   }

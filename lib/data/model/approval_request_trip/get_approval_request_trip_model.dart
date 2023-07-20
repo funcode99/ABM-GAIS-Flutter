@@ -1,34 +1,39 @@
-/// success : true
-/// message : "Success Get Data"
-/// data : {"current_page":1,"data":[{"id":307,"code_document":"SV","id_document":1,"level":2,"id_employee":1,"id_company":1,"id_site":18,"id_matrix":17,"id_approval_auth":1,"approved_by":null,"approved_behalf":null,"rejected_by":null,"is_approved":null,"notes":null,"code_status_doc":1,"is_request_trip":1,"code_sequence":"RTRIP","created_at":"2023-06-30 15:02:05","created_by":null,"updated_at":"2023-06-30 15:02:05","updated_by":null,"deleted_at":null,"current_level":2,"id_request_trip":223,"no_request_trip":"RTRIP-2023-23-06/144/RTRIP-3000/06/2023","notes_rtrip":"afsadf","file":null,"id_city_to":5,"id_city_from":8,"date_departure":"2023-07-08","date_arrival":"2023-07-15","id_zona":2,"code_status_rtrip":1,"tlk_per_day":"120000","total_tlk":"960000","employee_name":"John Doe","site_name":"Lahat, Kebur x","site_code":"LHT01","zona_name":"B","code_status":1,"status":"Waiting Approval","document_name":"Site Visit"},{"id":145,"code_document":"SV","id_document":1,"level":5,"id_employee":1,"id_company":1,"id_site":18,"id_matrix":17,"id_approval_auth":3,"approved_by":null,"approved_behalf":null,"rejected_by":null,"is_approved":null,"notes":null,"code_status_doc":1,"is_request_trip":1,"code_sequence":"RTRIP","created_at":"2023-06-12 13:38:20","created_by":null,"updated_at":"2023-06-12 13:38:20","updated_by":null,"deleted_at":null,"current_level":5,"id_request_trip":123,"no_request_trip":"RTRIP-2023-23-06/044/RTRIP-3000/06/2023","notes_rtrip":"tt","file":"http://103.165.130.157:8086/storage/files/request_trip/UfStk8FTWzNBRNpSDqs6DZd4cbfpp3T1bZaxM0ms.jpg","id_city_to":10,"id_city_from":3,"date_departure":"2023-06-21","date_arrival":"2023-06-23","id_zona":20,"code_status_rtrip":1,"tlk_per_day":"9999","total_tlk":"19998","employee_name":"John Doe","site_name":"Lahat, Kebur x","site_code":"LHT01","zona_name":null,"code_status":1,"status":"Waiting Approval","document_name":"Site Visit"}],"first_page_url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=1","from":1,"last_page":5,"last_page_url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=5","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=1","label":"1","active":true},{"url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=2","label":"2","active":false},{"url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=3","label":"3","active":false},{"url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=4","label":"4","active":false},{"url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=5","label":"5","active":false},{"url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=2","label":"Next &raquo;","active":false}],"next_page_url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=2","path":"http://38.47.76.138:8013/api/approval_request_trip/get_data","per_page":"2","prev_page_url":null,"to":2,"total":10}
-
 class GetApprovalRequestTripModel {
   GetApprovalRequestTripModel({
-      bool? success, 
-      String? message, 
-      Data? data,}){
+    bool? success,
+    String? message,
+    Data? data,
+  }) {
     _success = success;
     _message = message;
     _data = data;
-}
+  }
 
   GetApprovalRequestTripModel.fromJson(dynamic json) {
     _success = json['success'];
     _message = json['message'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
+
   bool? _success;
   String? _message;
   Data? _data;
-GetApprovalRequestTripModel copyWith({  bool? success,
-  String? message,
-  Data? data,
-}) => GetApprovalRequestTripModel(  success: success ?? _success,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+
+  GetApprovalRequestTripModel copyWith({
+    bool? success,
+    String? message,
+    Data? data,
+  }) =>
+      GetApprovalRequestTripModel(
+        success: success ?? _success,
+        message: message ?? _message,
+        data: data ?? _data,
+      );
+
   bool? get success => _success;
+
   String? get message => _message;
+
   Data? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -40,38 +45,24 @@ GetApprovalRequestTripModel copyWith({  bool? success,
     }
     return map;
   }
-
 }
-
-/// current_page : 1
-/// data : [{"id":307,"code_document":"SV","id_document":1,"level":2,"id_employee":1,"id_company":1,"id_site":18,"id_matrix":17,"id_approval_auth":1,"approved_by":null,"approved_behalf":null,"rejected_by":null,"is_approved":null,"notes":null,"code_status_doc":1,"is_request_trip":1,"code_sequence":"RTRIP","created_at":"2023-06-30 15:02:05","created_by":null,"updated_at":"2023-06-30 15:02:05","updated_by":null,"deleted_at":null,"current_level":2,"id_request_trip":223,"no_request_trip":"RTRIP-2023-23-06/144/RTRIP-3000/06/2023","notes_rtrip":"afsadf","file":null,"id_city_to":5,"id_city_from":8,"date_departure":"2023-07-08","date_arrival":"2023-07-15","id_zona":2,"code_status_rtrip":1,"tlk_per_day":"120000","total_tlk":"960000","employee_name":"John Doe","site_name":"Lahat, Kebur x","site_code":"LHT01","zona_name":"B","code_status":1,"status":"Waiting Approval","document_name":"Site Visit"},{"id":145,"code_document":"SV","id_document":1,"level":5,"id_employee":1,"id_company":1,"id_site":18,"id_matrix":17,"id_approval_auth":3,"approved_by":null,"approved_behalf":null,"rejected_by":null,"is_approved":null,"notes":null,"code_status_doc":1,"is_request_trip":1,"code_sequence":"RTRIP","created_at":"2023-06-12 13:38:20","created_by":null,"updated_at":"2023-06-12 13:38:20","updated_by":null,"deleted_at":null,"current_level":5,"id_request_trip":123,"no_request_trip":"RTRIP-2023-23-06/044/RTRIP-3000/06/2023","notes_rtrip":"tt","file":"http://103.165.130.157:8086/storage/files/request_trip/UfStk8FTWzNBRNpSDqs6DZd4cbfpp3T1bZaxM0ms.jpg","id_city_to":10,"id_city_from":3,"date_departure":"2023-06-21","date_arrival":"2023-06-23","id_zona":20,"code_status_rtrip":1,"tlk_per_day":"9999","total_tlk":"19998","employee_name":"John Doe","site_name":"Lahat, Kebur x","site_code":"LHT01","zona_name":null,"code_status":1,"status":"Waiting Approval","document_name":"Site Visit"}]
-/// first_page_url : "http://38.47.76.138:8013/api/approval_request_trip/get_data?page=1"
-/// from : 1
-/// last_page : 5
-/// last_page_url : "http://38.47.76.138:8013/api/approval_request_trip/get_data?page=5"
-/// links : [{"url":null,"label":"&laquo; Previous","active":false},{"url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=1","label":"1","active":true},{"url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=2","label":"2","active":false},{"url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=3","label":"3","active":false},{"url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=4","label":"4","active":false},{"url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=5","label":"5","active":false},{"url":"http://38.47.76.138:8013/api/approval_request_trip/get_data?page=2","label":"Next &raquo;","active":false}]
-/// next_page_url : "http://38.47.76.138:8013/api/approval_request_trip/get_data?page=2"
-/// path : "http://38.47.76.138:8013/api/approval_request_trip/get_data"
-/// per_page : "2"
-/// prev_page_url : null
-/// to : 2
-/// total : 10
 
 class Data {
   Data({
-      num? currentPage, 
-      List<Data2>? data,
-      String? firstPageUrl, 
-      num? from, 
-      num? lastPage, 
-      String? lastPageUrl, 
-      List<Links>? links, 
-      String? nextPageUrl, 
-      String? path, 
-      String? perPage, 
-      dynamic prevPageUrl, 
-      num? to, 
-      num? total,}){
+    num? currentPage,
+    List<Data2>? data,
+    String? firstPageUrl,
+    num? from,
+    num? lastPage,
+    String? lastPageUrl,
+    List<Links>? links,
+    String? nextPageUrl,
+    String? path,
+    String? perPage,
+    dynamic prevPageUrl,
+    num? to,
+    num? total,
+  }) {
     _currentPage = currentPage;
     _data = data;
     _firstPageUrl = firstPageUrl;
@@ -85,7 +76,7 @@ class Data {
     _prevPageUrl = prevPageUrl;
     _to = to;
     _total = total;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _currentPage = json['current_page'];
@@ -112,6 +103,7 @@ class Data {
     _to = json['to'];
     _total = json['total'];
   }
+
   num? _currentPage;
   List<Data2>? _data;
   String? _firstPageUrl;
@@ -125,45 +117,62 @@ class Data {
   dynamic _prevPageUrl;
   num? _to;
   num? _total;
-Data copyWith({  num? currentPage,
-  List<Data2>? data,
-  String? firstPageUrl,
-  num? from,
-  num? lastPage,
-  String? lastPageUrl,
-  List<Links>? links,
-  String? nextPageUrl,
-  String? path,
-  String? perPage,
-  dynamic prevPageUrl,
-  num? to,
-  num? total,
-}) => Data(  currentPage: currentPage ?? _currentPage,
-  data: data ?? _data,
-  firstPageUrl: firstPageUrl ?? _firstPageUrl,
-  from: from ?? _from,
-  lastPage: lastPage ?? _lastPage,
-  lastPageUrl: lastPageUrl ?? _lastPageUrl,
-  links: links ?? _links,
-  nextPageUrl: nextPageUrl ?? _nextPageUrl,
-  path: path ?? _path,
-  perPage: perPage ?? _perPage,
-  prevPageUrl: prevPageUrl ?? _prevPageUrl,
-  to: to ?? _to,
-  total: total ?? _total,
-);
+
+  Data copyWith({
+    num? currentPage,
+    List<Data2>? data,
+    String? firstPageUrl,
+    num? from,
+    num? lastPage,
+    String? lastPageUrl,
+    List<Links>? links,
+    String? nextPageUrl,
+    String? path,
+    String? perPage,
+    dynamic prevPageUrl,
+    num? to,
+    num? total,
+  }) =>
+      Data(
+        currentPage: currentPage ?? _currentPage,
+        data: data ?? _data,
+        firstPageUrl: firstPageUrl ?? _firstPageUrl,
+        from: from ?? _from,
+        lastPage: lastPage ?? _lastPage,
+        lastPageUrl: lastPageUrl ?? _lastPageUrl,
+        links: links ?? _links,
+        nextPageUrl: nextPageUrl ?? _nextPageUrl,
+        path: path ?? _path,
+        perPage: perPage ?? _perPage,
+        prevPageUrl: prevPageUrl ?? _prevPageUrl,
+        to: to ?? _to,
+        total: total ?? _total,
+      );
+
   num? get currentPage => _currentPage;
+
   List<Data2>? get data => _data;
+
   String? get firstPageUrl => _firstPageUrl;
+
   num? get from => _from;
+
   num? get lastPage => _lastPage;
+
   String? get lastPageUrl => _lastPageUrl;
+
   List<Links>? get links => _links;
+
   String? get nextPageUrl => _nextPageUrl;
+
   String? get path => _path;
+
   String? get perPage => _perPage;
+
   dynamic get prevPageUrl => _prevPageUrl;
+
   num? get to => _to;
+
   num? get total => _total;
 
   Map<String, dynamic> toJson() {
@@ -187,40 +196,44 @@ Data copyWith({  num? currentPage,
     map['total'] = _total;
     return map;
   }
-
 }
-
-/// url : null
-/// label : "&laquo; Previous"
-/// active : false
 
 class Links {
   Links({
-      dynamic url, 
-      String? label, 
-      bool? active,}){
+    dynamic url,
+    String? label,
+    bool? active,
+  }) {
     _url = url;
     _label = label;
     _active = active;
-}
+  }
 
   Links.fromJson(dynamic json) {
     _url = json['url'];
     _label = json['label'];
     _active = json['active'];
   }
+
   dynamic _url;
   String? _label;
   bool? _active;
-Links copyWith({  dynamic url,
-  String? label,
-  bool? active,
-}) => Links(  url: url ?? _url,
-  label: label ?? _label,
-  active: active ?? _active,
-);
+
+  Links copyWith({
+    dynamic url,
+    String? label,
+    bool? active,
+  }) =>
+      Links(
+        url: url ?? _url,
+        label: label ?? _label,
+        active: active ?? _active,
+      );
+
   dynamic get url => _url;
+
   String? get label => _label;
+
   bool? get active => _active;
 
   Map<String, dynamic> toJson() {
@@ -230,96 +243,59 @@ Links copyWith({  dynamic url,
     map['active'] = _active;
     return map;
   }
-
 }
-
-/// id : 307
-/// code_document : "SV"
-/// id_document : 1
-/// level : 2
-/// id_employee : 1
-/// id_company : 1
-/// id_site : 18
-/// id_matrix : 17
-/// id_approval_auth : 1
-/// approved_by : null
-/// approved_behalf : null
-/// rejected_by : null
-/// is_approved : null
-/// notes : null
-/// code_status_doc : 1
-/// is_request_trip : 1
-/// code_sequence : "RTRIP"
-/// created_at : "2023-06-30 15:02:05"
-/// created_by : null
-/// updated_at : "2023-06-30 15:02:05"
-/// updated_by : null
-/// deleted_at : null
-/// current_level : 2
-/// id_request_trip : 223
-/// no_request_trip : "RTRIP-2023-23-06/144/RTRIP-3000/06/2023"
-/// notes_rtrip : "afsadf"
-/// file : null
-/// id_city_to : 5
-/// id_city_from : 8
-/// date_departure : "2023-07-08"
-/// date_arrival : "2023-07-15"
-/// id_zona : 2
-/// code_status_rtrip : 1
-/// tlk_per_day : "120000"
-/// total_tlk : "960000"
-/// employee_name : "John Doe"
-/// site_name : "Lahat, Kebur x"
-/// site_code : "LHT01"
-/// zona_name : "B"
-/// code_status : 1
-/// status : "Waiting Approval"
-/// document_name : "Site Visit"
 
 class Data2 {
   Data2({
-      num? id, 
-      String? codeDocument, 
-      num? idDocument, 
-      num? level, 
-      num? idEmployee, 
-      num? idCompany, 
-      num? idSite, 
-      num? idMatrix, 
-      num? idApprovalAuth, 
-      dynamic approvedBy, 
-      dynamic approvedBehalf, 
-      dynamic rejectedBy, 
-      dynamic isApproved, 
-      dynamic notes, 
-      num? codeStatusDoc, 
-      num? isRequestTrip, 
-      String? codeSequence, 
-      String? createdAt, 
-      dynamic createdBy, 
-      String? updatedAt, 
-      dynamic updatedBy, 
-      dynamic deletedAt, 
-      num? currentLevel, 
-      num? idRequestTrip, 
-      String? noRequestTrip, 
-      String? notesRtrip, 
-      dynamic file, 
-      num? idCityTo, 
-      num? idCityFrom, 
-      String? dateDeparture, 
-      String? dateArrival, 
-      num? idZona, 
-      num? codeStatusRtrip, 
-      String? tlkPerDay, 
-      String? totalTlk, 
-      String? employeeName, 
-      String? siteName, 
-      String? siteCode, 
-      String? zonaName, 
-      num? codeStatus, 
-      String? status, 
-      String? documentName,}){
+    num? no,
+    String? id,
+    String? codeDocument,
+    num? idDocument,
+    num? level,
+    num? idEmployee,
+    num? idCompany,
+    num? idSite,
+    num? idMatrix,
+    num? idApprovalAuth,
+    dynamic approvedBy,
+    dynamic approvedBehalf,
+    dynamic rejectedBy,
+    dynamic isApproved,
+    dynamic notes,
+    num? codeStatusDoc,
+    num? isRequestTrip,
+    String? codeSequence,
+    String? createdAt,
+    dynamic createdBy,
+    String? updatedAt,
+    dynamic updatedBy,
+    dynamic deletedAt,
+    num? idOrigin,
+    dynamic isDelegation,
+    String? docCreatedAt,
+    num? currentLevel,
+    String? idRequestTrip,
+    String? noRequestTrip,
+    dynamic notesRtrip,
+    dynamic file,
+    dynamic fileName,
+    num? idCityTo,
+    num? idCityFrom,
+    String? dateDeparture,
+    String? dateArrival,
+    num? idZona,
+    num? codeStatusRtrip,
+    String? tlkPerDay,
+    String? totalTlk,
+    String? employeeName,
+    String? siteName,
+    String? siteCode,
+    String? zonaName,
+    num? codeStatus,
+    String? status,
+    String? documentName,
+  }) {
+    _no = no;
     _id = id;
     _codeDocument = codeDocument;
     _idDocument = idDocument;
@@ -342,11 +318,15 @@ class Data2 {
     _updatedAt = updatedAt;
     _updatedBy = updatedBy;
     _deletedAt = deletedAt;
+    _idOrigin = idOrigin;
+    _isDelegation = isDelegation;
+    _docCreatedAt = docCreatedAt;
     _currentLevel = currentLevel;
     _idRequestTrip = idRequestTrip;
     _noRequestTrip = noRequestTrip;
     _notesRtrip = notesRtrip;
     _file = file;
+    _fileName = fileName;
     _idCityTo = idCityTo;
     _idCityFrom = idCityFrom;
     _dateDeparture = dateDeparture;
@@ -362,9 +342,10 @@ class Data2 {
     _codeStatus = codeStatus;
     _status = status;
     _documentName = documentName;
-}
+  }
 
   Data2.fromJson(dynamic json) {
+    _no = json['no'];
     _id = json['id'];
     _codeDocument = json['code_document'];
     _idDocument = json['id_document'];
@@ -387,11 +368,15 @@ class Data2 {
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
     _deletedAt = json['deleted_at'];
+    _idOrigin = json['id_origin'];
+    _isDelegation = json['is_delegation'];
+    _docCreatedAt = json['doc_created_at'];
     _currentLevel = json['current_level'];
     _idRequestTrip = json['id_request_trip'];
     _noRequestTrip = json['no_request_trip'];
     _notesRtrip = json['notes_rtrip'];
     _file = json['file'];
+    _fileName = json['file_name'];
     _idCityTo = json['id_city_to'];
     _idCityFrom = json['id_city_from'];
     _dateDeparture = json['date_departure'];
@@ -408,7 +393,9 @@ class Data2 {
     _status = json['status'];
     _documentName = json['document_name'];
   }
-  num? _id;
+
+  num? _no;
+  String? _id;
   String? _codeDocument;
   num? _idDocument;
   num? _level;
@@ -430,11 +417,15 @@ class Data2 {
   String? _updatedAt;
   dynamic _updatedBy;
   dynamic _deletedAt;
+  num? _idOrigin;
+  dynamic _isDelegation;
+  String? _docCreatedAt;
   num? _currentLevel;
-  num? _idRequestTrip;
+  String? _idRequestTrip;
   String? _noRequestTrip;
-  String? _notesRtrip;
+  dynamic _notesRtrip;
   dynamic _file;
+  dynamic _fileName;
   num? _idCityTo;
   num? _idCityFrom;
   String? _dateDeparture;
@@ -450,136 +441,203 @@ class Data2 {
   num? _codeStatus;
   String? _status;
   String? _documentName;
-Data2 copyWith({  num? id,
-  String? codeDocument,
-  num? idDocument,
-  num? level,
-  num? idEmployee,
-  num? idCompany,
-  num? idSite,
-  num? idMatrix,
-  num? idApprovalAuth,
-  dynamic approvedBy,
-  dynamic approvedBehalf,
-  dynamic rejectedBy,
-  dynamic isApproved,
-  dynamic notes,
-  num? codeStatusDoc,
-  num? isRequestTrip,
-  String? codeSequence,
-  String? createdAt,
-  dynamic createdBy,
-  String? updatedAt,
-  dynamic updatedBy,
-  dynamic deletedAt,
-  num? currentLevel,
-  num? idRequestTrip,
-  String? noRequestTrip,
-  String? notesRtrip,
-  dynamic file,
-  num? idCityTo,
-  num? idCityFrom,
-  String? dateDeparture,
-  String? dateArrival,
-  num? idZona,
-  num? codeStatusRtrip,
-  String? tlkPerDay,
-  String? totalTlk,
-  String? employeeName,
-  String? siteName,
-  String? siteCode,
-  String? zonaName,
-  num? codeStatus,
-  String? status,
-  String? documentName,
-}) => Data2(  id: id ?? _id,
-  codeDocument: codeDocument ?? _codeDocument,
-  idDocument: idDocument ?? _idDocument,
-  level: level ?? _level,
-  idEmployee: idEmployee ?? _idEmployee,
-  idCompany: idCompany ?? _idCompany,
-  idSite: idSite ?? _idSite,
-  idMatrix: idMatrix ?? _idMatrix,
-  idApprovalAuth: idApprovalAuth ?? _idApprovalAuth,
-  approvedBy: approvedBy ?? _approvedBy,
-  approvedBehalf: approvedBehalf ?? _approvedBehalf,
-  rejectedBy: rejectedBy ?? _rejectedBy,
-  isApproved: isApproved ?? _isApproved,
-  notes: notes ?? _notes,
-  codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
-  isRequestTrip: isRequestTrip ?? _isRequestTrip,
-  codeSequence: codeSequence ?? _codeSequence,
-  createdAt: createdAt ?? _createdAt,
-  createdBy: createdBy ?? _createdBy,
-  updatedAt: updatedAt ?? _updatedAt,
-  updatedBy: updatedBy ?? _updatedBy,
-  deletedAt: deletedAt ?? _deletedAt,
-  currentLevel: currentLevel ?? _currentLevel,
-  idRequestTrip: idRequestTrip ?? _idRequestTrip,
-  noRequestTrip: noRequestTrip ?? _noRequestTrip,
-  notesRtrip: notesRtrip ?? _notesRtrip,
-  file: file ?? _file,
-  idCityTo: idCityTo ?? _idCityTo,
-  idCityFrom: idCityFrom ?? _idCityFrom,
-  dateDeparture: dateDeparture ?? _dateDeparture,
-  dateArrival: dateArrival ?? _dateArrival,
-  idZona: idZona ?? _idZona,
-  codeStatusRtrip: codeStatusRtrip ?? _codeStatusRtrip,
-  tlkPerDay: tlkPerDay ?? _tlkPerDay,
-  totalTlk: totalTlk ?? _totalTlk,
-  employeeName: employeeName ?? _employeeName,
-  siteName: siteName ?? _siteName,
-  siteCode: siteCode ?? _siteCode,
-  zonaName: zonaName ?? _zonaName,
-  codeStatus: codeStatus ?? _codeStatus,
-  status: status ?? _status,
-  documentName: documentName ?? _documentName,
-);
-  num? get id => _id;
+
+  Data2 copyWith({
+    num? no,
+    String? id,
+    String? codeDocument,
+    num? idDocument,
+    num? level,
+    num? idEmployee,
+    num? idCompany,
+    num? idSite,
+    num? idMatrix,
+    num? idApprovalAuth,
+    dynamic approvedBy,
+    dynamic approvedBehalf,
+    dynamic rejectedBy,
+    dynamic isApproved,
+    dynamic notes,
+    num? codeStatusDoc,
+    num? isRequestTrip,
+    String? codeSequence,
+    String? createdAt,
+    dynamic createdBy,
+    String? updatedAt,
+    dynamic updatedBy,
+    dynamic deletedAt,
+    num? idOrigin,
+    dynamic isDelegation,
+    String? docCreatedAt,
+    num? currentLevel,
+    String? idRequestTrip,
+    String? noRequestTrip,
+    dynamic notesRtrip,
+    dynamic file,
+    dynamic fileName,
+    num? idCityTo,
+    num? idCityFrom,
+    String? dateDeparture,
+    String? dateArrival,
+    num? idZona,
+    num? codeStatusRtrip,
+    String? tlkPerDay,
+    String? totalTlk,
+    String? employeeName,
+    String? siteName,
+    String? siteCode,
+    String? zonaName,
+    num? codeStatus,
+    String? status,
+    String? documentName,
+  }) =>
+      Data2(
+        no: no ?? _no,
+        id: id ?? _id,
+        codeDocument: codeDocument ?? _codeDocument,
+        idDocument: idDocument ?? _idDocument,
+        level: level ?? _level,
+        idEmployee: idEmployee ?? _idEmployee,
+        idCompany: idCompany ?? _idCompany,
+        idSite: idSite ?? _idSite,
+        idMatrix: idMatrix ?? _idMatrix,
+        idApprovalAuth: idApprovalAuth ?? _idApprovalAuth,
+        approvedBy: approvedBy ?? _approvedBy,
+        approvedBehalf: approvedBehalf ?? _approvedBehalf,
+        rejectedBy: rejectedBy ?? _rejectedBy,
+        isApproved: isApproved ?? _isApproved,
+        notes: notes ?? _notes,
+        codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
+        isRequestTrip: isRequestTrip ?? _isRequestTrip,
+        codeSequence: codeSequence ?? _codeSequence,
+        createdAt: createdAt ?? _createdAt,
+        createdBy: createdBy ?? _createdBy,
+        updatedAt: updatedAt ?? _updatedAt,
+        updatedBy: updatedBy ?? _updatedBy,
+        deletedAt: deletedAt ?? _deletedAt,
+        idOrigin: idOrigin ?? _idOrigin,
+        isDelegation: isDelegation ?? _isDelegation,
+        docCreatedAt: docCreatedAt ?? _docCreatedAt,
+        currentLevel: currentLevel ?? _currentLevel,
+        idRequestTrip: idRequestTrip ?? _idRequestTrip,
+        noRequestTrip: noRequestTrip ?? _noRequestTrip,
+        notesRtrip: notesRtrip ?? _notesRtrip,
+        file: file ?? _file,
+        fileName: fileName ?? _fileName,
+        idCityTo: idCityTo ?? _idCityTo,
+        idCityFrom: idCityFrom ?? _idCityFrom,
+        dateDeparture: dateDeparture ?? _dateDeparture,
+        dateArrival: dateArrival ?? _dateArrival,
+        idZona: idZona ?? _idZona,
+        codeStatusRtrip: codeStatusRtrip ?? _codeStatusRtrip,
+        tlkPerDay: tlkPerDay ?? _tlkPerDay,
+        totalTlk: totalTlk ?? _totalTlk,
+        employeeName: employeeName ?? _employeeName,
+        siteName: siteName ?? _siteName,
+        siteCode: siteCode ?? _siteCode,
+        zonaName: zonaName ?? _zonaName,
+        codeStatus: codeStatus ?? _codeStatus,
+        status: status ?? _status,
+        documentName: documentName ?? _documentName,
+      );
+
+  num? get no => _no;
+
+  String? get id => _id;
+
   String? get codeDocument => _codeDocument;
+
   num? get idDocument => _idDocument;
+
   num? get level => _level;
+
   num? get idEmployee => _idEmployee;
+
   num? get idCompany => _idCompany;
+
   num? get idSite => _idSite;
+
   num? get idMatrix => _idMatrix;
+
   num? get idApprovalAuth => _idApprovalAuth;
+
   dynamic get approvedBy => _approvedBy;
+
   dynamic get approvedBehalf => _approvedBehalf;
+
   dynamic get rejectedBy => _rejectedBy;
+
   dynamic get isApproved => _isApproved;
+
   dynamic get notes => _notes;
+
   num? get codeStatusDoc => _codeStatusDoc;
+
   num? get isRequestTrip => _isRequestTrip;
+
   String? get codeSequence => _codeSequence;
+
   String? get createdAt => _createdAt;
+
   dynamic get createdBy => _createdBy;
+
   String? get updatedAt => _updatedAt;
+
   dynamic get updatedBy => _updatedBy;
+
   dynamic get deletedAt => _deletedAt;
+
+  num? get idOrigin => _idOrigin;
+
+  dynamic get isDelegation => _isDelegation;
+
+  String? get docCreatedAt => _docCreatedAt;
+
   num? get currentLevel => _currentLevel;
-  num? get idRequestTrip => _idRequestTrip;
+
+  String? get idRequestTrip => _idRequestTrip;
+
   String? get noRequestTrip => _noRequestTrip;
-  String? get notesRtrip => _notesRtrip;
+
+  dynamic get notesRtrip => _notesRtrip;
+
   dynamic get file => _file;
+
+  dynamic get fileName => _fileName;
+
   num? get idCityTo => _idCityTo;
+
   num? get idCityFrom => _idCityFrom;
+
   String? get dateDeparture => _dateDeparture;
+
   String? get dateArrival => _dateArrival;
+
   num? get idZona => _idZona;
+
   num? get codeStatusRtrip => _codeStatusRtrip;
+
   String? get tlkPerDay => _tlkPerDay;
+
   String? get totalTlk => _totalTlk;
+
   String? get employeeName => _employeeName;
+
   String? get siteName => _siteName;
+
   String? get siteCode => _siteCode;
+
   String? get zonaName => _zonaName;
+
   num? get codeStatus => _codeStatus;
+
   String? get status => _status;
+
   String? get documentName => _documentName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    map['no'] = _no;
     map['id'] = _id;
     map['code_document'] = _codeDocument;
     map['id_document'] = _idDocument;
@@ -602,11 +660,15 @@ Data2 copyWith({  num? id,
     map['updated_at'] = _updatedAt;
     map['updated_by'] = _updatedBy;
     map['deleted_at'] = _deletedAt;
+    map['id_origin'] = _idOrigin;
+    map['is_delegation'] = _isDelegation;
+    map['doc_created_at'] = _docCreatedAt;
     map['current_level'] = _currentLevel;
     map['id_request_trip'] = _idRequestTrip;
     map['no_request_trip'] = _noRequestTrip;
     map['notes_rtrip'] = _notesRtrip;
     map['file'] = _file;
+    map['file_name'] = _fileName;
     map['id_city_to'] = _idCityTo;
     map['id_city_from'] = _idCityFrom;
     map['date_departure'] = _dateDeparture;
@@ -624,5 +686,4 @@ Data2 copyWith({  num? id,
     map['document_name'] = _documentName;
     return map;
   }
-
 }

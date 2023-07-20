@@ -9,6 +9,7 @@ import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
+import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/management_meeting_room/add/add_room_info_screen.dart';
@@ -32,7 +33,7 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: RefreshIndicator(
                 onRefresh: () async {
-                  // controller.fetchList();
+                  controller.fetchList(1);
                   controller.update();
                 },
                 child: CustomScrollView(
@@ -40,8 +41,8 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                     SliverPersistentHeader(
                       pinned: true,
                       delegate: SliverAppBarDelegate(
-                        // minHeight: controller.dataisnull || controller.isLoading ? Get.height : 180,
-                        minHeight: 180,
+                        minHeight: controller.dataisnull || controller.isLoading ? Get.height : 180,
+                        // minHeight: 180,
                         maxHeight: 32,
                         child: Container(
                           color: baseColor,
@@ -49,9 +50,9 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                             children: [
                               CustomSearchBar(
                                 onSubmit: (value) {
-                                  // controller.searchValue = value;
-                                  // controller.filterStatus = "-1";
-                                  // controller.fetchList();
+                                  controller.searchValue = value;
+                                  controller.filterStatus = "-1";
+                                  controller.fetchList(1);
                                 },
                                 onPressedFilter: () {
                                   Get.bottomSheet(
@@ -59,13 +60,13 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                                       builder: (context, setState) {
                                         return FilterBottomSheet(
                                           onApplyFilter: () {
-                                            // controller.fetchList();
+                                            controller.fetchList(1);
                                             controller.update();
                                             Get.back();
                                           },
                                           onResetFilter: () {
                                             setState(() {
-                                              // controller.resetFilter();
+                                              controller.resetFilter();
                                             });
                                           },
                                           children: [
@@ -126,12 +127,12 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                                 colorPrimary: infoColor,
                                 onPageChanged: (int pageNumber) {
                                   controller.currentPage = pageNumber;
-                                  // controller.fetchList();
+                                  controller.fetchList(pageNumber);
                                   controller.update();
                                 },
                                 threshold: 5,
-                                // pageTotal: controller.ddModel?.data?.lastPage?.toInt() ?? 1,
-                                pageTotal: 5,
+                                pageTotal: controller.meetingRoomModel?.data?.lastPage?.toInt() ?? 1,
+                                // pageTotal: 5,
                                 pageInit: controller.currentPage,
                               ),
                               controller.isLoading
@@ -151,47 +152,56 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 CustomTripCard(
-                                  // listNumber: controller.currentPage > 1 ? (controller.ddModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
-                                  listNumber: (index + 1),
-                                  title: "Room Name",
-                                  status: "Status",
-                                  subtitle: "IDxxxx",
+                                  listNumber:
+                                      controller.currentPage > 1 ? (controller.meetingRoomModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
+                                  // listNumber: (index + 1),
+                                  title: controller.meetingRoomList[index].nameMeetingRoom.toString(),
+                                  status: controller.meetingRoomList[index].availableStatus,
+                                  subtitle: controller.meetingRoomList[index].codeMeetingRoom,
                                   isEdit: true,
                                   editAction: () => Get.to(
                                     const AddRoomInfoScreen(),
-                                    arguments: {
-                                      // 'id': controller.ddList[index].id?.toInt(),
-                                      'isEdit': true
-                                    },
+                                    arguments: {'id': controller.meetingRoomList[index].id?.toInt(), 'isEdit': true},
                                   )?.then((value) {
-                                    // controller.fetchList();
+                                    controller.fetchList(controller.currentPage);
                                     controller.update();
                                   }),
                                   isDelete: true,
-                                  // deleteAction: () {
-                                  //   controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
-                                  //   controller.deleteDocumentDelivery(int.parse(controller.ddList[index].id.toString()));
-                                  //
-                                  //   controller.update();
-                                  // },
+                                  deleteAction: () {
+                                    // controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
+                                    // controller.deleteDocumentDelivery(int.parse(controller.ddList[index].id.toString()));
+                                    controller.update();
+                                  },
                                   content: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [Text("Capacity", style: listTitleTextStyle), Text("8", style: listSubTitleTextStyle)],
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Text("Capacity", style: listTitleTextStyle),
+                                          Text(controller.meetingRoomList[index].capacity.toString(), style: listSubTitleTextStyle)
+                                        ],
                                       ),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [Text("Floor", style: listTitleTextStyle), Text("2", style: listSubTitleTextStyle)],
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Text("Floor", style: listTitleTextStyle),
+                                          Text(controller.meetingRoomList[index].floor.toString(), style: listSubTitleTextStyle)
+                                        ],
                                       ),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [Text("Company", style: listTitleTextStyle), Text("ABM", style: listSubTitleTextStyle)],
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Text("Company", style: listTitleTextStyle),
+                                          Text(controller.meetingRoomList[index].companyName.toString(), style: listSubTitleTextStyle)
+                                        ],
                                       ),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [Text("Site", style: listTitleTextStyle), Text("Site A", style: listSubTitleTextStyle)],
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Text("Site", style: listTitleTextStyle),
+                                          Text(controller.meetingRoomList[index].siteName.toString(), style: listSubTitleTextStyle)
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -213,7 +223,7 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
               child: Icon(Icons.add_rounded, size: 45),
               backgroundColor: successColor,
               onPressed: () => Get.to(AddRoomInfoScreen(), arguments: {'isEdit': false})?.then((value) {
-                // controller.fetchList();
+                controller.fetchList(1);
                 controller.update();
               }),
             ),

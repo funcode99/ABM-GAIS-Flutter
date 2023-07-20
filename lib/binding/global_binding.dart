@@ -9,6 +9,8 @@ import 'package:gais/data/repository/dashboard/dashboard_repository.dart';
 import 'package:gais/data/repository/document_delivery/document_delivery_impl.dart';
 import 'package:gais/data/repository/document_delivery/document_delivery_repository.dart';
 import 'package:gais/data/repository/management_item_atk/management_item_atk_repository.dart';
+import 'package:gais/data/repository/management_meeting_room/management_meeting_room_impl.dart';
+import 'package:gais/data/repository/management_meeting_room/management_meeting_room_repository.dart';
 import 'package:gais/data/repository/master/master_repository.dart';
 import 'package:gais/data/repository/pool_car/pool_car_repository.dart';
 import 'package:gais/data/repository/pool_car/management_poolcar/management_poolcar_impl.dart';
@@ -18,6 +20,7 @@ import 'package:gais/data/repository/repository_impl.dart';
 import 'package:gais/data/repository/request_atk/request_atk_repository.dart';
 import 'package:gais/data/repository/stock_in/stock_in_repository.dart';
 import 'package:gais/data/storage_core.dart';
+import 'package:gais/screen/fss/management_meeting_room/list/management_meeting_room_controller.dart';
 import 'package:get/get.dart';
 
 
@@ -30,6 +33,7 @@ class GlobalBinding extends Bindings {
     Get.put<DocumentDeliveryRepository>(DocumentDeliveryImpl(), permanent:  true);
     Get.put<ApprovalRequestTripRepository>(ApprovalRequestTripImpl(), permanent: true);
     Get.put<ManagementPoolCarRepository>(ManagementPoolCarImpl(), permanent: true);
+    Get.put<ManagementMeetingRoomRepository>(ManagementMeetingRoomImpl(), permanent: true);
 
     Get.put(CashAdvanceTravelRepository(), permanent: false);
     Get.put(CashAdvanceNonTravelRepository(), permanent: false);

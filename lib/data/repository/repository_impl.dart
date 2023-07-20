@@ -311,6 +311,7 @@ class RepositoryImpl implements Repository {
       );
       return GetCompanyModel.fromJson(response.data);
     } on DioError catch (e) {
+      print("response error : ${e.response?.data}");
       return e.error;
     }
   }

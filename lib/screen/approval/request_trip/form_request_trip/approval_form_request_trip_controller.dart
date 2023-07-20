@@ -39,7 +39,7 @@ class ApprovalFormRequestTripController extends BaseController {
   late String rejection = reject[0];
 
   ApprovalActionEnum? approvalActionEnum = Get.arguments['approvalEnum'];
-  rt.Data approvalData = Get.arguments['approvalData'];
+  rt.Data2   approvalData = Get.arguments['approvalData'];
   int purposeID = Get.arguments['idRequestTrip'];
   int approvalID = Get.arguments['id'];
   int approvalAuthID = Get.arguments['idApprovalAuth'];

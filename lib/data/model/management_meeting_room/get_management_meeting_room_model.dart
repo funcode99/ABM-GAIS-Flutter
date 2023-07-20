@@ -1,5 +1,5 @@
-class GetCarListModel {
-  GetCarListModel({
+class GetManagementMeetingRoomModel {
+  GetManagementMeetingRoomModel({
       bool? success, 
       String? message, 
       Data? data,}){
@@ -8,7 +8,7 @@ class GetCarListModel {
     _data = data;
 }
 
-  GetCarListModel.fromJson(dynamic json) {
+  GetManagementMeetingRoomModel.fromJson(dynamic json) {
     _success = json['success'];
     _message = json['message'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
@@ -16,10 +16,10 @@ class GetCarListModel {
   bool? _success;
   String? _message;
   Data? _data;
-GetCarListModel copyWith({  bool? success,
+GetManagementMeetingRoomModel copyWith({  bool? success,
   String? message,
   Data? data,
-}) => GetCarListModel(  success: success ?? _success,
+}) => GetManagementMeetingRoomModel(  success: success ?? _success,
   message: message ?? _message,
   data: data ?? _data,
 );
@@ -215,188 +215,172 @@ class Data2 {
   Data2({
       num? no, 
       num? id, 
-      String? carName, 
-      String? plate, 
       num? idCompany, 
       num? idSite, 
-      String? odometer, 
-      String? transmisi, 
-      num? idDriver, 
-      num? status, 
-      num? idCarType, 
+      String? nameMeetingRoom, 
+      num? capacity, 
+      num? floor, 
+      String? availableStatus, 
       String? createdAt, 
       String? createdBy, 
       String? updatedAt, 
       dynamic updatedBy, 
       dynamic deletedAt, 
+      String? codeMeetingRoom, 
+      String? companyName, 
       String? companyCode, 
-      String? siteName, 
-      String? siteCode, 
-      String? typeCar, 
-      String? name, 
-      String? companyName,}){
+      dynamic siteName, 
+      dynamic siteCode, 
+      String? nameCreated, 
+      dynamic nameUpdated,}){
     _no = no;
     _id = id;
-    _carName = carName;
-    _plate = plate;
     _idCompany = idCompany;
     _idSite = idSite;
-    _odometer = odometer;
-    _transmisi = transmisi;
-    _idDriver = idDriver;
-    _status = status;
-    _idCarType = idCarType;
+    _nameMeetingRoom = nameMeetingRoom;
+    _capacity = capacity;
+    _floor = floor;
+    _availableStatus = availableStatus;
     _createdAt = createdAt;
     _createdBy = createdBy;
     _updatedAt = updatedAt;
     _updatedBy = updatedBy;
     _deletedAt = deletedAt;
+    _codeMeetingRoom = codeMeetingRoom;
+    _companyName = companyName;
     _companyCode = companyCode;
     _siteName = siteName;
     _siteCode = siteCode;
-    _typeCar = typeCar;
-    _name = name;
-    _companyName = companyName;
+    _nameCreated = nameCreated;
+    _nameUpdated = nameUpdated;
 }
 
   Data2.fromJson(dynamic json) {
     _no = json['no'];
     _id = json['id'];
-    _carName = json['car_name'];
-    _plate = json['plate'];
     _idCompany = json['id_company'];
     _idSite = json['id_site'];
-    _odometer = json['odometer'];
-    _transmisi = json['transmisi'];
-    _idDriver = json['id_driver'];
-    _status = json['status'];
-    _idCarType = json['id_car_type'];
+    _nameMeetingRoom = json['name_meeting_room'];
+    _capacity = json['capacity'];
+    _floor = json['floor'];
+    _availableStatus = json['available_status'];
     _createdAt = json['created_at'];
     _createdBy = json['created_by'];
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
     _deletedAt = json['deleted_at'];
+    _codeMeetingRoom = json['code_meeting_room'];
+    _companyName = json['company_name'];
     _companyCode = json['company_code'];
     _siteName = json['site_name'];
     _siteCode = json['site_code'];
-    _typeCar = json['type_car'];
-    _name = json['name'];
-    _companyName = json['company_name'];
+    _nameCreated = json['name_created'];
+    _nameUpdated = json['name_updated'];
   }
   num? _no;
   num? _id;
-  String? _carName;
-  String? _plate;
   num? _idCompany;
   num? _idSite;
-  String? _odometer;
-  String? _transmisi;
-  num? _idDriver;
-  num? _status;
-  num? _idCarType;
+  String? _nameMeetingRoom;
+  num? _capacity;
+  num? _floor;
+  String? _availableStatus;
   String? _createdAt;
   String? _createdBy;
   String? _updatedAt;
   dynamic _updatedBy;
   dynamic _deletedAt;
-  String? _companyCode;
-  String? _siteName;
-  String? _siteCode;
-  String? _typeCar;
-  String? _name;
+  String? _codeMeetingRoom;
   String? _companyName;
+  String? _companyCode;
+  dynamic _siteName;
+  dynamic _siteCode;
+  String? _nameCreated;
+  dynamic _nameUpdated;
 Data2 copyWith({  num? no,
   num? id,
-  String? carName,
-  String? plate,
   num? idCompany,
   num? idSite,
-  String? odometer,
-  String? transmisi,
-  num? idDriver,
-  num? status,
-  num? idCarType,
+  String? nameMeetingRoom,
+  num? capacity,
+  num? floor,
+  String? availableStatus,
   String? createdAt,
   String? createdBy,
   String? updatedAt,
   dynamic updatedBy,
   dynamic deletedAt,
-  String? companyCode,
-  String? siteName,
-  String? siteCode,
-  String? typeCar,
-  String? name,
+  String? codeMeetingRoom,
   String? companyName,
+  String? companyCode,
+  dynamic siteName,
+  dynamic siteCode,
+  String? nameCreated,
+  dynamic nameUpdated,
 }) => Data2(  no: no ?? _no,
   id: id ?? _id,
-  carName: carName ?? _carName,
-  plate: plate ?? _plate,
   idCompany: idCompany ?? _idCompany,
   idSite: idSite ?? _idSite,
-  odometer: odometer ?? _odometer,
-  transmisi: transmisi ?? _transmisi,
-  idDriver: idDriver ?? _idDriver,
-  status: status ?? _status,
-  idCarType: idCarType ?? _idCarType,
+  nameMeetingRoom: nameMeetingRoom ?? _nameMeetingRoom,
+  capacity: capacity ?? _capacity,
+  floor: floor ?? _floor,
+  availableStatus: availableStatus ?? _availableStatus,
   createdAt: createdAt ?? _createdAt,
   createdBy: createdBy ?? _createdBy,
   updatedAt: updatedAt ?? _updatedAt,
   updatedBy: updatedBy ?? _updatedBy,
   deletedAt: deletedAt ?? _deletedAt,
+  codeMeetingRoom: codeMeetingRoom ?? _codeMeetingRoom,
+  companyName: companyName ?? _companyName,
   companyCode: companyCode ?? _companyCode,
   siteName: siteName ?? _siteName,
   siteCode: siteCode ?? _siteCode,
-  typeCar: typeCar ?? _typeCar,
-  name: name ?? _name,
-  companyName: companyName ?? _companyName,
+  nameCreated: nameCreated ?? _nameCreated,
+  nameUpdated: nameUpdated ?? _nameUpdated,
 );
   num? get no => _no;
   num? get id => _id;
-  String? get carName => _carName;
-  String? get plate => _plate;
   num? get idCompany => _idCompany;
   num? get idSite => _idSite;
-  String? get odometer => _odometer;
-  String? get transmisi => _transmisi;
-  num? get idDriver => _idDriver;
-  num? get status => _status;
-  num? get idCarType => _idCarType;
+  String? get nameMeetingRoom => _nameMeetingRoom;
+  num? get capacity => _capacity;
+  num? get floor => _floor;
+  String? get availableStatus => _availableStatus;
   String? get createdAt => _createdAt;
   String? get createdBy => _createdBy;
   String? get updatedAt => _updatedAt;
   dynamic get updatedBy => _updatedBy;
   dynamic get deletedAt => _deletedAt;
-  String? get companyCode => _companyCode;
-  String? get siteName => _siteName;
-  String? get siteCode => _siteCode;
-  String? get typeCar => _typeCar;
-  String? get name => _name;
+  String? get codeMeetingRoom => _codeMeetingRoom;
   String? get companyName => _companyName;
+  String? get companyCode => _companyCode;
+  dynamic get siteName => _siteName;
+  dynamic get siteCode => _siteCode;
+  String? get nameCreated => _nameCreated;
+  dynamic get nameUpdated => _nameUpdated;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['no'] = _no;
     map['id'] = _id;
-    map['car_name'] = _carName;
-    map['plate'] = _plate;
     map['id_company'] = _idCompany;
     map['id_site'] = _idSite;
-    map['odometer'] = _odometer;
-    map['transmisi'] = _transmisi;
-    map['id_driver'] = _idDriver;
-    map['status'] = _status;
-    map['id_car_type'] = _idCarType;
+    map['name_meeting_room'] = _nameMeetingRoom;
+    map['capacity'] = _capacity;
+    map['floor'] = _floor;
+    map['available_status'] = _availableStatus;
     map['created_at'] = _createdAt;
     map['created_by'] = _createdBy;
     map['updated_at'] = _updatedAt;
     map['updated_by'] = _updatedBy;
     map['deleted_at'] = _deletedAt;
+    map['code_meeting_room'] = _codeMeetingRoom;
+    map['company_name'] = _companyName;
     map['company_code'] = _companyCode;
     map['site_name'] = _siteName;
     map['site_code'] = _siteCode;
-    map['type_car'] = _typeCar;
-    map['name'] = _name;
-    map['company_name'] = _companyName;
+    map['name_created'] = _nameCreated;
+    map['name_updated'] = _nameUpdated;
     return map;
   }
 

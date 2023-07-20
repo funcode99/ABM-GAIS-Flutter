@@ -166,31 +166,60 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                           Container(
                             decoration: BoxDecoration(color: baseColor, borderRadius: BorderRadius.circular(14)),
                             padding: EdgeInsets.symmetric(horizontal: 9),
+                            width: Get.width / 3.5,
                             child: DropdownButton(
                               hint: Text(
-                                "Company",
+                                controller.loadCompany ? "Loading..." : "Company",
                                 style: listTitleTextStyle,
                               ),
                               underline: SizedBox(),
+                              isExpanded: true,
+                              value: controller.selectedCompany != null ? controller.selectedCompany.toString() : null,
                               icon: Icon(Icons.arrow_drop_down),
                               borderRadius: BorderRadius.circular(8),
-                              items: [],
-                              onChanged: (value) {},
+                              menuMaxHeight: 500,
+                              style: listSubTitleTextStyle.copyWith(overflow: TextOverflow.ellipsis, color: blackColor),
+                              items: controller.listCompany
+                                  .map((e) => DropdownMenuItem(
+                                        child: Text(
+                                          e.companyName.toString(),
+                                        ),
+                                        value: e.id.toString(),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                controller.selectedCompany = value?.toInt();
+                                controller.listOfSite(value!.toInt());
+                                controller.update();
+                              },
                             ),
                           ),
                           Container(
                             decoration: BoxDecoration(color: baseColor, borderRadius: BorderRadius.circular(14)),
                             padding: EdgeInsets.symmetric(horizontal: 9),
+                            width: Get.width/5,
                             child: DropdownButton(
                               hint: Text(
-                                "Site",
+                                controller.loadSite ? "Loading..." : "Site",
                                 style: listTitleTextStyle,
                               ),
                               underline: SizedBox(),
+                              isExpanded: true,
+                              style: listSubTitleTextStyle.copyWith(overflow: TextOverflow.ellipsis, color: blackColor),
+                              value: controller.selectedSite != null ? controller.selectedSite.toString() : null,
                               icon: Icon(Icons.arrow_drop_down),
                               borderRadius: BorderRadius.circular(8),
-                              items: [],
-                              onChanged: (value) {},
+                              items: controller.listSite
+                                  .map((e) => DropdownMenuItem(
+                                        child: Text(e.siteName.toString()),
+                                        value: e.id.toString(),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                controller.selectedSite = value?.toInt();
+                                controller.listOfFLoor(value!.toInt());
+                                controller.update();
+                              },
                             ),
                           ),
                           Container(
