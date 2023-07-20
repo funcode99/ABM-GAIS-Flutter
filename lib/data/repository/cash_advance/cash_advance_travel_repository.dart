@@ -176,7 +176,7 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
   }
 
   @override
-  Future<Either<BaseError, bool>> reject(model, int id) async{
+  Future<Either<BaseError, bool>> reject(model, dynamic id) async{
     try {
       final approvalModel = model as ApprovalModel;
 
@@ -199,7 +199,7 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
   }
 
   @override
-  Future<Either<BaseError, bool>> approve(model, int id) async{
+  Future<Either<BaseError, bool>> approve(model, dynamic id) async{
     try {
       final approvalModel = model as ApprovalModel;
 
