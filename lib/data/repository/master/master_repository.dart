@@ -240,6 +240,28 @@ class MasterRepository{
     }
   }
 
+  Future<Either<BaseError, List<RoomModel>>> getListMeetingRoomBySiteId(int idSite)async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/master_meeting_room/get_by_site/$idSite',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, RoomModel.fromJsonModelList);
+      return right(apiResponseModel.data);
+
+    } on Dio.DioError catch (e) {
+      print(e);
+
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print(e);
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print(e);
+
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
   Future<Either<BaseError, List<WarehouseModel>>> getListWarehouse()async{
     try {
       Dio.Response response = await network.dio.get(

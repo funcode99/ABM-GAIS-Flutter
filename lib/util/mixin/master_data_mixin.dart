@@ -73,6 +73,11 @@ mixin MasterDataMixin{
     return result.fold((l) => [], (list) => list);
   }
 
+  Future<List<RoomModel>> getListMeetingRoomBySiteId(int idSite)async{
+    final result = await _repository.getListMeetingRoomBySiteId(idSite);
+    return result.fold((l) => [], (list) => list);
+  }
+
   Future<List<WarehouseModel>> getListWarehouse()async{
     final result = await _repository.getListWarehouse();
     return result.fold((l) => [], (list) => list);
