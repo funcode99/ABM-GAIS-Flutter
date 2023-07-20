@@ -77,19 +77,67 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   const SizedBox(
                     height: 32,
                   ),
-                  CustomTextFormField(
-                      isRequired: true,
-                      readOnly: true,
-                      controller: controller.companyController,
-                      label: "Company".tr),
+                  Obx(() {
+                    if(controller.enableSelectCompany.value){
+                      return CustomDropDownFormField(
+                        items: controller.listCompany
+                            .map((e) => DropdownMenuItem(
+                          value: e.id.toString(),
+                          child: Text("${e.companyName}"),
+                        ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller
+                              .onChangeSelectedCompany(item.toString());
+                        },
+                        label: "Company".tr,
+                        value: controller.selectedCompany.value != null
+                            ? controller.selectedCompany.value?.id
+                            .toString()
+                            : "",
+                      );
+                    }else{
+                      return CustomTextFormField(
+                          isRequired: true,
+                          readOnly: true,
+                          controller: controller.companyController,
+                          label: "Company".tr);
+                    }
+
+                    return const SizedBox();
+                  }),
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomTextFormField(
-                      isRequired: true,
-                      readOnly: true,
-                      controller: controller.siteController,
-                      label: "Site".tr),
+                  Obx(() {
+                    if(controller.enableSelectSite.value){
+                      return CustomDropDownFormField(
+                        items: controller.listSite
+                            .map((e) => DropdownMenuItem(
+                          value: e.id.toString(),
+                          child: Text("${e.siteName}"),
+                        ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller
+                              .onChangeSelectedSite(item.toString());
+                        },
+                        label: "Site".tr,
+                        value: controller.selectedSite.value != null
+                            ? controller.selectedSite.value?.id
+                            .toString()
+                            : "",
+                      );
+                    }else{
+                      return CustomTextFormField(
+                          isRequired: true,
+                          readOnly: true,
+                          controller: controller.siteController,
+                          label: "Site".tr);
+                    }
+
+                    return const SizedBox();
+                  }),
                   const SizedBox(
                     height: 8,
                   ),

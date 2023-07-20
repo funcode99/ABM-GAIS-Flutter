@@ -10,6 +10,7 @@ import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_r
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
+import 'package:gais/util/enum/role_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
@@ -52,9 +53,11 @@ class AddBookingMeetingRoomController extends BaseController
 
   final listCompany = <CompanyModel>[].obs;
   final selectedCompany = Rxn<CompanyModel>();
+  final enableSelectCompany = false.obs;
 
   final listSite = <SiteModel>[].obs;
   final selectedSite = Rxn<SiteModel>();
+  final enableSelectSite = false.obs;
 
   final listEmployee = <EmployeeModel>[].obs;
   final selectedEmployee = Rxn<EmployeeModel>();
@@ -77,26 +80,76 @@ class AddBookingMeetingRoomController extends BaseController
 
   initData() async {
     String companyName = await storage.readString(StorageCore.companyName);
+    String idCompany = await storage.readString(StorageCore.companyID);
     String siteName = await storage.readString(StorageCore.siteName);
     String idSite = await storage.readString(StorageCore.siteID);
-    companyController.text = companyName;
-    siteController.text = siteName;
-
-    listCompany.add(CompanyModel(id: "", companyName: "Company"));
-    final companies = await getListCompany();
-    listCompany.addAll(companies);
-
-    listSite.add(SiteModel(id: "", siteName: "Site"));
-    final sites = await getListSite();
-    listSite.addAll(sites);
+    String codeRole = await storage.readString(StorageCore.codeRole);
 
     listRoom.add(RoomModel(id: "", nameMeetingRoom: "Meeting Room"));
     final rooms = await getListRoomBySite(idSite.toInt());
     listRoom.addAll(rooms);
+
+    if(codeRole == RoleEnum.administrator.value){
+      enableSelectCompany(true);
+
+      listCompany.add(CompanyModel(id: "", companyName: "Company"));
+      final companies = await getListCompany();
+      listCompany.addAll(companies);
+      onChangeSelectedCompany(listCompany.first.id);
+    }else{
+      selectedCompany.value = CompanyModel(
+          id: idCompany
+      );
+      companyController.text = companyName;
+      onChangeSelectedCompany(idCompany);
+    }
+
+    if(codeRole == RoleEnum.administrator.value || codeRole == RoleEnum.superAdmin.value){
+      enableSelectSite(true);
+
+      listSite.add(SiteModel(id: "", siteName: "Site"));
+      final sites = await getListSite();
+      listSite.addAll(sites);
+
+      onChangeSelectedSite(listSite.first.id);
+    }else{
+      selectedSite.value = SiteModel(
+          id: idSite
+      );
+      siteController.text = siteName;
+      onChangeSelectedSite(idSite);
+    }
+
     onChangeSelectedRoom("");
 
     /*final employees = await getListEmployee();
     listEmployee.addAll(employees);*/
+  }
+
+  void onChangeSelectedCompany(String id) {
+    if(listCompany.isNotEmpty){
+      final selected = listCompany.firstWhere(
+              (item) => item.id.toString() == id.toString(),
+          orElse: () => listCompany.first);
+      selectedCompany(selected);
+
+      //clear site and filter sites
+      onChangeSelectedSite("");
+      _filterSite(selected.id.toString());
+    }
+  }
+
+  void onChangeSelectedSite(String id) {
+    if(listSite.isNotEmpty){
+      final selected = listSite.firstWhere(
+              (item) => item.id.toString() == id.toString(),
+          orElse: () => listSite.first);
+      selectedSite(selected);
+
+      //clear warehouse and filter room
+      onChangeSelectedRoom("");
+      _filterMeetingRoom(selected.id.toString());
+    }
   }
 
   void onChangeSelectedRoom(String id) {
@@ -115,17 +168,31 @@ class AddBookingMeetingRoomController extends BaseController
     }
   }
 
+  void _filterSite(String idCompany)async{
+    listSite.removeWhere((element) => element.id != "");
+    if(idCompany.isNotEmpty){
+      final filtered = await getListSiteByCompanyId(idCompany.toInt());
+      listSite.addAll(filtered);
+    }
+  }
+
+  void _filterMeetingRoom(String idSite)async{
+    listRoom.removeWhere((element) => element.id != "");
+    if(idSite.isNotEmpty){
+      final filtered = await getListMeetingRoomBySiteId(idSite.toInt());
+      listRoom.addAll(filtered);
+    }
+  }
+
+
   void updateButton() {
     enableButton(formKey.currentState!.validate());
   }
 
   void saveData() async {
-    String idCompany = await storage.readString(StorageCore.companyID);
-    String idSite = await storage.readString(StorageCore.siteID);
-
     BookingMeetingRoomModel meetingRoomModel = BookingMeetingRoomModel(
-        idCompany: idCompany.toInt(),
-        idSite: idSite.toInt(),
+        idCompany: selectedCompany.value?.id.toString().toInt(),
+        idSite: selectedSite.value?.id.toString().toInt(),
         floor: floorController.text.toInt() ?? 0,
         capacity: capacityController.text.toInt() ?? 0,
         title: titleController.text,
@@ -161,7 +228,6 @@ class AddBookingMeetingRoomController extends BaseController
     listEmployee.clear();
     final employees = await getListEmployeeByKeyword(keyword);
     listEmployee.addAll(employees);
-    print("LEEENGTH ${listEmployee.length}");
 
     return listEmployee;
   }
