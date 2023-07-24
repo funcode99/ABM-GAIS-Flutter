@@ -30,4 +30,10 @@ extension StringExt on String{
       return null;
     }
   }
+
+  bool isNumeric() {
+    RegExp _numeric = RegExp(r'^-?[0-9]+$');
+    return _numeric.hasMatch(this);
+  }
+
 }
