@@ -21,7 +21,6 @@ import 'package:gais/data/model/reference/get_type_transportation_model.dart';
 import 'package:gais/data/model/reference/get_zona_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart';
-import 'package:gais/data/model/request_trip/get_airliness_schedule_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_vendor_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart';
@@ -59,7 +58,7 @@ abstract class Repository {
     String? endDate,
   );
 
-  Future<GetRequestTripByidModel> getRequestTripByid(int id);
+  Future<GetRequestTripByidModel> getRequestTripByid(String id);
 
   Future<EmployeeInfoModel> getEmployeeInfo();
 
@@ -96,7 +95,7 @@ abstract class Repository {
   );
 
   Future<UpdatePurposeOfTripModel> updateRequestTrip(
-    int id,
+    String id,
     String employeeID,
     String noRequestTrip,
     String codeDocument,
@@ -115,8 +114,6 @@ abstract class Repository {
   Future<GetTravellerTypeModel> getTravellerTypeList();
 
   Future<GetEmployeeModel> getEmployeeList();
-
-  Future<GetEmployeeModel> getEmployeeListBySiteID(int id);
 
   Future<GetDepartmentModel> getDepartmentList();
 
@@ -146,7 +143,7 @@ abstract class Repository {
   Future<UpdateTravellerGuestModel> updateTravellerGuest(
     int id,
     String nameGuest,
-    int idrequesttrip,
+    String idrequesttrip,
     int idcompany,
     String company,
     int idtypetraveller,
@@ -161,7 +158,7 @@ abstract class Repository {
 
   Future deletePurposeOfTrip(int id);
 
-  Future<GetGuestBytripModel> getGuestBytripList(int id);
+  Future<GetGuestBytripModel> getGuestBytripList(String id);
 
   Future<GetGuestByidModel> getGuestByID(int id);
 
@@ -190,7 +187,7 @@ abstract class Repository {
     String voucher,
   );
 
-  Future<GetTaxiVoucherModel> getTaxiVoucherBytripList(int id);
+  Future<GetTaxiVoucherModel> getTaxiVoucherBytripList(String id);
 
   Future<GetTaxiVoucherModel> getTaxiVoucherByid(int id);
 
@@ -219,8 +216,6 @@ abstract class Repository {
 
   Future<GetAirlinessVendorModel> getAirlinessVendorList();
 
-  Future<GetAirlinessScheduleModel> getAirlinessScheduleList();
-
   Future<GetAirlinessModel> getAirlinessBytripList();
 
   Future<GetAirlinessModel> getAirlinessByid(int id);
@@ -246,7 +241,7 @@ abstract class Repository {
     String remarks,
   );
 
-  Future<GetOtherTransportModel> getOtherTransportBytripList(int id);
+  Future<GetOtherTransportModel> getOtherTransportBytripList(String id);
 
   Future<GetOtherTransportModel> getOtherTransportByid(int id);
 
@@ -283,7 +278,7 @@ abstract class Repository {
     String codeHotel,
   );
 
-  Future<GetAccommodationModel> getAccommodationBytripList(int id);
+  Future<GetAccommodationModel> getAccommodationBytripList(String id);
 
   Future<GetAccommodationModel> getAccommodationByid(int id);
 
@@ -291,7 +286,7 @@ abstract class Repository {
 
   Future<GetHotelTypeModel> getHotelTypeList();
 
-  Future<GetCashAdvanceTravelModel> getCashAdvanceTravelList(int id);
+  Future<GetCashAdvanceTravelModel> getCashAdvanceTravelList(String id);
 
   Future<GetCashAdvanceByidModel> getCashAdvanceTravelByid(int id);
 
@@ -311,5 +306,5 @@ abstract class Repository {
     int id,
   );
 
-  Future<SubmitRequestTripModel> submitRequestTrip(int id);
+  Future<SubmitRequestTripModel> submitRequestTrip(String id);
 }

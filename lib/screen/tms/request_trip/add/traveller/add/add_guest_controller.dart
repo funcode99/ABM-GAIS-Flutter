@@ -6,7 +6,7 @@ import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
 class AddGuestController extends BaseController {
-  int purposeID = Get.arguments['purposeID'];
+  String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
   int? guestID = Get.arguments['guestID'];
   bool? formEdit = Get.arguments['formEdit'];
@@ -143,7 +143,7 @@ class AddGuestController extends BaseController {
           .then(
         (value) {
           print(value.success);
-          purposeID = value.data?.id?.toInt() ?? 0;
+          purposeID = value.data?.id.toString() ?? "";
           print(purposeID);
           // Get.off(TravellerScreen(), arguments: {'purposeID': purposeID});
           Get.back(result: value.success);

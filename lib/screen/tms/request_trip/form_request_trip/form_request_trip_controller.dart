@@ -28,7 +28,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FormRequestTripController extends BaseController {
-  int purposeID = Get.arguments['id'];
+  String purposeID = Get.arguments['id'];
   int? codeDocument = Get.arguments['codeDocument'];
   int? requsetorID;
   int? siteID;

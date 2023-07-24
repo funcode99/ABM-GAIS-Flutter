@@ -9,6 +9,7 @@ class CashAdvanceModel {
   int? idEmployee;
   dynamic typeCa;
   String? noCa;
+  // String? idRequestTrip;
   dynamic idRequestTrip;
   int? idCurrency;
   String? grandTotal;

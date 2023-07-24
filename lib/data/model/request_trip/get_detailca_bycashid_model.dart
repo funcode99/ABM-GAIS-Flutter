@@ -147,7 +147,7 @@ Data copyWith({  num? id,
   updatedAt: updatedAt ?? _updatedAt,
   updatedBy: updatedBy ?? _updatedBy,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   num? get idCa => _idCa;
   dynamic get idItemCa => _idItemCa;
   num? get idCostCenter => _idCostCenter;

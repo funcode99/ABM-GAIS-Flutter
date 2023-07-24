@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class EditTaxiVoucherController extends BaseController {
-  int purposeID = Get.arguments['purposeID'];
+  String purposeID = Get.arguments['purposeID'];
   int tvID = Get.arguments['id'];
   bool? formEdit = Get.arguments['formEdit'];
 

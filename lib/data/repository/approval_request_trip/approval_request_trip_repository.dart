@@ -13,11 +13,11 @@ abstract class ApprovalRequestTripRepository {
     String? codeStatusDoc,
   );
 
-  Future<GetApprovalRequestTripByidModel> getByID(int id);
+  Future<GetApprovalRequestTripByidModel> getByID(String id);
 
-  Future approve(int id, ApprovalModel approval);
+  Future approve(String id, ApprovalModel approval);
 
-  Future reject(int id, ApprovalModel rejection);
+  Future reject(String id, ApprovalModel rejection);
 
-  Future<ApprovalInfoModel> approval_info(int id);
+  Future<ApprovalInfoModel> approval_info(String id);
 }

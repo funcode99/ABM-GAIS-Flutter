@@ -46,7 +46,7 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
     }
   }
 
-  Future approve(int id, ApprovalModel approval) async {
+  Future approve(String id, ApprovalModel approval) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -66,7 +66,7 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
     }
   }
 
-  Future reject(int id, ApprovalModel rejection) async {
+  Future reject(String id, ApprovalModel rejection) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -88,7 +88,7 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
   }
 
   @override
-  Future<ApprovalInfoModel> approval_info(int id) async{
+  Future<ApprovalInfoModel> approval_info(String id) async{
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -105,7 +105,7 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
   }
 
   @override
-  Future<GetApprovalRequestTripByidModel> getByID(int id) async {
+  Future<GetApprovalRequestTripByidModel> getByID(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {

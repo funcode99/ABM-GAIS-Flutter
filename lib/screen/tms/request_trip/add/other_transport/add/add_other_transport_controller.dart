@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AddOtherTransportController extends BaseController {
-  int purposeID = Get.arguments['purposeID'];
+  String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
 
   final formKey = GlobalKey<FormState>();

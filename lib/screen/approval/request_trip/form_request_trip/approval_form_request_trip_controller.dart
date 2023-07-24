@@ -40,8 +40,8 @@ class ApprovalFormRequestTripController extends BaseController {
 
   ApprovalActionEnum? approvalActionEnum = Get.arguments['approvalEnum'];
   rt.Data2   approvalData = Get.arguments['approvalData'];
-  int purposeID = Get.arguments['idRequestTrip'];
-  int approvalID = Get.arguments['id'];
+  String purposeID = Get.arguments['idRequestTrip'];
+  String approvalID = Get.arguments['id'];
   int approvalAuthID = Get.arguments['idApprovalAuth'];
   int companyID = Get.arguments['idCompany'];
   int? requsetorID;
@@ -260,28 +260,12 @@ class ApprovalFormRequestTripController extends BaseController {
     siteID = rtModel?.data?.first.idSite?.toInt();
     site.text = rtModel?.data?.first.siteName ?? "";
     notes.text = rtModel?.data?.first.notes ?? "";
+    attachment.text = rtModel?.data?.first.file ?? "";
     selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
     isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
-    print("attachment : ${rtModel?.data?.first.file}");
-    // if (isAttachment == true) {
-    //   attachment.text = rtModel?.data?.first.file;
-    //   fileURL = rtModel?.data?.first.file;
-    //   getFileFromUrl().then((f) {
-    //     pdfPath = f.path;
-    //     // gettedFile = f;
-    //     update();
-    //   });
-    //   update();
-    // }
-    selectedPurpose = codeDocument.toString();
-    print("selected purpose : $selectedPurpose");
-    print("file : $fileURL");
-    print("pdfPath : $pdfPath");
     tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";
-    requsetorID = rtModel?.data?.first.idEmployee?.toInt();
     // tlkJobBand.text = rtModel?.data?.first.
     tlkZona.text = rtModel?.data?.first.zonaName ?? "";
-    print(rtModel?.data?.first.totalTlk);
     tlkTotal.text = rtModel?.data?.first.totalTlk ?? "";
     // tlkTotalMeals.text = rtModel?.data?.first. ?? "";
     fromCity = rtModel?.data?.first.idCityFrom.toString();

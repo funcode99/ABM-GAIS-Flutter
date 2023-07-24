@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/reference/get_site_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
@@ -121,7 +122,7 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                               label: "Attachment (Optional)",
                               suffixIcon: Icon(Icons.upload),
                               readOnly: true,
-                              onTap: () {
+                              onTap: (){
                                 controller.getSingleFile();
                               },
                             ),

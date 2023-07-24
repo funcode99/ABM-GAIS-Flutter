@@ -9,7 +9,7 @@ class CheckAccommodationController extends BaseController {
   bool isEdit = Get.arguments['isEdit'] ?? false;
   bool? formEdit = Get.arguments['formEdit'];
   int id = Get.arguments['id'] ?? 0;
-  int purposeID = Get.arguments['purposeID'];
+  String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
   int cityID = Get.arguments['city'];
   String checkinDate = Get.arguments['checkIn'];

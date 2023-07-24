@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AddAccommodationController extends BaseController {
-  int purposeID = Get.arguments['purposeID'];
+  String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
   bool? formEdit = Get.arguments['formEdit'];
 

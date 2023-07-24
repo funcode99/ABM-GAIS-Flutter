@@ -6,6 +6,7 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_employee_model.dart' as receiver;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
+import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/screen/fss/document_delivery/document_delivery_list/document_delivery_list_screen.dart';
 import 'package:get/get.dart';
 
@@ -33,6 +34,8 @@ class AddDocumentDeliveryController extends BaseController {
   List<receiver.Data> receiverList = [];
   List<comp.Data> companyList = [];
   List<site.Data> locationList = [];
+  List<comp.Data> receiverCompanyList = [];
+  List<site.Data> locationList = [];
 
   @override
   void onInit() {
@@ -42,7 +45,9 @@ class AddDocumentDeliveryController extends BaseController {
 
   Future<void> fetchList() async {
     loadCompany = true;
-    companyList = [];
+    receiverCompanyList = [];
+    // locationList = [];
+    // receiverList = [];
     try {
       await storage.readEmployeeInfo().then((value) {
         sender.text = value.first.employeeName ?? "";
@@ -62,6 +67,8 @@ class AddDocumentDeliveryController extends BaseController {
     update();
   }
 
+      await repository.getCompanyList().then((value) {
+        receiverCompanyList.addAll(value.data?.toSet().toList() ?? []);
   Future<void> fetchLocationList(int id) async {
     loadLocation = true;
     locationList = [];
@@ -69,7 +76,30 @@ class AddDocumentDeliveryController extends BaseController {
       await repository.getSiteListByCompanyID(id).then((value) {
         locationList.addAll(value.data?.toSet().toList() ?? []);
       });
-    } catch (e) {
+
+      // await repository.getSiteList().then((value) {
+      //   locationList.addAll(value.data?.toSet().toList() ?? []);
+      // });
+
+      // await repository.getEmployeeList().then((value) {
+      //   receiverList.addAll(value.data?.where((e) => e.id != senderID).toSet().toList() ?? []);
+      // });
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+    }
+    loadCompany = false;
+    update();
+  }
+
+  Future<void> fetchLocationList(int id) async {
+    loadLocation = true;
+    locationList = [];
+    try {
+      await repository.getSiteListByCompanyID(id).then((value) {
+        locationList.addAll(value.data?.toSet().toList() ?? []);
+      });
+    } catch (e, i) {
       e.printError();
     }
     loadLocation = false;

@@ -11,6 +11,6 @@ abstract class ApprovalBaseRepository<T>{
   Future<Either<BaseError, bool>> reject(dynamic model, int id);
   Future<Either<BaseError, bool>> approve(dynamic model, int id);
 
-  Future<Either<BaseError, List<ApprovalLogModel>>> getApprovalLog(int id);
+  Future<Either<BaseError, List<ApprovalLogModel>>> getApprovalLog(String id);
 
 }

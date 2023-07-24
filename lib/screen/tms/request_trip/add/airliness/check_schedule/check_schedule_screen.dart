@@ -219,7 +219,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                 ),
               ),
             ),
-            bottomNavigationBar: const BottomBar(menu: 0),
+            bottomNavigationBar: const BottomBar(menu: 1),
           );
         });
   }

@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class CheckScheduleController extends BaseController {
-  int purposeID = Get.arguments['purposeID'];
+  String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
   int? departure = Get.arguments['departure'];
   int? arrival = Get.arguments['arrival'];
@@ -20,8 +20,8 @@ class CheckScheduleController extends BaseController {
   String? departureCity;
   String? arrivalCity;
 
-  schedule.GetAirlinessScheduleModel? flightscheduleModel;
-  List<schedule.Data> flightscheduleList = [];
+  flight.GetFlightScheduleModel? flightScheduleModel;
+  List<flight.Data> flightScheduleList = [];
   GetCityModel? cityModel;
 
   @override
