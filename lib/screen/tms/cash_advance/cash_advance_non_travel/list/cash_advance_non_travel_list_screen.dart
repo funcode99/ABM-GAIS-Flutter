@@ -147,8 +147,7 @@ class CashAdvanceNonTravelListScreen extends StatelessWidget {
                                 },
                                 subtitle:
                                     "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss")}",
-                                total:
-                                    "${item.grandTotal?.toInt().toCurrency()}",
+                                total: item.grandTotal!.isNumericOnly ? "${item.currencyCode ?? ""} ${item.grandTotal?.toInt().toCurrency()}" : null,
                                 content: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 8),
