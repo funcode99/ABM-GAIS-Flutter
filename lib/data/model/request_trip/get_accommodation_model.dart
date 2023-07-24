@@ -159,8 +159,8 @@ class Data {
     _employeeName = json['employee_name'];
     _vendor = json['vendor'];
   }
-  num? _id;
-  num? _idRequestTrip;
+  dynamic _id;
+  dynamic _idRequestTrip;
   num? _idTypeAccomodation;
   String? _checkInDate;
   String? _checkOutDate;
@@ -239,7 +239,7 @@ Data copyWith({  num? id,
   vendor: vendor ?? _vendor,
 );
   num? get id => _id;
-  num? get idRequestTrip => _idRequestTrip;
+  dynamic get idRequestTrip => _idRequestTrip;
   num? get idTypeAccomodation => _idTypeAccomodation;
   String? get checkInDate => _checkInDate;
   String? get checkOutDate => _checkOutDate;

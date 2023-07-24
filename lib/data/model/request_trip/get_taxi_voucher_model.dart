@@ -139,8 +139,8 @@ class Data {
     _nameDepartureCity = json['name_departure_city'];
     _nameArrivalCity = json['name_arrival_city'];
   }
-  num? _id;
-  num? _idRequestTrip;
+  dynamic _id;
+  dynamic _idRequestTrip;
   String? _amount;
   String? _accountName;
   String? _date;
@@ -204,7 +204,7 @@ Data copyWith({  num? id,
   nameArrivalCity: nameArrivalCity ?? _nameArrivalCity,
 );
   num? get id => _id;
-  num? get idRequestTrip => _idRequestTrip;
+  dynamic get idRequestTrip => _idRequestTrip;
   String? get amount => _amount;
   String? get accountName => _accountName;
   String? get date => _date;

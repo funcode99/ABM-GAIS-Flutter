@@ -131,8 +131,8 @@ class Data {
     _status = json['status'];
     _employeeName = json['employee_name'];
   }
-  num? _id;
-  num? _idRequestTrip;
+  dynamic _id;
+  dynamic _idRequestTrip;
   num? _idTypeTransportation;
   String? _fromDate;
   String? _toDate;
@@ -190,7 +190,7 @@ Data copyWith({  num? id,
   employeeName: employeeName ?? _employeeName,
 );
   num? get id => _id;
-  num? get idRequestTrip => _idRequestTrip;
+  dynamic get idRequestTrip => _idRequestTrip;
   num? get idTypeTransportation => _idTypeTransportation;
   String? get fromDate => _fromDate;
   String? get toDate => _toDate;

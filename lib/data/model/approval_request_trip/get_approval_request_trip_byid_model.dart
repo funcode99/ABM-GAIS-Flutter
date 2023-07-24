@@ -223,7 +223,7 @@ class Data {
     _status = json['status'];
     _documentName = json['document_name'];
   }
-  num? _id;
+  dynamic _id;
   String? _codeDocument;
   num? _idDocument;
   num? _level;
@@ -246,7 +246,7 @@ class Data {
   dynamic _updatedBy;
   dynamic _deletedAt;
   num? _currentLevel;
-  num? _idRequestTrip;
+  dynamic _idRequestTrip;
   String? _noRequestTrip;
   String? _notesRtrip;
   dynamic _file;

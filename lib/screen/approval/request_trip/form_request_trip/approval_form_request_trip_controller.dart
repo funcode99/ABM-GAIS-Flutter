@@ -260,7 +260,7 @@ class ApprovalFormRequestTripController extends BaseController {
     siteID = rtModel?.data?.first.idSite?.toInt();
     site.text = rtModel?.data?.first.siteName ?? "";
     notes.text = rtModel?.data?.first.notes ?? "";
-    attachment.text = rtModel?.data?.first.file ?? "";
+    attachment.text = rtModel?.data?.first.file.toString() ?? "";
     selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
     isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
     tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";

@@ -111,8 +111,8 @@ class Data {
     _employeeName = json['employee_name'];
     _vendor = json['vendor'];
   }
-  num? _id;
-  num? _idRequestTrip;
+  dynamic _id;
+  dynamic _idRequestTrip;
   num? _idVendor;
   String? _flightNo;
   String? _codeAirlines;
@@ -155,7 +155,7 @@ Data copyWith({  num? id,
   vendor: vendor ?? _vendor,
 );
   num? get id => _id;
-  num? get idRequestTrip => _idRequestTrip;
+  dynamic get idRequestTrip => _idRequestTrip;
   num? get idVendor => _idVendor;
   String? get flightNo => _flightNo;
   String? get codeAirlines => _codeAirlines;
