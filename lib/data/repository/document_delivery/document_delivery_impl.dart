@@ -126,7 +126,7 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
   Future<UpdateDocumentDeliveryModel> update(
     int id,
     int idCompanyReceiver,
-    int idSiteReceiver,
+    String idSiteReceiver,
     int idEmployeeSender,
     int idEmployeeReceiver,
     int idCompanySender,

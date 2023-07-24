@@ -145,7 +145,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                         children: controller.listOfDates
                             .map((e) => SingleChildScrollView(
                                   child: Column(
-                                    children: controller.flightscheduleList
+                                    children: controller.flightScheduleList
                                         .map(
                                           (e) => Card(
                                             elevation: 4,

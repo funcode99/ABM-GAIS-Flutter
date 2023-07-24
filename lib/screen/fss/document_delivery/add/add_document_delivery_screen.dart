@@ -88,7 +88,7 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                                   .toList(),
                               onChanged: (value) {
                                 controller.receiverSiteID = value!.toInt();
-                                controller.fetchReceiverList(value!.toInt());
+                                controller.fetchReceiverList(value);
                                 controller.update();
                               },
                             ),

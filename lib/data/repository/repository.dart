@@ -10,6 +10,7 @@ import 'package:gais/data/model/reference/get_department_model.dart';
 import 'package:gais/data/model/reference/get_document_code_model.dart';
 import 'package:gais/data/model/reference/get_employee_model.dart';
 import 'package:gais/data/model/reference/get_flight_class_model.dart';
+import 'package:gais/data/model/reference/get_flight_schedule_model.dart';
 import 'package:gais/data/model/reference/get_hotel_model.dart';
 import 'package:gais/data/model/reference/get_hotel_type_model.dart';
 import 'package:gais/data/model/reference/get_job_band_model.dart';
@@ -115,6 +116,8 @@ abstract class Repository {
 
   Future<GetEmployeeModel> getEmployeeList();
 
+  Future<GetEmployeeModel> getEmployeeListBySiteID(String id);
+
   Future<GetDepartmentModel> getDepartmentList();
 
   Future<GetCompanyModel> getCompanyList();
@@ -219,6 +222,8 @@ abstract class Repository {
   Future<GetAirlinessModel> getAirlinessBytripList();
 
   Future<GetAirlinessModel> getAirlinessByid(int id);
+
+  Future<GetFlightScheduleModel> getFlightScheduleList();
 
   Future<SaveOtherTransportationModel> saveOtherTransportation(
     String idRequestTrip,

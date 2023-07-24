@@ -31,11 +31,11 @@ class AddDocumentDeliveryController extends BaseController {
   bool loadLocation = false;
   bool loadReceiver = false;
 
-  List<receiver.Data> receiverList = [];
+  List<receiver.Data2> receiverList = [];
   List<comp.Data> companyList = [];
   List<site.Data> locationList = [];
   List<comp.Data> receiverCompanyList = [];
-  List<site.Data> locationList = [];
+  // List<site.Data> locationList = [];
 
   @override
   void onInit() {
@@ -67,8 +67,8 @@ class AddDocumentDeliveryController extends BaseController {
     update();
   }
 
-      await repository.getCompanyList().then((value) {
-        receiverCompanyList.addAll(value.data?.toSet().toList() ?? []);
+      // await repository.getCompanyList().then((value) {
+      //   receiverCompanyList.addAll(value.data?.toSet().toList() ?? []);
   Future<void> fetchLocationList(int id) async {
     loadLocation = true;
     locationList = [];
@@ -92,26 +92,12 @@ class AddDocumentDeliveryController extends BaseController {
     update();
   }
 
-  Future<void> fetchLocationList(int id) async {
-    loadLocation = true;
-    locationList = [];
-    try {
-      await repository.getSiteListByCompanyID(id).then((value) {
-        locationList.addAll(value.data?.toSet().toList() ?? []);
-      });
-    } catch (e, i) {
-      e.printError();
-    }
-    loadLocation = false;
-    update();
-  }
-
-  Future<void> fetchReceiverList(int id) async {
+  Future<void> fetchReceiverList(String id) async {
     loadReceiver = true;
     receiverList = [];
     try {
       await repository.getEmployeeListBySiteID(id).then((value) {
-        receiverList.addAll(value.data?.toSet().toList() ?? []);
+        receiverList.addAll(value.data?.data?.toSet().toList() ?? []);
       });
     } catch (e, i) {
       e.printError();

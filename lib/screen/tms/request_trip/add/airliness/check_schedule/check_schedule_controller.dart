@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_city_model.dart';
-import 'package:gais/data/model/request_trip/get_airliness_schedule_model.dart' as schedule;
+import 'package:gais/data/model/reference/get_flight_schedule_model.dart' as flight;
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -47,11 +47,11 @@ class CheckScheduleController extends BaseController {
   }
 
   Future<void> fetchList() async {
-    flightscheduleList = [];
+    flightScheduleList = [];
     try {
-      var response = await repository.getAirlinessScheduleList();
-      flightscheduleModel = response;
-      flightscheduleList.addAll(response.data?.toSet().toList() ?? []);
+      var response = await repository.getFlightScheduleList();
+      flightScheduleModel = response;
+      flightScheduleList.addAll(response.data?.toSet().toList() ?? []);
 
       var cityData = await repository.getCityList();
       cityModel = cityData;

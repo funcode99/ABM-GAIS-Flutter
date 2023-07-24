@@ -273,7 +273,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetEmployeeModel> getEmployeeListBySiteID(int id) async {
+  Future<GetEmployeeModel> getEmployeeListBySiteID(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -1291,5 +1291,11 @@ class RepositoryImpl implements Repository {
       e.error.printError();
       return e.error;
     }
+  }
+
+  @override
+  Future<GetAirlinessModel> getAirlinessSchedule() {
+    // TODO: implement getAirlinessSchedule
+    throw UnimplementedError();
   }
 }
