@@ -26,7 +26,7 @@ class FormDocumentDeliveryController extends BaseController {
 
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   int? senderID;
-  int? receiverSiteID;
+  String? receiverSiteID;
   int? receiverCompanyID;
   int? receiverID;
   int? codeStatusDoc;
@@ -47,7 +47,7 @@ class FormDocumentDeliveryController extends BaseController {
   bool loadLocation = false;
   bool loadReceiver = false;
 
-  List<receiver.Data> receiverList = [];
+  List<receiver.Data2> receiverList = [];
   List<comp.Data> companyList = [];
   List<site.Data> locationList = [];
 
@@ -102,7 +102,7 @@ class FormDocumentDeliveryController extends BaseController {
         receiverID = value.data?.first.idEmployeeReceiver?.toInt();
         receiverName = value.data?.first.receiverName.toString();
         location.text = value.data?.first.nameSiteReceiver ?? "";
-        receiverSiteID = value.data?.first.idSiteReceiver?.toInt();
+        receiverSiteID = value.data!.first.idSiteReceiver.toString();
         company.text = value.data?.first.nameCompanyReceiver ?? "";
         receiverCompanyID = value.data?.first.idCompanyReceiver?.toInt();
         subjectDocument.text = value.data?.first.subject ?? "";
@@ -150,12 +150,12 @@ class FormDocumentDeliveryController extends BaseController {
     update();
   }
 
-  Future<void> fetchReceiverList(int id) async {
+  Future<void> fetchReceiverList(String id) async {
     loadReceiver = true;
     receiverList = [];
     try {
       await repository.getEmployeeListBySiteID(id).then((value) {
-        receiverList.addAll(value.data?.toSet().toList() ?? []);
+        receiverList.addAll(value.data?.data?.toSet().toList() ?? []);
       });
     } catch (e, i) {
       e.printError();
@@ -171,7 +171,7 @@ class FormDocumentDeliveryController extends BaseController {
           .update(
         ddID!.toInt(),
         receiverCompanyID!,
-        receiverSiteID!,
+        receiverSiteID.toString(),
         senderID!.toInt(),
         receiverID!.toInt(),
         senderCompanyID!,

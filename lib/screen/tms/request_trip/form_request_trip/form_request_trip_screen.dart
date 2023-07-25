@@ -798,12 +798,12 @@ class FormRequestTripScreen extends StatelessWidget {
                                   readOnly: true,
                                 ),
                                 const SizedBox(height: 8),
-                                CustomTextFormField(
-                                  controller: controller.tlkJobBand,
-                                  label: "Job Band",
-                                  isRequired: true,
-                                  readOnly: true,
-                                ),
+                                // CustomTextFormField(
+                                //   controller: controller.tlkJobBand,
+                                //   label: "Job Band",
+                                //   isRequired: true,
+                                //   readOnly: true,
+                                // ),
                                 const SizedBox(height: 8),
                                 CustomTextFormField(
                                   controller: controller.tlkZona,
@@ -819,12 +819,12 @@ class FormRequestTripScreen extends StatelessWidget {
                                   readOnly: true,
                                 ),
                                 const SizedBox(height: 8),
-                                CustomTextFormField(
-                                  controller: controller.tlkTotalMeals,
-                                  label: "Total Meals",
-                                  isRequired: true,
-                                  readOnly: true,
-                                ),
+                                // CustomTextFormField(
+                                //   controller: controller.tlkTotalMeals,
+                                //   label: "Total Meals",
+                                //   isRequired: true,
+                                //   readOnly: true,
+                                // ),
                                 const SizedBox(height: 50),
                               ],
                             ),

@@ -2,7 +2,7 @@ name: gais
 description: general affair information system
 
 publish_to: 'none'
-version: 1.0.68+68
+version: 1.0.69+69
 
 environment:
   sdk: '>=2.18.6 <3.0.0'
@@ -41,6 +41,8 @@ dependencies:
   path_provider: ^2.0.15
   permission_handler: ^10.4.1
   flutter_typeahead: ^4.6.2
+  syncfusion_flutter_calendar: ^21.2.3
+  calendar_view: ^1.0.3
 
 
 dev_dependencies:

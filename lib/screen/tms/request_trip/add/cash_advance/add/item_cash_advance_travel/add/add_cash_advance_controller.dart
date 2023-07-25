@@ -7,7 +7,7 @@ import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
 class AddCashAdvanceController extends BaseController{
-  int purposeID = Get.arguments['purposeID'];
+  String purposeID = Get.arguments['purposeID'];
   int codeDocument = Get.arguments['codeDocument'];
 
   final formKey = GlobalKey<FormState>();

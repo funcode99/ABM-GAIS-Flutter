@@ -14,7 +14,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AddCashAdvanceTravelController extends BaseController {
-  int purposeID = Get.arguments['purposeID'];
+  String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
   bool? formEdit = Get.arguments['formEdit'];
   int? idCA = Get.arguments['id'];
@@ -66,7 +66,7 @@ class AddCashAdvanceTravelController extends BaseController {
     var detailData = await repository.getDetailCashAdvanceTravelByid(idCA!);
     detailData.data?.forEach((e) {
       listDetail.add(CashAdvanceDetailModel(
-        id: e.id.toString(),
+        id: e.id?.toInt(),
         idItemCa: e.idItemCa,
         nominal: e.nominal,
         remarks: e.remarks,

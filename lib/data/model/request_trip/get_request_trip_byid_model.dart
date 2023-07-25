@@ -181,7 +181,7 @@ class Data {
     _nameCityTo = json['name_city_to'];
   }
 
-  num? _id;
+  dynamic _id;
   num? _idEmployee;
   String? _noRequestTrip;
   String? _codeDocument;

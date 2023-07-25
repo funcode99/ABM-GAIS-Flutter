@@ -1,39 +1,30 @@
 class GetApprovalRequestTripModel {
   GetApprovalRequestTripModel({
-    bool? success,
-    String? message,
-    Data? data,
-  }) {
+      bool? success, 
+      String? message, 
+      Data? data,}){
     _success = success;
     _message = message;
     _data = data;
-  }
+}
 
   GetApprovalRequestTripModel.fromJson(dynamic json) {
     _success = json['success'];
     _message = json['message'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
-
   bool? _success;
   String? _message;
   Data? _data;
-
-  GetApprovalRequestTripModel copyWith({
-    bool? success,
-    String? message,
-    Data? data,
-  }) =>
-      GetApprovalRequestTripModel(
-        success: success ?? _success,
-        message: message ?? _message,
-        data: data ?? _data,
-      );
-
+GetApprovalRequestTripModel copyWith({  bool? success,
+  String? message,
+  Data? data,
+}) => GetApprovalRequestTripModel(  success: success ?? _success,
+  message: message ?? _message,
+  data: data ?? _data,
+);
   bool? get success => _success;
-
   String? get message => _message;
-
   Data? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -45,24 +36,24 @@ class GetApprovalRequestTripModel {
     }
     return map;
   }
+
 }
 
 class Data {
   Data({
-    num? currentPage,
-    List<Data2>? data,
-    String? firstPageUrl,
-    num? from,
-    num? lastPage,
-    String? lastPageUrl,
-    List<Links>? links,
-    String? nextPageUrl,
-    String? path,
-    String? perPage,
-    dynamic prevPageUrl,
-    num? to,
-    num? total,
-  }) {
+      num? currentPage, 
+      List<Data2>? data,
+      String? firstPageUrl, 
+      num? from, 
+      num? lastPage, 
+      String? lastPageUrl, 
+      List<Links>? links, 
+      String? nextPageUrl, 
+      String? path, 
+      String? perPage, 
+      dynamic prevPageUrl, 
+      num? to, 
+      num? total,}){
     _currentPage = currentPage;
     _data = data;
     _firstPageUrl = firstPageUrl;
@@ -76,7 +67,7 @@ class Data {
     _prevPageUrl = prevPageUrl;
     _to = to;
     _total = total;
-  }
+}
 
   Data.fromJson(dynamic json) {
     _currentPage = json['current_page'];
@@ -103,7 +94,6 @@ class Data {
     _to = json['to'];
     _total = json['total'];
   }
-
   num? _currentPage;
   List<Data2>? _data;
   String? _firstPageUrl;
@@ -117,62 +107,45 @@ class Data {
   dynamic _prevPageUrl;
   num? _to;
   num? _total;
-
-  Data copyWith({
-    num? currentPage,
-    List<Data2>? data,
-    String? firstPageUrl,
-    num? from,
-    num? lastPage,
-    String? lastPageUrl,
-    List<Links>? links,
-    String? nextPageUrl,
-    String? path,
-    String? perPage,
-    dynamic prevPageUrl,
-    num? to,
-    num? total,
-  }) =>
-      Data(
-        currentPage: currentPage ?? _currentPage,
-        data: data ?? _data,
-        firstPageUrl: firstPageUrl ?? _firstPageUrl,
-        from: from ?? _from,
-        lastPage: lastPage ?? _lastPage,
-        lastPageUrl: lastPageUrl ?? _lastPageUrl,
-        links: links ?? _links,
-        nextPageUrl: nextPageUrl ?? _nextPageUrl,
-        path: path ?? _path,
-        perPage: perPage ?? _perPage,
-        prevPageUrl: prevPageUrl ?? _prevPageUrl,
-        to: to ?? _to,
-        total: total ?? _total,
-      );
-
+Data copyWith({  num? currentPage,
+  List<Data2>? data,
+  String? firstPageUrl,
+  num? from,
+  num? lastPage,
+  String? lastPageUrl,
+  List<Links>? links,
+  String? nextPageUrl,
+  String? path,
+  String? perPage,
+  dynamic prevPageUrl,
+  num? to,
+  num? total,
+}) => Data(  currentPage: currentPage ?? _currentPage,
+  data: data ?? _data,
+  firstPageUrl: firstPageUrl ?? _firstPageUrl,
+  from: from ?? _from,
+  lastPage: lastPage ?? _lastPage,
+  lastPageUrl: lastPageUrl ?? _lastPageUrl,
+  links: links ?? _links,
+  nextPageUrl: nextPageUrl ?? _nextPageUrl,
+  path: path ?? _path,
+  perPage: perPage ?? _perPage,
+  prevPageUrl: prevPageUrl ?? _prevPageUrl,
+  to: to ?? _to,
+  total: total ?? _total,
+);
   num? get currentPage => _currentPage;
-
   List<Data2>? get data => _data;
-
   String? get firstPageUrl => _firstPageUrl;
-
   num? get from => _from;
-
   num? get lastPage => _lastPage;
-
   String? get lastPageUrl => _lastPageUrl;
-
   List<Links>? get links => _links;
-
   String? get nextPageUrl => _nextPageUrl;
-
   String? get path => _path;
-
   String? get perPage => _perPage;
-
   dynamic get prevPageUrl => _prevPageUrl;
-
   num? get to => _to;
-
   num? get total => _total;
 
   Map<String, dynamic> toJson() {
@@ -196,44 +169,36 @@ class Data {
     map['total'] = _total;
     return map;
   }
+
 }
 
 class Links {
   Links({
-    dynamic url,
-    String? label,
-    bool? active,
-  }) {
+      dynamic url, 
+      String? label, 
+      bool? active,}){
     _url = url;
     _label = label;
     _active = active;
-  }
+}
 
   Links.fromJson(dynamic json) {
     _url = json['url'];
     _label = json['label'];
     _active = json['active'];
   }
-
   dynamic _url;
   String? _label;
   bool? _active;
-
-  Links copyWith({
-    dynamic url,
-    String? label,
-    bool? active,
-  }) =>
-      Links(
-        url: url ?? _url,
-        label: label ?? _label,
-        active: active ?? _active,
-      );
-
+Links copyWith({  dynamic url,
+  String? label,
+  bool? active,
+}) => Links(  url: url ?? _url,
+  label: label ?? _label,
+  active: active ?? _active,
+);
   dynamic get url => _url;
-
   String? get label => _label;
-
   bool? get active => _active;
 
   Map<String, dynamic> toJson() {
@@ -243,58 +208,58 @@ class Links {
     map['active'] = _active;
     return map;
   }
+
 }
 
 class Data2 {
   Data2({
-    num? no,
-    String? id,
-    String? codeDocument,
-    num? idDocument,
-    num? level,
-    num? idEmployee,
-    num? idCompany,
-    num? idSite,
-    num? idMatrix,
-    num? idApprovalAuth,
-    dynamic approvedBy,
-    dynamic approvedBehalf,
-    dynamic rejectedBy,
-    dynamic isApproved,
-    dynamic notes,
-    num? codeStatusDoc,
-    num? isRequestTrip,
-    String? codeSequence,
-    String? createdAt,
-    dynamic createdBy,
-    String? updatedAt,
-    dynamic updatedBy,
-    dynamic deletedAt,
-    num? idOrigin,
-    dynamic isDelegation,
-    String? docCreatedAt,
-    num? currentLevel,
-    String? idRequestTrip,
-    String? noRequestTrip,
-    dynamic notesRtrip,
-    dynamic file,
-    dynamic fileName,
-    num? idCityTo,
-    num? idCityFrom,
-    String? dateDeparture,
-    String? dateArrival,
-    num? idZona,
-    num? codeStatusRtrip,
-    String? tlkPerDay,
-    String? totalTlk,
-    String? employeeName,
-    String? siteName,
-    String? siteCode,
-    String? zonaName,
-    num? codeStatus,
-    String? status,
-    String? documentName,
-  }) {
+      num? no, 
+      String? id, 
+      String? codeDocument, 
+      num? idDocument, 
+      num? level, 
+      num? idEmployee, 
+      num? idCompany, 
+      num? idSite, 
+      num? idMatrix, 
+      num? idApprovalAuth, 
+      dynamic approvedBy, 
+      dynamic approvedBehalf, 
+      dynamic rejectedBy, 
+      dynamic isApproved, 
+      dynamic notes, 
+      num? codeStatusDoc, 
+      num? isRequestTrip, 
+      String? codeSequence, 
+      String? createdAt, 
+      dynamic createdBy, 
+      String? updatedAt, 
+      dynamic updatedBy, 
+      dynamic deletedAt, 
+      dynamic idOrigin, 
+      dynamic isDelegation, 
+      dynamic docCreatedAt, 
+      num? currentLevel, 
+      String? idRequestTrip, 
+      String? noRequestTrip, 
+      String? notesRtrip, 
+      dynamic file, 
+      dynamic fileName, 
+      num? idCityTo, 
+      num? idCityFrom, 
+      String? dateDeparture, 
+      String? dateArrival, 
+      num? idZona, 
+      num? codeStatusRtrip, 
+      String? tlkPerDay, 
+      String? totalTlk, 
+      String? employeeName, 
+      String? siteName, 
+      String? siteCode, 
+      String? zonaName, 
+      num? codeStatus, 
+      String? status, 
+      String? documentName,}){
     _no = no;
     _id = id;
     _codeDocument = codeDocument;
@@ -342,7 +307,7 @@ class Data2 {
     _codeStatus = codeStatus;
     _status = status;
     _documentName = documentName;
-  }
+}
 
   Data2.fromJson(dynamic json) {
     _no = json['no'];
@@ -393,7 +358,6 @@ class Data2 {
     _status = json['status'];
     _documentName = json['document_name'];
   }
-
   num? _no;
   String? _id;
   String? _codeDocument;
@@ -417,13 +381,13 @@ class Data2 {
   String? _updatedAt;
   dynamic _updatedBy;
   dynamic _deletedAt;
-  num? _idOrigin;
+  dynamic _idOrigin;
   dynamic _isDelegation;
-  String? _docCreatedAt;
+  dynamic _docCreatedAt;
   num? _currentLevel;
   String? _idRequestTrip;
   String? _noRequestTrip;
-  dynamic _notesRtrip;
+  String? _notesRtrip;
   dynamic _file;
   dynamic _fileName;
   num? _idCityTo;
@@ -441,198 +405,147 @@ class Data2 {
   num? _codeStatus;
   String? _status;
   String? _documentName;
-
-  Data2 copyWith({
-    num? no,
-    String? id,
-    String? codeDocument,
-    num? idDocument,
-    num? level,
-    num? idEmployee,
-    num? idCompany,
-    num? idSite,
-    num? idMatrix,
-    num? idApprovalAuth,
-    dynamic approvedBy,
-    dynamic approvedBehalf,
-    dynamic rejectedBy,
-    dynamic isApproved,
-    dynamic notes,
-    num? codeStatusDoc,
-    num? isRequestTrip,
-    String? codeSequence,
-    String? createdAt,
-    dynamic createdBy,
-    String? updatedAt,
-    dynamic updatedBy,
-    dynamic deletedAt,
-    num? idOrigin,
-    dynamic isDelegation,
-    String? docCreatedAt,
-    num? currentLevel,
-    String? idRequestTrip,
-    String? noRequestTrip,
-    dynamic notesRtrip,
-    dynamic file,
-    dynamic fileName,
-    num? idCityTo,
-    num? idCityFrom,
-    String? dateDeparture,
-    String? dateArrival,
-    num? idZona,
-    num? codeStatusRtrip,
-    String? tlkPerDay,
-    String? totalTlk,
-    String? employeeName,
-    String? siteName,
-    String? siteCode,
-    String? zonaName,
-    num? codeStatus,
-    String? status,
-    String? documentName,
-  }) =>
-      Data2(
-        no: no ?? _no,
-        id: id ?? _id,
-        codeDocument: codeDocument ?? _codeDocument,
-        idDocument: idDocument ?? _idDocument,
-        level: level ?? _level,
-        idEmployee: idEmployee ?? _idEmployee,
-        idCompany: idCompany ?? _idCompany,
-        idSite: idSite ?? _idSite,
-        idMatrix: idMatrix ?? _idMatrix,
-        idApprovalAuth: idApprovalAuth ?? _idApprovalAuth,
-        approvedBy: approvedBy ?? _approvedBy,
-        approvedBehalf: approvedBehalf ?? _approvedBehalf,
-        rejectedBy: rejectedBy ?? _rejectedBy,
-        isApproved: isApproved ?? _isApproved,
-        notes: notes ?? _notes,
-        codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
-        isRequestTrip: isRequestTrip ?? _isRequestTrip,
-        codeSequence: codeSequence ?? _codeSequence,
-        createdAt: createdAt ?? _createdAt,
-        createdBy: createdBy ?? _createdBy,
-        updatedAt: updatedAt ?? _updatedAt,
-        updatedBy: updatedBy ?? _updatedBy,
-        deletedAt: deletedAt ?? _deletedAt,
-        idOrigin: idOrigin ?? _idOrigin,
-        isDelegation: isDelegation ?? _isDelegation,
-        docCreatedAt: docCreatedAt ?? _docCreatedAt,
-        currentLevel: currentLevel ?? _currentLevel,
-        idRequestTrip: idRequestTrip ?? _idRequestTrip,
-        noRequestTrip: noRequestTrip ?? _noRequestTrip,
-        notesRtrip: notesRtrip ?? _notesRtrip,
-        file: file ?? _file,
-        fileName: fileName ?? _fileName,
-        idCityTo: idCityTo ?? _idCityTo,
-        idCityFrom: idCityFrom ?? _idCityFrom,
-        dateDeparture: dateDeparture ?? _dateDeparture,
-        dateArrival: dateArrival ?? _dateArrival,
-        idZona: idZona ?? _idZona,
-        codeStatusRtrip: codeStatusRtrip ?? _codeStatusRtrip,
-        tlkPerDay: tlkPerDay ?? _tlkPerDay,
-        totalTlk: totalTlk ?? _totalTlk,
-        employeeName: employeeName ?? _employeeName,
-        siteName: siteName ?? _siteName,
-        siteCode: siteCode ?? _siteCode,
-        zonaName: zonaName ?? _zonaName,
-        codeStatus: codeStatus ?? _codeStatus,
-        status: status ?? _status,
-        documentName: documentName ?? _documentName,
-      );
-
+Data2 copyWith({  num? no,
+  String? id,
+  String? codeDocument,
+  num? idDocument,
+  num? level,
+  num? idEmployee,
+  num? idCompany,
+  num? idSite,
+  num? idMatrix,
+  num? idApprovalAuth,
+  dynamic approvedBy,
+  dynamic approvedBehalf,
+  dynamic rejectedBy,
+  dynamic isApproved,
+  dynamic notes,
+  num? codeStatusDoc,
+  num? isRequestTrip,
+  String? codeSequence,
+  String? createdAt,
+  dynamic createdBy,
+  String? updatedAt,
+  dynamic updatedBy,
+  dynamic deletedAt,
+  dynamic idOrigin,
+  dynamic isDelegation,
+  dynamic docCreatedAt,
+  num? currentLevel,
+  String? idRequestTrip,
+  String? noRequestTrip,
+  String? notesRtrip,
+  dynamic file,
+  dynamic fileName,
+  num? idCityTo,
+  num? idCityFrom,
+  String? dateDeparture,
+  String? dateArrival,
+  num? idZona,
+  num? codeStatusRtrip,
+  String? tlkPerDay,
+  String? totalTlk,
+  String? employeeName,
+  String? siteName,
+  String? siteCode,
+  String? zonaName,
+  num? codeStatus,
+  String? status,
+  String? documentName,
+}) => Data2(  no: no ?? _no,
+  id: id ?? _id,
+  codeDocument: codeDocument ?? _codeDocument,
+  idDocument: idDocument ?? _idDocument,
+  level: level ?? _level,
+  idEmployee: idEmployee ?? _idEmployee,
+  idCompany: idCompany ?? _idCompany,
+  idSite: idSite ?? _idSite,
+  idMatrix: idMatrix ?? _idMatrix,
+  idApprovalAuth: idApprovalAuth ?? _idApprovalAuth,
+  approvedBy: approvedBy ?? _approvedBy,
+  approvedBehalf: approvedBehalf ?? _approvedBehalf,
+  rejectedBy: rejectedBy ?? _rejectedBy,
+  isApproved: isApproved ?? _isApproved,
+  notes: notes ?? _notes,
+  codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
+  isRequestTrip: isRequestTrip ?? _isRequestTrip,
+  codeSequence: codeSequence ?? _codeSequence,
+  createdAt: createdAt ?? _createdAt,
+  createdBy: createdBy ?? _createdBy,
+  updatedAt: updatedAt ?? _updatedAt,
+  updatedBy: updatedBy ?? _updatedBy,
+  deletedAt: deletedAt ?? _deletedAt,
+  idOrigin: idOrigin ?? _idOrigin,
+  isDelegation: isDelegation ?? _isDelegation,
+  docCreatedAt: docCreatedAt ?? _docCreatedAt,
+  currentLevel: currentLevel ?? _currentLevel,
+  idRequestTrip: idRequestTrip ?? _idRequestTrip,
+  noRequestTrip: noRequestTrip ?? _noRequestTrip,
+  notesRtrip: notesRtrip ?? _notesRtrip,
+  file: file ?? _file,
+  fileName: fileName ?? _fileName,
+  idCityTo: idCityTo ?? _idCityTo,
+  idCityFrom: idCityFrom ?? _idCityFrom,
+  dateDeparture: dateDeparture ?? _dateDeparture,
+  dateArrival: dateArrival ?? _dateArrival,
+  idZona: idZona ?? _idZona,
+  codeStatusRtrip: codeStatusRtrip ?? _codeStatusRtrip,
+  tlkPerDay: tlkPerDay ?? _tlkPerDay,
+  totalTlk: totalTlk ?? _totalTlk,
+  employeeName: employeeName ?? _employeeName,
+  siteName: siteName ?? _siteName,
+  siteCode: siteCode ?? _siteCode,
+  zonaName: zonaName ?? _zonaName,
+  codeStatus: codeStatus ?? _codeStatus,
+  status: status ?? _status,
+  documentName: documentName ?? _documentName,
+);
   num? get no => _no;
-
   String? get id => _id;
-
   String? get codeDocument => _codeDocument;
-
   num? get idDocument => _idDocument;
-
   num? get level => _level;
-
   num? get idEmployee => _idEmployee;
-
   num? get idCompany => _idCompany;
-
   num? get idSite => _idSite;
-
   num? get idMatrix => _idMatrix;
-
   num? get idApprovalAuth => _idApprovalAuth;
-
   dynamic get approvedBy => _approvedBy;
-
   dynamic get approvedBehalf => _approvedBehalf;
-
   dynamic get rejectedBy => _rejectedBy;
-
   dynamic get isApproved => _isApproved;
-
   dynamic get notes => _notes;
-
   num? get codeStatusDoc => _codeStatusDoc;
-
   num? get isRequestTrip => _isRequestTrip;
-
   String? get codeSequence => _codeSequence;
-
   String? get createdAt => _createdAt;
-
   dynamic get createdBy => _createdBy;
-
   String? get updatedAt => _updatedAt;
-
   dynamic get updatedBy => _updatedBy;
-
   dynamic get deletedAt => _deletedAt;
-
-  num? get idOrigin => _idOrigin;
-
+  dynamic get idOrigin => _idOrigin;
   dynamic get isDelegation => _isDelegation;
-
-  String? get docCreatedAt => _docCreatedAt;
-
+  dynamic get docCreatedAt => _docCreatedAt;
   num? get currentLevel => _currentLevel;
-
   String? get idRequestTrip => _idRequestTrip;
-
   String? get noRequestTrip => _noRequestTrip;
-
-  dynamic get notesRtrip => _notesRtrip;
-
+  String? get notesRtrip => _notesRtrip;
   dynamic get file => _file;
-
   dynamic get fileName => _fileName;
-
   num? get idCityTo => _idCityTo;
-
   num? get idCityFrom => _idCityFrom;
-
   String? get dateDeparture => _dateDeparture;
-
   String? get dateArrival => _dateArrival;
-
   num? get idZona => _idZona;
-
   num? get codeStatusRtrip => _codeStatusRtrip;
-
   String? get tlkPerDay => _tlkPerDay;
-
   String? get totalTlk => _totalTlk;
-
   String? get employeeName => _employeeName;
-
   String? get siteName => _siteName;
-
   String? get siteCode => _siteCode;
-
   String? get zonaName => _zonaName;
-
   num? get codeStatus => _codeStatus;
-
   String? get status => _status;
-
   String? get documentName => _documentName;
 
   Map<String, dynamic> toJson() {
@@ -686,4 +599,5 @@ class Data2 {
     map['document_name'] = _documentName;
     return map;
   }
+
 }

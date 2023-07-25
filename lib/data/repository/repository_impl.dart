@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/data/model/employee_info_model.dart';
@@ -12,6 +11,7 @@ import 'package:gais/data/model/reference/get_department_model.dart';
 import 'package:gais/data/model/reference/get_document_code_model.dart';
 import 'package:gais/data/model/reference/get_employee_model.dart';
 import 'package:gais/data/model/reference/get_flight_class_model.dart';
+import 'package:gais/data/model/reference/get_flight_schedule_model.dart';
 import 'package:gais/data/model/reference/get_hotel_model.dart';
 import 'package:gais/data/model/reference/get_hotel_type_model.dart';
 import 'package:gais/data/model/reference/get_job_band_model.dart';
@@ -23,7 +23,6 @@ import 'package:gais/data/model/reference/get_type_transportation_model.dart';
 import 'package:gais/data/model/reference/get_zona_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart';
-import 'package:gais/data/model/request_trip/get_airliness_schedule_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_vendor_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart';
@@ -69,6 +68,8 @@ class RepositoryImpl implements Repository {
       );
       return LoginModel.fromJson(response.data);
     } on DioError catch (e) {
+      // debugPrint("error login : ${LoginModel.fromJson(e?.response?.data)}");
+      //print("response error: ${e.response?.data}");
       return e.response?.data!;
     }
   }
@@ -101,12 +102,13 @@ class RepositoryImpl implements Repository {
       RequestTripListModel.fromJson(response.data).data?.total.printInfo(info: "=> response info");
       return RequestTripListModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return RequestTripListModel.fromJson(e.response?.data);
     }
   }
 
   @override
-  Future<GetRequestTripByidModel> getRequestTripByid(int id) async {
+  Future<GetRequestTripByidModel> getRequestTripByid(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -115,6 +117,7 @@ class RepositoryImpl implements Repository {
       );
       return GetRequestTripByidModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -129,6 +132,7 @@ class RepositoryImpl implements Repository {
       );
       return EmployeeInfoModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -143,6 +147,7 @@ class RepositoryImpl implements Repository {
       );
       return GetDocumentCodeModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -157,6 +162,7 @@ class RepositoryImpl implements Repository {
       );
       return GetCityModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -171,6 +177,7 @@ class RepositoryImpl implements Repository {
       );
       return GetZonaByidModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -185,20 +192,7 @@ class RepositoryImpl implements Repository {
       );
       return GetSiteModel.fromJson(response.data);
     } on DioError catch (e) {
-      return e.error;
-    }
-  }
-
-  @override
-  Future<GetSiteModel> getSiteListByCompanyID(int id) async {
-    var token = await storageSecure.read(key: "token");
-    network.dio.options.headers['Authorization'] = 'Bearer $token';
-    try {
-      Response response = await network.dio.get(
-        "/api/company/get_site/$id",
-      );
-      return GetSiteModel.fromJson(response.data);
-    } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -213,6 +207,7 @@ class RepositoryImpl implements Repository {
       );
       return GetHotelModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -227,6 +222,7 @@ class RepositoryImpl implements Repository {
       );
       return GetCurrencyModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -241,6 +237,7 @@ class RepositoryImpl implements Repository {
       );
       return GetTlkJobModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -255,6 +252,7 @@ class RepositoryImpl implements Repository {
       );
       return GetTravellerTypeModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -269,12 +267,13 @@ class RepositoryImpl implements Repository {
       );
       return GetEmployeeModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
 
   @override
-  Future<GetEmployeeModel> getEmployeeListBySiteID(int id) async {
+  Future<GetEmployeeModel> getEmployeeListBySiteID(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -283,6 +282,7 @@ class RepositoryImpl implements Repository {
       );
       return GetEmployeeModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -297,6 +297,7 @@ class RepositoryImpl implements Repository {
       );
       return GetDepartmentModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -307,11 +308,26 @@ class RepositoryImpl implements Repository {
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       Response response = await network.dio.get(
-        "/api/company/get/",
+        "/api/company/get",
       );
       return GetCompanyModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error : ${e.response?.data}");
+      //print("response error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+  @override
+  Future<GetSiteModel> getSiteListByCompanyID(int id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/company/get_site/$id",
+      );
+      return GetSiteModel.fromJson(response.data);
+    } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -326,6 +342,7 @@ class RepositoryImpl implements Repository {
       );
       return GetFlightClassModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -340,6 +357,7 @@ class RepositoryImpl implements Repository {
       );
       return GetStatusDocumentModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -355,6 +373,7 @@ class RepositoryImpl implements Repository {
       GetJobBandModel.fromJson(response.data).success.printInfo();
       return GetJobBandModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -404,7 +423,7 @@ class RepositoryImpl implements Repository {
       return SavePurposeOfTripModel.fromJson(response.data);
     } on DioError catch (e) {
       // e.error.printError();
-
+      //print("response error: ${e.response?.data}");
       return e.response?.data;
       // return e.error;
       // throw Exception();
@@ -413,7 +432,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<UpdatePurposeOfTripModel> updateRequestTrip(
-    int id,
+    String id,
     String employeeID,
     String noRequestTrip,
     String codeDocument,
@@ -457,6 +476,7 @@ class RepositoryImpl implements Repository {
       );
       return UpdatePurposeOfTripModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return UpdatePurposeOfTripModel.fromJson(e.message);
       // return e.error;
       // throw Exception();
@@ -502,6 +522,7 @@ class RepositoryImpl implements Repository {
       );
       return SaveTravellerGuestModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -510,7 +531,7 @@ class RepositoryImpl implements Repository {
   Future<UpdateTravellerGuestModel> updateTravellerGuest(
     int id,
     String guestName,
-    int idrequesttrip,
+    String idrequesttrip,
     int idcompany,
     String company,
     int idtypetraveller,
@@ -546,12 +567,13 @@ class RepositoryImpl implements Repository {
       );
       return UpdateTravellerGuestModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
 
   @override
-  Future<GetGuestBytripModel> getGuestBytripList(int id) async {
+  Future<GetGuestBytripModel> getGuestBytripList(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -560,6 +582,7 @@ class RepositoryImpl implements Repository {
       );
       return GetGuestBytripModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -574,6 +597,7 @@ class RepositoryImpl implements Repository {
       );
       return GetGuestByidModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -588,6 +612,7 @@ class RepositoryImpl implements Repository {
       );
       return response.data;
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -623,6 +648,7 @@ class RepositoryImpl implements Repository {
       );
       return SaveTaxiVoucherModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -659,12 +685,13 @@ class RepositoryImpl implements Repository {
       );
       return UpdateTaxiVoucherModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
 
   @override
-  Future<GetTaxiVoucherModel> getTaxiVoucherBytripList(int id) async {
+  Future<GetTaxiVoucherModel> getTaxiVoucherBytripList(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -673,6 +700,7 @@ class RepositoryImpl implements Repository {
       );
       return GetTaxiVoucherModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -687,6 +715,7 @@ class RepositoryImpl implements Repository {
       );
       return GetTaxiVoucherModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -701,12 +730,13 @@ class RepositoryImpl implements Repository {
       );
       return response.data;
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
 
   @override
-  Future deletePurposeOfTrip(int id) async {
+  Future deletePurposeOfTrip(dynamic id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -715,6 +745,7 @@ class RepositoryImpl implements Repository {
       );
       return response.data;
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -729,6 +760,7 @@ class RepositoryImpl implements Repository {
       );
       return StatusDocumentModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -759,6 +791,7 @@ class RepositoryImpl implements Repository {
       );
       return SaveAirlinesModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -790,6 +823,7 @@ class RepositoryImpl implements Repository {
       );
       return UpdateAirlinessModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -804,6 +838,7 @@ class RepositoryImpl implements Repository {
       );
       return response.data;
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -818,20 +853,22 @@ class RepositoryImpl implements Repository {
       );
       return GetAirlinessVendorModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
 
   @override
-  Future<GetAirlinessScheduleModel> getAirlinessScheduleList() async {
+  Future<GetFlightScheduleModel> getFlightScheduleList() async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       Response response = await network.dio.get(
         "/api/flight_schedule",
       );
-      return GetAirlinessScheduleModel.fromJson(response.data);
+      return GetFlightScheduleModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -846,6 +883,7 @@ class RepositoryImpl implements Repository {
       );
       return GetAirlinessModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -860,6 +898,7 @@ class RepositoryImpl implements Repository {
       );
       return GetAirlinessModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -894,6 +933,7 @@ class RepositoryImpl implements Repository {
       );
       return SaveOtherTransportationModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -929,12 +969,13 @@ class RepositoryImpl implements Repository {
       );
       return UpdateOtherTransportModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
 
   @override
-  Future<GetOtherTransportModel> getOtherTransportBytripList(int id) async {
+  Future<GetOtherTransportModel> getOtherTransportBytripList(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -943,6 +984,7 @@ class RepositoryImpl implements Repository {
       );
       return GetOtherTransportModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -957,6 +999,7 @@ class RepositoryImpl implements Repository {
       );
       return GetOtherTransportModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -971,6 +1014,7 @@ class RepositoryImpl implements Repository {
       );
       return GetTypeTransportationModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -985,6 +1029,7 @@ class RepositoryImpl implements Repository {
       );
       return response.data;
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -999,6 +1044,7 @@ class RepositoryImpl implements Repository {
       );
       return response.data;
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1013,12 +1059,13 @@ class RepositoryImpl implements Repository {
       );
       return GetAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
 
   @override
-  Future<GetAccommodationModel> getAccommodationBytripList(int id) async {
+  Future<GetAccommodationModel> getAccommodationBytripList(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -1027,6 +1074,7 @@ class RepositoryImpl implements Repository {
       );
       return GetAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1069,6 +1117,7 @@ class RepositoryImpl implements Repository {
       );
       return SaveAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1112,6 +1161,7 @@ class RepositoryImpl implements Repository {
       );
       return UpdateAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1126,12 +1176,13 @@ class RepositoryImpl implements Repository {
       );
       return GetHotelTypeModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
 
   @override
-  Future<GetCashAdvanceTravelModel> getCashAdvanceTravelList(int id) async {
+  Future<GetCashAdvanceTravelModel> getCashAdvanceTravelList(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -1141,6 +1192,7 @@ class RepositoryImpl implements Repository {
       GetCashAdvanceTravelModel.fromJson(response.data).data?.first.noCa.printInfo();
       return GetCashAdvanceTravelModel.fromJson(response.data);
     } on DioError catch (e) {
+      print("response error cash advance: ${e.response?.data}");
       return e.response?.data;
     }
   }
@@ -1155,6 +1207,7 @@ class RepositoryImpl implements Repository {
       );
       return GetCashAdvanceByidModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1169,6 +1222,7 @@ class RepositoryImpl implements Repository {
       );
       return GetDetailcaBycashidModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -1183,12 +1237,13 @@ class RepositoryImpl implements Repository {
       );
       return GetCashAdvanceTravelModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       return e.error;
     }
   }
 
   @override
-  Future<SubmitRequestTripModel> submitRequestTrip(int id) async {
+  Future<SubmitRequestTripModel> submitRequestTrip(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -1199,7 +1254,7 @@ class RepositoryImpl implements Repository {
     } on DioError catch (e) {
       e.printError();
       SubmitRequestTripModel.fromJson(e.response?.data).message.printError();
-
+      //print("response error: ${e.response?.data}");
       return SubmitRequestTripModel.fromJson(e.response?.data);
     }
   }
@@ -1232,8 +1287,15 @@ class RepositoryImpl implements Repository {
       );
       return UpdateCashAdvanceTravelModel.fromJson(response.data);
     } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
       e.error.printError();
       return e.error;
     }
+  }
+
+  @override
+  Future<GetAirlinessModel> getAirlinessSchedule() {
+    // TODO: implement getAirlinessSchedule
+    throw UnimplementedError();
   }
 }

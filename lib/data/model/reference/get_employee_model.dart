@@ -1,12 +1,8 @@
-/// success : true
-/// message : "Success Get Data"
-/// data : [{"no":1,"id":1,"employee_name":"Jhon Doe","phone_number":"08123456789","sn_employee":"12345","email":"12345@mail.com","nik":"12344321","dob":"1990-01-01 00:00:00","start_date":"2020-01-01 00:00:00","end_date":"2025-12-01 00:00:00","jenkel":"L","id_department":2,"id_company":1,"id_site":14,"id_job_band":76,"foto":null,"foto_path":null,"created_at":null,"created_by":null,"updated_at":"2023-06-07 06:06:16","updated_by":"2","deleted_at":null,"company_code":"3000","site_name":"Balikpapan, Sepinggan","site_code":"BPP02","band_job_name":"B","departement_name":null,"company_name":"PT Cipta Kridatama"},{"no":2,"id":2,"employee_name":"Admin","phone_number":"0812345678","sn_employee":"12345","email":"admin@mail.com","nik":"1234123412341234123","dob":"1991-01-01 00:00:00","start_date":"1991-01-01 00:00:00","end_date":"1991-01-01 00:00:00","jenkel":"L","id_department":1,"id_company":1,"id_site":1,"id_job_band":1,"foto":null,"foto_path":null,"created_at":null,"created_by":null,"updated_at":null,"updated_by":null,"deleted_at":null,"company_code":"3000","site_name":null,"site_code":null,"band_job_name":"1","departement_name":null,"company_name":"PT Cipta Kridatama"},{"no":3,"id":3,"employee_name":"steven","phone_number":"08123456789","sn_employee":"123456","email":"steven@gmail.com","nik":"12344321","dob":"1990-01-01 00:00:00","start_date":"2020-01-01 00:00:00","end_date":"2025-01-01 00:00:00","jenkel":"L","id_department":2,"id_company":1,"id_site":1,"id_job_band":1,"foto":null,"foto_path":null,"created_at":"2023-05-29 15:05:32","created_by":"1","updated_at":"2023-05-29 15:05:32","updated_by":null,"deleted_at":null,"company_code":"3000","site_name":null,"site_code":null,"band_job_name":"1","departement_name":null,"company_name":"PT Cipta Kridatama"},{"no":4,"id":4,"employee_name":"Raden Mas Abdul Rahman Alhafizh Hutagalung","phone_number":"08988416727","sn_employee":"SN00001","email":"radenmasabdul@ml.co","nik":"3271000000000000001","dob":"1996-01-22 00:00:00","start_date":"2020-01-01 00:00:00","end_date":"2025-01-01 00:00:00","jenkel":"L","id_department":1,"id_company":1,"id_site":1,"id_job_band":1,"foto":"foto-abdul-resize.jpeg","foto_path":"http://103.165.130.157:8086/storage/files/employee/aWKlPKCNyOuVuN04gMQMmtTcQ5JQ5NNfbP8yBIQK.png","created_at":"2023-05-29 15:27:05","created_by":"1","updated_at":"2023-05-29 15:27:05","updated_by":null,"deleted_at":null,"company_code":"3000","site_name":null,"site_code":null,"band_job_name":"1","departement_name":null,"company_name":"PT Cipta Kridatama"}]
-
 class GetEmployeeModel {
   GetEmployeeModel({
       bool? success, 
       String? message, 
-      List<Data>? data,}){
+      Data? data,}){
     _success = success;
     _message = message;
     _data = data;
@@ -15,70 +11,208 @@ class GetEmployeeModel {
   GetEmployeeModel.fromJson(dynamic json) {
     _success = json['success'];
     _message = json['message'];
-    if (json['data'] != null) {
-      _data = [];
-      json['data'].forEach((v) {
-        _data?.add(Data.fromJson(v));
-      });
-    }
+    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
   bool? _success;
   String? _message;
-  List<Data>? _data;
+  Data? _data;
 GetEmployeeModel copyWith({  bool? success,
   String? message,
-  List<Data>? data,
+  Data? data,
 }) => GetEmployeeModel(  success: success ?? _success,
   message: message ?? _message,
   data: data ?? _data,
 );
   bool? get success => _success;
   String? get message => _message;
-  List<Data>? get data => _data;
+  Data? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['success'] = _success;
     map['message'] = _message;
     if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
+      map['data'] = _data?.toJson();
     }
     return map;
   }
 
 }
 
-/// no : 1
-/// id : 1
-/// employee_name : "Jhon Doe"
-/// phone_number : "08123456789"
-/// sn_employee : "12345"
-/// email : "12345@mail.com"
-/// nik : "12344321"
-/// dob : "1990-01-01 00:00:00"
-/// start_date : "2020-01-01 00:00:00"
-/// end_date : "2025-12-01 00:00:00"
-/// jenkel : "L"
-/// id_department : 2
-/// id_company : 1
-/// id_site : 14
-/// id_job_band : 76
-/// foto : null
-/// foto_path : null
-/// created_at : null
-/// created_by : null
-/// updated_at : "2023-06-07 06:06:16"
-/// updated_by : "2"
-/// deleted_at : null
-/// company_code : "3000"
-/// site_name : "Balikpapan, Sepinggan"
-/// site_code : "BPP02"
-/// band_job_name : "B"
-/// departement_name : null
-/// company_name : "PT Cipta Kridatama"
-
 class Data {
   Data({
+      num? currentPage, 
+      List<Data2>? data,
+      String? firstPageUrl, 
+      num? from, 
+      num? lastPage, 
+      String? lastPageUrl, 
+      List<Links>? links, 
+      String? nextPageUrl, 
+      String? path, 
+      String? perPage, 
+      dynamic prevPageUrl, 
+      num? to, 
+      num? total,}){
+    _currentPage = currentPage;
+    _data = data;
+    _firstPageUrl = firstPageUrl;
+    _from = from;
+    _lastPage = lastPage;
+    _lastPageUrl = lastPageUrl;
+    _links = links;
+    _nextPageUrl = nextPageUrl;
+    _path = path;
+    _perPage = perPage;
+    _prevPageUrl = prevPageUrl;
+    _to = to;
+    _total = total;
+}
+
+  Data.fromJson(dynamic json) {
+    _currentPage = json['current_page'];
+    if (json['data'] != null) {
+      _data = [];
+      json['data'].forEach((v) {
+        _data?.add(Data2.fromJson(v));
+      });
+    }
+    _firstPageUrl = json['first_page_url'];
+    _from = json['from'];
+    _lastPage = json['last_page'];
+    _lastPageUrl = json['last_page_url'];
+    if (json['links'] != null) {
+      _links = [];
+      json['links'].forEach((v) {
+        _links?.add(Links.fromJson(v));
+      });
+    }
+    _nextPageUrl = json['next_page_url'];
+    _path = json['path'];
+    _perPage = json['per_page'];
+    _prevPageUrl = json['prev_page_url'];
+    _to = json['to'];
+    _total = json['total'];
+  }
+  num? _currentPage;
+  List<Data2>? _data;
+  String? _firstPageUrl;
+  num? _from;
+  num? _lastPage;
+  String? _lastPageUrl;
+  List<Links>? _links;
+  String? _nextPageUrl;
+  String? _path;
+  String? _perPage;
+  dynamic _prevPageUrl;
+  num? _to;
+  num? _total;
+Data copyWith({  num? currentPage,
+  List<Data2>? data,
+  String? firstPageUrl,
+  num? from,
+  num? lastPage,
+  String? lastPageUrl,
+  List<Links>? links,
+  String? nextPageUrl,
+  String? path,
+  String? perPage,
+  dynamic prevPageUrl,
+  num? to,
+  num? total,
+}) => Data(  currentPage: currentPage ?? _currentPage,
+  data: data ?? _data,
+  firstPageUrl: firstPageUrl ?? _firstPageUrl,
+  from: from ?? _from,
+  lastPage: lastPage ?? _lastPage,
+  lastPageUrl: lastPageUrl ?? _lastPageUrl,
+  links: links ?? _links,
+  nextPageUrl: nextPageUrl ?? _nextPageUrl,
+  path: path ?? _path,
+  perPage: perPage ?? _perPage,
+  prevPageUrl: prevPageUrl ?? _prevPageUrl,
+  to: to ?? _to,
+  total: total ?? _total,
+);
+  num? get currentPage => _currentPage;
+  List<Data2>? get data => _data;
+  String? get firstPageUrl => _firstPageUrl;
+  num? get from => _from;
+  num? get lastPage => _lastPage;
+  String? get lastPageUrl => _lastPageUrl;
+  List<Links>? get links => _links;
+  String? get nextPageUrl => _nextPageUrl;
+  String? get path => _path;
+  String? get perPage => _perPage;
+  dynamic get prevPageUrl => _prevPageUrl;
+  num? get to => _to;
+  num? get total => _total;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['current_page'] = _currentPage;
+    if (_data != null) {
+      map['data'] = _data?.map((v) => v.toJson()).toList();
+    }
+    map['first_page_url'] = _firstPageUrl;
+    map['from'] = _from;
+    map['last_page'] = _lastPage;
+    map['last_page_url'] = _lastPageUrl;
+    if (_links != null) {
+      map['links'] = _links?.map((v) => v.toJson()).toList();
+    }
+    map['next_page_url'] = _nextPageUrl;
+    map['path'] = _path;
+    map['per_page'] = _perPage;
+    map['prev_page_url'] = _prevPageUrl;
+    map['to'] = _to;
+    map['total'] = _total;
+    return map;
+  }
+
+}
+
+class Links {
+  Links({
+      dynamic url, 
+      String? label, 
+      bool? active,}){
+    _url = url;
+    _label = label;
+    _active = active;
+}
+
+  Links.fromJson(dynamic json) {
+    _url = json['url'];
+    _label = json['label'];
+    _active = json['active'];
+  }
+  dynamic _url;
+  String? _label;
+  bool? _active;
+Links copyWith({  dynamic url,
+  String? label,
+  bool? active,
+}) => Links(  url: url ?? _url,
+  label: label ?? _label,
+  active: active ?? _active,
+);
+  dynamic get url => _url;
+  String? get label => _label;
+  bool? get active => _active;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['url'] = _url;
+    map['label'] = _label;
+    map['active'] = _active;
+    return map;
+  }
+
+}
+
+class Data2 {
+  Data2({
       num? no, 
       num? id, 
       String? employeeName, 
@@ -93,19 +227,28 @@ class Data {
       num? idDepartment, 
       num? idCompany, 
       num? idSite, 
-      String? idJobBand,
       dynamic foto, 
       dynamic fotoPath, 
       dynamic createdAt, 
       dynamic createdBy, 
-      String? updatedAt, 
-      String? updatedBy, 
+      dynamic updatedAt, 
+      dynamic updatedBy, 
       dynamic deletedAt, 
+      String? snAtasan1, 
+      String? snAtasan2, 
+      dynamic isRegistered, 
+      num? idCostCenter, 
+      dynamic isTerminated, 
+      dynamic positionCode, 
+      dynamic positionLevel, 
+      dynamic positionTittle, 
+      String? idJobBand, 
       String? companyCode, 
       String? siteName, 
       String? siteCode, 
-      String? bandJobName, 
-      dynamic departementName, 
+      String? departementName, 
+      String? costCenterName, 
+      String? costCenterCode, 
       String? companyName,}){
     _no = no;
     _id = id;
@@ -121,7 +264,6 @@ class Data {
     _idDepartment = idDepartment;
     _idCompany = idCompany;
     _idSite = idSite;
-    _idJobBand = idJobBand;
     _foto = foto;
     _fotoPath = fotoPath;
     _createdAt = createdAt;
@@ -129,15 +271,25 @@ class Data {
     _updatedAt = updatedAt;
     _updatedBy = updatedBy;
     _deletedAt = deletedAt;
+    _snAtasan1 = snAtasan1;
+    _snAtasan2 = snAtasan2;
+    _isRegistered = isRegistered;
+    _idCostCenter = idCostCenter;
+    _isTerminated = isTerminated;
+    _positionCode = positionCode;
+    _positionLevel = positionLevel;
+    _positionTittle = positionTittle;
+    _idJobBand = idJobBand;
     _companyCode = companyCode;
     _siteName = siteName;
     _siteCode = siteCode;
-    _bandJobName = bandJobName;
     _departementName = departementName;
+    _costCenterName = costCenterName;
+    _costCenterCode = costCenterCode;
     _companyName = companyName;
 }
 
-  Data.fromJson(dynamic json) {
+  Data2.fromJson(dynamic json) {
     _no = json['no'];
     _id = json['id'];
     _employeeName = json['employee_name'];
@@ -152,7 +304,6 @@ class Data {
     _idDepartment = json['id_department'];
     _idCompany = json['id_company'];
     _idSite = json['id_site'];
-    _idJobBand = json['id_job_band'];
     _foto = json['foto'];
     _fotoPath = json['foto_path'];
     _createdAt = json['created_at'];
@@ -160,11 +311,21 @@ class Data {
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
     _deletedAt = json['deleted_at'];
+    _snAtasan1 = json['sn_atasan_1'];
+    _snAtasan2 = json['sn_atasan_2'];
+    _isRegistered = json['is_registered'];
+    _idCostCenter = json['id_cost_center'];
+    _isTerminated = json['is_terminated'];
+    _positionCode = json['position_code'];
+    _positionLevel = json['position_level'];
+    _positionTittle = json['position_tittle'];
+    _idJobBand = json['id_job_band'];
     _companyCode = json['company_code'];
     _siteName = json['site_name'];
     _siteCode = json['site_code'];
-    _bandJobName = json['band_job_name'];
     _departementName = json['departement_name'];
+    _costCenterName = json['cost_center_name'];
+    _costCenterCode = json['cost_center_code'];
     _companyName = json['company_name'];
   }
   num? _no;
@@ -181,21 +342,30 @@ class Data {
   num? _idDepartment;
   num? _idCompany;
   num? _idSite;
-  String? _idJobBand;
   dynamic _foto;
   dynamic _fotoPath;
   dynamic _createdAt;
   dynamic _createdBy;
-  String? _updatedAt;
-  String? _updatedBy;
+  dynamic _updatedAt;
+  dynamic _updatedBy;
   dynamic _deletedAt;
+  String? _snAtasan1;
+  String? _snAtasan2;
+  dynamic _isRegistered;
+  num? _idCostCenter;
+  dynamic _isTerminated;
+  dynamic _positionCode;
+  dynamic _positionLevel;
+  dynamic _positionTittle;
+  String? _idJobBand;
   String? _companyCode;
   String? _siteName;
   String? _siteCode;
-  String? _bandJobName;
-  dynamic _departementName;
+  String? _departementName;
+  String? _costCenterName;
+  String? _costCenterCode;
   String? _companyName;
-Data copyWith({  num? no,
+Data2 copyWith({  num? no,
   num? id,
   String? employeeName,
   String? phoneNumber,
@@ -209,21 +379,30 @@ Data copyWith({  num? no,
   num? idDepartment,
   num? idCompany,
   num? idSite,
-  String? idJobBand,
   dynamic foto,
   dynamic fotoPath,
   dynamic createdAt,
   dynamic createdBy,
-  String? updatedAt,
-  String? updatedBy,
+  dynamic updatedAt,
+  dynamic updatedBy,
   dynamic deletedAt,
+  String? snAtasan1,
+  String? snAtasan2,
+  dynamic isRegistered,
+  num? idCostCenter,
+  dynamic isTerminated,
+  dynamic positionCode,
+  dynamic positionLevel,
+  dynamic positionTittle,
+  String? idJobBand,
   String? companyCode,
   String? siteName,
   String? siteCode,
-  String? bandJobName,
-  dynamic departementName,
+  String? departementName,
+  String? costCenterName,
+  String? costCenterCode,
   String? companyName,
-}) => Data(  no: no ?? _no,
+}) => Data2(  no: no ?? _no,
   id: id ?? _id,
   employeeName: employeeName ?? _employeeName,
   phoneNumber: phoneNumber ?? _phoneNumber,
@@ -237,7 +416,6 @@ Data copyWith({  num? no,
   idDepartment: idDepartment ?? _idDepartment,
   idCompany: idCompany ?? _idCompany,
   idSite: idSite ?? _idSite,
-  idJobBand: idJobBand ?? _idJobBand,
   foto: foto ?? _foto,
   fotoPath: fotoPath ?? _fotoPath,
   createdAt: createdAt ?? _createdAt,
@@ -245,11 +423,21 @@ Data copyWith({  num? no,
   updatedAt: updatedAt ?? _updatedAt,
   updatedBy: updatedBy ?? _updatedBy,
   deletedAt: deletedAt ?? _deletedAt,
+  snAtasan1: snAtasan1 ?? _snAtasan1,
+  snAtasan2: snAtasan2 ?? _snAtasan2,
+  isRegistered: isRegistered ?? _isRegistered,
+  idCostCenter: idCostCenter ?? _idCostCenter,
+  isTerminated: isTerminated ?? _isTerminated,
+  positionCode: positionCode ?? _positionCode,
+  positionLevel: positionLevel ?? _positionLevel,
+  positionTittle: positionTittle ?? _positionTittle,
+  idJobBand: idJobBand ?? _idJobBand,
   companyCode: companyCode ?? _companyCode,
   siteName: siteName ?? _siteName,
   siteCode: siteCode ?? _siteCode,
-  bandJobName: bandJobName ?? _bandJobName,
   departementName: departementName ?? _departementName,
+  costCenterName: costCenterName ?? _costCenterName,
+  costCenterCode: costCenterCode ?? _costCenterCode,
   companyName: companyName ?? _companyName,
 );
   num? get no => _no;
@@ -266,19 +454,28 @@ Data copyWith({  num? no,
   num? get idDepartment => _idDepartment;
   num? get idCompany => _idCompany;
   num? get idSite => _idSite;
-  String? get idJobBand => _idJobBand;
   dynamic get foto => _foto;
   dynamic get fotoPath => _fotoPath;
   dynamic get createdAt => _createdAt;
   dynamic get createdBy => _createdBy;
-  String? get updatedAt => _updatedAt;
-  String? get updatedBy => _updatedBy;
+  dynamic get updatedAt => _updatedAt;
+  dynamic get updatedBy => _updatedBy;
   dynamic get deletedAt => _deletedAt;
+  String? get snAtasan1 => _snAtasan1;
+  String? get snAtasan2 => _snAtasan2;
+  dynamic get isRegistered => _isRegistered;
+  num? get idCostCenter => _idCostCenter;
+  dynamic get isTerminated => _isTerminated;
+  dynamic get positionCode => _positionCode;
+  dynamic get positionLevel => _positionLevel;
+  dynamic get positionTittle => _positionTittle;
+  String? get idJobBand => _idJobBand;
   String? get companyCode => _companyCode;
   String? get siteName => _siteName;
   String? get siteCode => _siteCode;
-  String? get bandJobName => _bandJobName;
-  dynamic get departementName => _departementName;
+  String? get departementName => _departementName;
+  String? get costCenterName => _costCenterName;
+  String? get costCenterCode => _costCenterCode;
   String? get companyName => _companyName;
 
   Map<String, dynamic> toJson() {
@@ -297,7 +494,6 @@ Data copyWith({  num? no,
     map['id_department'] = _idDepartment;
     map['id_company'] = _idCompany;
     map['id_site'] = _idSite;
-    map['id_job_band'] = _idJobBand;
     map['foto'] = _foto;
     map['foto_path'] = _fotoPath;
     map['created_at'] = _createdAt;
@@ -305,11 +501,21 @@ Data copyWith({  num? no,
     map['updated_at'] = _updatedAt;
     map['updated_by'] = _updatedBy;
     map['deleted_at'] = _deletedAt;
+    map['sn_atasan_1'] = _snAtasan1;
+    map['sn_atasan_2'] = _snAtasan2;
+    map['is_registered'] = _isRegistered;
+    map['id_cost_center'] = _idCostCenter;
+    map['is_terminated'] = _isTerminated;
+    map['position_code'] = _positionCode;
+    map['position_level'] = _positionLevel;
+    map['position_tittle'] = _positionTittle;
+    map['id_job_band'] = _idJobBand;
     map['company_code'] = _companyCode;
     map['site_name'] = _siteName;
     map['site_code'] = _siteCode;
-    map['band_job_name'] = _bandJobName;
     map['departement_name'] = _departementName;
+    map['cost_center_name'] = _costCenterName;
+    map['cost_center_code'] = _costCenterCode;
     map['company_name'] = _companyName;
     return map;
   }

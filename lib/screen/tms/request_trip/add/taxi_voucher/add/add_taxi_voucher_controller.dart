@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AddTaxiVoucherController extends BaseController {
-  int purposeID = Get.arguments['purposeID'] ?? 1;
+  String purposeID = Get.arguments['purposeID'] ?? 1;
 
   DateFormat dateFormat = DateFormat("dd-MM-yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy/MM/dd");

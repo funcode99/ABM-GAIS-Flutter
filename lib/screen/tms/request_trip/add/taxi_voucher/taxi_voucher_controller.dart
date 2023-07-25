@@ -7,7 +7,7 @@ import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list
 import 'package:get/get.dart';
 
 class TaxiVoucherController extends BaseController {
-  int purposeID = Get.arguments['purposeID'];
+  String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
   bool? formEdit = Get.arguments['formEdit'];
 

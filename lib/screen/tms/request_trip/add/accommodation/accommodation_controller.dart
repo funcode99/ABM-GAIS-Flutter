@@ -6,7 +6,7 @@ import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_scree
 import 'package:get/get.dart';
 
 class AccommodationController extends BaseController {
-  int purposeID = Get.arguments['purposeID'];
+  String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
   bool? formEdit = Get.arguments['formEdit'];
 

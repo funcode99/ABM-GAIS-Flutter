@@ -1,9 +1,12 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
 import 'package:gais/data/model/week_model.dart';
 import 'package:intl/intl.dart';
-import 'package:get/get.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class DashboardMeetingRoomController extends BaseController {
   List listYears = [];
@@ -22,11 +25,16 @@ class DashboardMeetingRoomController extends BaseController {
     {"id": 11, "value": "November"},
     {"id": 12, "value": "December"}
   ];
+
   List listDays = [""];
   List<comp.Data> listCompany = [];
   List<site.Data> listSite = [];
   List listFloor = [];
   List listRoom = [];
+
+  List<CalendarResource> dataResource = [];
+  List<Appointment>? shiftCollection;
+  MeetingDataSource? events;
 
   DateTime? initialDate;
   DateTime? nextDate;
@@ -88,7 +96,7 @@ class DashboardMeetingRoomController extends BaseController {
     update();
   }
 
-  Future<void> listOfRoom(int idFloor) async{
+  Future<void> listOfRoom(int idFloor) async {
     loadRoom = true;
     listRoom = [];
     loadRoom = false;
@@ -101,6 +109,10 @@ class DashboardMeetingRoomController extends BaseController {
     listYears = Iterable<int>.generate((DateTime.now().year) + 1).skip(1900).toList().reversed.toList();
     listOfDates(DateTime.now());
     listOfCompany();
+
+    addResourceDetail();
+    addAppointments();
+    events = MeetingDataSource(shiftCollection!, dataResource);
   }
 
   @override
@@ -109,5 +121,85 @@ class DashboardMeetingRoomController extends BaseController {
     selectedDate = DateTime.now().day;
     selectedMonth = DateTime.now().month;
     selectedYear = DateTime.now().year;
+  }
+
+  void addAppointments() {
+    var subjectCollection = [
+      'General Meeting',
+      'Plan Execution',
+      'Project Plan',
+      'Consulting',
+      'Support',
+      'Development Meeting',
+      'Scrum',
+      'Project Completion',
+      'Release updates',
+      'Performance Check'
+    ];
+
+    var colorCollection = [
+      const Color(0xFF0F8644),
+      const Color(0xFF8B1FA9),
+      const Color(0xFFD20100),
+      const Color(0xFFFC571D),
+      const Color(0xFF85461E),
+      const Color(0xFF36B37B),
+      const Color(0xFF3D4FB5),
+      const Color(0xFFE47C73),
+      const Color(0xFF636363)
+    ];
+
+    shiftCollection = <Appointment>[];
+    for (var calendarResource in dataResource) {
+      var employeeIds = [calendarResource.id];
+
+      for (int j = 0; j < 365; j++) {
+        for (int k = 0; k < 2; k++) {
+          final DateTime date = DateTime.now().add(Duration(days: j + k));
+          int startHour = 9 + Random().nextInt(6);
+          startHour = startHour >= 13 && startHour <= 14 ? startHour + 1 : startHour;
+          final DateTime _shiftStartTime = DateTime(date.year, date.month, date.day, startHour, 0, 0);
+          shiftCollection?.add(Appointment(
+              startTime: _shiftStartTime,
+              endTime: _shiftStartTime.add(const Duration(hours: 1)),
+              subject: subjectCollection[Random().nextInt(8)],
+              color: colorCollection[Random().nextInt(8)],
+              startTimeZone: '',
+              endTimeZone: '',
+              resourceIds: employeeIds));
+        }
+      }
+    }
+  }
+
+  void addResourceDetail() {
+    var nameCollection = [
+      'John',
+      'Bryan',
+      'Robert',
+    ];
+
+    var colorCollection = [
+      const Color(0xFF0F8644),
+      const Color(0xFF8B1FA9),
+      const Color(0xFFD20100),
+    ];
+
+    dataResource = <CalendarResource>[];
+    for (var i = 0; i < nameCollection.length; i++) {
+      dataResource.add(CalendarResource(
+        id: '000' + i.toString(),
+        displayName: nameCollection[i],
+        color: colorCollection[i],
+      ));
+    }
+  }
+}
+
+class MeetingDataSource extends CalendarDataSource {
+  MeetingDataSource(List<Appointment> shiftCollection,
+      List<CalendarResource> employeeCalendarResource) {
+    appointments = shiftCollection;
+    resources = employeeCalendarResource;
   }
 }

@@ -45,7 +45,7 @@ class DetailDocumentDeliveryController extends BaseController {
   bool loadLocation = false;
   bool loadReceiver = false;
 
-  List<receiver.Data> receiverList = [];
+  List<receiver.Data2> receiverList = [];
   List<comp.Data> companyList = [];
   List<site.Data> locationList = [];
 
@@ -152,8 +152,8 @@ class DetailDocumentDeliveryController extends BaseController {
     loadReceiver = true;
     receiverList = [];
     try {
-      await repository.getEmployeeListBySiteID(id).then((value) {
-        receiverList.addAll(value.data?.toSet().toList() ?? []);
+      await repository.getEmployeeListBySiteID(id.toString()).then((value) {
+        receiverList.addAll(value.data?.data?.toSet().toList() ?? []);
       });
     } catch (e, i) {
       e.printError();
@@ -169,7 +169,7 @@ class DetailDocumentDeliveryController extends BaseController {
           .update(
         ddID!.toInt(),
         receiverCompanyID!,
-        receiverSiteID!,
+        receiverSiteID!.toString(),
         senderID!.toInt(),
         receiverID!.toInt(),
         senderCompanyID!,
