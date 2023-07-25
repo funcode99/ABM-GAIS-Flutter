@@ -75,6 +75,7 @@ class LoginController extends BaseController {
             storage.writeString(StorageCore.companyName, value.users?.companyName.toString() ?? "");
             storage.writeString(StorageCore.snEmployee, value.users?.snEmployee.toString() ?? "");
             storage.writeString(StorageCore.employeeName, value.users?.employeeName.toString() ?? "");
+            storage.writeString(StorageCore.userID, value.users?.idEmployee.toString() ?? "");
             storage.writeString(StorageCore.siteID, value.users?.idSite.toString() ?? "");
             storage.writeString(StorageCore.siteName, value.users?.siteName.toString() ?? "");
             saveEmployeeInfo();
