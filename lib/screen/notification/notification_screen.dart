@@ -42,7 +42,7 @@ class NotificationScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(50)
                             ),
                             child: Text(
-                              "${element == NotificationTabEnum.notification ? controller.unreadMessageCount() : controller.unreadMessageCountApproval()}",
+                              "${element == NotificationTabEnum.notification ? controller.totalNotification : controller.totalNotificationApproval}",
                               style: listSubTitleTextStyle.copyWith(color: infoColor),),
                           ),
                           text: element == NotificationTabEnum.notification ? "Notification" : "Approval",
@@ -97,7 +97,7 @@ class NotificationScreen extends StatelessWidget {
                                                   text: item.text ?? "",
                                                   date: item.date ?? "",
                                                   name: item.name ?? "",
-                                                  showIndicator: item.isViewed != 1,
+                                                  showIndicator: item.isViewed == 1,
                                                 )
                                             )
                                           ],
@@ -148,7 +148,7 @@ class NotificationScreen extends StatelessWidget {
                                                 text: item.text ?? "",
                                                 date: item.date ?? "",
                                                 name: item.name ?? "",
-                                                showIndicator: item.isViewed != 1,
+                                                showIndicator: item.isViewed == 1,
                                               )
                                           )
                                         ],
