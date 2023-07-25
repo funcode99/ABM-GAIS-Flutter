@@ -422,11 +422,8 @@ class RepositoryImpl implements Repository {
       );
       return SavePurposeOfTripModel.fromJson(response.data);
     } on DioError catch (e) {
-      // e.error.printError();
-      //print("response error: ${e.response?.data}");
+      print("response save error: ${e.response?.data}");
       return e.response?.data;
-      // return e.error;
-      // throw Exception();
     }
   }
 
@@ -452,7 +449,6 @@ class RepositoryImpl implements Repository {
 
     var formData = FormData.fromMap({
       "id_employee": employeeID,
-      "no_request_trip": noRequestTrip,
       "code_document": codeDocument,
       "id_site": siteID,
       "notes": notes,
@@ -529,12 +525,12 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<UpdateTravellerGuestModel> updateTravellerGuest(
-    int id,
-    String guestName,
+    String id,
+    String nameGuest,
     String idrequesttrip,
     int idcompany,
     String company,
-    int idtypetraveller,
+    String idtypetraveller,
     String nik,
     String contact,
     String departement,
@@ -545,7 +541,7 @@ class RepositoryImpl implements Repository {
   ) async {
     try {
       var formData = FormData.fromMap({
-        "name_guest": guestName,
+        "name_guest": nameGuest,
         "id_request_trip": idrequesttrip,
         "company": company,
         "id_type_traveller": idtypetraveller,
@@ -588,7 +584,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetGuestByidModel> getGuestByID(int id) async {
+  Future<GetGuestByidModel> getGuestByID(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -603,7 +599,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future deleteTravellerGuest(int id) async {
+  Future deleteTravellerGuest(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -1293,9 +1289,5 @@ class RepositoryImpl implements Repository {
     }
   }
 
-  @override
-  Future<GetAirlinessModel> getAirlinessSchedule() {
-    // TODO: implement getAirlinessSchedule
-    throw UnimplementedError();
-  }
+
 }

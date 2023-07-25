@@ -195,7 +195,7 @@ class Users {
     _roleName = json['role_name'];
     _codeRole = json['code_role'];
   }
-  num? _id;
+  dynamic _id;
   String? _name;
   num? _isEmployee;
   num? _idCompany;
@@ -244,7 +244,7 @@ Users copyWith({  num? id,
   roleName: roleName ?? _roleName,
   codeRole: codeRole ?? _codeRole,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   String? get name => _name;
   num? get isEmployee => _isEmployee;
   num? get idCompany => _idCompany;

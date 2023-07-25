@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/data/model/reference/get_flight_class_model.dart' as flight;
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -55,13 +56,17 @@ class AddAirlinessController extends BaseController {
       });
     } else {
       await storage.readEmployeeInfo().then((value) {
-        print(value);
         travellerID = int.parse(value.first.id.toString());
         travellerName.text = value.first.employeeName.toString();
-        flightClassID = value.first.idFlightClass?.toInt();
-        travellerflightClass.text = value.first.flightClass ?? "";
+        // flightClassID = value.first.idFlightClass?.toInt();
+        // travellerflightClass.text = value.first.flightClass ?? "";
+      });
+      await storage.readEmployeeFlight().then((value) {
+        travellerflightClass.text = value.first.idFlightClass.toString();
+        flightClassID = value.first.flightClass.toInt();
       });
     }
+
 
     update();
   }

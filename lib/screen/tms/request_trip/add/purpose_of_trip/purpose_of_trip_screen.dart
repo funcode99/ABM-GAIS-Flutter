@@ -59,9 +59,8 @@ class PurposeOfTripScreen extends StatelessWidget {
                             CustomDropDownFormField(
                               label: 'Purpose of Trip',
                               isRequired: true,
-                              hintText: "Purpose of Trip",
+                              hintText: controller.isLoading ? "Loading..." : "Purpose of Trip",
                               // value: controller.selectedPurpose,
-
                               items: controller.purposeList
                                   .map((e) => DropdownMenuItem(
                                         value: e.id.toString(),
@@ -82,12 +81,12 @@ class PurposeOfTripScreen extends StatelessWidget {
                             const SizedBox(height: 8),
                             controller.selectedPurpose == "1"
                                 ? Container(
-                                    margin: EdgeInsets.only(bottom: 8),
+                                    margin: const EdgeInsets.only(bottom: 8),
                                     child: CustomDropDownFormField(
                                       items: controller.siteList
                                           .map((e) => DropdownMenuItem(
-                                                child: Text(e.siteName.toString()),
                                                 value: e.id.toString(),
+                                                child: Text(e.siteName.toString()),
                                               ))
                                           .toList(),
                                       label: "Site",
@@ -99,7 +98,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                                     ),
                                   )
                                 : Container(),
-                            controller.isAttachment!
+                            controller.isAttachment
                                 ? CustomTextFormField(
                                     controller: controller.fileName,
                                     label: 'File Attachment',
@@ -108,9 +107,9 @@ class PurposeOfTripScreen extends StatelessWidget {
                                       if (value == null || value.isEmpty) {
                                         return "This field is required";
                                       }
-                                      // if(controller.fileExtension != "pdf"){
-                                      //   return "Files must be pdf";
-                                      // }
+                                      if(controller.fileExtension != "pdf"){
+                                        return "Files must be pdf";
+                                      }
                                       return null;
                                     },
                                     readOnly: true,
@@ -131,7 +130,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                             CustomDropDownFormField(
                               label: "From",
                               isRequired: true,
-                              hintText: "City",
+                              hintText: controller.isLoading ? "Loading..." : "City",
                               items: controller.cityList
                                   .map((e) => DropdownMenuItem(
                                         value: e.id.toString(),
@@ -149,7 +148,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                               // validator: ValidationBuilder().required().maxLength(9).minLength(9).build(),
                               label: "To",
                               isRequired: true,
-                              hintText: "City",
+                              hintText: controller.isLoading ? "Loading..." : "City",
                               // value: controller.toCity,
                               items: controller.cityList
                                   .map((e) => DropdownMenuItem(

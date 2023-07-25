@@ -84,7 +84,6 @@ class StorageCore {
     await storage.write(key: 'flightClass', value: flightClass);
     await storage.write(key: 'hotelFare', value: hotelFare);
     await storage.write(key: 'mealsFare', value: mealsFare);
-
   }
 
   void deleteToken() async {
@@ -102,7 +101,7 @@ class StorageCore {
     return role;
   }
 
-  Future<int?> readID() async{
+  Future<int?> readID() async {
     var id = await storage.read(key: 'userID');
     return id!.toInt();
   }
@@ -131,12 +130,21 @@ class StorageCore {
       bandJobName: await storage.read(key: 'jobBand'),
       foto: await storage.read(key: 'foto'),
       fotoPath: await storage.read(key: 'fotoPath'),
-      idFlightClass: int.parse(await storage.read(key: 'flightClassID') ?? "0"),
-      flightClass: await storage.read(key: 'flightClass'),
+      // idFlightClass: int.parse(await storage.read(key: 'flightClassID') ?? "0"),
+      // flightClass: await storage.read(key: 'flightClass'),
       hotelFare: await storage.read(key: 'hotelFare'),
       mealsRate: await storage.read(key: 'mealsFare'),
     ));
     return employee;
+  }
+
+  Future<List<info.FlightClass>> readEmployeeFlight() async {
+    List<info.FlightClass> flight = [];
+    flight.add(info.FlightClass(
+      idFlightClass: int.parse(await storage.read(key: 'flightClassID') ?? "0"),
+      flightClass: await storage.read(key: 'flightClass'),
+    ));
+    return flight;
   }
 
   Future<bool> ensureStorageReady() async {

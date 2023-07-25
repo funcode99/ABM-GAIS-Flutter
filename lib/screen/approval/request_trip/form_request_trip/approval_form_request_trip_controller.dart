@@ -39,7 +39,7 @@ class ApprovalFormRequestTripController extends BaseController {
   late String rejection = reject[0];
 
   ApprovalActionEnum? approvalActionEnum = Get.arguments['approvalEnum'];
-  rt.Data2   approvalData = Get.arguments['approvalData'];
+  rt.Data2 approvalData = Get.arguments['approvalData'];
   String purposeID = Get.arguments['idRequestTrip'];
   String approvalID = Get.arguments['id'];
   int approvalAuthID = Get.arguments['idApprovalAuth'];
@@ -222,7 +222,7 @@ class ApprovalFormRequestTripController extends BaseController {
 
   Future<File> getFileFromUrl({name}) async {
     Completer<File> completer = Completer();
-    print("Start download file from internet!");
+    debugPrint("Start download file from internet!");
     try {
       final url = fileURL;
       final filename = url.substring(url.lastIndexOf("/") + 1);
@@ -230,8 +230,7 @@ class ApprovalFormRequestTripController extends BaseController {
       var response = await request.close();
       var bytes = await consolidateHttpClientResponseBytes(response);
       var dir = await getApplicationDocumentsDirectory();
-      print("Download files");
-      print("${dir.path}/$filename");
+      debugPrint("Download files : ${dir.path}/$filename");
       File file = File("${dir.path}/$filename");
       await file.writeAsBytes(bytes, flush: true);
       completer.complete(file);
@@ -246,7 +245,7 @@ class ApprovalFormRequestTripController extends BaseController {
   Future<void> fetchRequestTrip() async {
     var rtData = await repository.getRequestTripByid(purposeID);
     var rtApproval = await approvalRequestTrip.getByID(approvalID);
-    print(rtApproval.data?.first.idApprovalAuth);
+    // print(rtApproval.data?.first.idApprovalAuth);
     DateTime? tempDate;
     rtModel = rtData;
     getApprovalModel = rtApproval;
@@ -286,8 +285,10 @@ class ApprovalFormRequestTripController extends BaseController {
       travellerSN = value.first.snEmployee;
       travellerGender = value.first.jenkel;
       travellerHotel = value.first.hotelFare;
-      travellerFlight = value.first.flightClass;
+      // travellerFlight = value.first.flightClass;
     });
+
+    await storage.readEmployeeFlight().then((value) => travellerFlight = value.first.idFlightClass.toString());
 
     update();
   }
@@ -297,7 +298,6 @@ class ApprovalFormRequestTripController extends BaseController {
       path: pdfPath,
       fileURL: fileURL,
     ));
-    print("go to preview file");
   }
 
   Future<void> fetchList() async {
@@ -340,7 +340,7 @@ class ApprovalFormRequestTripController extends BaseController {
   }
 
   openApproveDialog() async {
-    print("approval model: ${approvalAuthID} $requsetorID $siteID $companyID");
+    // print("approval model: ${approvalAuthID} $requsetorID $siteID $companyID");
     ApprovalModel? result = await Get.dialog(ApprovalConfirmationDialog(
       // idEmployee: requsetorID,
       // idSite: siteID,
@@ -350,8 +350,8 @@ class ApprovalFormRequestTripController extends BaseController {
 
     if (result != null) {
       approvalModel(result);
-      print('result : ${result.approvedBehalf}');
-      print('approveID: $approvalID');
+      // print('result : ${result.approvedBehalf}');
+      // print('approveID: $approvalID');
       try {
         await approvalRequestTrip.approve(approvalID, result).then((value) {
           // Get.back(result: true);
@@ -405,7 +405,7 @@ class ApprovalFormRequestTripController extends BaseController {
 
     if (result != null) {
       approvalModel(result);
-      print('result : ${result.notes}');
+      // print('result : ${result.notes}');
       try {
         await approvalRequestTrip.reject(approvalID, result).then((value) {
           Get.dialog(SuccessDialog(

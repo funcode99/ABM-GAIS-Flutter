@@ -61,7 +61,6 @@ class CustomDropDownFormField<T> extends StatelessWidget {
           return "This field is required";
         }
       },
-
       popupProps: PopupProps.menu(
         constraints: const BoxConstraints(maxHeight: 200),
         fit: FlexFit.loose,

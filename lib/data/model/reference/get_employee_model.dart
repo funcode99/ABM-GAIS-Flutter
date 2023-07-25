@@ -329,7 +329,7 @@ class Data2 {
     _companyName = json['company_name'];
   }
   num? _no;
-  num? _id;
+  dynamic _id;
   String? _employeeName;
   String? _phoneNumber;
   String? _snEmployee;
@@ -441,7 +441,7 @@ Data2 copyWith({  num? no,
   companyName: companyName ?? _companyName,
 );
   num? get no => _no;
-  num? get id => _id;
+  dynamic get id => _id;
   String? get employeeName => _employeeName;
   String? get phoneNumber => _phoneNumber;
   String? get snEmployee => _snEmployee;

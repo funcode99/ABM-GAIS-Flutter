@@ -224,10 +224,10 @@ Data copyWith({  num? id,
   companyName: companyName ?? _companyName,
   flightClass: flightClass ?? _flightClass,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   dynamic get idEmployee => _idEmployee;
   String? get nameGuest => _nameGuest;
-  dynamic? get idRequestTrip => _idRequestTrip;
+  dynamic get idRequestTrip => _idRequestTrip;
   num? get idCompany => _idCompany;
   dynamic get company => _company;
   num? get codeStatusDoc => _codeStatusDoc;

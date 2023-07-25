@@ -293,7 +293,7 @@ class Data2 {
     _flightClass = json['flight_class'];
   }
   num? _no;
-  num? _id;
+  dynamic _id;
   String? _bandJobName;
   num? _idCompany;
   String? _hotelFare;
@@ -333,7 +333,7 @@ Data2 copyWith({  num? no,
   flightClass: flightClass ?? _flightClass,
 );
   num? get no => _no;
-  num? get id => _id;
+  dynamic get id => _id;
   String? get bandJobName => _bandJobName;
   num? get idCompany => _idCompany;
   String? get hotelFare => _hotelFare;

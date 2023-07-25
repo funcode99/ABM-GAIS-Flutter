@@ -79,7 +79,7 @@ class Data {
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
   }
-  num? _id;
+  dynamic _id;
   String? _vendor;
   dynamic _createdAt;
   dynamic _createdBy;
@@ -98,7 +98,7 @@ Data copyWith({  num? id,
   updatedAt: updatedAt ?? _updatedAt,
   updatedBy: updatedBy ?? _updatedBy,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   String? get vendor => _vendor;
   dynamic get createdAt => _createdAt;
   dynamic get createdBy => _createdBy;

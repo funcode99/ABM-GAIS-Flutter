@@ -1,16 +1,7 @@
-/// success : true
-/// message : "Success Create Menu"
-///  "error": {
-///         "id_site": [
-///             "The id site field is required."
-///         ]
-///     }
-/// data : {"id_employee":"1","no_request_trip":"REQ/ABM/123","code_document":"1","id_site":"1","notes":"1","id_city_from":"1","id_city_to":"1","date_departure":"01-01-2023","date_arrival":"02-01-2023","id_zona":"1","tlk_per_day":100000.12,"total_tlk":600000,"file":"http://103.165.130.157:8086/storage/files/request_trip/SfKxcsBX9KN9Y74VMtAazpJF4sNCHQD5QYzl6WEC.png","created_at":"2023-05-17T06:42:16.000000Z","created_by":2,"code_status_doc":"0","updated_at":"2023-05-17T06:42:16.000000Z","id":78}
-
 class SavePurposeOfTripModel {
   SavePurposeOfTripModel({
-      bool? success,
-      String? message,
+      bool? success, 
+      String? message, 
       Data? data,}){
     _success = success;
     _message = message;
@@ -48,47 +39,29 @@ SavePurposeOfTripModel copyWith({  bool? success,
 
 }
 
-/// id_employee : "1"
-/// no_request_trip : "REQ/ABM/123"
-/// code_document : "1"
-/// id_site : "1"
-/// notes : "1"
-/// id_city_from : "1"
-/// id_city_to : "1"
-/// date_departure : "01-01-2023"
-/// date_arrival : "02-01-2023"
-/// id_zona : "1"
-/// tlk_per_day : 100000.12
-/// total_tlk : 600000
-/// file : "http://103.165.130.157:8086/storage/files/request_trip/SfKxcsBX9KN9Y74VMtAazpJF4sNCHQD5QYzl6WEC.png"
-/// created_at : "2023-05-17T06:42:16.000000Z"
-/// created_by : 2
-/// code_status_doc : "0"
-/// updated_at : "2023-05-17T06:42:16.000000Z"
-/// id : 78
-
 class Data {
   Data({
-      String? idEmployee,
-      String? noRequestTrip,
-      String? codeDocument,
-      String? idSite,
-      String? notes,
-      String? idCityFrom,
-      String? idCityTo,
-      String? dateDeparture,
-      String? dateArrival,
-      String? idZona,
-      num? tlkPerDay,
-      num? totalTlk,
-      String? file,
-      String? createdAt,
-      num? createdBy,
-      String? codeStatus,
-      String? updatedAt,
-      num? id,}){
+      String? idEmployee, 
+      String? codeDocument, 
+      String? idSite, 
+      String? notes, 
+      String? idCityFrom, 
+      String? idCityTo, 
+      String? dateDeparture, 
+      String? dateArrival, 
+      String? idZona, 
+      double? tlkPerDay, 
+      int? totalTlk, 
+      int? idCompany, 
+      int? idDepartement, 
+      int? idCostCenter, 
+      String? createdAt, 
+      int? createdBy, 
+      String? noRequestTrip, 
+      String? codeStatusDoc, 
+      String? id, 
+      String? updatedAt,}){
     _idEmployee = idEmployee;
-    _noRequestTrip = noRequestTrip;
     _codeDocument = codeDocument;
     _idSite = idSite;
     _notes = notes;
@@ -99,17 +72,19 @@ class Data {
     _idZona = idZona;
     _tlkPerDay = tlkPerDay;
     _totalTlk = totalTlk;
-    _file = file;
+    _idCompany = idCompany;
+    _idDepartement = idDepartement;
+    _idCostCenter = idCostCenter;
     _createdAt = createdAt;
     _createdBy = createdBy;
-    _codeStatus = codeStatus;
-    _updatedAt = updatedAt;
+    _noRequestTrip = noRequestTrip;
+    _codeStatusDoc = codeStatusDoc;
     _id = id;
+    _updatedAt = updatedAt;
 }
 
   Data.fromJson(dynamic json) {
     _idEmployee = json['id_employee'];
-    _noRequestTrip = json['no_request_trip'];
     _codeDocument = json['code_document'];
     _idSite = json['id_site'];
     _notes = json['notes'];
@@ -120,15 +95,17 @@ class Data {
     _idZona = json['id_zona'];
     _tlkPerDay = json['tlk_per_day'];
     _totalTlk = json['total_tlk'];
-    _file = json['file'];
+    _idCompany = json['id_company'];
+    _idDepartement = json['id_departement'];
+    _idCostCenter = json['id_cost_center'];
     _createdAt = json['created_at'];
     _createdBy = json['created_by'];
-    _codeStatus = json['code_status_doc'];
-    _updatedAt = json['updated_at'];
+    _noRequestTrip = json['no_request_trip'];
+    _codeStatusDoc = json['code_status_doc'];
     _id = json['id'];
+    _updatedAt = json['updated_at'];
   }
   String? _idEmployee;
-  String? _noRequestTrip;
   String? _codeDocument;
   String? _idSite;
   String? _notes;
@@ -137,16 +114,18 @@ class Data {
   String? _dateDeparture;
   String? _dateArrival;
   String? _idZona;
-  num? _tlkPerDay;
-  num? _totalTlk;
-  String? _file;
+  dynamic _tlkPerDay;
+  int? _totalTlk;
+  int? _idCompany;
+  int? _idDepartement;
+  int? _idCostCenter;
   String? _createdAt;
-  num? _createdBy;
-  String? _codeStatus;
+  int? _createdBy;
+  String? _noRequestTrip;
+  String? _codeStatusDoc;
+  String? _id;
   String? _updatedAt;
-  num? _id;
 Data copyWith({  String? idEmployee,
-  String? noRequestTrip,
   String? codeDocument,
   String? idSite,
   String? notes,
@@ -155,16 +134,18 @@ Data copyWith({  String? idEmployee,
   String? dateDeparture,
   String? dateArrival,
   String? idZona,
-  num? tlkPerDay,
-  num? totalTlk,
-  String? file,
+  double? tlkPerDay,
+  int? totalTlk,
+  int? idCompany,
+  int? idDepartement,
+  int? idCostCenter,
   String? createdAt,
-  num? createdBy,
-  String? codeStatus,
+  int? createdBy,
+  String? noRequestTrip,
+  String? codeStatusDoc,
+  String? id,
   String? updatedAt,
-  num? id,
 }) => Data(  idEmployee: idEmployee ?? _idEmployee,
-  noRequestTrip: noRequestTrip ?? _noRequestTrip,
   codeDocument: codeDocument ?? _codeDocument,
   idSite: idSite ?? _idSite,
   notes: notes ?? _notes,
@@ -175,15 +156,17 @@ Data copyWith({  String? idEmployee,
   idZona: idZona ?? _idZona,
   tlkPerDay: tlkPerDay ?? _tlkPerDay,
   totalTlk: totalTlk ?? _totalTlk,
-  file: file ?? _file,
+  idCompany: idCompany ?? _idCompany,
+  idDepartement: idDepartement ?? _idDepartement,
+  idCostCenter: idCostCenter ?? _idCostCenter,
   createdAt: createdAt ?? _createdAt,
   createdBy: createdBy ?? _createdBy,
-  codeStatus: codeStatus ?? _codeStatus,
-  updatedAt: updatedAt ?? _updatedAt,
+  noRequestTrip: noRequestTrip ?? _noRequestTrip,
+  codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
   id: id ?? _id,
+  updatedAt: updatedAt ?? _updatedAt,
 );
   String? get idEmployee => _idEmployee;
-  String? get noRequestTrip => _noRequestTrip;
   String? get codeDocument => _codeDocument;
   String? get idSite => _idSite;
   String? get notes => _notes;
@@ -192,19 +175,21 @@ Data copyWith({  String? idEmployee,
   String? get dateDeparture => _dateDeparture;
   String? get dateArrival => _dateArrival;
   String? get idZona => _idZona;
-  num? get tlkPerDay => _tlkPerDay;
-  num? get totalTlk => _totalTlk;
-  String? get file => _file;
+  double? get tlkPerDay => _tlkPerDay;
+  int? get totalTlk => _totalTlk;
+  int? get idCompany => _idCompany;
+  int? get idDepartement => _idDepartement;
+  int? get idCostCenter => _idCostCenter;
   String? get createdAt => _createdAt;
-  num? get createdBy => _createdBy;
-  String? get codeStatus => _codeStatus;
+  int? get createdBy => _createdBy;
+  String? get noRequestTrip => _noRequestTrip;
+  String? get codeStatusDoc => _codeStatusDoc;
+  String? get id => _id;
   String? get updatedAt => _updatedAt;
-  num? get id => _id;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id_employee'] = _idEmployee;
-    map['no_request_trip'] = _noRequestTrip;
     map['code_document'] = _codeDocument;
     map['id_site'] = _idSite;
     map['notes'] = _notes;
@@ -215,14 +200,16 @@ Data copyWith({  String? idEmployee,
     map['id_zona'] = _idZona;
     map['tlk_per_day'] = _tlkPerDay;
     map['total_tlk'] = _totalTlk;
-    map['file'] = _file;
+    map['id_company'] = _idCompany;
+    map['id_departement'] = _idDepartement;
+    map['id_cost_center'] = _idCostCenter;
     map['created_at'] = _createdAt;
     map['created_by'] = _createdBy;
-    map['code_status_doc'] = _codeStatus;
-    map['updated_at'] = _updatedAt;
+    map['no_request_trip'] = _noRequestTrip;
+    map['code_status_doc'] = _codeStatusDoc;
     map['id'] = _id;
+    map['updated_at'] = _updatedAt;
     return map;
   }
 
 }
-

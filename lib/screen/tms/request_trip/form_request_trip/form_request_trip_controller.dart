@@ -216,12 +216,12 @@ class FormRequestTripController extends BaseController {
       path: pdfPath,
       fileURL: fileURL,
     ));
-    print("go to preview file");
+    // print("go to preview file");
   }
 
   Future<File> getFileFromUrl({name}) async {
     Completer<File> completer = Completer();
-    print("Start download file from internet!");
+    // print("Start download file from internet!");
     try {
       final url = fileURL;
       final filename = url.substring(url.lastIndexOf("/") + 1);
@@ -229,8 +229,8 @@ class FormRequestTripController extends BaseController {
       var response = await request.close();
       var bytes = await consolidateHttpClientResponseBytes(response);
       var dir = await getApplicationDocumentsDirectory();
-      print("Download files");
-      print("${dir.path}/$filename");
+      // print("Download files");
+      // print("${dir.path}/$filename");
       File file = File("${dir.path}/$filename");
       await file.writeAsBytes(bytes, flush: true);
       completer.complete(file);
@@ -258,7 +258,7 @@ class FormRequestTripController extends BaseController {
     notes.text = rtModel?.data?.first.notes ?? "";
     selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
     isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
-    print("attachment : ${rtModel?.data?.first.file}");
+    // print("attachment : ${rtModel?.data?.first.file}");
     if (isAttachment == true) {
       attachment.text = rtModel?.data?.first.file;
       fileURL = rtModel?.data?.first.file;
@@ -270,13 +270,12 @@ class FormRequestTripController extends BaseController {
       update();
     }
     selectedPurpose = codeDocument.toString();
-    print("selected purpose : $selectedPurpose");
-    print("file : $fileURL");
-    print("pdfPath : $pdfPath");
+    // print("selected purpose : $selectedPurpose");
+    // print("file : $fileURL");
+    // print("pdfPath : $pdfPath");
     tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";
     // tlkJobBand.text = rtModel?.data?.first.
     tlkZona.text = rtModel?.data?.first.zonaName ?? "";
-    print(rtModel?.data?.first.totalTlk);
     tlkTotal.text = rtModel?.data?.first.totalTlk ?? "";
     // tlkTotalMeals.text = rtModel?.data?.first. ?? "";
     fromCity = rtModel?.data?.first.idCityFrom.toString();
@@ -294,8 +293,10 @@ class FormRequestTripController extends BaseController {
       travellerSN = value.first.snEmployee;
       travellerGender = value.first.jenkel;
       travellerHotel = value.first.hotelFare;
-      travellerFlight = value.first.flightClass;
+      // travellerFlight = value.first.flightClass;
     });
+
+    await storage.readEmployeeFlight().then((value) => travellerFlight = value.first.idFlightClass.toString());
 
     await storage.readEmployeeInfo().then((value) {
       tlkJobBand.text = value.first.bandJobName != "null" ? value.first.bandJobName.toString() : "";
@@ -350,7 +351,7 @@ class FormRequestTripController extends BaseController {
     update();
   }
 
-  Future<void> deleteGuest(int id) async {
+  Future<void> deleteGuest(String id) async {
     try {
       await repository.deleteTravellerGuest(id).then((value) {
         fetchList();
@@ -548,7 +549,7 @@ class FormRequestTripController extends BaseController {
   }
 
   Future<void> updateRequestTrip() async {
-    print("getted file: $gettedFile");
+    // print("getted file: $gettedFile");
     try {
       await repository
           .updateRequestTrip(

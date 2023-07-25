@@ -60,7 +60,7 @@ class AddGuestScreen extends StatelessWidget {
                                       ))
                                   .toList(),
                               label: "Type of Traveller",
-                              hintText: "Type",
+                              hintText: controller.isLoading ? "loading..." : "Type",
                               isRequired: true,
                               value: controller.selectedType,
                               onChanged: (value) {

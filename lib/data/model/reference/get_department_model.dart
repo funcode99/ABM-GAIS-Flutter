@@ -111,7 +111,7 @@ class Data {
     _companyName = json['company_name'];
     _companyCode = json['company_code'];
   }
-  num? _id;
+  dynamic _id;
   num? _idCompany;
   String? _departementName;
   String? _costCenter;
@@ -154,7 +154,7 @@ Data copyWith({  num? id,
   companyName: companyName ?? _companyName,
   companyCode: companyCode ?? _companyCode,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   num? get idCompany => _idCompany;
   String? get departementName => _departementName;
   String? get costCenter => _costCenter;

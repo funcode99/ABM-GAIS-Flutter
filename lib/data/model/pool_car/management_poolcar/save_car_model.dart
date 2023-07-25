@@ -109,7 +109,7 @@ class Data {
   String? _createdAt;
   num? _createdBy;
   String? _updatedAt;
-  num? _id;
+  dynamic _id;
 Data copyWith({  String? carName,
   String? idCompany,
   String? idSite,
@@ -146,7 +146,7 @@ Data copyWith({  String? carName,
   String? get createdAt => _createdAt;
   num? get createdBy => _createdBy;
   String? get updatedAt => _updatedAt;
-  num? get id => _id;
+  dynamic get id => _id;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

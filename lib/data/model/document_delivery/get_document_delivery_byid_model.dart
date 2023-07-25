@@ -171,7 +171,7 @@ class Data {
     _codeDocument = json['code_document'];
     _status = json['status'];
   }
-  num? _id;
+  dynamic _id;
   num? _idCompany;
   num? _idEmployeeSender;
   num? _idEmployeeReceiver;
@@ -259,7 +259,7 @@ Data copyWith({  num? id,
   codeDocument: codeDocument ?? _codeDocument,
   status: status ?? _status,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   num? get idCompany => _idCompany;
   num? get idEmployeeSender => _idEmployeeSender;
   num? get idEmployeeReceiver => _idEmployeeReceiver;

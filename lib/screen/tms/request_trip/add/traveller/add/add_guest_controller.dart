@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 class AddGuestController extends BaseController {
   String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
-  int? guestID = Get.arguments['guestID'];
+  String? guestID = Get.arguments['guestID'];
   bool? formEdit = Get.arguments['formEdit'];
 
   final formKey = GlobalKey<FormState>();
@@ -29,6 +29,7 @@ class AddGuestController extends BaseController {
   int? jobBandID;
   int? idFlight;
   int? travellerID;
+  bool isLoading = false;
   List<type.Data> typeList = [];
   type.GetTravellerTypeModel? typeModel;
 
@@ -101,6 +102,7 @@ class AddGuestController extends BaseController {
 
   Future<void> fetchList() async {
     typeList = [];
+    isLoading = true;
     try {
       await repository.getTravellerTypeList().then((value) {
         typeModel = value;
@@ -109,18 +111,20 @@ class AddGuestController extends BaseController {
 
       storage.readEmployeeInfo().then((value) {
         jobBandID = int.parse(value.first.idJobBand.toString());
-        flightEntitlement.text = value.first.flightClass.toString();
+        // flightEntitlement.text = value.first.flightClass.toString();
         travellerID = int.tryParse(value.first.id.toString());
         hotelFare.text = int.parse(value.first.hotelFare ?? "").toCurrency();
         idFlight = int.parse(value.first.idJobBand.toString());
       });
 
-      update();
-    } catch (e,i) {
+      storage.readEmployeeFlight().then((value) => flightEntitlement.text = value.first.flightClass.toString());
+    } catch (e, i) {
       e.printError();
       i.printError();
     }
     print("purposeID : $purposeID");
+    isLoading = false;
+    update();
   }
 
   Future<void> saveGuest() async {
@@ -176,7 +180,7 @@ class AddGuestController extends BaseController {
         purposeID,
         int.parse(selectedCompany ?? "1"),
         guestCompany.text,
-        int.parse(selectedType ?? "1"),
+        selectedType ?? "1",
         guestNIK.text,
         guestContact.text,
         guestDepartment.text,
@@ -186,7 +190,7 @@ class AddGuestController extends BaseController {
         gender.toString(),
       )
           .then(
-            (value) {
+        (value) {
           print(value.success);
           Get.back();
         },
@@ -207,4 +211,5 @@ class AddGuestController extends BaseController {
         ),
       );
     }
-  }}
+  }
+}

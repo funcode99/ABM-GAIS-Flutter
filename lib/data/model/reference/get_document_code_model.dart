@@ -97,7 +97,7 @@ class Data {
     _updatedBy = json['updated_by'];
   }
 
-  num? _id;
+  dynamic _id;
   String? _codeDocument;
   String? _documentName;
   bool? _isSelected = false;
@@ -141,7 +141,7 @@ class Data {
         updatedBy: updatedBy ?? _updatedBy,
       );
 
-  num? get id => _id;
+  dynamic get id => _id;
 
   String? get codeDocument => _codeDocument;
 

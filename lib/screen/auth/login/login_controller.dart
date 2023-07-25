@@ -15,7 +15,7 @@ class LoginController extends BaseController {
   bool isRemember = false;
   bool isLoading = true;
 
-  Widget showIcon = Icon(
+  Widget showIcon = const Icon(
     IconlyBold.show,
     color: Colors.black,
   );
@@ -46,10 +46,10 @@ class LoginController extends BaseController {
     update();
     String? token = await storage.readToken();
     String? role = await storage.readRole();
-    print("token : $token");
-    print("role : $role");
+    debugPrint("token : $token");
+    debugPrint("role : $role");
     if (token != null) {
-      Get.offAll(HomeScreen());
+      Get.offAll(const HomeScreen());
     }
     isLoading = false;
     update();
@@ -111,18 +111,18 @@ class LoginController extends BaseController {
         ),
       );
     }
-    print("role : ${await storage.readRole()}");
+    debugPrint("role : ${await storage.readRole()}");
     if (await storage.readRole() == "5") {
       // await repository.getEmployeeInfo();
       // saveEmployeeInfo();
     }
-    print("site : ${await FlutterSecureStorage().read(key: 'site')}");
+    debugPrint("site : ${await const FlutterSecureStorage().read(key: 'site')}");
   }
 
   Future<void> saveEmployeeInfo() async {
     try {
       await repository.getEmployeeInfo().then((value) {
-        print("value: ${value.data?.first.idFlightClass}");
+        debugPrint(value.data?.first.phoneNumber.toString());
         storage.saveUser(
           value.data?.first.id.toString() ?? "",
           value.data?.first.employeeName ?? "",
@@ -145,14 +145,15 @@ class LoginController extends BaseController {
           value.data?.first.bandJobName.toString() ?? "",
           value.data?.first.foto.toString() ?? "",
           value.data?.first.fotoPath.toString() ?? "",
-          value.data?.first.idFlightClass.toString() ?? "",
-          value.data?.first.flightClass.toString() ?? "",
+          value.data?.first.flightClass?.first.idFlightClass.toString() ?? "",
+          value.data?.first.flightClass?.first.flightClass.toString() ?? "",
           value.data?.first.hotelFare.toString() ?? "",
           value.data?.first.mealsRate.toString() ?? "",
         );
       });
-    } catch (e) {
+    } catch (e,i) {
       e.printError();
+      i.printError();
     }
   }
 }

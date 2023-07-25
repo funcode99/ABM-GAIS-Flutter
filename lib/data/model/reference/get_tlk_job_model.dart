@@ -112,7 +112,7 @@ class Data {
     _mealsRate = json['meals_rate'];
   }
   num? _no;
-  num? _id;
+  dynamic _id;
   num? _idZona;
   num? _idJobBand;
   String? _tlkRate;
@@ -155,7 +155,7 @@ Data copyWith({  num? no,
   mealsRate: mealsRate ?? _mealsRate,
 );
   num? get no => _no;
-  num? get id => _id;
+  dynamic get id => _id;
   num? get idZona => _idZona;
   num? get idJobBand => _idJobBand;
   String? get tlkRate => _tlkRate;

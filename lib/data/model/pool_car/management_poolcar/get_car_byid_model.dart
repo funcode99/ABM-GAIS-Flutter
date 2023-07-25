@@ -139,7 +139,7 @@ class Data {
     _typeCar = json['type_car'];
     _name = json['name'];
   }
-  num? _id;
+  dynamic _id;
   String? _carName;
   String? _plate;
   num? _idCompany;
@@ -203,7 +203,7 @@ Data copyWith({  num? id,
   typeCar: typeCar ?? _typeCar,
   name: name ?? _name,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   String? get carName => _carName;
   String? get plate => _plate;
   num? get idCompany => _idCompany;

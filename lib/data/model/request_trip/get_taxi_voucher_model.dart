@@ -203,7 +203,7 @@ Data copyWith({  num? id,
   nameDepartureCity: nameDepartureCity ?? _nameDepartureCity,
   nameArrivalCity: nameArrivalCity ?? _nameArrivalCity,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   dynamic get idRequestTrip => _idRequestTrip;
   String? get amount => _amount;
   String? get accountName => _accountName;

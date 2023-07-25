@@ -79,7 +79,7 @@ class Data {
     _idCompany = json['id_company'];
     _idSite = json['id_site'];
   }
-  num? _id;
+  dynamic _id;
   String? _username;
   String? _name;
   String? _email;
@@ -98,7 +98,7 @@ Data copyWith({  num? id,
   idCompany: idCompany ?? _idCompany,
   idSite: idSite ?? _idSite,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   String? get username => _username;
   String? get name => _name;
   String? get email => _email;

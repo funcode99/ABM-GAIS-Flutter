@@ -274,7 +274,7 @@ class Data {
         nameCityTo: nameCityTo ?? _nameCityTo,
       );
 
-  num? get id => _id;
+  dynamic get id => _id;
 
   num? get idEmployee => _idEmployee;
 

@@ -203,7 +203,7 @@ Data copyWith({  num? id,
   status: status ?? _status,
   itemCount: itemCount ?? _itemCount,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   num? get idEmployee => _idEmployee;
   num? get typeCa => _typeCa;
   String? get noCa => _noCa;

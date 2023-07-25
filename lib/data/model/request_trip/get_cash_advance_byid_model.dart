@@ -143,11 +143,11 @@ class Data {
     _status = json['status'];
     _itemCount = json['item_count'];
   }
-  num? _id;
+  dynamic _id;
   num? _idEmployee;
   num? _typeCa;
   String? _noCa;
-  num? _idRequestTrip;
+  dynamic _idRequestTrip;
   num? _idCurrency;
   String? _grandTotal;
   num? _isPaid;
@@ -210,7 +210,7 @@ Data copyWith({  num? id,
   status: status ?? _status,
   itemCount: itemCount ?? _itemCount,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   num? get idEmployee => _idEmployee;
   num? get typeCa => _typeCa;
   String? get noCa => _noCa;

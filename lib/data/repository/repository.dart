@@ -144,12 +144,12 @@ abstract class Repository {
   );
 
   Future<UpdateTravellerGuestModel> updateTravellerGuest(
-    int id,
+    String id,
     String nameGuest,
     String idrequesttrip,
     int idcompany,
     String company,
-    int idtypetraveller,
+    String idtypetraveller,
     String nik,
     String contact,
     String departement,
@@ -163,9 +163,9 @@ abstract class Repository {
 
   Future<GetGuestBytripModel> getGuestBytripList(String id);
 
-  Future<GetGuestByidModel> getGuestByID(int id);
+  Future<GetGuestByidModel> getGuestByID(String id);
 
-  Future deleteTravellerGuest(int id);
+  Future deleteTravellerGuest(String id);
 
   Future<SaveTaxiVoucherModel> saveTaxiVoucher(
     String tripID,

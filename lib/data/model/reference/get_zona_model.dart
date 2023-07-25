@@ -72,7 +72,7 @@ class Data {
       });
     }
   }
-  num? _id;
+  dynamic _id;
   String? _zonaName;
   List<City>? _city;
 Data copyWith({  num? id,
@@ -82,7 +82,7 @@ Data copyWith({  num? id,
   zonaName: zonaName ?? _zonaName,
   city: city ?? _city,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   String? get zonaName => _zonaName;
   List<City>? get city => _city;
 

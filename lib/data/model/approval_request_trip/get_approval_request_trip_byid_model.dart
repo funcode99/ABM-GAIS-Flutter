@@ -350,7 +350,7 @@ Data copyWith({  num? id,
   status: status ?? _status,
   documentName: documentName ?? _documentName,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   String? get codeDocument => _codeDocument;
   num? get idDocument => _idDocument;
   num? get level => _level;

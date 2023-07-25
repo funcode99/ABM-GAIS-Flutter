@@ -138,7 +138,7 @@ class Data {
     _updatedBy = json['updated_by'];
     _deletedAt = json['deleted_at'];
   }
-  num? _id;
+  dynamic _id;
   String? _codeDocument;
   num? _idDocument;
   num? _level;
@@ -205,7 +205,7 @@ Data copyWith({  num? id,
   updatedBy: updatedBy ?? _updatedBy,
   deletedAt: deletedAt ?? _deletedAt,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   String? get codeDocument => _codeDocument;
   num? get idDocument => _idDocument;
   num? get level => _level;

@@ -137,7 +137,7 @@ class Data {
     }
   }
   num? _no;
-  num? _id;
+  dynamic _id;
   String? _companyCode;
   String? _companyName;
   String? _shortName;
@@ -195,7 +195,7 @@ Data copyWith({  num? no,
   detail: detail ?? _detail,
 );
   num? get no => _no;
-  num? get id => _id;
+  dynamic get id => _id;
   String? get companyCode => _companyCode;
   String? get companyName => _companyName;
   String? get shortName => _shortName;

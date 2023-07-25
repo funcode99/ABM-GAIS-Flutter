@@ -440,7 +440,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                           }),
                                                           isDelete: controller.isEdit,
                                                           deleteAction: () {
-                                                            controller.deleteGuest(int.parse(e.id.toString()));
+                                                            controller.deleteGuest(e.id.toString());
                                                             controller.update();
                                                           },
                                                           content: Row(

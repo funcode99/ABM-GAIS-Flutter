@@ -154,7 +154,7 @@ Data copyWith({  num? id,
   employeeName: employeeName ?? _employeeName,
   vendor: vendor ?? _vendor,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   dynamic get idRequestTrip => _idRequestTrip;
   num? get idVendor => _idVendor;
   String? get flightNo => _flightNo;

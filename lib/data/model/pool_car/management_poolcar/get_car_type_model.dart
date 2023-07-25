@@ -63,14 +63,14 @@ class Data {
     _id = json['id'];
     _typeCar = json['type_car'];
   }
-  num? _id;
+  dynamic _id;
   String? _typeCar;
 Data copyWith({  num? id,
   String? typeCar,
 }) => Data(  id: id ?? _id,
   typeCar: typeCar ?? _typeCar,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   String? get typeCar => _typeCar;
 
   Map<String, dynamic> toJson() {

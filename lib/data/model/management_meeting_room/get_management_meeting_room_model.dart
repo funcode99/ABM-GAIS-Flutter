@@ -278,7 +278,7 @@ class Data2 {
     _nameUpdated = json['name_updated'];
   }
   num? _no;
-  num? _id;
+  dynamic _id;
   num? _idCompany;
   num? _idSite;
   String? _nameMeetingRoom;
@@ -339,7 +339,7 @@ Data2 copyWith({  num? no,
   nameUpdated: nameUpdated ?? _nameUpdated,
 );
   num? get no => _no;
-  num? get id => _id;
+  dynamic get id => _id;
   num? get idCompany => _idCompany;
   num? get idSite => _idSite;
   String? get nameMeetingRoom => _nameMeetingRoom;

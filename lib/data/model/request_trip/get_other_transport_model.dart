@@ -189,7 +189,7 @@ Data copyWith({  num? id,
   status: status ?? _status,
   employeeName: employeeName ?? _employeeName,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   dynamic get idRequestTrip => _idRequestTrip;
   num? get idTypeTransportation => _idTypeTransportation;
   String? get fromDate => _fromDate;

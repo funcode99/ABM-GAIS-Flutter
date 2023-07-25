@@ -111,7 +111,7 @@ class TravellerScreen extends StatelessWidget {
                                   }),
                                   isDelete: true,
                                   deleteAction: () {
-                                    controller.deleteGuest(int.parse(e.id.toString()));
+                                    controller.deleteGuest(e.id.toString());
                                     controller.update();
                                     print(e.id);
                                   },

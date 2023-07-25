@@ -115,7 +115,7 @@ class Data {
     _cityCode = json['city_code'];
     _typeAccomodation = json['type_accomodation'];
   }
-  num? _id;
+  dynamic _id;
   String? _hotelName;
   String? _address;
   num? _idTypeHotel;
@@ -161,7 +161,7 @@ Data copyWith({  num? id,
   cityCode: cityCode ?? _cityCode,
   typeAccomodation: typeAccomodation ?? _typeAccomodation,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   String? get hotelName => _hotelName;
   String? get address => _address;
   num? get idTypeHotel => _idTypeHotel;

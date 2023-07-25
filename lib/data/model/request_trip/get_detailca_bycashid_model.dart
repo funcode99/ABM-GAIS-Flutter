@@ -107,7 +107,7 @@ class Data {
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
   }
-  num? _id;
+  dynamic _id;
   num? _idCa;
   dynamic _idItemCa;
   num? _idCostCenter;

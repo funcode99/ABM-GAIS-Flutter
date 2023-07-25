@@ -94,7 +94,7 @@ class Data {
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
   }
-  num? _id;
+  dynamic _id;
   String? _idRequestTrip;
   String? _idVendor;
   String? _flightNo;
@@ -128,7 +128,7 @@ Data copyWith({  num? id,
   updatedAt: updatedAt ?? _updatedAt,
   updatedBy: updatedBy ?? _updatedBy,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   String? get idRequestTrip => _idRequestTrip;
   String? get idVendor => _idVendor;
   String? get flightNo => _flightNo;

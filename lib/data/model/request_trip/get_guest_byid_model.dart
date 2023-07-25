@@ -147,10 +147,10 @@ class Data {
     _companyName = json['company_name'];
     _flightClass = json['flight_class'];
   }
-  num? _id;
+  dynamic _id;
   num? _idEmployee;
   dynamic _nameGuest;
-  num? _idRequestTrip;
+  dynamic _idRequestTrip;
   num? _idCompany;
   String? _company;
   num? _idTypeTraveller;
@@ -217,7 +217,7 @@ Data copyWith({  num? id,
   companyName: companyName ?? _companyName,
   flightClass: flightClass ?? _flightClass,
 );
-  num? get id => _id;
+  dynamic get id => _id;
   num? get idEmployee => _idEmployee;
   dynamic get nameGuest => _nameGuest;
   num? get idRequestTrip => _idRequestTrip;

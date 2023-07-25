@@ -33,15 +33,16 @@ class AirlinesController extends BaseController {
 
   Future<void> getTravellerInfo() async {
     await storage.readEmployeeInfo().then((value) {
-      print(value);
       travellerID = int.parse(value.first.id.toString());
       travellerName = value.first.employeeName;
       travellerSN = value.first.snEmployee;
       travellerGender = value.first.jenkel;
       travellerHotel = value.first.hotelFare;
       jobBandID = int.parse(value.first.idJobBand.toString());
-      travellerFlight = value.first.flightClass;
+      // travellerFlight = value.first.flightClass;
     });
+
+    await storage.readEmployeeFlight().then((value) => travellerFlight = value.first.idFlightClass.toString());
 
     update();
   }
@@ -58,13 +59,12 @@ class AirlinesController extends BaseController {
     update();
   }
 
-  Future<void> deleteGuest(int id) async {
+  Future<void> deleteGuest(String id) async {
     try {
       await repository.deleteTravellerGuest(id).then((value) {
-        print(value);
         getGuestList();
         Get.showSnackbar(
-          GetSnackBar(
+          const GetSnackBar(
             icon: Icon(
               Icons.error,
               color: Colors.white,
@@ -78,7 +78,7 @@ class AirlinesController extends BaseController {
       });
     } catch (e) {
       Get.showSnackbar(
-        GetSnackBar(
+        const GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,

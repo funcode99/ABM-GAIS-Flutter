@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
@@ -35,17 +34,19 @@ class PurposeOfTripController extends BaseController {
   DateTime departure = DateTime.now();
   DateTime arrival = DateTime.now();
   int rangeDate = 0;
-  bool? isAttachment = false;
   String? selectedDepartureDate;
   String? selectedArrivalDate;
   String? fromCity;
   String? toCity;
   File? gettedFile;
-  int? purposeID;
+  String? purposeID;
   String? zonaID;
+  String? fileExtension;
+
   bool? isFilled = false;
   bool? isEnabledButton = false;
-  String? fileExtension;
+  bool isAttachment = false;
+  bool isLoading = false;
 
   purpose.GetDocumentCodeModel? purposeModel;
   List<purpose.Data> purposeList = [];
@@ -96,7 +97,7 @@ class PurposeOfTripController extends BaseController {
   Future<void> fetchList() async {
     cityList = [];
     purposeList = [];
-
+    isLoading = true;
     requestorID = await storage.readID();
     requestorID.printInfo(info: "requestorID");
     await storage.readEmployeeInfo().then((value) {
@@ -125,7 +126,7 @@ class PurposeOfTripController extends BaseController {
     await repository.getTLKJobByIDJob(jobID!).then((value) {
       tlkDay.text = int.parse(value.data?.first.tlkRate ?? "0").toCurrency();
     });
-
+    isLoading = false;
     update();
   }
 
@@ -133,9 +134,8 @@ class PurposeOfTripController extends BaseController {
     var datazona = await repository.getZonaByIDCity(int.parse(toCity!));
     zona.text = datazona.data?.first.zonaName ?? "";
     zonaID = datazona.data?.first.idZona.toString() ?? "";
-    print("Zona : ${ datazona.data?.first.idZona}");
+    print("Zona : ${datazona.data?.first.idZona}");
     update();
-
   }
 
   Future<void> postPurposeOfTrip() async {
@@ -159,26 +159,22 @@ class PurposeOfTripController extends BaseController {
           gettedFile,
         )
             .then(
-              (value) {
-            purposeID = int.parse(value.data!.id.toString());
+          (value) {
+            purposeID = value.data!.id.toString();
             isFilled = value.success;
             print("requsetorID: $requestorID");
             print("purposeID : $purposeID");
             print("isFilled : $isFilled");
           },
         ).then(
-              (value) =>
-              Get.to(
-                const TravellerScreen(),
-                arguments: {
-                  'purposeID': purposeID,
-                  'codeDocument': int.parse(selectedPurpose.toString())
-                },
-              )?.then((result) {
-                isFilled = result;
-                update();
-                print("purpose is filled : $result");
-              }),
+          (value) => Get.to(
+            const TravellerScreen(),
+            arguments: {'purposeID': purposeID, 'codeDocument': int.parse(selectedPurpose.toString())},
+          )?.then((result) {
+            isFilled = result;
+            update();
+            print("purpose is filled : $result");
+          }),
         );
       } catch (e, i) {
         e.printError();
@@ -197,20 +193,66 @@ class PurposeOfTripController extends BaseController {
         );
       }
     } else {
-      Get.to(
-        const TravellerScreen(),
-        arguments: {
-          'purposeID': purposeID,
-          'codeDocument': int.parse(selectedPurpose.toString())
-        },
-      )?.then((result) {
-        isFilled = result;
-        update();
-        print("purpose is filled : $result");
-      });
+      updateData();
     }
 
     print("purposeID:$purposeID");
     print("purpose : ${selectedPurpose}");
+  }
+
+  Future<void> updateData() async {
+    try {
+      await repository
+          .updateRequestTrip(
+        purposeID!,
+        requestorID.toString(),
+        "1",
+        selectedPurpose ?? "0",
+        siteID.toString(),
+        notesPurpose.text,
+        fromCity ?? "",
+        toCity ?? "",
+        selectedDepartureDate ?? "",
+        selectedArrivalDate ?? "",
+        zonaID ?? "1",
+        // "7",
+        tlkDay.text.digitOnly(),
+        totalTLK.text.digitOnly(),
+        gettedFile,
+      )
+          .then(
+        (value) {
+          purposeID = value.data!.id.toString();
+          isFilled = value.success;
+          print("requsetorID: $requestorID");
+          print("purposeID : ${value.data!.id.toString()}");
+          print("isFilled : $isFilled");
+        },
+      ).then(
+        (value) => Get.to(
+          const TravellerScreen(),
+          arguments: {'purposeID': purposeID, 'codeDocument': int.parse(selectedPurpose.toString())},
+        )?.then((result) {
+          isFilled = result;
+          update();
+          print("purpose is filled : $result");
+        }),
+      );
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Failed To Save',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }
