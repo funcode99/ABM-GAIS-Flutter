@@ -10,15 +10,13 @@ import 'package:get/get.dart';
 class NotificationRepository{
   final network = Get.find<NetworkCore>();
 
-  Future<Either<BaseError, List<NotificationModel>>> getNotification({Map<String, dynamic>? data}) async{
+  Future<Either<BaseError, PaginationModel>> getNotification({Map<String, dynamic>? data}) async{
     try {
       Dio.Response response = await network.dio.get(
-          '/api/notification/get_data',
+          '/api/notification/get_notif',
           queryParameters: data
       );
-      /*ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
-      return right(apiResponseModel.data);*/
-      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, NotificationModel.fromJsonModelList);
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
       return right(apiResponseModel.data);
     } on Dio.DioError catch (e) {
       print("DioError $e");
