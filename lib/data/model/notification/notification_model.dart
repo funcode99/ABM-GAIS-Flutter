@@ -11,6 +11,8 @@ class NotificationModel {
   String? url;
   String? idDoc;
   String? date;
+  String? codeDocument;
+  String? name;
 
   NotificationModel({
     this.id,
@@ -20,6 +22,8 @@ class NotificationModel {
     this.url,
     this.idDoc,
     this.date,
+    this.codeDocument,
+    this.name,
   });
 
   static NotificationModel fromJsonModel(Object? json) =>

@@ -15,6 +15,8 @@ NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) =>
       url: json['url'] as String?,
       idDoc: json['id_doc'] as String?,
       date: json['date'] as String?,
+      codeDocument: json['code_document'] as String?,
+      name: json['name'] as String?,
     );
 
 Map<String, dynamic> _$NotificationModelToJson(NotificationModel instance) =>
@@ -26,4 +28,6 @@ Map<String, dynamic> _$NotificationModelToJson(NotificationModel instance) =>
       'url': instance.url,
       'id_doc': instance.idDoc,
       'date': instance.date,
+      'code_document': instance.codeDocument,
+      'name': instance.name,
     };
