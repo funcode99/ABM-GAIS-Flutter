@@ -159,7 +159,7 @@ abstract class Repository {
     String gender,
   );
 
-  Future deletePurposeOfTrip(int id);
+  Future deletePurposeOfTrip(dynamic id);
 
   Future<GetGuestBytripModel> getGuestBytripList(String id);
 

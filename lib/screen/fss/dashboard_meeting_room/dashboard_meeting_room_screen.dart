@@ -287,8 +287,10 @@ class _DashboardMeetingRoomScreenState extends State<DashboardMeetingRoomScreen>
                   timeSlotViewSettings: const TimeSlotViewSettings(startHour: 9, endHour: 18),
                   dataSource: controller.events,
                   showCurrentTimeIndicator: false,
+                  dragAndDropSettings: DragAndDropSettings(
+                    allowScroll: false
+                  ),
                   showWeekNumber: false,
-                  headerStyle: CalendarHeaderStyle(textStyle: TextStyle(color: Colors.transparent)),
                   resourceViewSettings: ResourceViewSettings(),
                   monthViewSettings: MonthViewSettings(navigationDirection: MonthNavigationDirection.horizontal),
                 ))

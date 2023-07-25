@@ -11,7 +11,6 @@ import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_field.dart';
-import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
@@ -35,7 +34,7 @@ class RequestTripListScreen extends StatelessWidget {
             backgroundColor: baseColor,
             appBar: TopBar(
               title: Text("Request Trip", style: appTitle),
-              leading: CustomBackButton(onPressed: () => Get.off(HomeScreen(), arguments: 0)),
+              leading: CustomBackButton(onPressed: () => Get.off(const HomeScreen(), arguments: 0)),
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -68,8 +67,6 @@ class RequestTripListScreen extends StatelessWidget {
                                 },
                                 onPressedFilter: () {
                                   Get.bottomSheet(StatefulBuilder(builder: (context, setState) {
-                                    PersistentBottomSheetController _controller; // <------ Instance variable
-                                    final _scaffoldKey = GlobalKey<ScaffoldState>();
 
                                     return FilterBottomSheet(
                                       onApplyFilter: () {
@@ -165,7 +162,7 @@ class RequestTripListScreen extends StatelessWidget {
                                 pageInit: controller.currentPage,
                               ),
                               controller.isLoading
-                                  ? Container(height: Get.height / 2, child: const Center(child: CircularProgressIndicator()))
+                                  ? SizedBox(height: Get.height / 2, child: const Center(child: CircularProgressIndicator()))
                                   : controller.dataisnull == true
                                       ? SizedBox(height: Get.height / 2, child: const DataEmpty())
                                       : Container()
@@ -191,7 +188,7 @@ class RequestTripListScreen extends StatelessWidget {
                                   editAction: () => Get.to(
                                     const FormRequestTripScreen(),
                                     arguments: {
-                                      'id': controller.requestList[index].id?.toInt(),
+                                      'id': controller.requestList[index].id,
                                       'codeDocument': controller.requestList[index].idDocument,
                                     },
                                   )?.then((value) {
@@ -201,7 +198,7 @@ class RequestTripListScreen extends StatelessWidget {
                                   isDelete: true,
                                   deleteAction: () {
                                     controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
-                                    controller.delete(int.parse(controller.requestList[index].id.toString()));
+                                    controller.delete(controller.requestList[index].id.toString());
 
                                     controller.update();
                                   },
@@ -222,7 +219,7 @@ class RequestTripListScreen extends StatelessWidget {
                                                   alignment: Alignment.center,
                                                   height: 35,
                                                   width: 35,
-                                                  margin: EdgeInsets.symmetric(horizontal: 1),
+                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
                                                   // padding: EdgeInsets.all(10),
                                                   decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                                                   child: const Icon(Icons.groups, color: whiteColor),
@@ -233,7 +230,7 @@ class RequestTripListScreen extends StatelessWidget {
                                                   alignment: Alignment.center,
                                                   height: 35,
                                                   width: 35,
-                                                  margin: EdgeInsets.symmetric(horizontal: 1),
+                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
                                                   // padding: EdgeInsets.all(10),
                                                   decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                                                   child: SvgPicture.asset(
@@ -247,10 +244,10 @@ class RequestTripListScreen extends StatelessWidget {
                                                   alignment: Alignment.center,
                                                   height: 35,
                                                   width: 35,
-                                                  margin: EdgeInsets.symmetric(horizontal: 1),
+                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
                                                   // padding: EdgeInsets.all(10),
                                                   decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
-                                                  child: Icon(Icons.account_balance_wallet_rounded, color: whiteColor),
+                                                  child: const Icon(Icons.account_balance_wallet_rounded, color: whiteColor),
                                                 )
                                               : Container(),
                                           controller.requestList[index].documentReady?.otherTransportation == 1
@@ -258,7 +255,7 @@ class RequestTripListScreen extends StatelessWidget {
                                                   alignment: Alignment.center,
                                                   height: 35,
                                                   width: 35,
-                                                  margin: EdgeInsets.symmetric(horizontal: 1),
+                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
                                                   // padding: EdgeInsets.all(10),
                                                   decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                                                   child: SvgPicture.asset(
@@ -272,7 +269,7 @@ class RequestTripListScreen extends StatelessWidget {
                                                   alignment: Alignment.center,
                                                   height: 35,
                                                   width: 35,
-                                                  margin: EdgeInsets.symmetric(horizontal: 1),
+                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
                                                   // padding: EdgeInsets.all(10),
                                                   decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                                                   child: SvgPicture.asset(
@@ -286,7 +283,7 @@ class RequestTripListScreen extends StatelessWidget {
                                                   alignment: Alignment.center,
                                                   height: 35,
                                                   width: 35,
-                                                  margin: EdgeInsets.symmetric(horizontal: 1),
+                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
                                                   // padding: EdgeInsets.all(10),
                                                   decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                                                   child: SvgPicture.asset(

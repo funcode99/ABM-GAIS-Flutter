@@ -736,7 +736,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future deletePurposeOfTrip(int id) async {
+  Future deletePurposeOfTrip(dynamic id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {

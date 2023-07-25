@@ -139,7 +139,7 @@ class Data {
     _status = json['status'];
     _itemCount = json['item_count'];
   }
-  num? _id;
+  dynamic _id;
   num? _idEmployee;
   num? _typeCa;
   String? _noCa;

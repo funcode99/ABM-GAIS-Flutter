@@ -388,7 +388,7 @@ class Data2 {
     _documentReady = json['document_ready'] != null ? DocumentReady.fromJson(json['document_ready']) : null;
   }
 
-  num? _id;
+  dynamic _id;
   num? _idEmployee;
   String? _noRequestTrip;
   num? _idDocument;
@@ -478,7 +478,7 @@ class Data2 {
         documentReady: documentReady ?? _documentReady,
       );
 
-  num? get id => _id;
+  dynamic get id => _id;
 
   num? get idEmployee => _idEmployee;
 
