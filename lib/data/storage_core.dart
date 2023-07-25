@@ -12,6 +12,7 @@ class StorageCore {
   static const String siteName = "site";
   static const String siteID = "siteID";
   static const String roleName = "roleName";
+  static const String roleID = "roleID";
   static const String codeRole = "codeRole";
   static const String snEmployee = "sn";
 
