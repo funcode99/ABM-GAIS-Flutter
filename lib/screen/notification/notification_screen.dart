@@ -5,6 +5,7 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/screen/notification/notification_controller.dart';
+import 'package:gais/util/navigation/notification_navigation.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -98,6 +99,12 @@ class NotificationScreen extends StatelessWidget {
                                                   date: item.date ?? "",
                                                   name: item.name ?? "",
                                                   showIndicator: item.isViewed == 1,
+                                                  onClick: (){
+                                                    if(item.isViewed == 1){
+                                                      controller.updateNotificationStatus(item.idDocument);
+                                                    }
+                                                    NotificationNavigation.navigateToPage(codeDocument: item.codeDocument, id: item.idDocument);
+                                                  },
                                                 )
                                             )
                                           ],
@@ -149,6 +156,8 @@ class NotificationScreen extends StatelessWidget {
                                                 date: item.date ?? "",
                                                 name: item.name ?? "",
                                                 showIndicator: item.isViewed == 1,
+                                                onClick: (){
+                                                },
                                               )
                                           )
                                         ],
@@ -169,96 +178,100 @@ class NotificationScreen extends StatelessWidget {
 
 class NotificationItem extends StatelessWidget {
   const NotificationItem(
-      {super.key, required this.date, required this.text, required this.name, this.showIndicator = false});
+      {super.key, required this.date, required this.text, required this.name, this.showIndicator = false, this.onClick});
 
   final String name;
   final String date;
   final String text;
   final bool showIndicator;
+  final VoidCallback? onClick;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8)
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: 50,
-                width: 50,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.grey
-                ),
-              ),
-              if (showIndicator) Positioned(
-                left: 0,
-                child: Container(
-                  height: 20,
-                  width: 20,
+    return GestureDetector(
+      onTap: onClick,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8)
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Stack(
+              children: [
+                Container(
+                  height: 50,
+                  width: 50,
                   decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: redColor
+                      color: Colors.grey
                   ),
                 ),
-              ) else
-                const SizedBox(),
-            ],
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-          Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name ?? "",
-                    style: listTitleTextStyle.copyWith(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700
+                if (showIndicator) Positioned(
+                  left: 0,
+                  child: Container(
+                    height: 20,
+                    width: 20,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: redColor
                     ),
                   ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    "$date",
-                    style: listSubTitleTextStyle.copyWith(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500
+                ) else
+                  const SizedBox(),
+              ],
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name ?? "",
+                      style: listTitleTextStyle.copyWith(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    text,
-                    style: listSubTitleTextStyle.copyWith(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500
+                    const SizedBox(
+                      height: 4,
                     ),
-                  ),
-                ],
-              )
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-          Container(
-            height: 80,
-            alignment: Alignment.bottomRight,
-            child: const Icon(IconlyBold.logout, color: infoColor,),
-          )
-        ],
+                    Text(
+                      "$date",
+                      style: listSubTitleTextStyle.copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      text,
+                      style: listSubTitleTextStyle.copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500
+                      ),
+                    ),
+                  ],
+                )
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            Container(
+              height: 80,
+              alignment: Alignment.bottomRight,
+              child: const Icon(IconlyBold.logout, color: infoColor,),
+            )
+          ],
+        ),
       ),
     );
   }

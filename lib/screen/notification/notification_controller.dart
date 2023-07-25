@@ -127,6 +127,10 @@ class NotificationController extends BaseController with GetTickerProviderStateM
         });
   }
 
+  void updateNotificationStatus(String? id)async{
+    final result = await _repository.updateNotificationStatus(id);
+  }
+
   int unreadMessageCount(){
     int result = 0;
     /*for (var element in listNotification) {
@@ -158,5 +162,6 @@ class NotificationController extends BaseController with GetTickerProviderStateM
 
     return result;
   }
+
 
 }
