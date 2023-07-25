@@ -41,6 +41,8 @@ dependencies:
   path_provider: ^2.0.15
   permission_handler: ^10.4.1
   flutter_typeahead: ^4.6.2
+  syncfusion_flutter_calendar: ^21.2.3
+  calendar_view: ^1.0.3
 
 
 dev_dependencies:
