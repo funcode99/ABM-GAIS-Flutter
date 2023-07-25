@@ -3,6 +3,7 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/notification/notification_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/repository/notification/notification_repository.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +16,8 @@ class NotificationController extends BaseController{
   final totalPage = 1.obs;
   final currentPage = 1.obs;
   int limit = 10;
+
+  final isApproval = false.obs;
 
   @override
   void onInit() {
@@ -29,6 +32,9 @@ class NotificationController extends BaseController{
   }
 
   void initData()async{
+    String roleId = await storage.readString(StorageCore.siteID);
+    isApproval.value = roleId == "1" || roleId == "2" || roleId == "3" ? true : false;
+
   }
 
   void getNotification({int page = 1}) async {
@@ -48,9 +54,7 @@ class NotificationController extends BaseController{
           currentPage(1);
         },
             (r) {
-              listNotification.value = r;
-              listNotification.refresh();
-          /*paginationModel = r;
+          paginationModel = r;
           int tempTotalPage = (paginationModel!.total!/limit).ceil();
           totalPage(tempTotalPage);
           currentPage(paginationModel?.currentPage);
@@ -58,7 +62,7 @@ class NotificationController extends BaseController{
           listNotification.value = paginationModel!.data!
               .map((e) => NotificationModel.fromJson(e))
               .toList();
-          listNotification.refresh();*/
+          listNotification.refresh();
         });
   }
 
