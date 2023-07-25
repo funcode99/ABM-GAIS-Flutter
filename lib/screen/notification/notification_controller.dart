@@ -7,22 +7,43 @@ import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:get/get.dart';
 
-class NotificationController extends BaseController{
+enum NotificationTabEnum{
+  notification,
+  approval
+}
+class NotificationController extends BaseController with GetTickerProviderStateMixin{
+  late TabController tabController;
 
   final listNotification = <NotificationModel>[].obs;
+  final listNotificationApproval = <NotificationModel>[].obs;
 
   final NotificationRepository _repository = Get.find();
-  late PaginationModel? paginationModel;
+  PaginationModel? paginationModel;
   final totalPage = 1.obs;
   final currentPage = 1.obs;
   int limit = 10;
 
+  PaginationModel? paginationModelApproval;
+  final totalPageApproval = 1.obs;
+  final currentPageApproval = 1.obs;
+
   final isApproval = false.obs;
+  final tabs = <NotificationTabEnum>[].obs;
+  final totalNotification = 0.obs;
+  final totalNotificationApproval = 0.obs;
 
   @override
   void onInit() {
     super.onInit();
+    tabController = TabController(length: tabs.length, vsync: this);
     getNotification();
+    getNotificationApproval();
+  }
+
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
   }
 
   @override
@@ -32,8 +53,15 @@ class NotificationController extends BaseController{
   }
 
   void initData()async{
-    String roleId = await storage.readString(StorageCore.siteID);
+    String roleId = await storage.readString(StorageCore.roleID);
+
     isApproval.value = roleId == "1" || roleId == "2" || roleId == "3" ? true : false;
+
+    tabs.add(NotificationTabEnum.notification);
+    if(isApproval.value){
+      tabs.add(NotificationTabEnum.approval);
+    }
+    tabController = TabController(length: tabs.length, vsync: this);
 
   }
 
@@ -47,8 +75,8 @@ class NotificationController extends BaseController{
 
     result.fold(
             (l) {
-          Get.showSnackbar(
-              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+          /*Get.showSnackbar(
+              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));*/
           listNotification.clear();
           totalPage(1);
           currentPage(1);
@@ -59,11 +87,81 @@ class NotificationController extends BaseController{
           totalPage(tempTotalPage);
           currentPage(paginationModel?.currentPage);
 
+          totalNotification.value = paginationModel!.total!;
+
           listNotification.value = paginationModel!.data!
               .map((e) => NotificationModel.fromJson(e))
               .toList();
           listNotification.refresh();
         });
   }
+
+  void getNotificationApproval({int page = 1}) async {
+    final result = await _repository.getNotificationApproval(
+        data: {
+          "page" : page,
+          "perPage" : limit,
+        }
+    );
+
+    result.fold(
+            (l) {
+          /*Get.showSnackbar(
+              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+          listNotification.clear();*/
+          totalPageApproval(1);
+          currentPageApproval(1);
+        },
+            (r) {
+          paginationModelApproval = r;
+          int tempTotalPage = (paginationModelApproval!.total!/limit).ceil();
+          totalPageApproval(tempTotalPage);
+          currentPageApproval(paginationModelApproval?.currentPage);
+
+          totalNotificationApproval.value = paginationModelApproval!.total!;
+
+          listNotificationApproval.value = paginationModelApproval!.data!
+              .map((e) => NotificationModel.fromJson(e))
+              .toList();
+          listNotificationApproval.refresh();
+        });
+  }
+
+  void updateNotificationStatus(String? id)async{
+    final result = await _repository.updateNotificationStatus(id);
+  }
+
+  int unreadMessageCount(){
+    int result = 0;
+    /*for (var element in listNotification) {
+      if(element.isViewed==1){
+        result++;
+      }
+    }*/
+
+    if(paginationModel != null){
+      result = paginationModel?.total ?? 0;
+    }
+
+    print("RESULT $result");
+
+    return result;
+  }
+
+  int unreadMessageCountApproval(){
+    int result = 0;
+    /*for (var element in listNotificationApproval) {
+      if(element.isViewed==1){
+        result++;
+      }
+    }*/
+
+    if(paginationModelApproval != null){
+      result = paginationModelApproval?.total ?? 0;
+    }
+
+    return result;
+  }
+
 
 }
