@@ -101,7 +101,7 @@ class NotificationScreen extends StatelessWidget {
                                                   showIndicator: item.isViewed == 1,
                                                   onClick: (){
                                                     if(item.isViewed == 1){
-                                                      controller.updateNotificationStatus(item.idDocument);
+                                                      controller.updateNotificationStatus(item.id);
                                                     }
                                                     NotificationNavigation.navigateToPage(codeDocument: item.codeDocument, id: item.idDocument);
                                                   },
