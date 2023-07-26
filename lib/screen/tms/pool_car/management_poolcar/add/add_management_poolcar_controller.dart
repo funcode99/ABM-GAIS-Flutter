@@ -32,7 +32,7 @@ class AddManagementPoolCarController extends BaseController {
   List<driver.Data> driverList = [];
 
   int? carID = Get.arguments['id'];
-  int? companyID;
+  String? companyID;
   int? siteID;
   int? carTypeID;
   int? driverID;
@@ -118,8 +118,8 @@ class AddManagementPoolCarController extends BaseController {
         selectedStatus.text,
       )
           .then((value) {
-        Get.off(ManagementPoolCarListScreen());
-        Get.showSnackbar(GetSnackBar(
+        Get.off(const ManagementPoolCarListScreen());
+        Get.showSnackbar(const GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,
@@ -133,7 +133,7 @@ class AddManagementPoolCarController extends BaseController {
     } catch (e, i) {
       e.printError();
       i.printError();
-      Get.showSnackbar(GetSnackBar(
+      Get.showSnackbar(const GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -162,8 +162,8 @@ class AddManagementPoolCarController extends BaseController {
         selectedStatus.text,
       )
           .then((value) {
-        Get.off(ManagementPoolCarListScreen());
-        Get.showSnackbar(GetSnackBar(
+        Get.off(const ManagementPoolCarListScreen());
+        Get.showSnackbar(const GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,
@@ -177,7 +177,7 @@ class AddManagementPoolCarController extends BaseController {
     } catch (e, i) {
       e.printError();
       i.printError();
-      Get.showSnackbar(GetSnackBar(
+      Get.showSnackbar(const GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,

@@ -81,7 +81,7 @@ class DashboardMeetingRoomController extends BaseController {
     update();
   }
 
-  Future<void> listOfSite(int idCompany) async {
+  Future<void> listOfSite(String idCompany) async {
     loadSite = true;
     listSite = [];
     await repository.getSiteListByCompanyID(idCompany).then((value) => listSite.addAll(value.data?.toSet().toList() ?? []));

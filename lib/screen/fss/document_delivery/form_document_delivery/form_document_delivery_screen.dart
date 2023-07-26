@@ -321,7 +321,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   value: controller.receiverCompanyID.toString(),
                                   onChanged: (value) {
                                     controller.receiverCompanyID = value!.toInt();
-                                    controller.fetchLocationList(value.toInt());
+                                    controller.fetchLocationList(value);
                                     controller.update();
                                   },
                                 ),

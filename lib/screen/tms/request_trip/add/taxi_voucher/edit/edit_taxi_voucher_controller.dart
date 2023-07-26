@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 
 class EditTaxiVoucherController extends BaseController {
   String purposeID = Get.arguments['purposeID'];
-  int tvID = Get.arguments['id'];
+  String tvID = Get.arguments['id'];
   bool? formEdit = Get.arguments['formEdit'];
 
   DateFormat dateFormat = DateFormat("dd-MM-yyyy");

@@ -384,7 +384,7 @@ class FormRequestTripController extends BaseController {
     }
   }
 
-  Future<void> deleteAirliness(int id) async {
+  Future<void> deleteAirliness(String id) async {
     try {
       await repository.deleteAirliness(id).then((value) {
         fetchList();
@@ -417,7 +417,7 @@ class FormRequestTripController extends BaseController {
     }
   }
 
-  Future<void> deleteTaxiVoucher(int id) async {
+  Future<void> deleteTaxiVoucher(String id) async {
     try {
       await repository.deleteTaxiVoucher(id).then((value) {
         fetchList();
@@ -450,7 +450,7 @@ class FormRequestTripController extends BaseController {
     }
   }
 
-  Future<void> deleteOtherTransport(int id) async {
+  Future<void> deleteOtherTransport(String id) async {
     try {
       await repository.deleteOtherTransportation(id).then((value) {
         fetchList();
@@ -483,7 +483,7 @@ class FormRequestTripController extends BaseController {
     }
   }
 
-  Future<void> deleteAccommodation(int id) async {
+  Future<void> deleteAccommodation(String id) async {
     try {
       await repository.deleteAccommodation(id).then((value) {
         fetchList();

@@ -13,7 +13,7 @@ class CheckScheduleController extends BaseController {
   int? codeDocument = Get.arguments['codeDocument'];
   int? departure = Get.arguments['departure'];
   int? arrival = Get.arguments['arrival'];
-  int? airlinessID = Get.arguments['id'];
+  String? airlinessID = Get.arguments['id'];
   bool? formEdit = Get.arguments['formEdit'];
 
   List listOfDates = [];
@@ -27,7 +27,9 @@ class CheckScheduleController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    daysInMonth(DateTime(DateTime.now().month));
+    daysInMonth(DateTime(DateTime
+        .now()
+        .month));
     Future.wait([fetchList()]);
   }
 
@@ -41,9 +43,13 @@ class CheckScheduleController extends BaseController {
   int daysInMonth(DateTime date) {
     var initialDate = new DateTime.now();
     var nextDate = new DateTime.now().add(Duration(days: 4));
-    listOfDates = new List<String>.generate(nextDate.difference(initialDate).inDays,
-        (i) => "${DateFormat("MMM").format(DateTime.now())} ${int.parse(DateFormat("dd").format(DateTime.now())) + i}");
-    return nextDate.difference(initialDate).inDays;
+    listOfDates = new List<String>.generate(nextDate
+        .difference(initialDate)
+        .inDays,
+            (i) => "${DateFormat("MMM").format(DateTime.now())} ${int.parse(DateFormat("dd").format(DateTime.now())) + i}");
+    return nextDate
+        .difference(initialDate)
+        .inDays;
   }
 
   Future<void> fetchList() async {
@@ -81,31 +87,30 @@ class CheckScheduleController extends BaseController {
     }
   }
 
-  Future<void> selectAirlines(
-    String idFlight,
-    String codeAirliness,
-    String flightNo,
-    String price,
-  ) async {
+  Future<void> selectAirlines(String idFlight,
+      String codeAirliness,
+      String flightNo,
+      String price,) async {
     if (airlinessID != null) {
       try {
         await repository
             .updateAirlines(
-              airlinessID!,
-              purposeID.toString(),
-              idFlight,
-              flightNo, // flight_no
-              codeAirliness, // code airliness
-              price.digitOnly(), // ticket price
-            )
+          airlinessID!,
+          purposeID.toString(),
+          idFlight,
+          flightNo, // flight_no
+          codeAirliness, // code airliness
+          price.digitOnly(), // ticket price
+        )
             .then(
-              (value) => formEdit == true
-                  ? Get.off(FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
-                  : Get.off(
-                      const AirlinessScreen(),
-                      arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit},
-                    ),
-            );
+              (value) =>
+          formEdit == true
+              ? Get.off(FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+              : Get.off(
+            const AirlinessScreen(),
+            arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit},
+          ),
+        );
       } catch (e, i) {
         e.printError();
         i.printError();
@@ -126,15 +131,15 @@ class CheckScheduleController extends BaseController {
       try {
         await repository
             .saveAirlines(
-              purposeID.toString(),
-              idFlight,
-              "QG828", // flight_no
-              "QG", // code airliness
-              "899000", // ticket price
-            )
+            purposeID.toString(),
+            idFlight,
+            flightNo, // flight_no
+            codeAirliness, // code airliness
+            price.digitOnly(), // ticket price
+        )
             .then(
               (value) => Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
-            );
+        );
       } catch (e) {
         Get.showSnackbar(
           const GetSnackBar(

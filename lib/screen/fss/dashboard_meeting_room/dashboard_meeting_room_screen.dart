@@ -196,7 +196,7 @@ class _DashboardMeetingRoomScreenState extends State<DashboardMeetingRoomScreen>
                                   .toList(),
                               onChanged: (value) {
                                 controller.selectedCompany = value?.toInt();
-                                controller.listOfSite(value!.toInt());
+                                controller.listOfSite(value!);
                                 controller.update();
                               },
                             ),

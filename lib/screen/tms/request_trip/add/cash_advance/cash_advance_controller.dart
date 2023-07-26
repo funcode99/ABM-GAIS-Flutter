@@ -37,9 +37,9 @@ class CashAdvanceController extends BaseController {
     try {
       await repository.submitRequestTrip(purposeID).then((value) {
         formEdit == true
-            ? Get.off(FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
-            : Get.offAll(RequestTripListScreen());
-        Get.showSnackbar(GetSnackBar(
+            ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+            : Get.offAll(const RequestTripListScreen());
+        Get.showSnackbar(const GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -51,7 +51,7 @@ class CashAdvanceController extends BaseController {
         ));
       });
     } catch (e) {
-      Get.showSnackbar(GetSnackBar(
+      Get.showSnackbar(const GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -64,11 +64,11 @@ class CashAdvanceController extends BaseController {
     }
   }
 
-  Future<void> delete(int id) async {
+  Future<void> delete(String id) async {
     try {
       await repository.deleteCashAdvanceTravel(id).then((value) {
         fetchList();
-        Get.showSnackbar(GetSnackBar(
+        Get.showSnackbar(const GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -81,7 +81,7 @@ class CashAdvanceController extends BaseController {
       });
       update();
     } catch (e) {
-      Get.showSnackbar(GetSnackBar(
+      Get.showSnackbar(const GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,

@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class EditAccommodationController extends BaseController {
-  int id = Get.arguments['id'];
+  String id = Get.arguments['id'];
   String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
   bool? formEdit = Get.arguments['formEdit'];
@@ -107,12 +107,12 @@ class EditAccommodationController extends BaseController {
     } catch (e) {
       e.printError();
     }
-    print("selected city : ${selectedCity}");
+    print("selected city : $selectedCity");
   }
 
   Future<void> check() async {
     Get.off(
-      CheckAccommodationScreen(),
+      const CheckAccommodationScreen(),
       arguments: {
         'purposeID': purposeID,
         'codeDocument': codeDocument,
@@ -121,7 +121,7 @@ class EditAccommodationController extends BaseController {
         'checkOut': checkoutDate.text,
         'accommodationType': int.parse(accommodationType.toString()),
         'useGL': createGL == true ? "1" : "0",
-        'sharingName': sharingName.text ?? "",
+        'sharingName': sharingName.text,
         'remarks': remarks.text,
         'isEdit': true,
         'id': id,

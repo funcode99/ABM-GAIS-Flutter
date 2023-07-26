@@ -17,7 +17,7 @@ class AddCashAdvanceTravelController extends BaseController {
   String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
   bool? formEdit = Get.arguments['formEdit'];
-  int? idCA = Get.arguments['id'];
+  String? idCA = Get.arguments['id'];
 
   final formKey = GlobalKey<FormState>();
   final TextEditingController notes = TextEditingController();
@@ -55,9 +55,9 @@ class AddCashAdvanceTravelController extends BaseController {
 
   Future<void> fetchEditValue() async {
     await repository.getCashAdvanceTravelByid(idCA!).then((value) {
-      travellerName.text = value.data?.first?.employeeName ?? "";
-      notes.text = value.data?.first?.remarks ?? "";
-      selectedCurrency = value.data?.first?.idCurrency?.toInt();
+      travellerName.text = value.data?.first.employeeName ?? "";
+      notes.text = value.data?.first.remarks ?? "";
+      selectedCurrency = value.data?.first.idCurrency?.toInt();
       currentCurrency = value.data?.first.idCurrency.toString();
       totalController.text = value.data?.first.grandTotal ?? "";
       codeStatus = value.data?.first.codeStatusDoc?.toInt();
@@ -183,12 +183,12 @@ class AddCashAdvanceTravelController extends BaseController {
           //update list
           if (formEdit == true) {
             Get.off(
-                  () => FormRequestTripScreen(),
+                  () => const FormRequestTripScreen(),
               arguments: {'id': purposeID, 'codeDocument': codeDocument},
             );
           } else {
             Get.off(
-                  () => CashAdvanceScreen(),
+                  () => const CashAdvanceScreen(),
               arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit},
             );
           }
@@ -197,7 +197,7 @@ class AddCashAdvanceTravelController extends BaseController {
     } catch (e) {
       e.printError();
       Get.showSnackbar(
-        GetSnackBar(
+        const GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,
@@ -227,12 +227,12 @@ class AddCashAdvanceTravelController extends BaseController {
           .then((value) {
         if (formEdit == true) {
           Get.off(
-            () => FormRequestTripScreen(),
+            () => const FormRequestTripScreen(),
             arguments: {'id': purposeID, 'codeDocument': codeDocument},
           );
         } else {
           Get.off(
-            () => CashAdvanceScreen(),
+            () => const CashAdvanceScreen(),
             arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit},
           );
         }

@@ -44,7 +44,7 @@ abstract class DocumentDeliveryRepository {
     int codeStatusDoc,
   );
 
-  Future delete(int id);
+  Future delete(String id);
 
   Future<SubmitDocumentDeliveryModel> submit(int id);
 }

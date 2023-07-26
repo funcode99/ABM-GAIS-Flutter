@@ -39,11 +39,6 @@ class DocumentDeliveryListController extends BaseController {
     Future.wait([fetchData(), fetchList(1)]);
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   void resetFilter() {
     formKey.currentState?.reset();
     filterStatus = "-1";
@@ -93,7 +88,7 @@ class DocumentDeliveryListController extends BaseController {
       ddList.addAll(ddModel?.data?.data?.toSet().toList() ?? []);
       isLoading = false;
       searchNotFound = ddModel?.data?.data?.isEmpty ?? false;
-      dataisnull = ddList.isEmpty ?? false;
+      dataisnull = ddList.isEmpty;
       print("data null $dataisnull");
       print("reqList: ${ddList.length.toString()}");
       update();
@@ -106,11 +101,11 @@ class DocumentDeliveryListController extends BaseController {
     }
   }
 
-  Future<void> deleteDocumentDelivery(int id) async {
+  Future<void> deleteDocumentDelivery(String id) async {
     isLoading = true;
     try {
       await documentDelivery.delete(id).then((value) {
-        Get.showSnackbar(GetSnackBar(
+        Get.showSnackbar(const GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -125,7 +120,7 @@ class DocumentDeliveryListController extends BaseController {
       isLoading = false;
       update();
     } catch (e) {
-      Get.showSnackbar(GetSnackBar(
+      Get.showSnackbar(const GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,

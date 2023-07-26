@@ -32,7 +32,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
             backgroundColor: baseColor,
             appBar: TopBar(
               title: Text("Document Delivery", style: appTitle),
-              leading: CustomBackButton(onPressed: ()=> Get.off(HomeScreen(), arguments: 0),),
+              leading: CustomBackButton(onPressed: ()=> Get.off(const HomeScreen(), arguments: 0),),
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -153,7 +153,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                 pageInit: controller.currentPage,
                               ),
                               controller.isLoading
-                                  ? Container(height: Get.height / 2, child: const Center(child: CircularProgressIndicator()))
+                                  ? SizedBox(height: Get.height / 2, child: const Center(child: CircularProgressIndicator()))
                                   : controller.dataisnull
                                       ? SizedBox(height: Get.height / 2, child: const DataEmpty())
                                       : Container()
@@ -188,7 +188,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                   isDelete: controller.ddList[index].codeStatusDoc == 3 ? false : true,
                                   deleteAction: () {
                                     controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
-                                    controller.deleteDocumentDelivery(int.parse(controller.ddList[index].id.toString()));
+                                    controller.deleteDocumentDelivery(controller.ddList[index].id.toString());
 
                                     controller.update();
                                   },
@@ -196,33 +196,33 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         width: Get.width/3,
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text("Receiver", style: listTitleTextStyle),
-                                            Text(controller.ddList[index].receiverName.toString() ?? "", style: listSubTitleTextStyle)
+                                            Text(controller.ddList[index].receiverName.toString(), style: listSubTitleTextStyle)
                                           ],
                                         ),
                                       ),
-                                      Container(
+                                      SizedBox(
                                         width: Get.width/4,
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text("Sender", style: listTitleTextStyle),
-                                            Text(controller.ddList[index].senderName.toString() ?? "", style: listSubTitleTextStyle)
+                                            Text(controller.ddList[index].senderName.toString(), style: listSubTitleTextStyle)
                                           ],
                                         ),
                                       ),
-                                      Container(
+                                      SizedBox(
                                         width: Get.width/3.8,
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text("Location", style: listTitleTextStyle),
-                                            Text("${controller.ddList[index].nameSiteSender} - ${controller.ddList[index].nameSiteReceiver.toString() ?? " "}", style: listSubTitleTextStyle)
+                                            Text("${controller.ddList[index].nameSiteSender} - ${controller.ddList[index].nameSiteReceiver.toString()}", style: listSubTitleTextStyle)
                                           ],
                                         ),
                                       ),
@@ -242,14 +242,14 @@ class DocumentDeliveryListScreen extends StatelessWidget {
               ),
             ),
             floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.add_rounded, size: 45),
               backgroundColor: successColor,
-              onPressed: () => Get.to(AddDocumentDeliveryScreen())?.then((value) {
+              onPressed: () => Get.to(const AddDocumentDeliveryScreen())?.then((value) {
                 controller.fetchList(1);
                 controller.update();
               }),
+              child: const Icon(Icons.add_rounded, size: 45),
             ),
-            bottomNavigationBar: BottomBar(menu: 0),
+            bottomNavigationBar: const BottomBar(menu: 0),
           );
         });
   }

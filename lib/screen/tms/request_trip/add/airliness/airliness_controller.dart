@@ -49,7 +49,7 @@ class AirlinessController extends BaseController {
     }
   }
 
-  Future<void> delete(int id) async {
+  Future<void> delete(String id) async {
     isLoading = true;
     try {
       await repository.deleteAirliness(id).then((value) {

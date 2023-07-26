@@ -1,12 +1,10 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_employee_model.dart' as receiver;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
-import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/screen/fss/document_delivery/document_delivery_list/document_delivery_list_screen.dart';
 import 'package:get/get.dart';
 
@@ -35,6 +33,7 @@ class AddDocumentDeliveryController extends BaseController {
   List<comp.Data> companyList = [];
   List<site.Data> locationList = [];
   List<comp.Data> receiverCompanyList = [];
+
   // List<site.Data> locationList = [];
 
   @override
@@ -67,9 +66,9 @@ class AddDocumentDeliveryController extends BaseController {
     update();
   }
 
-      // await repository.getCompanyList().then((value) {
-      //   receiverCompanyList.addAll(value.data?.toSet().toList() ?? []);
-  Future<void> fetchLocationList(int id) async {
+  // await repository.getCompanyList().then((value) {
+  //   receiverCompanyList.addAll(value.data?.toSet().toList() ?? []);
+  Future<void> fetchLocationList(String id) async {
     loadLocation = true;
     locationList = [];
     try {
@@ -122,8 +121,8 @@ class AddDocumentDeliveryController extends BaseController {
         remarks.text,
       )
           .then((value) {
-        Get.off(DocumentDeliveryListScreen());
-        Get.showSnackbar(GetSnackBar(
+        Get.off(const DocumentDeliveryListScreen());
+        Get.showSnackbar(const GetSnackBar(
           icon: Icon(
             Icons.error,
             color: Colors.white,
@@ -137,7 +136,7 @@ class AddDocumentDeliveryController extends BaseController {
     } catch (e, i) {
       e.printError();
       i.printError();
-      Get.showSnackbar(GetSnackBar(
+      Get.showSnackbar(const GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,

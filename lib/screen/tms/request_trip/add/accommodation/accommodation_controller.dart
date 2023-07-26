@@ -34,11 +34,11 @@ class AccommodationController extends BaseController {
     }
   }
 
-  Future<void> delete(int id) async {
+  Future<void> delete(String id) async {
     try {
       await repository.deleteAccommodation(id).then((value) {
         fetchList();
-        GetSnackBar(
+        const GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -51,7 +51,7 @@ class AccommodationController extends BaseController {
       });
       update();
     } catch (e) {
-      GetSnackBar(
+      const GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,

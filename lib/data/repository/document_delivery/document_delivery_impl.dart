@@ -16,7 +16,7 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
   final storageSecure = const FlutterSecureStorage();
 
   @override
-  Future delete(int id) async {
+  Future delete(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {

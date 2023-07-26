@@ -23,12 +23,12 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
           return Scaffold(
             appBar: TopBar(
               title: Text("List Document Delivery", style: appTitle),
-              leading: CustomBackButton(),
+              leading: const CustomBackButton(),
             ),
             body: Container(
-              margin: EdgeInsets.only(top: 6, left: 7, right: 7),
-              padding: EdgeInsets.only(top: 18),
-              decoration: BoxDecoration(
+              margin: const EdgeInsets.only(top: 6, left: 7, right: 7),
+              padding: const EdgeInsets.only(top: 18),
+              decoration: const BoxDecoration(
                 color: whiteColor,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(8),
@@ -47,15 +47,15 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.only(bottom: 10),
+                              margin: const EdgeInsets.only(bottom: 10),
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.all(8),
-                                      margin: EdgeInsets.symmetric(horizontal: 5),
-                                      decoration: BoxDecoration(
+                                      padding: const EdgeInsets.all(8),
+                                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                                      decoration: const BoxDecoration(
                                           color: successColor,
                                           borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(8),
@@ -63,7 +63,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                             bottomLeft: Radius.circular(24),
                                             bottomRight: Radius.circular(8),
                                           )),
-                                      child: Row(
+                                      child: const Row(
                                         children: [
                                           Text("Created", style: TextStyle(color: whiteColor)),
                                           Icon(
@@ -75,11 +75,11 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       child: Container(
-                                        padding: EdgeInsets.all(8),
-                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                                        padding: const EdgeInsets.all(8),
+                                        margin: const EdgeInsets.symmetric(horizontal: 5),
                                         decoration: BoxDecoration(
                                             color: controller.isReceived ? successColor : whiteColor,
-                                            borderRadius: BorderRadius.only(
+                                            borderRadius: const BorderRadius.only(
                                               topLeft: Radius.circular(8),
                                               topRight: Radius.circular(8),
                                               bottomLeft: Radius.circular(24),
@@ -90,7 +90,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                           children: [
                                             Text("Received", style: TextStyle(color: controller.isReceived ? whiteColor : blackColor)),
                                             controller.isReceived
-                                                ? Icon(
+                                                ? const Icon(
                                               Icons.check_circle_outline_sharp,
                                               color: whiteColor,
                                             )
@@ -108,11 +108,11 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       child: Container(
-                                        padding: EdgeInsets.all(8),
-                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                                        padding: const EdgeInsets.all(8),
+                                        margin: const EdgeInsets.symmetric(horizontal: 5),
                                         decoration: BoxDecoration(
                                             color: controller.isDelivering ? successColor : whiteColor,
-                                            borderRadius: BorderRadius.only(
+                                            borderRadius: const BorderRadius.only(
                                               topLeft: Radius.circular(8),
                                               topRight: Radius.circular(8),
                                               bottomLeft: Radius.circular(24),
@@ -123,7 +123,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                           children: [
                                             Text("Delivering", style: TextStyle(color: controller.isDelivering ? whiteColor : blackColor)),
                                             controller.isDelivering
-                                                ? Icon(
+                                                ? const Icon(
                                               Icons.check_circle_outline_sharp,
                                               color: whiteColor,
                                             )
@@ -140,11 +140,11 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                       },
                                     ),
                                     Container(
-                                      padding: EdgeInsets.all(8),
-                                      margin: EdgeInsets.symmetric(horizontal: 5),
+                                      padding: const EdgeInsets.all(8),
+                                      margin: const EdgeInsets.symmetric(horizontal: 5),
                                       decoration: BoxDecoration(
                                           color: controller.isDelivered ? successColor : whiteColor,
-                                          borderRadius: BorderRadius.only(
+                                          borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(8),
                                             topRight: Radius.circular(8),
                                             bottomLeft: Radius.circular(24),
@@ -155,7 +155,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                         children: [
                                           Text("Delivered", style: TextStyle(color: controller.isDelivered ? whiteColor : blackColor)),
                                           controller.isDelivered
-                                              ? Icon(
+                                              ? const Icon(
                                             Icons.check_circle_outline_sharp,
                                             color: whiteColor,
                                           )
@@ -189,7 +189,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                           : null;
                                       controller.update();
                                     } else {
-                                      Get.showSnackbar(GetSnackBar(
+                                      Get.showSnackbar(const GetSnackBar(
                                         icon: Icon(
                                           Icons.error,
                                           color: Colors.white,
@@ -235,14 +235,14 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                 isRequired: true,
                                 readOnly: true,
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               CustomTextFormField(
                                 controller: controller.createdBy,
                                 label: "Created By",
                                 isRequired: true,
                                 readOnly: true,
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               controller.codeStatusDoc == 3
                                   ? CustomTextFormField(
                                 controller: controller.receivedBy,
@@ -251,7 +251,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                 readOnly: true,
                               )
                                   : Container(),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                             ],
                           ),
                         );
@@ -265,7 +265,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                       minHeight: 50,
                       maxHeight: 32,
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: infoColor,
                           borderRadius: BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
                         ),
@@ -273,15 +273,15 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                           children: [
                             Container(
                               alignment: Alignment.center,
-                              margin: EdgeInsets.only(top: 10, left: 5),
+                              margin: const EdgeInsets.only(top: 10, left: 5),
                               width: 100,
                               height: 50,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: whiteColor,
                                 borderRadius: BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
                                 gradient: LinearGradient(stops: [0.1, 0], colors: [blackColor, whiteColor]),
                               ),
-                              child: Text("Detail"),
+                              child: const Text("Detail"),
                             ),
                           ],
                         ),
@@ -299,15 +299,15 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 CustomTextFormField(
                                   controller: controller.sender,
                                   label: "Sender",
                                   isRequired: true,
                                   readOnly: true,
                                 ),
-                                SizedBox(height: 8),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 CustomDropDownFormField(
                                   label: "Receiver Company",
                                   hintText: controller.loadCompany ? "Loading..." : "Receiver Company",
@@ -323,11 +323,11 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                   value: controller.receiverCompanyID.toString(),
                                   onChanged: (value) {
                                     controller.receiverCompanyID = value!.toInt();
-                                    controller.fetchLocationList(value!.toInt());
+                                    controller.fetchLocationList(value!);
                                     controller.update();
                                   },
                                 ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 CustomDropDownFormField(
                                   label: "Location",
                                   hintText: controller.loadLocation ? "Loading..." : "Location",
@@ -347,7 +347,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                     controller.update();
                                   },
                                 ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 CustomDropDownFormField(
                                   items: controller.receiverList
                                       .map((e) => DropdownMenuItem(
@@ -374,24 +374,24 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                     controller.update();
                                   },
                                 ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 CustomTextFormField(
                                   controller: controller.subjectDocument,
                                   label: "Subject Document",
                                   isRequired: true,
                                   readOnly: true,
                                 ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 CustomTextFormField(
                                   controller: controller.attachment,
                                   label: "Attachment (Optional)",
-                                  suffixIcon: true ? null : Icon(Icons.upload),
+                                  suffixIcon: true ? null : const Icon(Icons.upload),
                                   readOnly: true,
                                   onTap: () {
                                     if (controller.isEdit == true) controller.getSingleFile();
                                   },
                                 ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 CustomTextFormField(
                                   controller: controller.remarks,
                                   label: "Remarks",
@@ -409,7 +409,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                 ],
               ),
             ),
-            bottomNavigationBar: BottomBar(menu: 0),
+            bottomNavigationBar: const BottomBar(menu: 0),
           );
         });
   }

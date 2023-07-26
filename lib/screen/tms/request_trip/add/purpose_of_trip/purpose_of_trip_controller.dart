@@ -14,7 +14,7 @@ import 'package:intl/intl.dart';
 class PurposeOfTripController extends BaseController {
   int? requestorID;
   int? siteID;
-  int? jobID;
+  String? jobID;
 
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy/MM/dd");
@@ -103,7 +103,7 @@ class PurposeOfTripController extends BaseController {
     await storage.readEmployeeInfo().then((value) {
       // requsetorID = value.first.id?.toInt();
       siteID = value.first.idSite?.toInt();
-      jobID = value.first.idJobBand?.toInt();
+      jobID = value.first.idJobBand.toString();
     });
 
     var dataCity = await repository.getCityList();
@@ -131,7 +131,7 @@ class PurposeOfTripController extends BaseController {
   }
 
   Future<void> getZonaCity() async {
-    var datazona = await repository.getZonaByIDCity(int.parse(toCity!));
+    var datazona = await repository.getZonaByIDCity(toCity!);
     zona.text = datazona.data?.first.zonaName ?? "";
     zonaID = datazona.data?.first.idZona.toString() ?? "";
     print("Zona : ${datazona.data?.first.idZona}");

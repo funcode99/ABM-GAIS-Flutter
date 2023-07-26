@@ -27,13 +27,13 @@ class OtherTransportScreen extends StatelessWidget {
             appBar: AppBar(
               title: Text("Request Trip", style: appTitle),
               centerTitle: true,
-              leading: CustomBackButton(),
-              flexibleSpace: TopBar(),
+              leading: const CustomBackButton(),
+              flexibleSpace: const TopBar(),
             ),
             body: Container(
               alignment: Alignment.topCenter,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.all(7),
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(7),
               decoration: BoxDecoration(
                 color: whiteColor,
                 borderRadius: BorderRadius.circular(8),
@@ -51,7 +51,7 @@ class OtherTransportScreen extends StatelessWidget {
                       child: SvgPicture.asset(ImageConstant.car, height: 25),
                     ),
                     Text("Other Transportation", style: appTitle),
-                    SizedBox(height: 14),
+                    const SizedBox(height: 14),
                     Column(
                       children: controller.otList
                           .mapIndexed(
@@ -62,17 +62,16 @@ class OtherTransportScreen extends StatelessWidget {
                               status: e.status.toString(),
                               info: e.cityName.toString(),
                               isEdit: true,
-                              editAction: () => Get.to(EditOtherTransportScreen(), arguments: {
+                              editAction: () => Get.to(const EditOtherTransportScreen(), arguments: {
                                 'purposeID': controller.purposeID,
                                 'codeDocument': controller.codeDocument,
                                 'otID': e.id,
                               })?.then((result) {
                                 controller.fetchList();
                                 controller.update();
-                                print(result);
                               }),
                               isDelete: true,
-                              deleteAction: () => controller.delete(int.parse(e.id.toString())),
+                              deleteAction: () => controller.delete(e.id.toString()),
                               content: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -103,7 +102,7 @@ class OtherTransportScreen extends StatelessWidget {
                           )
                           .toList(),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 50),
                       child: CustomFilledButton(
@@ -111,11 +110,10 @@ class OtherTransportScreen extends StatelessWidget {
                         title: "Add Other Transportation",
                         icon: Icons.add,
                         onPressed: () =>
-                            Get.to(AddOtherTransportScreen(), arguments: {'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument})
+                            Get.to(const AddOtherTransportScreen(), arguments: {'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument})
                                 ?.then((result) {
                           controller.fetchList();
                           controller.update();
-                          print(result);
                         }),
                       ),
                     ),
@@ -135,7 +133,7 @@ class OtherTransportScreen extends StatelessWidget {
                                 width: 100,
                                 color: infoColor,
                                 title: "Draft",
-                                onPressed: () => Get.offAll(FormRequestTripScreen(), arguments: {
+                                onPressed: () => Get.offAll(const FormRequestTripScreen(), arguments: {
                                   'id': controller.purposeID,
                                   'codeDocument': controller.codeDocument,
                                 }),
@@ -166,7 +164,7 @@ class OtherTransportScreen extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: BottomBar(menu: 0),
+            bottomNavigationBar: const BottomBar(menu: 0),
           );
         });
   }

@@ -503,7 +503,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                             });
                                                           },
                                                           isDelete: controller.isEdit,
-                                                          deleteAction: () => controller.deleteAirliness(int.parse(e.id.toString())),
+                                                          deleteAction: () => controller.deleteAirliness(e.id.toString()),
                                                           content: Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                             children: [
@@ -562,7 +562,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                               controller.update();
                                                             }),
                                                             isDelete: controller.isEdit,
-                                                            deleteAction: () => controller.deleteTaxiVoucher(int.parse(e.id.toString())),
+                                                            deleteAction: () => controller.deleteTaxiVoucher(e.id.toString()),
                                                             content: Row(
                                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                               children: [
@@ -618,7 +618,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                   controller.update();
                                                                 }),
                                                                 isDelete: controller.isEdit,
-                                                                deleteAction: () => controller.deleteOtherTransport(int.parse(e.id.toString())),
+                                                                deleteAction: () => controller.deleteOtherTransport(e.id.toString()),
                                                                 content: Row(
                                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                   children: [

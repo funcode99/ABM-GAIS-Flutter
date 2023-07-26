@@ -87,7 +87,7 @@ class ListDocumentDeliveryController extends BaseController{
       ddList.addAll(ddModel?.data?.data?.toSet().toList() ?? []);
       isLoading = false;
       searchNotFound = ddModel?.data?.data?.isEmpty ?? false;
-      dataisnull = ddList.isEmpty ?? false;
+      dataisnull = ddList.isEmpty;
       print("data null $dataisnull");
       print("reqList: ${ddList.length.toString()}");
       update();
@@ -100,7 +100,7 @@ class ListDocumentDeliveryController extends BaseController{
     }
   }
 
-  Future<void> deleteDocumentDelivery(int id) async {
+  Future<void> deleteDocumentDelivery(String id) async {
     isLoading = true;
     try {
       await documentDelivery.delete(id).then((value) {

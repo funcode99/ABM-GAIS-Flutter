@@ -35,10 +35,10 @@ class OtherTransportController extends BaseController {
     }
   }
 
-  Future<void> delete(int id) async {
+  Future<void> delete(String id) async {
     try {
       await repository.deleteOtherTransportation(id).then((value) => fetchList()).then((value) => Get.showSnackbar(
-            GetSnackBar(
+            const GetSnackBar(
               icon: Icon(
                 Icons.error,
                 color: Colors.white,
@@ -69,8 +69,8 @@ class OtherTransportController extends BaseController {
   Future<void> submit() async {
     try {
       await repository.submitRequestTrip(purposeID).then((value) {
-        Get.offAll(RequestTripListScreen());
-        GetSnackBar(
+        Get.offAll(const RequestTripListScreen());
+        const GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -83,7 +83,7 @@ class OtherTransportController extends BaseController {
       });
       update();
     } catch (e) {
-      GetSnackBar(
+      const GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -100,7 +100,7 @@ class OtherTransportController extends BaseController {
     if (formEdit == true) {
       Get.back();
     } else {
-      Get.to(AccommodationScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument});
+      Get.to(const AccommodationScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument});
     }
   }
 }

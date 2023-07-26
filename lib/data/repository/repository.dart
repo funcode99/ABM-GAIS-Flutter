@@ -67,17 +67,17 @@ abstract class Repository {
 
   Future<GetCityModel> getCityList();
 
-  Future<GetZonaByidModel> getZonaByIDCity(int id);
+  Future<GetZonaByidModel> getZonaByIDCity(String id);
 
   Future<GetSiteModel> getSiteList();
 
-  Future<GetSiteModel> getSiteListByCompanyID(int id);
+  Future<GetSiteModel> getSiteListByCompanyID(String id);
 
   Future<GetHotelModel> getHotelList();
 
   Future<GetCurrencyModel> getCurrencyList();
 
-  Future<GetTlkJobModel> getTLKJobByIDJob(int job);
+  Future<GetTlkJobModel> getTLKJobByIDJob(String job);
 
   Future<SavePurposeOfTripModel> saveRequestTrip(
     String employeeID,
@@ -192,9 +192,9 @@ abstract class Repository {
 
   Future<GetTaxiVoucherModel> getTaxiVoucherBytripList(String id);
 
-  Future<GetTaxiVoucherModel> getTaxiVoucherByid(int id);
+  Future<GetTaxiVoucherModel> getTaxiVoucherByid(String id);
 
-  Future deleteTaxiVoucher(int id);
+  Future deleteTaxiVoucher(String id);
 
   Future<StatusDocumentModel> getStatusDoc();
 
@@ -207,7 +207,7 @@ abstract class Repository {
   );
 
   Future<UpdateAirlinessModel> updateAirlines(
-    int id,
+    String id,
     String idRequestTrip,
     String idVendor,
     String flightNo,
@@ -215,13 +215,13 @@ abstract class Repository {
     String ticketPrice,
   );
 
-  Future deleteAirliness(int id);
+  Future deleteAirliness(String id);
 
   Future<GetAirlinessVendorModel> getAirlinessVendorList();
 
   Future<GetAirlinessModel> getAirlinessBytripList();
 
-  Future<GetAirlinessModel> getAirlinessByid(int id);
+  Future<GetAirlinessModel> getAirlinessByid(String id);
 
   Future<GetFlightScheduleModel> getFlightScheduleList();
 
@@ -236,7 +236,7 @@ abstract class Repository {
   );
 
   Future<UpdateOtherTransportModel> updateOtherTransportation(
-    int id,
+    String id,
     String idRequestTrip,
     String typeTransportation,
     String fromDate,
@@ -248,11 +248,11 @@ abstract class Repository {
 
   Future<GetOtherTransportModel> getOtherTransportBytripList(String id);
 
-  Future<GetOtherTransportModel> getOtherTransportByid(int id);
+  Future<GetOtherTransportModel> getOtherTransportByid(String id);
 
   Future<GetTypeTransportationModel> getTypeTransportation();
 
-  Future deleteOtherTransportation(int id);
+  Future deleteOtherTransportation(String id);
 
   Future<SaveAccommodationModel> saveAccommodation(
     String idRequestTrip,
@@ -285,17 +285,17 @@ abstract class Repository {
 
   Future<GetAccommodationModel> getAccommodationBytripList(String id);
 
-  Future<GetAccommodationModel> getAccommodationByid(int id);
+  Future<GetAccommodationModel> getAccommodationByid(String id);
 
-  Future deleteAccommodation(int id);
+  Future deleteAccommodation(String id);
 
   Future<GetHotelTypeModel> getHotelTypeList();
 
   Future<GetCashAdvanceTravelModel> getCashAdvanceTravelList(String id);
 
-  Future<GetCashAdvanceByidModel> getCashAdvanceTravelByid(int id);
+  Future<GetCashAdvanceByidModel> getCashAdvanceTravelByid(String id);
 
-  Future<GetDetailcaBycashidModel> getDetailCashAdvanceTravelByid(int id);
+  Future<GetDetailcaBycashidModel> getDetailCashAdvanceTravelByid(String id);
 
   Future<UpdateCashAdvanceTravelModel> updateCashAdvanceTravel(
     int id,
@@ -307,9 +307,7 @@ abstract class Repository {
     String typeCa,
   );
 
-  Future deleteCashAdvanceTravel(
-    int id,
-  );
+  Future deleteCashAdvanceTravel(String id);
 
   Future<SubmitRequestTripModel> submitRequestTrip(String id);
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
-import 'package:gais/data/model/reference/get_site_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
@@ -24,12 +23,12 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
           return Scaffold(
             appBar: TopBar(
               title: Text("Document Delivery Info", style: appTitle),
-              leading: CustomBackButton(),
+              leading: const CustomBackButton(),
             ),
             body: Container(
               alignment: Alignment.topCenter,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.all(7),
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(7),
               decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(8)),
               child: SingleChildScrollView(
                 child: Column(
@@ -41,10 +40,10 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                       width: 42,
                       // padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
-                      child: Icon(IconlyBold.info_square, color: whiteColor),
+                      child: const Icon(IconlyBold.info_square, color: whiteColor),
                     ),
                     Text("Document Delivery", style: appTitle),
-                    SizedBox(height: 39),
+                    const SizedBox(height: 39),
                     Form(
                       key: controller.formKey,
                       child: Padding(
@@ -58,32 +57,32 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                               isRequired: true,
                               readOnly: true,
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             CustomDropDownFormField(
                               label: "Receiver Company",
                               hintText: controller.loadCompany ? "Loading..." : "Receiver Company",
                               isRequired: true,
                               items: controller.companyList
                                   .map((e) => DropdownMenuItem(
-                                        child: Text(e.companyName.toString()),
                                         value: e.id.toString(),
+                                        child: Text(e.companyName.toString()),
                                       ))
                                   .toList(),
                               onChanged: (value) {
                                 controller.receiverCompanyID = value!.toInt();
-                                controller.fetchLocationList(value!.toInt());
+                                controller.fetchLocationList(value);
                                 controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             CustomDropDownFormField(
                               label: "Location",
                               hintText: controller.loadLocation ? "Loading..." : "Location",
                               isRequired: true,
                               items: controller.locationList
                                   .map((e) => DropdownMenuItem(
-                                        child: Text(e.siteName.toString()),
                                         value: e.id.toString(),
+                                        child: Text(e.siteName.toString()),
                                       ))
                                   .toList(),
                               onChanged: (value) {
@@ -92,15 +91,15 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                                 controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             CustomDropDownFormField(
                               label: "Receiver",
                               hintText: controller.loadReceiver ? "Loading..." : "Receiver",
                               isRequired: true,
                               items: controller.receiverList
                                   .map((e) => DropdownMenuItem(
-                                        child: Text(e.employeeName.toString()),
                                         value: e.id.toString(),
+                                        child: Text(e.employeeName.toString()),
                                       ))
                                   .toList(),
                               onChanged: (value) {
@@ -110,23 +109,23 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                                 controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.subjectDocument,
                               label: "Subject Document",
                               isRequired: true,
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.attachment,
                               label: "Attachment (Optional)",
-                              suffixIcon: Icon(Icons.upload),
+                              suffixIcon: const Icon(Icons.upload),
                               readOnly: true,
                               onTap: (){
                                 controller.getSingleFile();
                               },
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.remarks,
                               label: "Remarks",
@@ -152,7 +151,7 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: BottomBar(menu: 0),
+            bottomNavigationBar: const BottomBar(menu: 0),
           );
         });
   }

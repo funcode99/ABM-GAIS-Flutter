@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 class AddAirlinessController extends BaseController {
   String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
-  int? airlinessID = Get.arguments['id'];
+  String? airlinessID = Get.arguments['id'];
   bool? formEdit = Get.arguments['formEdit'];
 
   final formKey = GlobalKey<FormState>();
@@ -62,8 +62,8 @@ class AddAirlinessController extends BaseController {
         // travellerflightClass.text = value.first.flightClass ?? "";
       });
       await storage.readEmployeeFlight().then((value) {
-        travellerflightClass.text = value.first.idFlightClass.toString();
-        flightClassID = value.first.flightClass.toInt();
+        travellerflightClass.text = value.first.flightClass.toString();
+        flightClassID = value.first.idFlightClass.toInt();
       });
     }
 

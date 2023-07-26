@@ -64,7 +64,7 @@ class AddRoomInfoScreen extends StatelessWidget {
                                   .toList(),
                               onChanged: (value) {
                                 controller.companyID.text = value!;
-                                controller.fetchSiteList(value.toInt());
+                                controller.fetchSiteList(value);
                                 controller.update();
                               },
                             ),

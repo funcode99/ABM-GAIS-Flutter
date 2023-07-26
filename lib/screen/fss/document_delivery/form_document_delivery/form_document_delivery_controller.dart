@@ -1,12 +1,10 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_employee_model.dart' as receiver;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -136,7 +134,7 @@ class FormDocumentDeliveryController extends BaseController {
 
   }
 
-  Future<void> fetchLocationList(int id) async {
+  Future<void> fetchLocationList(String id) async {
     loadLocation = true;
     locationList = [];
     try {

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:get/get.dart';
@@ -134,7 +133,7 @@ class DetailDocumentDeliveryController extends BaseController {
 
   }
 
-  Future<void> fetchLocationList(int id) async {
+  Future<void> fetchLocationList(String id) async {
     loadLocation = true;
     locationList = [];
     try {

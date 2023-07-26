@@ -24,15 +24,15 @@ class AddManagementPoolCarScreen extends StatelessWidget {
             backgroundColor: baseColor,
             appBar: TopBar(
               title: Text("Management Pool Car", style: appTitle),
-              leading: CustomBackButton(),
+              leading: const CustomBackButton(),
             ),
             body: Container(
-              margin: EdgeInsets.only(top: 16, left: 16, right: 16),
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+              margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
               height: Get.height,
               width: Get.width,
               decoration:
-                  BoxDecoration(color: whiteColor, borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8))),
+                  const BoxDecoration(color: whiteColor, borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8))),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -45,7 +45,7 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                       child: const Icon(IconlyBold.info_square, color: whiteColor),
                     ),
                     Text("Car Info", style: appTitle),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Form(
                       key: controller.formKey,
                       child: Column(
@@ -53,8 +53,8 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                           CustomDropDownFormField(
                             items: controller.companyList
                                 .map((e) => DropdownMenuItem(
-                                      child: Text(e.companyName.toString()),
                                       value: e.id.toString(),
+                                      child: Text(e.companyName.toString()),
                                     ))
                                 .toList(),
                             label: "Company",
@@ -62,17 +62,17 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                             hintText: controller.isLoading ? "Loading" : "Company",
                             isRequired: true,
                             onChanged: (value) {
-                              controller.companyID = value?.toInt();
+                              controller.companyID = value;
                               controller.fetchSiteList(value!.toInt());
                               controller.update();
                             },
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomDropDownFormField(
                             items: controller.siteList
                                 .map((e) => DropdownMenuItem(
-                                      child: Text(e.siteName.toString()),
                                       value: e.id.toString(),
+                                      child: Text(e.siteName.toString()),
                                     ))
                                 .toList(),
                             label: "Site",
@@ -84,30 +84,30 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                               controller.update();
                             },
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.nameCar,
                             label: "Car Name",
                             isRequired: true,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.plate,
                             label: "Plate",
                             isRequired: true,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.odometer,
                             label: "Odometer (In KM)",
                             isRequired: true,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomDropDownFormField(
                             items: controller.carTypeList
                                 .map((e) => DropdownMenuItem(
-                                      child: Text(e.typeCar.toString()),
                                       value: e.id.toString(),
+                                      child: Text(e.typeCar.toString()),
                                     ))
                                 .toList(),
                             label: "Car Type",
@@ -119,16 +119,16 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                               controller.update();
                             },
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomDropDownFormField(
-                            items: [
+                            items: const [
                               DropdownMenuItem(
-                                child: Text("Manual"),
                                 value: "Manual",
+                                child: Text("Manual"),
                               ),
                               DropdownMenuItem(
-                                child: Text("Automatic"),
                                 value: "Automatic",
+                                child: Text("Automatic"),
                               ),
                             ],
                             label: "Transmision",
@@ -139,16 +139,16 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                               controller.update();
                             },
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomDropDownFormField(
-                            items: [
+                            items: const [
                               DropdownMenuItem(
-                                child: Text('Active'),
                                 value: "1",
+                                child: Text('Active'),
                               ),
                               DropdownMenuItem(
-                                child: Text('In Maintenance'),
                                 value: "0",
+                                child: Text('In Maintenance'),
                               ),
                             ],
                             label: "Status",
@@ -159,12 +159,12 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                               controller.update();
                             },
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomDropDownFormField(
                             items: controller.driverList
                                 .map((e) => DropdownMenuItem(
-                                      child: Text(e.name.toString()),
                                       value: e.id.toString(),
+                                      child: Text(e.name.toString()),
                                     ))
                                 .toList(),
                             label: "Driver",
@@ -174,14 +174,14 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                               controller.update();
                             },
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomFilledButton(
                             color: successColor,
                             width: Get.width / 2.5,
                             title: "Save",
                             onPressed: () {
                               if (controller.formKey.currentState?.validate() == true) {
-                                controller.isEdit! ? controller.updateData() : controller.saveData();
+                                controller.isEdit? controller.updateData() : controller.saveData();
                               }
                             },
                           )
@@ -192,7 +192,7 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: BottomBar(menu: 0),
+            bottomNavigationBar: const BottomBar(menu: 0),
           );
         });
   }

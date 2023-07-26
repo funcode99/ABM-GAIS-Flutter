@@ -35,7 +35,7 @@ class TaxiVoucherController extends BaseController {
     print("taxi voucher: ${tvModel?.data}");
   }
 
-  Future<void> delete(int id) async {
+  Future<void> delete(String id) async {
     try {
       await repository.deleteTaxiVoucher(id).then((value) {
         print(value);

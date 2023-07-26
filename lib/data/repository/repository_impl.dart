@@ -168,7 +168,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetZonaByidModel> getZonaByIDCity(int id) async {
+  Future<GetZonaByidModel> getZonaByIDCity(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -228,7 +228,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetTlkJobModel> getTLKJobByIDJob(int id) async {
+  Future<GetTlkJobModel> getTLKJobByIDJob(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -318,7 +318,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetSiteModel> getSiteListByCompanyID(int id) async {
+  Future<GetSiteModel> getSiteListByCompanyID(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -702,7 +702,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetTaxiVoucherModel> getTaxiVoucherByid(int id) async {
+  Future<GetTaxiVoucherModel> getTaxiVoucherByid(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -717,7 +717,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future deleteTaxiVoucher(int id) async {
+  Future deleteTaxiVoucher(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -794,7 +794,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<UpdateAirlinessModel> updateAirlines(
-    int id,
+    String id,
     String idRequestTrip,
     String idVendor,
     String flightNo,
@@ -825,7 +825,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future deleteAirliness(int id) async {
+  Future deleteAirliness(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -885,7 +885,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetAirlinessModel> getAirlinessByid(int id) async {
+  Future<GetAirlinessModel> getAirlinessByid(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -936,7 +936,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<UpdateOtherTransportModel> updateOtherTransportation(
-    int id,
+    String id,
     String idRequestTrip,
     String typeTransportation,
     String fromDate,
@@ -986,7 +986,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetOtherTransportModel> getOtherTransportByid(int id) async {
+  Future<GetOtherTransportModel> getOtherTransportByid(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -1016,7 +1016,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future deleteOtherTransportation(int id) async {
+  Future deleteOtherTransportation(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -1031,7 +1031,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future deleteAccommodation(int id) async {
+  Future deleteAccommodation(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -1046,7 +1046,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetAccommodationModel> getAccommodationByid(int id) async {
+  Future<GetAccommodationModel> getAccommodationByid(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -1194,7 +1194,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetCashAdvanceByidModel> getCashAdvanceTravelByid(int id) async {
+  Future<GetCashAdvanceByidModel> getCashAdvanceTravelByid(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -1209,7 +1209,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetDetailcaBycashidModel> getDetailCashAdvanceTravelByid(int id) async {
+  Future<GetDetailcaBycashidModel> getDetailCashAdvanceTravelByid(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -1224,7 +1224,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetCashAdvanceTravelModel> deleteCashAdvanceTravel(int id) async {
+  Future<GetCashAdvanceTravelModel> deleteCashAdvanceTravel(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {

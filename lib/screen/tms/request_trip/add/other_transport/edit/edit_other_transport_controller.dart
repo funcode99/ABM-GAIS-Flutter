@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 class EditOtherTransportController extends BaseController {
   String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
-  int otID = Get.arguments['otID'];
+  String otID = Get.arguments['otID'];
 
   final formKey = GlobalKey<FormState>();
   final travellerName = TextEditingController();

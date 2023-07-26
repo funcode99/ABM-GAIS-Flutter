@@ -66,10 +66,10 @@ class AirlinessScreen extends StatelessWidget {
                                 isEdit: true,
                                 editAction: () {
                                   Get.to(CheckScheduleScreen(),
-                                      arguments: {'id': e.id?.toInt(), 'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument});
+                                      arguments: {'id': e.id, 'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument});
                                 },
                                 isDelete: true,
-                                deleteAction: () => controller.delete(int.parse(e.id.toString())),
+                                deleteAction: () => controller.delete(e.id.toString()),
                                 content: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [

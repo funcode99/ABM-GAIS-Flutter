@@ -7,12 +7,10 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/topbar.dart';
-import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/edit/edit_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_controller.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
-import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 
@@ -76,7 +74,7 @@ class TaxiVoucherScreen extends StatelessWidget {
                                   }),
                                   isDelete: true,
                                   deleteAction: () => controller
-                                      .delete(int.parse(e.id.toString())),
+                                      .delete(e.id.toString()),
                                   content: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
@@ -139,7 +137,7 @@ class TaxiVoucherScreen extends StatelessWidget {
                                 width: 100,
                                 color: infoColor,
                                 title: "Draft",
-                                onPressed: ()=> Get.offAll(FormRequestTripScreen(), arguments: {
+                                onPressed: ()=> Get.offAll(const FormRequestTripScreen(), arguments: {
                                   'id': controller.purposeID,
                                   'codeDocument': controller.codeDocument,
                                 }),

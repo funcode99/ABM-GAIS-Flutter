@@ -3,7 +3,6 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
-import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:get/get.dart';
 
 class AddRoomInfoController extends BaseController {
@@ -48,7 +47,7 @@ class AddRoomInfoController extends BaseController {
     update();
   }
 
-  Future<void> fetchSiteList(int id) async {
+  Future<void> fetchSiteList(String id) async {
     siteList = [];
     loadSite = true;
     try {
@@ -74,7 +73,7 @@ class AddRoomInfoController extends BaseController {
       )
           .then((value) {
         Get.back();
-        Get.showSnackbar(GetSnackBar(
+        Get.showSnackbar(const GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
