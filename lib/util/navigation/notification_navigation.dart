@@ -45,8 +45,7 @@ class NotificationNavigation {
               ),
           arguments: {"item": item});
     } else if (codeDocument == CodeDocumentEnum.cashAdvanceNonTravel.value) {
-      print("TESTING $id");
-      ApprovalCashAdvanceModel item = ApprovalCashAdvanceModel(idCa: id);
+      ApprovalCashAdvanceModel item = ApprovalCashAdvanceModel(id: id);
       Get.to(
           () => const ApprovalCashAdvanceNonTravelDetailScreen(
                 approvalActionEnum: ApprovalActionEnum.none,
