@@ -14,6 +14,7 @@ class AddItemCashAdvanceNonTravelController extends BaseController with MasterDa
   final formKey = GlobalKey<FormState>();
   final isButtonEnabled = false.obs;
   final cashAdvanceDetailModel = Rxn<CashAdvanceDetailModel>();
+  final idCostCenter = Rxn<int>();
 
 
 
@@ -48,6 +49,7 @@ class AddItemCashAdvanceNonTravelController extends BaseController with MasterDa
           key: DateTime.now().microsecondsSinceEpoch.toString(),
           nominal: nominalController.text.digitOnly(),
           remarks: remarksController.text,
+          idCostCenter: idCostCenter.value,
           itemName: itemNameController.text);
     }
   }
