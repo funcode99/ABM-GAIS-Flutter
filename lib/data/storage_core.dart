@@ -13,6 +13,7 @@ class StorageCore {
   static const String siteID = "siteID";
   static const String roleName = "roleName";
   static const String roleID = "roleID";
+  static const String costCenterID = "costCenterID";
   static const String codeRole = "codeRole";
   static const String snEmployee = "sn";
 
@@ -58,6 +59,7 @@ class StorageCore {
     String flightClass,
     String hotelFare,
     String mealsFare,
+    String idCostCenter,
   ) async {
     await storage.write(key: 'userID', value: id);
     await storage.write(key: 'name', value: name);
@@ -84,6 +86,7 @@ class StorageCore {
     await storage.write(key: 'flightClass', value: flightClass);
     await storage.write(key: 'hotelFare', value: hotelFare);
     await storage.write(key: 'mealsFare', value: mealsFare);
+    await storage.write(key: 'costCenterID', value: idCostCenter);
   }
 
   void deleteToken() async {

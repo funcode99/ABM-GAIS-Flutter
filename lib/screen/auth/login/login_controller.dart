@@ -149,6 +149,7 @@ class LoginController extends BaseController {
           value.data?.first.flightClass?.first.flightClass.toString() ?? "",
           value.data?.first.hotelFare.toString() ?? "",
           value.data?.first.mealsRate.toString() ?? "",
+          value.data?.first.idCostCenter.toString() ?? "",
         );
       });
     } catch (e,i) {
