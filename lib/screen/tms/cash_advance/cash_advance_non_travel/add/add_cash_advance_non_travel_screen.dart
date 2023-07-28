@@ -94,6 +94,27 @@ class _AddCashAdvanceNonTravelScreenState
                         Obx(() {
                           return CustomDropDownFormField(
                             isRequired: true,
+                            items: [
+                              ...controller.listCostCenter.mapIndexed((index, item) {
+                                return DropdownMenuItem(
+                                  value: "${item.id}",
+                                  child: Text("${item.costCenterName} - ${item.costCenterCode}"),
+                                );
+                              }).toList()
+                            ],
+                            onChanged: (value) {
+                              controller.onChangeSelectedCostCenter(value.toString());
+                            },
+                            label: "Cost Center".tr,
+                            value: controller.selectedCostCenter.value.id.toString(),
+                          );
+                        }),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Obx(() {
+                          return CustomDropDownFormField(
+                            isRequired: true,
                             items: controller.listCurrency
                                 .map((e) =>
                                 DropdownMenuItem(
@@ -136,7 +157,7 @@ class _AddCashAdvanceNonTravelScreenState
                             .mapIndexed((index, element) => CommonAddItem(
                                   number: "${index + 1}",
                                   title: "${element.itemName}",
-                                  subtitle: "${element.costCenterName}",
+                                  subtitle: "",
                                   nominal:
                                       "${element.nominal?.toInt().toCurrency()}",
                                   action: [

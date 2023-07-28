@@ -79,6 +79,7 @@ class _DetailItemCashAdvanceNonTravelScreenState extends State<DetailItemCashAdv
                   ),
                   CustomTextFormField(
                       multiLine: true,
+                      readOnly: true,
                       controller: _remarksController,
                       label: "Remarks".tr),
                   const SizedBox(

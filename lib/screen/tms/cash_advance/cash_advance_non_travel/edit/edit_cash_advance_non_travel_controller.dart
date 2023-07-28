@@ -3,6 +3,7 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/approval_log_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
+import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
 import 'package:gais/data/storage_core.dart';
@@ -21,6 +22,7 @@ class EditCashAdvanceNonTravelController extends BaseController
   final TextEditingController requestorController = TextEditingController();
   final TextEditingController totalController = TextEditingController();
   final TextEditingController currencyController = TextEditingController();
+  final TextEditingController costCenterController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   final CashAdvanceNonTravelRepository _repository = Get.find();
@@ -32,12 +34,14 @@ class EditCashAdvanceNonTravelController extends BaseController
 
   final listDetail = <CashAdvanceDetailModel>[].obs;
   final listCurrency = <CurrencyModel>[].obs;
+  final selectedCurrency = CurrencyModel().obs;
+
+  final listCostCenter = <CostCenterModel>[].obs;
+  final selectedCostCenter = CostCenterModel().obs;
 
   final selectedTab = Rx<TabEnum>(TabEnum.detail);
   final listLogApproval = <ApprovalLogModel>[].obs;
 
-
-  final selectedCurrency = CurrencyModel().obs;
 
   @override
   void onInit() {
@@ -62,6 +66,14 @@ class EditCashAdvanceNonTravelController extends BaseController
       selectedCurrency(listCurrency.first);
     }
 
+    final costCenters = await getListCostCenter();
+    listCostCenter(costCenters);
+    if (selectedItem.value.idCostCenter != null) {
+      onChangeSelectedCostCenter(selectedItem.value.idCostCenter.toString());
+    } else {
+      selectedCostCenter(listCostCenter.first);
+    }
+
     setValue();
   }
 
@@ -76,6 +88,9 @@ class EditCashAdvanceNonTravelController extends BaseController
 
     currencyController.text =
         "${selectedItem.value.currencyName} (${selectedItem.value.currencyCode})";
+
+    costCenterController.text =
+    "${selectedItem.value.costCenterName} (${selectedItem.value.costCenterCode})";
   }
 
   void updateEnableButton() {
@@ -109,6 +124,9 @@ class EditCashAdvanceNonTravelController extends BaseController
       currencyCode: selectedCurrency.value.currencyCode,
       currencyName: selectedCurrency.value.currencyName,
       currencySymbol: selectedCurrency.value.currencySymbol,
+      idCostCenter: selectedCostCenter.value.id,
+      costCenterName: selectedCostCenter.value.costCenterName,
+      costCenterCode: selectedCostCenter.value.costCenterCode,
       date: dateController.text
           .toDateFormat(targetFormat: "yyyy/MM/dd", originFormat: "dd/MM/yyyy"),
       grandTotal: totalController.text.digitOnly(),
@@ -209,6 +227,11 @@ class EditCashAdvanceNonTravelController extends BaseController
     final selected = listCurrency.firstWhere((item) => item.id == id.toInt(),
         orElse: () => listCurrency.first);
     selectedCurrency(selected);
+  }
+
+  void onChangeSelectedCostCenter(String id) {
+    final selected = listCostCenter.firstWhere((item) => item.id == id.toInt());
+    selectedCostCenter(selected);
   }
 
   void getApprovalLog()async{

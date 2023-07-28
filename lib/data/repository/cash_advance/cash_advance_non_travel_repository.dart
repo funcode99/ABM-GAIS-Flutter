@@ -64,6 +64,9 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
         data: cashAdvanceModel.toJson()
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceModel.fromJsonModel);
+      if(apiResponseModel.data == null){
+        return left(BaseError(message:apiResponseModel.message ?? ""));
+      }
       return right(apiResponseModel.data);
     } on DioError catch (e) {
       return left(BaseError(message: e.response!.data['message'] ?? e.message));
@@ -137,7 +140,7 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteData(int id) async{
+  Future<Either<BaseError, bool>> deleteData(dynamic id) async{
     try {
       Dio.Response response = await network.dio.delete(
         '/api/cash_advance/delete_data/$id',
@@ -222,6 +225,26 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceModel.fromJsonModelList);
       List<CashAdvanceModel> list = apiResponseModel.data;
+      return right(list.first);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  Future<Either<BaseError, ApprovalCashAdvanceModel>> detailDataApproval(dynamic id) async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/approval_non_travel/get_data/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalCashAdvanceModel.fromJsonModelList);
+      List<ApprovalCashAdvanceModel> list = apiResponseModel.data;
       return right(list.first);
     } on DioError catch (e) {
       print("DioError $e");

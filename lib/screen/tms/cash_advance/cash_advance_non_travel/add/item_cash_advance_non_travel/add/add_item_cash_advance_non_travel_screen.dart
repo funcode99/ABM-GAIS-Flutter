@@ -14,14 +14,14 @@ import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dar
 import 'package:get/get.dart';
 
 class AddItemCashAdvanceNonTravelScreen extends StatelessWidget {
-  const AddItemCashAdvanceNonTravelScreen({super.key, this.item});
+  const AddItemCashAdvanceNonTravelScreen({super.key, this.item, this.idCostCenter});
 
   final CashAdvanceDetailModel? item;
-
+  final int? idCostCenter;
   @override
   Widget build(BuildContext context) {
     final AddItemCashAdvanceNonTravelController controller =
-    Get.put(AddItemCashAdvanceNonTravelController())..cashAdvanceDetailModel(item);
+    Get.put(AddItemCashAdvanceNonTravelController())..cashAdvanceDetailModel(item)..idCostCenter(idCostCenter);
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -57,27 +57,6 @@ class AddItemCashAdvanceNonTravelScreen extends StatelessWidget {
                       isRequired: true,
                       controller: controller.itemNameController,
                       label: "Item".tr),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Obx(() {
-                    return CustomDropDownFormField(
-                      isRequired: true,
-                      items: [
-                        ...controller.listCostCenter.mapIndexed((index, item) {
-                          return DropdownMenuItem(
-                            value: "${item.id}",
-                            child: Text("${item.costCenterName} - ${item.costCenterCode}"),
-                          );
-                        }).toList()
-                      ],
-                      onChanged: (value) {
-                        controller.onChangeSelectedCostCenter(value.toString());
-                      },
-                      label: "Cost Center".tr,
-                      value: controller.selectedCostCenter.value.id.toString(),
-                    );
-                  }),
                   const SizedBox(
                     height: 8,
                   ),

@@ -9,12 +9,16 @@ class CashAdvanceModel {
   int? idEmployee;
   dynamic typeCa;
   String? noCa;
+
   // String? idRequestTrip;
   dynamic idRequestTrip;
   int? idCurrency;
   String? grandTotal;
   int? isPaid;
   int? isJournal;
+  int? idCostCenter;
+  dynamic costCenterName;
+  String? costCenterCode;
   dynamic codeStatusDoc;
   dynamic codeStatus;
   String? noRequestTrip;
@@ -38,6 +42,9 @@ class CashAdvanceModel {
       this.typeCa,
       this.noCa,
       this.idRequestTrip,
+      this.idCostCenter,
+      this.costCenterName,
+      this.costCenterCode,
       this.idCurrency,
       this.grandTotal,
       this.isPaid,

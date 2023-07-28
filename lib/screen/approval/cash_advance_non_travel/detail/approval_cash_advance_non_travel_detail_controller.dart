@@ -42,7 +42,6 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController {
   void onReady() {
     super.onReady();
     detailHeader();
-    getDataDetail();
   }
 
   void setValue() {
@@ -59,14 +58,26 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController {
   }
 
   void detailHeader() async {
-    final result = await _repository.detailData(selectedItem.value.idCa!);
+    print("TESTING 1");
+    final result = await _repository.detailDataApproval(selectedItem.value.id!);
 
     result.fold((l) {
       print("ERROR DETAIL HEADER ${l.message}");
-    }, (r) {
-      detailSelectedItem(r);
-      setValue();
-      getApprovalLog();
+    }, (r) async{
+      print("TESTING 2");
+      selectedItem(r);
+
+      getDataDetail();
+
+      final resultDetail = await _repository.detailData(selectedItem.value.idCa!);
+      resultDetail.fold(
+            (l) => print("ERROR DETAIL HEADER ${l.message}"),
+            (right) {
+              print("TESTING 3");
+              detailSelectedItem(right);
+              setValue();
+              getApprovalLog();
+            });
     });
   }
 
