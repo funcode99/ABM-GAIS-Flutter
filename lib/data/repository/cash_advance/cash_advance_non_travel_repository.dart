@@ -64,6 +64,9 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
         data: cashAdvanceModel.toJson()
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CashAdvanceModel.fromJsonModel);
+      if(apiResponseModel.data == null){
+        return left(BaseError(message:apiResponseModel.message ?? ""));
+      }
       return right(apiResponseModel.data);
     } on DioError catch (e) {
       return left(BaseError(message: e.response!.data['message'] ?? e.message));
