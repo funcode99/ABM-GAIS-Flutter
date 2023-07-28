@@ -12,6 +12,7 @@ class NotificationModel {
   String? idDoc;
   String? date;
   String? codeDocument;
+  String? typeDocument;
   String? name;
 
   NotificationModel({
@@ -23,6 +24,7 @@ class NotificationModel {
     this.idDoc,
     this.date,
     this.codeDocument,
+    this.typeDocument,
     this.name,
   });
 

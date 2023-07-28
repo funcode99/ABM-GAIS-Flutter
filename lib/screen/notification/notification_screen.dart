@@ -103,7 +103,7 @@ class NotificationScreen extends StatelessWidget {
                                                     if(item.isViewed == 1){
                                                       controller.updateNotificationStatus(item.id);
                                                     }
-                                                    NotificationNavigation.navigateToPage(codeDocument: item.codeDocument, id: item.idDocument);
+                                                    NotificationNavigation.navigateToPage(codeDocument: item.codeDocument, id: item.idDocument, typeDocument: item.typeDocument);
                                                   },
                                                 )
                                             )
@@ -160,7 +160,7 @@ class NotificationScreen extends StatelessWidget {
                                                   if(item.isViewed == 1){
                                                     controller.updateNotificationStatus(item.id);
                                                   }
-                                                  NotificationNavigation.navigateToPageApproval(codeDocument: item.codeDocument, id: item.idDocument);
+                                                  NotificationNavigation.navigateToPageApproval(codeDocument: item.codeDocument, id: item.idDocument, typeDocument: item.typeDocument);
                                                 },
                                               )
                                           )

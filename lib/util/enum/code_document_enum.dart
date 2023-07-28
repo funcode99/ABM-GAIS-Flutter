@@ -1,4 +1,4 @@
-enum CodeDocumentEnum {
+enum TypeDocumentEnum {
 
   cashAdvanceTravel("TCA"),
 	cashAdvanceNonTravel("CANT"),
@@ -10,7 +10,7 @@ enum CodeDocumentEnum {
 	documentDelivery("DOCDL"),
 	requestATK("ATKR");
 
-  const CodeDocumentEnum(this.value);
+  const TypeDocumentEnum(this.value);
 
   final String value;
 }
