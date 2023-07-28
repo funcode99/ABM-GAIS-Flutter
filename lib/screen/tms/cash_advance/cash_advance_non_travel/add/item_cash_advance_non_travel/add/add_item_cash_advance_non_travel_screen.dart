@@ -60,27 +60,6 @@ class AddItemCashAdvanceNonTravelScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Obx(() {
-                    return CustomDropDownFormField(
-                      isRequired: true,
-                      items: [
-                        ...controller.listCostCenter.mapIndexed((index, item) {
-                          return DropdownMenuItem(
-                            value: "${item.id}",
-                            child: Text("${item.costCenterName} - ${item.costCenterCode}"),
-                          );
-                        }).toList()
-                      ],
-                      onChanged: (value) {
-                        controller.onChangeSelectedCostCenter(value.toString());
-                      },
-                      label: "Cost Center".tr,
-                      value: controller.selectedCostCenter.value.id.toString(),
-                    );
-                  }),
-                  const SizedBox(
-                    height: 8,
-                  ),
                   CustomTextFormField(
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,

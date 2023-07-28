@@ -1,7 +1,9 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
+import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
 import 'package:gais/data/storage_core.dart';
@@ -20,8 +22,10 @@ class AddCashAdvanceNonTravelController extends BaseController with MasterDataMi
   final formKey = GlobalKey<FormState>();
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   final listCurrency = <CurrencyModel>[].obs;
-
   final selectedCurrency = CurrencyModel().obs;
+
+  final listCostCenter = <CostCenterModel>[].obs;
+  final selectedCostCenter = CostCenterModel().obs;
 
   List<CashAdvanceDetailModel> listDetail = <CashAdvanceDetailModel>[];
 
@@ -43,6 +47,17 @@ class AddCashAdvanceNonTravelController extends BaseController with MasterDataMi
   }
 
   void initData()async{
+    String costCenterID = await storage.readString(StorageCore.costCenterID);
+
+    final costCenters = await getListCostCenter();
+    listCostCenter(costCenters);
+    if(costCenterID.isNotEmpty){
+      onChangeSelectedCostCenter(costCenterID);
+    }else{
+      onChangeSelectedCostCenter("${listCostCenter.first.id}");
+    }
+
+
     final currencies = await getListCurrency();
     listCurrency(currencies);
     selectedCurrency(listCurrency.first);
@@ -91,9 +106,12 @@ class AddCashAdvanceNonTravelController extends BaseController with MasterDataMi
       typeCa: "2",
       event: eventController.text,
       idCurrency: selectedCurrency.value.id,
+      idCostCenter: selectedCostCenter.value.id,
+      costCenterName: selectedCostCenter.value.costCenterName,
+      costCenterCode: selectedCostCenter.value.costCenterCode,
       date: dateController.text
           .toDateFormat(targetFormat: "yyyy-MM-dd", originFormat: "dd/MM/yyyy"),
-      arrayDetail: listDetail,
+      arrayDetail: listDetail.mapIndexed((index, item) => CashAdvanceDetailModel(nominal: item.nominal, remarks: item.remarks, itemName: item.itemName, idCostCenter: selectedCostCenter.value.id, costCenterName: selectedCostCenter.value.costCenterName, costCenterCode: selectedCostCenter.value.costCenterCode)).toList(),
       grandTotal: totalController.text.digitOnly(),
     );
 
@@ -112,6 +130,11 @@ class AddCashAdvanceNonTravelController extends BaseController with MasterDataMi
   void onChangeSelectedCurrency(String id) {
     final selected = listCurrency.firstWhere((item) => item.id == id.toInt());
     selectedCurrency(selected);
+  }
+
+  void onChangeSelectedCostCenter(String id) {
+    final selected = listCostCenter.firstWhere((item) => item.id == id.toInt());
+    selectedCostCenter(selected);
   }
 
 }
