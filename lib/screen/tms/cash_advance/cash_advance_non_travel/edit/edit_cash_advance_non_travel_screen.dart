@@ -205,6 +205,37 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                             if (controller.onEdit.value) {
                               return CustomDropDownFormField(
                                 isRequired: true,
+                                items: controller.listCostCenter
+                                    .map((e) =>
+                                    DropdownMenuItem(
+                                      value: e.id.toString(),
+                                      child: Text(
+                                          "${e.costCenterName} (${e
+                                              .costCenterCode})"),
+                                    ))
+                                    .toList(),
+                                onChanged: (item) {
+                                  controller.onChangeSelectedCostCenter(
+                                      item.toString());
+                                },
+                                label: "Cost Center".tr,
+                                value: controller.selectedCostCenter.value.id
+                                    .toString(),
+                              );
+                            }
+                            return CustomTextFormField(
+                                readOnly: true,
+                                isRequired: true,
+                                controller: controller.costCenterController,
+                                label: "Cost Center".tr);
+                          }),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Obx(() {
+                            if (controller.onEdit.value) {
+                              return CustomDropDownFormField(
+                                isRequired: true,
                                 items: controller.listCurrency
                                     .map((e) =>
                                     DropdownMenuItem(
@@ -362,7 +393,7 @@ class EditCashAdvanceNonTravelScreen extends StatelessWidget {
                             backgroundColor: infoColor,
                             onPressed: () async {
                               final addedItem = await Get.to(
-                                  const AddItemCashAdvanceNonTravelScreen());
+                                  AddItemCashAdvanceNonTravelScreen(idCostCenter: controller.selectedItem.value.idCostCenter,));
                               if (addedItem != null) {
                                 //add item
                                 controller.addDetail(addedItem);

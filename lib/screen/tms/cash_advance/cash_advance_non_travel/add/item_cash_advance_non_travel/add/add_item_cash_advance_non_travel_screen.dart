@@ -14,14 +14,14 @@ import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dar
 import 'package:get/get.dart';
 
 class AddItemCashAdvanceNonTravelScreen extends StatelessWidget {
-  const AddItemCashAdvanceNonTravelScreen({super.key, this.item});
+  const AddItemCashAdvanceNonTravelScreen({super.key, this.item, this.idCostCenter});
 
   final CashAdvanceDetailModel? item;
-
+  final int? idCostCenter;
   @override
   Widget build(BuildContext context) {
     final AddItemCashAdvanceNonTravelController controller =
-    Get.put(AddItemCashAdvanceNonTravelController())..cashAdvanceDetailModel(item);
+    Get.put(AddItemCashAdvanceNonTravelController())..cashAdvanceDetailModel(item)..idCostCenter(idCostCenter);
 
     return Scaffold(
       backgroundColor: baseColor,
