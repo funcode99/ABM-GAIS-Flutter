@@ -17,7 +17,7 @@ class CashAdvanceModel {
   int? isPaid;
   int? isJournal;
   int? idCostCenter;
-  String? costCenterName;
+  dynamic costCenterName;
   String? costCenterCode;
   dynamic codeStatusDoc;
   dynamic codeStatus;

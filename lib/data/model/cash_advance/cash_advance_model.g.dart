@@ -14,7 +14,7 @@ CashAdvanceModel _$CashAdvanceModelFromJson(Map<String, dynamic> json) =>
       noCa: json['no_ca'] as String?,
       idRequestTrip: json['id_request_trip'],
       idCostCenter: json['id_cost_center'] as int?,
-      costCenterName: json['cost_center_name'] as String?,
+      costCenterName: json['cost_center_name'],
       costCenterCode: json['cost_center_code'] as String?,
       idCurrency: json['id_currency'] as int?,
       grandTotal: json['grand_total'] as String?,

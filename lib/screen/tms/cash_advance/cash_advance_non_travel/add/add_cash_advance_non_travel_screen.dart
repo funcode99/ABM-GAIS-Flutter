@@ -157,7 +157,7 @@ class _AddCashAdvanceNonTravelScreenState
                             .mapIndexed((index, element) => CommonAddItem(
                                   number: "${index + 1}",
                                   title: "${element.itemName}",
-                                  subtitle: "${element.costCenterName}",
+                                  subtitle: "",
                                   nominal:
                                       "${element.nominal?.toInt().toCurrency()}",
                                   action: [
