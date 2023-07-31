@@ -122,6 +122,7 @@ class AddAccommodationScreen extends StatelessWidget {
                                 }
                                 return null;
                               },
+                              value: controller.selectedCity,
                               items: controller.cityList
                                   .map((e) => DropdownMenuItem(
                                         value: e.id.toString(),
@@ -194,6 +195,7 @@ class AddAccommodationScreen extends StatelessWidget {
                                 }
                                 return null;
                               },
+                              value: controller.accommodationType,
                               items: controller.hotelTypeList
                                   .map((e) => DropdownMenuItem(
                                         value: e.id.toString(),

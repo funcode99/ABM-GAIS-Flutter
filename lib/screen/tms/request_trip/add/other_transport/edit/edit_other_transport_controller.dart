@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
-import 'package:gais/data/model/reference/get_type_transportation_model.dart'
-    as type;
-import 'package:gais/data/model/request_trip/get_other_transport_model.dart'
-    as ot;
+import 'package:gais/data/model/reference/get_type_transportation_model.dart' as type;
+import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as ot;
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -22,7 +20,7 @@ class EditOtherTransportController extends BaseController {
 
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
-  int? otherTransportID;
+  String? otherTransportID;
   int? travellerID;
   DateTime? selectedDate;
   String? transportType;
@@ -100,7 +98,7 @@ class EditOtherTransportController extends BaseController {
   Future<void> fetchData() async {
     await repository.getOtherTransportByid(otID).then((value) {
       print("other transport: $value");
-      otherTransportID = value.data?.first.id?.toInt();
+      otherTransportID = value.data?.first.id;
       transportType = value.data?.first.idTypeTransportation.toString();
       fromDate.text = value.data?.first.fromDate.toString() ?? "";
       toDate.text = value.data?.first.toDate.toString() ?? "";
@@ -115,14 +113,7 @@ class EditOtherTransportController extends BaseController {
     try {
       await repository
           .updateOtherTransportation(
-              otID,
-              purposeID.toString(),
-              transportType.toString(),
-              fromDate.text,
-              toDate.text,
-              selectedCity.toString(),
-              quantity.text,
-              remarks.text)
+              otID, purposeID.toString(), transportType.toString(), fromDate.text, toDate.text, selectedCity.toString(), quantity.text, remarks.text)
           .then((value) => Get.back());
     } catch (e) {
       e.printError();

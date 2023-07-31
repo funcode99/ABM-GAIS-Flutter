@@ -6,9 +6,9 @@ import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_scr
 import 'package:get/get.dart';
 
 class CheckAccommodationController extends BaseController {
-  bool isEdit = Get.arguments['isEdit'] ?? false;
+  bool isEdit = Get.arguments['isEdit'];
   bool? formEdit = Get.arguments['formEdit'];
-  int id = Get.arguments['id'] ?? 0;
+  String id = Get.arguments['id'] ?? "0";
   String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
   int cityID = Get.arguments['city'];

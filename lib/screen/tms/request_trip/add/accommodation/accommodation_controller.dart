@@ -38,7 +38,7 @@ class AccommodationController extends BaseController {
     try {
       await repository.deleteAccommodation(id).then((value) {
         fetchList();
-        const GetSnackBar(
+        Get.showSnackbar(const GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -47,11 +47,11 @@ class AccommodationController extends BaseController {
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: greenColor,
-        );
+        ));
       });
       update();
     } catch (e) {
-      const GetSnackBar(
+      Get.showSnackbar(const GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -60,7 +60,7 @@ class AccommodationController extends BaseController {
         isDismissible: true,
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
-      );
+      ));
     }
   }
 

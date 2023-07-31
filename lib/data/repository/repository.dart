@@ -269,7 +269,7 @@ abstract class Repository {
   );
 
   Future<UpdateAccommodationModel> updateAccommodation(
-    int id,
+    String id,
     String idRequestTrip,
     String idTypeAccommodation,
     String checkInDate,

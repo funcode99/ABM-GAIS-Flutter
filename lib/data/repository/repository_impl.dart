@@ -1120,7 +1120,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<UpdateAccommodationModel> updateAccommodation(
-    int id,
+    String id,
     String idRequestTrip,
     String idTypeAccommodation,
     String checkInDate,
