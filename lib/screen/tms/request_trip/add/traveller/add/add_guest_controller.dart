@@ -114,10 +114,13 @@ class AddGuestController extends BaseController {
         // flightEntitlement.text = value.first.flightClass.toString();
         travellerID = int.tryParse(value.first.id.toString());
         hotelFare.text = int.parse(value.first.hotelFare ?? "").toCurrency();
-        idFlight = int.parse(value.first.idJobBand.toString());
+        // idFlight = int.parse(value.first.idJobBand.toString());
       });
 
-      storage.readEmployeeFlight().then((value) => flightEntitlement.text = value.first.flightClass.toString());
+      storage.readEmployeeFlight().then((value) {
+        flightEntitlement.text = value.first.flightClass.toString();
+        idFlight = value.first.idFlightClass;
+      });
     } catch (e, i) {
       e.printError();
       i.printError();
