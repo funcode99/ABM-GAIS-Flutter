@@ -310,4 +310,6 @@ abstract class Repository {
   Future deleteCashAdvanceTravel(String id);
 
   Future<SubmitRequestTripModel> submitRequestTrip(String id);
+
+  Future<void> registerFCM(String token);
 }

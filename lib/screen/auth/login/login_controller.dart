@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/data/model/login_model.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/screen/home/home_screen.dart';
+import 'package:gais/util/firebase/firebase_util.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -79,6 +80,9 @@ class LoginController extends BaseController {
             storage.writeString(StorageCore.siteID, value.users?.idSite.toString() ?? "");
             storage.writeString(StorageCore.siteName, value.users?.siteName.toString() ?? "");
             saveEmployeeInfo();
+
+            //register firebase token
+            registerFCMToken();
           })
           .then(
             (_) => Get.showSnackbar(
@@ -156,5 +160,15 @@ class LoginController extends BaseController {
       e.printError();
       i.printError();
     }
+  }
+
+  Future<void> registerFCMToken()async{
+    String? token = await FirebaseUtil.getFCMToken();
+
+    if(token != null){
+      return repository.registerFCM(token);
+    }
+
+    return Future.value();
   }
 }
