@@ -422,8 +422,8 @@ class RepositoryImpl implements Repository {
       );
       return SavePurposeOfTripModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response save error: ${e.response?.data}");
-      return e.response?.data;
+      print("response save error: ${SavePurposeOfTripModel.fromJson(e.response?.data).message}");
+      return SavePurposeOfTripModel.fromJson(e.response?.data);
     }
   }
 
