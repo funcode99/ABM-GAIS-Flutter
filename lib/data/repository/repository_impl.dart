@@ -651,7 +651,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<UpdateTaxiVoucherModel> updateTaxiVoucher(
-    int id,
+    String id,
     String tripID,
     String amount,
     String accountName,
