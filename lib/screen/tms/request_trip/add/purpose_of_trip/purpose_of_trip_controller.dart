@@ -160,21 +160,35 @@ class PurposeOfTripController extends BaseController {
         )
             .then(
           (value) {
-            purposeID = value.data!.id.toString();
+            purposeID = value.data?.id.toString();
             isFilled = value.success;
             print("requsetorID: $requestorID");
             print("purposeID : $purposeID");
             print("isFilled : $isFilled");
+            if (value.success == false) {
+              Get.showSnackbar(
+                GetSnackBar(
+                  icon: Icon(
+                    Icons.error,
+                    color: Colors.white,
+                  ),
+                  message: value.message,
+                  isDismissible: true,
+                  duration: Duration(seconds: 3),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            } else {
+              Get.to(
+                const TravellerScreen(),
+                arguments: {'purposeID': purposeID, 'codeDocument': int.parse(selectedPurpose.toString())},
+              )?.then((result) {
+                isFilled = result;
+                update();
+                print("purpose is filled : $result");
+              });
+            }
           },
-        ).then(
-          (value) => Get.to(
-            const TravellerScreen(),
-            arguments: {'purposeID': purposeID, 'codeDocument': int.parse(selectedPurpose.toString())},
-          )?.then((result) {
-            isFilled = result;
-            update();
-            print("purpose is filled : $result");
-          }),
         );
       } catch (e, i) {
         e.printError();

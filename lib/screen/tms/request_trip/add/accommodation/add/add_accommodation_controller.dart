@@ -11,6 +11,8 @@ class AddAccommodationController extends BaseController {
   String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
   bool? formEdit = Get.arguments['formEdit'];
+  bool? isEdit = Get.arguments['isEdit'];
+  String? id = Get.arguments['id'];
 
   final formKey = GlobalKey<FormState>();
   final travellerName = TextEditingController();
@@ -48,22 +50,34 @@ class AddAccommodationController extends BaseController {
     remarks.text;
     isSharing = false;
     createGL = false;
-
     Future.wait([fetchList()]);
+    if(isEdit == true){
+      fetchData();
+    }
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    checkinDate.dispose();
-    checkoutDate.dispose();
-    remarks.dispose();
+
+  Future<void> fetchData() async {
+    try {
+      await repository.getAccommodationByid(id!).then((value) {
+        selectedCity = value.data?.first.idCity.toString();
+        checkinDate.text = value.data?.first.checkInDate ?? "";
+        checkoutDate.text = value.data?.first.checkOutDate ?? "";
+        accommodationType = value.data?.first.idTypeAccomodation.toString();
+        remarks.text = value.data?.first.remarks ?? "";
+        sharingName.text = value.data?.first.sharingWName ?? "";
+        value.data?.first.sharingWName != null ? isSharing = true : false;
+        value.data?.first.useGl == 1 ? createGL = true: false;
+      });
+    } catch (e,i) {
+      e.printError();
+      i.printError();
+    }
   }
 
   Future<void> fetchList() async {
     try {
       await storage.readEmployeeInfo().then((value) {
-        print(value.isNotEmpty);
         travellerID = int.parse(value.first.id.toString());
         travellerName.text = value.first.employeeName.toString();
         hotelFare.text = value.first.hotelFare.toString();
@@ -94,7 +108,7 @@ class AddAccommodationController extends BaseController {
 
   Future<void> check() async {
     Get.off(
-      CheckAccommodationScreen(),
+      const CheckAccommodationScreen(),
       arguments: {
         'purposeID': purposeID,
         'codeDocument': codeDocument,
@@ -103,9 +117,11 @@ class AddAccommodationController extends BaseController {
         'checkOut': checkoutDate.text,
         'accommodationType': int.parse(accommodationType.toString()),
         'useGL': createGL == true ? "1" : "0",
-        'sharingName': sharingName.text ?? "",
+        'sharingName': sharingName.text,
         'remarks': remarks.text,
         'formEdit': formEdit,
+        'isEdit': isEdit,
+        'id': id,
       },
     );
   }

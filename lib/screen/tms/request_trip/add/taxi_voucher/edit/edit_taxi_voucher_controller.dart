@@ -26,7 +26,7 @@ class EditTaxiVoucherController extends BaseController {
   DateTime? selectedDate;
   String? departure;
   String? arrival;
-  int? taxiVoucherID;
+  String? taxiVoucherID;
 
   tv.GetTaxiVoucherModel? tvModel;
   List<tv.Data> tvList = [];
@@ -71,7 +71,7 @@ class EditTaxiVoucherController extends BaseController {
   Future<void> fetchData() async {
     await repository.getTaxiVoucherByid(tvID).then((value) {
       print("other transport: $value");
-      taxiVoucherID = value.data?.first.id?.toInt();
+      taxiVoucherID = value.data?.first.id;
       date.text = value.data?.first.date ?? "";
       departure = value.data?.first.idDepartureCity.toString();
       arrival = value.data?.first.idArrivalCity.toString();
@@ -86,7 +86,7 @@ class EditTaxiVoucherController extends BaseController {
     try {
       await repository
           .updateTaxiVoucher(
-        taxiVoucherID!.toInt(),
+        taxiVoucherID!,
         purposeID.toString(),
         amount.text.digitOnly(),
         accountName.text,

@@ -42,7 +42,7 @@ class AirlinesController extends BaseController {
       // travellerFlight = value.first.flightClass;
     });
 
-    await storage.readEmployeeFlight().then((value) => travellerFlight = value.first.idFlightClass.toString());
+    await storage.readEmployeeFlight().then((value) => travellerFlight = value.first.flightClass.toString());
 
     update();
   }

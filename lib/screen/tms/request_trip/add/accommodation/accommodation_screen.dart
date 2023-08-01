@@ -11,7 +11,6 @@ import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/accommodation/edit/edit_accommodation_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 
@@ -45,11 +44,8 @@ class AccommodationScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
-                      child:
-                          SvgPicture.asset(ImageConstant.building, height: 25),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                      child: SvgPicture.asset(ImageConstant.building, height: 25),
                     ),
                     Text("Accommodation", style: appTitle),
                     const SizedBox(height: 14),
@@ -63,52 +59,40 @@ class AccommodationScreen extends StatelessWidget {
                               info: e.hotelName,
                               //hotel name
                               isEdit: true,
-                              editAction: () => Get.off(
-                                  const EditAccommodationScreen(),
-                                  arguments: {
-                                    'purposeID': controller.purposeID,
-                                    'codeDocument': controller.codeDocument,
-                                    'id': e.id,
-                                    'formEdit': controller.formEdit
-                                  })?.then((result) {
+                              editAction: () => Get.off(const AddAccommodationScreen(), arguments: {
+                                'purposeID': controller.purposeID,
+                                'codeDocument': controller.codeDocument,
+                                'id': e.id,
+                                'formEdit': controller.formEdit,
+                                'isEdit': true,
+                              })?.then((result) {
                                 controller.fetchList();
                                 controller.update();
-                                print(result);
                               }),
                               isDelete: true,
-                              deleteAction: () =>
-                                  controller.delete(e.id!.toInt()),
+                              deleteAction: () => controller.delete(e.id),
                               content: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("Check In",
-                                          style: listTitleTextStyle),
-                                      Text(e.checkInDate.toString(),
-                                          style: listSubTitleTextStyle),
+                                      Text("Check In", style: listTitleTextStyle),
+                                      Text(e.checkInDate.toString(), style: listSubTitleTextStyle),
                                     ],
                                   ),
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("Check Out",
-                                          style: listTitleTextStyle),
-                                      Text(e.checkOutDate.toString(),
-                                          style: listSubTitleTextStyle),
+                                      Text("Check Out", style: listTitleTextStyle),
+                                      Text(e.checkOutDate.toString(), style: listSubTitleTextStyle),
                                     ],
                                   ),
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Price", style: listTitleTextStyle),
-                                      Text("${int.parse(e.price ?? "0").toCurrency()}",
-                                          style: listSubTitleTextStyle),
+                                      Text(int.parse(e.price ?? "0").toCurrency(), style: listSubTitleTextStyle),
                                     ],
                                   ),
                                 ],
@@ -124,15 +108,15 @@ class AccommodationScreen extends StatelessWidget {
                         color: infoColor,
                         title: "Add Accommodation",
                         icon: Icons.add,
-                        onPressed: () => Get.off(const AddAccommodationScreen(),
-                            arguments: {
-                              'purposeID': controller.purposeID,
-                              'codeDocument': controller.codeDocument,
-                              'formEdit': true,
-                            })?.then((result) {
+                        onPressed: () => Get.off(const AddAccommodationScreen(), arguments: {
+                          'purposeID': controller.purposeID,
+                          'codeDocument': controller.codeDocument,
+                          'id': "0",
+                          'formEdit': controller.formEdit,
+                          'isEdit': false,
+                        })?.then((result) {
                           controller.fetchList();
                           controller.update();
-                          print(result);
                         }),
                       ),
                     ),
@@ -147,12 +131,7 @@ class AccommodationScreen extends StatelessWidget {
                           fontColor: infoColor,
                           onPressed: () => Get.back(),
                         ),
-                        CustomFilledButton(
-                          width: 100,
-                          color: infoColor,
-                          title: "Next",
-                          onPressed: () => controller.next()
-                        ),
+                        CustomFilledButton(width: 100, color: infoColor, title: "Next", onPressed: () => controller.next()),
                       ],
                     )
                   ],

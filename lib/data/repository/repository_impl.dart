@@ -422,8 +422,8 @@ class RepositoryImpl implements Repository {
       );
       return SavePurposeOfTripModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response save error: ${e.response?.data}");
-      return e.response?.data;
+      print("response save error: ${SavePurposeOfTripModel.fromJson(e.response?.data).message}");
+      return SavePurposeOfTripModel.fromJson(e.response?.data);
     }
   }
 
@@ -651,7 +651,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<UpdateTaxiVoucherModel> updateTaxiVoucher(
-    int id,
+    String id,
     String tripID,
     String amount,
     String accountName,
@@ -1120,7 +1120,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<UpdateAccommodationModel> updateAccommodation(
-    int id,
+    String id,
     String idRequestTrip,
     String idTypeAccommodation,
     String checkInDate,

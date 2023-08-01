@@ -139,7 +139,7 @@ class FormRequestTripController extends BaseController {
     tlkTotal.text;
     tlkTotalMeals.text;
     isEdit = false;
-    Future.wait([fetchRequestTrip(), fetchList()]);
+    Future.wait([fetchRequestTrip(), fetchList(), fetchApprovalInfo()]);
     purposeID.printInfo(info: "purposeID");
   }
 
@@ -341,14 +341,21 @@ class FormRequestTripController extends BaseController {
       var caData = await repository.getCashAdvanceTravelList(purposeID);
       caList.addAll(caData.data?.toSet().toList() ?? []);
 
-      var approvalInfoData = await approvalRequestTrip.approval_info(purposeID);
-      approvalInfoList.addAll(approvalInfoData.data?.toSet().toList() ?? []);
     } catch (e, i) {
       e.printError();
       i.printError();
     }
 
     update();
+  }
+
+  Future<void> fetchApprovalInfo() async{
+    try{
+      var approvalInfoData = await approvalRequestTrip.approval_info(purposeID);
+      approvalInfoList.addAll(approvalInfoData.data?.toSet().toList() ?? []);
+    }catch(e){
+      e.printError();
+    }
   }
 
   Future<void> deleteGuest(String id) async {

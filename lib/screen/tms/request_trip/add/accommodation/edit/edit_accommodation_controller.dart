@@ -85,14 +85,14 @@ class EditAccommodationController extends BaseController {
       hotelTypeModel = hotelType;
       hotelTypeList.addAll(hotelType.data?.toSet().toList() ?? []);
 
-    } catch (e) {
+    } catch (e,i) {
       e.printError();
+      i.printError();
     }
     update();
   }
 
   Future<void> fetchData() async {
-
     try {
       await repository.getAccommodationByid(id).then((value) {
         selectedCity = value.data?.first.idCity.toString();
@@ -104,8 +104,9 @@ class EditAccommodationController extends BaseController {
         value.data?.first.sharingWName != null ? isSharing = true : false;
         value.data?.first.useGl == 1 ? createGL = true: false;
       });
-    } catch (e) {
+    } catch (e,i) {
       e.printError();
+      i.printError();
     }
     print("selected city : $selectedCity");
   }

@@ -179,7 +179,7 @@ abstract class Repository {
   );
 
   Future<UpdateTaxiVoucherModel> updateTaxiVoucher(
-    int id,
+    String id,
     String tripID,
     String amount,
     String accountName,
@@ -269,7 +269,7 @@ abstract class Repository {
   );
 
   Future<UpdateAccommodationModel> updateAccommodation(
-    int id,
+    String id,
     String idRequestTrip,
     String idTypeAccommodation,
     String checkInDate,
