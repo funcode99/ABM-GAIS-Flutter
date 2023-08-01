@@ -101,6 +101,17 @@ class ManagementPoolCarImpl implements ManagementPoolCarRepository {
     String odometer,
     String transmisi,
     String status,
+    String type,
+    String typeName,
+    String? hullNumber,
+    String? assetNo,
+    String? vendorName,
+    String startDate,
+    String endDate,
+    String registrationDate,
+    String plateDate,
+    String? kirDate,
+    String? stickerDate
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -115,6 +126,17 @@ class ManagementPoolCarImpl implements ManagementPoolCarRepository {
       "odometer": odometer,
       "transmisi": transmisi,
       "status": status,
+      "start_date" : startDate,
+      "end_date" : endDate,
+      "type" : type,
+      "type_name" : typeName,
+      "hull_no" : hullNumber,
+      "registration_date" : registrationDate,
+      "plate_date" : plateDate,
+      "kir_date" : kirDate,
+      "stickers_date" : stickerDate,
+      "asset_no" : assetNo,
+      "vendor_name" : vendorName
     });
 
     try {

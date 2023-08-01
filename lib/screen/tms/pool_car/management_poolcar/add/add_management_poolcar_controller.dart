@@ -6,6 +6,7 @@ import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
 import 'package:gais/screen/tms/pool_car/management_poolcar/list/management_poolcar_list_screen.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AddManagementPoolCarController extends BaseController {
   final formKey = GlobalKey<FormState>();
@@ -19,28 +20,58 @@ class AddManagementPoolCarController extends BaseController {
   final selectedStatus = TextEditingController();
   final selectedDriver = TextEditingController();
 
+  final startDateController = TextEditingController();
+  final endDateController = TextEditingController();
+  final hullNumberController = TextEditingController();
+  final assetNumberController = TextEditingController();
+  final vendorNameController = TextEditingController();
+  final vehicleRegistrationDateController = TextEditingController();
+  final plateExpiredDateController = TextEditingController();
+  final kirRegistrationDateController = TextEditingController();
+  final stickerExpiredDateController = TextEditingController();
+
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+
   bool isAdministrator = false;
   bool isSuperAdmin = false;
   bool isAdmin = false;
   bool isLoading = false;
   bool isLoadSite = false;
-  bool isEdit = Get.arguments['isEdit'];
+  bool isEdit = false;
 
   List<comp.Data> companyList = [];
   List<site.Data> siteList = [];
   List<car.Data> carTypeList = [];
   List<driver.Data> driverList = [];
+  List<int> typeList = [
+    1,
+    2,
+  ];
 
-  int? carID = Get.arguments['id'];
+  int? carID;
   String? companyID;
   int? siteID;
   int? carTypeID;
   int? driverID;
+  String selectedType = "1";
+
+  final startDate = Rxn<DateTime>();
+  final endDate = Rxn<DateTime>();
+
+  final vehicleRegistrationDate = Rxn<DateTime>();
+  final plateExpiredDate = Rxn<DateTime>();
+  final kirRegistrationDate = Rxn<DateTime>();
+  final stickerExpiredDate = Rxn<DateTime>();
 
   @override
   void onInit() {
     super.onInit();
     fetchList();
+
+    if(Get.arguments != null){
+      carID = Get.arguments['id'];
+      isEdit = Get.arguments['isEdit'];
+    }
     if (isEdit == true) fetchEdit();
   }
 
@@ -116,6 +147,17 @@ class AddManagementPoolCarController extends BaseController {
         odometer.text,
         selectedTransmision.text,
         selectedStatus.text,
+        selectedType,
+        selectedType == "1" ? "assets" : "kontrak",
+        hullNumberController.text,
+        selectedType == "1" ? assetNumberController.text : null,
+        selectedType == "2" ? vendorNameController.text : null,
+        startDate.value.toString(),
+        endDate.value.toString(),
+        vehicleRegistrationDate.value.toString(),
+        plateExpiredDate.value.toString(),
+        kirRegistrationDate.value.toString(),
+        stickerExpiredDate.value.toString()
       )
           .then((value) {
         Get.off(const ManagementPoolCarListScreen());
