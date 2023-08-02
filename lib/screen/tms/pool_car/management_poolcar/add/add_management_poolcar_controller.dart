@@ -91,8 +91,8 @@ class AddManagementPoolCarController extends BaseController {
         selectedDriver.text = value.data?.first.idDriver.toString() ?? "";
 
         selectedType = value.data?.first.type.toString() ?? "1";
-        assetNumberController.text = value.data?.first.assetNo ?? "";
-        vendorNameController.text = value.data?.first.vendorName ?? "";
+        assetNumberController.text = value.data?.first.typeName ?? "";
+        vendorNameController.text = value.data?.first.typeName ?? "";
         hullNumberController.text = value.data?.first.hullNo.toString() ?? "";
 
 
@@ -171,7 +171,7 @@ class AddManagementPoolCarController extends BaseController {
         selectedTransmision.text,
         selectedStatus.text,
         selectedType,
-        selectedType == "1" ? "assets" : "kontrak",
+        selectedType == "1" ? assetNumberController.text  : vendorNameController.text,
         hullNumberController.text,
         selectedType == "1" ? assetNumberController.text : null,
         selectedType == "2" ? vendorNameController.text : null,
@@ -228,7 +228,7 @@ class AddManagementPoolCarController extends BaseController {
 
 
         selectedType,
-        selectedType == "1" ? "assets" : "kontrak",
+        selectedType == "1" ? assetNumberController.text : vendorNameController.text,
         hullNumberController.text,
         selectedType == "1" ? assetNumberController.text : null,
         selectedType == "2" ? vendorNameController.text : null,
