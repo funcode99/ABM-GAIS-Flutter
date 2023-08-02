@@ -30,6 +30,17 @@ abstract class ManagementPoolCarRepository {
     String odometer,
     String transmisi,
     String status,
+    String type,
+    String typeName,
+    String? hullNumber,
+    String? assetNo,
+    String? vendorName,
+    String? startDate,
+    String? endDate,
+    String? registrationDate,
+    String? plateDate,
+    String? kirDate,
+    String? stickerDate
   );
 
   Future<UpdateCarModel> update(
@@ -43,6 +54,17 @@ abstract class ManagementPoolCarRepository {
     String odometer,
     String transmisi,
     String status,
+    String type,
+    String typeName,
+    String? hullNumber,
+    String? assetNo,
+    String? vendorName,
+    String? startDate,
+    String? endDate,
+    String? registrationDate,
+    String? plateDate,
+    String? kirDate,
+    String? stickerDate
   );
 
   Future delete(int id);

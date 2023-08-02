@@ -77,7 +77,7 @@ class Data {
       String? plate, 
       num? idCompany, 
       num? idSite, 
-      num? odometer, 
+      dynamic odometer,
       String? transmisi, 
       num? idDriver, 
       num? status, 
@@ -92,7 +92,19 @@ class Data {
       dynamic siteName, 
       dynamic siteCode, 
       dynamic typeCar, 
-      String? name,}){
+      String? name,
+      String? hullNo,
+      String? stickersDate,
+      String? kirDate,
+      num? type,
+      String? typeName,
+      String? plateDate,
+      String? registrationDate,
+      String? startDate,
+      String? endDate,
+      String? assetNo,
+      String? vendorName,
+  }){
     _id = id;
     _carName = carName;
     _plate = plate;
@@ -114,6 +126,17 @@ class Data {
     _siteCode = siteCode;
     _typeCar = typeCar;
     _name = name;
+    _hullNo = hullNo;
+    _stickersDate = stickersDate;
+    _kirDate = kirDate;
+    _type = type;
+    _typeName = typeName;
+    _plateDate = plateDate;
+    _registrationDate = registrationDate;
+    _startDate = startDate;
+    _endDate = endDate;
+    _assetNo = assetNo;
+    _vendorName = vendorName;
 }
 
   Data.fromJson(dynamic json) {
@@ -138,13 +161,25 @@ class Data {
     _siteCode = json['site_code'];
     _typeCar = json['type_car'];
     _name = json['name'];
+    _hullNo = json['hull_no'];
+    _stickersDate = json['stickers_date'];
+    _kirDate = json['kir_date'];
+    _type = json['type'];
+    _typeName = json['type_name'];
+    _plateDate = json['plate_date'];
+    _registrationDate = json['registration_date'];
+    _startDate = json['start_date'];
+    _endDate = json['end_date'];
+    _assetNo = json['asset_no'];
+    _vendorName = json['vendor_name'];
+
   }
   dynamic _id;
   String? _carName;
   String? _plate;
   num? _idCompany;
   num? _idSite;
-  num? _odometer;
+  dynamic _odometer;
   String? _transmisi;
   num? _idDriver;
   num? _status;
@@ -160,12 +195,23 @@ class Data {
   dynamic _siteCode;
   dynamic _typeCar;
   String? _name;
+  String? _hullNo;
+  String? _stickersDate;
+  String? _kirDate;
+  num? _type;
+  String? _typeName;
+  String? _plateDate;
+  String? _registrationDate;
+  String? _startDate;
+  String? _endDate;
+  String? _assetNo;
+  String? _vendorName;
 Data copyWith({  num? id,
   String? carName,
   String? plate,
   num? idCompany,
   num? idSite,
-  num? odometer,
+  dynamic odometer,
   String? transmisi,
   num? idDriver,
   num? status,
@@ -181,6 +227,17 @@ Data copyWith({  num? id,
   dynamic siteCode,
   dynamic typeCar,
   String? name,
+  String? hullNo,
+  String? stickersDate,
+  String? kirDate,
+  num? type,
+  String? typeName,
+  String? plateDate,
+  String? registrationDate,
+  String? startDate,
+  String? endDate,
+  String? assetNo,
+  String? vendorName,
 }) => Data(  id: id ?? _id,
   carName: carName ?? _carName,
   plate: plate ?? _plate,
@@ -202,13 +259,24 @@ Data copyWith({  num? id,
   siteCode: siteCode ?? _siteCode,
   typeCar: typeCar ?? _typeCar,
   name: name ?? _name,
+  hullNo: hullNo ?? _hullNo,
+  stickersDate: stickersDate ?? _stickersDate,
+  kirDate: kirDate ?? _kirDate,
+  type: type ?? _type,
+  typeName: typeName ?? _typeName,
+  plateDate: plateDate ?? _plateDate,
+  registrationDate: registrationDate ?? _registrationDate,
+  startDate: startDate ?? _startDate,
+  endDate: endDate ?? _endDate,
+  assetNo: assetNo ?? _assetNo,
+  vendorName: vendorName ?? _vendorName,
 );
   dynamic get id => _id;
   String? get carName => _carName;
   String? get plate => _plate;
   num? get idCompany => _idCompany;
   num? get idSite => _idSite;
-  num? get odometer => _odometer;
+  dynamic get odometer => _odometer;
   String? get transmisi => _transmisi;
   num? get idDriver => _idDriver;
   num? get status => _status;
@@ -224,6 +292,17 @@ Data copyWith({  num? id,
   dynamic get siteCode => _siteCode;
   dynamic get typeCar => _typeCar;
   String? get name => _name;
+  String? get hullNo => _hullNo;
+  String? get stickersDate => _stickersDate;
+  String? get kirDate => _kirDate;
+  num? get type => _type;
+  String? get typeName => _typeName;
+  String? get plateDate => _plateDate;
+  String? get registrationDate => _registrationDate;
+  String? get startDate => _startDate;
+  String? get endDate => _endDate;
+  String? get assetNo => _assetNo;
+  String? get vendorName => _vendorName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -248,6 +327,18 @@ Data copyWith({  num? id,
     map['site_code'] = _siteCode;
     map['type_car'] = _typeCar;
     map['name'] = _name;
+    map['hullNo'] = _hullNo;
+    map['stickersDate'] = _stickersDate;
+    map['kirDate'] = _kirDate;
+    map['type'] = _type;
+    map['typeName'] = _typeName;
+    map['plateDate'] = _plateDate;
+    map['registrationDate'] = _registrationDate;
+    map['startDate'] = _startDate;
+    map['endDate'] = _endDate;
+    map['assetNo'] = _assetNo;
+    map['vendorName'] = _vendorName;
+
     return map;
   }
 
