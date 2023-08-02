@@ -5,6 +5,7 @@ import 'package:gais/data/model/pool_car/management_poolcar/get_driver_model.dar
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
 import 'package:gais/screen/tms/pool_car/management_poolcar/list/management_poolcar_list_screen.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -31,6 +32,7 @@ class AddManagementPoolCarController extends BaseController {
   final stickerExpiredDateController = TextEditingController();
 
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+  DateFormat dateFormatForSubmit = DateFormat("yyyy-MM-dd");
 
   bool isAdministrator = false;
   bool isSuperAdmin = false;
@@ -55,13 +57,13 @@ class AddManagementPoolCarController extends BaseController {
   int? driverID;
   String selectedType = "1";
 
-  final startDate = Rxn<DateTime>();
-  final endDate = Rxn<DateTime>();
+  DateTime? startDate;
+  DateTime? endDate;
 
-  final vehicleRegistrationDate = Rxn<DateTime>();
-  final plateExpiredDate = Rxn<DateTime>();
-  final kirRegistrationDate = Rxn<DateTime>();
-  final stickerExpiredDate = Rxn<DateTime>();
+  DateTime? vehicleRegistrationDate;
+  DateTime? plateExpiredDate;
+  DateTime? kirRegistrationDate;
+  DateTime? stickerExpiredDate;
 
   @override
   void onInit() {
@@ -87,6 +89,27 @@ class AddManagementPoolCarController extends BaseController {
         selectedTransmision.text = value.data?.first.transmisi.toString() ?? "";
         selectedStatus.text = value.data?.first.status.toString() ?? "";
         selectedDriver.text = value.data?.first.idDriver.toString() ?? "";
+
+        selectedType = value.data?.first.type.toString() ?? "1";
+        assetNumberController.text = value.data?.first.assetNo ?? "";
+        vendorNameController.text = value.data?.first.vendorName ?? "";
+        hullNumberController.text = value.data?.first.hullNo.toString() ?? "";
+
+
+        startDateController.text = value.data?.first.startDate?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy") ?? "-";
+        endDateController.text = value.data?.first.endDate?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy") ?? "-";
+        vehicleRegistrationDateController.text = value.data?.first.registrationDate?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy") ?? "-";
+        plateExpiredDateController.text = value.data?.first.plateDate?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy") ?? "-";
+        kirRegistrationDateController.text = value.data?.first.kirDate?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy") ?? "-";
+        stickerExpiredDateController.text = value.data?.first.stickersDate?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy") ?? "-";
+
+        startDate = value.data?.first.startDate?.toDate(originFormat: "yyyy-MM-dd HH:mm:ss");
+        endDate = value.data?.first.endDate?.toDate(originFormat: "yyyy-MM-dd HH:mm:ss");
+        vehicleRegistrationDate = value.data?.first.registrationDate?.toDate(originFormat: "yyyy-MM-dd HH:mm:ss");
+        plateExpiredDate = value.data?.first.plateDate?.toDate(originFormat: "yyyy-MM-dd HH:mm:ss");
+        kirRegistrationDate = value.data?.first.kirDate?.toDate(originFormat: "yyyy-MM-dd HH:mm:ss");
+        stickerExpiredDate = value.data?.first.stickersDate?.toDate(originFormat: "yyyy-MM-dd HH:mm:ss");
+        update();
       });
     } catch (e) {
       e.printError();
@@ -152,13 +175,13 @@ class AddManagementPoolCarController extends BaseController {
         hullNumberController.text,
         selectedType == "1" ? assetNumberController.text : null,
         selectedType == "2" ? vendorNameController.text : null,
-        startDate.value.toString(),
-        endDate.value.toString(),
-        vehicleRegistrationDate.value.toString(),
-        plateExpiredDate.value.toString(),
-        kirRegistrationDate.value.toString(),
-        stickerExpiredDate.value.toString()
-      )
+        startDate != null ? dateFormatForSubmit.format(startDate!) : null,
+        endDate != null ? dateFormatForSubmit.format(endDate!) : null,
+        vehicleRegistrationDate != null ? dateFormatForSubmit.format(vehicleRegistrationDate!) : null,
+        plateExpiredDate != null ? dateFormatForSubmit.format(plateExpiredDate!) : null,
+        kirRegistrationDate != null ? dateFormatForSubmit.format(kirRegistrationDate!) : null,
+        stickerExpiredDate != null ? dateFormatForSubmit.format(stickerExpiredDate!) : null,
+    )
           .then((value) {
         Get.off(const ManagementPoolCarListScreen());
         Get.showSnackbar(const GetSnackBar(
@@ -202,6 +225,19 @@ class AddManagementPoolCarController extends BaseController {
         odometer.text,
         selectedTransmision.text,
         selectedStatus.text,
+
+
+        selectedType,
+        selectedType == "1" ? "assets" : "kontrak",
+        hullNumberController.text,
+        selectedType == "1" ? assetNumberController.text : null,
+        selectedType == "2" ? vendorNameController.text : null,
+        startDate != null ? dateFormatForSubmit.format(startDate!) : null,
+        endDate != null ? dateFormatForSubmit.format(endDate!) : null,
+        vehicleRegistrationDate != null ? dateFormatForSubmit.format(vehicleRegistrationDate!) : null,
+        plateExpiredDate != null ? dateFormatForSubmit.format(plateExpiredDate!) : null,
+        kirRegistrationDate != null ? dateFormatForSubmit.format(kirRegistrationDate!) : null,
+        stickerExpiredDate != null ? dateFormatForSubmit.format(stickerExpiredDate!) : null,
       )
           .then((value) {
         Get.off(const ManagementPoolCarListScreen());

@@ -113,16 +113,16 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                                   FocusScope.of(context).requestFocus(FocusNode());
                                   showDatePicker(
                                       context: context,
-                                      initialDate: DateTime.now(),
+                                      initialDate: controller.startDate ?? DateTime.now(),
                                       firstDate: DateTime.now().subtract(const Duration(days: 365 * 10)),
                                       lastDate: DateTime.now().add(const Duration(days: 365 * 10)))
                                       .then((date) {
                                     if (date != null) {
-                                      controller.startDate.value = date;
+                                      controller.startDate = date;
                                       controller.startDateController.text = controller.dateFormat.format(date);
-                                      if(controller.endDate.value != null){
-                                        if(controller.startDate.value!.isAfter(controller.endDate.value!)){
-                                          controller.endDate.value = null;
+                                      if(controller.endDate != null){
+                                        if(controller.startDate!.isAfter(controller.endDate!)){
+                                          controller.endDate = null;
                                           controller.endDateController.text = "";
                                         }
                                       }
@@ -141,7 +141,7 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                               isRequired: true,
                               suffixIcon: const Icon(IconlyLight.calendar),
                               onTap: () {
-                                if(controller.startDate.value == null){
+                                if(controller.startDate == null){
                                   Get.showSnackbar(
                                     CustomGetSnackBar(
                                         message: "Please start date first",
@@ -151,12 +151,12 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                                   FocusScope.of(context).requestFocus(FocusNode());
                                   showDatePicker(
                                       context: context,
-                                      initialDate: controller.startDate.value!,
-                                      firstDate: controller.startDate.value!,
-                                      lastDate: controller.startDate.value!.add(const Duration(days: 365)))
+                                      initialDate: controller.endDate ?? controller.startDate!,
+                                      firstDate: controller.startDate!,
+                                      lastDate: controller.startDate!.add(const Duration(days: 365)))
                                       .then((date) {
                                     if (date != null) {
-                                      controller.endDate.value = date;
+                                      controller.endDate = date;
                                       controller.endDateController.text = controller.dateFormat.format(date);
                                       controller.update();
                                     }
@@ -301,7 +301,7 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                                         .add(const Duration(days: 365)))
                                     .then((date) {
                                   if (date != null) {
-                                    controller.vehicleRegistrationDate.value = date;
+                                    controller.vehicleRegistrationDate = date;
                                     controller.vehicleRegistrationDateController.text = controller.dateFormat.format(date);
                                     controller.update();
                                   }
@@ -326,7 +326,7 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                                         .add(const Duration(days: 365)))
                                     .then((date) {
                                   if (date != null) {
-                                    controller.plateExpiredDate.value = date;
+                                    controller.plateExpiredDate = date;
                                     controller.plateExpiredDateController.text = controller.dateFormat.format(date);
                                     controller.update();
                                   }
@@ -352,7 +352,7 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                                         .add(const Duration(days: 365)))
                                     .then((date) {
                                   if (date != null) {
-                                    controller.kirRegistrationDate.value = date;
+                                    controller.kirRegistrationDate = date;
                                     controller.kirRegistrationDateController.text =
                                         controller.dateFormat.format(date);
                                     controller.update();
@@ -378,7 +378,7 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                                         .add(const Duration(days: 365)))
                                     .then((date) {
                                   if (date != null) {
-                                    controller.stickerExpiredDate.value = date;
+                                    controller.stickerExpiredDate = date;
                                     controller.stickerExpiredDateController.text = controller.dateFormat.format(date);
                                     controller.update();
                                   }
