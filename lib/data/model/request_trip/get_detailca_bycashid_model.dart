@@ -108,7 +108,7 @@ class Data {
     _updatedBy = json['updated_by'];
   }
   dynamic _id;
-  num? _idCa;
+  dynamic _idCa;
   dynamic _idItemCa;
   num? _idCostCenter;
   String? _remarks;
@@ -148,7 +148,7 @@ Data copyWith({  num? id,
   updatedBy: updatedBy ?? _updatedBy,
 );
   dynamic get id => _id;
-  num? get idCa => _idCa;
+  dynamic get idCa => _idCa;
   dynamic get idItemCa => _idItemCa;
   num? get idCostCenter => _idCostCenter;
   String? get remarks => _remarks;

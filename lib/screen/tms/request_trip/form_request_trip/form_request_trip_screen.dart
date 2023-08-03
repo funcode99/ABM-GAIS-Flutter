@@ -10,7 +10,6 @@ import 'package:gais/reusable/customformlabel.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
-import 'package:gais/reusable/pdf_screen.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/edit/edit_accommodation_screen.dart';
@@ -213,18 +212,17 @@ class FormRequestTripScreen extends StatelessWidget {
                                       : Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            CustomFormLabel(label: "Attachment", showRequired: true),
+                                            const CustomFormLabel(label: "Attachment", showRequired: true),
                                             GestureDetector(
                                               onTap: () => controller.viewFile(),
                                               child: Container(
                                                   width: Get.width,
-                                                  margin: EdgeInsets.only(top: 10),
-                                                  padding: EdgeInsets.all(10),
+                                                  margin: const EdgeInsets.only(top: 10),
+                                                  padding: const EdgeInsets.all(10),
                                                   decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    border: Border.all(color: blackColor),
-                                                    color: baseColor
-                                                  ),
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      border: Border.all(color: blackColor),
+                                                      color: baseColor),
                                                   child: Text(controller.attachment.text, style: listSubTitleTextStyle.copyWith(color: blackColor))),
                                             ),
                                           ],
@@ -747,6 +745,10 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                             )?.then((value) => controller.fetchList());
                                                                           },
                                                                           isDelete: controller.isEdit,
+                                                                          deleteAction: () {
+                                                                            controller.deleteCashAdvance(e.id);
+                                                                            controller.update();
+                                                                          },
                                                                           content: Row(
                                                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                                             children: [
@@ -833,9 +835,9 @@ class FormRequestTripScreen extends StatelessWidget {
                         if (controller.isApproval == true) {
                           if (controller.approvalInfoList.isEmpty) {
                             return Container(
-                              margin: EdgeInsets.only(top: 20, bottom: 30),
+                              margin: const EdgeInsets.only(top: 20, bottom: 30),
                               alignment: Alignment.center,
-                              child: Text("No data yet"),
+                              child: const Text("No data yet"),
                             );
                           } else {
                             return Row(

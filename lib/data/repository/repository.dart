@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:gais/data/model/cash_advance/item_cash_advance_travel_model.dart';
 import 'package:gais/data/model/employee_info_model.dart';
 import 'package:gais/data/model/login_model.dart';
 import 'package:gais/data/model/reference/get_city_model.dart';
@@ -298,7 +299,7 @@ abstract class Repository {
   Future<GetDetailcaBycashidModel> getDetailCashAdvanceTravelByid(String id);
 
   Future<UpdateCashAdvanceTravelModel> updateCashAdvanceTravel(
-    int id,
+    String id,
     String idEmployee,
     String idRequestTrip,
     String idCurrency,
@@ -308,6 +309,8 @@ abstract class Repository {
   );
 
   Future deleteCashAdvanceTravel(String id);
+
+  Future<ItemCashAdvanceTravelModel> getItemCATravel();
 
   Future<SubmitRequestTripModel> submitRequestTrip(String id);
 

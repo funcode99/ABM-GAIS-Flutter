@@ -3,6 +3,7 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/model/reference/get_currency_model.dart' as currency;
+import 'package:gais/data/model/cash_advance/item_cash_advance_travel_model.dart' as items;
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
@@ -33,11 +34,7 @@ class AddCashAdvanceTravelController extends BaseController {
 
   List<CashAdvanceDetailModel> listDetail = <CashAdvanceDetailModel>[];
   List<currency.Data> currencyList = [];
-  List itemCA = [
-    {'id': 1, 'item': 'Meals'},
-    {'id': 2, 'item': 'Transport'},
-    {'id': 3, 'item': 'Other'},
-  ];
+  List<items.Data> itemCA = [];
 
   final CashAdvanceNonTravelRepository _cashAdvanceTravelNonRepository = Get.find();
 
@@ -48,9 +45,22 @@ class AddCashAdvanceTravelController extends BaseController {
     totalController.text = _getTotal();
     super.onInit();
     print(purposeID);
-    print(idCA);
-    Future.wait([fetchData()]);
+    print("idCA : $idCA");
+    Future.wait([fetchData(), fetchList()]);
     if (idCA != null) fetchEditValue();
+  }
+
+  Future<void> fetchList() async {
+    itemCA = [];
+    try {
+      await repository.getItemCATravel().then((value) {
+        itemCA.addAll(value.data?.toSet().toList() ?? []);
+      });
+    } catch (e) {
+      e.printError();
+    }
+
+    update();
   }
 
   Future<void> fetchEditValue() async {
@@ -59,14 +69,14 @@ class AddCashAdvanceTravelController extends BaseController {
       notes.text = value.data?.first.remarks ?? "";
       selectedCurrency = value.data?.first.idCurrency?.toInt();
       currentCurrency = value.data?.first.idCurrency.toString();
-      totalController.text = value.data?.first.grandTotal ?? "";
+      totalController.text = value.data?.first.grandTotal?.toInt().toCurrency() ?? "";
       codeStatus = value.data?.first.codeStatusDoc?.toInt();
     });
 
     var detailData = await repository.getDetailCashAdvanceTravelByid(idCA!);
     detailData.data?.forEach((e) {
       listDetail.add(CashAdvanceDetailModel(
-        id: e.id?.toInt(),
+        id: e.id,
         idItemCa: e.idItemCa,
         nominal: e.nominal,
         remarks: e.remarks,
@@ -157,6 +167,7 @@ class AddCashAdvanceTravelController extends BaseController {
     for (CashAdvanceDetailModel element in listDetail) {
       total += element.total!.toInt();
     }
+    update();
 
     return total.toCurrency();
   }
@@ -181,18 +192,19 @@ class AddCashAdvanceTravelController extends BaseController {
         final result = await _cashAdvanceTravelNonRepository.saveData(cashAdvanceModel);
         result.fold((l) => Get.showSnackbar(CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)), (cashAdvanceModel) {
           //update list
-          if (formEdit == true) {
-            Get.off(
-                  () => const FormRequestTripScreen(),
-              arguments: {'id': purposeID, 'codeDocument': codeDocument},
-            );
-          } else {
-            Get.off(
-                  () => const CashAdvanceScreen(),
-              arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit},
-            );
-          }
         });
+      }
+
+      if (formEdit == true) {
+        Get.off(
+          () => const FormRequestTripScreen(),
+          arguments: {'id': purposeID, 'codeDocument': codeDocument},
+        );
+      } else {
+        Get.off(
+          () => const CashAdvanceScreen(),
+          arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit},
+        );
       }
     } catch (e) {
       e.printError();
@@ -214,29 +226,15 @@ class AddCashAdvanceTravelController extends BaseController {
   void updateData() async {
     String userId = await storage.readString(StorageCore.userID);
     try {
-      await repository
-          .updateCashAdvanceTravel(
-        idCA!.toInt(),
+      await repository.updateCashAdvanceTravel(
+        idCA!,
         userId,
         purposeID.toString(),
         selectedCurrency.toString(),
         notes.text,
         totalController.text.digitOnly(),
         "1",
-      )
-          .then((value) {
-        if (formEdit == true) {
-          Get.off(
-            () => const FormRequestTripScreen(),
-            arguments: {'id': purposeID, 'codeDocument': codeDocument},
-          );
-        } else {
-          Get.off(
-            () => const CashAdvanceScreen(),
-            arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit},
-          );
-        }
-      });
+      );
     } catch (e, i) {
       e.printError();
       i.printError();
