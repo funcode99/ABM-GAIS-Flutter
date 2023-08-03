@@ -6,6 +6,7 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/pool_car/management_poolcar/add/add_management_poolcar_controller.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -85,6 +86,108 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                             },
                           ),
                           const SizedBox(height: 8),
+
+
+                          CustomDropDownFormField(
+                            items: controller.typeList
+                                .map((e) => DropdownMenuItem(
+                              value: e.toString(),
+                              child: Text(e == 1 ? "Asset" : "Contract"),
+                            ))
+                                .toList(),
+                            label: "Type",
+                            value: controller.selectedType,
+                            isRequired: true,
+                            onChanged: (value) {
+                              controller.selectedType = value.toString();
+                              controller.update();
+                            },
+                          ),
+                          const SizedBox(height: 8),
+
+                          if(controller.selectedType == "2")
+                            CustomTextFormField(
+                                isRequired: true,
+                                suffixIcon: const Icon(IconlyLight.calendar),
+                                onTap: () {
+                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  showDatePicker(
+                                      context: context,
+                                      initialDate: controller.startDate ?? DateTime.now(),
+                                      firstDate: DateTime.now().subtract(const Duration(days: 365 * 10)),
+                                      lastDate: DateTime.now().add(const Duration(days: 365 * 10)))
+                                      .then((date) {
+                                    if (date != null) {
+                                      controller.startDate = date;
+                                      controller.startDateController.text = controller.dateFormat.format(date);
+                                      if(controller.endDate != null){
+                                        if(controller.startDate!.isAfter(controller.endDate!)){
+                                          controller.endDate = null;
+                                          controller.endDateController.text = "";
+                                        }
+                                      }
+                                      controller.update();
+                                    }
+                                  });
+                                },
+                                controller: controller.startDateController,
+                                label: "Start Date".tr),
+                          if(controller.selectedType == "2") const SizedBox(
+                            height: 8,
+                          ),
+
+                          if(controller.selectedType == "2")
+                            CustomTextFormField(
+                              isRequired: true,
+                              suffixIcon: const Icon(IconlyLight.calendar),
+                              onTap: () {
+                                if(controller.startDate == null){
+                                  Get.showSnackbar(
+                                    CustomGetSnackBar(
+                                        message: "Please start date first",
+                                        backgroundColor: redColor),
+                                  );
+                                }else{
+                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  showDatePicker(
+                                      context: context,
+                                      initialDate: controller.endDate ?? controller.startDate!,
+                                      firstDate: controller.startDate!,
+                                      lastDate: controller.startDate!.add(const Duration(days: 365)))
+                                      .then((date) {
+                                    if (date != null) {
+                                      controller.endDate = date;
+                                      controller.endDateController.text = controller.dateFormat.format(date);
+                                      controller.update();
+                                    }
+                                  });
+                                }
+
+                              },
+                              controller: controller.endDateController,
+                              label: "End Date".tr),
+                          if(controller.selectedType == "2") const SizedBox(
+                            height: 8,
+                          ),
+
+                          if(controller.selectedType == "1")
+                            CustomTextFormField(
+                            controller: controller.assetNumberController,
+                            label: "Asset No",
+                            isRequired: true,
+                          ),
+                          if(controller.selectedType == "1")
+                            const SizedBox(height: 8),
+
+                          if(controller.selectedType == "2")
+                            CustomTextFormField(
+                            controller: controller.vendorNameController,
+                            label: "Vendor Name",
+                            isRequired: true,
+                          ),
+                          if(controller.selectedType == "2")
+                            const SizedBox(height: 8),
+
                           CustomTextFormField(
                             controller: controller.nameCar,
                             label: "Car Name",
@@ -97,6 +200,14 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                             isRequired: true,
                           ),
                           const SizedBox(height: 8),
+
+                          CustomTextFormField(
+                            controller: controller.hullNumberController,
+                            label: "Hull No",
+                            isRequired: false,
+                          ),
+                          const SizedBox(height: 8),
+
                           CustomTextFormField(
                             controller: controller.odometer,
                             label: "Odometer (In KM)",
@@ -175,6 +286,111 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                             },
                           ),
                           const SizedBox(height: 8),
+
+
+                          CustomTextFormField(
+                              isRequired: true,
+                              suffixIcon: const Icon(IconlyLight.calendar),
+                              onTap: () {
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime.now()
+                                        .add(const Duration(days: 365)))
+                                    .then((date) {
+                                  if (date != null) {
+                                    controller.vehicleRegistrationDate = date;
+                                    controller.vehicleRegistrationDateController.text = controller.dateFormat.format(date);
+                                    controller.update();
+                                  }
+                                });
+                              },
+                              controller: controller.vehicleRegistrationDateController,
+                              label: "Vehicle Registration Date".tr),
+                          const SizedBox(
+                            height: 8,
+                          ),
+
+                          CustomTextFormField(
+                              isRequired: true,
+                              suffixIcon: const Icon(IconlyLight.calendar),
+                              onTap: () {
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime.now()
+                                        .add(const Duration(days: 365)))
+                                    .then((date) {
+                                  if (date != null) {
+                                    controller.plateExpiredDate = date;
+                                    controller.plateExpiredDateController.text = controller.dateFormat.format(date);
+                                    controller.update();
+                                  }
+                                });
+                              },
+                              controller: controller.plateExpiredDateController,
+                              label: "Plate Registration Expired Date".tr),
+                          const SizedBox(
+                            height: 8,
+                          ),
+
+
+                          CustomTextFormField(
+                              isRequired: false,
+                              suffixIcon: const Icon(IconlyLight.calendar),
+                              onTap: () {
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime.now()
+                                        .add(const Duration(days: 365)))
+                                    .then((date) {
+                                  if (date != null) {
+                                    controller.kirRegistrationDate = date;
+                                    controller.kirRegistrationDateController.text =
+                                        controller.dateFormat.format(date);
+                                    controller.update();
+                                  }
+                                });
+                              },
+                              controller: controller.kirRegistrationDateController,
+                              label: "KIR Registration".tr),
+                          const SizedBox(
+                            height: 8,
+                          ),
+
+                          CustomTextFormField(
+                              isRequired: false,
+                              suffixIcon: const Icon(IconlyLight.calendar),
+                              onTap: () {
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime.now()
+                                        .add(const Duration(days: 365)))
+                                    .then((date) {
+                                  if (date != null) {
+                                    controller.stickerExpiredDate = date;
+                                    controller.stickerExpiredDateController.text = controller.dateFormat.format(date);
+                                    controller.update();
+                                  }
+                                });
+                              },
+                              controller: controller.stickerExpiredDateController,
+                              label: "Stickers Expired Date".tr),
+                          const SizedBox(
+                            height: 8,
+                          ),
+
+
                           CustomFilledButton(
                             color: successColor,
                             width: Get.width / 2.5,
