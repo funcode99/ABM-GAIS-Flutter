@@ -275,7 +275,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                 controller.update();
                               },
                             ),
-                            GestureDetector(
+                            controller.showTLK ? GestureDetector(
                               child: Container(
                                 alignment: Alignment.center,
                                 margin: const EdgeInsets.only(top: 10, left: 3),
@@ -295,7 +295,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                 controller.isApproval = false;
                                 controller.update();
                               },
-                            ),
+                            ) : Container(),
                             GestureDetector(
                               child: Container(
                                 alignment: Alignment.center,

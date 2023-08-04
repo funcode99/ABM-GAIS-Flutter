@@ -89,6 +89,7 @@ class LoginController extends BaseController {
               const GetSnackBar(
                 message: 'Welcome',
                 isDismissible: true,
+                margin  : EdgeInsets.only(bottom: 55  ),
                 duration: Duration(seconds: 3),
                 backgroundColor: Colors.green,
               ),

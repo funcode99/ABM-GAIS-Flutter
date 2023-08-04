@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +32,7 @@ class FormRequestTripController extends BaseController {
   int? requsetorID;
   int? siteID;
   int? jobID;
+  String? role;
 
   final formKey = GlobalKey<FormState>();
   final createdDate = TextEditingController();
@@ -51,6 +51,7 @@ class FormRequestTripController extends BaseController {
   String? tabName;
   bool isDetail = true;
   bool isTLK = false;
+  bool showTLK = false;
   bool isApproval = false;
   bool isEdit = false;
   bool isAttachment = false;
@@ -139,7 +140,7 @@ class FormRequestTripController extends BaseController {
     tlkTotal.text;
     tlkTotalMeals.text;
     isEdit = false;
-    Future.wait([fetchRequestTrip(), fetchList(), fetchApprovalInfo()]);
+    Future.wait([fetchRequestTrip(), fetchList(), fetchApprovalInfo(), checkRole()]);
     purposeID.printInfo(info: "purposeID");
   }
 
@@ -154,6 +155,15 @@ class FormRequestTripController extends BaseController {
     tlkZona.dispose();
     tlkTotal.dispose();
     tlkTotalMeals.dispose();
+  }
+
+  Future<void> checkRole() async{
+    role = await storage.readRole();
+    print("role : $role");
+    if(role=="3" || role=="2" || role =="1"){
+      showTLK = true;
+    }
+    update();
   }
 
   checkItems() {
