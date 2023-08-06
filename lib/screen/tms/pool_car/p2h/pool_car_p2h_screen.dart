@@ -141,13 +141,17 @@ class PoolCarP2HScreen extends StatelessWidget {
                                       print("element ${element.choices!.firstWhere((element) => element.value == value).text}");
                                     },
                                     selectedValue: element.value!,
+                                    withImage: true,
+                                    listAttachable: element.choices!
+                                        .map((e) => e.attachable ?? false)
+                                        .toList(),
+                                    onImageSelected: (file){
+                                      controller.mapImage[element.idDetail] = "${file?.path}";
+                                      print("FILE ${controller.mapImage}");
+                                    },
                                   );
                                 }),
-                                ImagePicker(
-                                   onImageSelected: (file){
 
-                                   },
-                                )
                                 
                               ],
                             ),

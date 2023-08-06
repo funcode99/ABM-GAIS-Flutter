@@ -28,6 +28,7 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
   final selectedItem = PoolCarModel().obs;
 
   final listCheckItem = <CheckItemModel>[].obs;
+  final mapImage = {}.obs;
 
   final showButton = false.obs;
 
@@ -70,6 +71,8 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
       odometer = r.dataExisting?.odometer.toString() ?? "";
       note = r.dataExisting?.notes ?? "";
       isUsable.value = r.dataExisting?.isUsable == null ? true :  r.dataExisting?.isUsable == 1;
+
+
 
       setValue();
     });
