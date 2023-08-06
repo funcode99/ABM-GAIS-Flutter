@@ -1,3 +1,4 @@
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:gais/data/model/pool_car/pool_car_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/picker/image_picker.dart';
 import 'package:gais/reusable/radio/custom_radio_group.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/pool_car/p2h/pool_car_p2h_controller.dart';
@@ -135,12 +137,18 @@ class PoolCarP2HScreen extends StatelessWidget {
                                         .map((e) => e.value!)
                                         .toList(),
                                     onChanged: (value) {
-                                      controller.updateChecklistValue(
-                                          index, value);
+                                      controller.updateChecklistValue(index, value);
+                                      print("element ${element.choices!.firstWhere((element) => element.value == value).text}");
                                     },
                                     selectedValue: element.value!,
                                   );
-                                })
+                                }),
+                                ImagePicker(
+                                   onImageSelected: (file){
+
+                                   },
+                                )
+                                
                               ],
                             ),
                           );

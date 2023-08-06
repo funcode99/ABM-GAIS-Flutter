@@ -57,7 +57,11 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
   }
 
   void getCheckData() async {
-    final result = await _repository.getCheckData(selectedItem.value.id!);
+    Map<String, dynamic> data = {
+      "status" : 1
+    };
+
+    final result = await _repository.getCheckData(selectedItem.value.id!, data);
 
     result.fold((l) {
       print("ERROR GET CHECK DATA${l.message}");

@@ -139,10 +139,11 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
     }
   }
 
-  Future<Either<BaseError, GetCheckModel>> getCheckData(dynamic id) async{
+  Future<Either<BaseError, GetCheckModel>> getCheckData(dynamic id, Map<String, dynamic> data) async{
     try {
       Dio.Response response = await network.dio.get(
         '/api/pool_car/get_check/$id',
+        queryParameters: data
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, GetCheckModel.fromJsonModel);
       return right(apiResponseModel.data);
