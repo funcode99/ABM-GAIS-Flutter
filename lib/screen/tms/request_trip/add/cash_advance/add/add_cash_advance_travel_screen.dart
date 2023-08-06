@@ -33,12 +33,12 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
             appBar: TopBar(
               leading: CustomBackButton(
                 onPressed: () => controller.formEdit == true
-                    ? Get.off(FormRequestTripScreen(), arguments: {
+                    ? Get.off(const FormRequestTripScreen(), arguments: {
                         'id': controller.purposeID,
                         'codeDocument': controller.codeDocument,
                       })
                     : Get.off(
-                        CashAdvanceScreen(),
+                        const CashAdvanceScreen(),
                         arguments: {'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument},
                       ),
               ),
@@ -46,8 +46,8 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
             ),
             body: Container(
               alignment: Alignment.topCenter,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.all(7),
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(7),
               decoration: BoxDecoration(
                 color: whiteColor,
                 borderRadius: BorderRadius.circular(8),
@@ -91,11 +91,11 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                               value: controller.currentCurrency,
                               items: controller.currencyList
                                   .map((e) => DropdownMenuItem(
-                                        child: Text(e.currencyName.toString()),
                                         value: e.id.toString(),
                                         onTap: () {
-                                          controller.currencyCode = "${e.currencyCode.toString()}";
+                                          controller.currencyCode = e.currencyCode.toString();
                                         },
+                                        child: Text(e.currencyName.toString()),
                                       ))
                                   .toList(),
                               onChanged: (value) {
@@ -103,7 +103,7 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                                 controller.update();
                               },
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             CustomTextFormField(
                               readOnly: true,
                               controller: controller.totalController,
@@ -114,7 +114,7 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                             ),
                             Text(
                               "Details Item",
-                              style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600),
+                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w600),
                             ),
                             const Divider(
                               height: 20,
@@ -123,14 +123,14 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                             ...controller.listDetail
                                 .mapIndexed((index, e) => CustomTripCard(
                                       listNumber: index + 1,
-                                      title: controller.itemCA.where((item) => item["id"] == e.idItemCa?.toInt()).first["item"].toString(),
+                                      title: controller.itemCA.where((item) => item.id == e.idItemCa).first.itemName.toString(),
                                       info: "${controller.currencyCode} ${int.parse(e.total.toString()).toCurrency()}",
                                       isEdit: true,
                                       editButton: GestureDetector(
                                         child: Container(
-                                          padding: EdgeInsets.all(5),
+                                          padding: const EdgeInsets.all(5),
                                           decoration: BoxDecoration(color: successColor, borderRadius: BorderRadius.circular(6)),
-                                          child: Icon(IconlyBold.edit, color: whiteColor),
+                                          child: const Icon(IconlyBold.edit, color: whiteColor),
                                         ),
                                         onTap: () async {
                                           final editedItem = await Get.to(
@@ -138,6 +138,7 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                                             arguments: {
                                               'purposeID': controller.purposeID,
                                               'codeDocument': controller.codeDocument,
+                                              'item' : e,
                                             },
                                           );
                                           controller.editItem(editedItem);
@@ -146,9 +147,9 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                                       isDelete: true,
                                       deleteButton: GestureDetector(
                                         child: Container(
-                                          padding: EdgeInsets.all(5),
+                                          padding: const EdgeInsets.all(5),
                                           decoration: BoxDecoration(color: errorColor, borderRadius: BorderRadius.circular(6)),
-                                          child: Icon(IconlyBold.delete, color: whiteColor),
+                                          child: const Icon(IconlyBold.delete, color: whiteColor),
                                         ),
                                         onTap: () {
                                           // Get.dialog(DeleteConfirmationDialog(
@@ -190,7 +191,7 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                               onPressed: () async {
                                 final addedItem = await Get.to(
                                   // const AddCashAdvanceScreen(),
-                                  AddItemCashAdvanceTravelScreen(),
+                                  const AddItemCashAdvanceTravelScreen(),
                                   arguments: {
                                     'purposeID': controller.purposeID,
                                     'codeDocument': controller.codeDocument,
@@ -215,12 +216,12 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                                   borderColor: infoColor,
                                   onPressed: () {
                                     controller.formEdit == true
-                                        ? Get.off(FormRequestTripScreen(), arguments: {
+                                        ? Get.off(const FormRequestTripScreen(), arguments: {
                                             'id': controller.purposeID,
                                             'codeDocument': controller.codeDocument,
                                           })
                                         : Get.off(
-                                            CashAdvanceScreen(),
+                                            const CashAdvanceScreen(),
                                             arguments: {'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument},
                                           );
                                   },

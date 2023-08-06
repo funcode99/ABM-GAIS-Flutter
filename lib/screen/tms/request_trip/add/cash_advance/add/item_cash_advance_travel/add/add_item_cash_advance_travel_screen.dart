@@ -24,149 +24,146 @@ class AddItemCashAdvanceTravelScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AddItemCashAdvanceTravelController controller = Get.put(AddItemCashAdvanceTravelController())..item = item;
+    // final AddItemCashAdvanceTravelController controller = Get.put(AddItemCashAdvanceTravelController())..item = item;
 
-    return Scaffold(
-      backgroundColor: baseColor,
-      appBar: TopBar(
-        leading: const CustomBackButton(),
-        title: Text("Add Item".tr, style: appTitle),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-        child: Card(
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                height: 42,
-                width: 42,
-                margin: EdgeInsets.only(top: 10),
-                // padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
-                child: SvgPicture.asset(ImageConstant.emptyWalletTime, height: 25),
-              ),
-              Text("Cash Advance Travel", style: appTitle),
-              Form(
-                key: controller.formKey,
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 16,
+    return GetBuilder<AddItemCashAdvanceTravelController>(
+        init: AddItemCashAdvanceTravelController(),
+        builder: (controller) {
+          return Scaffold(
+            backgroundColor: baseColor,
+            appBar: TopBar(
+              leading: const CustomBackButton(),
+              title: Text("Add Item".tr, style: appTitle),
+            ),
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Card(
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      height: 42,
+                      width: 42,
+                      margin: const EdgeInsets.only(top: 10),
+                      // padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                      child: SvgPicture.asset(ImageConstant.emptyWalletTime, height: 25),
+                    ),
+                    Text("Cash Advance Travel", style: appTitle),
+                    Form(
+                      key: controller.formKey,
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            CustomDropDownFormField(
+                              label: "Item",
+                              hintText: controller.isLoading ? "Loading... " : "Item",
+                              isRequired: true,
+                              value: controller.selectedItem,
+                              items: controller.itemCA
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.itemName.toString()),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                controller.selectedItem = value;
+                                // print(controller.selectedItem);
+                                controller.update();
+                              },
+                            ),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.frequencyController,
+                              label: "Frequency",
+                              isRequired: true,
+                              inputType: TextInputType.number,
+                              onChanged: (value) {
+                                controller.totalController.text =
+                                    (controller.nominalController.text.digitOnly().toInt() * int.parse(value.digitOnly())).toCurrency();
+                              },
+                            ),
+                            const SizedBox(height: 8),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                ThousandsSeparatorInputFormatter(),
+                              ],
+                              inputType: TextInputType.number,
+                              isRequired: true,
+                              controller: controller.nominalController,
+                              label: "Amount".tr,
+                              onChanged: (value) {
+                                controller.totalController.text =
+                                    (controller.frequencyController.text.digitOnly().toInt() * int.parse(value.digitOnly())).toCurrency();
+                                controller.isButtonEnabled(controller.formKey.currentState!.validate());
+                              },
+                            ),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.totalController,
+                              label: "Total",
+                              isRequired: true,
+                              readOnly: true,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                ThousandsSeparatorInputFormatter(),
+                              ],
+                              inputType: TextInputType.number,
+                              onChanged: (value) {},
+                            ),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              multiLine: true,
+                              controller: controller.remarksController,
+                              label: "Remarks".tr,
+                            ),
+                            const SizedBox(height: 32),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomFilledButton(
+                                  color: Colors.transparent,
+                                  title: "Cancel",
+                                  width: 100,
+                                  fontColor: infoColor,
+                                  borderColor: infoColor,
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                ),
+                                CustomFilledButton(
+                                    color: infoColor,
+                                    title: "Save",
+                                    width: 100,
+                                    onPressed: () {
+                                      if (controller.formKey.currentState?.validate() == true) {
+                                        Get.back(result: controller.getAddedItem());
+                                      }
+                                    }),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                          ],
+                        ),
                       ),
-                      CustomDropDownFormField(
-                        label: "Item",
-                        hintText: "Item",
-                        isRequired: true,
-                        value: controller.selectedItem,
-                        items: [
-                          DropdownMenuItem(
-                            child: Text("Meals"),
-                            value: "1",
-                          ),
-                          DropdownMenuItem(
-                            child: Text("Transport"),
-                            value: "2",
-                          ),
-                          DropdownMenuItem(
-                            child: Text("Other"),
-                            value: "3",
-                          ),
-                        ],
-                        onChanged: (value) {
-                          controller.selectedItem = value;
-                          print(controller.selectedItem);
-                          controller.update();
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      CustomTextFormField(
-                        controller: controller.frequencyController,
-                        label: "Frequency",
-                        isRequired: true,
-                        inputType: TextInputType.number,
-                        onChanged: (value) {
-                          controller.totalController.text =
-                              "${(controller.nominalController.text.digitOnly().toInt() * int.parse(value.digitOnly())).toCurrency()}";
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      const SizedBox(height: 8),
-                      CustomTextFormField(
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          ThousandsSeparatorInputFormatter(),
-                        ],
-                        inputType: TextInputType.number,
-                        isRequired: true,
-                        controller: controller.nominalController,
-                        label: "Amount".tr,
-                        onChanged: (value) {
-                          controller.totalController.text =
-                              "${(controller.frequencyController.text.digitOnly().toInt() * int.parse(value.digitOnly())).toCurrency()}";
-                          controller.isButtonEnabled(controller.formKey.currentState!.validate());
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      CustomTextFormField(
-                        controller: controller.totalController,
-                        label: "Total",
-                        isRequired: true,
-                        readOnly: true,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          ThousandsSeparatorInputFormatter(),
-                        ],
-                        inputType: TextInputType.number,
-                        onChanged: (value) {},
-                      ),
-                      SizedBox(height: 8),
-                      CustomTextFormField(
-                        multiLine: true,
-                        controller: controller.remarksController,
-                        label: "Remarks".tr,
-                      ),
-                      const SizedBox(height: 32),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomFilledButton(
-                            color: Colors.transparent,
-                            title: "Cancel",
-                            width: 100,
-                            fontColor: infoColor,
-                            borderColor: infoColor,
-                            onPressed: () {
-                              Get.back();
-                            },
-                          ),
-                          CustomFilledButton(
-                              color: infoColor,
-                              title: "Save",
-                              width: 100,
-                              onPressed: () {
-                                if(controller.formKey.currentState?.validate() == true)
-                                  Get.back(result: controller.getAddedItem());
-                              }),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: const BottomBar(menu: 0),
-    );
+            ),
+            bottomNavigationBar: const BottomBar(menu: 0),
+          );
+        });
   }
 }

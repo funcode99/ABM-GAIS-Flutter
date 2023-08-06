@@ -6,7 +6,7 @@ part 'cash_advance_model.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class CashAdvanceModel {
   dynamic id;
-  int? idEmployee;
+  dynamic idEmployee;
   dynamic typeCa;
   String? noCa;
 

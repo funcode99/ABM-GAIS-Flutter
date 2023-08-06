@@ -340,7 +340,6 @@ class FormRequestTripController extends BaseController {
 
       var caData = await repository.getCashAdvanceTravelList(purposeID);
       caList.addAll(caData.data?.toSet().toList() ?? []);
-
     } catch (e, i) {
       e.printError();
       i.printError();
@@ -349,11 +348,11 @@ class FormRequestTripController extends BaseController {
     update();
   }
 
-  Future<void> fetchApprovalInfo() async{
-    try{
+  Future<void> fetchApprovalInfo() async {
+    try {
       var approvalInfoData = await approvalRequestTrip.approval_info(purposeID);
       approvalInfoList.addAll(approvalInfoData.data?.toSet().toList() ?? []);
-    }catch(e){
+    } catch (e) {
       e.printError();
     }
   }
@@ -493,6 +492,39 @@ class FormRequestTripController extends BaseController {
   Future<void> deleteAccommodation(String id) async {
     try {
       await repository.deleteAccommodation(id).then((value) {
+        fetchList();
+        Get.showSnackbar(
+          const GetSnackBar(
+            icon: Icon(
+              Icons.error,
+              color: Colors.white,
+            ),
+            message: 'Data Deleted',
+            isDismissible: true,
+            duration: Duration(seconds: 3),
+            backgroundColor: successColor,
+          ),
+        );
+      });
+    } catch (e) {
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Delete Failed',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: errorColor,
+        ),
+      );
+    }
+  }
+
+  Future<void> deleteCashAdvance(String id) async {
+    try {
+      await repository.deleteCashAdvanceTravel(id).then((value) {
         fetchList();
         Get.showSnackbar(
           const GetSnackBar(

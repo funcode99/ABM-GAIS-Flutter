@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
+import 'package:gais/data/model/cash_advance/item_cash_advance_travel_model.dart' as items;
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,8 @@ class AddItemCashAdvanceTravelController extends BaseController {
   String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
   bool? formEdit = Get.arguments['formEdit'];
+  bool isLoading = false;
+  CashAdvanceDetailModel? item = Get.arguments['item'];
 
   final TextEditingController itemNameController = TextEditingController();
   final TextEditingController frequencyController = TextEditingController();
@@ -17,40 +20,52 @@ class AddItemCashAdvanceTravelController extends BaseController {
   final TextEditingController remarksController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final isButtonEnabled = false.obs;
-  CashAdvanceDetailModel? item;
+
 
   String? selectedItem;
 
-  List itemCA = [
-    {'id': 1, 'item': 'Meals'},
-    {'id': 2, 'item': 'Transport'},
-    {'id': 3, 'item': 'Other'},
-  ];
+  List<items.Data> itemCA = [];
 
   @override
   void onInit() {
     super.onInit();
     initData();
-
+    update();
   }
 
   @override
   void onReady() {
     super.onReady();
     initData();
-    if(selectedItem!=null)
-      update();
+    if (selectedItem != null) update();
+  }
+
+  Future<void> fetchList() async {
+    itemCA = [];
+    isLoading = true;
+    try {
+      await repository.getItemCATravel().then((value) {
+        itemCA.addAll(value.data?.toSet().toList() ?? []);
+        isLoading = false;
+      });
+    } catch (e) {
+      e.printError();
+    }
+
+    isLoading = false;
+    update();
   }
 
   void initData() {
+    fetchList();
     if (item != null) {
       selectedItem = item!.idItemCa.toString();
-      frequencyController.text = item!.frequency.toString() ;
+      frequencyController.text = item!.frequency.toString();
       nominalController.text = item!.nominal?.toInt().toCurrency() ?? "";
       totalController.text = item!.total?.toInt().toCurrency() ?? "";
       remarksController.text = item!.remarks ?? "";
-      update();
     }
+    update();
   }
 
   CashAdvanceDetailModel getAddedItem() {
@@ -71,5 +86,4 @@ class AddItemCashAdvanceTravelController extends BaseController {
           idItemCa: selectedItem?.toInt());
     }
   }
-
 }

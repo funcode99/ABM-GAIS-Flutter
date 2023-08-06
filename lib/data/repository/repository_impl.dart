@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:gais/data/model/cash_advance/item_cash_advance_travel_model.dart';
 import 'package:gais/data/model/employee_info_model.dart';
 import 'package:gais/data/model/login_model.dart';
 import 'package:gais/data/model/reference/get_city_model.dart';
@@ -422,7 +423,7 @@ class RepositoryImpl implements Repository {
       );
       return SavePurposeOfTripModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response save error: ${SavePurposeOfTripModel.fromJson(e.response?.data).message}");
+      // print("response save error: ${SavePurposeOfTripModel.fromJson(e.response?.data).message}");
       return SavePurposeOfTripModel.fromJson(e.response?.data);
     }
   }
@@ -1188,7 +1189,7 @@ class RepositoryImpl implements Repository {
       GetCashAdvanceTravelModel.fromJson(response.data).data?.first.noCa.printInfo();
       return GetCashAdvanceTravelModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("response error cash advance: ${e.response?.data}");
+      // print("response error cash advance: ${e.response?.data}");
       return e.response?.data;
     }
   }
@@ -1239,6 +1240,21 @@ class RepositoryImpl implements Repository {
   }
 
   @override
+  Future<ItemCashAdvanceTravelModel> getItemCATravel() async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/cash_advance/get_type_item_ca",
+      );
+      return ItemCashAdvanceTravelModel.fromJson(response.data);
+    } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+  @override
   Future<SubmitRequestTripModel> submitRequestTrip(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -1257,7 +1273,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<UpdateCashAdvanceTravelModel> updateCashAdvanceTravel(
-    int id,
+    String id,
     String idEmployee,
     String idRequestTrip,
     String idCurrency,
@@ -1289,19 +1305,12 @@ class RepositoryImpl implements Repository {
     }
   }
 
-  Future<void> registerFCM(String token)async {
+  Future<void> registerFCM(String token) async {
     try {
-      Response response = await network.dio.post(
-        "/api/users/fcm_create",
-        data: {
-          "fcm_token" : token
-        }
-      );
+      Response response = await network.dio.post("/api/users/fcm_create", data: {"fcm_token": token});
       return Future.value();
     } on DioError catch (e) {
       e.printError();
     }
   }
-
-
 }
