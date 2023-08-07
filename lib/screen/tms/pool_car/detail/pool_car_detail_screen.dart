@@ -339,7 +339,8 @@ class _PoolCarDetailScreenState
                                     backgroundColor: orangeColor,
                                     onPressed: () async{
                                       Get.to(()=>const PoolCarP2HScreen(), arguments: {
-                                        "item" : controller.selectedItem.value
+                                        "item" : controller.selectedItem.value,
+                                        "status" : 1
                                       })?.then((value) => controller.detailHeader());
 
                                     },
@@ -347,7 +348,7 @@ class _PoolCarDetailScreenState
                                 }
                                 return const SizedBox();
                               }),
-                              SizedBox(
+                              const SizedBox(
                                 width: 4,
                               ),
                               Obx((){
@@ -358,7 +359,8 @@ class _PoolCarDetailScreenState
                                     backgroundColor: orangeColor,
                                     onPressed: () async{
                                       Get.to(()=>const PoolCarP2HScreen(), arguments: {
-                                        "item" : controller.selectedItem.value
+                                        "item" : controller.selectedItem.value,
+                                        "status" : 2
                                       })?.then((value) => controller.detailHeader());
 
                                     },

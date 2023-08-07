@@ -38,6 +38,8 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
   String note = "";
   final isUsable = true.obs;
 
+  final status = 1.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -59,7 +61,7 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
 
   void getCheckData() async {
     Map<String, dynamic> queryParam = {
-      "status" : 1
+      "status" : status
     };
 
     final result = await _repository.getCheckData(selectedItem.value.id!, queryParam);
@@ -113,7 +115,7 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
 
 
     Map<String, dynamic> queryParam = {
-      "status" : 1
+      "status" : status
     };
 
     final result = await _repository.submitCheck(submitCheckModel, queryParam);

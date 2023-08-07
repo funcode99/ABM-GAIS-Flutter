@@ -1,4 +1,3 @@
-
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,9 +20,11 @@ class PoolCarP2HScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PoolCarModel selectedItem = Get.arguments["item"];
+    int status = Get.arguments["status"];
 
     final PoolCarP2HController controller = Get.put(PoolCarP2HController())
-      ..selectedItem(selectedItem);
+      ..selectedItem(selectedItem)
+      ..status(status);
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -93,7 +94,7 @@ class PoolCarP2HScreen extends StatelessWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children:
-                      controller.listCheckItem.mapIndexed((index, element) {
+                          controller.listCheckItem.mapIndexed((index, element) {
                         if (element.isHeader != null) {
                           if (element.isHeader! == 1) {
                             return Padding(
@@ -137,21 +138,39 @@ class PoolCarP2HScreen extends StatelessWidget {
                                         .map((e) => e.value!)
                                         .toList(),
                                     onChanged: (value) {
-                                      controller.updateChecklistValue(index, value);
-                                      print("element ${element.choices!.firstWhere((element) => element.value == value).text}");
+                                      controller.updateChecklistValue(
+                                          index, value);
+                                      print(
+                                          "element ${element.choices!.firstWhere((element) => element.value == value).text}");
                                     },
                                     selectedValue: element.value!,
                                     withImage: true,
                                     listAttachable: element.choices!
                                         .map((e) => e.attachable ?? false)
                                         .toList(),
-                                    onImageSelected: (file){
-                                      controller.listCheckItem[index].path = file?.path;
+                                    onImageSelected: (file) {
+                                      controller.listCheckItem[index].path =
+                                          file?.path;
                                     },
                                   );
                                 }),
-
-                                
+                                element.path != null
+                                    ? GestureDetector(
+                                        onTap: (){
+                                          Get.dialog(
+                                              Dialog(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                                                  child: Image.network(element.path!),
+                                                ),
+                                              )
+                                          );
+                                        },
+                                        child: Container(
+                                            height: 100,
+                                            child:
+                                                Image.network(element.path!)))
+                                    : SizedBox()
                               ],
                             ),
                           );
@@ -194,7 +213,7 @@ class PoolCarP2HScreen extends StatelessWidget {
                         readOnly: !controller.showButton.value,
                         controller: controller.noteController,
                         helperText:
-                        "Masukan catatan untuk kondisi pengecekan yang memerlukan tindakan perbaikan",
+                            "Masukan catatan untuk kondisi pengecekan yang memerlukan tindakan perbaikan",
                         label: "Catatan");
                   }),
                   const SizedBox(
@@ -220,8 +239,8 @@ class PoolCarP2HScreen extends StatelessWidget {
                           ElevatedButton(
                             onPressed: controller.enableButton.value
                                 ? () {
-                              controller.saveData();
-                            }
+                                    controller.saveData();
+                                  }
                                 : null,
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: successColor),
