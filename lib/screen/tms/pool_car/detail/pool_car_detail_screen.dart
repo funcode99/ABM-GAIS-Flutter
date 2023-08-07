@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/master/car/car_model.dart';
 import 'package:gais/data/model/pool_car/pool_car_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
+import 'package:gais/reusable/dialog/change_car_dialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
@@ -29,7 +31,11 @@ class _PoolCarDetailScreenState
     extends State<PoolCarDetailScreen> {
   @override
   Widget build(BuildContext context) {
-    PoolCarModel selectedItem = Get.arguments["item"];
+    PoolCarModel? selectedItem;
+
+    if (Get.arguments != null) {
+      selectedItem = Get.arguments["item"];
+    }
 
     final PoolCarDetailController controller =
     Get.put(PoolCarDetailController())
@@ -362,6 +368,29 @@ class _PoolCarDetailScreenState
                                         "item" : controller.selectedItem.value,
                                         "status" : 2
                                       })?.then((value) => controller.detailHeader());
+
+                                    },
+                                  );
+                                }
+                                return const SizedBox();
+                              }),
+                              const SizedBox(
+                                width: 4,
+                              ),
+                              Obx((){
+                                if(controller.showChangeCar.value){
+                                  return CustomIconButton(
+                                    title: "Change",
+                                    iconData: Icons.refresh,
+                                    backgroundColor: infoColor,
+                                    onPressed: () async{
+                                      CarModel? result = await Get.dialog(ChangeCarDialog(
+                                        idSite: controller.idSite.value,
+                                      ));
+
+                                      if (result != null) {
+                                        controller.changeCar(result);
+                                      }
 
                                     },
                                   );

@@ -4,6 +4,7 @@ import 'package:gais/base/base_error.dart';
 import 'package:gais/data/model/api_response_model.dart';
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/master/brand/brand_model.dart';
+import 'package:gais/data/model/master/car/car_model.dart';
 import 'package:gais/data/model/master/check_item/check_item_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
@@ -447,6 +448,39 @@ class MasterRepository{
           .toList();
 
       return right(result);
+
+    } on Dio.DioError catch (e) {
+      print(e);
+
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print(e);
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print(e);
+
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  Future<Either<BaseError, List<CarModel>>> getListCar({String? keyword, int? idSite})async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/car/get',
+        queryParameters: {
+          "search" : keyword,
+          "id_site" : idSite
+        }
+      );
+      /*ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
+      PaginationModel paginationModel = apiResponseModel.data;
+      List<CarModel> result = [];
+      result = paginationModel.data!
+          .map((e) => CarModel.fromJson(e))
+          .toList();*/
+
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CarModel.fromJsonModelList);
+      return right(apiResponseModel.data);
 
     } on Dio.DioError catch (e) {
       print(e);

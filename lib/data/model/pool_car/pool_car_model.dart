@@ -15,6 +15,7 @@ class PoolCarModel {
   int? codeStatusDoc;
   String? createdAt;
   dynamic createdBy;
+  dynamic isChanged;
   String? updatedAt;
   dynamic updatedBy;
   String? requestorName;
@@ -35,6 +36,7 @@ class PoolCarModel {
         this.fromDate,
         this.toDate,
         this.noPoolCar,
+        this.isChanged,
         this.codeStatusDoc,
         this.createdAt,
         this.createdBy,
