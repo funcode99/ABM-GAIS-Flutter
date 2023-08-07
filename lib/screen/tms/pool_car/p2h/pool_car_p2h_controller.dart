@@ -58,11 +58,11 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
   }
 
   void getCheckData() async {
-    Map<String, dynamic> data = {
+    Map<String, dynamic> queryParam = {
       "status" : 1
     };
 
-    final result = await _repository.getCheckData(selectedItem.value.id!, data);
+    final result = await _repository.getCheckData(selectedItem.value.id!, queryParam);
 
     result.fold((l) {
       print("ERROR GET CHECK DATA${l.message}");
@@ -96,7 +96,8 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
         data.add(
           SubmitCheckDataModel(
             idDetailCheck: checkItemModel.idDetail,
-            value: checkItemModel.value
+            value: checkItemModel.value.toString(),
+            path: checkItemModel.path
           )
         );
       }
@@ -110,7 +111,12 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
         data:data
     );
 
-    final result = await _repository.submitCheck(submitCheckModel);
+
+    Map<String, dynamic> queryParam = {
+      "status" : 1
+    };
+
+    final result = await _repository.submitCheck(submitCheckModel, queryParam);
     result.fold(
       (l) => Get.showSnackbar(
                 CustomGetSnackBar(

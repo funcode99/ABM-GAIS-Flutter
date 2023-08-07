@@ -22,6 +22,7 @@ class PoolCarDetailController extends BaseController {
   final PoolCarRepository _repository = Get.find();
 
   final showP2H = false.obs;
+  final showP2HEnd = false.obs;
   final showSubmitButton = false.obs;
 
   @override
@@ -68,7 +69,11 @@ class PoolCarDetailController extends BaseController {
     });
   }
 
-  void submitHeader() async {
+  submitHeader(){
+    showP2HEnd.value = true;
+  }
+
+  /*void submitHeader() async {
     final result = await _repository.submitData(selectedItem.value.id!);
     result.fold(
         (l) => Get.showSnackbar(
@@ -76,5 +81,5 @@ class PoolCarDetailController extends BaseController {
         (cashAdvanceModel) {
       Get.back(result: true);
     });
-  }
+  }*/
 }

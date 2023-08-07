@@ -6,6 +6,7 @@ import 'package:gais/data/model/api_response_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/model/pool_car/get_check_model.dart';
 import 'package:gais/data/model/pool_car/pool_car_model.dart';
+import 'package:gais/data/model/pool_car/submit_check_data_model.dart';
 import 'package:gais/data/model/pool_car/submit_check_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:get/get.dart';
@@ -121,12 +122,33 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
     throw UnimplementedError();
   }
 
-  Future<Either<BaseError, bool>> submitCheck(model) async{
-    final submitCheckModel = model as SubmitCheckModel;
+  Future<Either<BaseError, bool>> submitCheck(model, Map<String, dynamic> queryParams) async{
+    SubmitCheckModel submitCheckModel = model as SubmitCheckModel;
+
+    Dio.FormData formData = Dio.FormData();
+
+    formData.fields.add(MapEntry("notes", submitCheckModel.notes ?? ""));
+    formData.fields.add(MapEntry("is_usable", submitCheckModel.isUsable.toString()));
+    formData.fields.add(MapEntry("odometer", submitCheckModel.odometer.toString()));
+    formData.fields.add(MapEntry("id_pool_car", submitCheckModel.idPoolCar.toString()));
+
+    if(submitCheckModel.data != null){
+      for(int i=0; i<submitCheckModel.data!.length; i++){
+        SubmitCheckDataModel submitCheckDataModel = submitCheckModel.data![i];
+        formData.fields.add(MapEntry("data[$i][id_detail_check]", submitCheckDataModel.idDetailCheck.toString()));
+        formData.fields.add(MapEntry("data[$i][value]", submitCheckDataModel.value.toString()));
+
+        if(submitCheckDataModel.path != null){
+          formData.files.addAll([MapEntry("data[$i][file]", await Dio.MultipartFile.fromFile(submitCheckDataModel.path!))]);
+        }
+      }
+    }
+
+    print("DATA ${formData.fields}");
 
     try {
       Dio.Response response = await network.dio
-          .post('/api/pool_car/store_check', data: submitCheckModel.toJson());
+          .post('/api/pool_car/store_check', data: formData, queryParameters: queryParams);
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, SubmitCheckModel.fromJsonModel);
       return right(apiResponseModel.success ?? false);
     } on Dio.DioError catch (e) {

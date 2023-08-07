@@ -4,13 +4,15 @@ part 'submit_check_data_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class SubmitCheckDataModel {
-  int? idDetailCheck;
-  int? value;
+  dynamic idDetailCheck;
+  dynamic value;
+  String? path;
 
   SubmitCheckDataModel(
       {
         this.idDetailCheck,
         this.value,
+        this.path
       });
 
   static SubmitCheckDataModel fromJsonModel(Object? json) =>

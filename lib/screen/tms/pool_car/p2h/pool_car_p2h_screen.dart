@@ -146,8 +146,7 @@ class PoolCarP2HScreen extends StatelessWidget {
                                         .map((e) => e.attachable ?? false)
                                         .toList(),
                                     onImageSelected: (file){
-                                      controller.mapImage[element.idDetail] = "${file?.path}";
-                                      print("FILE ${controller.mapImage}");
+                                      controller.listCheckItem[index].path = file?.path;
                                     },
                                   );
                                 }),

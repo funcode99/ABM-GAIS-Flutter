@@ -83,7 +83,7 @@ class _PoolCarDetailScreenState
                     height: 16,
                   ),
                   Obx(() {
-                    if (controller.showSubmitButton.value) {
+                    if (controller.showSubmitButton.value && !controller.showP2HEnd.value) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -334,7 +334,26 @@ class _PoolCarDetailScreenState
                               Obx((){
                                 if(controller.showP2H.value){
                                   return CustomIconButton(
-                                    title: "P2H",
+                                    title: "P2H Start",
+                                    iconData: IconlyBold.edit,
+                                    backgroundColor: orangeColor,
+                                    onPressed: () async{
+                                      Get.to(()=>const PoolCarP2HScreen(), arguments: {
+                                        "item" : controller.selectedItem.value
+                                      })?.then((value) => controller.detailHeader());
+
+                                    },
+                                  );
+                                }
+                                return const SizedBox();
+                              }),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Obx((){
+                                if(controller.showP2HEnd.value){
+                                  return CustomIconButton(
+                                    title: "P2H End",
                                     iconData: IconlyBold.edit,
                                     backgroundColor: orangeColor,
                                     onPressed: () async{
