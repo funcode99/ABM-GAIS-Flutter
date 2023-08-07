@@ -11,6 +11,7 @@ import 'package:gais/reusable/picker/image_picker.dart';
 import 'package:gais/reusable/radio/custom_radio_group.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/pool_car/p2h/pool_car_p2h_controller.dart';
+import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/input_formatter/min_value_text_input_formatter.dart';
 import 'package:get/get.dart';
 
@@ -154,7 +155,7 @@ class PoolCarP2HScreen extends StatelessWidget {
                                     },
                                   );
                                 }),
-                                element.path != null
+                                element.path != null && controller.selectedItem.value.codeStatusDoc != PoolCarEnum.driverCheck.value
                                     ? GestureDetector(
                                         onTap: (){
                                           Get.dialog(

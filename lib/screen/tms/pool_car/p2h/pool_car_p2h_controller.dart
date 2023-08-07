@@ -54,7 +54,7 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
   void initData() async {
     String codeRole = await storage.readString(StorageCore.codeRole);
 
-    showButton.value = codeRole == RoleEnum.driver.value && selectedItem.value.codeStatusDoc == PoolCarEnum.driverCheck.value;
+    showButton.value = codeRole == RoleEnum.driver.value && ((selectedItem.value.codeStatusDoc == PoolCarEnum.driverCheck.value && status.value == 1) || (selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value && status.value == 2));
 
     getCheckData();
   }

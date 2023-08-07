@@ -44,6 +44,9 @@ class PoolCarDetailController extends BaseController {
     showP2H.value = codeRole == RoleEnum.driver.value ||
         selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value;
 
+    showP2HEnd.value = codeRole == RoleEnum.driver.value &&
+        selectedItem.value.codeStatusDoc == PoolCarEnum.done.value;
+
     showSubmitButton.value = codeRole == RoleEnum.driver.value &&
         selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value;
 
