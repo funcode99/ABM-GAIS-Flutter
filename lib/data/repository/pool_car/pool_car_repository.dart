@@ -146,7 +146,6 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
       }
     }
 
-    print("DATA ${formData.fields}");
 
     try {
       Dio.Response response = await network.dio
