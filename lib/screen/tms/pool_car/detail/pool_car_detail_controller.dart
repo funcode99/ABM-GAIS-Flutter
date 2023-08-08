@@ -60,13 +60,15 @@ class PoolCarDetailController extends BaseController {
     setValue();
   }
 
-  void setValue() {
+  void setValue() async{
     createdDateController.text = selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss") ??
         "-";
     requestorController.text = selectedItem.value.requestorName ?? "-";
     referenceController.text = selectedItem.value.noRequestTrip ?? "-";
 
-    showChangeCar.value = selectedItem.value.isChanged == 1 && selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value;
+    String codeRole = await storage.readString(StorageCore.codeRole);
+
+    showChangeCar.value = selectedItem.value.isChanged == 1 && selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value && codeRole == RoleEnum.superAdmin.value;
   }
 
   void detailHeader() async {

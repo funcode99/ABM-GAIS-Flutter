@@ -12,6 +12,7 @@ ApprovalModel _$ApprovalModelFromJson(Map<String, dynamic> json) =>
       notes: json['notes'] as String?,
       isRevision: json['is_revision'] as bool?,
       arrayDetail: json['array_detail'] as List<dynamic>?,
+      path: json['path'] as String?,
     );
 
 Map<String, dynamic> _$ApprovalModelToJson(ApprovalModel instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$ApprovalModelToJson(ApprovalModel instance) =>
       'notes': instance.notes,
       'is_revision': instance.isRevision,
       'array_detail': instance.arrayDetail,
+      'path': instance.path,
     };

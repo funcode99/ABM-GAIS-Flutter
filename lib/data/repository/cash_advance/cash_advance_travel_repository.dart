@@ -203,9 +203,14 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
     try {
       final approvalModel = model as ApprovalModel;
 
+      final formData = Dio.FormData.fromMap(approvalModel.toJson());
+      if(approvalModel.approvedBehalf != null){
+        formData.files.add(MapEntry("file", await Dio.MultipartFile.fromFile(approvalModel.path!)));
+      }
+
       Dio.Response response = await network.dio.post(
           '/api/approval_cash_advance/approve/$id',
-          data: approvalModel.toJson()
+          data: formData
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalCashAdvanceModel.fromJsonModel);
       return right(apiResponseModel.success ?? false);

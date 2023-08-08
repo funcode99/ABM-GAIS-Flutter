@@ -53,6 +53,11 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
     var formData = FormData.fromMap({
       "approved_behalf": approval.approvedBehalf,
     });
+
+    if(approval.approvedBehalf != null){
+      formData.files.add(MapEntry("file", await MultipartFile.fromFile(approval.path!)));
+    }
+
     try {
       Response response = await network.dio.post(
         "/api/approval_request_trip/approve/$id",
