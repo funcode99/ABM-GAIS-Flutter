@@ -8,12 +8,14 @@ class ApprovalModel {
   String? notes;
   bool? isRevision;
   List<dynamic>? arrayDetail;
+  String? path;
 
   ApprovalModel({
     this.approvedBehalf,
     this.notes,
     this.isRevision,
-    this.arrayDetail
+    this.arrayDetail,
+    this.path,
   });
 
   static ApprovalModel fromJsonModel(Object? json) =>
