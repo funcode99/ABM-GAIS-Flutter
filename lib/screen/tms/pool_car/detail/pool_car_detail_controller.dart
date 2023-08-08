@@ -47,9 +47,9 @@ class PoolCarDetailController extends BaseController {
     String siteID = await storage.readString(StorageCore.siteID);
 
     showP2H.value = codeRole == RoleEnum.driver.value ||
-        selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value;
+        selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value || selectedItem.value.codeStatusDoc == PoolCarEnum.done.value;
 
-    showP2HEnd.value = codeRole == RoleEnum.driver.value &&
+    showP2HEnd.value =
         selectedItem.value.codeStatusDoc == PoolCarEnum.done.value;
 
     showSubmitButton.value = codeRole == RoleEnum.driver.value &&
@@ -66,7 +66,7 @@ class PoolCarDetailController extends BaseController {
     requestorController.text = selectedItem.value.requestorName ?? "-";
     referenceController.text = selectedItem.value.noRequestTrip ?? "-";
 
-    showChangeCar.value = selectedItem.value.isChanged == 1;
+    showChangeCar.value = selectedItem.value.isChanged == 1 && selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value;
   }
 
   void detailHeader() async {
