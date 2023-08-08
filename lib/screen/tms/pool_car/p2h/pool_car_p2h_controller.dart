@@ -28,6 +28,7 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
   final selectedItem = PoolCarModel().obs;
 
   final listCheckItem = <CheckItemModel>[].obs;
+  final mapImage = {}.obs;
 
   final showButton = false.obs;
 
@@ -36,6 +37,8 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
   String odometer = "";
   String note = "";
   final isUsable = true.obs;
+
+  final status = 1.obs;
 
   @override
   void onInit() {
@@ -51,13 +54,17 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
   void initData() async {
     String codeRole = await storage.readString(StorageCore.codeRole);
 
-    showButton.value = codeRole == RoleEnum.driver.value && selectedItem.value.codeStatusDoc == PoolCarEnum.driverCheck.value;
+    showButton.value = codeRole == RoleEnum.driver.value && ((selectedItem.value.codeStatusDoc == PoolCarEnum.driverCheck.value && status.value == 1) || (selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value && status.value == 2));
 
     getCheckData();
   }
 
   void getCheckData() async {
-    final result = await _repository.getCheckData(selectedItem.value.id!);
+    Map<String, dynamic> queryParam = {
+      "status" : status
+    };
+
+    final result = await _repository.getCheckData(selectedItem.value.id!, queryParam);
 
     result.fold((l) {
       print("ERROR GET CHECK DATA${l.message}");
@@ -66,6 +73,8 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
       odometer = r.dataExisting?.odometer.toString() ?? "";
       note = r.dataExisting?.notes ?? "";
       isUsable.value = r.dataExisting?.isUsable == null ? true :  r.dataExisting?.isUsable == 1;
+
+
 
       setValue();
     });
@@ -89,7 +98,8 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
         data.add(
           SubmitCheckDataModel(
             idDetailCheck: checkItemModel.idDetail,
-            value: checkItemModel.value
+            value: checkItemModel.value.toString(),
+            path: checkItemModel.path
           )
         );
       }
@@ -103,7 +113,12 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
         data:data
     );
 
-    final result = await _repository.submitCheck(submitCheckModel);
+
+    Map<String, dynamic> queryParam = {
+      "status" : status
+    };
+
+    final result = await _repository.submitCheck(submitCheckModel, queryParam);
     result.fold(
       (l) => Get.showSnackbar(
                 CustomGetSnackBar(

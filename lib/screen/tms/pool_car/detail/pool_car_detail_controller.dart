@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/master/car/car_model.dart';
 import 'package:gais/data/model/pool_car/pool_car_model.dart';
 import 'package:gais/data/repository/pool_car/pool_car_repository.dart';
 import 'package:gais/data/storage_core.dart';
@@ -22,8 +23,11 @@ class PoolCarDetailController extends BaseController {
   final PoolCarRepository _repository = Get.find();
 
   final showP2H = false.obs;
+  final showP2HEnd = false.obs;
+  final showChangeCar = false.obs;
   final showSubmitButton = false.obs;
 
+  final idSite = Rxn<int>();
   @override
   void onInit() {
     super.onInit();
@@ -40,11 +44,18 @@ class PoolCarDetailController extends BaseController {
 
   void initData() async {
     String codeRole = await storage.readString(StorageCore.codeRole);
+    String siteID = await storage.readString(StorageCore.siteID);
+
     showP2H.value = codeRole == RoleEnum.driver.value ||
-        selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value;
+        selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value || selectedItem.value.codeStatusDoc == PoolCarEnum.done.value;
+
+    showP2HEnd.value =
+        selectedItem.value.codeStatusDoc == PoolCarEnum.done.value;
 
     showSubmitButton.value = codeRole == RoleEnum.driver.value &&
         selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value;
+
+    idSite.value = siteID.toInt();
 
     setValue();
   }
@@ -54,6 +65,8 @@ class PoolCarDetailController extends BaseController {
         "-";
     requestorController.text = selectedItem.value.requestorName ?? "-";
     referenceController.text = selectedItem.value.noRequestTrip ?? "-";
+
+    showChangeCar.value = selectedItem.value.isChanged == 1 && selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value;
   }
 
   void detailHeader() async {
@@ -68,7 +81,11 @@ class PoolCarDetailController extends BaseController {
     });
   }
 
-  void submitHeader() async {
+  submitHeader(){
+    showP2HEnd.value = true;
+  }
+
+  /*void submitHeader() async {
     final result = await _repository.submitData(selectedItem.value.id!);
     result.fold(
         (l) => Get.showSnackbar(
@@ -76,5 +93,15 @@ class PoolCarDetailController extends BaseController {
         (cashAdvanceModel) {
       Get.back(result: true);
     });
+  }*/
+
+  void changeCar(CarModel newCar)async{
+    final result = await _repository.changeCar(selectedItem.value.id, newCar);
+    result.fold(
+            (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (bool result) {
+              detailHeader();
+        });
   }
 }

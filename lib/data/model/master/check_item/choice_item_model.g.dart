@@ -10,10 +10,12 @@ ChoiceItemModel _$ChoiceItemModelFromJson(Map<String, dynamic> json) =>
     ChoiceItemModel(
       value: json['value'] as int?,
       text: json['text'] as String?,
+      attachable: json['attachable'] as bool?,
     );
 
 Map<String, dynamic> _$ChoiceItemModelToJson(ChoiceItemModel instance) =>
     <String, dynamic>{
       'value': instance.value,
       'text': instance.text,
+      'attachable': instance.attachable,
     };

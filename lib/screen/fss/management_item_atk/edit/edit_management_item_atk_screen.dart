@@ -177,7 +177,7 @@ class EditManagementItemATKScreen extends StatelessWidget {
                   CustomTextFormField(
                       multiLine: true,
                       controller: controller.remarksController,
-                      label: "Remarks".tr),
+                      label: "Description".tr),
                   const SizedBox(
                     height: 32,
                   ),

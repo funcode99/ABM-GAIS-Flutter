@@ -1,5 +1,6 @@
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/master/brand/brand_model.dart';
+import 'package:gais/data/model/master/car/car_model.dart';
 import 'package:gais/data/model/master/check_item/check_item_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
@@ -115,6 +116,11 @@ mixin MasterDataMixin{
 
   Future<List<EmployeeModel>> getListEmployeeByKeyword(String keyword)async{
     final result = await _repository.getListEmployeeByKeyword(keyword);
+    return result.fold((l) => [], (list) => list);
+  }
+
+  Future<List<CarModel>> getListCar({String? keyword, int? idSite})async{
+    final result = await _repository.getListCar(keyword: keyword, idSite: idSite);
     return result.fold((l) => [], (list) => list);
   }
 
