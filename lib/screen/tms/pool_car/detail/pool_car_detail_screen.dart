@@ -89,18 +89,21 @@ class _PoolCarDetailScreenState
                     height: 16,
                   ),
                   Obx(() {
-                    if (controller.showSubmitButton.value && !controller.showP2HEnd.value) {
+                    if (controller.showSubmitButton.value) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
                             onPressed: () {
-                              controller.submitHeader();
+                              Get.to(()=>const PoolCarP2HScreen(), arguments: {
+                                "item" : controller.selectedItem.value,
+                                "status" : 2
+                              })?.then((value) => controller.detailHeader());
                             },
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(75, 30),
                                 backgroundColor: orangeColor),
-                            child: Text("Submit".tr),
+                            child: Text("Done".tr),
                           ),
                         ],
                       );

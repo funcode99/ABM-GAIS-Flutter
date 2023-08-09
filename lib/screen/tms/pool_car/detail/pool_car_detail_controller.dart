@@ -78,6 +78,7 @@ class PoolCarDetailController extends BaseController {
       print("ERROR DETAIL HEADER ${l.message}");
     }, (r) {
       selectedItem(r);
+      initData();
       setValue();
       // getApprovalLog();
     });

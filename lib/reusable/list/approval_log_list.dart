@@ -21,7 +21,7 @@ class ApprovalLogList extends StatelessWidget {
       itemCount: list.length,
       itemBuilder: (context, index) {
         return ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 220, minHeight: 160),
+          constraints: const BoxConstraints(maxHeight: 250, minHeight: 160),
           child: SizedBox(
             height: double.infinity,
             child: ApprovalLogItem(
@@ -160,6 +160,7 @@ class ApprovalLogItem extends StatelessWidget {
                       item.notes == null
                           ? const SizedBox()
                           : GestureDetector(
+                              behavior: HitTestBehavior.translucent,
                               onTap: item.notes != null
                                   ? item.notes!.isNotEmpty
                                       ? () {
@@ -174,10 +175,13 @@ class ApprovalLogItem extends StatelessWidget {
                                         }
                                       : null
                                   : null,
-                              child: Text(
-                                "Notes : ${item.notes ?? ""}",
-                                style: const TextStyle(
-                                    overflow: TextOverflow.ellipsis),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 4),
+                                child: Text(
+                                  "Notes : ${item.notes ?? ""}",
+                                  style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis),
+                                ),
                               ),
                             ),
                       const SizedBox(
@@ -190,6 +194,7 @@ class ApprovalLogItem extends StatelessWidget {
                               children: [
                                 const Text("Attachment : "),
                                 GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
                                   onTap: () async {
                                     if (item.path.toString().isImageFileName) {
                                       Get.dialog(Dialog(
@@ -207,11 +212,14 @@ class ApprovalLogItem extends StatelessWidget {
                                       }
                                     }
                                   },
-                                  child: Text(
-                                    "${item.file ?? ""}",
-                                    style: const TextStyle(
-                                        overflow: TextOverflow.ellipsis,
-                                        color: infoColor),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 4),
+                                    child: Text(
+                                      "${item.file ?? ""}",
+                                      style: const TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          color: infoColor),
+                                    ),
                                   ),
                                 )
                               ],
