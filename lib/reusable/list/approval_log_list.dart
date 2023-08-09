@@ -57,171 +57,173 @@ class ApprovalLogItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: item.notes != null
-          ? item.notes!.isNotEmpty
-              ? () {
-                  Get.dialog(Dialog(
-                    child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 21),
-                        child: Text(item.notes ?? "")),
-                  ));
-                }
-              : null
-          : null,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            children: [
-              Expanded(
-                child: showTopLine
-                    ? const SizedBox()
-                    : SizedBox(
-                        height: double.infinity,
-                        child: CustomPaint(
-                            size: const Size(1.5, double.infinity),
-                            painter: DashedVerticalLine()),
-                      ),
-              ),
-              Container(
-                decoration:
-                    BoxDecoration(shape: BoxShape.circle, color: iconColor),
-                padding: const EdgeInsets.all(10),
-                child: const Icon(
-                  IconlyBold.user_3,
-                  color: Colors.white,
-                  size: 24,
-                ),
-              ),
-              Expanded(
-                child: showBottomLine
-                    ? const SizedBox()
-                    : SizedBox(
-                        height: double.infinity,
-                        child: CustomPaint(
-                            size: const Size(1.5, double.infinity),
-                            painter: DashedVerticalLine()),
-                      ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            width: 16,
-          ),
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: const Color(0xffEFF4FF)),
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Color(0xFFC3C3C3)),
-                    padding: const EdgeInsets.all(8),
-                    child: const Icon(
-                      IconlyBold.profile,
-                      color: greyColor,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          children: [
+            Expanded(
+              child: showTopLine
+                  ? const SizedBox()
+                  : SizedBox(
+                      height: double.infinity,
+                      child: CustomPaint(
+                          size: const Size(1.5, double.infinity),
+                          painter: DashedVerticalLine()),
                     ),
+            ),
+            Container(
+              decoration:
+                  BoxDecoration(shape: BoxShape.circle, color: iconColor),
+              padding: const EdgeInsets.all(10),
+              child: const Icon(
+                IconlyBold.user_3,
+                color: Colors.white,
+                size: 24,
+              ),
+            ),
+            Expanded(
+              child: showBottomLine
+                  ? const SizedBox()
+                  : SizedBox(
+                      height: double.infinity,
+                      child: CustomPaint(
+                          size: const Size(1.5, double.infinity),
+                          painter: DashedVerticalLine()),
+                    ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          width: 16,
+        ),
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: const Color(0xffEFF4FF)),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle, color: Color(0xFFC3C3C3)),
+                  padding: const EdgeInsets.all(8),
+                  child: const Icon(
+                    IconlyBold.profile,
+                    color: greyColor,
                   ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${item.text}",
-                          style: titleTextStyle.copyWith(
-                              fontSize: 14, fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          item.date?.toDateFormat(
-                                  targetFormat: "EEEE, dd MMMM yyyy",
-                                  originFormat: "yyyy-MM-dd HH:mm:ss") ??
-                              "-",
-                          style: hintTextStyle.copyWith(
-                              color: const Color(0xFF8C8C8C),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          item.date?.toDateFormat(
-                                  targetFormat: "HH:mm:ss a",
-                                  originFormat: "yyyy-MM-dd HH:mm:ss") ??
-                              "-",
-                          style: hintTextStyle.copyWith(
-                              color: const Color(0xFF8C8C8C),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        item.notes == null
-                            ? const SizedBox()
-                            : Text(
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${item.text}",
+                        style: titleTextStyle.copyWith(
+                            fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        item.date?.toDateFormat(
+                                targetFormat: "EEEE, dd MMMM yyyy",
+                                originFormat: "yyyy-MM-dd HH:mm:ss") ??
+                            "-",
+                        style: hintTextStyle.copyWith(
+                            color: const Color(0xFF8C8C8C),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        item.date?.toDateFormat(
+                                targetFormat: "HH:mm:ss a",
+                                originFormat: "yyyy-MM-dd HH:mm:ss") ??
+                            "-",
+                        style: hintTextStyle.copyWith(
+                            color: const Color(0xFF8C8C8C),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      item.notes == null
+                          ? const SizedBox()
+                          : GestureDetector(
+                              onTap: item.notes != null
+                                  ? item.notes!.isNotEmpty
+                                      ? () {
+                                          Get.dialog(Dialog(
+                                            child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 21),
+                                                child: Text(item.notes ?? "")),
+                                          ));
+                                        }
+                                      : null
+                                  : null,
+                              child: Text(
                                 "Notes : ${item.notes ?? ""}",
                                 style: const TextStyle(
                                     overflow: TextOverflow.ellipsis),
                               ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        item.path == null
-                            ? const SizedBox()
-                            : Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text("Attachment : "),
-                                  GestureDetector(
-                                    onTap: () async{
-                                      if (item.path
-                                          .toString()
-                                          .isImageFileName) {
-                                        Get.dialog(Dialog(
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 16, vertical: 16),
-                                            child: Image.network(item.path!),
-                                          ),
-                                        ));
-                                      } else {
-                                        if (!await launchUrl(Uri.parse(item.path.toString()))) {
-                                          throw Exception('Could not launch ${item.path.toString}');
-                                        }
+                            ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      item.path == null
+                          ? const SizedBox()
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Attachment : "),
+                                GestureDetector(
+                                  onTap: () async {
+                                    if (item.path.toString().isImageFileName) {
+                                      Get.dialog(Dialog(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 16),
+                                          child: Image.network(item.path!),
+                                        ),
+                                      ));
+                                    } else {
+                                      if (!await launchUrl(
+                                          Uri.parse(item.path.toString()))) {
+                                        throw Exception(
+                                            'Could not launch ${item.path.toString}');
                                       }
-                                    },
-                                    child: Text(
-                                      "${item.file ?? ""}",
-                                      style: const TextStyle(
-                                          overflow: TextOverflow.ellipsis,
-                                          color: infoColor),
-                                    ),
-                                  )
-                                ],
-                              )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                                    }
+                                  },
+                                  child: Text(
+                                    "${item.file ?? ""}",
+                                    style: const TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        color: infoColor),
+                                  ),
+                                )
+                              ],
+                            )
+                    ],
+                  ),
+                )
+              ],
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }
