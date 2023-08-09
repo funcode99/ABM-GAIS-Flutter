@@ -9,12 +9,16 @@ class ApprovalLogModel {
   String? text;
   String? date;
   String? notes;
+  dynamic path;
+  dynamic file;
 
   ApprovalLogModel({
     this.codeStatus,
     this.level,
     this.text,
     this.date,
+    this.path,
+    this.file,
     this.notes
   });
 

@@ -36,4 +36,9 @@ extension StringExt on String{
     return _numeric.hasMatch(this);
   }
 
+  bool isImage(){
+    String text = toLowerCase();
+    return text.contains(".png") || text.contains(".jpg") || text.contains("jpeg");
+  }
+
 }

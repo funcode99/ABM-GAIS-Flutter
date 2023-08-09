@@ -12,6 +12,8 @@ ApprovalLogModel _$ApprovalLogModelFromJson(Map<String, dynamic> json) =>
       level: json['level'] as int?,
       text: json['text'] as String?,
       date: json['date'] as String?,
+      path: json['path'],
+      file: json['file'],
       notes: json['notes'] as String?,
     );
 
@@ -22,4 +24,6 @@ Map<String, dynamic> _$ApprovalLogModelToJson(ApprovalLogModel instance) =>
       'text': instance.text,
       'date': instance.date,
       'notes': instance.notes,
+      'path': instance.path,
+      'file': instance.file,
     };
