@@ -26,6 +26,7 @@ class ApprovalConfirmationController extends BaseController with MasterDataMixin
 
   File? selectedFile;
   final enableButton = false.obs;
+  final showAttachment = false.obs;
 
   @override
   void onInit() {
@@ -44,6 +45,8 @@ class ApprovalConfirmationController extends BaseController with MasterDataMixin
     if(codeRole == RoleEnum.superAdmin.value){
       //enable on behalf
       enableOnBehalf(true);
+      //show attachment
+      showAttachment(true);
       final employees = await getApproveBehalf(
         idApprovalAuth: idApprovalAuth.value,
         idSite: idSite.value,

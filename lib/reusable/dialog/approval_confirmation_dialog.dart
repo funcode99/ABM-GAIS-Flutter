@@ -164,7 +164,7 @@ class ApprovalConfirmationDialog extends StatelessWidget {
                   : 0,
             ),
             Obx(() {
-              if (controller.selectedEnum.value == ApproveEnum.onBehalf) {
+              if (controller.selectedEnum.value == ApproveEnum.onBehalf && controller.showAttachment.value) {
                 return CustomFormFilePicker(
                   label: "Attachment".tr,
                   isRequired: true,
