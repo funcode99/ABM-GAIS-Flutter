@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' as Dio;
 import 'package:dio/dio.dart';
@@ -78,11 +80,17 @@ class ManagementItemATKRepository implements BaseRepository<ManagementItemATKMod
   @override
   Future<Either<BaseError, ManagementItemATKModel>> saveData(model) async{
     final managementItemModel = model as ManagementItemATKModel;
+    
+    final data = {
+      "array_atk" : [
+        managementItemModel.toJson()
+      ]
+    };
 
     try {
       Dio.Response response = await network.dio.post(
           '/api/management_atk/store',
-          data: managementItemModel.toJson()
+          data: jsonEncode(data)
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ManagementItemATKModel.fromJsonModel);
       return right(apiResponseModel.data);

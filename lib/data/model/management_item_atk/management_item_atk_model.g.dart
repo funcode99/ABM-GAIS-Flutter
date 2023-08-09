@@ -31,6 +31,7 @@ ManagementItemATKModel _$ManagementItemATKModelFromJson(
       siteName: json['site_name'] as String?,
       siteCode: json['site_code'] as String?,
       warehouseName: json['warehouse_name'] as String?,
+      arrayWarehouse: json['array_warehouse'] as List<dynamic>?,
     );
 
 Map<String, dynamic> _$ManagementItemATKModelToJson(
@@ -58,4 +59,5 @@ Map<String, dynamic> _$ManagementItemATKModelToJson(
       'site_name': instance.siteName,
       'site_code': instance.siteCode,
       'warehouse_name': instance.warehouseName,
+      'array_warehouse': instance.arrayWarehouse,
     };

@@ -26,6 +26,7 @@ class ManagementItemATKModel {
   String? siteName;
   String? siteCode;
   String? warehouseName;
+  List<dynamic>? arrayWarehouse;
 
   ManagementItemATKModel({
     this.id,
@@ -50,6 +51,7 @@ class ManagementItemATKModel {
     this.siteName,
     this.siteCode,
     this.warehouseName,
+    this.arrayWarehouse,
   });
 
   static ManagementItemATKModel fromJsonModel(Object? json) =>
