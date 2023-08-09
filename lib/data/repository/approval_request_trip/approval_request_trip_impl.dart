@@ -55,7 +55,9 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
     });
 
     if(approval.approvedBehalf != null){
-      formData.files.add(MapEntry("file", await MultipartFile.fromFile(approval.path!)));
+      if(approval.path!=null){
+        formData.files.add(MapEntry("file", await MultipartFile.fromFile(approval.path!)));
+      }
     }
 
     try {

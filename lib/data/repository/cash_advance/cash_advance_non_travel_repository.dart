@@ -329,7 +329,9 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
 
       final formData = Dio.FormData.fromMap(approvalModel.toJson());
       if(approvalModel.approvedBehalf != null){
-        formData.files.add(MapEntry("file", await Dio.MultipartFile.fromFile(approvalModel.path!)));
+        if(approvalModel.path!=null){
+          formData.files.add(MapEntry("file", await Dio.MultipartFile.fromFile(approvalModel.path!)));
+        }
       }
       
       Dio.Response response = await network.dio.post(
