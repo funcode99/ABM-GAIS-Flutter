@@ -1,8 +1,11 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
@@ -89,21 +92,129 @@ class AddManagementItemATKScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
+
+                  RichText(
+                    text: TextSpan(
+                      text: "Warehouse".tr,
+                      style: formlabelTextStyle,
+                      children: const <TextSpan>[
+                        TextSpan(
+                            text: "*", style: TextStyle(color: Colors.red)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   Obx(() {
-                    return CustomDropDownFormField(
-                      isRequired: true,
-                      items: controller.listWarehouse
-                          .map((e) =>
-                          DropdownMenuItem(
-                            value: e.id.toString(),
-                            child: Text("${e.warehouseName}"),
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 8),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: controller.showWarehouseError.value
+                              ? Colors.redAccent
+                              : Colors.black,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Wrap(
+                        runSpacing: 8,
+                        runAlignment: WrapAlignment.center,
+                        children: [
+                          ...controller.listSelectedWarehouse
+                              .mapIndexed((index, item) => Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(4.0),
+                              ),
+                              color: Color(0xFFe4e4e4),
+                            ),
+                            margin: const EdgeInsets.only(
+                                right: 5.0, left: 5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 4.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                InkWell(
+                                  child: Text(
+                                    item.warehouseName ?? "",
+                                    style: listSubTitleTextStyle,
+                                  ),
+                                ),
+                                const SizedBox(width: 4.0),
+                                InkWell(
+                                  child: const Icon(
+                                    Icons.cancel,
+                                    size: 14.0,
+                                    color: greyColor,
+                                  ),
+                                  onTap: () {
+                                    controller
+                                        .deleteWarehouseItem(item);
+                                    controller.updateButton();
+                                  },
+                                )
+                              ],
+                            ),
                           ))
-                          .toList(),
-                      onChanged: (item) {
-                        controller.onChangeSelectedWarehouse(item.toString());
-                      },
-                      label: "Warehouse ".tr,
-                      value: controller.selectedWarehouse.value.id.toString(),
+                              .toList(),
+                          SizedBox(
+                            width: double.infinity,
+                            child: TypeAheadFormField<WarehouseModel>(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                controller: controller.autocompleteController,
+                                autofocus: false,
+                                style: Theme.of(context).textTheme.titleMedium,
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    hintText: "Warehouse".tr,
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0, vertical: 4.0),
+                                    errorText: null,
+                                    errorBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      gapPadding: 0,
+                                    ),
+                                    errorStyle: const TextStyle(height: 0)),
+                              ),
+                              suggestionsCallback: (pattern) {
+                                final list = controller.getWarehouseByKeyword(pattern);
+                                return list;
+                              },
+                              itemBuilder: (context, suggestion) {
+                                return ListTile(
+                                  title: Text("${suggestion.warehouseName}"),
+                                );
+                              },
+                              onSuggestionSelected: (suggestion) {
+                                controller.listSelectedWarehouse.add(suggestion);
+                                controller.autocompleteController.text = "";
+                              },
+                              debounceDuration: const Duration(milliseconds: 1500),
+                              hideOnLoading: true,
+                              hideSuggestionsOnKeyboardHide: true,
+                              keepSuggestionsOnLoading: false,
+                              minCharsForSuggestions: 1,
+                              validator: (value) {
+                                controller.showWarehouseError(
+                                    controller.listSelectedWarehouse
+                                        .isEmpty);
+
+                                if(controller.listSelectedWarehouse
+                                    .isEmpty){
+                                  return "";
+                                }
+                                return null;
+                              },
+                            ),
+                          )
+                        ],
+                      ),
                     );
                   }),
                   const SizedBox(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/management_item_atk/detail_stock_management_item_atk_model.dart';
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/master/brand/brand_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
@@ -18,6 +19,7 @@ class EditManagementItemATKController extends BaseController with MasterDataMixi
   final TextEditingController alertQuantityController = TextEditingController();
   final TextEditingController siteController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
+  late TextEditingController autocompleteController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   final enableButton = false.obs;
@@ -28,6 +30,9 @@ class EditManagementItemATKController extends BaseController with MasterDataMixi
   final selectedBrand = BrandModel().obs;
   final selectedUOM = UomModel().obs;
   final managementItemATK = ManagementItemATKModel().obs;
+
+  final listSelectedWarehouse = <WarehouseModel>[].obs;
+  final showWarehouseError = false.obs;
 
   final ManagementItemATKRepository _repository = Get.find();
 
@@ -56,7 +61,7 @@ class EditManagementItemATKController extends BaseController with MasterDataMixi
 
     final warehouses = await getListWarehouseByCompanyId(idCompany.toInt());
     listWarehouse(warehouses);
-    onChangeSelectedWarehouse(managementItemATK.value.idWarehouse.toString());
+    // onChangeSelectedWarehouse(managementItemATK.value.idWarehouse.toString());
 
     final brands = await getListBrandByCompanyId(idCompany.toInt());
     listBrand(brands);
@@ -65,6 +70,13 @@ class EditManagementItemATKController extends BaseController with MasterDataMixi
     final uoms = await getListUOM();
     listUOM(uoms);
     onChangeSelectedUOM(managementItemATK.value.idUom.toString());
+
+    listSelectedWarehouse.clear();
+    List<DetailStockManagementItemATKModel>? listDetailManagementItemATK = managementItemATK.value.arrayWarehouse?.map((e) => DetailStockManagementItemATKModel.fromJson(e)).toList() ?? [];
+    for(DetailStockManagementItemATKModel item in listDetailManagementItemATK){
+      final selectedWarehouse = listWarehouse.firstWhere((element) => element.id.toString() == item.idWarehouse.toString());
+      listSelectedWarehouse.add(selectedWarehouse);
+    }
   }
 
   void onChangeSelectedWarehouse(String id) {
@@ -104,7 +116,7 @@ class EditManagementItemATKController extends BaseController with MasterDataMixi
       alertQty: alertQuantityController.text.toInt(),
       idCompany: idCompany.toInt(),
       idSite: idSite.toInt(),
-      idWarehouse: selectedWarehouse.value.id,
+      arrayWarehouse: listSelectedWarehouse.map((element) => element.id).toList(),
       remarks: remarksController.text,
     );
 
@@ -117,4 +129,22 @@ class EditManagementItemATKController extends BaseController with MasterDataMixi
           Get.back(result: true);
         });
   }
+
+  void deleteWarehouseItem(WarehouseModel item) {
+    listSelectedWarehouse.removeWhere((element) => item.id == element.id);
+  }
+
+  List<WarehouseModel> getWarehouseByKeyword(String keyword) {
+    final list = listWarehouse
+        .where((warehouse) => warehouse.warehouseName!
+        .toLowerCase()
+        .contains(keyword.toLowerCase())
+    )
+        .toList();
+
+    list.removeWhere((element) => listSelectedWarehouse.contains(element));
+
+    return list;
+  }
+
 }
