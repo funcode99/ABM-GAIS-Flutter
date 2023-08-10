@@ -6,7 +6,7 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
+import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 class PDFScreen extends StatefulWidget {
@@ -21,6 +21,7 @@ class PDFScreen extends StatefulWidget {
 class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
   late File Pfile;
   bool isLoading = false;
+  String? fileExtension;
 
   Future<void> loadNetwork(String link) async {
     setState(() {
@@ -29,15 +30,16 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
     var url = link;
     final response = await http.get(Uri.parse(url));
     final bytes = response.bodyBytes;
-    final filename = basename(url);
+    final filename = p.basename(url);
     final dir = await getApplicationDocumentsDirectory();
     var file = File('${dir.path}/$filename');
     await file.writeAsBytes(bytes, flush: true);
     setState(() {
       Pfile = file;
     });
-
-    print(Pfile);
+    fileExtension = p.extension(Pfile.path);
+    print("path $Pfile");
+    print("extension : $fileExtension");
     setState(() {
       isLoading = false;
     });
@@ -56,41 +58,6 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
   bool isReady = false;
   String errorMessage = '';
 
-  // String? filePath;
-  //
-  //
-  // @override
-  // void initState() {
-  //   // getFileFromUrl().then((f) => setState(() {
-  //   //   filePath = f.path;
-  //   // }));
-  //   print("fileURL: ${widget.fileURL}");
-  //   print("filePath : $filePath");
-  // }
-  //
-  // Future<File> getFileFromUrl() async {
-  //   Completer<File> completer = Completer();
-  //   print("Start download file from internet!");
-  //   try {
-  //     final url = "http://www.pdf995.com/samples/pdf.pdf";
-  //     final filename = url?.substring(url.lastIndexOf("/") + 1);
-  //     var request = await HttpClient().getUrl(Uri.parse(url!));
-  //     var response = await request.close();
-  //     var bytes = await consolidateHttpClientResponseBytes(response);
-  //     var dir = await getApplicationDocumentsDirectory();
-  //     print("Download files");
-  //     print("${dir.path}/$filename");
-  //     File file = File("${dir.path}/$filename");
-  //     await file.writeAsBytes(bytes, flush: true);
-  //     completer.complete(file);
-  //   } catch (e) {
-  //     throw Exception('Error parsing asset file!');
-  //   }
-  //
-  //   return completer.future;
-  // }
-  //
-  //
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +67,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Stack(
+          : fileExtension == ".pdf" ? Stack(
               children: <Widget>[
                 PDFView(
                   filePath: Pfile.path,
@@ -140,7 +107,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
                         child: Text(errorMessage),
                       )
               ],
-            ),
+            ) : Center(child: Image.network(widget.fileURL)),
     );
   }
 }

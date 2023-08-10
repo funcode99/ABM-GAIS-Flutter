@@ -410,6 +410,8 @@ class RepositoryImpl implements Repository {
     int tlkDay,
     String tlkTotal,
     File? file,
+    String daNumber,
+    String costCenterID,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -426,6 +428,8 @@ class RepositoryImpl implements Repository {
       "id_zona": zonaID,
       "tlk_per_day": tlkDay,
       "total_tlk": tlkTotal,
+      "id_cost_center": costCenterID,
+      "number_da": daNumber,
     });
 
     if (file != null) {

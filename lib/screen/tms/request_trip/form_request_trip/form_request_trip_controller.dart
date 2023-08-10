@@ -58,6 +58,7 @@ class FormRequestTripController extends BaseController {
   String? selectedPurpose;
   String fileURL = "";
   String pdfPath = "";
+  String? fileFormat;
 
   int activeStep = 1;
   String? rtStatus;
@@ -187,6 +188,24 @@ class FormRequestTripController extends BaseController {
             ? true
             : item['title'] == "Airliness"
                 ? true
+                : item['title'] == "Accommodation"
+                    ? true
+                    : false;
+
+        item['showList'] = item['title'] == "Traveller Guest"
+            ? true
+            : item['title'] == "Airliness"
+                ? true
+                : item['title'] == "Accommodation"
+                    ? true
+                    : false;
+      }
+    } else if (selectedPurpose == "2") {
+      for (var item in items) {
+        item['isFilled'] = item['title'] == "Traveller Guest"
+            ? true
+            : item['title'] == "Airliness"
+                ? true
                 : item['title'] == "Other Transportation"
                     ? true
                     : false;
@@ -199,7 +218,7 @@ class FormRequestTripController extends BaseController {
                     ? true
                     : false;
       }
-    } else if (selectedPurpose == "2") {
+    } else if (selectedPurpose == "5") {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
@@ -224,6 +243,40 @@ class FormRequestTripController extends BaseController {
       });
     }
     update();
+  }
+
+  addDetails(int index) {
+    index == 1 || index == 4 || index == 5
+        ? Get.off(
+            items[index]['screen'],
+            arguments: {
+              'purposeID': purposeID,
+              'codeDocument': codeDocument,
+              'formEdit': true,
+            },
+          )
+        : selectedPurpose == "5" && index == 0
+            ? Get.showSnackbar(const GetSnackBar(
+                icon: Icon(
+                  Icons.error,
+                  color: Colors.white,
+                ),
+                message: "unable to add guests",
+                isDismissible: true,
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.red,
+              ))
+            : Get.to(
+                items[index]['screen'],
+                arguments: {
+                  'purposeID': purposeID,
+                  'codeDocument': codeDocument,
+                  'formEdit': true,
+                },
+              )?.then((value) {
+                fetchList();
+                update();
+              });
   }
 
   getSingleFile() async {
@@ -260,8 +313,8 @@ class FormRequestTripController extends BaseController {
       // print("Download files");
       // print("${dir.path}/$filename");
       File file = File("${dir.path}/$filename");
+      // fileFormat = file.
       await file.writeAsBytes(bytes, flush: true);
-      completer.complete(file);
       update();
     } catch (e) {
       throw Exception('Error parsing asset file!');
@@ -285,7 +338,7 @@ class FormRequestTripController extends BaseController {
     site.text = rtModel?.data?.first.siteName ?? "";
     notes.text = rtModel?.data?.first.notes ?? "";
     selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
-    isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
+    isAttachment = selectedPurpose == "1" || selectedPurpose == "2" || selectedPurpose == "3" || selectedPurpose == "5" ? true : false;
     // print("attachment : ${rtModel?.data?.first.file}");
     if (isAttachment == true) {
       attachment.text = rtModel?.data?.first.file;
@@ -322,6 +375,7 @@ class FormRequestTripController extends BaseController {
       travellerGender = value.first.jenkel;
       travellerHotel = value.first.hotelFare;
       // travellerFlight = value.first.flightClass;
+      tlkJobBand.text = value.first.bandJobName.toString();
     });
 
     await storage.readEmployeeFlight().then((value) => travellerFlight = value.first.idFlightClass.toString());

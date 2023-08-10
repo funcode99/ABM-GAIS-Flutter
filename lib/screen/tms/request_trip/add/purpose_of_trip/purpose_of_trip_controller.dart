@@ -170,6 +170,8 @@ class PurposeOfTripController extends BaseController {
           int.parse(tlkDay.text.digitOnly()),
           totalTLK.text.digitOnly(),
           gettedFile,
+          nomorDA.text,
+          selectedCostCenter ?? costCenterID.toString(),
         )
             .then(
           (value) {

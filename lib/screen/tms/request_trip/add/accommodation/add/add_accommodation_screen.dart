@@ -27,12 +27,12 @@ class AddAccommodationScreen extends StatelessWidget {
                 title: Text("Accommodation", style: appTitle),
                 leading: CustomBackButton(
                   onPressed: () => controller.formEdit == true
-                      ? Get.off(FormRequestTripScreen(), arguments: {
+                      ? Get.off(const FormRequestTripScreen(), arguments: {
                           'id': controller.purposeID,
                           'codeDocument': controller.codeDocument,
                         })
                       : Get.off(
-                          AccommodationScreen(),
+                          const AccommodationScreen(),
                           arguments: {
                             'purposeID': controller.purposeID,
                             'codeDocument': controller.codeDocument,
@@ -152,7 +152,7 @@ class AddAccommodationScreen extends StatelessWidget {
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now().add(const Duration(days: 30)))
+                                      lastDate: controller.lastDate)
                                   .then((date) {
                                 controller.selectedDate = date!;
                                 controller.checkinDate.text = controller.dateFormat.format(date);
@@ -177,7 +177,7 @@ class AddAccommodationScreen extends StatelessWidget {
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now().add(const Duration(days: 30)))
+                                      lastDate: controller.lastDate)
                                   .then((date) {
                                 controller.selectedDate = date!;
                                 controller.checkoutDate.text = controller.dateFormat.format(date);
@@ -214,8 +214,8 @@ class AddAccommodationScreen extends StatelessWidget {
                               hintText: "Remarks",
                               multiLine: true,
                             ),
-                            Container(
-                              height: 50,
+                            controller.hasGuest ? SizedBox(
+                              // height: 50,
                               child: Row(
                                 children: [
                                   Checkbox(
@@ -229,29 +229,29 @@ class AddAccommodationScreen extends StatelessWidget {
                                   Text("Sharing with", style: listTitleTextStyle)
                                 ],
                               ),
-                            ),
-                            controller.isSharing == true
-                                ? CustomTextFormField(
+                            ) : Container(),
+                            controller.isSharing && controller.hasGuest
+                                ? TextFormField(
                                     controller: controller.sharingName,
-                                    label: "",
-                                    hintText: "Name",
+                                    // label: "",
+                                    // hintText: "Name",
                                   )
                                 : Container(),
                             const SizedBox(height: 8),
-                            Text("Create GL?", style: listTitleTextStyle),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: Colors.white,
-                                  value: controller.createGL,
-                                  onChanged: (bool? value) {
-                                    controller.createGL = value!;
-                                    controller.update();
-                                  },
-                                ),
-                                Text("Yes", style: listTitleTextStyle)
-                              ],
-                            ),
+                            // Text("Create GL?", style: listTitleTextStyle),
+                            // Row(
+                            //   children: [
+                            //     Checkbox(
+                            //       checkColor: Colors.white,
+                            //       value: controller.createGL,
+                            //       onChanged: (bool? value) {
+                            //         controller.createGL = value!;
+                            //         controller.update();
+                            //       },
+                            //     ),
+                            //     Text("Yes", style: listTitleTextStyle)
+                            //   ],
+                            // ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -262,11 +262,11 @@ class AddAccommodationScreen extends StatelessWidget {
                                   title: "Cancel",
                                   fontColor: infoColor,
                                   onPressed: () => controller.formEdit == true
-                                      ? Get.off(FormRequestTripScreen(), arguments: {
+                                      ? Get.off(const FormRequestTripScreen(), arguments: {
                                           'id': controller.purposeID,
                                           'codeDocument': controller.codeDocument,
                                         })
-                                      : Get.off(AccommodationScreen(), arguments: {
+                                      : Get.off(const AccommodationScreen(), arguments: {
                                           'purposeID': controller.purposeID,
                                           'codeDocument': controller.codeDocument,
                                         }),

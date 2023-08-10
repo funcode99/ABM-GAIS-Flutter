@@ -74,7 +74,9 @@ class PurposeOfTripScreen extends StatelessWidget {
                               onChanged: (value) {
                                 controller.selectedPurpose = value;
                                 print('selected purpose : $value');
-                                value == "1" || value == "2" || value == "3"|| value == "5" ? controller.isAttachment = true : controller.isAttachment = false;
+                                value == "1" || value == "2" || value == "3" || value == "5"
+                                    ? controller.isAttachment = true
+                                    : controller.isAttachment = false;
                                 value == "3" ? controller.isDANumber = true : controller.isDANumber = false;
                                 controller.update();
                                 // print(controller.selectedPurpose);
@@ -230,12 +232,10 @@ class PurposeOfTripScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            controller.isDANumber
-                                ? CustomTextFormField(
-                                    controller: controller.nomorDA,
-                                    label: "DA Number",
-                                  )
-                                : Container(),
+                            CustomTextFormField(
+                              controller: controller.nomorDA,
+                              label: "DA Number",
+                            ),
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
                               items: controller.costCenterList

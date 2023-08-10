@@ -118,7 +118,7 @@ class Data {
   int? _totalTlk;
   int? _idCompany;
   int? _idDepartement;
-  int? _idCostCenter;
+  dynamic _idCostCenter;
   String? _createdAt;
   int? _createdBy;
   String? _noRequestTrip;

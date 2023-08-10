@@ -95,6 +95,8 @@ abstract class Repository {
     int tlkDay,
     String tlkTotal,
     File? file,
+    String daNumber,
+    String costCenterID,
   );
 
   Future<UpdatePurposeOfTripModel> updateRequestTrip(

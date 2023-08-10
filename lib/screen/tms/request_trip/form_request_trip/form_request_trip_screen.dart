@@ -19,6 +19,7 @@ import 'package:gais/screen/tms/request_trip/add/other_transport/edit/edit_other
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/edit/edit_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_controller.dart';
+import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -36,7 +37,9 @@ class FormRequestTripScreen extends StatelessWidget {
             backgroundColor: baseColor,
             appBar: TopBar(
               title: Text("Request Trip", style: appTitle),
-              leading: const CustomBackButton(),
+              leading: CustomBackButton(
+                onPressed: () => Get.off(const RequestTripListScreen()),
+              ),
             ),
             body: Container(
               margin: const EdgeInsets.only(top: 6, left: 7, right: 7),
@@ -162,7 +165,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                           .toList(),
                                       onChanged: (value) {
                                         controller.selectedPurpose = value.toString();
-                                        controller.isAttachment = value == "1" || value == "2" ? true : false;
+                                        controller.isAttachment = value == "1" || value == "2" || value == "3" || value == "5" ? true : false;
                                         controller.update();
                                         controller.checkItems();
                                         controller.update();
@@ -213,6 +216,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             const CustomFormLabel(label: "Attachment", showRequired: true),
+                                            // Text("file format : ${controller.fileFormat}"),
                                             GestureDetector(
                                               onTap: () => controller.viewFile(),
                                               child: Container(
@@ -275,27 +279,29 @@ class FormRequestTripScreen extends StatelessWidget {
                                 controller.update();
                               },
                             ),
-                            controller.showTLK ? GestureDetector(
-                              child: Container(
-                                alignment: Alignment.center,
-                                margin: const EdgeInsets.only(top: 10, left: 3),
-                                width: Get.width / 4,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: controller.isTLK ? whiteColor : neutralColor,
-                                  borderRadius: const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
-                                  gradient:
-                                      LinearGradient(stops: const [0.15, 0], colors: [controller.isTLK ? blackColor : whiteColor, Colors.white]),
-                                ),
-                                child: const Text("TLK Info"),
-                              ),
-                              onTap: () {
-                                controller.isTLK = true;
-                                controller.isDetail = false;
-                                controller.isApproval = false;
-                                controller.update();
-                              },
-                            ) : Container(),
+                            controller.showTLK
+                                ? GestureDetector(
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      margin: const EdgeInsets.only(top: 10, left: 3),
+                                      width: Get.width / 4,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color: controller.isTLK ? whiteColor : neutralColor,
+                                        borderRadius: const BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
+                                        gradient: LinearGradient(
+                                            stops: const [0.15, 0], colors: [controller.isTLK ? blackColor : whiteColor, Colors.white]),
+                                      ),
+                                      child: const Text("TLK Info"),
+                                    ),
+                                    onTap: () {
+                                      controller.isTLK = true;
+                                      controller.isDetail = false;
+                                      controller.isApproval = false;
+                                      controller.update();
+                                    },
+                                  )
+                                : Container(),
                             GestureDetector(
                               child: Container(
                                 alignment: Alignment.center,
@@ -354,26 +360,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                             fontSize: 13,
                                             width: Get.width / 5,
                                             onPressed: () {
-                                              index == 1 || index == 4 || index == 5
-                                                  ? Get.off(
-                                                      controller.items[index]['screen'],
-                                                      arguments: {
-                                                        'purposeID': controller.purposeID,
-                                                        'codeDocument': controller.codeDocument,
-                                                        'formEdit': true,
-                                                      },
-                                                    )
-                                                  : Get.to(
-                                                      controller.items[index]['screen'],
-                                                      arguments: {
-                                                        'purposeID': controller.purposeID,
-                                                        'codeDocument': controller.codeDocument,
-                                                        'formEdit': true,
-                                                      },
-                                                    )?.then((value) {
-                                                      controller.fetchList();
-                                                      controller.update();
-                                                    });
+                                              controller.addDetails(index);
                                             },
                                           )
                                         : const SizedBox(),
@@ -551,7 +538,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                             title: e.employeeName.toString(),
                                                             subtitle: controller.dateFormat.format(DateTime.parse(e.date!)),
                                                             status: e.status.toString(),
-                                                            info: int.parse(e.amount.toString()).toCurrency(),
+                                                            // info: int.parse(e.amount.toString()).toCurrency(),
                                                             isEdit: controller.isEdit,
                                                             editAction: () => Get.to(const EditTaxiVoucherScreen(),
                                                                     arguments: {'purposeID': controller.purposeID, 'id': e.id, 'formEdit': true})
@@ -800,12 +787,12 @@ class FormRequestTripScreen extends StatelessWidget {
                                   readOnly: true,
                                 ),
                                 const SizedBox(height: 8),
-                                // CustomTextFormField(
-                                //   controller: controller.tlkJobBand,
-                                //   label: "Job Band",
-                                //   isRequired: true,
-                                //   readOnly: true,
-                                // ),
+                                CustomTextFormField(
+                                  controller: controller.tlkJobBand,
+                                  label: "Job Band",
+                                  isRequired: true,
+                                  readOnly: true,
+                                ),
                                 const SizedBox(height: 8),
                                 CustomTextFormField(
                                   controller: controller.tlkZona,

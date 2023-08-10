@@ -87,8 +87,7 @@ class AddTaxiVoucherScreen extends StatelessWidget {
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
+                                      lastDate: controller.lastDate)
                                   .then(
                                 (date) {
                                   controller.selectedDate = date!;
@@ -143,24 +142,24 @@ class AddTaxiVoucherScreen extends StatelessWidget {
                               },
                             ),
                             SizedBox(height: 8),
-                            CustomTextFormField(
-                              controller: controller.amount,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                                ThousandsSeparatorInputFormatter()
-                              ],
-                              inputType: TextInputType.number,
-                              label: "amount",
-                              hintText: "Amount",
-                              isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 8),
+                            // CustomTextFormField(
+                            //   controller: controller.amount,
+                            //   inputFormatters: [
+                            //     FilteringTextInputFormatter.digitsOnly,
+                            //     ThousandsSeparatorInputFormatter()
+                            //   ],
+                            //   inputType: TextInputType.number,
+                            //   label: "amount",
+                            //   hintText: "Amount",
+                            //   isRequired: true,
+                            //   validator: (value) {
+                            //     if (value == null || value.isEmpty) {
+                            //       return "This field is required";
+                            //     }
+                            //     return null;
+                            //   },
+                            // ),
+                            // SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.accountName,
                               label: "Account Name",

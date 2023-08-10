@@ -3,6 +3,7 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/data/model/reference/get_hotel_type_model.dart' as type;
 import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
+import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/check_accommodation/check_accommodation_screen.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -24,6 +25,7 @@ class AddAccommodationController extends BaseController {
   final sharingName = TextEditingController();
 
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateTime lastDate = DateTime.now().add(const Duration(days: 30));
 
   int? travellerID;
   int? jobBandID;
@@ -35,7 +37,9 @@ class AddAccommodationController extends BaseController {
   bool isSharing = false;
   bool createGL = false;
   bool isButtonEnabled = false;
+  bool hasGuest = false;
 
+  GetRequestTripByidModel? rtModel;
   city.GetCityModel? cityModel;
   List<city.Data> cityList = [];
   type.GetHotelTypeModel? hotelTypeModel;
@@ -51,11 +55,10 @@ class AddAccommodationController extends BaseController {
     isSharing = false;
     createGL = false;
     Future.wait([fetchList()]);
-    if(isEdit == true){
+    if (isEdit == true) {
       fetchData();
     }
   }
-
 
   Future<void> fetchData() async {
     try {
@@ -67,9 +70,9 @@ class AddAccommodationController extends BaseController {
         remarks.text = value.data?.first.remarks ?? "";
         sharingName.text = value.data?.first.sharingWName ?? "";
         value.data?.first.sharingWName != null ? isSharing = true : false;
-        value.data?.first.useGl == 1 ? createGL = true: false;
+        value.data?.first.useGl == 1 ? createGL = true : false;
       });
-    } catch (e,i) {
+    } catch (e, i) {
       e.printError();
       i.printError();
     }
@@ -81,10 +84,8 @@ class AddAccommodationController extends BaseController {
         travellerID = int.parse(value.first.id.toString());
         travellerName.text = value.first.employeeName.toString();
         hotelFare.text = value.first.hotelFare.toString();
-        travellerGender.text =
-            value.first.jenkel.toString() == "L" ? "Male" : "Female";
+        travellerGender.text = value.first.jenkel.toString() == "L" ? "Male" : "Female";
         jobBandID = int.parse(value.first.idJobBand.toString());
-
       });
 
       var dataCity = await repository.getCityList();
@@ -99,11 +100,20 @@ class AddAccommodationController extends BaseController {
       shareList.addAll(share.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
       sharingName.text = shareList.first.nameGuest ?? "";
 
-      update();
-    } catch (e,i) {
+      var rtData = await repository.getRequestTripByid(purposeID);
+      rtModel = rtData;
+      lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
+
+      var guestData = await repository.getGuestBytripList(purposeID);
+      hasGuest = bool.parse(guestData.success.toString());
+      print(guestData.success);
+
+    } catch (e, i) {
       e.printError();
       i.printError();
     }
+
+    update();
   }
 
   Future<void> check() async {
