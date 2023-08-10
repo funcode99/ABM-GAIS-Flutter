@@ -74,7 +74,7 @@ class AddItemRequestATKScreen extends StatelessWidget {
                   const SizedBox(
                     height: 32,
                   ),
-                  Obx(() {
+                  /*Obx(() {
                     return CustomDropDownFormField(
                       isRequired: true,
                       items: controller.listWarehouse
@@ -93,7 +93,7 @@ class AddItemRequestATKScreen extends StatelessWidget {
                   }),
                   const SizedBox(
                     height: 8,
-                  ),
+                  ),*/
                   Obx(() {
                     return CustomDropDownFormField(
                       isRequired: true,

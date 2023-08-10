@@ -62,15 +62,15 @@ class AddRequestATKController extends BaseController {
   void saveData() async {
     String userId = await storage.readString(StorageCore.userID);
     String companyId = await storage.readString(StorageCore.companyID);
-    String departmentId = await storage.readString(StorageCore.departmentID);
+    // String departmentId = await storage.readString(StorageCore.departmentID);
     String siteId = await storage.readString(StorageCore.siteID);
     int warehouseId = 0; //dummies TODO this should inside the item
     RequestAtkModel requestAtkModel = RequestAtkModel(
-        idEmployee: userId.toInt(),
+        // idEmployee: userId.toInt(),
         idCompany: companyId.toInt(),
-        idDepartement: departmentId.toInt(),
+        // idDepartement: departmentId.toInt(),
         idSite: siteId.toInt(),
-        idWarehouse: warehouseId,
+        // idWarehouse: warehouseId,
         arrayDetail: listDetail);
 
     final result = await _repository.saveData(requestAtkModel);
