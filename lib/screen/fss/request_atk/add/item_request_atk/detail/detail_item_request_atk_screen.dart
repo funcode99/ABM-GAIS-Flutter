@@ -35,7 +35,7 @@ class _DetailItemRequestATKScreenState extends State<DetailItemRequestATKScreen>
     _uomController.text = "${widget.detailItem.uomName}";
     _siteController.text = "${widget.header.siteName}";
     _warehouseController.text = "${widget.detailItem.warehouseName}";
-    _remarksController.text = "${widget.detailItem.remarks}";
+    _remarksController.text = widget.detailItem.remarks ?? "";
   }
 
   @override
@@ -80,13 +80,13 @@ class _DetailItemRequestATKScreenState extends State<DetailItemRequestATKScreen>
                       const SizedBox(
                         height: 8,
                       ),
-                      CustomTextFormField(
+                      /*CustomTextFormField(
                           readOnly: true,
                           controller: _warehouseController,
                           label: "Warehouse".tr),
                       const SizedBox(
                         height: 8,
-                      ),
+                      ),*/
                       CustomTextFormField(
                           readOnly: true,
                           controller: _itemController,

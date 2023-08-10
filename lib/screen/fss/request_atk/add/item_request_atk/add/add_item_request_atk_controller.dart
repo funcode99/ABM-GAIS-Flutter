@@ -20,9 +20,9 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
 
   final requestATKDetailModel = Rxn<RequestATKDetailModel>();
 
-  final listWarehouse = <WarehouseModel>[].obs;
+  // final listWarehouse = <WarehouseModel>[].obs;
+  // final selectedWarehouse = WarehouseModel().obs;
   final listItem = <ManagementItemATKModel>[].obs;
-  final selectedWarehouse = WarehouseModel().obs;
   final selectedItem = Rxn<ManagementItemATKModel>();
   final emptyItem = ManagementItemATKModel(id: null, itemName: "Item");
 
@@ -42,25 +42,29 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
   void initData()async{
     String idSite = await storage.readString(StorageCore.siteID);
 
-    final warehouses = await getListWarehouseBySiteId(idSite.toInt());
+    /*final warehouses = await getListWarehouseBySiteId(idSite.toInt());
     listWarehouse(warehouses);
-    selectedWarehouse(listWarehouse.first);
+    selectedWarehouse(listWarehouse.first);*/
 
     if(requestATKDetailModel.value !=null){
       initEdit = true;
 
-      if(requestATKDetailModel.value?.idWarehouse!=null){
+      _getItemData();
+
+      /*if(requestATKDetailModel.value?.idWarehouse!=null){
         onChangeSelectedWarehouse("${requestATKDetailModel.value?.idWarehouse}");
       }else{
         onChangeSelectedWarehouse(listWarehouse.first.id.toString());
-      }
+      }*/
     }else{
       _getItemData();
     }
   }
 
   _getItemData()async{
-    final items = await getListItemByWarehouseId(selectedWarehouse.value.id!);
+    String idSite = await storage.readString(StorageCore.siteID);
+
+    final items = await getListItemBySiteId(idSite);
     listItem(items);
     if(listItem.isNotEmpty){
       if(initEdit){
@@ -102,12 +106,12 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
     Future.delayed(const Duration(milliseconds: 100), ()=>updateButton());
   }
 
-  void onChangeSelectedWarehouse(String id) {
+  /*void onChangeSelectedWarehouse(String id) {
     final selected = listWarehouse.firstWhere((item) => item.id == id.toInt());
     selectedWarehouse(selected);
 
     _getItemData();
-  }
+  }*/
 
   RequestATKDetailModel getAddedItem() {
     if(requestATKDetailModel.value!=null){
@@ -118,7 +122,7 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
       requestATKDetailModel.value?.uomName = uomController.text;
       requestATKDetailModel.value?.brandName = brandController.text;
       requestATKDetailModel.value?.qty = quantityController.text.toInt();
-      requestATKDetailModel.value?.idWarehouse = selectedWarehouse.value.id;
+      // requestATKDetailModel.value?.idWarehouse = selectedWarehouse.value.id;
       requestATKDetailModel.value?.idItem = selectedItem.value?.id;
       requestATKDetailModel.value?.idBrand = selectedItem.value?.idBrand;
       requestATKDetailModel.value?.idUom = selectedItem.value?.idUom;
@@ -126,13 +130,13 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
     }else{
       return RequestATKDetailModel(
         key: DateTime.now().toString(),
-        idWarehouse: selectedWarehouse.value.id,
+        // idWarehouse: selectedWarehouse.value.id,
         idItem: selectedItem.value?.id,
         remarks: remarksController.text,
         qty: quantityController.text.toInt(),
         uomName: uomController.text,
         brandName : brandController.text,
-        warehouseName : selectedWarehouse.value.warehouseName,
+        // warehouseName : selectedWarehouse.value.warehouseName,
         itemName : selectedItem.value?.itemName,
         codeItem : selectedItem.value?.codeItem,
         idBrand : selectedItem.value?.idBrand,

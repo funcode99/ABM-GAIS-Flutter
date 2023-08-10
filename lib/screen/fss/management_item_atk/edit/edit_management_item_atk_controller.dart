@@ -51,6 +51,7 @@ class EditManagementItemATKController extends BaseController with MasterDataMixi
     String companyName = await storage.readString(StorageCore.companyName);
     String idCompany = await storage.readString(StorageCore.companyID);
     String siteName = await storage.readString(StorageCore.siteName);
+    String idSite = await storage.readString(StorageCore.siteID);
 
     companyController.text = companyName;
     siteController.text = siteName;
@@ -59,7 +60,7 @@ class EditManagementItemATKController extends BaseController with MasterDataMixi
     alertQuantityController.text = managementItemATK.value.alertQty.toString();
     remarksController.text = managementItemATK.value.remarks ?? "";
 
-    final warehouses = await getListWarehouseByCompanyId(idCompany.toInt());
+    final warehouses = await getListWarehouseBySiteId(idSite.toInt());
     listWarehouse(warehouses);
     // onChangeSelectedWarehouse(managementItemATK.value.idWarehouse.toString());
 

@@ -49,6 +49,11 @@ mixin MasterDataMixin{
     return result.fold((l) => [], (listManagementItem) => listManagementItem);
   }
 
+  Future<List<ManagementItemATKModel>> getListItemBySiteId(dynamic siteId)async{
+    final result = await _repository.getListItemBySiteId(siteId);
+    return result.fold((l) => [], (listManagementItem) => listManagementItem);
+  }
+
   Future<List<StatusDocModel>> getListStatusDoc()async{
     final result = await _repository.getListStatusDoc();
     return result.fold((l) => [], (list) => list);
