@@ -329,7 +329,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                   ],
                                                 ),
                                               ),
-                                              Expanded(
+                                              /*Expanded(
                                                 child: Column(
                                                   children: [
                                                     Text(
@@ -346,7 +346,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                     ),
                                                   ],
                                                 ),
-                                              ),
+                                              ),*/
                                             ],
                                           ),
                                         ),
