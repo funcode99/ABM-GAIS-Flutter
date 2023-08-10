@@ -116,14 +116,14 @@ class AddItemRequestATKScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomTextFormField(
+                 /* CustomTextFormField(
                       isRequired: true,
                       readOnly: true,
                       controller: controller.brandController,
                       label: "Brand".tr),
                   const SizedBox(
                     height: 8,
-                  ),
+                  ),*/
                   CustomTextFormField(
                       validator: ValidationBuilder()
                           .required()

@@ -245,7 +245,7 @@ class AddManagementItemATKScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Obx(() {
+                  /*Obx(() {
                     return CustomDropDownFormField(
                       isRequired: true,
                       items: controller.listBrand
@@ -261,7 +261,7 @@ class AddManagementItemATKScreen extends StatelessWidget {
                       label: "Brand".tr,
                       value: controller.selectedBrand.value.id.toString(),
                     );
-                  }),
+                  }),*/
                   const SizedBox(
                     height: 8,
                   ),

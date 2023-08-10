@@ -94,13 +94,13 @@ class _DetailItemRequestATKScreenState extends State<DetailItemRequestATKScreen>
                       const SizedBox(
                         height: 8,
                       ),
-                      CustomTextFormField(
+                     /* CustomTextFormField(
                           readOnly: true,
                           controller: _brandController,
                           label: "Brand".tr),
                       const SizedBox(
                         height: 8,
-                      ),
+                      ),*/
                       CustomTextFormField(
                           readOnly: true,
                           controller: _quantityController,

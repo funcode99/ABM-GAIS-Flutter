@@ -86,13 +86,13 @@ class _DetailItemStockInATKScreenState extends State<DetailItemStockInATKScreen>
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomTextFormField(
+                  /*CustomTextFormField(
                       readOnly: true,
                       controller: _brandController,
                       label: "Brand".tr),
                   const SizedBox(
                     height: 8,
-                  ),
+                  ),*/
                   CustomTextFormField(
                       readOnly: true,
                       controller: _quantityController,
