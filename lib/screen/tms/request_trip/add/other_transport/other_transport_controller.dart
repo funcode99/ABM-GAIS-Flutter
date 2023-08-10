@@ -70,20 +70,20 @@ class OtherTransportController extends BaseController {
     try {
       await repository.submitRequestTrip(purposeID).then((value) {
         Get.offAll(const RequestTripListScreen());
-        const GetSnackBar(
+        Get.showSnackbar(const GetSnackBar(
           icon: Icon(
-            Icons.info,
+            Icons.error,
             color: Colors.white,
           ),
-          message: "Data Submitted",
+          message: "Submit Success",
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: greenColor,
-        );
+        ));
       });
       update();
     } catch (e) {
-      const GetSnackBar(
+      Get.showSnackbar(const GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -92,7 +92,7 @@ class OtherTransportController extends BaseController {
         isDismissible: true,
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
-      );
+      ));
     }
   }
 

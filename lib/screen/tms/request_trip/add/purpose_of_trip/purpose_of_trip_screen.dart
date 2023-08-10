@@ -73,7 +73,9 @@ class PurposeOfTripScreen extends StatelessWidget {
                                   .toList(),
                               onChanged: (value) {
                                 controller.selectedPurpose = value;
-                                value == "1" || value == "2" ? controller.isAttachment = true : controller.isAttachment = false;
+                                print('selected purpose : $value');
+                                value == "1" || value == "2" || value == "3"|| value == "5" ? controller.isAttachment = true : controller.isAttachment = false;
+                                value == "3" ? controller.isDANumber = true : controller.isDANumber = false;
                                 controller.update();
                                 // print(controller.selectedPurpose);
                               },
@@ -107,9 +109,9 @@ class PurposeOfTripScreen extends StatelessWidget {
                                       if (value == null || value.isEmpty) {
                                         return "This field is required";
                                       }
-                                      if(controller.fileExtension != "pdf"){
-                                        return "Files must be pdf";
-                                      }
+                                      // if (controller.fileExtension != "pdf") {
+                                      //   return "Files must be pdf";
+                                      // }
                                       return null;
                                     },
                                     readOnly: true,
@@ -123,6 +125,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                               controller: controller.notesPurpose,
                               label: "Notes to Purpose of Trip",
                               hintText: "Notes",
+                              isRequired: true,
                             ),
                             const SizedBox(height: 10),
                             Text("Itinerary", style: formlabelTextStyle),
@@ -227,31 +230,55 @@ class PurposeOfTripScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            CustomTextFormField(
-                              controller: controller.zona,
-                              label: "Zona",
+                            controller.isDANumber
+                                ? CustomTextFormField(
+                                    controller: controller.nomorDA,
+                                    label: "DA Number",
+                                  )
+                                : Container(),
+                            const SizedBox(height: 8),
+                            CustomDropDownFormField(
+                              items: controller.costCenterList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.costCenterName.toString()),
+                                      ))
+                                  .toList(),
+                              label: "Cost Center",
+                              hintText: controller.isLoading ? "Loading..." : "Cost Center",
                               isRequired: true,
-                              readOnly: true,
-                              hintText: "Zona",
+                              value: controller.costCenterID,
+                              onChanged: (value) {
+                                controller.selectedCostCenter = value.toString();
+                                controller.update();
+                              },
                             ),
                             const SizedBox(height: 8),
-                            CustomTextFormField(
-                              controller: controller.tlkDay,
-                              label: "TLK / Day",
-                              isRequired: true,
-                              readOnly: true,
-                              inputType: TextInputType.number,
-                              hintText: "TLK / Day",
-                            ),
-                            const SizedBox(height: 8),
-                            CustomTextFormField(
-                              controller: controller.totalTLK,
-                              label: "Total TLK",
-                              isRequired: true,
-                              readOnly: true,
-                              hintText: "Total TLK",
-                            ),
-                            const SizedBox(height: 8),
+                            // CustomTextFormField(
+                            //   controller: controller.zona,
+                            //   label: "Zona",
+                            //   isRequired: true,
+                            //   readOnly: true,
+                            //   hintText: "Zona",
+                            // ),
+                            // const SizedBox(height: 8),
+                            // CustomTextFormField(
+                            //   controller: controller.tlkDay,
+                            //   label: "TLK / Day",
+                            //   isRequired: true,
+                            //   readOnly: true,
+                            //   inputType: TextInputType.number,
+                            //   hintText: "TLK / Day",
+                            // ),
+                            // const SizedBox(height: 8),
+                            // CustomTextFormField(
+                            //   controller: controller.totalTLK,
+                            //   label: "Total TLK",
+                            //   isRequired: true,
+                            //   readOnly: true,
+                            //   hintText: "Total TLK",
+                            // ),
+                            // const SizedBox(height: 8),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

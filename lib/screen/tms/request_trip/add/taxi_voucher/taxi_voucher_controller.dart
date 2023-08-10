@@ -73,7 +73,7 @@ class TaxiVoucherController extends BaseController {
     try {
       await repository.submitRequestTrip(purposeID).then((value) {
         Get.offAll(RequestTripListScreen());
-        GetSnackBar(
+        Get.showSnackbar(GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -82,11 +82,11 @@ class TaxiVoucherController extends BaseController {
           isDismissible: true,
           duration: Duration(seconds: 3),
           backgroundColor: greenColor,
-        );
+        ));
       });
       update();
     } catch (e) {
-      GetSnackBar(
+      Get.showSnackbar(GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -95,7 +95,7 @@ class TaxiVoucherController extends BaseController {
         isDismissible: true,
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
-      );
+      ));
     }
   }
 

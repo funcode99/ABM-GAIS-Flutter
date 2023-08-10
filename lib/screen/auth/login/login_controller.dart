@@ -94,7 +94,6 @@ class LoginController extends BaseController {
                 backgroundColor: Colors.green,
                 snackPosition: SnackPosition.TOP,
                 snackStyle: SnackStyle.FLOATING,
-                margin: EdgeInsets.only(top: 50),
                 animationDuration: Duration(milliseconds: 500),
               ),
             ),

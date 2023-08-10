@@ -11,6 +11,7 @@ import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 
@@ -120,20 +121,49 @@ class AccommodationScreen extends StatelessWidget {
                         }),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomFilledButton(
-                          width: 100,
-                          color: Colors.transparent,
-                          borderColor: infoColor,
-                          title: "Back",
-                          fontColor: infoColor,
-                          onPressed: () => Get.back(),
-                        ),
-                        CustomFilledButton(width: 100, color: infoColor, title: "Next", onPressed: () => controller.next()),
-                      ],
-                    )
+                    controller.codeDocument == 5
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomFilledButton(
+                                width: 100,
+                                color: Colors.transparent,
+                                borderColor: infoColor,
+                                title: "Back",
+                                fontColor: infoColor,
+                                onPressed: () => Get.back(),
+                              ),
+                              CustomFilledButton(
+                                width: 100,
+                                color: infoColor,
+                                title: "Draft",
+                                onPressed: () => Get.offAll(const FormRequestTripScreen(), arguments: {
+                                  'id': controller.purposeID,
+                                  'codeDocument': controller.codeDocument,
+                                }),
+                              ),
+                              CustomFilledButton(
+                                width: 100,
+                                color: infoColor,
+                                title: "Submit",
+                                onPressed: () => controller.submit(),
+                              ),
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomFilledButton(
+                                width: 100,
+                                color: Colors.transparent,
+                                borderColor: infoColor,
+                                title: "Back",
+                                fontColor: infoColor,
+                                onPressed: () => Get.back(),
+                              ),
+                              CustomFilledButton(width: 100, color: infoColor, title: "Next", onPressed: () => controller.next()),
+                            ],
+                          )
                   ],
                 ),
               ),

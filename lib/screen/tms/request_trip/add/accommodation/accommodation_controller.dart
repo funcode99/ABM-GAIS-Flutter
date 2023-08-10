@@ -3,6 +3,7 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as acc;
 import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_screen.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
 
 class AccommodationController extends BaseController {
@@ -31,6 +32,36 @@ class AccommodationController extends BaseController {
     } catch (e, i) {
       e.printError();
       i.printError();
+    }
+  }
+
+  Future<void> submit() async {
+    try {
+      await repository.submitRequestTrip(purposeID).then((value) {
+        Get.offAll(const FormRequestTripScreen());
+        Get.showSnackbar(const GetSnackBar(
+          icon: Icon(
+            Icons.info,
+            color: Colors.white,
+          ),
+          message: "Data Submitted",
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: greenColor,
+        ));
+      });
+      update();
+    } catch (e) {
+      Get.showSnackbar(const GetSnackBar(
+        icon: Icon(
+          Icons.error,
+          color: Colors.white,
+        ),
+        message: "Submit Failed",
+        isDismissible: true,
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 

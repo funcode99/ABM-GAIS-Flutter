@@ -157,10 +157,10 @@ class FormRequestTripController extends BaseController {
     tlkTotalMeals.dispose();
   }
 
-  Future<void> checkRole() async{
+  Future<void> checkRole() async {
     role = await storage.readRole();
     print("role : $role");
-    if(role=="3" || role=="2" || role =="1"){
+    if (role == "3" || role == "2" || role == "1") {
       showTLK = true;
     }
     update();
@@ -180,6 +180,24 @@ class FormRequestTripController extends BaseController {
             : item['title'] == "Traveller Guest"
                 ? true
                 : false;
+      }
+    } else if (selectedPurpose == "2") {
+      for (var item in items) {
+        item['isFilled'] = item['title'] == "Traveller Guest"
+            ? true
+            : item['title'] == "Airliness"
+                ? true
+                : item['title'] == "Other Transportation"
+                    ? true
+                    : false;
+
+        item['showList'] = item['title'] == "Traveller Guest"
+            ? true
+            : item['title'] == "Airliness"
+                ? true
+                : item['title'] == "Other Transportation"
+                    ? true
+                    : false;
       }
     } else if (selectedPurpose == "2") {
       for (var item in items) {

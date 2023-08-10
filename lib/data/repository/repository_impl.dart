@@ -7,6 +7,7 @@ import 'package:gais/data/model/employee_info_model.dart';
 import 'package:gais/data/model/login_model.dart';
 import 'package:gais/data/model/reference/get_city_model.dart';
 import 'package:gais/data/model/reference/get_company_model.dart';
+import 'package:gais/data/model/reference/get_coset_center_model.dart';
 import 'package:gais/data/model/reference/get_currency_model.dart';
 import 'package:gais/data/model/reference/get_department_model.dart';
 import 'package:gais/data/model/reference/get_document_code_model.dart';
@@ -334,7 +335,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetFlightClassModel> getFlightList() async {
+  Future<GetFlightClassModel> getFlightClassList() async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -375,6 +376,21 @@ class RepositoryImpl implements Repository {
       return GetJobBandModel.fromJson(response.data);
     } on DioError catch (e) {
       //print("response error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+  @override
+  Future<GetCosetCenterModel> getCostCenterList() async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/company/get_cost_center/",
+      );
+      return GetCosetCenterModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -473,7 +489,7 @@ class RepositoryImpl implements Repository {
       );
       return UpdatePurposeOfTripModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
+      print("response error: ${e.response?.data}");
       return UpdatePurposeOfTripModel.fromJson(e.message);
       // return e.error;
       // throw Exception();
