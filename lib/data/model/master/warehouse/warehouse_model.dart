@@ -1,24 +1,25 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'warehouse_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class WarehouseModel {
-  dynamic id;
-  String? warehouseName;
-  int? idCompany;
-  int? idSite;
-  String? createdAt;
-  String? createdBy;
-  String? updatedAt;
-  String? updatedBy;
-  String? companyName;
-  String? companyCode;
-  String? siteName;
-  String? siteCode;
+class WarehouseModel extends Equatable{
+  final dynamic id;
+  final String? warehouseName;
+  final int? idCompany;
+  final int? idSite;
+  final String? createdAt;
+  final String? createdBy;
+  final String? updatedAt;
+  final String? updatedBy;
+  final String? companyName;
+  final String? companyCode;
+  final String? siteName;
+  final String? siteCode;
 
 
-  WarehouseModel({
+  const WarehouseModel({
     this.id,
     this.warehouseName,
     this.idCompany,
@@ -72,4 +73,20 @@ class WarehouseModel {
       _$WarehouseModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$WarehouseModelToJson(this);
+
+  @override
+  List<Object?> get props => [
+    id,
+    warehouseName,
+    idCompany,
+    idSite,
+    createdAt,
+    createdBy,
+    updatedAt,
+    updatedBy,
+    companyName,
+    companyCode,
+    siteName,
+    siteCode,
+  ];
 }

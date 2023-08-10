@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/management_item_atk/detail_stock_management_item_atk_model.dart';
 import 'package:gais/data/model/management_item_atk/management_item_atk_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/site/site_model.dart';
@@ -254,5 +255,10 @@ class ManagementItemATKListController extends BaseController
       // final filtered = listWarehouse.where((item) => item.idSite.toString() == idSite);
       listWarehouseFiltered.addAll(filtered);
     }
+  }
+
+  List<DetailStockManagementItemATKModel> getDetailStockManagementItemATKModel(ManagementItemATKModel managementItemATKModel){
+    final list = managementItemATKModel.arrayWarehouse?.map((e) => DetailStockManagementItemATKModel.fromJson(e)).toList();
+    return list ?? [];
   }
 }

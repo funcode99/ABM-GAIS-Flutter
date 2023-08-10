@@ -14,6 +14,8 @@ class CheckItemModel {
   String? headerName;
   int? isHeader;
   List<ChoiceItemModel>? choices;
+  String? file;
+  String? path;
 
   CheckItemModel({
     this.idDetail,
@@ -25,6 +27,8 @@ class CheckItemModel {
     this.headerName,
     this.isHeader,
     this.choices,
+    this.file,
+    this.path
   });
 
   static CheckItemModel fromJsonModel(Object? json) =>

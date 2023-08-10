@@ -9,8 +9,9 @@ part of 'submit_check_data_model.dart';
 SubmitCheckDataModel _$SubmitCheckDataModelFromJson(
         Map<String, dynamic> json) =>
     SubmitCheckDataModel(
-      idDetailCheck: json['id_detail_check'] as int?,
-      value: json['value'] as int?,
+      idDetailCheck: json['id_detail_check'],
+      value: json['value'],
+      path: json['path'] as String?,
     );
 
 Map<String, dynamic> _$SubmitCheckDataModelToJson(
@@ -18,4 +19,5 @@ Map<String, dynamic> _$SubmitCheckDataModelToJson(
     <String, dynamic>{
       'id_detail_check': instance.idDetailCheck,
       'value': instance.value,
+      'path': instance.path,
     };

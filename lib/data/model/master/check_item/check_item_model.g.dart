@@ -19,6 +19,8 @@ CheckItemModel _$CheckItemModelFromJson(Map<String, dynamic> json) =>
       choices: (json['choices'] as List<dynamic>?)
           ?.map((e) => ChoiceItemModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      file: json['file'] as String?,
+      path: json['path'] as String?,
     );
 
 Map<String, dynamic> _$CheckItemModelToJson(CheckItemModel instance) =>
@@ -32,4 +34,6 @@ Map<String, dynamic> _$CheckItemModelToJson(CheckItemModel instance) =>
       'header_name': instance.headerName,
       'is_header': instance.isHeader,
       'choices': instance.choices?.map((e) => e.toJson()).toList(),
+      'file': instance.file,
+      'path': instance.path,
     };

@@ -9,7 +9,7 @@ part of 'cash_advance_model.dart';
 CashAdvanceModel _$CashAdvanceModelFromJson(Map<String, dynamic> json) =>
     CashAdvanceModel(
       id: json['id'],
-      idEmployee: json['id_employee'] as int?,
+      idEmployee: json['id_employee'],
       typeCa: json['type_ca'],
       noCa: json['no_ca'] as String?,
       idRequestTrip: json['id_request_trip'],

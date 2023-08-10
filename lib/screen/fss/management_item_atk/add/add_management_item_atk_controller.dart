@@ -11,13 +11,15 @@ import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 
-class AddManagementItemATKController extends BaseController with MasterDataMixin{
+class AddManagementItemATKController extends BaseController
+    with MasterDataMixin {
   final TextEditingController idController = TextEditingController();
   final TextEditingController companyController = TextEditingController();
   final TextEditingController itemController = TextEditingController();
   final TextEditingController alertQuantityController = TextEditingController();
   final TextEditingController siteController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
+  late TextEditingController autocompleteController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   final enableButton = false.obs;
@@ -28,7 +30,11 @@ class AddManagementItemATKController extends BaseController with MasterDataMixin
   final selectedBrand = BrandModel().obs;
   final selectedUOM = UomModel().obs;
 
+  final listSelectedWarehouse = <WarehouseModel>[].obs;
+
   final ManagementItemATKRepository _repository = Get.find();
+
+  final showWarehouseError = false.obs;
 
   @override
   void onInit() {
@@ -41,7 +47,7 @@ class AddManagementItemATKController extends BaseController with MasterDataMixin
     initData();
   }
 
-  void initData()async{
+  void initData() async {
     String companyName = await storage.readString(StorageCore.companyName);
     String idCompany = await storage.readString(StorageCore.companyID);
     String siteName = await storage.readString(StorageCore.siteName);
@@ -100,7 +106,7 @@ class AddManagementItemATKController extends BaseController with MasterDataMixin
       alertQty: alertQuantityController.text.toInt(),
       idCompany: idCompany.toInt(),
       idSite: idSite.toInt(),
-      idWarehouse: selectedWarehouse.value.id,
+      arrayWarehouse: listSelectedWarehouse.map((element) => element.id).toList(),
       remarks: remarksController.text,
     );
 
@@ -112,5 +118,22 @@ class AddManagementItemATKController extends BaseController with MasterDataMixin
       //update list
       Get.back(result: true);
     });
+  }
+
+  void deleteWarehouseItem(WarehouseModel item) {
+    listSelectedWarehouse.removeWhere((element) => item.id == element.id);
+  }
+
+  List<WarehouseModel> getWarehouseByKeyword(String keyword) {
+    final list = listWarehouse
+        .where((warehouse) => warehouse.warehouseName!
+            .toLowerCase()
+            .contains(keyword.toLowerCase())
+    )
+        .toList();
+
+    list.removeWhere((element) => listSelectedWarehouse.contains(element));
+
+    return list;
   }
 }

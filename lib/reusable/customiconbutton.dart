@@ -25,6 +25,7 @@ class CustomIconButton extends StatelessWidget{
             Icon(
               iconData,
               color: Colors.white,
+              size: 16,
             ),
             const SizedBox(
               width: 6,
@@ -34,7 +35,7 @@ class CustomIconButton extends StatelessWidget{
               style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w900,
-                  fontSize: 12),
+                  fontSize: 10),
               textAlign: TextAlign.center,
             ),
           ],

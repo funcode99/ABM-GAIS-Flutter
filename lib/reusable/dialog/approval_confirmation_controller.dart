@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/approval_model.dart';
@@ -22,6 +24,9 @@ class ApprovalConfirmationController extends BaseController with MasterDataMixin
   final enableOnBehalf = false.obs;
   final selectedEnum = Rx<ApproveEnum>(ApproveEnum.onBehalf);
 
+  File? selectedFile;
+  final enableButton = false.obs;
+  final showAttachment = false.obs;
 
   @override
   void onInit() {
@@ -40,6 +45,8 @@ class ApprovalConfirmationController extends BaseController with MasterDataMixin
     if(codeRole == RoleEnum.superAdmin.value){
       //enable on behalf
       enableOnBehalf(true);
+      //show attachment
+      showAttachment(true);
       final employees = await getApproveBehalf(
         idApprovalAuth: idApprovalAuth.value,
         idSite: idSite.value,
@@ -63,8 +70,21 @@ class ApprovalConfirmationController extends BaseController with MasterDataMixin
     approvalModel.notes = noteController.text;
     if(selectedEnum.value == ApproveEnum.onBehalf){
       approvalModel.approvedBehalf = selectedEmployee.value?.id;
+      approvalModel.path = selectedFile!.path;
     }
 
     return approvalModel;
+  }
+
+  void updateButton(){
+    if(selectedEnum.value == ApproveEnum.onBehalf){
+      if(selectedFile != null){
+        enableButton.value = true;
+      }else{
+        enableButton.value = false;
+      }
+    }else{
+      enableButton.value = true;
+    }
   }
 }

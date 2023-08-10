@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/reusable/dialog/approval_confirmation_controller.dart';
+import 'package:gais/reusable/form/custom_form_file_picker.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
 class ApprovalConfirmationDialog extends StatelessWidget {
-  const ApprovalConfirmationDialog({super.key, this.idCompany, this.idSite, this.idEmployee, this.idApprovalAuth});
+  const ApprovalConfirmationDialog(
+      {super.key, this.idCompany, this.idSite, this.idEmployee, this.idApprovalAuth});
 
   final int? idCompany;
   final int? idSite;
@@ -15,7 +18,8 @@ class ApprovalConfirmationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ApprovalConfirmationController controller = Get.put(ApprovalConfirmationController())
+    final ApprovalConfirmationController controller = Get.put(
+        ApprovalConfirmationController())
       ..idApprovalAuth(idApprovalAuth)
       ..idCompany(idCompany)
       ..idSite(idSite)
@@ -33,7 +37,11 @@ class ApprovalConfirmationDialog extends StatelessWidget {
                 Expanded(
                   child: Text(
                     "Approval Confirmation".tr,
-                    style: Theme.of(context).textTheme.subtitle1?.copyWith(fontWeight: FontWeight.w600, fontSize: 20),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .subtitle1
+                        ?.copyWith(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                 ),
                 IconButton(
@@ -50,7 +58,11 @@ class ApprovalConfirmationDialog extends StatelessWidget {
             ),
             Text(
               "Are you sure want to approve this document?".tr,
-              style: Theme.of(context).textTheme.subtitle1?.copyWith(fontWeight: FontWeight.w500, fontSize: 14),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .subtitle1
+                  ?.copyWith(fontWeight: FontWeight.w500, fontSize: 14),
             ),
             const SizedBox(
               height: 16,
@@ -65,10 +77,13 @@ class ApprovalConfirmationDialog extends StatelessWidget {
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: blackColor),
-                          color: controller.selectedEnum.value == ApproveEnum.onBehalf ? infoColor : Colors.transparent),
+                          color: controller.selectedEnum.value ==
+                              ApproveEnum.onBehalf ? infoColor : Colors
+                              .transparent),
                       child: GestureDetector(
                         onTap: () {
                           controller.selectedEnum.value = ApproveEnum.onBehalf;
+                          controller.updateButton();
                         },
                       ),
                     ),
@@ -83,17 +98,20 @@ class ApprovalConfirmationDialog extends StatelessWidget {
                     ),
                     Expanded(
                       child: DropdownButtonFormField(
-                        decoration: const InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
+                        decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2)),
                         icon: const Icon(Icons.keyboard_arrow_down),
                         hint: Text("Name".tr),
                         value: controller.selectedEmployee.value?.id.toString(),
                         isExpanded: true,
                         // underline: SizedBox(),
                         items: controller.listEmployee
-                            .map((e) => DropdownMenuItem(
-                                  value: e.id.toString(),
-                                  child: Text("${e.employeeName}"),
-                                ))
+                            .map((e) =>
+                            DropdownMenuItem(
+                              value: e.id.toString(),
+                              child: Text("${e.employeeName}"),
+                            ))
                             .toList(),
                         onChanged: (value) {
                           controller.onChangeSelectedEmployee(value.toString());
@@ -117,10 +135,14 @@ class ApprovalConfirmationDialog extends StatelessWidget {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: blackColor),
-                        color: controller.selectedEnum.value == ApproveEnum.fullApprove ? infoColor : Colors.transparent),
+                        color: controller.selectedEnum.value ==
+                            ApproveEnum.fullApprove ? infoColor : Colors
+                            .transparent),
                     child: GestureDetector(
                       onTap: () {
                         controller.selectedEnum.value = ApproveEnum.fullApprove;
+                        controller.selectedFile = null;
+                        controller.updateButton();
                       },
                     ),
                   );
@@ -136,6 +158,24 @@ class ApprovalConfirmationDialog extends StatelessWidget {
                 )
               ],
             ),
+            SizedBox(
+              height: controller.selectedEnum.value == ApproveEnum.onBehalf
+                  ? 16
+                  : 0,
+            ),
+            Obx(() {
+              if (controller.selectedEnum.value == ApproveEnum.onBehalf && controller.showAttachment.value) {
+                return CustomFormFilePicker(
+                  label: "Attachment".tr,
+                  isRequired: true,
+                  onFileSelected: (file) {
+                    controller.selectedFile = file;
+                    controller.updateButton();
+                  },
+                );
+              }
+              return SizedBox();
+            }),
             const SizedBox(
               height: 16,
             ),
@@ -159,13 +199,16 @@ class ApprovalConfirmationDialog extends StatelessWidget {
                   width: 16,
                 ),
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.back(result: controller.approve());
-                    },
-                    style: ElevatedButton.styleFrom(backgroundColor: infoColor),
-                    child: Text("Approve".tr),
-                  ),
+                  child: Obx(() {
+                    return ElevatedButton(
+                      onPressed: controller.enableButton.value ? () {
+                        Get.back(result: controller.approve());
+                      } : null,
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: infoColor),
+                      child: Text("Approve".tr),
+                    );
+                  }),
                 )
               ],
             )

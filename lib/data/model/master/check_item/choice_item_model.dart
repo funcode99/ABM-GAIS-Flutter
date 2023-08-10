@@ -6,11 +6,13 @@ part 'choice_item_model.g.dart';
 class ChoiceItemModel {
   int? value;
   String? text;
+  bool? attachable;
 
 
   ChoiceItemModel({
     this.value,
     this.text,
+    this.attachable
   });
 
   static ChoiceItemModel fromJsonModel(Object? json) =>

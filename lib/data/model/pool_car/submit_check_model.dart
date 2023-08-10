@@ -5,9 +5,9 @@ part 'submit_check_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class SubmitCheckModel {
-  String? idPoolCar;
-  int? odometer;
-  int? isUsable;
+  dynamic idPoolCar;
+  dynamic odometer;
+  dynamic isUsable;
   String? notes;
   List<SubmitCheckDataModel>? data;
 
