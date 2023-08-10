@@ -2,7 +2,7 @@ name: gais
 description: general affair information system
 
 publish_to: 'none'
-version: 1.0.82+82
+version: 1.0.83+83
 
 environment:
   sdk: '>=2.18.6 <3.0.0'
