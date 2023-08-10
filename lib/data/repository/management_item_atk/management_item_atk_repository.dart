@@ -110,7 +110,7 @@ class ManagementItemATKRepository implements BaseRepository<ManagementItemATKMod
 
     try {
       Dio.Response response = await network.dio.post(
-          '/api/management_atk/update_data/$id',
+          '/api/management_atk/update/$id',
           data: managementItemATKModel.toJson()
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ManagementItemATKModel.fromJsonModel);

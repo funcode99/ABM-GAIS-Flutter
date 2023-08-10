@@ -346,7 +346,7 @@ class _ManagementItemATKListScreenState
                                           final result = await Get.to(() =>
                                               EditManagementItemATKScreen(
                                                   item: item));
-                                          if (result) {
+                                          if (result!=null) {
                                             controller.getHeader();
                                           }
                                         },
