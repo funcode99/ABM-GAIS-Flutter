@@ -49,6 +49,8 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
     if(requestATKDetailModel.value !=null){
       initEdit = true;
 
+      _getItemData();
+
       /*if(requestATKDetailModel.value?.idWarehouse!=null){
         onChangeSelectedWarehouse("${requestATKDetailModel.value?.idWarehouse}");
       }else{
