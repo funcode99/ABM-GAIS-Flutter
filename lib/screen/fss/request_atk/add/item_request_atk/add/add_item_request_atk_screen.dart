@@ -124,28 +124,20 @@ class AddItemRequestATKScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Obx(() {
-                    return CustomTextFormField(
-                        validator: controller.selectedItem.value != null
-                            ? ValidationBuilder()
-                            .required()
-                            .maxLength(3)
-                            .max(controller.selectedItem.value?.currentStock ?? 0, "Out of stock".tr)
-                            .build()
-                            : ValidationBuilder()
-                            .required()
-                            .maxLength(3)
-                            .build(),
-                        isRequired: true,
-                        inputType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(3),
-                          MinValueTextInputFormatter(0)
-                        ],
-                        controller: controller.quantityController,
-                        label: "Quantity".tr);
-                  }),
+                  CustomTextFormField(
+                      validator: ValidationBuilder()
+                          .required()
+                          .maxLength(3)
+                          .build(),
+                      isRequired: true,
+                      inputType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(3),
+                        MinValueTextInputFormatter(0)
+                      ],
+                      controller: controller.quantityController,
+                      label: "Quantity".tr),
                   const SizedBox(
                     height: 8,
                   ),
