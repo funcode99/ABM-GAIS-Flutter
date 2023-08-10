@@ -149,8 +149,8 @@ class EditManagementItemATKScreen extends StatelessWidget {
                                     color: greyColor,
                                   ),
                                   onTap: () {
-                                    controller
-                                        .deleteWarehouseItem(item);
+                                    controller.deleteWarehouseItem(item);
+                                    controller.update();
                                     controller.updateButton();
                                   },
                                 )
@@ -189,13 +189,14 @@ class EditManagementItemATKScreen extends StatelessWidget {
                               },
                               onSuggestionSelected: (suggestion) {
                                 controller.listSelectedWarehouse.add(suggestion);
+                                controller.updateButton();
                                 controller.autocompleteController.text = "";
                               },
-                              debounceDuration: const Duration(milliseconds: 1500),
+                              debounceDuration: const Duration(milliseconds: 500),
                               hideOnLoading: true,
-                              hideSuggestionsOnKeyboardHide: true,
+                              hideSuggestionsOnKeyboardHide: false,
                               keepSuggestionsOnLoading: false,
-                              minCharsForSuggestions: 1,
+                              minCharsForSuggestions: 0,
                               validator: (value) {
                                 controller.showWarehouseError(
                                     controller.listSelectedWarehouse
