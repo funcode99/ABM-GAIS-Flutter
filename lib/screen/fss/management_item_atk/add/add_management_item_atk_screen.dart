@@ -95,7 +95,7 @@ class AddManagementItemATKScreen extends StatelessWidget {
 
                   RichText(
                     text: TextSpan(
-                      text: "Warehouse".tr,
+                      text: "ATK Warehouse".tr,
                       style: formlabelTextStyle,
                       children: const <TextSpan>[
                         TextSpan(

@@ -91,7 +91,7 @@ class RequestATKDetailController extends BaseController {
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (detailModel) {
-      listDetail.add(detailModel);
+        getDetailData();
     });
   }
 
@@ -105,7 +105,7 @@ class RequestATKDetailController extends BaseController {
           message: "Success Delete Data".tr,
         ));
         //update state
-        listDetail.remove(item);
+        getDetailData();
       });
     } else {
       Get.showSnackbar(CustomGetSnackBar(
@@ -123,8 +123,7 @@ class RequestATKDetailController extends BaseController {
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (model) {
-      int index = listDetail.indexWhere((element) => element.id == item.id);
-      listDetail[index] = item;
+          getDetailData();
     });
   }
 }
