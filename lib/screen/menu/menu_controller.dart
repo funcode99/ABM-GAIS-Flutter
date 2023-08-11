@@ -5,6 +5,7 @@ class MenuGaisController extends BaseController {
   bool receptionis = false;
   bool isAdministrator = false;
   bool isSuperAdmin = false;
+  bool isEmployee = false;
 
   @override
   void onInit() {
@@ -17,6 +18,7 @@ class MenuGaisController extends BaseController {
     receptionis = await storage.readRole() == "4" ? true : false;
     isAdministrator = await storage.readRole() == "1"  ? true : false;
     isSuperAdmin = await storage.readRole() == "2" ? true : false;
+    isEmployee = await storage.readRole() == "5" ? true : false;
     update();
   }
 }

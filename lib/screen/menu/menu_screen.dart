@@ -370,7 +370,7 @@ class MenuScreen extends StatelessWidget {
                       ),
                     )
                   : Container(),
-              !controller.approvalAuth
+              !controller.approvalAuth && !controller.isEmployee
                   ? Container()
                   : Card(
                       elevation: 5,
@@ -418,6 +418,7 @@ class MenuScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
+                                  if(controller.approvalAuth)
                                   GestureDetector(
                                     onTap: () {
                                       Get.to(const StockInListScreen());
