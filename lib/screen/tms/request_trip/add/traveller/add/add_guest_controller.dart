@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/reference/get_flight_class_model.dart' as flight;
 import 'package:gais/data/model/reference/get_traveller_type_model.dart' as type;
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -31,6 +32,7 @@ class AddGuestController extends BaseController {
   int? travellerID;
   bool isLoading = false;
   List<type.Data> typeList = [];
+  List<flight.Data> flightList = [];
   type.GetTravellerTypeModel? typeModel;
 
   @override
@@ -102,12 +104,15 @@ class AddGuestController extends BaseController {
 
   Future<void> fetchList() async {
     typeList = [];
+    flightList = [];
     isLoading = true;
     try {
       await repository.getTravellerTypeList().then((value) {
         typeModel = value;
         typeList.addAll(value.data?.toSet().toList() ?? []);
       });
+
+      await repository.getFlightClassList().then((value) => flightList.addAll(value.data?.toSet().toList() ?? []));
 
       storage.readEmployeeInfo().then((value) {
         jobBandID = int.parse(value.first.idJobBand.toString());
@@ -125,7 +130,6 @@ class AddGuestController extends BaseController {
       e.printError();
       i.printError();
     }
-    print("purposeID : $purposeID");
     isLoading = false;
     update();
   }
@@ -149,9 +153,7 @@ class AddGuestController extends BaseController {
       )
           .then(
         (value) {
-          print(value.success);
           purposeID = value.data?.id.toString() ?? "";
-          print(purposeID);
           // Get.off(TravellerScreen(), arguments: {'purposeID': purposeID});
           Get.back(result: value.success);
         },
@@ -194,7 +196,6 @@ class AddGuestController extends BaseController {
       )
           .then(
         (value) {
-          print(value.success);
           Get.back();
         },
       );

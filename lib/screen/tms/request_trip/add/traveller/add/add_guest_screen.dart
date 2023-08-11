@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
@@ -8,6 +9,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_controller.dart';
+import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
 import 'package:get/get.dart';
 
 class AddGuestScreen extends StatelessWidget {
@@ -103,12 +105,12 @@ class AddGuestScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
-                              items: [
-                                const DropdownMenuItem(
+                              items: const [
+                                DropdownMenuItem(
                                   value: "L",
                                   child: Text("Male"),
                                 ),
-                                const DropdownMenuItem(
+                                DropdownMenuItem(
                                   value: "P",
                                   child: Text("Female"),
                                 ),
@@ -126,7 +128,7 @@ class AddGuestScreen extends StatelessWidget {
                             CustomTextFormField(
                               controller: controller.guestNIK,
                               label: "NIK",
-                              isRequired: true,
+                              isRequired: false,
                               inputType: TextInputType.number,
                             ),
                             const SizedBox(height: 8),
@@ -154,15 +156,32 @@ class AddGuestScreen extends StatelessWidget {
                               controller: controller.hotelFare,
                               label: "Hotel Fare",
                               isRequired: true,
-                              readOnly: true,
+                              readOnly: false,
+                              inputType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                ThousandsSeparatorInputFormatter(),
+                              ],
                             ),
                             const SizedBox(height: 8),
-                            CustomTextFormField(
-                              controller: controller.flightEntitlement,
+                            CustomDropDownFormField(
+                              items: controller.flightList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.id.toString(),
+                                        child: Text(e.flightClass.toString()),
+                                      ))
+                                  .toList(),
                               label: "Flight Entitlement",
+                              hintText: controller.isLoading ? "Loading..." : "Flight Entitlement",
+                              value: controller.idFlight.toString(),
                               isRequired: true,
-                              readOnly: true,
                             ),
+                            // CustomTextFormField(
+                            //   controller: controller.flightEntitlement,
+                            //   label: "Flight Entitlement",
+                            //   isRequired: true,
+                            //   readOnly: true,
+                            // ),
                             const SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.notes,

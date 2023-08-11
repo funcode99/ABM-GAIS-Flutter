@@ -10,7 +10,7 @@ class AirlinesController extends BaseController {
   String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
   bool? formEdit = Get.arguments['formEdit'];
-
+  bool showAddGuest = false;
   int? travellerID;
   int? jobBandID;
   int? flightID;
@@ -43,7 +43,9 @@ class AirlinesController extends BaseController {
     });
 
     await storage.readEmployeeFlight().then((value) => travellerFlight = value.first.flightClass.toString());
-
+    if(codeDocument!=5){
+      showAddGuest = true;
+    }
     update();
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
+import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ class AddTaxiVoucherController extends BaseController {
 
   DateFormat dateFormat = DateFormat("dd-MM-yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy/MM/dd");
+  DateTime lastDate = DateTime.now().add(const Duration(days: 30));
 
   final formKey = GlobalKey<FormState>();
   final traveller = TextEditingController();
@@ -24,6 +26,7 @@ class AddTaxiVoucherController extends BaseController {
   String? departure;
   String? arrival;
 
+  GetRequestTripByidModel? rtModel;
   GetTaxiVoucherModel? item;
   city.GetCityModel? cityModel;
   List<city.Data> cityList = [];
@@ -54,12 +57,18 @@ class AddTaxiVoucherController extends BaseController {
       print(value.isNotEmpty);
       travellerID = int.parse(value.first.id.toString());
       traveller.text = value.first.employeeName.toString();
+      accountName.text = value.first.employeeName.toString();
     });
 
     cityList = [];
     var dataCity = await repository.getCityList();
     cityModel = dataCity;
     cityList.addAll(dataCity.data?.toSet().toList() ?? []);
+
+    var rtData = await repository.getRequestTripByid(purposeID);
+    rtModel = rtData;
+    lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
+
     update();
   }
 

@@ -101,7 +101,7 @@ class AddAirlinessScreen extends StatelessWidget {
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now().add(const Duration(days: 30)))
+                                      lastDate: controller.lastDate)
                                   .then((date) {
                                 controller.selectedDate = date!;
                                 controller.departureDate.text = controller.dateFormat.format(date);

@@ -7,6 +7,7 @@ import 'package:gais/data/model/employee_info_model.dart';
 import 'package:gais/data/model/login_model.dart';
 import 'package:gais/data/model/reference/get_city_model.dart';
 import 'package:gais/data/model/reference/get_company_model.dart';
+import 'package:gais/data/model/reference/get_coset_center_model.dart';
 import 'package:gais/data/model/reference/get_currency_model.dart';
 import 'package:gais/data/model/reference/get_department_model.dart';
 import 'package:gais/data/model/reference/get_document_code_model.dart';
@@ -334,7 +335,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetFlightClassModel> getFlightList() async {
+  Future<GetFlightClassModel> getFlightClassList() async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -380,6 +381,21 @@ class RepositoryImpl implements Repository {
   }
 
   @override
+  Future<GetCosetCenterModel> getCostCenterList() async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/company/get_cost_center/",
+      );
+      return GetCosetCenterModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print("response error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+  @override
   Future<SavePurposeOfTripModel> saveRequestTrip(
     String employeeID,
     String noRequestTrip,
@@ -394,6 +410,8 @@ class RepositoryImpl implements Repository {
     int tlkDay,
     String tlkTotal,
     File? file,
+    String daNumber,
+    String costCenterID,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -410,6 +428,8 @@ class RepositoryImpl implements Repository {
       "id_zona": zonaID,
       "tlk_per_day": tlkDay,
       "total_tlk": tlkTotal,
+      "id_cost_center": costCenterID,
+      "number_da": daNumber,
     });
 
     if (file != null) {
@@ -473,7 +493,7 @@ class RepositoryImpl implements Repository {
       );
       return UpdatePurposeOfTripModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
+      print("response error: ${e.response?.data}");
       return UpdatePurposeOfTripModel.fromJson(e.message);
       // return e.error;
       // throw Exception();

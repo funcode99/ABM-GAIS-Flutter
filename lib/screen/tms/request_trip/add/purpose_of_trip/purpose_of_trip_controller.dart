@@ -3,8 +3,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
+import 'package:gais/data/model/reference/get_coset_center_model.dart' as cc;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as purpose;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/traveller_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -27,9 +29,11 @@ class PurposeOfTripController extends BaseController {
   final zona = TextEditingController();
   final tlkDay = TextEditingController();
   final totalTLK = TextEditingController();
+  final nomorDA = TextEditingController();
 
   String? selectedPurpose = "3";
   String? selectedPurposeName;
+  String? selectedCostCenter;
   int? idDocument = 1;
   DateTime departure = DateTime.now();
   DateTime arrival = DateTime.now();
@@ -42,11 +46,13 @@ class PurposeOfTripController extends BaseController {
   String? purposeID;
   String? zonaID;
   String? fileExtension;
+  String? costCenterID;
 
   bool? isFilled = false;
   bool? isEnabledButton = false;
   bool isAttachment = false;
   bool isLoading = false;
+  bool isDANumber = false;
 
   purpose.GetDocumentCodeModel? purposeModel;
   List<purpose.Data> purposeList = [];
@@ -54,6 +60,7 @@ class PurposeOfTripController extends BaseController {
   List<site.Data> siteList = [];
   city.GetCityModel? cityModel;
   List<city.Data> cityList = [];
+  List<cc.Data> costCenterList = [];
 
   getSingleFile() async {
     // Pick an file
@@ -97,6 +104,7 @@ class PurposeOfTripController extends BaseController {
   Future<void> fetchList() async {
     cityList = [];
     purposeList = [];
+    costCenterList = [];
     isLoading = true;
     requestorID = await storage.readID();
     requestorID.printInfo(info: "requestorID");
@@ -126,7 +134,12 @@ class PurposeOfTripController extends BaseController {
     await repository.getTLKJobByIDJob(jobID!).then((value) {
       tlkDay.text = int.parse(value.data?.first.tlkRate ?? "0").toCurrency();
     });
+
+    await repository.getCostCenterList().then((value) => costCenterList.addAll(value.data?.toSet().toList() ?? []));
     isLoading = false;
+
+    costCenterID = await storage.readString(StorageCore.costCenterID);
+
     update();
   }
 
@@ -134,7 +147,7 @@ class PurposeOfTripController extends BaseController {
     var datazona = await repository.getZonaByIDCity(toCity!);
     zona.text = datazona.data?.first.zonaName ?? "";
     zonaID = datazona.data?.first.idZona.toString() ?? "";
-    print("Zona : ${datazona.data?.first.idZona}");
+    // print("Zona : ${datazona.data?.first.idZona}");
     update();
   }
 
@@ -157,24 +170,26 @@ class PurposeOfTripController extends BaseController {
           int.parse(tlkDay.text.digitOnly()),
           totalTLK.text.digitOnly(),
           gettedFile,
+          nomorDA.text,
+          selectedCostCenter ?? costCenterID.toString(),
         )
             .then(
           (value) {
             purposeID = value.data?.id.toString();
             isFilled = value.success;
-            print("requsetorID: $requestorID");
-            print("purposeID : $purposeID");
-            print("isFilled : $isFilled");
+            // print("requsetorID: $requestorID");
+            // print("purposeID : $purposeID");
+            // print("isFilled : $isFilled");
             if (value.success == false) {
               Get.showSnackbar(
                 GetSnackBar(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.error,
                     color: Colors.white,
                   ),
                   message: value.message,
                   isDismissible: true,
-                  duration: Duration(seconds: 3),
+                  duration: const Duration(seconds: 3),
                   backgroundColor: Colors.red,
                 ),
               );
@@ -185,7 +200,7 @@ class PurposeOfTripController extends BaseController {
               )?.then((result) {
                 isFilled = result;
                 update();
-                print("purpose is filled : $result");
+                // print("purpose is filled : $result");
               });
             }
           },
@@ -210,8 +225,8 @@ class PurposeOfTripController extends BaseController {
       updateData();
     }
 
-    print("purposeID:$purposeID");
-    print("purpose : ${selectedPurpose}");
+    // print("purposeID:$purposeID");
+    // print("purpose : ${selectedPurpose}");
   }
 
   Future<void> updateData() async {
@@ -238,9 +253,9 @@ class PurposeOfTripController extends BaseController {
         (value) {
           purposeID = value.data!.id.toString();
           isFilled = value.success;
-          print("requsetorID: $requestorID");
-          print("purposeID : ${value.data!.id.toString()}");
-          print("isFilled : $isFilled");
+          // print("requsetorID: $requestorID");
+          // print("purposeID : ${value.data!.id.toString()}");
+          // print("isFilled : $isFilled");
         },
       ).then(
         (value) => Get.to(
@@ -249,7 +264,7 @@ class PurposeOfTripController extends BaseController {
         )?.then((result) {
           isFilled = result;
           update();
-          print("purpose is filled : $result");
+          // print("purpose is filled : $result");
         }),
       );
     } catch (e, i) {

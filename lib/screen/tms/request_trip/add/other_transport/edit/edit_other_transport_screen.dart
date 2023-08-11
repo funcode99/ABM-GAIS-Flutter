@@ -42,9 +42,7 @@ class EditOtherTransportScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                       child: SvgPicture.asset(ImageConstant.car, height: 25),
                     ),
                     Text("Other Transportation", style: appTitle),
@@ -84,8 +82,7 @@ class EditOtherTransportScreen extends StatelessWidget {
                               items: controller.typeList
                                   .map((e) => DropdownMenuItem(
                                         value: e.id.toString(),
-                                        child: Text(
-                                            e.typeTransportation.toString()),
+                                        child: Text(e.typeTransportation.toString()),
                                       ))
                                   .toList(),
                               onChanged: (value) {
@@ -111,12 +108,10 @@ class EditOtherTransportScreen extends StatelessWidget {
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
+                                      lastDate: controller.lastDate)
                                   .then((date) {
                                 controller.selectedDate = date!;
-                                controller.fromDate.text =
-                                    controller.dateFormat.format(date);
+                                controller.fromDate.text = controller.dateFormat.format(date);
                                 controller.update();
                               }),
                             ),
@@ -138,12 +133,10 @@ class EditOtherTransportScreen extends StatelessWidget {
                                       context: context,
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime.now(),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 30)))
+                                      lastDate: controller.lastDate)
                                   .then((date) {
                                 controller.selectedDate = date!;
-                                controller.toDate.text =
-                                    controller.dateFormat.format(date);
+                                controller.toDate.text = controller.dateFormat.format(date);
                                 controller.update();
                               }),
                             ),
@@ -208,9 +201,7 @@ class EditOtherTransportScreen extends StatelessWidget {
                                   color: infoColor,
                                   title: "Save",
                                   onPressed: () {
-                                    if (controller.formKey.currentState
-                                            ?.validate() ==
-                                        true) controller.save();
+                                    if (controller.formKey.currentState?.validate() == true) controller.save();
                                   },
                                 ),
                               ],

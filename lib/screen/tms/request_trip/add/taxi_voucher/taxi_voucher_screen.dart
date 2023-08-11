@@ -65,7 +65,7 @@ class TaxiVoucherScreen extends StatelessWidget {
                                     title: e.accountName.toString(),
                                     subtitle: e.date,
                                     status: e.status.toString(),
-                                    info: int.parse(e.amount.toString()).toCurrency(),
+                                    // info: int.parse(e.amount.toString()).toCurrency(),
                                     isEdit: true,
                                     editAction: () => Get.to(
                                         const EditTaxiVoucherScreen(),

@@ -6,6 +6,7 @@ import 'package:gais/data/model/employee_info_model.dart';
 import 'package:gais/data/model/login_model.dart';
 import 'package:gais/data/model/reference/get_city_model.dart';
 import 'package:gais/data/model/reference/get_company_model.dart';
+import 'package:gais/data/model/reference/get_coset_center_model.dart';
 import 'package:gais/data/model/reference/get_currency_model.dart';
 import 'package:gais/data/model/reference/get_department_model.dart';
 import 'package:gais/data/model/reference/get_document_code_model.dart';
@@ -94,6 +95,8 @@ abstract class Repository {
     int tlkDay,
     String tlkTotal,
     File? file,
+    String daNumber,
+    String costCenterID,
   );
 
   Future<UpdatePurposeOfTripModel> updateRequestTrip(
@@ -125,7 +128,9 @@ abstract class Repository {
 
   Future<GetJobBandModel> getJobBandList();
 
-  Future<GetFlightClassModel> getFlightList();
+  Future<GetCosetCenterModel> getCostCenterList();
+
+  Future<GetFlightClassModel> getFlightClassList();
 
   Future<GetStatusDocumentModel> getStatusDocument();
 

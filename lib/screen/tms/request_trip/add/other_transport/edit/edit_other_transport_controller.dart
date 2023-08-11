@@ -3,6 +3,7 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/data/model/reference/get_type_transportation_model.dart' as type;
 import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as ot;
+import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -19,6 +20,7 @@ class EditOtherTransportController extends BaseController {
   final remarks = TextEditingController();
 
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+  DateTime lastDate = DateTime.now().add(const Duration(days: 30));
 
   String? otherTransportID;
   int? travellerID;
@@ -26,6 +28,7 @@ class EditOtherTransportController extends BaseController {
   String? transportType;
   String? selectedCity;
 
+  GetRequestTripByidModel? rtModel;
   List<ot.Data> otList = [];
   ot.GetOtherTransportModel? otModel;
   type.GetTypeTransportationModel? typeModel;
@@ -57,24 +60,6 @@ class EditOtherTransportController extends BaseController {
 
   Future<void> fetchList() async {
     try {
-      // var otherTransportData =
-      //     await repository.getOtherTransportBytripList(purposeID);
-      // otModel = otherTransportData;
-      // otList.addAll(otherTransportData.data
-      //         ?.where((e) => e.id == otID)
-      //         .toSet()
-      //         .toList() ??
-      //     []);
-
-      //travellerName.text
-      // otherTransportID = otList.first.id?.toInt();
-      // transportType = otList.first.idTypeTransportation.toString();
-      // fromDate.text = otList.first.fromDate ?? "";
-      // toDate.text = otList.first.toDate ?? "";
-      // selectedCity = otList.first.idCity.toString();
-      // quantity.text = otList.first.qty.toString() ?? "";
-      // remarks.text = otList.first.remarks ?? "";
-
       await storage.readEmployeeInfo().then((value) {
         print(value.isNotEmpty);
         travellerID = int.parse(value.first.id.toString());
@@ -89,10 +74,14 @@ class EditOtherTransportController extends BaseController {
       cityModel = dataCity;
       cityList.addAll(dataCity.data?.toSet().toList() ?? []);
 
-      update();
+      var rtData = await repository.getRequestTripByid(purposeID);
+      rtModel = rtData;
+      lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
     } catch (e) {
       e.printError();
     }
+
+    update();
   }
 
   Future<void> fetchData() async {
