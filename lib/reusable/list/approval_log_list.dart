@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/data/model/approval_log_model.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/divider/dashed_vertical_line.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,9 @@ class ApprovalLogList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(list.isEmpty){
+      return const DataEmpty();
+    }
     return ListView.builder(
       itemCount: list.length,
       itemBuilder: (context, index) {
@@ -124,7 +128,7 @@ class ApprovalLogItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${item.text}",
+                        "${item.text ?? ""}",
                         style: titleTextStyle.copyWith(
                             fontSize: 14, fontWeight: FontWeight.w600),
                       ),

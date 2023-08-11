@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/approval_log_model.dart';
 import 'package:gais/data/model/request_atk/request_atk_detail_model.dart';
 import 'package:gais/data/model/request_atk/request_atk_model.dart';
 import 'package:gais/data/repository/request_atk/request_atk_repository.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
+import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
@@ -22,6 +24,9 @@ class RequestATKDetailController extends BaseController {
   final listDetail = <RequestATKDetailModel>[].obs;
 
   final RequestATKRepository _repository = Get.find();
+
+  final selectedTab = Rx<TabEnum>(TabEnum.detail);
+  final listLogApproval = <ApprovalLogModel>[].obs;
 
   @override
   void onReady() {
@@ -52,6 +57,7 @@ class RequestATKDetailController extends BaseController {
     }, (r) {
       selectedItem(r);
       setValue();
+      getApprovalLog();
     });
   }
 
@@ -124,6 +130,15 @@ class RequestATKDetailController extends BaseController {
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (model) {
           getDetailData();
+    });
+  }
+
+  void getApprovalLog()async{
+    final result = await _repository.getApprovalLog(selectedItem.value.id);
+
+    result.fold((l) => null, (r) {
+      listLogApproval.value = r;
+      listLogApproval.refresh();
     });
   }
 }
