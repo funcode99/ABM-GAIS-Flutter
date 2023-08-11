@@ -67,10 +67,11 @@ class RequestATKRepository
   Future<Either<BaseError, RequestATKDetailModel>> addDetail(model) async {
     final requestATKDetailModel = model as RequestATKDetailModel;
 
+    final formData = Dio.FormData.fromMap(requestATKDetailModel.toJson());
     try {
       Dio.Response response = await network.dio.post(
           '/api/request_atk/store_detail',
-          data: requestATKDetailModel.toJson());
+          data: formData);
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(
           response.data, RequestATKDetailModel.fromJsonModel);
       return right(apiResponseModel.data);
@@ -176,10 +177,12 @@ class RequestATKRepository
       model, int id) async {
     final requestATKDetailModel = model as RequestATKDetailModel;
 
+    final formData = Dio.FormData.fromMap(requestATKDetailModel.toJson());
+
     try {
       Dio.Response response = await network.dio.post(
           '/api/request_atk/update_data_detail/$id',
-          data: requestATKDetailModel.toJson());
+          data: formData);
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(
           response.data, RequestATKDetailModel.fromJsonModel);
       return right(apiResponseModel.data);

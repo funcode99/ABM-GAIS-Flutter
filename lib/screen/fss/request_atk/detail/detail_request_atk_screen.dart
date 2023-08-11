@@ -248,7 +248,8 @@ class RequestATKDetailScreen extends StatelessWidget {
                                   .mapIndexed((index, item) => CommonListItem(
                                         number: "${index + 1}",
                                         title: item.itemName,
-                                        subtitle: item.brandName ?? "-",
+                                        subtitle: "",
+                                        // subtitle: item.brandName ?? "",
                                         action: controller.onEdit.value
                                             ? [
                                                 CustomIconButton(

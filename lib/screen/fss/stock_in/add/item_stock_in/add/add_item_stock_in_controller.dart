@@ -121,11 +121,11 @@ class AddItemStockInATKController extends BaseController with MasterDataMixin{
       stockInATKDetailModel.value?.codeItem = selectedItem.value?.codeItem;
       stockInATKDetailModel.value?.warehouseName = selectedItem.value?.warehouseName;
       stockInATKDetailModel.value?.uomName = uomController.text;
-      stockInATKDetailModel.value?.brandName = brandController.text;
+      // stockInATKDetailModel.value?.brandName = brandController.text;
       stockInATKDetailModel.value?.qty = quantityController.text.toInt();
       stockInATKDetailModel.value?.idWarehouse = selectedWarehouse.value.id;
       stockInATKDetailModel.value?.idItem = selectedItem.value?.id;
-      stockInATKDetailModel.value?.idBrand = selectedItem.value?.idBrand;
+      // stockInATKDetailModel.value?.idBrand = selectedItem.value?.idBrand;
       stockInATKDetailModel.value?.idUom = selectedItem.value?.idUom;
       return stockInATKDetailModel.value!;
     }else{
@@ -136,11 +136,11 @@ class AddItemStockInATKController extends BaseController with MasterDataMixin{
         remarks: remarksController.text,
         qty: quantityController.text.toInt(),
         uomName: uomController.text,
-        brandName : brandController.text,
+        // brandName : brandController.text,
         warehouseName : selectedWarehouse.value.warehouseName,
         itemName : selectedItem.value?.itemName,
         codeItem : selectedItem.value?.codeItem,
-        idBrand : selectedItem.value?.idBrand,
+        // idBrand : selectedItem.value?.idBrand,
         idUom : selectedItem.value?.idUom,
       );
     }

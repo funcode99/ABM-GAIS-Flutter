@@ -101,7 +101,7 @@ class AddManagementItemATKController extends BaseController
     ManagementItemATKModel managementItemATKModel = ManagementItemATKModel(
       codeItem: idController.text,
       itemName: itemController.text,
-      idBrand: selectedBrand.value.id,
+      // idBrand: selectedBrand.value.id,
       idUom: selectedUOM.value.id,
       alertQty: alertQuantityController.text.toInt(),
       idCompany: idCompany.toInt(),

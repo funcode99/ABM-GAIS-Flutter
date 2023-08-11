@@ -86,7 +86,7 @@ class AddItemStockInATKScreen extends StatelessWidget{
                       onChanged: (item) {
                         controller.onChangeSelectedWarehouse(item.toString());
                       },
-                      label: "Warehouse ".tr,
+                      label: "ATK Warehouse ".tr,
                       value: controller.selectedWarehouse.value.id.toString(),
                     );
                   }),
@@ -118,14 +118,14 @@ class AddItemStockInATKScreen extends StatelessWidget{
                   const SizedBox(
                     height: 8,
                   ),
-                  CustomTextFormField(
+                  /*CustomTextFormField(
                       isRequired: true,
                       readOnly: true,
                       controller: controller.brandController,
                       label: "Brand".tr),
                   const SizedBox(
                     height: 8,
-                  ),
+                  ),*/
 
                   CustomTextFormField(
                       isRequired: true,

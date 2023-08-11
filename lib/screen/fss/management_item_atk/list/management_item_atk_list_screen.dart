@@ -232,7 +232,7 @@ class _ManagementItemATKListScreenState
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
                                             children: [
-                                              Expanded(
+                                              /*Expanded(
                                                 child: Column(
                                                   children: [
                                                     Text(
@@ -251,12 +251,12 @@ class _ManagementItemATKListScreenState
                                                     ),
                                                   ],
                                                 ),
-                                              ),
+                                              ),*/
                                               Expanded(
                                                 child: Column(
                                                   children: [
                                                     Text(
-                                                      "Warehouse".tr,
+                                                      "ATK Warehouse".tr,
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: listTitleTextStyle,
@@ -317,7 +317,7 @@ class _ManagementItemATKListScreenState
                                             ],
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 16,
                                         ),
                                         isOpen
@@ -328,8 +328,8 @@ class _ManagementItemATKListScreenState
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Text("${element.warehouseName}"),
-                                                    Text("${element.currentStock}"),
-                                                    Text("${element.stockToApproveWh}"),
+                                                    Text("${element.currentStock ?? "-"}"),
+                                                    Text("${element.stockToApproveWh ?? "-"}"),
                                                   ],
                                                 ),
                                               )).toList(),

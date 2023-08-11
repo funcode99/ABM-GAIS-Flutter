@@ -84,7 +84,8 @@ class AddStockInATKScreen extends StatelessWidget {
                             .mapIndexed((index, element) => CommonAddItem(
                                   number: "${index + 1}",
                                   title: element.itemName ?? "",
-                                  subtitle: element.brandName ?? "",
+                                  // subtitle: element.brandName ?? "",
+                                  subtitle: "",
                                   content: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 8),
@@ -128,7 +129,7 @@ class AddStockInATKScreen extends StatelessWidget {
                                           child: Column(
                                             children: [
                                               Text(
-                                                "Warehouse".tr,
+                                                "ATK Warehouse".tr,
                                                 style: listTitleTextStyle,
                                               ),
                                               Text(

@@ -57,6 +57,7 @@ class AddRequestATKController extends BaseController {
 
   void removeItem(RequestATKDetailModel item) {
     listDetail.removeWhere((element) => element.key == item.key);
+    update();
   }
 
   void saveData() async {

@@ -91,7 +91,7 @@ class EditManagementItemATKScreen extends StatelessWidget {
                   ),
                   RichText(
                     text: TextSpan(
-                      text: "Warehouse".tr,
+                      text: "ATK Warehouse".tr,
                       style: formlabelTextStyle,
                       children: const <TextSpan>[
                         TextSpan(
@@ -232,7 +232,7 @@ class EditManagementItemATKScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Obx(() {
+                  /*Obx(() {
                     return CustomDropDownFormField(
                       isRequired: true,
                       items: controller.listBrand
@@ -251,7 +251,7 @@ class EditManagementItemATKScreen extends StatelessWidget {
                   }),
                   const SizedBox(
                     height: 8,
-                  ),
+                  ),*/
                   Obx(() {
                     return CustomDropDownFormField(
                       isRequired: true,

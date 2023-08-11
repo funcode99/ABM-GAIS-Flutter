@@ -98,7 +98,8 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                             .mapIndexed((index, element) => CommonAddItem(
                                   number: "${index + 1}",
                                   title: "${element.codeItem} -  ${element.itemName}",
-                                  subtitle: "${element.brandName}",
+                                  subtitle: "",
+                                  // subtitle: "${element.brandName}",
                                   content: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 8),
@@ -123,7 +124,7 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 8,
                                         ),
                                         Flexible(
@@ -143,10 +144,10 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 8,
                                         ),
-                                        Flexible(
+                                        /*Flexible(
                                           flex: 1,
                                           child: Column(
                                             children: [
@@ -162,7 +163,7 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                                               ),
                                             ],
                                           ),
-                                        ),
+                                        ),*/
                                       ],
                                     ),
                                   ),

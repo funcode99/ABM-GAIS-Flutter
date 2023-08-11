@@ -305,7 +305,8 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                                     (index, item) => CommonListItem(
                                       number: "${index + 1}",
                                       title: "${item.codeItem ?? ""} -  ${item.itemName ?? ""}",
-                                      subtitle: item.brandName ?? "",
+                                      // subtitle: item.brandName ?? "",
+                                      subtitle: "",
                                       action: [],
                                       content: Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -344,7 +345,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                                                 ),
                                               ],
                                             ),
-                                            Column(
+                                            /*Column(
                                               children: [
                                                 Text(
                                                   "Warehouse".tr,
@@ -359,7 +360,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                                                       ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
                                                 ),
                                               ],
-                                            ),
+                                            ),*/
                                           ],
                                         ),
                                       ),

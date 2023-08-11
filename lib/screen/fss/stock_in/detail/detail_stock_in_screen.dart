@@ -331,7 +331,7 @@ class DetailStockInScreen extends StatelessWidget {
                                         child: Column(
                                           children: [
                                             Text(
-                                              "Warehouse".tr,
+                                              "ATK Warehouse".tr,
                                               style: listTitleTextStyle,
                                             ),
                                             Text(

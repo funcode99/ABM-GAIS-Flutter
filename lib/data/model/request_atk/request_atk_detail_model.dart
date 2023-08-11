@@ -7,12 +7,12 @@ part 'request_atk_detail_model.g.dart';
 class RequestATKDetailModel extends Equatable {
   String? key;
   int? id;
-  int? idAtkRequest;
-  int? idItem;
+  dynamic idAtkRequest;
+  dynamic idItem;
   int? idWarehouse;
   int? idBrand;
-  int? idUom;
-  int? qty;
+  dynamic idUom;
+  dynamic qty;
   String? remarks;
   String? createdAt;
   dynamic createdBy;

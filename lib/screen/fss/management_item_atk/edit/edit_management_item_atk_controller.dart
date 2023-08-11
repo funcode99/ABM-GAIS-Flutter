@@ -64,9 +64,9 @@ class EditManagementItemATKController extends BaseController with MasterDataMixi
     listWarehouse(warehouses);
     // onChangeSelectedWarehouse(managementItemATK.value.idWarehouse.toString());
 
-    final brands = await getListBrandByCompanyId(idCompany.toInt());
+    /*final brands = await getListBrandByCompanyId(idCompany.toInt());
     listBrand(brands);
-    onChangeSelectedBrand(managementItemATK.value.idBrand.toString());
+    onChangeSelectedBrand(managementItemATK.value.idBrand.toString());*/
 
     final uoms = await getListUOM();
     listUOM(uoms);
@@ -112,7 +112,7 @@ class EditManagementItemATKController extends BaseController with MasterDataMixi
     ManagementItemATKModel managementItemATKModel = ManagementItemATKModel(
       codeItem: idController.text,
       itemName: itemController.text,
-      idBrand: selectedBrand.value.id,
+      // idBrand: selectedBrand.value.id,
       idUom: selectedUOM.value.id,
       alertQty: alertQuantityController.text.toInt(),
       idCompany: idCompany.toInt(),
