@@ -333,14 +333,31 @@ class RequestATKRepository
   }
 
   @override
-  Future<Either<BaseError, List<ApprovalLogModel>>> getApprovalLog(int id) async{
-    throw UnimplementedError();
-    /*try {
+  Future<Either<BaseError, List<ApprovalLogModel>>> getApprovalLog(dynamic id) async{
+    try {
       Dio.Response response = await network.dio.get(
-        '/api/cash_advance/get_history_non_travel/$id',
+        '/api/request_atk/get_history/$id',
       );
-      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalLogModel.fromJsonModelList);
-      return right(apiResponseModel.data);
+      List<ApprovalLogModel> result = [];
+      try{
+        ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, RequestAtkModel.fromJsonModelList);
+        if(apiResponseModel.data != null){
+          List<RequestAtkModel> list = apiResponseModel.data;
+          RequestAtkModel requestAtkModel = list.first;
+
+          result = [
+            ApprovalLogModel(
+                codeStatus: requestAtkModel.codeStatusDoc,
+                notes: requestAtkModel.notes,
+                date: requestAtkModel.approvedAt,
+                text: requestAtkModel.nameApproved
+            )
+          ];
+        }
+      }catch(e){
+        print("ERROR PARSE LOG $e");
+      }
+      return right(result);
     } on DioError catch (e) {
       print("DioError $e");
       return left(BaseError(message: e.response!.data['message'] ?? e.message));
@@ -350,6 +367,8 @@ class RequestATKRepository
     }catch (e){
       print("catch error $e");
       return left(BaseError(message: "General error occurred"));
-    }*/
+    }
   }
+
+
 }

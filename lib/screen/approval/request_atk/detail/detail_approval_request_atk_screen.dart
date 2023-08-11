@@ -246,7 +246,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                             controller.selectedTab(TabEnum.detail);
                           },
                         ),
-                        /*GestureDetector(
+                        GestureDetector(
                           child: Obx(() {
                             return Container(
                               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -278,7 +278,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                           onTap: () {
                             controller.selectedTab(TabEnum.approval);
                           },
-                        ),*/
+                        ),
                       ],
                     ),
                   ),

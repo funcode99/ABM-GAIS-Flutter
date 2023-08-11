@@ -24,6 +24,7 @@ class ManagementItemATKListController extends BaseController
   final selectedCompany = Rxn<CompanyModel>();
   final selectedCompanyTemp = Rxn<CompanyModel>();
   final companyTextEditingController = TextEditingController();
+  final siteTextEditingController = TextEditingController();
 
 
   final listSite = <SiteModel>[].obs;
@@ -42,6 +43,7 @@ class ManagementItemATKListController extends BaseController
   final emptyItem = ManagementItemATKModel(id: null, itemName: "Item");
 
   final enableSelectCompany = false.obs;
+  final enableSelectSite = false.obs;
 
   //end filter
 
@@ -56,6 +58,7 @@ class ManagementItemATKListController extends BaseController
   final totalPage = 1.obs;
   final currentPage = 1.obs;
   int limit = 10;
+  final isEmployee = false.obs;
 
   @override
   void onInit() {
@@ -71,6 +74,8 @@ class ManagementItemATKListController extends BaseController
 
   void initData() async {
     String codeRole = await storage.readString(StorageCore.codeRole);
+
+    isEmployee.value = codeRole == RoleEnum.employee.value;
 
     listCompany.add(CompanyModel(id: "", companyName: "Company"));
     final companies = await getListCompany();
@@ -88,6 +93,7 @@ class ManagementItemATKListController extends BaseController
 
     if(codeRole == RoleEnum.administrator.value){
       enableSelectCompany(true);
+      enableSelectSite(true);
       onChangeSelectedCompany("");
     }else{
       String idCompany = await storage.readString(StorageCore.companyID);
@@ -97,9 +103,20 @@ class ManagementItemATKListController extends BaseController
       );
       companyTextEditingController.text = companyName;
       onChangeSelectedCompany(idCompany);
+      if(codeRole == RoleEnum.employee.value){
+        String idSite = await storage.readString(StorageCore.siteID);
+        String siteName = await storage.readString(StorageCore.siteName);
+        selectedSite.value = SiteModel(
+            id: idSite
+        );
+        siteTextEditingController.text = siteName;
+        onChangeSelectedSite(idSite);
+      }else{
+        enableSelectSite(true);
+        onChangeSelectedSite("");
+      }
     }
 
-    onChangeSelectedSite("");
     onChangeSelectedWarehouse("");
   }
 
@@ -111,6 +128,12 @@ class ManagementItemATKListController extends BaseController
       selectedCompany.value = CompanyModel(
           id: idCompany
       );
+      if(codeRole == RoleEnum.employee.value){
+        String idSite = await storage.readString(StorageCore.siteID);
+        selectedSite.value = SiteModel(
+            id: idSite
+        );
+      }
     }
 
     final result = await _repository.getPaginationData(
@@ -168,8 +191,14 @@ class ManagementItemATKListController extends BaseController
     }else{
       String idCompany = await storage.readString(StorageCore.companyID);
       onChangeSelectedCompany(idCompany);
+      if(enableSelectSite.value){
+        onChangeSelectedSite("");
+      }else{
+        String idSite = await storage.readString(StorageCore.siteID);
+        onChangeSelectedSite(idSite);
+      }
     }
-    onChangeSelectedSite("");
+
     onChangeSelectedWarehouse("");
     onChangeSelectedItem("");
   }
@@ -197,19 +226,19 @@ class ManagementItemATKListController extends BaseController
     selectedCompanyTemp(selected);
 
     //clear site and filter sites
-    onChangeSelectedSite("");
     _filterSite(selected.id.toString());
+    onChangeSelectedSite("");
   }
 
   void onChangeSelectedSite(String id) {
-    final selected = listSiteFiltered.firstWhere(
+    final selected = listSite.firstWhere(
             (item) => item.id.toString() == id.toString(),
-        orElse: () => listSiteFiltered.first);
+        orElse: () => listSite.first);
     selectedSiteTemp(selected);
 
     //clear warehouse and filter warehouses
-    onChangeSelectedWarehouse("");
     _filterWarehouse(selected.id.toString());
+    onChangeSelectedWarehouse("");
   }
 
   void onChangeSelectedWarehouse(String id) {

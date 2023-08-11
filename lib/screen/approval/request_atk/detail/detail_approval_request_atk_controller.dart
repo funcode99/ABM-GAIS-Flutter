@@ -59,7 +59,7 @@ class DetailApprovalRequestATKController extends BaseController {
     }, (r) {
       detailSelectedItem(r);
       setValue();
-      // getApprovalLog();
+      getApprovalLog();
     });
   }
 
