@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/stock_in/stock_in_atk_detail_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
@@ -20,7 +21,7 @@ class AddStockInATKScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AddStockInATKController controller =
-        Get.put(AddStockInATKController());
+    Get.put(AddStockInATKController());
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -68,7 +69,11 @@ class AddStockInATKScreen extends StatelessWidget {
                   ),
                   Text(
                     "Details Item".tr,
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(
                         fontSize: 14,
                         color: Colors.black,
                         fontWeight: FontWeight.w600),
@@ -78,53 +83,26 @@ class AddStockInATKScreen extends StatelessWidget {
                     color: greyColor,
                   ),
                   Obx(
-                    () => Column(
-                      children: [
-                        ...controller.listDetail
-                            .mapIndexed((index, element) => CommonAddItem(
-                                  number: "${index + 1}",
-                                  title: element.itemName ?? "",
-                                  // subtitle: element.brandName ?? "",
-                                  subtitle: "",
-                                  content: Padding(
+                        () =>
+                        Column(
+                          children: [
+                            ...controller.mapDetail
+                                .entries.mapIndexed((index, item) {
+                                  Map<String, dynamic> element = item.value;
+                                  List<StockInATKDetailModel> listDetail = List<StockInATKDetailModel>.from(element["listDetail"]);
+                              return CommonAddItem(
+                                number: "${index + 1}",
+                                title: "${element["itemName"]}",
+                                // subtitle: element.brandName ?? "",
+                                subtitle: "",
+                                content: Column(
+                                  children: listDetail.mapIndexed((index, itemDetail) => Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 8),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Expanded(
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                "Quantity".tr,
-                                                style: listTitleTextStyle,
-                                              ),
-                                              Text(
-                                                "${element.qty}",
-                                                style: listSubTitleTextStyle.copyWith(
-                                                  overflow: TextOverflow.ellipsis
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                "UOM".tr,
-                                                style: listTitleTextStyle,
-                                              ),
-                                              Text(
-                                                element.uomName ?? "-",
-                                                style: listSubTitleTextStyle.copyWith(
-                                                  overflow: TextOverflow.ellipsis
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
                                         Expanded(
                                           child: Column(
                                             children: [
@@ -133,26 +111,69 @@ class AddStockInATKScreen extends StatelessWidget {
                                                 style: listTitleTextStyle,
                                               ),
                                               Text(
-                                                element.warehouseName ?? "-",
-                                                style: listSubTitleTextStyle.copyWith(
-                                                  overflow: TextOverflow.ellipsis
+                                                itemDetail.warehouseName ?? "-",
+                                                style: listSubTitleTextStyle
+                                                    .copyWith(
+                                                    overflow: TextOverflow
+                                                        .ellipsis
                                                 ),
                                               )
                                             ],
                                           ),
                                         ),
+
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "QTY".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              "${itemDetail.qty}",
+                                              style: listSubTitleTextStyle
+                                                  .copyWith(
+                                                  overflow: TextOverflow
+                                                      .ellipsis
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          width: 16,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "UOM".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              itemDetail.uomName ?? "-",
+                                              style: listSubTitleTextStyle
+                                                  .copyWith(
+                                                  overflow: TextOverflow
+                                                      .ellipsis
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        if(listDetail.length > 1) IconButton(onPressed: (){
+                                          controller.removeDetailItem(element["idItem"], itemDetail);
+                                        }, icon: const Icon(Icons.delete, color: redColor,))
                                       ],
                                     ),
-                                  ),
-                                  action: [
-                                    CustomIconButton(
+                                  )).toList(),
+                                ),
+                                /*content: Text("TEST"),*/
+                                action: [
+                                  CustomIconButton(
                                       title: "Edit".tr,
                                       iconData: IconlyBold.edit,
                                       backgroundColor: successColor,
                                       onPressed: () async{
-                                        final editedItem = await Get.to(()=>AddItemStockInATKScreen(item: element));
-                                        if(editedItem!=null){
-                                          controller.editItem(editedItem);
+                                        final editedItems = await Get.to(()=>AddItemStockInATKScreen(item: item.value));
+                                        if(editedItems!=null){
+                                          controller.editItem(editedItems["idItem"], editedItems);
                                         }
                                       },
                                     ),
@@ -167,39 +188,41 @@ class AddStockInATKScreen extends StatelessWidget {
                                         Get.dialog(DeleteConfirmationDialog(
                                           onDeletePressed: () {
                                             Get.close(1);
-                                            controller.removeItem(element);
+                                            controller.removeItem(element["idItem"]);
                                           },
                                         ));
                                       },
                                     )
-                                  ],
-                                  nominal: '',
-                                ))
-                            .toList()
-                      ],
-                    ),
+                                ],
+                                nominal: '',
+                              );
+                            })
+                                .toList()
+                          ],
+                        ),
                   ),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-                        final addedItem =
-                            await Get.to(() => const AddItemStockInATKScreen());
-                        if (addedItem != null) {
-                          controller.addItem(addedItem);
+                        final addedItems =
+                        await Get.to(() => const AddItemStockInATKScreen());
+                        if (addedItems != null) {
+                          controller.addItems(addedItems["idItem"], addedItems);
                         }
                       },
                       style:
-                          ElevatedButton.styleFrom(backgroundColor: infoColor),
+                      ElevatedButton.styleFrom(backgroundColor: infoColor),
                       child: RichText(
                         text: TextSpan(
-                            style: Theme.of(context)
+                            style: Theme
+                                .of(context)
                                 .textTheme
                                 .bodyText1
                                 ?.copyWith(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700),
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
                             children: [
                               const TextSpan(text: "+ "),
                               TextSpan(text: "Add Item".tr)
@@ -224,7 +247,7 @@ class AddStockInATKScreen extends StatelessWidget {
                       ),
                       Obx(
                         () => ElevatedButton(
-                          onPressed: controller.enableButton.value && controller.listDetail.isNotEmpty
+                          onPressed: controller.enableButton.value && controller.mapDetail.isNotEmpty
                               ? () {
                                   controller.saveData();
                                 }

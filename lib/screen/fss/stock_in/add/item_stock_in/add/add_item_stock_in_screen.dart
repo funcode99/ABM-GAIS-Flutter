@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_validator/form_validator.dart';
@@ -10,19 +11,21 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/stock_in/add/item_stock_in/add/add_item_stock_in_controller.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/input_formatter/min_value_text_input_formatter.dart';
 import 'package:gais/util/validator/custom_validation_builder.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-class AddItemStockInATKScreen extends StatelessWidget{
+class AddItemStockInATKScreen extends StatelessWidget {
   const AddItemStockInATKScreen({super.key, this.item});
 
-  final StockInATKDetailModel? item;
+  final Map<String, dynamic>? item;
 
   @override
   Widget build(BuildContext context) {
-    final AddItemStockInATKController controller = Get.put(AddItemStockInATKController())..stockInATKDetailModel(item);
+    final AddItemStockInATKController controller =
+        Get.put(AddItemStockInATKController())..mapItem(item);
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -44,8 +47,7 @@ class AddItemStockInATKScreen extends StatelessWidget{
             },
             child: Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 32, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +75,7 @@ class AddItemStockInATKScreen extends StatelessWidget{
                   const SizedBox(
                     height: 32,
                   ),
-                  Obx(() {
+                  /*Obx(() {
                     return CustomDropDownFormField(
                       isRequired: true,
                       items: controller.listWarehouse
@@ -92,16 +94,17 @@ class AddItemStockInATKScreen extends StatelessWidget{
                   }),
                   const SizedBox(
                     height: 8,
-                  ),
+                  ),*/
                   Obx(() {
                     return CustomDropDownFormField(
                       isRequired: true,
                       items: controller.listItem
-                          .map((e) =>
-                          DropdownMenuItem(
-                            value: e.id != null ? e.id.toString() : "",
-                            child: Text(e.codeItem != null? "${e.codeItem} - ${e.itemName}" : "${e.itemName}"),
-                          ))
+                          .map((e) => DropdownMenuItem(
+                                value: e.id != null ? e.id.toString() : "",
+                                child: Text(e.codeItem != null
+                                    ? "${e.codeItem} - ${e.itemName}"
+                                    : "${e.itemName}"),
+                              ))
                           .toList(),
                       onChanged: (item) {
                         controller.onChangeSelectedItemId(item.toString());
@@ -135,8 +138,7 @@ class AddItemStockInATKScreen extends StatelessWidget{
                   const SizedBox(
                     height: 8,
                   ),
-
-                  CustomTextFormField(
+                  /*CustomTextFormField(
                       isRequired: true,
                       inputType: TextInputType.number,
                       inputFormatters: [
@@ -144,13 +146,13 @@ class AddItemStockInATKScreen extends StatelessWidget{
                         LengthLimitingTextInputFormatter(3),
                         MinValueTextInputFormatter(0)
                       ],
-                      validator: ValidationBuilder().required().max(999).build(),
+                      validator:
+                          ValidationBuilder().required().max(999).build(),
                       controller: controller.quantityController,
                       label: "Quantity".tr),
                   const SizedBox(
                     height: 8,
-                  ),
-
+                  ),*/
                   CustomTextFormField(
                       multiLine: true,
                       controller: controller.remarksController,
@@ -158,22 +160,61 @@ class AddItemStockInATKScreen extends StatelessWidget{
                   const SizedBox(
                     height: 32,
                   ),
+                  RichText(
+                    text: TextSpan(
+                      text: "Quantity ATK Warehouse".tr,
+                      style: formlabelTextStyle,
+                      children: const <TextSpan>[
+                        TextSpan(
+                            text: "*", style: TextStyle(color: Colors.red)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  const Divider(),
+                  Obx(() {
+                    return Column(
+                      children: controller.listStockInATKDetailModel
+                          .mapIndexed((index, item) {
+                        return Container(
+                          margin:  EdgeInsets.symmetric(vertical: 4),
+                          child: CustomTextFormField(
+                            multiLine: false,
+                            isRequired: false,
+                            onChanged: (String value) {
+                              controller.listStockInATKDetailModel[index].qty = value.toInt();
+                            },
+                            inputType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(5),
+                              MinValueTextInputFormatter(0)
+                            ],
+                            label: "${item.warehouseName}",
+                            controller: controller.listQuantityController[index],
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  }),
+                  const SizedBox(
+                    height: 32,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Obx(
-                              () => ElevatedButton(
+                      Obx(() => ElevatedButton(
                             onPressed: controller.enableButton.value
                                 ? () {
-                              Get.back(
-                                  result: controller.getAddedItem());
-                            }
+                                    Get.back(result: controller.getAddedItem());
+                                  }
                                 : null,
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: successColor),
                             child: Text("Save".tr),
-                          )
-                      ),
+                          )),
                     ],
                   ),
                   const SizedBox(
