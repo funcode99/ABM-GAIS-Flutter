@@ -1,8 +1,34 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:gais/util/navigation/notification_navigation.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
+}
+
+final StreamController<String?> selectNotificationStream =
+StreamController<String?>.broadcast();
+
+/// A notification action which triggers a url launch event
+const String urlLaunchActionId = 'id_1';
+
+/// A notification action which triggers a App navigation event
+const String navigationActionId = 'id_3';
+
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse notificationResponse) {
+  // ignore: avoid_print
+  print('notification(${notificationResponse.id}) action tapped: '
+      '${notificationResponse.actionId} with'
+      ' payload: ${notificationResponse.payload}');
+  if (notificationResponse.input?.isNotEmpty ?? false) {
+    // ignore: avoid_print
+    print(
+        'notification action tapped with input: ${notificationResponse.input}');
+  }
 }
 
 class FirebaseMessagingConfig{
@@ -15,8 +41,31 @@ class FirebaseMessagingConfig{
       importance: Importance.max,
     );
 
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse:
+          (NotificationResponse notificationResponse) {
+        switch (notificationResponse.notificationResponseType) {
+          case NotificationResponseType.selectedNotification:
+            selectNotificationStream.add(notificationResponse.payload);
+            break;
+          case NotificationResponseType.selectedNotificationAction:
+            if (notificationResponse.actionId == navigationActionId) {
+              selectNotificationStream.add(notificationResponse.payload);
+            }
+            break;
+        }
+      },
+      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
+    );
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
@@ -37,7 +86,6 @@ class FirebaseMessagingConfig{
 
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-
       if (message.notification != null) {
         AndroidNotification? android = message.notification?.android;
 
@@ -59,6 +107,27 @@ class FirebaseMessagingConfig{
         }
       }
     });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      if (message.data.containsKey("is_approval")) {
+        if(message.data["is_approval"].toString() == "0"){
+          NotificationNavigation.navigateToPage(
+              codeDocument: message.data["code_document"],
+              id: message.data["id_document"],
+              typeDocument: message.data["type_document"],
+          );
+        }else{
+          NotificationNavigation.navigateToPageApproval(
+            codeDocument: message.data["code_document"],
+            id: message.data["id_document"],
+            typeDocument: message.data["type_document"],
+          );
+        }
+      }
+
+    });
+
+
   }
 
 

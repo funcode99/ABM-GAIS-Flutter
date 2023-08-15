@@ -40,8 +40,7 @@ class NotificationNavigation {
   }
 
   static void navigateToPageApproval(
-      {String? codeDocument, String? typeDocument, String? id}) {
-    print("TYPE DOCUMENT $typeDocument");
+      {String? codeDocument, String? id, String? typeDocument}) {
     if (typeDocument == TypeDocumentEnum.cashAdvanceTravel.value) {
       ApprovalCashAdvanceModel item = ApprovalCashAdvanceModel(idCa: id);
       Get.to(
