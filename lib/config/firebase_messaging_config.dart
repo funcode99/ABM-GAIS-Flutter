@@ -9,8 +9,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 }
 
-final StreamController<String?> selectNotificationStream =
-StreamController<String?>.broadcast();
+final StreamController<String?> selectNotificationStream = StreamController<String?>.broadcast();
 
 /// A notification action which triggers a url launch event
 const String urlLaunchActionId = 'id_1';
@@ -51,17 +50,10 @@ class FirebaseMessagingConfig{
 
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse:
-          (NotificationResponse notificationResponse) {
-        switch (notificationResponse.notificationResponseType) {
-          case NotificationResponseType.selectedNotification:
-            selectNotificationStream.add(notificationResponse.payload);
-            break;
-          case NotificationResponseType.selectedNotificationAction:
-            if (notificationResponse.actionId == navigationActionId) {
-              selectNotificationStream.add(notificationResponse.payload);
-            }
-            break;
+      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) {
+        if(notificationResponse.payload != null){
+          Map<String, dynamic> data = jsonDecode(notificationResponse.payload!);
+          _handleTapOnNotification(data);
         }
       },
       onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
@@ -96,12 +88,12 @@ class FirebaseMessagingConfig{
               message.notification.hashCode,
               message.notification?.title,
               message.notification?.body,
+              payload: jsonEncode(message.data),
               NotificationDetails(
                 android: AndroidNotificationDetails(
                   channel.id,
                   channel.name,
                   channelDescription: channel.description,
-                  // other properties...
                 ),
               ));
         }
@@ -109,25 +101,26 @@ class FirebaseMessagingConfig{
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      if (message.data.containsKey("is_approval")) {
-        if(message.data["is_approval"].toString() == "0"){
-          NotificationNavigation.navigateToPage(
-              codeDocument: message.data["code_document"],
-              id: message.data["id_document"],
-              typeDocument: message.data["type_document"],
-          );
-        }else{
-          NotificationNavigation.navigateToPageApproval(
-            codeDocument: message.data["code_document"],
-            id: message.data["id_document"],
-            typeDocument: message.data["type_document"],
-          );
-        }
-      }
-
+      _handleTapOnNotification(message.data);
     });
+  }
 
-
+  static void _handleTapOnNotification(Map<String, dynamic> data){
+    if (data.containsKey("is_approval")) {
+      if(data["is_approval"].toString() == "0"){
+        NotificationNavigation.navigateToPage(
+          codeDocument: data["code_document"],
+          id: data["id_document"],
+          typeDocument: data["type_document"],
+        );
+      }else{
+        NotificationNavigation.navigateToPageApproval(
+          codeDocument: data["code_document"],
+          id: data["id_document"],
+          typeDocument: data["type_document"],
+        );
+      }
+    }
   }
 
 
