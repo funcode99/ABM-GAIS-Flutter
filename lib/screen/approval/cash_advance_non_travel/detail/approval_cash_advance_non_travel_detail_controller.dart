@@ -58,7 +58,6 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController {
   }
 
   void detailHeader() async {
-    print("TESTING 1");
     final result = await _repository.detailDataApproval(selectedItem.value.id!);
 
     result.fold((l) {

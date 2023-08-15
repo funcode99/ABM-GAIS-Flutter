@@ -43,7 +43,8 @@ enum RequestATKEnum {
   draft(0),
   waitingApproval(1),
   cancelled(9),
-  done(10);
+  done(10),
+  partialCompleted(11);
 
   const RequestATKEnum(this.value);
 

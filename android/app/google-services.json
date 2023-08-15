@@ -29,6 +29,13 @@
             {
               "client_id": "872917266434-1k624751ur2flb2gful2eceboo1roqq4.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "872917266434-h7j2otogva223i0trr9pskkpcdrcd222.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.abm.gais"
+              }
             }
           ]
         }
@@ -58,6 +65,13 @@
             {
               "client_id": "872917266434-1k624751ur2flb2gful2eceboo1roqq4.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "872917266434-h7j2otogva223i0trr9pskkpcdrcd222.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.abm.gais"
+              }
             }
           ]
         }
@@ -87,6 +101,13 @@
             {
               "client_id": "872917266434-1k624751ur2flb2gful2eceboo1roqq4.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "872917266434-h7j2otogva223i0trr9pskkpcdrcd222.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.abm.gais"
+              }
             }
           ]
         }

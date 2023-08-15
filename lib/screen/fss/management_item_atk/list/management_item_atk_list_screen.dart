@@ -34,7 +34,7 @@ class _ManagementItemATKListScreenState
   @override
   Widget build(BuildContext context) {
     final ManagementItemATKListController controller =
-        Get.put(ManagementItemATKListController());
+    Get.put(ManagementItemATKListController());
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -78,10 +78,11 @@ class _ManagementItemATKListScreenState
                           if (controller.enableSelectCompany.value) {
                             return CustomDropDownFormField(
                               items: controller.listCompany
-                                  .map((e) => DropdownMenuItem(
-                                        value: e.id.toString(),
-                                        child: Text("${e.companyName}"),
-                                      ))
+                                  .map((e) =>
+                                  DropdownMenuItem(
+                                    value: e.id.toString(),
+                                    child: Text("${e.companyName}"),
+                                  ))
                                   .toList(),
                               onChanged: (item) {
                                 controller
@@ -89,15 +90,15 @@ class _ManagementItemATKListScreenState
                               },
                               label: "Company".tr,
                               value:
-                                  controller.selectedCompanyTemp.value != null
-                                      ? controller.selectedCompanyTemp.value?.id
-                                          .toString()
-                                      : "",
+                              controller.selectedCompanyTemp.value != null
+                                  ? controller.selectedCompanyTemp.value?.id
+                                  .toString()
+                                  : "",
                             );
                           } else {
                             return CustomTextFormField(
                               controller:
-                                  controller.companyTextEditingController,
+                              controller.companyTextEditingController,
                               label: "Company",
                               readOnly: true,
                             );
@@ -109,21 +110,30 @@ class _ManagementItemATKListScreenState
                           height: 8,
                         ),
                         Obx(() {
-                          return CustomDropDownFormField(
-                            items: controller.listSiteFiltered
-                                .map((e) => DropdownMenuItem(
-                                      value: e.id.toString(),
-                                      child: Text("${e.siteName}"),
-                                    ))
-                                .toList(),
-                            onChanged: (item) {
-                              controller.onChangeSelectedSite(item.toString());
-                            },
-                            label: "Site".tr,
-                            value: controller.selectedSiteTemp.value != null
-                                ? controller.selectedSiteTemp.value?.id
-                                    .toString()
-                                : "",
+                          if (controller.enableSelectSite.value) {
+                            return CustomDropDownFormField(
+                              items: controller.listSiteFiltered
+                                  .map((e) =>
+                                  DropdownMenuItem(
+                                    value: e.id.toString(),
+                                    child: Text("${e.siteName}"),
+                                  ))
+                                  .toList(),
+                              onChanged: (item) {
+                                controller.onChangeSelectedSite(item.toString());
+                              },
+                              label: "Site".tr,
+                              value: controller.selectedSiteTemp.value != null
+                                  ? controller.selectedSiteTemp.value?.id
+                                  .toString()
+                                  : "",
+                            );
+                          }
+                          return CustomTextFormField(
+                            controller:
+                            controller.siteTextEditingController,
+                            label: "Site",
+                            readOnly: true,
                           );
                         }),
                         const SizedBox(
@@ -132,10 +142,11 @@ class _ManagementItemATKListScreenState
                         Obx(() {
                           return CustomDropDownFormField(
                             items: controller.listWarehouseFiltered
-                                .map((e) => DropdownMenuItem(
-                                      value: e.id.toString(),
-                                      child: Text("${e.warehouseName}"),
-                                    ))
+                                .map((e) =>
+                                DropdownMenuItem(
+                                  value: e.id.toString(),
+                                  child: Text("${e.warehouseName}"),
+                                ))
                                 .toList(),
                             onChanged: (item) {
                               controller
@@ -143,10 +154,10 @@ class _ManagementItemATKListScreenState
                             },
                             label: "Warehouse".tr,
                             value:
-                                controller.selectedWarehouseTemp.value != null
-                                    ? controller.selectedWarehouseTemp.value?.id
-                                        .toString()
-                                    : "",
+                            controller.selectedWarehouseTemp.value != null
+                                ? controller.selectedWarehouseTemp.value?.id
+                                .toString()
+                                : "",
                           );
                         }),
                         const SizedBox(
@@ -155,11 +166,12 @@ class _ManagementItemATKListScreenState
                         Obx(() {
                           return CustomDropDownFormField(
                             items: controller.listItem
-                                .map((e) => DropdownMenuItem(
-                                      value:
-                                          e.id != null ? e.id.toString() : "",
-                                      child: Text("${e.itemName}"),
-                                    ))
+                                .map((e) =>
+                                DropdownMenuItem(
+                                  value:
+                                  e.id != null ? e.id.toString() : "",
+                                  child: Text("${e.itemName}"),
+                                ))
                                 .toList(),
                             onChanged: (item) {
                               controller.onChangeSelectedItem(item.toString());
@@ -167,7 +179,7 @@ class _ManagementItemATKListScreenState
                             label: "Item".tr,
                             value: controller.selectedItemTemp.value?.id != null
                                 ? controller.selectedItemTemp.value?.id
-                                    .toString()
+                                .toString()
                                 : "",
                           );
                         }),
@@ -201,38 +213,39 @@ class _ManagementItemATKListScreenState
             ),
             Expanded(
                 child: RefreshIndicator(
-              onRefresh: () async {
-                controller.getHeader();
-              },
-              child: Obx(() {
-                return controller.listHeader.isEmpty
-                    ? const DataEmpty()
-                    : ListView(
-                        children: [
-                          ...controller.listHeader.mapIndexed((index, item) {
-                            bool isOpen = false;
-                            return StatefulBuilder(
-                              builder: (context, setState) {
-                                return CommonListItem(
-                                    number:
-                                        "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
-                                    subtitle: "${item.codeItem}",
-                                    title: item.itemName,
-                                    total: "${item.totalStock ?? "-"}",
-                                    content: Column(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              isOpen = !isOpen;
-                                            });
-                                          },
-                                          behavior: HitTestBehavior.translucent,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Expanded(
+                  onRefresh: () async {
+                    controller.getHeader();
+                  },
+                  child: Obx(() {
+                    return controller.listHeader.isEmpty
+                        ? const DataEmpty()
+                        : ListView(
+                      children: [
+                        ...controller.listHeader.mapIndexed((index, item) {
+                          bool isOpen = false;
+                          return StatefulBuilder(
+                            builder: (context, setState) {
+                              return CommonListItem(
+                                  number:
+                                  "${((controller.currentPage.value - 1) *
+                                      controller.limit) + (index + 1)}",
+                                  subtitle: "${item.codeItem}",
+                                  title: item.itemName,
+                                  total: controller.isEmployee.value ?  "${item.stockToBooked ?? "-"}" : "${item.totalStock ?? "-"}",
+                                  content: Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            isOpen = !isOpen;
+                                          });
+                                        },
+                                        behavior: HitTestBehavior.translucent,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                          children: [
+                                            /*Expanded(
                                                 child: Column(
                                                   children: [
                                                     Text(
@@ -251,94 +264,107 @@ class _ManagementItemATKListScreenState
                                                     ),
                                                   ],
                                                 ),
+                                              ),*/
+                                            Expanded(
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    "ATK Warehouse".tr,
+                                                    textAlign:
+                                                    TextAlign.center,
+                                                    style: listTitleTextStyle,
+                                                  ),
+                                                  Text(
+                                                    item.warehouseCount
+                                                        .toString() ??
+                                                        "-",
+                                                    style: listSubTitleTextStyle
+                                                        .copyWith(
+                                                        overflow:
+                                                        TextOverflow
+                                                            .ellipsis),
+                                                  ),
+                                                ],
                                               ),
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      "Warehouse".tr,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: listTitleTextStyle,
-                                                    ),
-                                                    Text(
-                                                      item.warehouseCount
-                                                              .toString() ??
-                                                          "-",
-                                                      style: listSubTitleTextStyle
-                                                          .copyWith(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis),
-                                                    ),
-                                                  ],
-                                                ),
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    "Alert Quantity".tr,
+                                                    textAlign:
+                                                    TextAlign.center,
+                                                    style: listTitleTextStyle,
+                                                  ),
+                                                  Text(
+                                                    "${item.alertQty}",
+                                                    style: listSubTitleTextStyle
+                                                        .copyWith(
+                                                        overflow:
+                                                        TextOverflow
+                                                            .ellipsis),
+                                                  ),
+                                                ],
                                               ),
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      "Alert Quantity".tr,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: listTitleTextStyle,
-                                                    ),
-                                                    Text(
-                                                      "${item.alertQty}",
-                                                      style: listSubTitleTextStyle
-                                                          .copyWith(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis),
-                                                    ),
-                                                  ],
-                                                ),
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    "UOM".tr,
+                                                    textAlign:
+                                                    TextAlign.center,
+                                                    style: listTitleTextStyle,
+                                                  ),
+                                                  Text(
+                                                    item.uomName ?? "-",
+                                                    style: listSubTitleTextStyle
+                                                        .copyWith(
+                                                        overflow:
+                                                        TextOverflow
+                                                            .ellipsis),
+                                                  ),
+                                                ],
                                               ),
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      "UOM".tr,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: listTitleTextStyle,
-                                                    ),
-                                                    Text(
-                                                      item.uomName ?? "-",
-                                                      style: listSubTitleTextStyle
-                                                          .copyWith(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-                                        SizedBox(
-                                          height: 16,
-                                        ),
-                                        isOpen
-                                            ? Column(
-                                              children: controller.getDetailStockManagementItemATKModel(item).mapIndexed((index, element) => Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 4),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                    Text("${element.warehouseName}"),
-                                                    Text("${element.currentStock}"),
-                                                    Text("${element.stockToApproveWh}"),
-                                                  ],
-                                                ),
-                                              )).toList(),
-                                            )
-                                            : const SizedBox()
-                                      ],
-                                    ),
-                                    action: [
-                                      CustomIconButton(
+                                      ),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      isOpen
+                                          ? Column(
+                                        children: controller
+                                            .getDetailStockManagementItemATKModel(
+                                            item).mapIndexed((index, element) =>
+                                            Padding(
+                                              padding: const EdgeInsets
+                                                  .symmetric(vertical: 4),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment
+                                                    .spaceBetween,
+                                                children: [
+                                                  Text("${element
+                                                      .warehouseName}"),
+                                                  Text("${element
+                                                      .currentStock ?? "-"}"),
+                                                  Text("${element
+                                                      .stockToApproveWh ??
+                                                      "-"}"),
+                                                ],
+                                              ),
+                                            )).toList(),
+                                      )
+                                          : const SizedBox()
+                                    ],
+                                  ),
+                                  action: [
+                                    Obx(() {
+                                      if (controller.isEmployee.value) {
+                                        return const SizedBox();
+                                      }
+                                      return CustomIconButton(
                                         title: "Edit".tr,
                                         iconData: IconlyBold.edit,
                                         backgroundColor: successColor,
@@ -346,15 +372,20 @@ class _ManagementItemATKListScreenState
                                           final result = await Get.to(() =>
                                               EditManagementItemATKScreen(
                                                   item: item));
-                                          if (result!=null) {
+                                          if (result != null) {
                                             controller.getHeader();
                                           }
                                         },
-                                      ),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      CustomIconButton(
+                                      );
+                                    }),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    Obx(() {
+                                      if(controller.isEmployee.value){
+                                        return const SizedBox();
+                                      }
+                                      return CustomIconButton(
                                         title: "Delete".tr,
                                         iconData: IconlyBold.delete,
                                         backgroundColor: redColor,
@@ -366,28 +397,35 @@ class _ManagementItemATKListScreenState
                                             },
                                           ));
                                         },
-                                      )
-                                    ]);
-                              },
-                            );
-                          })
-                        ],
-                      );
-              }),
-            )),
+                                      );
+                                    })
+                                  ]);
+                            },
+                          );
+                        })
+                      ],
+                    );
+                  }),
+                )),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: successColor,
-        onPressed: () async {
-          final result = await Get.to(() => const AddManagementItemATKScreen());
-          if (result) {
-            controller.getHeader();
-          }
-        },
-        child: const Icon(Icons.add_rounded, size: 45),
-      ),
+      floatingActionButton: Obx(() {
+        if (controller.isEmployee.value) {
+          return const SizedBox();
+        }
+        return FloatingActionButton(
+          backgroundColor: successColor,
+          onPressed: () async {
+            final result = await Get
+                .to(() => const AddManagementItemATKScreen());
+            if (result) {
+              controller.getHeader();
+            }
+          },
+          child: const Icon(Icons.add_rounded, size: 45),
+        );
+      }),
       bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
