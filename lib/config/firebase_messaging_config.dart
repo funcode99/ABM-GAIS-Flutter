@@ -1,32 +1,24 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:gais/util/navigation/notification_navigation.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 }
 
-final StreamController<String?> selectNotificationStream = StreamController<String?>.broadcast();
-
-/// A notification action which triggers a url launch event
-const String urlLaunchActionId = 'id_1';
-
-/// A notification action which triggers a App navigation event
-const String navigationActionId = 'id_3';
+String? payload;
 
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
-  // ignore: avoid_print
-  print('notification(${notificationResponse.id}) action tapped: '
-      '${notificationResponse.actionId} with'
-      ' payload: ${notificationResponse.payload}');
-  if (notificationResponse.input?.isNotEmpty ?? false) {
-    // ignore: avoid_print
-    print(
-        'notification action tapped with input: ${notificationResponse.input}');
+  if(payload != null){
+    Map<String, dynamic> data = jsonDecode(notificationResponse.payload!);
+    FirebaseMessagingConfig._handleTapOnNotification(data);
   }
 }
 
@@ -41,6 +33,12 @@ class FirebaseMessagingConfig{
     );
 
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    final NotificationAppLaunchDetails? notificationAppLaunchDetails = !kIsWeb && Platform.isLinux ? null
+        : await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+    if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+      payload = notificationAppLaunchDetails!.notificationResponse?.payload;
+    }
 
     const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -65,7 +63,7 @@ class FirebaseMessagingConfig{
         ?.createNotificationChannel(channel);
 
     FirebaseMessaging messaging = FirebaseMessaging.instance;
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       announcement: false,
@@ -103,6 +101,15 @@ class FirebaseMessagingConfig{
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       _handleTapOnNotification(message.data);
     });
+
+    FirebaseMessaging.instance.getInitialMessage().then((message){
+      if(message!=null){
+        Future.delayed(const Duration(seconds: 1), (){
+          _handleTapOnNotification(message.data);
+        });
+      }
+    });
+
   }
 
   static void _handleTapOnNotification(Map<String, dynamic> data){
