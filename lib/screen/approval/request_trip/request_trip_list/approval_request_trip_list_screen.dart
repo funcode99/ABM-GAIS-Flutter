@@ -101,9 +101,9 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                             label: "Purpose of Trip",
                                             items: controller.documentList
                                                 .map((e) => DropdownMenuItem(
-                                              value: e.codeDocument,
-                                              child: Text(e.documentName.toString()),
-                                            ))
+                                                      value: e.codeDocument,
+                                                      child: Text(e.documentName.toString()),
+                                                    ))
                                                 .toSet()
                                                 .toList(),
                                             value: controller.purposeValue,
@@ -136,7 +136,7 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                                   controller.startDate = controller.rangeFormat.format(start);
 
                                                   controller.dateRange.text =
-                                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                                      "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                                                   controller.update();
                                                 },
                                                 onCancelClick: () {
@@ -207,7 +207,7 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                         'idApprovalAuth': controller.requestList[index].idApprovalAuth?.toInt(),
                                         'idCompany': controller.requestList[index].idCompany?.toInt(),
                                       },
-                                    );
+                                    )?.then((value) => controller.fetchList(controller.currentPage));
                                   },
                                   isDelete: true,
                                   rejectAction: () {
@@ -223,14 +223,13 @@ class ApprovalRequestTripListScreen extends StatelessWidget {
                                         'idApprovalAuth': controller.requestList[index].idApprovalAuth?.toInt(),
                                         'idCompany': controller.requestList[index].idCompany?.toInt(),
                                       },
-                                    );
+                                    )?.then((value) => controller.fetchList(controller.currentPage));
                                   },
                                   content: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Requestor", style: listTitleTextStyle),
                                       Text(controller.requestList[index].employeeName ?? "", style: listSubTitleTextStyle)
-
                                     ],
                                   ),
                                 ),

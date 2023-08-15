@@ -8,6 +8,7 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customformlabel.dart';
 import 'package:gais/reusable/customtripcard.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
@@ -18,6 +19,7 @@ import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advan
 import 'package:gais/screen/tms/request_trip/add/other_transport/edit/edit_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/edit/edit_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/actualization_trip_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_controller.dart';
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
@@ -56,7 +58,8 @@ class FormRequestTripScreen extends StatelessWidget {
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: SliverAppBarDelegate(
-                      minHeight: controller.rtStatus == "Draft" || controller.rtStatus == "Revision" ? 120 : 80,
+                      // minHeight: controller.rtStatus == "Draft" || controller.rtStatus == "Revision" ? 120 : 80,
+                      minHeight: 120,
                       maxHeight: 32,
                       child: Container(
                         color: whiteColor,
@@ -83,6 +86,14 @@ class FormRequestTripScreen extends StatelessWidget {
                                   ? MainAxisAlignment.spaceEvenly
                                   : MainAxisAlignment.center,
                               children: [
+                                CustomFilledButton(
+                                  color: orangeColor,
+                                  title: "Actualization",
+                                  width: Get.width / 4,
+                                  onPressed: () {
+                                    Get.to(ActualizationTripScreen());
+                                  },
+                                ),
                                 controller.rtStatus == "Draft" || controller.rtStatus == "Revision"
                                     ? CustomFilledButton(
                                         color: Colors.transparent,
@@ -424,10 +435,13 @@ class FormRequestTripScreen extends StatelessWidget {
                                                             controller.update();
                                                           }),
                                                           isDelete: controller.isEdit,
-                                                          deleteAction: () {
-                                                            controller.deleteGuest(e.id.toString());
-                                                            controller.update();
-                                                          },
+                                                          deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                                            onDeletePressed: () {
+                                                              controller.deleteGuest(e.id.toString());
+                                                              controller.update();
+                                                              Get.back();
+                                                            },
+                                                          )),
                                                           content: Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                             children: [
@@ -488,7 +502,12 @@ class FormRequestTripScreen extends StatelessWidget {
                                                             });
                                                           },
                                                           isDelete: controller.isEdit,
-                                                          deleteAction: () => controller.deleteAirliness(e.id.toString()),
+                                                          deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                                            onDeletePressed: () {
+                                                              controller.deleteAirliness(e.id.toString());
+                                                              Get.back();
+                                                            },
+                                                          )),
                                                           content: Row(
                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                             children: [
@@ -547,7 +566,12 @@ class FormRequestTripScreen extends StatelessWidget {
                                                               controller.update();
                                                             }),
                                                             isDelete: controller.isEdit,
-                                                            deleteAction: () => controller.deleteTaxiVoucher(e.id.toString()),
+                                                            deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                                              onDeletePressed: () {
+                                                                controller.deleteTaxiVoucher(e.id.toString());
+                                                                Get.back();
+                                                              },
+                                                            )),
                                                             content: Row(
                                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                               children: [
@@ -603,7 +627,12 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                   controller.update();
                                                                 }),
                                                                 isDelete: controller.isEdit,
-                                                                deleteAction: () => controller.deleteOtherTransport(e.id.toString()),
+                                                                deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                                                  onDeletePressed: () {
+                                                                    controller.deleteOtherTransport(e.id.toString());
+                                                                    Get.back();
+                                                                  },
+                                                                )),
                                                                 content: Row(
                                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                   children: [
@@ -665,7 +694,12 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                       controller.update();
                                                                     }),
                                                                     isDelete: controller.isEdit,
-                                                                    deleteAction: () => controller.deleteAccommodation(e.id!.toInt()),
+                                                                    deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                                                      onDeletePressed: () {
+                                                                        controller.deleteAccommodation(e.id!.toInt());
+                                                                        Get.back();
+                                                                      },
+                                                                    )),
                                                                     content: Row(
                                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                       children: [
@@ -732,10 +766,13 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                             )?.then((value) => controller.fetchList());
                                                                           },
                                                                           isDelete: controller.isEdit,
-                                                                          deleteAction: () {
-                                                                            controller.deleteCashAdvance(e.id);
-                                                                            controller.update();
-                                                                          },
+                                                                          deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                                                            onDeletePressed: () {
+                                                                              controller.deleteCashAdvance(e.id);
+                                                                              controller.update();
+                                                                              Get.back();
+                                                                            },
+                                                                          )),
                                                                           content: Row(
                                                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                                             children: [

@@ -66,7 +66,6 @@ class AddItemCashAdvanceNonTravelScreen extends StatelessWidget {
                         ThousandsSeparatorInputFormatter()
                       ],
                       inputType: TextInputType.number,
-                      isRequired: true,
                       controller: controller.nominalController,
                       label: "Nominal".tr),
                   const SizedBox(

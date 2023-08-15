@@ -8,6 +8,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customtripcard.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
@@ -71,7 +72,14 @@ class AccommodationScreen extends StatelessWidget {
                                 controller.update();
                               }),
                               isDelete: true,
-                              deleteAction: () => controller.delete(e.id),
+                              deleteAction: () {
+                                Get.dialog(DeleteConfirmationDialog(
+                                  onDeletePressed: () {
+                                    controller.delete(e.id);
+                                    Get.back();
+                                  },
+                                ));
+                              },
                               content: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [

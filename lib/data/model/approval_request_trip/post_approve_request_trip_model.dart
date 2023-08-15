@@ -140,7 +140,7 @@ class Data {
   }
   dynamic _id;
   String? _codeDocument;
-  num? _idDocument;
+  dynamic _idDocument;
   num? _level;
   dynamic _idEmployee;
   num? _idCompany;
