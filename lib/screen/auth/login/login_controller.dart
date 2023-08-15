@@ -92,7 +92,7 @@ class LoginController extends BaseController {
                 margin  : EdgeInsets.only(bottom: 55  ),
                 duration: Duration(seconds: 3),
                 backgroundColor: Colors.green,
-                snackPosition: SnackPosition.TOP,
+                snackPosition: SnackPosition.BOTTOM,
                 snackStyle: SnackStyle.FLOATING,
                 animationDuration: Duration(milliseconds: 500),
               ),
