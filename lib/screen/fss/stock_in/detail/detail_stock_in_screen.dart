@@ -70,20 +70,22 @@ class DetailStockInScreen extends StatelessWidget {
                       );
                     }),
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: Text(
-                      controller.selectedItem.value.noStockIn ?? "-",
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .bodyText1
-                          ?.copyWith(fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          overflow: TextOverflow.ellipsis),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                  Obx(() {
+                    return SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        controller.selectedItem.value.noStockIn ?? "-",
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText1
+                            ?.copyWith(fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            overflow: TextOverflow.ellipsis),
+                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  }),
                   Obx(() {
                     if (controller.selectedItem.value.codeStatusDoc
                         .toString() ==
@@ -232,7 +234,8 @@ class DetailStockInScreen extends StatelessWidget {
                             final addedItems =
                             await Get.to(() => const AddItemStockInATKScreen());
                             if (addedItems != null) {
-                              controller.addItems(addedItems["idItem"], addedItems);
+                              controller.addItems(
+                                  addedItems["idItem"], addedItems);
                             }
                           },
                         ),
@@ -252,7 +255,9 @@ class DetailStockInScreen extends StatelessWidget {
                           ...controller.mapDetailTemp
                               .entries.mapIndexed((index, item) {
                             Map<String, dynamic> element = item.value;
-                            List<StockInATKDetailModel> listDetail = List<StockInATKDetailModel>.from(element["listDetail"]);
+                            List<StockInATKDetailModel> listDetail = List<
+                                StockInATKDetailModel>.from(
+                                element["listDetail"]);
                             return CommonListItem(
                               number: "${index + 1}",
                               title: "${element["itemName"]}",
@@ -265,9 +270,12 @@ class DetailStockInScreen extends StatelessWidget {
                                   iconData: IconlyBold.edit,
                                   backgroundColor: successColor,
                                   onPressed: () async {
-                                    final editedItems = await Get.to(()=>AddItemStockInATKScreen(item: item.value));
-                                    if(editedItems!=null){
-                                      controller.editItem(editedItems["idItem"], editedItems);
+                                    final editedItems = await Get.to(() =>
+                                        AddItemStockInATKScreen(
+                                            item: item.value));
+                                    if (editedItems != null) {
+                                      controller.editItem(
+                                          editedItems["idItem"], editedItems);
                                     }
                                   },
                                 ),
@@ -281,83 +289,88 @@ class DetailStockInScreen extends StatelessWidget {
                                   onPressed: () {
                                     Get.dialog(
                                         DeleteConfirmationDialog(
-                                          onDeletePressed: () {
-                                            Get.close(1);
-                                            controller.removeItem(element["idItem"]);
-                                          }
+                                            onDeletePressed: () {
+                                              Get.close(1);
+                                              controller.removeItem(
+                                                  element["idItem"]);
+                                            }
                                         ));
                                   },
                                 )
                               ]
                                   : [],
                               content: Column(
-                                children: listDetail.mapIndexed((index, itemDetail) => Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 8),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Column(
+                                children: listDetail.mapIndexed((index,
+                                    itemDetail) =>
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 8),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .spaceEvenly,
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .center,
                                         children: [
-                                          Text(
-                                            "ATK Warehouse".tr,
-                                            style: listTitleTextStyle,
+                                          Column(
+                                            children: [
+                                              Text(
+                                                "ATK Warehouse".tr,
+                                                style: listTitleTextStyle,
+                                              ),
+                                              Text(
+                                                itemDetail.warehouseName ?? "-",
+                                                style: listSubTitleTextStyle
+                                                    .copyWith(
+                                                    overflow: TextOverflow
+                                                        .ellipsis
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                          Text(
-                                            itemDetail.warehouseName ?? "-",
-                                            style: listSubTitleTextStyle
-                                                .copyWith(
-                                                overflow: TextOverflow
-                                                    .ellipsis
-                                            ),
-                                          )
-                                        ],
-                                      ),
 
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "QTY".tr,
-                                            style: listTitleTextStyle,
+                                          Column(
+                                            children: [
+                                              Text(
+                                                "QTY".tr,
+                                                style: listTitleTextStyle,
+                                              ),
+                                              Text(
+                                                "${itemDetail.qty}",
+                                                style: listSubTitleTextStyle
+                                                    .copyWith(
+                                                    overflow: TextOverflow
+                                                        .ellipsis
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                          Text(
-                                            "${itemDetail.qty}",
-                                            style: listSubTitleTextStyle
-                                                .copyWith(
-                                                overflow: TextOverflow
-                                                    .ellipsis
-                                            ),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                "UOM".tr,
+                                                style: listTitleTextStyle,
+                                              ),
+                                              Text(
+                                                itemDetail.uomName ?? "-",
+                                                style: listSubTitleTextStyle
+                                                    .copyWith(
+                                                    overflow: TextOverflow
+                                                        .ellipsis
+                                                ),
+                                              )
+                                            ],
                                           )
                                         ],
                                       ),
-                                      const SizedBox(
-                                        width: 16,
-                                      ),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "UOM".tr,
-                                            style: listTitleTextStyle,
-                                          ),
-                                          Text(
-                                            itemDetail.uomName ?? "-",
-                                            style: listSubTitleTextStyle
-                                                .copyWith(
-                                                overflow: TextOverflow
-                                                    .ellipsis
-                                            ),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                )).toList(),
+                                    )).toList(),
                               ),
                               onTap: () {
-                                /*Get.dialog(
-                                    DetailItemStockInATKScreen(item: item)
-                                );*/
+                                Get.dialog(
+                                    DetailItemStockInATKScreen(item: item.value)
+                                );
                               },
                             );
                           })

@@ -243,7 +243,7 @@ class StockInListScreen extends StatelessWidget {
                                               style: listTitleTextStyle,
                                             ),
                                             Text(
-                                              item.employeeName ?? "-",
+                                              item.nameCreated ?? "-",
                                               style: listSubTitleTextStyle
                                                   .copyWith(
                                                       overflow: TextOverflow
