@@ -8,6 +8,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customtripcard.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/edit/edit_other_transport_screen.dart';
@@ -71,7 +72,12 @@ class OtherTransportScreen extends StatelessWidget {
                                 controller.update();
                               }),
                               isDelete: true,
-                              deleteAction: () => controller.delete(e.id.toString()),
+                              deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                onDeletePressed: () {
+                                  controller.delete(e.id.toString());
+                                  Get.back();
+                                },
+                              )),
                               content: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -109,9 +115,8 @@ class OtherTransportScreen extends StatelessWidget {
                         color: infoColor,
                         title: "Add Other Transportation",
                         icon: Icons.add,
-                        onPressed: () =>
-                            Get.to(const AddOtherTransportScreen(), arguments: {'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument})
-                                ?.then((result) {
+                        onPressed: () => Get.to(const AddOtherTransportScreen(),
+                            arguments: {'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument})?.then((result) {
                           controller.fetchList();
                           controller.update();
                         }),

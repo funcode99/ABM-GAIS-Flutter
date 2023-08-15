@@ -9,6 +9,7 @@ import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
@@ -67,7 +68,6 @@ class RequestTripListScreen extends StatelessWidget {
                                 },
                                 onPressedFilter: () {
                                   Get.bottomSheet(StatefulBuilder(builder: (context, setState) {
-
                                     return FilterBottomSheet(
                                       onApplyFilter: () {
                                         controller.fetchList(1);
@@ -197,10 +197,14 @@ class RequestTripListScreen extends StatelessWidget {
                                   }),
                                   isDelete: true,
                                   deleteAction: () {
-                                    controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
-                                    controller.delete(controller.requestList[index].id.toString());
-
-                                    controller.update();
+                                    Get.dialog(DeleteConfirmationDialog(
+                                      onDeletePressed: () {
+                                        controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
+                                        controller.delete(controller.requestList[index].id.toString());
+                                        controller.update();
+                                        Get.back();
+                                      },
+                                    ));
                                   },
                                   content: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

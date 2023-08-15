@@ -8,6 +8,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customtripcard.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_controller.dart';
@@ -39,7 +40,7 @@ class AirlinessScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: RefreshIndicator(
-                onRefresh: () async{
+                onRefresh: () async {
                   controller.fetchList();
                 },
                 child: SingleChildScrollView(
@@ -73,7 +74,12 @@ class AirlinessScreen extends StatelessWidget {
                                         arguments: {'id': e.id, 'purposeID': controller.purposeID, 'codeDocument': controller.codeDocument});
                                   },
                                   isDelete: true,
-                                  deleteAction: () => controller.delete(e.id.toString()),
+                                  deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                    onDeletePressed: () {
+                                      controller.delete(e.id.toString());
+                                      Get.back();
+                                    },
+                                  )),
                                   content: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [

@@ -6,6 +6,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customtripcard.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/traveller_controller.dart';
@@ -89,88 +90,91 @@ class TravellerScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      controller.showAddGuest ? Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            padding: const EdgeInsets.symmetric(horizontal: 50),
-                            child: Text("Guest", style: formlabelTextStyle, textAlign: TextAlign.start),
-                          ),
-                          Column(
-                            children: controller.guestList.isNotEmpty
-                                ? controller.guestList
-                                .mapIndexed(
-                                  (i, e) => CustomTripCard(
-                                listNumber: i + 1,
-                                title: e.nameGuest.toString(),
-                                subtitle: e.nik,
-                                info: "Guest",
-                                isEdit: true,
-                                editAction: () => Get.to(const AddGuestScreen(), arguments: {
-                                  'purposeID': controller.purposeID,
-                                  'codeDocument': controller.codeDocument,
-                                  'guestID': e.id,
-                                  'isEdit': true,
-                                })?.then((_) {
-                                  controller.getGuestList();
-                                  controller.update();
-                                }),
-                                isDelete: true,
-                                deleteAction: () {
-                                  controller.deleteGuest(e.id.toString());
-                                  controller.update();
-                                  print(e.id);
-                                },
-                                content: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Gender", style: listTitleTextStyle),
-                                        Text(e.gender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Hotel Fare", style: listTitleTextStyle),
-                                        Text("${int.parse(e.hotelFare.toString()).toCurrency()}", style: listSubTitleTextStyle),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Flight Entitlement", style: listTitleTextStyle),
-                                        Text(e.flightClass.toString(), style: listSubTitleTextStyle),
-                                      ],
-                                    ),
-                                  ],
+                      controller.showAddGuest
+                          ? Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                                  child: Text("Guest", style: formlabelTextStyle, textAlign: TextAlign.start),
                                 ),
-                              ),
+                                Column(
+                                  children: controller.guestList.isNotEmpty
+                                      ? controller.guestList
+                                          .mapIndexed(
+                                            (i, e) => CustomTripCard(
+                                              listNumber: i + 1,
+                                              title: e.nameGuest.toString(),
+                                              subtitle: e.nik,
+                                              info: "Guest",
+                                              isEdit: true,
+                                              editAction: () => Get.to(const AddGuestScreen(), arguments: {
+                                                'purposeID': controller.purposeID,
+                                                'codeDocument': controller.codeDocument,
+                                                'guestID': e.id,
+                                                'isEdit': true,
+                                              })?.then((_) {
+                                                controller.getGuestList();
+                                                controller.update();
+                                              }),
+                                              isDelete: true,
+                                              deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                                onDeletePressed: () {
+                                                  controller.deleteGuest(e.id.toString());
+                                                  controller.update();
+                                                  Get.back();
+                                                },
+                                              )),
+                                              content: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text("Gender", style: listTitleTextStyle),
+                                                      Text(e.gender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text("Hotel Fare", style: listTitleTextStyle),
+                                                      Text("${int.parse(e.hotelFare.toString()).toCurrency()}", style: listSubTitleTextStyle),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text("Flight Entitlement", style: listTitleTextStyle),
+                                                      Text(e.flightClass.toString(), style: listSubTitleTextStyle),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList()
+                                      : [const Text("no data yet")],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                                  child: CustomFilledButton(
+                                    color: infoColor,
+                                    title: "Add Guest",
+                                    icon: Icons.add,
+                                    onPressed: () => Get.to(AddGuestScreen(), arguments: {
+                                      'purposeID': controller.purposeID,
+                                      'travellerID': controller.travellerID,
+                                      'formEdit': controller.formEdit,
+                                    })?.then((_) {
+                                      controller.getGuestList();
+                                      controller.update();
+                                    }),
+                                  ),
+                                ),
+                              ],
                             )
-                                .toList()
-                                : [const Text("no data yet")],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 50),
-                            child: CustomFilledButton(
-                              color: infoColor,
-                              title: "Add Guest",
-                              icon: Icons.add,
-                              onPressed: () => Get.to(AddGuestScreen(), arguments: {
-                                'purposeID': controller.purposeID,
-                                'travellerID': controller.travellerID,
-                                'formEdit': controller.formEdit,
-                              })?.then((_) {
-                                controller.getGuestList();
-                                controller.update();
-                              }),
-                            ),
-                          ),
-                        ],
-                      ) : Container(),
-
+                          : Container(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

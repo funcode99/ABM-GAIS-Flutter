@@ -8,6 +8,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customtripcard.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_controller.dart';
@@ -73,9 +74,12 @@ class CashAdvanceScreen extends StatelessWidget {
                                   )?.then((value) => controller.fetchList());
                                 },
                                 isDelete: true,
-                                deleteAction: () {
-                                  controller.delete(e.id!.toInt());
-                                },
+                                deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                  onDeletePressed: () {
+                                    controller.delete(e.id.toInt());
+                                    Get.back();
+                                  },
+                                )),
                                 content: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [

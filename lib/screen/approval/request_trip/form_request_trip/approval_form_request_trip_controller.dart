@@ -17,6 +17,7 @@ import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as 
 import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart' as tv;
 import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
+import 'package:gais/reusable/dialog/fail_dialog.dart';
 import 'package:gais/reusable/dialog/reject_dialog.dart';
 import 'package:gais/reusable/dialog/success_dialog.dart';
 import 'package:gais/reusable/pdf_screen.dart';
@@ -32,12 +33,6 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ApprovalFormRequestTripController extends BaseController {
-  List<String> approve = ["Behalf of", "Fully Approve"];
-  late String approval = approve[0];
-
-  List<String> reject = ["With Notes", "Fully Rejected"];
-  late String rejection = reject[0];
-
   ApprovalActionEnum? approvalActionEnum = Get.arguments['approvalEnum'];
   rt.Data2 approvalData = Get.arguments['approvalData'];
   String purposeID = Get.arguments['idRequestTrip'];
@@ -194,6 +189,42 @@ class ApprovalFormRequestTripController extends BaseController {
                 : false;
       }
     } else if (selectedPurpose == "2") {
+      for (var item in items) {
+        item['isFilled'] = item['title'] == "Traveller Guest"
+            ? true
+            : item['title'] == "Airliness"
+                ? true
+                : item['title'] == "Accommodation"
+                    ? true
+                    : false;
+
+        item['showList'] = item['title'] == "Traveller Guest"
+            ? true
+            : item['title'] == "Airliness"
+                ? true
+                : item['title'] == "Accommodation"
+                    ? true
+                    : false;
+      }
+    } else if (selectedPurpose == "2") {
+      for (var item in items) {
+        item['isFilled'] = item['title'] == "Traveller Guest"
+            ? true
+            : item['title'] == "Airliness"
+                ? true
+                : item['title'] == "Other Transportation"
+                    ? true
+                    : false;
+
+        item['showList'] = item['title'] == "Traveller Guest"
+            ? true
+            : item['title'] == "Airliness"
+                ? true
+                : item['title'] == "Other Transportation"
+                    ? true
+                    : false;
+      }
+    } else if (selectedPurpose == "5") {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
@@ -362,42 +393,19 @@ class ApprovalFormRequestTripController extends BaseController {
             },
           ));
           fetchRequestTrip();
-          //   Get.showSnackbar(
-          //     const GetSnackBar(
-          //       icon: Icon(
-          //         Icons.error,
-          //         color: Colors.white,
-          //       ),
-          //       message: 'Document Apporved',
-          //       isDismissible: true,
-          //       duration: Duration(seconds: 3),
-          //       backgroundColor: successColor,
-          //     ),
-          //   );
         });
       } catch (e, i) {
         e.printError();
         i.printError();
-        Get.dialog(SuccessDialog(
+        Get.dialog(FailDialog(
           message: "Request failed to be approved!",
           onClosePressed: () {
             Get.back(result: true);
           },
         ));
-        // Get.showSnackbar(
-        //   const GetSnackBar(
-        //     icon: Icon(
-        //       Icons.error,
-        //       color: Colors.white,
-        //     ),
-        //     message: "Failed update Data",
-        //     isDismissible: true,
-        //     duration: Duration(seconds: 3),
-        //     backgroundColor: redColor,
-        //   ),
-        // );
       }
     }
+    update();
   }
 
   openRejectDialog() async {
@@ -415,20 +423,7 @@ class ApprovalFormRequestTripController extends BaseController {
             },
           ));
           fetchRequestTrip();
-        }
-            //     Get.showSnackbar(
-            //   const GetSnackBar(
-            //     icon: Icon(
-            //       Icons.error,
-            //       color: Colors.white,
-            //     ),
-            //     message: 'Document Rejected',
-            //     isDismissible: true,
-            //     duration: Duration(seconds: 3),
-            //     backgroundColor: successColor,
-            //   ),
-            // ),
-            );
+        });
       } catch (e, i) {
         e.printError();
         i.printError();
@@ -438,19 +433,8 @@ class ApprovalFormRequestTripController extends BaseController {
             Get.back(result: true);
           },
         ));
-        // Get.showSnackbar(
-        //   const GetSnackBar(
-        //     icon: Icon(
-        //       Icons.error,
-        //       color: Colors.white,
-        //     ),
-        //     message: "Failed update Data",
-        //     isDismissible: true,
-        //     duration: Duration(seconds: 3),
-        //     backgroundColor: redColor,
-        //   ),
-        // );
       }
     }
+    update();
   }
 }

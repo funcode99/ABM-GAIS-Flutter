@@ -6,6 +6,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customtripcard.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/edit/edit_taxi_voucher_screen.dart';
@@ -36,7 +37,7 @@ class TaxiVoucherScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: RefreshIndicator(
-                onRefresh: () async{
+                onRefresh: () async {
                   controller.getList();
                 },
                 child: SingleChildScrollView(
@@ -48,11 +49,8 @@ class TaxiVoucherScreen extends StatelessWidget {
                         height: 42,
                         width: 42,
                         // padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: infoColor,
-                            borderRadius: BorderRadius.circular(50)),
-                        child: const Icon(Icons.account_balance_wallet_rounded,
-                            color: whiteColor),
+                        decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                        child: const Icon(Icons.account_balance_wallet_rounded, color: whiteColor),
                       ),
                       Text("Taxi Voucher", style: appTitle),
                       const SizedBox(height: 14),
@@ -67,40 +65,33 @@ class TaxiVoucherScreen extends StatelessWidget {
                                     status: e.status.toString(),
                                     // info: int.parse(e.amount.toString()).toCurrency(),
                                     isEdit: true,
-                                    editAction: () => Get.to(
-                                        const EditTaxiVoucherScreen(),
-                                        arguments: {
-                                          'purposeID': controller.purposeID,
-                                          'id': e.id
-                                        })?.then((_) {
+                                    editAction: () =>
+                                        Get.to(const EditTaxiVoucherScreen(), arguments: {'purposeID': controller.purposeID, 'id': e.id})?.then((_) {
                                       controller.getList();
                                       controller.update();
                                     }),
                                     isDelete: true,
-                                    deleteAction: () => controller
-                                        .delete(e.id.toString()),
+                                    deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                      onDeletePressed: () {
+                                        controller.delete(e.id.toString());
+                                        Get.back();
+                                      },
+                                    )),
                                     content: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            Text("Departure",
-                                                style: listTitleTextStyle),
-                                            Text(e.nameDepartureCity.toString(),
-                                                style: listSubTitleTextStyle),
+                                            Text("Departure", style: listTitleTextStyle),
+                                            Text(e.nameDepartureCity.toString(), style: listSubTitleTextStyle),
                                           ],
                                         ),
                                         Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            Text("Arrival",
-                                                style: listTitleTextStyle),
-                                            Text(e.nameArrivalCity.toString(),
-                                                style: listSubTitleTextStyle),
+                                            Text("Arrival", style: listTitleTextStyle),
+                                            Text(e.nameArrivalCity.toString(), style: listSubTitleTextStyle),
                                           ],
                                         ),
                                       ],
@@ -117,9 +108,7 @@ class TaxiVoucherScreen extends StatelessWidget {
                           color: infoColor,
                           title: "Add Taxi Voucher",
                           icon: Icons.add,
-                          onPressed: () => Get.to(const AddTaxiVoucherScreen(),
-                                  arguments: {'purposeID': controller.purposeID})
-                              ?.then((_) {
+                          onPressed: () => Get.to(const AddTaxiVoucherScreen(), arguments: {'purposeID': controller.purposeID})?.then((_) {
                             controller.getList();
                             controller.update();
                           }),
@@ -141,7 +130,7 @@ class TaxiVoucherScreen extends StatelessWidget {
                                   width: 100,
                                   color: infoColor,
                                   title: "Draft",
-                                  onPressed: ()=> Get.offAll(const FormRequestTripScreen(), arguments: {
+                                  onPressed: () => Get.offAll(const FormRequestTripScreen(), arguments: {
                                     'id': controller.purposeID,
                                     'codeDocument': controller.codeDocument,
                                   }),

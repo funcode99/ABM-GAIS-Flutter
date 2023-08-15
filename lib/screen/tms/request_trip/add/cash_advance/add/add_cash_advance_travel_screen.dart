@@ -8,6 +8,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customtripcard.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -138,7 +139,7 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                                             arguments: {
                                               'purposeID': controller.purposeID,
                                               'codeDocument': controller.codeDocument,
-                                              'item' : e,
+                                              'item': e,
                                             },
                                           );
                                           controller.editItem(editedItem);
@@ -152,11 +153,12 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                                           child: const Icon(IconlyBold.delete, color: whiteColor),
                                         ),
                                         onTap: () {
-                                          // Get.dialog(DeleteConfirmationDialog(
-                                          //   onDeletePressed: () {
-                                          controller.removeItem(e);
-                                          // },
-                                          // ));
+                                          Get.dialog(DeleteConfirmationDialog(
+                                            onDeletePressed: () {
+                                              controller.removeItem(e);
+                                              Get.back();
+                                            },
+                                          ));
                                         },
                                       ),
                                       content: Padding(

@@ -21,7 +21,6 @@ class AddItemCashAdvanceTravelController extends BaseController {
   final formKey = GlobalKey<FormState>();
   final isButtonEnabled = false.obs;
 
-
   String? selectedItem;
 
   List<items.Data> itemCA = [];
@@ -29,6 +28,7 @@ class AddItemCashAdvanceTravelController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    Future.wait([fetchList()]);
     initData();
     update();
   }
@@ -46,7 +46,7 @@ class AddItemCashAdvanceTravelController extends BaseController {
     try {
       await repository.getItemCATravel().then((value) {
         itemCA.addAll(value.data?.toSet().toList() ?? []);
-        isLoading = false;
+        print("item CA : ${value.data?.map((e) => e)}");
       });
     } catch (e) {
       e.printError();
@@ -57,7 +57,6 @@ class AddItemCashAdvanceTravelController extends BaseController {
   }
 
   void initData() {
-    fetchList();
     if (item != null) {
       selectedItem = item!.idItemCa.toString();
       frequencyController.text = item!.frequency.toString();
