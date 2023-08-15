@@ -1,8 +1,25 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:gais/util/navigation/notification_navigation.dart';
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
+}
+
+String? payload;
+
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse notificationResponse) {
+  if(payload != null){
+    Map<String, dynamic> data = jsonDecode(notificationResponse.payload!);
+    FirebaseMessagingConfig._handleTapOnNotification(data);
+  }
 }
 
 class FirebaseMessagingConfig{
@@ -15,8 +32,30 @@ class FirebaseMessagingConfig{
       importance: Importance.max,
     );
 
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    final NotificationAppLaunchDetails? notificationAppLaunchDetails = !kIsWeb && Platform.isLinux ? null
+        : await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+    if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+      payload = notificationAppLaunchDetails!.notificationResponse?.payload;
+    }
+
+    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) {
+        if(notificationResponse.payload != null){
+          Map<String, dynamic> data = jsonDecode(notificationResponse.payload!);
+          _handleTapOnNotification(data);
+        }
+      },
+      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
+    );
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
@@ -24,7 +63,7 @@ class FirebaseMessagingConfig{
         ?.createNotificationChannel(channel);
 
     FirebaseMessaging messaging = FirebaseMessaging.instance;
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       announcement: false,
@@ -37,7 +76,6 @@ class FirebaseMessagingConfig{
 
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-
       if (message.notification != null) {
         AndroidNotification? android = message.notification?.android;
 
@@ -48,17 +86,48 @@ class FirebaseMessagingConfig{
               message.notification.hashCode,
               message.notification?.title,
               message.notification?.body,
+              payload: jsonEncode(message.data),
               NotificationDetails(
                 android: AndroidNotificationDetails(
                   channel.id,
                   channel.name,
                   channelDescription: channel.description,
-                  // other properties...
                 ),
               ));
         }
       }
     });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      _handleTapOnNotification(message.data);
+    });
+
+    FirebaseMessaging.instance.getInitialMessage().then((message){
+      if(message!=null){
+        Future.delayed(const Duration(seconds: 1), (){
+          _handleTapOnNotification(message.data);
+        });
+      }
+    });
+
+  }
+
+  static void _handleTapOnNotification(Map<String, dynamic> data){
+    if (data.containsKey("is_approval")) {
+      if(data["is_approval"].toString() == "0"){
+        NotificationNavigation.navigateToPage(
+          codeDocument: data["code_document"],
+          id: data["id_document"],
+          typeDocument: data["type_document"],
+        );
+      }else{
+        NotificationNavigation.navigateToPageApproval(
+          codeDocument: data["code_document"],
+          id: data["id_document"],
+          typeDocument: data["type_document"],
+        );
+      }
+    }
   }
 
 
