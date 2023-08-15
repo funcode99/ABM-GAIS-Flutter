@@ -100,26 +100,24 @@ class AddStockInATKScreen extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 8),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Expanded(
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                "ATK Warehouse".tr,
-                                                style: listTitleTextStyle,
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "ATK Warehouse".tr,
+                                              style: listTitleTextStyle,
+                                            ),
+                                            Text(
+                                              itemDetail.warehouseName ?? "-",
+                                              style: listSubTitleTextStyle
+                                                  .copyWith(
+                                                  overflow: TextOverflow
+                                                      .ellipsis
                                               ),
-                                              Text(
-                                                itemDetail.warehouseName ?? "-",
-                                                style: listSubTitleTextStyle
-                                                    .copyWith(
-                                                    overflow: TextOverflow
-                                                        .ellipsis
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                            )
+                                          ],
                                         ),
 
                                         Column(
@@ -156,10 +154,7 @@ class AddStockInATKScreen extends StatelessWidget {
                                               ),
                                             )
                                           ],
-                                        ),
-                                        if(listDetail.length > 1) IconButton(onPressed: (){
-                                          controller.removeDetailItem(element["idItem"], itemDetail);
-                                        }, icon: const Icon(Icons.delete, color: redColor,))
+                                        )
                                       ],
                                     ),
                                   )).toList(),
