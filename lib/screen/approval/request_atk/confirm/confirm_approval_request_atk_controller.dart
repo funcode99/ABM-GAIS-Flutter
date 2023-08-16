@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/approval_request_atk/approval_request_atk_model.dart';
+import 'package:gais/data/model/master/warehouse/warehouse_detail_model.dart';
 import 'package:gais/data/model/request_atk/request_atk_detail_model.dart';
 import 'package:gais/data/repository/request_atk/request_atk_repository.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,9 @@ class ConfirmApprovalRequestATKController extends BaseController {
 
   final listDetail = <RequestATKDetailModel>[].obs;
   final listEditedDetail = <RequestATKDetailModel>[].obs;
+
+  final mapATKConfirmation = <String, dynamic>{}.obs;
+  final mapATKSelected = <String, dynamic>{}.obs;
 
   final RequestATKRepository _repository = Get.find();
 
@@ -49,6 +53,13 @@ class ConfirmApprovalRequestATKController extends BaseController {
           idBrand: item.idBrand,
           idUom: item.idUom
         ));
+
+        Map<String, dynamic> detail = {
+          "listDetail" : item.arrayWarehouse?.map((e) => WarehouseDetailModel.fromJson(e)).toList(),
+          "listSelected" : [item.arrayWarehouse?.map((e) => WarehouseDetailModel.fromJson(e)).toList().first]
+        };
+
+        mapATKConfirmation.putIfAbsent("${item.id}", () => detail);
       }
     });
   }

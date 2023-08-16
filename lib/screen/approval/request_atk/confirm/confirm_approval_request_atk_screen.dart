@@ -4,6 +4,7 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/approval_request_atk/approval_request_atk_model.dart';
+import 'package:gais/data/model/master/warehouse/warehouse_detail_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
@@ -124,40 +125,75 @@ class _ConfirmApprovalRequestATKScreenState
                                               ],
                                             ),
                                           ),
-                                          Expanded(
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  "ATK Warehouse".tr,
-                                                  style: listTitleTextStyle,
-                                                ),
-                                                Text(
-                                                  item.warehouseName ?? "-",
-                                                  style: listSubTitleTextStyle
-                                                      .copyWith(
-                                                      overflow:
-                                                      TextOverflow
-                                                          .ellipsis),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
                                         ],
                                       ),
                                       const SizedBox(
                                         height: 32,
                                       ),
-                                      Obx(() {
-                                        return CustomNumberPicker(
-                                            minValue: 0,
-                                            maxValue: item.qty ?? 0,
-                                            onChanged: (val) {
-                                              controller.listEditedDetail[index].qty = val;
-                                              controller.listEditedDetail.refresh();
-                                            },
-                                            currentValue: controller.listEditedDetail[index].qty ?? 0
-                                        );
-                                      })
+                                      if(controller.mapATKConfirmation["${item.id}"] != null) Column(
+                                        children: controller.mapATKConfirmation["${item.id}"]["listSelected"].map<Widget>((e){
+                                          print("EEE ${e.warehouseName}");
+                                          final maxValue = item.qty > e.stockAvailable ? e.stockAvailable : item.qty;
+                                          print("MAXVALUE ${e.warehouseName} $maxValue");
+                                          print("controller.listEditedDetail[index].qty ${controller.listEditedDetail[index].qty}");
+                                          return Container(
+                                            margin: EdgeInsets.symmetric(vertical: 8),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Expanded(
+                                                  child: Column(
+                                                    children: [
+                                                      DropdownButtonFormField(
+                                                        decoration: const InputDecoration(
+                                                            contentPadding: EdgeInsets.symmetric(
+                                                                horizontal: 8, vertical: 2)),
+                                                        icon: const Icon(Icons.keyboard_arrow_down),
+                                                        hint: Text("Name".tr),
+                                                        value: "${e.idWarehouse}",
+                                                        isExpanded: true,
+                                                        // underline: SizedBox(),
+                                                        items: controller.mapATKConfirmation["${item.id}"]["listDetail"]
+                                                            .map<DropdownMenuItem<String>>((e) =>
+                                                            DropdownMenuItem(
+                                                              value: "${e.idWarehouse}",
+                                                              child: Text("${e.warehouseName}"),
+                                                            ))
+                                                            .toList(),
+                                                        onChanged: (value) {
+                                                        },
+                                                      )
+
+
+                                                    ],
+                                                  ),
+                                                ),
+                                                /*Column(
+                                                  children: [
+                                                    Text(
+                                                      "Stock Avail".tr,
+                                                      style: listTitleTextStyle,
+                                                    ),
+                                                    Text(
+                                                      "${e.stockAvailable ?? "-"}",
+                                                      style: listSubTitleTextStyle,
+                                                    ),
+                                                  ],
+                                                ),*/
+                                                CustomNumberPicker(
+                                                    minValue: 0,
+                                                    maxValue: maxValue,
+                                                    onChanged: (val) {
+                                                      controller.listEditedDetail[index].qty = val;
+                                                      controller.listEditedDetail.refresh();
+                                                    },
+                                                    currentValue: 0
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        }).toList(),
+                                      )
                                     ],
                                   ),
                                 ),

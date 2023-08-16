@@ -27,6 +27,7 @@ RequestATKDetailModel _$RequestATKDetailModelFromJson(
       brandName: json['brand_name'] as String?,
       uomName: json['uom_name'] as String?,
       warehouseName: json['warehouse_name'] as String?,
+      arrayWarehouse: json['array_warehouse'] as List<dynamic>?,
     );
 
 Map<String, dynamic> _$RequestATKDetailModelToJson(
@@ -50,4 +51,5 @@ Map<String, dynamic> _$RequestATKDetailModelToJson(
       'brand_name': instance.brandName,
       'uom_name': instance.uomName,
       'warehouse_name': instance.warehouseName,
+      'array_warehouse': instance.arrayWarehouse,
     };

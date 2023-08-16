@@ -23,6 +23,7 @@ class RequestATKDetailModel extends Equatable {
   String? brandName;
   String? uomName;
   String? warehouseName;
+  List<dynamic>? arrayWarehouse;
 
   RequestATKDetailModel({
     this.key,
@@ -43,6 +44,7 @@ class RequestATKDetailModel extends Equatable {
     this.brandName,
     this.uomName,
     this.warehouseName,
+    this.arrayWarehouse,
   });
 
   factory RequestATKDetailModel.fromJson(Map<String, dynamic> json) =>
