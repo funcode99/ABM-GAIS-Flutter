@@ -1,4 +1,6 @@
 import 'package:gais/data/network_core.dart';
+import 'package:gais/data/repository/actualization_trip/actualization_trip_impl.dart';
+import 'package:gais/data/repository/actualization_trip/actualization_trip_repository.dart';
 import 'package:gais/data/repository/approval_delegation/approval_delegation_repository.dart';
 import 'package:gais/data/repository/approval_request_trip/approval_request_trip_impl.dart';
 import 'package:gais/data/repository/approval_request_trip/approval_request_trip_repository.dart';
@@ -34,6 +36,7 @@ class GlobalBinding extends Bindings {
     Get.put<ApprovalRequestTripRepository>(ApprovalRequestTripImpl(), permanent: true);
     Get.put<ManagementPoolCarRepository>(ManagementPoolCarImpl(), permanent: true);
     Get.put<ManagementMeetingRoomRepository>(ManagementMeetingRoomImpl(), permanent: true);
+    Get.put<ActualizationTripRepository>(ActualizationTripImpl(), permanent: true);
 
     Get.put(CashAdvanceTravelRepository(), permanent: false);
     Get.put(CashAdvanceNonTravelRepository(), permanent: false);

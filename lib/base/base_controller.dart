@@ -1,3 +1,4 @@
+import 'package:gais/data/repository/actualization_trip/actualization_trip_repository.dart';
 import 'package:gais/data/repository/approval_request_trip/approval_request_trip_repository.dart';
 import 'package:gais/data/repository/document_delivery/document_delivery_repository.dart';
 import 'package:gais/data/repository/management_meeting_room/management_meeting_room_repository.dart';
@@ -14,6 +15,7 @@ abstract class BaseController extends GetxController {
   final approvalRequestTrip = Get.find<ApprovalRequestTripRepository>();
   final managementPoolCar = Get.find<ManagementPoolCarRepository>();
   final managementMeetingRoom = Get.find<ManagementMeetingRoomRepository>();
+  final actualizationTrip = Get.find<ActualizationTripRepository>();
   final storage = Get.find<StorageCore>();
 
 
