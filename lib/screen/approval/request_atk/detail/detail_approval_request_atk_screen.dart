@@ -33,7 +33,7 @@ class DetailApprovalRequestATKScreen extends StatefulWidget {
 class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestATKScreen> {
   _goToConfirmPage(ApprovalRequestATKModel? selectedItem)async{
     DetailApprovalRequestATKController controller = Get.find();
-    ApprovalModel result = await  Get.to(
+    ApprovalModel? result = await  Get.to(
         ()=>const ConfirmApprovalRequestATKScreen(),
       arguments: {
           "item" : selectedItem
@@ -47,7 +47,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
 
   _openRejectDialog()async{
     DetailApprovalRequestATKController controller = Get.find();
-    ApprovalModel result = await Get.dialog(const RejectDialog(rejectFormEnum: RejectFormEnum.onlyFullReject));
+    ApprovalModel? result = await Get.dialog(const RejectDialog(rejectFormEnum: RejectFormEnum.onlyFullReject));
     if (result != null) {
       controller.approvalModel(result);
       controller.reject();

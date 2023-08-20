@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/approval_model.dart';
@@ -56,8 +58,34 @@ class ConfirmApprovalRequestATKController extends BaseController {
           idUom: item.idUom
         ));*/
 
-        List<WarehouseDetailModel>? listDetailWarehouse = item.arrayWarehouse?.map((e) => WarehouseDetailModel.fromJson(e)).toList() ?? [];
-        List<WarehouseDetailModel>? listNotSelected = item.arrayWarehouse?.map((e) => WarehouseDetailModel.fromJson(e)).toList() ?? [];
+        List<WarehouseDetailModel>? listDetailWarehouse = item.arrayWarehouse?.map((e){
+          final tempWarehouse = WarehouseDetailModel.fromJson(e);
+          WarehouseDetailModel  warehouseDetailModel = WarehouseDetailModel(
+            idItem: item.idItem,
+            idAtkRequestDetail: item.id,
+            stockAvailable: tempWarehouse.stockAvailable,
+            remarks: tempWarehouse.remarks,
+            idWarehouse: tempWarehouse.idWarehouse,
+            qtyApproved: tempWarehouse.qtyApproved,
+            warehouseName: tempWarehouse.warehouseName
+          );
+          return warehouseDetailModel;
+        }).toList() ?? [];
+
+
+        List<WarehouseDetailModel>? listNotSelected = item.arrayWarehouse?.map((e){
+          final tempWarehouse = WarehouseDetailModel.fromJson(e);
+          WarehouseDetailModel  warehouseDetailModel = WarehouseDetailModel(
+              idItem: item.idItem,
+              idAtkRequestDetail: item.id,
+              stockAvailable: tempWarehouse.stockAvailable,
+              remarks: tempWarehouse.remarks,
+              idWarehouse: tempWarehouse.idWarehouse,
+              qtyApproved: tempWarehouse.qtyApproved,
+              warehouseName: tempWarehouse.warehouseName
+          );
+          return warehouseDetailModel;
+        }).toList() ?? [];
 
 
         Map<String, dynamic> detail = {
@@ -73,14 +101,12 @@ class ConfirmApprovalRequestATKController extends BaseController {
           maxMap.putIfAbsent("${warehouseDetailModel.idWarehouse}", () => 0);
         }
         mapMaxValue["${item.id}"] = maxMap;
-        print("INIT $mapMaxValue");
 
         mapATKConfirmation.putIfAbsent("${item.id}", () => detail);
 
       }
     });
   }
-
 
   void setMaximumValue(dynamic id){
     Map<String, dynamic> tempMapMaxValue = Map<String, dynamic>.from(mapMaxValue);
@@ -117,7 +143,6 @@ class ConfirmApprovalRequestATKController extends BaseController {
 
     mapMaxValue.clear();
     mapMaxValue.value = Map<String, dynamic>.from(tempMapMaxValue);
-    print("MAPMAXVALUE $mapMaxValue");
 
   }
 
@@ -164,7 +189,17 @@ class ConfirmApprovalRequestATKController extends BaseController {
     List<WarehouseDetailModel> listSelected = List<WarehouseDetailModel>.from(tempMapATKConfirmation["${id}"]["listSelected"]).toList();
     List<WarehouseDetailModel> listNotSelected = List<WarehouseDetailModel>.from(tempMapATKConfirmation["${id}"]["listNotSelected"]).toList();
 
-    listNotSelected.add(item);
+    WarehouseDetailModel newItem = WarehouseDetailModel(
+        idWarehouse: item.idWarehouse,
+        warehouseName: item.warehouseName,
+        idItem: item.idItem,
+        remarks: item.remarks,
+        stockAvailable: item.stockAvailable,
+        idAtkRequestDetail: item.idAtkRequestDetail,
+        qtyApproved: 0
+    );
+
+    listNotSelected.add(newItem);
     listSelected.removeWhere((element) => element.idWarehouse == item.idWarehouse);
     tempMapATKConfirmation["${id}"]["listSelected"] = listSelected;
     tempMapATKConfirmation["${id}"]["listNotSelected"] = listNotSelected;
@@ -197,5 +232,32 @@ class ConfirmApprovalRequestATKController extends BaseController {
     mapATKConfirmation.value = Map<String, dynamic>.from(tempMapATKConfirmation);
 
     setMaximumValue(id);
+  }
+
+  void confirm(){
+    List<WarehouseDetailModel> warehouseDetail = [];
+
+    mapATKConfirmation.forEach((key, value) {
+      List<WarehouseDetailModel> listSelected = List<WarehouseDetailModel>.from(value["listSelected"]).toList();
+      for(WarehouseDetailModel item in listSelected){
+        warehouseDetail.add(
+          WarehouseDetailModel(
+            qtyApproved: item.qtyApproved,
+            idAtkRequestDetail: item.idAtkRequestDetail,
+            idWarehouse: item.idWarehouse,
+            remarks: noteController.text,
+            idItem: item.idItem,
+          )
+        );
+      }
+    });
+
+    print(jsonEncode(warehouseDetail));
+
+    Get.back(
+      result: ApprovalModel(
+          notes: noteController.text,
+          warehouseDetail: warehouseDetail
+    ));
   }
 }

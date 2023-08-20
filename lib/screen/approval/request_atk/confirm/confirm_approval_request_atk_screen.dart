@@ -18,24 +18,12 @@ import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-class ConfirmApprovalRequestATKScreen extends StatefulWidget {
+class ConfirmApprovalRequestATKScreen extends StatelessWidget {
   const ConfirmApprovalRequestATKScreen(
       {Key? key, this.approvalActionEnum = ApprovalActionEnum.none})
       : super(key: key);
 
   final ApprovalActionEnum approvalActionEnum;
-
-  @override
-  State<ConfirmApprovalRequestATKScreen> createState() =>
-      _ConfirmApprovalRequestATKScreenState();
-}
-
-class _ConfirmApprovalRequestATKScreenState
-    extends State<ConfirmApprovalRequestATKScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,10 +132,7 @@ class _ConfirmApprovalRequestATKScreenState
                                                     .listSelected("${item.id}")
                                                     .mapIndexed<Widget>(
                                                         (int index, e) {
-                                                  print("EEE ${e.warehouseName}");
                                                   final int maxValue = e.stockAvailable;
-                                                  print("MAXVALUE ${e.warehouseName} $maxValue");
-                                                  print("currentValue ${e.qtyApproved}");
                                                   return Container(
                                                     margin: const EdgeInsets
                                                         .symmetric(vertical: 8),
@@ -227,6 +212,7 @@ class _ConfirmApprovalRequestATKScreenState
                     CustomTextFormField(
                       label: "Notes".tr,
                       controller: controller.noteController,
+                      multiLine: true,
                     ),
                     const SizedBox(
                       height: 64,
@@ -245,12 +231,7 @@ class _ConfirmApprovalRequestATKScreenState
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            /*Get.back(
-                                result: ApprovalModel(
-                                    notes: controller.noteController.text,
-                                    arrayDetail: controller.listEditedDetail
-                                        .map((element) => element.toJson())
-                                        .toList()));*/
+                            controller.confirm();
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: infoColor),
