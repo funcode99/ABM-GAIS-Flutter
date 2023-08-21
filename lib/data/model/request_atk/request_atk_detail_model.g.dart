@@ -17,6 +17,9 @@ RequestATKDetailModel _$RequestATKDetailModelFromJson(
       idBrand: json['id_brand'] as int?,
       idUom: json['id_uom'],
       qty: json['qty'],
+      qtyApproved: json['qty_approved'],
+      qtyUnsend: json['qty_unsend'],
+      qtyDelivered: json['qty_delivered'],
       remarks: json['remarks'] as String?,
       createdAt: json['created_at'] as String?,
       createdBy: json['created_by'],
@@ -27,6 +30,7 @@ RequestATKDetailModel _$RequestATKDetailModelFromJson(
       brandName: json['brand_name'] as String?,
       uomName: json['uom_name'] as String?,
       warehouseName: json['warehouse_name'] as String?,
+      arrayWarehouse: json['array_warehouse'] as List<dynamic>?,
     );
 
 Map<String, dynamic> _$RequestATKDetailModelToJson(
@@ -40,6 +44,9 @@ Map<String, dynamic> _$RequestATKDetailModelToJson(
       'id_brand': instance.idBrand,
       'id_uom': instance.idUom,
       'qty': instance.qty,
+      'qty_approved': instance.qtyApproved,
+      'qty_unsend': instance.qtyUnsend,
+      'qty_delivered': instance.qtyDelivered,
       'remarks': instance.remarks,
       'created_at': instance.createdAt,
       'created_by': instance.createdBy,
@@ -50,4 +57,5 @@ Map<String, dynamic> _$RequestATKDetailModelToJson(
       'brand_name': instance.brandName,
       'uom_name': instance.uomName,
       'warehouse_name': instance.warehouseName,
+      'array_warehouse': instance.arrayWarehouse,
     };

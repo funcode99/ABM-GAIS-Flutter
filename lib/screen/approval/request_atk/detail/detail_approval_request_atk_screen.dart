@@ -15,7 +15,9 @@ import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/request_atk/confirm/confirm_approval_request_atk_screen.dart';
+import 'package:gais/screen/approval/request_atk/delivery/delivery_approval_request_atk_screen.dart';
 import 'package:gais/screen/approval/request_atk/detail/detail_approval_request_atk_controller.dart';
+import 'package:gais/util/color/color_util.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
@@ -33,7 +35,7 @@ class DetailApprovalRequestATKScreen extends StatefulWidget {
 class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestATKScreen> {
   _goToConfirmPage(ApprovalRequestATKModel? selectedItem)async{
     DetailApprovalRequestATKController controller = Get.find();
-    ApprovalModel result = await  Get.to(
+    ApprovalModel? result = await  Get.to(
         ()=>const ConfirmApprovalRequestATKScreen(),
       arguments: {
           "item" : selectedItem
@@ -47,10 +49,24 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
 
   _openRejectDialog()async{
     DetailApprovalRequestATKController controller = Get.find();
-    ApprovalModel result = await Get.dialog(const RejectDialog(rejectFormEnum: RejectFormEnum.onlyFullReject));
+    ApprovalModel? result = await Get.dialog(const RejectDialog(rejectFormEnum: RejectFormEnum.onlyFullReject));
     if (result != null) {
       controller.approvalModel(result);
       controller.reject();
+    }
+  }
+
+  _goToDeliveryPage(ApprovalRequestATKModel? selectedItem)async{
+    DetailApprovalRequestATKController controller = Get.find();
+    ApprovalModel? result = await  Get.to(
+            ()=>const DeliveryApprovalRequestATKScreen(),
+        arguments: {
+          "item" : selectedItem
+        }
+    );
+    if (result != null) {
+      controller.approvalModel(result);
+      controller.complete();
     }
   }
 
@@ -104,7 +120,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                       children: [
                         Obx(() {
                           return CustomStatusContainer(
-                            backgroundColor: greenColor,
+                            backgroundColor: ColorUtil.getStatusColorByText("${controller.selectedItem.value.status}"),
                             status:
                             "${controller.detailSelectedItem.value.status}",
                           );
@@ -149,6 +165,21 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                             backgroundColor: redColor,
                             onPressed: () {
                               _openRejectDialog();
+                            },
+                          )
+                        ],
+                      );
+                    }else if (controller.selectedItem.value.codeStatusDoc ==
+                        RequestATKEnum.approve.value) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomIconButton(
+                            title: "Delivery".tr,
+                            iconData: Icons.check,
+                            backgroundColor: successColor,
+                            onPressed: () {
+                              _goToDeliveryPage(controller.selectedItem.value);
                             },
                           )
                         ],
@@ -313,22 +344,81 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                                           children: [
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  "Quantity".tr,
-                                                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                                                      fontSize: 14, color: Colors.black, height: 1.5),
-                                                ),
-                                                Text(
-                                                  "${item.qty ?? ""}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
-                                                ),
-                                              ],
+                                            Expanded(
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    "Qty Req".tr,
+                                                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                                        fontSize: 14, color: Colors.black, height: 1.5),
+                                                  ),
+                                                  Text(
+                                                    "${item.qty ?? ""}",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
+                                            if(item.qtyApproved != null)
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "Qty App".tr,
+                                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                                          fontSize: 14, color: Colors.black, height: 1.5),
+                                                    ),
+                                                    Text(
+                                                      "${item.qtyApproved ?? ""}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            if(item.qtyUnsend != null)
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "Qty Rej".tr,
+                                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                                          fontSize: 14, color: Colors.black, height: 1.5),
+                                                    ),
+                                                    Text(
+                                                      "${item.qtyUnsend ?? ""}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            if(item.qtyDelivered != null)
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "Qty Del".tr,
+                                                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                                          fontSize: 14, color: Colors.black, height: 1.5),
+                                                    ),
+                                                    Text(
+                                                      "${item.qtyDelivered ?? ""}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             Column(
                                               children: [
                                                 Text(

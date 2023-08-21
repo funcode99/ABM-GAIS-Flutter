@@ -16,6 +16,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/add/add_item_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_controller.dart';
+import 'package:gais/util/color/color_util.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:get/get.dart';
@@ -66,7 +67,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                               return const SizedBox();
                             }
                             return CustomStatusContainer(
-                              backgroundColor: greenColor,
+                              backgroundColor: ColorUtil.getStatusColorByText("${controller.selectedItem.value.status}"),
                               status: "${controller.selectedItem.value.status}",
                             );
                           })
@@ -369,20 +370,73 @@ class RequestATKDetailScreen extends StatelessWidget {
                                               child: Column(
                                                 children: [
                                                   Text(
-                                                    "Quantity".tr,
-                                                    style: listTitleTextStyle,
+                                                    "Qty Req".tr,
+                                                      style: listTitleTextStyle,
                                                   ),
                                                   Text(
-                                                    "${item.qty}",
-                                                    style: listSubTitleTextStyle
-                                                        .copyWith(
-                                                        overflow:
-                                                        TextOverflow
-                                                            .ellipsis),
+                                                    "${item.qty ?? ""}",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
                                                   ),
                                                 ],
                                               ),
                                             ),
+                                            if(item.qtyApproved != null)
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "Qty App".tr,
+                                                      style: listTitleTextStyle,
+                                                    ),
+                                                    Text(
+                                                      "${item.qtyApproved ?? ""}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            if(item.qtyUnsend != null)
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "Qty Rej".tr,
+                                                      style: listTitleTextStyle,
+                                                    ),
+                                                    Text(
+                                                      "${item.qtyUnsend ?? ""}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            if(item.qtyDelivered != null)
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "Qty Del".tr,
+                                                      style: listTitleTextStyle,
+                                                    ),
+                                                    Text(
+                                                      "${item.qtyDelivered ?? ""}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             Expanded(
                                               child: Column(
                                                 children: [

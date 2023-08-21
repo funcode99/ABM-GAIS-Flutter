@@ -16,6 +16,7 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_controller.dart';
 import 'package:gais/screen/fss/booking_meeting_room/widget/meeting_room_time_picker_dialog.dart';
+import 'package:gais/util/color/color_util.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/date_ext.dart';
 import 'package:gais/util/validator/custom_validation_builder.dart';
@@ -71,7 +72,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                             return const SizedBox();
                           }
                           return CustomStatusContainer(
-                            backgroundColor: greenColor,
+                            backgroundColor: ColorUtil.getStatusColorByText("${controller.selectedItem.value.status}"),
                             status: "${controller.selectedItem.value.status}",
                           );
                         })
