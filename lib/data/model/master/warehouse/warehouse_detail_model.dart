@@ -12,6 +12,7 @@ class WarehouseDetailModel extends Equatable{
   final dynamic idAtkRequestDetail;
   final dynamic qtyApproved;
   final String? remarks;
+  final int? maxValue;
 
 
 
@@ -22,7 +23,8 @@ class WarehouseDetailModel extends Equatable{
     this.idItem,
     this.idAtkRequestDetail,
     this.qtyApproved,
-    this.remarks
+    this.remarks,
+    this.maxValue,
   });
 
 

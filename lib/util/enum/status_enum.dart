@@ -42,6 +42,7 @@ enum RequestTripEnum {
 enum RequestATKEnum {
   draft(0),
   waitingApproval(1),
+  approve(2),
   cancelled(9),
   done(10),
   partialCompleted(11);

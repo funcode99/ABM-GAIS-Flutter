@@ -13,6 +13,9 @@ class RequestATKDetailModel extends Equatable {
   int? idBrand;
   dynamic idUom;
   dynamic qty;
+  dynamic qtyApproved;
+  dynamic qtyUnsend;
+  dynamic qtyDelivered;
   String? remarks;
   String? createdAt;
   dynamic createdBy;
@@ -34,6 +37,9 @@ class RequestATKDetailModel extends Equatable {
     this.idBrand,
     this.idUom,
     this.qty,
+    this.qtyApproved,
+    this.qtyUnsend,
+    this.qtyDelivered,
     this.remarks,
     this.createdAt,
     this.createdBy,

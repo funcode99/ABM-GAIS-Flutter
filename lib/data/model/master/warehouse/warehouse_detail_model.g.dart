@@ -16,6 +16,7 @@ WarehouseDetailModel _$WarehouseDetailModelFromJson(
       idAtkRequestDetail: json['id_atk_request_detail'],
       qtyApproved: json['qty_approved'],
       remarks: json['remarks'] as String?,
+      maxValue: json['max_value'] as int?,
     );
 
 Map<String, dynamic> _$WarehouseDetailModelToJson(
@@ -28,4 +29,5 @@ Map<String, dynamic> _$WarehouseDetailModelToJson(
       'id_atk_request_detail': instance.idAtkRequestDetail,
       'qty_approved': instance.qtyApproved,
       'remarks': instance.remarks,
+      'max_value': instance.maxValue,
     };
