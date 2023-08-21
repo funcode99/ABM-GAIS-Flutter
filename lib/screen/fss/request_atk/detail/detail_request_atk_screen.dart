@@ -369,20 +369,73 @@ class RequestATKDetailScreen extends StatelessWidget {
                                               child: Column(
                                                 children: [
                                                   Text(
-                                                    "Quantity".tr,
-                                                    style: listTitleTextStyle,
+                                                    "Qty Req".tr,
+                                                      style: listTitleTextStyle,
                                                   ),
                                                   Text(
-                                                    "${item.qty}",
-                                                    style: listSubTitleTextStyle
-                                                        .copyWith(
-                                                        overflow:
-                                                        TextOverflow
-                                                            .ellipsis),
+                                                    "${item.qty ?? ""}",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
                                                   ),
                                                 ],
                                               ),
                                             ),
+                                            if(item.qtyApproved != null)
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "Qty App".tr,
+                                                      style: listTitleTextStyle,
+                                                    ),
+                                                    Text(
+                                                      "${item.qtyApproved ?? ""}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            if(item.qtyUnsend != null)
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "Qty Rej".tr,
+                                                      style: listTitleTextStyle,
+                                                    ),
+                                                    Text(
+                                                      "${item.qtyUnsend ?? ""}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            if(item.qtyDelivered != null)
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      "Qty Del".tr,
+                                                      style: listTitleTextStyle,
+                                                    ),
+                                                    Text(
+                                                      "${item.qtyDelivered ?? ""}",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1
+                                                          ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             Expanded(
                                               child: Column(
                                                 children: [

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/approval_log_model.dart';
@@ -98,6 +100,22 @@ class DetailApprovalRequestATKController extends BaseController {
             .then((value) => Get.back(result: true));
       } else {
         showApprovalFailDialog("Request failed to be approved!".tr)
+            .then((value) => Get.back(result: true));
+      }
+    });
+  }
+
+  void complete() async {
+    final result =
+        await _repository.complete(approvalModel.value, selectedItem.value.id!);
+    result.fold(
+        (l) => showApprovalFailDialog("Request failed to be delivered!".tr)
+            .then((value) => Get.back(result: true)), (r) {
+      if (r) {
+        showApprovalSuccessDialog("The request was successfully delivered!".tr)
+            .then((value) => Get.back(result: true));
+      } else {
+        showApprovalFailDialog("Request failed to be delivered!".tr)
             .then((value) => Get.back(result: true));
       }
     });
