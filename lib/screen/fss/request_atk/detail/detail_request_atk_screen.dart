@@ -383,7 +383,8 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                              if(item.qtyApproved != null)
+                                              if(item.codeStatusDoc != null)
+                                                if(item.qtyApproved != null && item.codeStatusDoc! > 1)
                                                 Column(
                                                   children: [
                                                     Text(
@@ -400,7 +401,8 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                     ),
                                                   ],
                                                 ),
-                                              if(item.qtyUnsend != null)
+                                              if(item.codeStatusDoc != null)
+                                              if(item.qtyUnsend != null && item.codeStatusDoc! > 1)
                                                 Column(
                                                   children: [
                                                     Text(
@@ -417,7 +419,8 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                     ),
                                                   ],
                                                 ),
-                                              if(item.qtyDelivered != null)
+                                              if(item.codeStatusDoc != null)
+                                                if(item.qtyDelivered != null && item.codeStatusDoc! > 1)
                                                 Column(
                                                   children: [
                                                     Text(

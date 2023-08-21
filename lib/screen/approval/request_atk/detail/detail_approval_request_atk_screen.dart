@@ -362,57 +362,60 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                                                   ),
                                                 ],
                                               ),
-                                              if(item.qtyApproved != null)
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "Qty\nApproved".tr,
-                                                      textAlign: TextAlign.center,
-                                                      style: listTitleTextStyle,
-                                                    ),
-                                                    Text(
-                                                      "${item.qtyApproved ?? ""}",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
-                                                    ),
-                                                  ],
-                                                ),
-                                              if(item.qtyUnsend != null)
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "Qty\nRejected".tr,
-                                                      textAlign: TextAlign.center,
-                                                      style: listTitleTextStyle,
-                                                    ),
-                                                    Text(
-                                                      "${item.qtyUnsend ?? ""}",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
-                                                    ),
-                                                  ],
-                                                ),
-                                              if(item.qtyDelivered != null)
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "Qty\nDelivered".tr,
-                                                      textAlign: TextAlign.center,
-                                                      style: listTitleTextStyle,
-                                                    ),
-                                                    Text(
-                                                      "${item.qtyDelivered ?? ""}",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
-                                                    ),
-                                                  ],
-                                                ),
+                                              if(item.codeStatusDoc != null)
+                                                if(item.qtyApproved != null && item.codeStatusDoc! > 1)
+                                                  Column(
+                                                    children: [
+                                                      Text(
+                                                        "Qty\nApproved".tr,
+                                                        textAlign: TextAlign.center,
+                                                        style: listTitleTextStyle,
+                                                      ),
+                                                      Text(
+                                                        "${item.qtyApproved ?? ""}",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1
+                                                            ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                                      ),
+                                                    ],
+                                                  ),
+                                              if(item.codeStatusDoc != null)
+                                                if(item.qtyUnsend != null && item.codeStatusDoc! > 1)
+                                                  Column(
+                                                    children: [
+                                                      Text(
+                                                        "Qty\nRejected".tr,
+                                                        textAlign: TextAlign.center,
+                                                        style: listTitleTextStyle,
+                                                      ),
+                                                      Text(
+                                                        "${item.qtyUnsend ?? ""}",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1
+                                                            ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                                      ),
+                                                    ],
+                                                  ),
+                                              if(item.codeStatusDoc != null)
+                                                if(item.qtyDelivered != null && item.codeStatusDoc! > 1)
+                                                  Column(
+                                                    children: [
+                                                      Text(
+                                                        "Qty\nDelivered".tr,
+                                                        textAlign: TextAlign.center,
+                                                        style: listTitleTextStyle,
+                                                      ),
+                                                      Text(
+                                                        "${item.qtyDelivered ?? ""}",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1
+                                                            ?.copyWith(fontSize: 14, color: greyColor, height: 1.5),
+                                                      ),
+                                                    ],
+                                                  ),
                                               Column(
                                                 children: [
                                                   Text(
