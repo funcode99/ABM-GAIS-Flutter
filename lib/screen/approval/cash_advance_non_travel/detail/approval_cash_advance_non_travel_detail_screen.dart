@@ -16,6 +16,7 @@ import 'package:gais/reusable/list_item/common_add_item.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/cash_advance_non_travel/detail/approval_cash_advance_non_travel_detail_controller.dart';
+import 'package:gais/util/color/color_util.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
@@ -107,7 +108,7 @@ class _ApprovalCashAdvanceNonTravelDetailScreenState
                       children: [
                         Obx(() {
                           return CustomStatusContainer(
-                            backgroundColor: greenColor,
+                            backgroundColor: ColorUtil.getStatusColorByText("${controller.selectedItem.value.status}"),
                             status:
                                 "${controller.detailSelectedItem.value.status}",
                           );

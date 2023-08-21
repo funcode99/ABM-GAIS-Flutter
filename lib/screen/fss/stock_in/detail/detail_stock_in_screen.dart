@@ -15,6 +15,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/stock_in/add/item_stock_in/add/add_item_stock_in_screen.dart';
 import 'package:gais/screen/fss/stock_in/add/item_stock_in/detail/detail_item_stock_in_screen.dart';
 import 'package:gais/screen/fss/stock_in/detail/detail_stock_in_controller.dart';
+import 'package:gais/util/color/color_util.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -61,7 +62,7 @@ class DetailStockInScreen extends StatelessWidget {
                         children: [
                           controller.selectedItem.value.status != null
                               ? CustomStatusContainer(
-                            backgroundColor: greenColor,
+                            backgroundColor: ColorUtil.getStatusColorByText("${controller.selectedItem.value.status}"),
                             status:
                             controller.selectedItem.value.status ?? "-",
                           )

@@ -3,6 +3,7 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/customalertcontainer.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
+import 'package:gais/util/color/color_util.dart';
 
 class CommonListItem extends StatelessWidget {
   const CommonListItem(
@@ -75,7 +76,7 @@ class CommonListItem extends StatelessWidget {
                     ),
                   ),
                   status != null ? CustomStatusContainer(
-                    backgroundColor: greenColor,
+                    backgroundColor: ColorUtil.getStatusColorByText(status!),
                     status: status ?? "",
                   ) : const SizedBox()
                 ],

@@ -16,6 +16,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/add/add_item_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/detail/detail_request_atk_controller.dart';
+import 'package:gais/util/color/color_util.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:get/get.dart';
@@ -66,7 +67,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                               return const SizedBox();
                             }
                             return CustomStatusContainer(
-                              backgroundColor: greenColor,
+                              backgroundColor: ColorUtil.getStatusColorByText("${controller.selectedItem.value.status}"),
                               status: "${controller.selectedItem.value.status}",
                             );
                           })
