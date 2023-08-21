@@ -58,6 +58,8 @@ class ApprovalConfirmationController extends BaseController with MasterDataMixin
     }else{
       selectedEnum(ApproveEnum.fullApprove);
     }
+
+    updateButton();
   }
 
   void onChangeSelectedEmployee(String id) {
