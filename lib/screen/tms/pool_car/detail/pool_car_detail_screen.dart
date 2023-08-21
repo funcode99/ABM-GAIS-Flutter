@@ -14,6 +14,7 @@ import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/pool_car/detail/pool_car_detail_controller.dart';
 import 'package:gais/screen/tms/pool_car/p2h/pool_car_p2h_screen.dart';
+import 'package:gais/util/color/color_util.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -64,7 +65,7 @@ class _PoolCarDetailScreenState
                       children: [
                         Obx(() {
                           return CustomStatusContainer(
-                            backgroundColor: greenColor,
+                            backgroundColor: ColorUtil.getStatusColorByText("${controller.selectedItem.value.status}"),
                             status: "${controller.selectedItem.value.status}",
                           );
                         })

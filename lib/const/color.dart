@@ -15,3 +15,4 @@ const Color infoColor = Color(0xff015289);
 const Color greenColor = Color(0xff16B364);
 const Color successColor = Color(0xff87C556);
 const Color warningColor = Color(0xffFFF500);
+const Color blueColor = Color(0xff3f7bfe);
