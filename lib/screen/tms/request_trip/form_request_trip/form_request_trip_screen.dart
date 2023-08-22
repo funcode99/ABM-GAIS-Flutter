@@ -91,7 +91,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                   title: "Actualization",
                                   width: Get.width / 4,
                                   onPressed: () {
-                                    Get.to(ActualizationTripScreen());
+                                    controller.checkActual();
                                   },
                                 ),
                                 controller.rtStatus == "Draft" || controller.rtStatus == "Revision"

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
@@ -11,6 +12,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/actualization_trip_controller.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/add/activities_detail/act_activities_detail_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/add/trip_info/act_trip_info_screen.dart';
+import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -44,88 +46,93 @@ class ActualizationTripScreen extends StatelessWidget {
                     children: [
                       const CustomFormLabel(label: "Trip Info", showRequired: false),
                       Column(
-                        children: [
-                          Container(
-                            // width: Get.width,
-                            margin: const EdgeInsets.only(top: 10),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 50,
-                                  height: 50,
-                                  margin: const EdgeInsets.only(right: 10),
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(4)),
-                                  child: Text("No\n1", style: listTitleTextStyle.copyWith(color: whiteColor), textAlign: TextAlign.center),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("23/04/2023 - 25/04/2023", style: listTitleTextStyle),
-                                    SizedBox(
-                                      width: Get.width - 100,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text("Jakarta - Surabaya", style: listSubTitleTextStyle),
-                                              Text("Zona", style: listSubTitleTextStyle),
-                                              Text("TLK / Day", style: listSubTitleTextStyle),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              GestureDetector(
-                                                child: Container(
-                                                  padding: const EdgeInsets.all(5),
-                                                  margin: const EdgeInsets.all(2),
-                                                  decoration: BoxDecoration(color: successColor, borderRadius: BorderRadius.circular(6)),
-                                                  child: const Icon(IconlyBold.edit, color: whiteColor),
-                                                ),
-                                                onTap: () {
-                                                  Get.dialog(DeleteConfirmationDialog(
-                                                    onDeletePressed: () {
-                                                      Get.back();
-                                                    },
-                                                  ));
-                                                },
-                                              ),
-                                              GestureDetector(
-                                                child: Container(
-                                                  padding: const EdgeInsets.all(5),
-                                                  margin: const EdgeInsets.all(2),
-                                                  decoration: BoxDecoration(color: errorColor, borderRadius: BorderRadius.circular(6)),
-                                                  child: const Icon(IconlyBold.delete, color: whiteColor),
-                                                ),
-                                                onTap: () {
-                                                  Get.dialog(DeleteConfirmationDialog(
-                                                    onDeletePressed: () {
-                                                      Get.back();
-                                                    },
-                                                  ));
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                        children: controller.listTripInfo
+                            .mapIndexed((i, e) => Container(
+                                  // width: Get.width,
+                                  margin: const EdgeInsets.only(top: 10),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 50,
+                                        height: 50,
+                                        margin: const EdgeInsets.only(right: 10),
+                                        padding: const EdgeInsets.all(5),
+                                        decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(4)),
+                                        child:
+                                            Text("No\n${i + 1}", style: listTitleTextStyle.copyWith(color: whiteColor), textAlign: TextAlign.center),
                                       ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              "${controller.dateFormat.format(DateTime.parse(e.dateDeparture.toString()))} - ${controller.dateFormat.format(DateTime.parse(e.dateArrival.toString()))}",
+                                              style: listTitleTextStyle),
+                                          SizedBox(
+                                            width: Get.width - 100,
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("${e.nameCityFrom} - ${e.nameCityTo}", style: listSubTitleTextStyle),
+                                                    Text("${e.zonaName}", style: listSubTitleTextStyle),
+                                                    Text("${e.tlkRate?.toInt().toCurrency()}", style: listSubTitleTextStyle),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    GestureDetector(
+                                                      child: Container(
+                                                        padding: const EdgeInsets.all(5),
+                                                        margin: const EdgeInsets.all(2),
+                                                        decoration: BoxDecoration(color: successColor, borderRadius: BorderRadius.circular(6)),
+                                                        child: const Icon(IconlyBold.edit, color: whiteColor),
+                                                      ),
+                                                      onTap: () {
+                                                        Get.dialog(DeleteConfirmationDialog(
+                                                          onDeletePressed: () {
+                                                            Get.back();
+                                                          },
+                                                        ));
+                                                      },
+                                                    ),
+                                                    GestureDetector(
+                                                      child: Container(
+                                                        padding: const EdgeInsets.all(5),
+                                                        margin: const EdgeInsets.all(2),
+                                                        decoration: BoxDecoration(color: errorColor, borderRadius: BorderRadius.circular(6)),
+                                                        child: const Icon(IconlyBold.delete, color: whiteColor),
+                                                      ),
+                                                      onTap: () {
+                                                        Get.dialog(DeleteConfirmationDialog(
+                                                          onDeletePressed: () {
+                                                            Get.back();
+                                                          },
+                                                        ));
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ))
+                            .toList(),
                       ),
                       CustomFilledButton(
                         color: infoColor,
                         title: "Add Trip",
                         icon: Icons.add,
                         margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                        onPressed: () => Get.to(const ActTripInfoScreen()),
+                        onPressed: () => Get.to(const ActTripInfoScreen(),
+                                arguments: {"idActual": controller.actualID, "idZona": controller.zonaID, "tlkRate": controller.tlkRate})
+                            ?.then((value) => controller.fetchList()),
                       ),
                       CustomTextFormField(
                         controller: controller.purpose,
@@ -136,87 +143,90 @@ class ActualizationTripScreen extends StatelessWidget {
                       const CustomFormLabel(label: "Activities", showRequired: true),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            // width: Get.width,
-                            margin: const EdgeInsets.only(top: 10),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 50,
-                                  height: 50,
-                                  margin: const EdgeInsets.only(right: 10),
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(4)),
-                                  child: Text("No\n1", style: listTitleTextStyle.copyWith(color: whiteColor), textAlign: TextAlign.center),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("23/04/2023", style: listTitleTextStyle),
-                                    SizedBox(
-                                      width: Get.width - 100,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: controller.listActivities
+                            .mapIndexed((i, e) => Container(
+                                  // width: Get.width,
+                                  margin: const EdgeInsets.only(top: 10),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 50,
+                                        height: 50,
+                                        margin: const EdgeInsets.only(right: 10),
+                                        padding: const EdgeInsets.all(5),
+                                        decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(4)),
+                                        child:
+                                            Text("No\n${i + 1}", style: listTitleTextStyle.copyWith(color: whiteColor), textAlign: TextAlign.center),
+                                      ),
+                                      Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text("Travel from Jakarta to Surabaya", style: listSubTitleTextStyle),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              GestureDetector(
-                                                child: Container(
-                                                  padding: const EdgeInsets.all(5),
-                                                  margin: const EdgeInsets.all(2),
-                                                  decoration: BoxDecoration(color: successColor, borderRadius: BorderRadius.circular(6)),
-                                                  child: const Icon(IconlyBold.edit, color: whiteColor),
+                                          Text(controller.dateFormat.format(DateTime.parse(e.actDate ?? DateTime.now().toString())),
+                                              style: listTitleTextStyle),
+                                          SizedBox(
+                                            width: Get.width - 100,
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(e.activities.toString(), style: listSubTitleTextStyle),
+                                                  ],
                                                 ),
-                                                onTap: () {
-                                                  Get.dialog(DeleteConfirmationDialog(
-                                                    onDeletePressed: () {
-                                                      Get.back();
-                                                    },
-                                                  ));
-                                                },
-                                              ),
-                                              GestureDetector(
-                                                child: Container(
-                                                  padding: const EdgeInsets.all(5),
-                                                  margin: const EdgeInsets.all(2),
-                                                  decoration: BoxDecoration(color: errorColor, borderRadius: BorderRadius.circular(6)),
-                                                  child: const Icon(IconlyBold.delete, color: whiteColor),
+                                                Row(
+                                                  children: [
+                                                    GestureDetector(
+                                                      child: Container(
+                                                        padding: const EdgeInsets.all(5),
+                                                        margin: const EdgeInsets.all(2),
+                                                        decoration: BoxDecoration(color: successColor, borderRadius: BorderRadius.circular(6)),
+                                                        child: const Icon(IconlyBold.edit, color: whiteColor),
+                                                      ),
+                                                      onTap: () {
+                                                        Get.dialog(DeleteConfirmationDialog(
+                                                          onDeletePressed: () {
+                                                            Get.back();
+                                                          },
+                                                        ));
+                                                      },
+                                                    ),
+                                                    GestureDetector(
+                                                      child: Container(
+                                                        padding: const EdgeInsets.all(5),
+                                                        margin: const EdgeInsets.all(2),
+                                                        decoration: BoxDecoration(color: errorColor, borderRadius: BorderRadius.circular(6)),
+                                                        child: const Icon(IconlyBold.delete, color: whiteColor),
+                                                      ),
+                                                      onTap: () {
+                                                        Get.dialog(DeleteConfirmationDialog(
+                                                          onDeletePressed: () {
+                                                            Get.back();
+                                                          },
+                                                        ));
+                                                      },
+                                                    ),
+                                                  ],
                                                 ),
-                                                onTap: () {
-                                                  Get.dialog(DeleteConfirmationDialog(
-                                                    onDeletePressed: () {
-                                                      Get.back();
-                                                    },
-                                                  ));
-                                                },
-                                              ),
-                                            ],
-                                          ),
+                                              ],
+                                            ),
+                                          )
                                         ],
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
+                                      )
+                                    ],
+                                  ),
+                                ))
+                            .toList(),
                       ),
                       CustomFilledButton(
                         color: infoColor,
                         title: "Add Activities",
                         icon: Icons.add,
                         margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                        onPressed: () => Get.to(const ActActivitiesDetailScreen()),
+                        onPressed: () => Get.to(const ActActivitiesDetailScreen(), arguments: {"idActual": controller.actualID})
+                            ?.then((value) => controller.fetchList()),
                       ),
                       CustomTextFormField(
                         controller: controller.totalTLK,

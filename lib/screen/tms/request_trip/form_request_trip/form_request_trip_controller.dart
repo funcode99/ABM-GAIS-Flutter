@@ -22,6 +22,8 @@ import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advan
 import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/actualization_trip_screen.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -33,6 +35,7 @@ class FormRequestTripController extends BaseController {
   int? siteID;
   int? jobID;
   String? role;
+  String? actualID;
 
   final formKey = GlobalKey<FormState>();
   final createdDate = TextEditingController();
@@ -77,6 +80,7 @@ class FormRequestTripController extends BaseController {
   String? travellerGender;
   String? travellerHotel;
   String? travellerFlight;
+  String? idEmployee;
 
   List items = [
     {
@@ -339,15 +343,18 @@ class FormRequestTripController extends BaseController {
     notes.text = rtModel?.data?.first.notes ?? "";
     selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
     isAttachment = selectedPurpose == "1" || selectedPurpose == "2" || selectedPurpose == "3" || selectedPurpose == "5" ? true : false;
-    // print("attachment : ${rtModel?.data?.first.file}");
+    print("attachment : ${rtModel?.data?.first.file}");
     if (isAttachment == true) {
-      attachment.text = rtModel?.data?.first.file;
-      fileURL = rtModel?.data?.first.file;
-      getFileFromUrl().then((f) {
-        pdfPath = f.path;
-        gettedFile = f;
-        update();
-      });
+      attachment.text = rtModel?.data?.first.file.toString() != "{}" ? rtModel?.data?.first.file : "no attachment";
+      fileURL = rtModel?.data?.first.file.toString() ?? "";
+      print("file URL : $fileURL");
+      if (fileURL != "{}") {
+        getFileFromUrl().then((f) {
+          pdfPath = f.path;
+          gettedFile = f;
+          update();
+        });
+      }
       update();
     }
     selectedPurpose = codeDocument.toString();
@@ -376,6 +383,8 @@ class FormRequestTripController extends BaseController {
       travellerHotel = value.first.hotelFare;
       // travellerFlight = value.first.flightClass;
       tlkJobBand.text = value.first.bandJobName.toString();
+      idEmployee = value.first.id.toString();
+      print("id_employee: $idEmployee");
     });
 
     await storage.readEmployeeFlight().then((value) => travellerFlight = value.first.idFlightClass.toString());
@@ -721,6 +730,48 @@ class FormRequestTripController extends BaseController {
           backgroundColor: errorColor,
         ),
       );
+    }
+  }
+
+  Future<void> checkActual() async {
+    try {
+      await actualizationTrip.getActualBytripID(purposeID).then((value) async {
+        print("actual : ${value.data?.isNotEmpty}");
+        if (value.data!.isEmpty) {
+          await actualizationTrip
+              .saveActualizationTrip(
+                purposeID,
+                departureDate.toString(),
+                arrivalDate.toString(),
+                fromCity.toString(),
+                toCity.toString(),
+                zonaID.toString(),
+                tlkDay.toString(),
+                "-",
+                "",
+                "-",
+                tlkTotal.text.digitOnly(),
+                "-",
+                idEmployee.toString(),
+              )
+              .then((saveAct) => Get.to(const ActualizationTripScreen(), arguments: {
+                    "idRequestTrip": purposeID,
+                    "idActual": saveAct.data?.id,
+                    "idZona": zonaID,
+                    "tlkRate": tlkDay,
+                  }));
+        } else {
+          Get.to(const ActualizationTripScreen(), arguments: {
+            "idRequestTrip": purposeID,
+            "idActual": value.data?.first.id,
+            "idZona": zonaID,
+            "tlkRate": tlkDay,
+          });
+        }
+      });
+    } catch (e, i) {
+      e.printError();
+      i.printError();
     }
   }
 }

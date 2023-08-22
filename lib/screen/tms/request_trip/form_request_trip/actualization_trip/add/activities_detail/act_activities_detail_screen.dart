@@ -83,7 +83,9 @@ class ActActivitiesDetailScreen extends StatelessWidget {
                             color: successColor,
                             title: "Save",
                             onPressed: () {
-                              if (controller.formKey.currentState?.validate() == true) {}
+                              if (controller.formKey.currentState?.validate() == true) {
+                                controller.saveData();
+                              }
                             },
                           )
                         ],

@@ -131,9 +131,11 @@ class PurposeOfTripController extends BaseController {
     siteModel = dataSite;
     siteList.addAll(dataSite.data?.toSet().toList() ?? []);
 
-    await repository.getTLKJobByIDJob(jobID!).then((value) {
-      tlkDay.text = int.parse(value.data?.first.tlkRate ?? "0").toCurrency();
-    });
+    // await repository.getTLKJobByIDJob(jobID!).then((value) {
+    //   tlkDay.text = int.parse(value.data?.first.tlkRate ?? "0").toCurrency();
+    // });
+
+    await storage.readString(StorageCore.tlkRate).then((value) => tlkDay.text = int.parse(value).toCurrency());
 
     await repository.getCostCenterList().then((value) => costCenterList.addAll(value.data?.toSet().toList() ?? []));
     isLoading = false;

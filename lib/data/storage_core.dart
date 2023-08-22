@@ -16,6 +16,7 @@ class StorageCore {
   static const String costCenterID = "costCenterID";
   static const String codeRole = "codeRole";
   static const String snEmployee = "sn";
+  static const String tlkRate = 'tlkRate';
 
   final storage = const FlutterSecureStorage();
 
@@ -60,6 +61,7 @@ class StorageCore {
     String hotelFare,
     String mealsFare,
     String idCostCenter,
+    String tlkRate,
   ) async {
     await storage.write(key: 'userID', value: id);
     await storage.write(key: 'name', value: name);
@@ -87,6 +89,7 @@ class StorageCore {
     await storage.write(key: 'hotelFare', value: hotelFare);
     await storage.write(key: 'mealsFare', value: mealsFare);
     await storage.write(key: 'costCenterID', value: idCostCenter);
+    await storage.write(key: 'tlkRate', value: tlkRate);
   }
 
   void deleteToken() async {
