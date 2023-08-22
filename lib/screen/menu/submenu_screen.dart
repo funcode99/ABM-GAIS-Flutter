@@ -6,6 +6,7 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/approval/cash_advance_non_travel/approval_cash_advance_non_travel_screen.dart';
 import 'package:gais/screen/approval/cash_advance_non_travel/list/approval_cash_advance_non_travel_list_screen.dart';
 import 'package:gais/screen/approval/cash_advance_travel/approval_cash_advance_travel_screen.dart';
 import 'package:gais/screen/approval/cash_advance_travel/list/approval_cash_advance_travel_list_screen.dart';
@@ -100,7 +101,7 @@ class SubmenuScreen extends StatelessWidget {
                                 ),
                                 onTap: () => controller.approval
                                     ? Get.to(() =>
-                                        const ApprovalCashAdvanceNonTravelListScreen())
+                                        const ApprovalCashAdvanceNonTravelScreen())
                                     : Get.to(() =>
                                         const CashAdvanceNonTravelListScreen()),
                               ),
