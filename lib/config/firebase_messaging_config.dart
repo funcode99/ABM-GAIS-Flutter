@@ -42,26 +42,15 @@ class FirebaseMessagingConfig{
 
     const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    const DarwinInitializationSettings initializationSettingsDarwin =
-    DarwinInitializationSettings(
+    DarwinInitializationSettings initializationSettingsDarwin =
+    const DarwinInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
-        /*onDidReceiveLocalNotification:
-          (int id, String? title, String? body, String? payload) async {
-        didReceiveLocalNotificationStream.add(
-          ReceivedNotification(
-            id: id,
-            title: title,
-            body: body,
-            payload: payload,
-          ),
-        );
-      },*/
       // notificationCategories: darwinNotificationCategories,
     );
 
-    const InitializationSettings initializationSettings = InitializationSettings(
+    InitializationSettings initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
       iOS:initializationSettingsDarwin
     );
@@ -95,6 +84,12 @@ class FirebaseMessagingConfig{
     );
 
 
+    FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true
+    );
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if (message.notification != null) {
         AndroidNotification? android = message.notification?.android;
@@ -112,6 +107,7 @@ class FirebaseMessagingConfig{
                   channel.id,
                   channel.name,
                   channelDescription: channel.description,
+                  priority: Priority.max,
                 ),
               ));
         }
