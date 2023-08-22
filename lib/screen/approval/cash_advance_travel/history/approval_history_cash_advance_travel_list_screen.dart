@@ -1,34 +1,31 @@
 import 'package:collection/collection.dart';
-import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
-import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/calendar/custom_calendar_picker.dart';
-import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
-import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/cash_advance_travel/detail/approval_cash_advance_travel_detail_screen.dart';
-import 'package:gais/screen/approval/cash_advance_travel/list/approval_cash_advance_travel_list_controller.dart';
+import 'package:gais/screen/approval/cash_advance_travel/history/approval_history_cash_advance_travel_list_controller.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
-class ApprovalCashAdvanceTravelListScreen extends StatelessWidget {
-  const ApprovalCashAdvanceTravelListScreen({Key? key}) : super(key: key);
+class ApprovalHistoryCashAdvanceTravelListScreen extends StatelessWidget {
+  const ApprovalHistoryCashAdvanceTravelListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ApprovalCashAdvanceTravelListController controller =
-        Get.put(ApprovalCashAdvanceTravelListController());
+    final ApprovalHistoryCashAdvanceTravelListController controller =
+        Get.put(ApprovalHistoryCashAdvanceTravelListController());
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -52,6 +49,26 @@ class ApprovalCashAdvanceTravelListScreen extends StatelessWidget {
                   controller.resetFilter();
                 },
                 children: [
+                  Obx(() {
+                    return CustomDropDownFormField(
+                      items: controller.listStatus
+                          .map((e) => DropdownMenuItem(
+                        value: e.code.toString(),
+                        child: Text("${e.status}"),
+                      ))
+                          .toList(),
+                      onChanged: (item) {
+                        controller.onChangeSelectedStatus(item.toString());
+                      },
+                      label: "Status".tr,
+                      value: controller.selectedStatusTemp.value != null
+                          ? controller.selectedStatusTemp.value?.code.toString()
+                          : "",
+                    );
+                  }),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   CustomTextFormField(
                       readOnly: true,
                       controller: controller.dateRangeController,

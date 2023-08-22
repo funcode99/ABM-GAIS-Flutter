@@ -277,32 +277,36 @@ class _CashAdvanceTravelDetailScreenState
                                       child: Row(
                                         mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Column(
-                                            children: [
-                                              Text(
-                                                "Item".tr,
-                                                style: Theme
-                                                    .of(context)
-                                                    .textTheme
-                                                    .bodyText1
-                                                    ?.copyWith(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                    height: 1.5),
-                                              ),
-                                              Text(
-                                                "${item.itemName}",
-                                                style: Theme
-                                                    .of(context)
-                                                    .textTheme
-                                                    .bodyText1
-                                                    ?.copyWith(
-                                                    fontSize: 14,
-                                                    color: greyColor,
-                                                    height: 1.5),
-                                              ),
-                                            ],
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "Item".tr,
+                                                  style: Theme
+                                                      .of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      ?.copyWith(
+                                                      fontSize: 14,
+                                                      color: Colors.black,
+                                                      height: 1.5),
+                                                ),
+                                                Text(
+                                                  "${item.itemName ??  item.namaItem}",
+                                                  textAlign: TextAlign.center,
+                                                  style: Theme
+                                                      .of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      ?.copyWith(
+                                                      fontSize: 14,
+                                                      color: greyColor,
+                                                      height: 1.5),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                           Column(
                                             children: [

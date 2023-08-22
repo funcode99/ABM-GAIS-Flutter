@@ -14,6 +14,7 @@ class CashAdvanceDetailModel extends Equatable {
   String? nominal;
   String? total;
   String? itemName;
+  String? namaItem;
   String? remarks;
   String? costCenterName;
   String? costCenterCode;
@@ -26,6 +27,7 @@ class CashAdvanceDetailModel extends Equatable {
       this.frequency,
       this.nominal,
       this.itemName,
+      this.namaItem,
       this.remarks,
       this.idCostCenter,
       this.costCenterName,

@@ -414,5 +414,11 @@ class RequestATKRepository
     }
   }
 
+  @override
+  Future<Either<BaseError, PaginationModel>> getPaginationDataApprovalHistory({Map<String, dynamic>? data}) {
+    // TODO: implement getPaginationDataApprovalHistory
+    throw UnimplementedError();
+  }
+
 
 }

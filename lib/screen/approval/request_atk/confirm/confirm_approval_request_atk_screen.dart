@@ -33,8 +33,8 @@ class ConfirmApprovalRequestATKScreen extends StatelessWidget {
     }
 
     final ConfirmApprovalRequestATKController controller =
-        Get.put(ConfirmApprovalRequestATKController())
-          ..selectedItem(selectedItem);
+    Get.put(ConfirmApprovalRequestATKController())
+      ..selectedItem(selectedItem);
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -58,153 +58,167 @@ class ConfirmApprovalRequestATKScreen extends StatelessWidget {
                       return controller.listDetail.isEmpty
                           ? const SizedBox()
                           : ListView(
-                              shrinkWrap: true,
-                              physics: const ScrollPhysics(),
-                              children: [
-                                ...controller.listDetail.mapIndexed((index,
-                                        item) =>
-                                    CommonListItem(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          16, 26, 16, 4),
-                                      number: "${index + 1}",
-                                      title: item.itemName,
-                                      subtitle: "",
-                                      action: [],
-                                      content: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 8),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
+                        shrinkWrap: true,
+                        physics: const ScrollPhysics(),
+                        children: [
+                          ...controller.listDetail.mapIndexed((index,
+                              item) =>
+                              CommonListItem(
+                                padding: const EdgeInsets.fromLTRB(
+                                    16, 26, 16, 4),
+                                number: "${index + 1}",
+                                title: item.itemName,
+                                subtitle: "",
+                                action: [],
+                                content: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 8),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.end,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Expanded(
+                                            child: Column(
                                               children: [
-                                                Expanded(
-                                                  child: Column(
-                                                    children: [
-                                                      Text(
-                                                        "Quantity".tr,
-                                                        style:
-                                                            listTitleTextStyle,
-                                                      ),
-                                                      Text(
-                                                        "${item.qty}",
-                                                        style: listSubTitleTextStyle
-                                                            .copyWith(
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                Text(
+                                                  "Quantity".tr,
+                                                  style:
+                                                  listTitleTextStyle,
                                                 ),
-                                                Expanded(
-                                                  child: Column(
-                                                    children: [
-                                                      Text(
-                                                        "UOM".tr,
-                                                        style:
-                                                            listTitleTextStyle,
-                                                      ),
-                                                      Text(
-                                                        item.uomName ?? "-",
-                                                        style: listSubTitleTextStyle
-                                                            .copyWith(
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                Text(
+                                                  "${item.qty}",
+                                                  style: listSubTitleTextStyle
+                                                      .copyWith(
+                                                      overflow:
+                                                      TextOverflow
+                                                          .ellipsis),
                                                 ),
                                               ],
                                             ),
-                                            const SizedBox(
-                                              height: 32,
-                                            ),
-                                            if (controller
-                                                .listSelected("${item.id}")
-                                                .isNotEmpty)
-                                              Column(
-                                                children: controller
-                                                    .listSelected("${item.id}")
-                                                    .mapIndexed<Widget>(
-                                                        (int index, e) {
-                                                  final int maxValue = e.stockAvailable;
-                                                  return Container(
-                                                    margin: const EdgeInsets
-                                                        .symmetric(vertical: 8),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        Expanded(
-                                                          child: ListTile(
-                                                            title: Text(
-                                                                "${e.warehouseName}"),
-                                                            subtitle: Text(
-                                                                "Available Stock : ${e.stockAvailable}"),
-                                                            contentPadding:
-                                                                EdgeInsets.zero,
-                                                          ),
-                                                        ),
-                                                        CustomNumberPicker(
-                                                            minValue: 0,
-                                                            maxValue: controller.mapMaxValue["${item.id}"]["${e.idWarehouse}"],
-                                                            onChanged: (val) {
-                                                              controller.addQuantity(val, "${item.id}", e);
-                                                            },
-                                                            currentValue: e.qtyApproved ?? 0,
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 4,
-                                                        ),
-                                                        GestureDetector(
-                                                            onTap: () {
-                                                              controller.deleteWarehouse("${item.id}", e);
-                                                            },
-                                                            child: const Icon(
-                                                                Icons.delete, color: redColor,))
-
-                                                      ],
-                                                    ),
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            if (controller
-                                                .listNotSelected("${item.id}")
-                                                .isNotEmpty)
-                                              SizedBox(
-                                                width: 80,
-                                                child: CustomIconButton(
-                                                  title: "Add".tr,
-                                                  iconData: Icons.add,
-                                                  backgroundColor: successColor,
-                                                  onPressed: () async {
-                                                    WarehouseDetailModel?
-                                                        result =
-                                                        await Get.dialog(
-                                                            SelectWarehouse(
-                                                      list: controller
-                                                          .listNotSelected(
-                                                              "${item.id}"),
-                                                    ));
-                                                    if (result != null) {
-                                                      controller.addWarehouse(
-                                                          "${item.id}", result);
-                                                    }
-                                                  },
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "UOM".tr,
+                                                  style:
+                                                  listTitleTextStyle,
                                                 ),
-                                              ),
-                                          ],
-                                        ),
+                                                Text(
+                                                  item.uomName ?? "-",
+                                                  style: listSubTitleTextStyle
+                                                      .copyWith(
+                                                      overflow:
+                                                      TextOverflow
+                                                          .ellipsis),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ))
-                              ],
-                            );
+                                      const SizedBox(
+                                        height: 32,
+                                      ),
+                                      if (controller
+                                          .listSelected("${item.id}")
+                                          .isNotEmpty)
+                                        Column(
+                                          children: controller
+                                              .listSelected("${item.id}")
+                                              .mapIndexed<Widget>(
+                                                  (int index, e) {
+                                                final int maxValue = e
+                                                    .stockAvailable;
+                                                return Container(
+                                                  margin: const EdgeInsets
+                                                      .symmetric(vertical: 8),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                    children: [
+                                                      Expanded(
+                                                        child: ListTile(
+                                                          title: Text(
+                                                              "${e
+                                                                  .warehouseName}"),
+                                                          subtitle: Text(
+                                                              "Available Stock : ${e
+                                                                  .stockAvailable}"),
+                                                          contentPadding:
+                                                          EdgeInsets.zero,
+                                                        ),
+                                                      ),
+                                                      CustomNumberPicker(
+                                                        minValue: 0,
+                                                        maxValue: controller
+                                                            .mapMaxValue["${item
+                                                            .id}"]["${e
+                                                            .idWarehouse}"],
+                                                        onChanged: (val) {
+                                                          controller
+                                                              .addQuantity(
+                                                              val, "${item.id}",
+                                                              e);
+                                                        },
+                                                        currentValue: e
+                                                            .qtyApproved ?? 0,
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 4,
+                                                      ),
+                                                      GestureDetector(
+                                                          onTap: () {
+                                                            controller
+                                                                .deleteWarehouse(
+                                                                "${item.id}",
+                                                                e);
+                                                          },
+                                                          child: const Icon(
+                                                            Icons.delete,
+                                                            color: redColor,))
+
+                                                    ],
+                                                  ),
+                                                );
+                                              }).toList(),
+                                        ),
+                                      if (controller
+                                          .listNotSelected("${item.id}")
+                                          .isNotEmpty)
+                                        SizedBox(
+                                          width: 80,
+                                          child: CustomIconButton(
+                                            title: "Add".tr,
+                                            iconData: Icons.add,
+                                            backgroundColor: successColor,
+                                            onPressed: () async {
+                                              WarehouseDetailModel?
+                                              result =
+                                              await Get.dialog(
+                                                  SelectWarehouse(
+                                                    list: controller
+                                                        .listNotSelected(
+                                                        "${item.id}"),
+                                                  ));
+                                              if (result != null) {
+                                                controller.addWarehouse(
+                                                    "${item.id}", result);
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ))
+                        ],
+                      );
                     }),
                     const SizedBox(
                       height: 16,
@@ -229,14 +243,16 @@ class ConfirmApprovalRequestATKScreen extends StatelessWidget {
                           ),
                           child: Text("Cancel".tr),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            controller.confirm();
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: infoColor),
-                          child: Text("Confirm".tr),
-                        ),
+                        Obx(() {
+                          return ElevatedButton(
+                            onPressed: controller.isButtonEnabled() ? () {
+                              controller.confirm();
+                            } : null,
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: infoColor),
+                            child: Text("Confirm".tr),
+                          );
+                        }),
                       ],
                     ),
                   ]),
@@ -285,7 +301,8 @@ class _SelectWarehouseState extends State<SelectWarehouse> {
                 Expanded(
                   child: Text(
                     "Select Warehouse".tr,
-                    style: Theme.of(context)
+                    style: Theme
+                        .of(context)
                         .textTheme
                         .subtitle1
                         ?.copyWith(fontWeight: FontWeight.w600, fontSize: 20),
@@ -305,11 +322,12 @@ class _SelectWarehouseState extends State<SelectWarehouse> {
             ),
             CustomDropDownFormField(
               items: widget.list
-                  .map((e) => DropdownMenuItem(
-                        value: e.idWarehouse.toString(),
-                        child: Text(
-                            "${e.warehouseName} - (stock : ${e.stockAvailable})"),
-                      ))
+                  .map((e) =>
+                  DropdownMenuItem(
+                    value: e.idWarehouse.toString(),
+                    child: Text(
+                        "${e.warehouseName} - (stock : ${e.stockAvailable})"),
+                  ))
                   .toList(),
               label: "Select Warehouse",
               isRequired: true,
@@ -341,8 +359,8 @@ class _SelectWarehouseState extends State<SelectWarehouse> {
                       Get.back(
                           result: widget.list
                               .where((element) =>
-                                  element.idWarehouse.toString() ==
-                                  selected.toString())
+                          element.idWarehouse.toString() ==
+                              selected.toString())
                               .first);
                     },
                     style: ElevatedButton.styleFrom(backgroundColor: infoColor),

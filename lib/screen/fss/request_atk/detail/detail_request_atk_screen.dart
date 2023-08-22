@@ -320,7 +320,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                                         .mapIndexed((index, item) => CommonListItem(
                                       number: "${index + 1}",
                                       title: item.itemName,
-                                      subtitle: "",
+                                      subtitle: "${item.codeItem}",
                                       // subtitle: item.brandName ?? "",
                                       action: controller.onEdit.value
                                           ? [
@@ -361,16 +361,17 @@ class RequestATKDetailScreen extends StatelessWidget {
                                           : [],
                                       content: Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 8),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Expanded(
-                                              child: Column(
+                                            horizontal: 0, vertical: 8),
+                                        child: SingleChildScrollView(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Column(
                                                 children: [
                                                   Text(
-                                                    "Qty Req".tr,
+                                                    "Qty\nRequest".tr,
+                                                      textAlign: TextAlign.center,
                                                       style: listTitleTextStyle,
                                                   ),
                                                   Text(
@@ -382,13 +383,13 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                            ),
-                                            if(item.qtyApproved != null)
-                                              Expanded(
-                                                child: Column(
+                                              if(item.codeStatusDoc != null)
+                                                if(item.qtyApproved != null && item.codeStatusDoc! > 1)
+                                                Column(
                                                   children: [
                                                     Text(
-                                                      "Qty App".tr,
+                                                      "Qty\nApproved".tr,
+                                                      textAlign: TextAlign.center,
                                                       style: listTitleTextStyle,
                                                     ),
                                                     Text(
@@ -400,13 +401,13 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                            if(item.qtyUnsend != null)
-                                              Expanded(
-                                                child: Column(
+                                              if(item.codeStatusDoc != null)
+                                              if(item.qtyUnsend != null && item.codeStatusDoc! > 1)
+                                                Column(
                                                   children: [
                                                     Text(
-                                                      "Qty Rej".tr,
+                                                      "Qty\nRejected".tr,
+                                                      textAlign: TextAlign.center,
                                                       style: listTitleTextStyle,
                                                     ),
                                                     Text(
@@ -418,13 +419,13 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                            if(item.qtyDelivered != null)
-                                              Expanded(
-                                                child: Column(
+                                              if(item.codeStatusDoc != null)
+                                                if(item.qtyDelivered != null && item.codeStatusDoc! > 1)
+                                                Column(
                                                   children: [
                                                     Text(
-                                                      "Qty Del".tr,
+                                                      "Qty\nDelivered".tr,
+                                                      textAlign: TextAlign.center,
                                                       style: listTitleTextStyle,
                                                     ),
                                                     Text(
@@ -436,9 +437,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                            Expanded(
-                                              child: Column(
+                                              Column(
                                                 children: [
                                                   Text(
                                                     "UOM".tr,
@@ -454,26 +453,26 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                            ),
-                                            /*Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      "Warehouse".tr,
-                                                      style: listTitleTextStyle,
-                                                    ),
-                                                    Text(
-                                                      item.warehouseName ?? "-",
-                                                      style: listSubTitleTextStyle
-                                                          .copyWith(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),*/
-                                          ],
+                                              /*Expanded(
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        "Warehouse".tr,
+                                                        style: listTitleTextStyle,
+                                                      ),
+                                                      Text(
+                                                        item.warehouseName ?? "-",
+                                                        style: listSubTitleTextStyle
+                                                            .copyWith(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),*/
+                                            ],
+                                          ),
                                         ),
                                       ),
                                       onTap: () {

@@ -260,4 +260,20 @@ class ConfirmApprovalRequestATKController extends BaseController {
           warehouseDetail: warehouseDetail
     ));
   }
+
+  bool isButtonEnabled(){
+    bool result = true;
+
+    mapATKConfirmation.forEach((key, value) {
+      List<WarehouseDetailModel> listSelected = List<WarehouseDetailModel>.from(value["listSelected"]).toList();
+
+      if(listSelected.isEmpty){
+        result = false;
+      }
+
+    });
+
+    print("RESULTTT $result");
+    return result;
+  }
 }
