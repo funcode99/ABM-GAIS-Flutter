@@ -252,7 +252,7 @@ class CashAdvanceTravelRepository implements BaseRepository<CashAdvanceModel, Ca
   Future<Either<BaseError, PaginationModel>> getPaginationDataApprovalHistory({Map<String, dynamic>? data}) async{
     try {
       Dio.Response response = await network.dio.get(
-          '/api/approval_non_travel/history',
+          '/api/approval_cash_advance/history',
           queryParameters: data
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
