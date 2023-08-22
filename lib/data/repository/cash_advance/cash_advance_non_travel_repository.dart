@@ -373,9 +373,24 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
   }
 
   @override
-  Future<Either<BaseError, PaginationModel>> getPaginationDataApprovalHistory({Map<String, dynamic>? data}) {
-    // TODO: implement getPaginationDataApprovalHistory
-    throw UnimplementedError();
+  Future<Either<BaseError, PaginationModel>> getPaginationDataApprovalHistory({Map<String, dynamic>? data}) async{
+    try {
+      Dio.Response response = await network.dio.get(
+          '/api/approval_non_travel/history',
+          queryParameters: data
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
 }
