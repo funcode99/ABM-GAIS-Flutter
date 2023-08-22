@@ -42,8 +42,17 @@ class FirebaseMessagingConfig{
 
     const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    const InitializationSettings initializationSettings = InitializationSettings(
+    DarwinInitializationSettings initializationSettingsDarwin =
+    const DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+      // notificationCategories: darwinNotificationCategories,
+    );
+
+    InitializationSettings initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
+      iOS:initializationSettingsDarwin
     );
 
     await flutterLocalNotificationsPlugin.initialize(
@@ -75,6 +84,12 @@ class FirebaseMessagingConfig{
     );
 
 
+    FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true
+    );
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if (message.notification != null) {
         AndroidNotification? android = message.notification?.android;
@@ -92,6 +107,7 @@ class FirebaseMessagingConfig{
                   channel.id,
                   channel.name,
                   channelDescription: channel.description,
+                  priority: Priority.max,
                 ),
               ));
         }
