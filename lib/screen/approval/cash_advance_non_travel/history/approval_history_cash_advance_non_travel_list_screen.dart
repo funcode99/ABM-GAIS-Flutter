@@ -7,23 +7,24 @@ import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/screen/approval/cash_advance_non_travel/detail/approval_cash_advance_non_travel_detail_screen.dart';
-import 'package:gais/screen/approval/cash_advance_non_travel/list/approval_cash_advance_non_travel_list_controller.dart';
+import 'package:gais/screen/approval/cash_advance_non_travel/history/approval_history_cash_advance_non_travel_list_controller.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
-class ApprovalCashAdvanceNonTravelListScreen extends StatelessWidget {
-  const ApprovalCashAdvanceNonTravelListScreen({Key? key}) : super(key: key);
+class ApprovalHistoryCashAdvanceNonTravelListScreen extends StatelessWidget {
+  const ApprovalHistoryCashAdvanceNonTravelListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ApprovalCashAdvanceNonTravelListController controller =
-        Get.put(ApprovalCashAdvanceNonTravelListController());
+    final ApprovalHistoryCashAdvanceNonTravelListController controller =
+    Get.put(ApprovalHistoryCashAdvanceNonTravelListController());
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -47,6 +48,26 @@ class ApprovalCashAdvanceNonTravelListScreen extends StatelessWidget {
                   controller.resetFilter();
                 },
                 children: [
+                  Obx(() {
+                    return CustomDropDownFormField(
+                      items: controller.listStatus
+                          .map((e) => DropdownMenuItem(
+                        value: e.code.toString(),
+                        child: Text("${e.status}"),
+                      ))
+                          .toList(),
+                      onChanged: (item) {
+                        controller.onChangeSelectedStatus(item.toString());
+                      },
+                      label: "Status".tr,
+                      value: controller.selectedStatusTemp.value != null
+                          ? controller.selectedStatusTemp.value?.code.toString()
+                          : "",
+                    );
+                  }),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   CustomTextFormField(
                       readOnly: true,
                       controller: controller.dateRangeController,
