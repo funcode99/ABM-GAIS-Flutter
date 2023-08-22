@@ -88,6 +88,7 @@ class ActTripInfoScreen extends StatelessWidget {
                         label: "From",
                         isRequired: true,
                         hintText: controller.isLoading ? "Loading..." : "City",
+                        value: controller.isEdit ? controller.fromCity.text : null,
                         items: controller.cityList
                             .map((e) => DropdownMenuItem(
                                   value: e.id.toString(),
@@ -105,6 +106,7 @@ class ActTripInfoScreen extends StatelessWidget {
                         label: "To",
                         isRequired: true,
                         hintText: controller.isLoading ? "Loading..." : "City",
+                        value: controller.isEdit ? controller.toCity.text : null,
                         items: controller.cityList
                             .map((e) => DropdownMenuItem(
                                   value: e.id.toString(),

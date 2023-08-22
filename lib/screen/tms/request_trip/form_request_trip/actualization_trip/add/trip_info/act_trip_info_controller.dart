@@ -5,9 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 
 class ActTripInfoController extends BaseController {
-  final actualID = Get.arguments['idActual'];
-  final zonaID = Get.arguments['idZona'];
-  final tlkRate = Get.arguments['tlkRate'];
+  final String actualID = Get.arguments['idActual'];
+  final String zonaID = Get.arguments['idZona'];
+  final String tlkRate = Get.arguments['tlkRate'];
+  final bool isEdit = Get.arguments['isEdit'];
+  final String? idTripInfo = Get.arguments['id'];
 
   final formKey = GlobalKey<FormState>();
   final departureDate = TextEditingController();
@@ -26,7 +28,12 @@ class ActTripInfoController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    print("trip info id: $idTripInfo");
+    print("actual id: $actualID");
     Future.wait([fetchList()]);
+    if (isEdit) {
+      fetchData();
+    }
   }
 
   Future<void> fetchList() async {
@@ -42,9 +49,47 @@ class ActTripInfoController extends BaseController {
   }
 
   Future<void> saveData() async {
+    if (isEdit) {
+      updateData();
+    } else {
+      try {
+        await actualizationTrip
+            .saveTripInfo(
+              actualID,
+              departureDate.text,
+              arrivalDate.text,
+              fromCity.text,
+              toCity.text,
+              zonaID,
+              tlkRate,
+            )
+            .then((value) => Get.back());
+      } catch (e, i) {
+        e.printError();
+        i.printError();
+      }
+    }
+  }
+
+  Future<void> fetchData() async {
+    try {
+      await actualizationTrip.getTripInfoByID(idTripInfo!).then((value) {
+        departureDate.text = dateFormat.format(DateTime.parse(value.data?.first.dateDeparture.toString() ?? ""));
+        arrivalDate.text = dateFormat.format(DateTime.parse(value.data?.first.dateArrival.toString() ?? ""));
+        fromCity.text = value.data?.first.idCityFrom.toString() ?? "";
+        toCity.text = value.data?.first.idCityTo.toString() ?? "";
+      });
+    } catch (e) {
+      e.printError();
+    }
+    update();
+  }
+
+  Future<void> updateData() async {
     try {
       await actualizationTrip
-          .saveTripInfo(
+          .updateTripInfo(
+            idTripInfo!,
             actualID,
             departureDate.text,
             arrivalDate.text,
@@ -54,7 +99,7 @@ class ActTripInfoController extends BaseController {
             tlkRate,
           )
           .then((value) => Get.back());
-    } catch (e,i) {
+    } catch (e, i) {
       e.printError();
       i.printError();
     }

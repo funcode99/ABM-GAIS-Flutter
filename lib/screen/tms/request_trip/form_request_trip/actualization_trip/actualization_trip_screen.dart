@@ -91,11 +91,13 @@ class ActualizationTripScreen extends StatelessWidget {
                                                         child: const Icon(IconlyBold.edit, color: whiteColor),
                                                       ),
                                                       onTap: () {
-                                                        Get.dialog(DeleteConfirmationDialog(
-                                                          onDeletePressed: () {
-                                                            Get.back();
-                                                          },
-                                                        ));
+                                                        Get.to(const ActTripInfoScreen(), arguments: {
+                                                          "id": e.id,
+                                                          "idActual": controller.actualID,
+                                                          "idZona": controller.zonaID,
+                                                          "tlkRate": controller.tlkRate,
+                                                          'isEdit': true
+                                                        })?.then((value) => controller.fetchList());
                                                       },
                                                     ),
                                                     GestureDetector(
@@ -106,8 +108,11 @@ class ActualizationTripScreen extends StatelessWidget {
                                                         child: const Icon(IconlyBold.delete, color: whiteColor),
                                                       ),
                                                       onTap: () {
+                                                        print(e.id);
                                                         Get.dialog(DeleteConfirmationDialog(
                                                           onDeletePressed: () {
+                                                            controller.deleteTripInfo(e.id.toString());
+                                                            controller.fetchList();
                                                             Get.back();
                                                           },
                                                         ));
@@ -130,9 +135,12 @@ class ActualizationTripScreen extends StatelessWidget {
                         title: "Add Trip",
                         icon: Icons.add,
                         margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                        onPressed: () => Get.to(const ActTripInfoScreen(),
-                                arguments: {"idActual": controller.actualID, "idZona": controller.zonaID, "tlkRate": controller.tlkRate})
-                            ?.then((value) => controller.fetchList()),
+                        onPressed: () => Get.to(const ActTripInfoScreen(), arguments: {
+                          "idActual": controller.actualID,
+                          "idZona": controller.zonaID,
+                          "tlkRate": controller.tlkRate,
+                          'isEdit': false
+                        })?.then((value) => controller.fetchList()),
                       ),
                       CustomTextFormField(
                         controller: controller.purpose,
@@ -185,13 +193,7 @@ class ActualizationTripScreen extends StatelessWidget {
                                                         decoration: BoxDecoration(color: successColor, borderRadius: BorderRadius.circular(6)),
                                                         child: const Icon(IconlyBold.edit, color: whiteColor),
                                                       ),
-                                                      onTap: () {
-                                                        Get.dialog(DeleteConfirmationDialog(
-                                                          onDeletePressed: () {
-                                                            Get.back();
-                                                          },
-                                                        ));
-                                                      },
+                                                      onTap: () {},
                                                     ),
                                                     GestureDetector(
                                                       child: Container(
@@ -225,7 +227,7 @@ class ActualizationTripScreen extends StatelessWidget {
                         title: "Add Activities",
                         icon: Icons.add,
                         margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                        onPressed: () => Get.to(const ActActivitiesDetailScreen(), arguments: {"idActual": controller.actualID})
+                        onPressed: () => Get.to(const ActActivitiesDetailScreen(), arguments: {"idActual": controller.actualID, 'isEdit': false})
                             ?.then((value) => controller.fetchList()),
                       ),
                       CustomTextFormField(
@@ -256,7 +258,18 @@ class ActualizationTripScreen extends StatelessWidget {
                             color: successColor,
                             title: "Submit",
                             onPressed: () {
-                              if (controller.formKey.currentState?.validate() == true) {}
+                              if (controller.formKey.currentState?.validate() == true) {
+                                Get.showSnackbar(const GetSnackBar(
+                                  icon: Icon(
+                                    Icons.error,
+                                    color: Colors.white,
+                                  ),
+                                  message: "Submit Failed",
+                                  isDismissible: true,
+                                  duration: Duration(seconds: 3),
+                                  backgroundColor: Colors.red,
+                                ));
+                              }
                             },
                           )
                         ],

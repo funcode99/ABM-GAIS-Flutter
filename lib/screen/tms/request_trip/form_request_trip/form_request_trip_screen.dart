@@ -86,14 +86,16 @@ class FormRequestTripScreen extends StatelessWidget {
                                   ? MainAxisAlignment.spaceEvenly
                                   : MainAxisAlignment.center,
                               children: [
-                                CustomFilledButton(
-                                  color: orangeColor,
-                                  title: "Actualization",
-                                  width: Get.width / 4,
-                                  onPressed: () {
-                                    controller.checkActual();
-                                  },
-                                ),
+                                controller.rtStatus == "Confirmed"
+                                    ? CustomFilledButton(
+                                        color: orangeColor,
+                                        title: "Actualization",
+                                        width: Get.width / 4,
+                                        onPressed: () {
+                                          controller.checkActual();
+                                        },
+                                      )
+                                    : Container(),
                                 controller.rtStatus == "Draft" || controller.rtStatus == "Revision"
                                     ? CustomFilledButton(
                                         color: Colors.transparent,

@@ -33,13 +33,48 @@ class ActualizationTripController extends BaseController {
     listActivities = [];
     isLoading = true;
     try {
-      await actualizationTrip.getTripInfoByActual(actualID).then((value) => listTripInfo.addAll(value.data?.toSet().toList() ?? []));
+      await actualizationTrip
+          .getTripInfoByActual(actualID)
+          // .then((value) => print("trip info data: ${value.data?.where((e) => e.deletedAt==null).first.deletedAt}"));
+          .then((value) => listTripInfo.addAll(value.data?.where((e) => e.deletedAt == null).toSet().toList() ?? []));
 
       await actualizationTrip.getActivitiesByActual(actualID).then((value) => listActivities.addAll(value.data?.toSet().toList() ?? []));
     } catch (e) {
       e.printError();
     }
     isLoading = false;
+    update();
+  }
+
+  Future<void> deleteTripInfo(String id) async {
+    try {
+      await actualizationTrip.deleteTripInfoByID(id).then(
+            (value) => Get.showSnackbar(GetSnackBar(
+              icon: Icon(
+                Icons.error,
+                color: Colors.white,
+              ),
+              message: "Data Deleted",
+              isDismissible: true,
+              duration: Duration(seconds: 3),
+              backgroundColor: Colors.green,
+            )),
+          );
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+      Get.showSnackbar(const GetSnackBar(
+        icon: Icon(
+          Icons.error,
+          color: Colors.white,
+        ),
+        message: "Delete Failed",
+        isDismissible: true,
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.red,
+      ));
+    }
+    fetchList();
     update();
   }
 }
