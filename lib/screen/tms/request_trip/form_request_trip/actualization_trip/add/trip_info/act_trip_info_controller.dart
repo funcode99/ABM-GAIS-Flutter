@@ -5,6 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 
 class ActTripInfoController extends BaseController {
+  final actualID = Get.arguments['idActual'];
+  final zonaID = Get.arguments['idZona'];
+  final tlkRate = Get.arguments['tlkRate'];
+
   final formKey = GlobalKey<FormState>();
   final departureDate = TextEditingController();
   final arrivalDate = TextEditingController();
@@ -35,5 +39,24 @@ class ActTripInfoController extends BaseController {
     }
     isLoading = false;
     update();
+  }
+
+  Future<void> saveData() async {
+    try {
+      await actualizationTrip
+          .saveTripInfo(
+            actualID,
+            departureDate.text,
+            arrivalDate.text,
+            fromCity.text,
+            toCity.text,
+            zonaID,
+            tlkRate,
+          )
+          .then((value) => Get.back());
+    } catch (e,i) {
+      e.printError();
+      i.printError();
+    }
   }
 }

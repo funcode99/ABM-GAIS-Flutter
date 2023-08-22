@@ -130,7 +130,7 @@ class LoginController extends BaseController {
   Future<void> saveEmployeeInfo() async {
     try {
       await repository.getEmployeeInfo().then((value) {
-        debugPrint(value.data?.first.phoneNumber.toString());
+        debugPrint(value.data?.first.tlkRate?.first.tlk.toString());
         storage.saveUser(
           value.data?.first.id.toString() ?? "",
           value.data?.first.employeeName ?? "",
@@ -158,6 +158,7 @@ class LoginController extends BaseController {
           value.data?.first.hotelFare.toString() ?? "",
           value.data?.first.mealsRate.toString() ?? "",
           value.data?.first.idCostCenter.toString() ?? "",
+          value.data?.first.tlkRate?.first.tlk.toString() ?? "",
         );
       });
     } catch (e,i) {

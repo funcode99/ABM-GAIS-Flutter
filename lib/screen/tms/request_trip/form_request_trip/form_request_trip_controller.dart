@@ -343,15 +343,18 @@ class FormRequestTripController extends BaseController {
     notes.text = rtModel?.data?.first.notes ?? "";
     selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
     isAttachment = selectedPurpose == "1" || selectedPurpose == "2" || selectedPurpose == "3" || selectedPurpose == "5" ? true : false;
-    // print("attachment : ${rtModel?.data?.first.file}");
+    print("attachment : ${rtModel?.data?.first.file}");
     if (isAttachment == true) {
-      attachment.text = rtModel?.data?.first.file;
-      fileURL = rtModel?.data?.first.file;
-      getFileFromUrl().then((f) {
-        pdfPath = f.path;
-        gettedFile = f;
-        update();
-      });
+      attachment.text = rtModel?.data?.first.file.toString() != "{}" ? rtModel?.data?.first.file : "no attachment";
+      fileURL = rtModel?.data?.first.file.toString() ?? "";
+      print("file URL : $fileURL");
+      if (fileURL != "{}") {
+        getFileFromUrl().then((f) {
+          pdfPath = f.path;
+          gettedFile = f;
+          update();
+        });
+      }
       update();
     }
     selectedPurpose = codeDocument.toString();
@@ -381,6 +384,7 @@ class FormRequestTripController extends BaseController {
       // travellerFlight = value.first.flightClass;
       tlkJobBand.text = value.first.bandJobName.toString();
       idEmployee = value.first.id.toString();
+      print("id_employee: $idEmployee");
     });
 
     await storage.readEmployeeFlight().then((value) => travellerFlight = value.first.idFlightClass.toString());
@@ -750,14 +754,18 @@ class FormRequestTripController extends BaseController {
                 "-",
                 idEmployee.toString(),
               )
-              .then((saveAct) => Get.to(ActualizationTripScreen(), arguments: {
+              .then((saveAct) => Get.to(const ActualizationTripScreen(), arguments: {
                     "idRequestTrip": purposeID,
                     "idActual": saveAct.data?.id,
+                    "idZona": zonaID,
+                    "tlkRate": tlkDay,
                   }));
         } else {
-          Get.to(ActualizationTripScreen(), arguments: {
+          Get.to(const ActualizationTripScreen(), arguments: {
             "idRequestTrip": purposeID,
             "idActual": value.data?.first.id,
+            "idZona": zonaID,
+            "tlkRate": tlkDay,
           });
         }
       });

@@ -239,7 +239,7 @@ class RepositoryImpl implements Repository {
       );
       return GetTlkJobModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
+      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
