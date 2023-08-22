@@ -42,8 +42,28 @@ class FirebaseMessagingConfig{
 
     const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
+    const DarwinInitializationSettings initializationSettingsDarwin =
+    DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+        /*onDidReceiveLocalNotification:
+          (int id, String? title, String? body, String? payload) async {
+        didReceiveLocalNotificationStream.add(
+          ReceivedNotification(
+            id: id,
+            title: title,
+            body: body,
+            payload: payload,
+          ),
+        );
+      },*/
+      // notificationCategories: darwinNotificationCategories,
+    );
+
     const InitializationSettings initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
+      iOS:initializationSettingsDarwin
     );
 
     await flutterLocalNotificationsPlugin.initialize(
