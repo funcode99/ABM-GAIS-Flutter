@@ -54,15 +54,18 @@ class DeliveryApprovalRequestATKController extends BaseController {
           },
           (r2){
             for (RequestATKDetailModel item in r) {
-
-              List<WarehouseDetailModel>? listDetailWarehouse = item.arrayWarehouse?.map((e){
+              List<WarehouseDetailModel>? listDetailWarehouse = [];
+              item.arrayWarehouse?.forEach((e){
                 final tempWarehouse = WarehouseDetailModel.fromJson(e);
-                final tempWarehouseForApproval = r2.where((element){
+                List<WarehouseDetailModel> tempList = r2.where((element){
                   return element.idAtkRequestDetail == item.id && element.idWarehouse == tempWarehouse.idWarehouse && element.idItem == item.idItem;
-                }).first;
+                }).toList();
 
-                
-                WarehouseDetailModel  warehouseDetailModel = WarehouseDetailModel(
+                if(tempList.isNotEmpty){
+                  final tempWarehouseForApproval = tempList.first;
+
+
+                  WarehouseDetailModel warehouseDetailModel = WarehouseDetailModel(
                     idItem: item.idItem,
                     idAtkRequestDetail: item.id,
                     stockAvailable: tempWarehouse.stockAvailable,
@@ -71,9 +74,12 @@ class DeliveryApprovalRequestATKController extends BaseController {
                     qtyApproved: tempWarehouseForApproval.qtyApproved ?? 0,
                     warehouseName: tempWarehouse.warehouseName,
                     maxValue: tempWarehouseForApproval.qtyApproved ?? 0,
-                );
-                return warehouseDetailModel;
-              }).toList() ?? [];
+                  );
+
+                  listDetailWarehouse.add(warehouseDetailModel);
+
+                }
+              });
 
 
 

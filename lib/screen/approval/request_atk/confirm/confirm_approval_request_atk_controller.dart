@@ -247,6 +247,7 @@ class ConfirmApprovalRequestATKController extends BaseController {
             idWarehouse: item.idWarehouse,
             remarks: noteController.text,
             idItem: item.idItem,
+            stockAvailable: item.stockAvailable,
           )
         );
       }
