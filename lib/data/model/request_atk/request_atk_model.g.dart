@@ -37,6 +37,8 @@ RequestAtkModel _$RequestAtkModelFromJson(Map<String, dynamic> json) =>
           .toList(),
       approvedAt: json['approved_at'] as String?,
       nameApproved: json['name_approved'] as String?,
+      nameDelivered: json['name_delivered'] as String?,
+      deliveredAt: json['delivered_at'] as String?,
     );
 
 Map<String, dynamic> _$RequestAtkModelToJson(RequestAtkModel instance) =>
@@ -66,5 +68,7 @@ Map<String, dynamic> _$RequestAtkModelToJson(RequestAtkModel instance) =>
       'item_count': instance.itemCount,
       'array_detail': instance.arrayDetail?.map((e) => e.toJson()).toList(),
       'approved_at': instance.approvedAt,
+      'delivered_at': instance.deliveredAt,
       'name_approved': instance.nameApproved,
+      'name_delivered': instance.nameDelivered,
     };
