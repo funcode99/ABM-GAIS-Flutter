@@ -14,6 +14,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class DetailApprovalRequestATKController extends BaseController {
+  final TextEditingController companyController = TextEditingController();
+  final TextEditingController siteController = TextEditingController();
   final TextEditingController createdDateController = TextEditingController();
   final TextEditingController createdByController = TextEditingController();
   final TextEditingController rejectNoteController = TextEditingController();
@@ -51,6 +53,10 @@ class DetailApprovalRequestATKController extends BaseController {
         "-";
     createdByController.text = detailSelectedItem.value.employeeName ?? "-";
     rejectNoteController.text = detailSelectedItem.value.remarks ?? "-";
+
+    companyController.text = selectedItem.value.companyName ?? "-";
+    siteController.text = selectedItem.value.siteName ?? "-";
+
   }
 
   void detailHeader() async {

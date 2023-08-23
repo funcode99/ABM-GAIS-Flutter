@@ -67,7 +67,7 @@ class DeliveryApprovalRequestATKController extends BaseController {
 
                   WarehouseDetailModel warehouseDetailModel = WarehouseDetailModel(
                     idItem: item.idItem,
-                    idAtkRequestDetail: item.id,
+                    idAtkRequestDetail: tempWarehouseForApproval.id,
                     stockAvailable: tempWarehouse.stockAvailable,
                     remarks: tempWarehouse.remarks,
                     idWarehouse: tempWarehouse.idWarehouse,
