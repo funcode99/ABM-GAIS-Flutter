@@ -346,14 +346,25 @@ class RequestATKRepository
           List<RequestAtkModel> list = apiResponseModel.data;
           RequestAtkModel requestAtkModel = list.first;
 
-          result = [
-            ApprovalLogModel(
-                codeStatus: requestAtkModel.codeStatusDoc,
-                notes: requestAtkModel.notes,
-                date: requestAtkModel.approvedAt,
-                text: requestAtkModel.nameApproved
-            )
-          ];
+          if(requestAtkModel.nameDelivered != null){
+            result.add(
+                ApprovalLogModel(
+                    codeStatus: requestAtkModel.codeStatusDoc,
+                    notes: requestAtkModel.notes,
+                    date: requestAtkModel.deliveredAt,
+                    text: "Delivered by : ${requestAtkModel.nameDelivered}"
+                )
+            );
+          }
+
+          result.add(
+              ApprovalLogModel(
+                  codeStatus: requestAtkModel.codeStatusDoc,
+                  notes: requestAtkModel.notes,
+                  date: requestAtkModel.approvedAt,
+                  text: "Approved by : ${requestAtkModel.nameApproved}"
+              )
+          );
         }
       }catch(e){
         print("ERROR PARSE LOG $e");

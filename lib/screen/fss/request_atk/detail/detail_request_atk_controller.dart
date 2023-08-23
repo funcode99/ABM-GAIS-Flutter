@@ -10,6 +10,8 @@ import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
 class RequestATKDetailController extends BaseController {
+  final TextEditingController companyController = TextEditingController();
+  final TextEditingController siteController = TextEditingController();
   final TextEditingController createdDateController = TextEditingController();
   final TextEditingController createdByController = TextEditingController();
   final TextEditingController rejectNoteController = TextEditingController();
@@ -41,6 +43,9 @@ class RequestATKDetailController extends BaseController {
   }
 
   void setValue(){
+    companyController.text = selectedItem.value.companyName ?? "-";
+    siteController.text = selectedItem.value.siteName ?? "-";
+
     createdByController.text = selectedItem.value.employeeName ?? "-";
     createdDateController.text = selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss") ??
         "-";

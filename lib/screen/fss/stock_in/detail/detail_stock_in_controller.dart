@@ -78,12 +78,15 @@ class DetailStockInController extends BaseController {
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (r) {
           Map<String, List<StockInATKDetailModel>> tempMap = {};
+          String codeItem = "";
           for(StockInATKDetailModel stockInATKDetailModel in r){
             if(!tempMap.containsKey("${stockInATKDetailModel.idItem}")){
               tempMap.putIfAbsent("${stockInATKDetailModel.idItem}", () => []);
             }
 
             tempMap["${stockInATKDetailModel.idItem}"]?.add(stockInATKDetailModel);
+
+            codeItem = stockInATKDetailModel.codeItem ?? "";
           }
 
           Map<String, dynamic> result = {};
@@ -91,6 +94,7 @@ class DetailStockInController extends BaseController {
             result.putIfAbsent(key, () => <String, dynamic>{});
             result[key]["listDetail"] = tempMap[key];
             result[key]["idItem"] = key;
+            result[key]["codeItem"] = codeItem;
             result[key]["itemName"] = tempMap[key]?.first.itemName;
           });
           

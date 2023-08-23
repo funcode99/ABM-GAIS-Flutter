@@ -5,6 +5,7 @@ part 'warehouse_detail_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class WarehouseDetailModel extends Equatable{
+  final dynamic id;
   final dynamic idWarehouse;
   final String? warehouseName;
   final dynamic stockAvailable;
@@ -17,6 +18,7 @@ class WarehouseDetailModel extends Equatable{
 
 
   const WarehouseDetailModel({
+    this.id,
     this.idWarehouse,
     this.warehouseName,
     this.stockAvailable,

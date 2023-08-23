@@ -262,8 +262,7 @@ class DetailStockInScreen extends StatelessWidget {
                             return CommonListItem(
                               number: "${index + 1}",
                               title: "${element["itemName"]}",
-                              // subtitle: element.brandName ?? "",
-                              subtitle: "",
+                              subtitle: "${element["codeItem"]}",
                               action: controller.onEdit.value
                                   ? [
                                 CustomIconButton(
