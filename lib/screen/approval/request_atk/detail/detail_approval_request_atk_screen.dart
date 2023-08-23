@@ -209,6 +209,22 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                         CustomTextFormField(
                             readOnly: true,
                             isRequired: true,
+                            controller: controller.companyController,
+                            label: "Company".tr),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        CustomTextFormField(
+                            readOnly: true,
+                            isRequired: true,
+                            controller: controller.siteController,
+                            label: "Site".tr),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        CustomTextFormField(
+                            readOnly: true,
+                            isRequired: true,
                             controller: controller.createdByController,
                             label: "Created By".tr),
                         const SizedBox(

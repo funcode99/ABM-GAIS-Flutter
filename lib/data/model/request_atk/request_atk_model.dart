@@ -30,7 +30,9 @@ class RequestAtkModel {
   int? itemCount;
   List<RequestATKDetailModel>? arrayDetail;
   String? approvedAt;
+  String? deliveredAt;
   String? nameApproved;
+  String? nameDelivered;
 
   RequestAtkModel(
       {
@@ -60,6 +62,8 @@ class RequestAtkModel {
         this.arrayDetail,
         this.approvedAt,
         this.nameApproved,
+        this.nameDelivered,
+        this.deliveredAt,
 });
 
   static RequestAtkModel fromJsonModel(Object? json) =>
