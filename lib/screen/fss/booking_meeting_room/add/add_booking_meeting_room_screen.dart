@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,11 +7,14 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/booking_meeting_room/recurrence_model.dart';
 import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/calendar/custom_calendar_picker.dart';
 import 'package:gais/reusable/custombackbutton.dart';
+import 'package:gais/reusable/dialog/recurrence_dialog.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
+import 'package:gais/reusable/form/custom_form_file_picker.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -78,25 +83,23 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                     height: 32,
                   ),
                   Obx(() {
-                    if(controller.enableSelectCompany.value){
+                    if (controller.enableSelectCompany.value) {
                       return CustomDropDownFormField(
                         items: controller.listCompany
                             .map((e) => DropdownMenuItem(
-                          value: e.id.toString(),
-                          child: Text("${e.companyName}"),
-                        ))
+                                  value: e.id.toString(),
+                                  child: Text("${e.companyName}"),
+                                ))
                             .toList(),
                         onChanged: (item) {
-                          controller
-                              .onChangeSelectedCompany(item.toString());
+                          controller.onChangeSelectedCompany(item.toString());
                         },
                         label: "Company".tr,
                         value: controller.selectedCompany.value != null
-                            ? controller.selectedCompany.value?.id
-                            .toString()
+                            ? controller.selectedCompany.value?.id.toString()
                             : "",
                       );
-                    }else{
+                    } else {
                       return CustomTextFormField(
                           isRequired: true,
                           readOnly: true,
@@ -110,25 +113,23 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                     height: 8,
                   ),
                   Obx(() {
-                    if(controller.enableSelectSite.value){
+                    if (controller.enableSelectSite.value) {
                       return CustomDropDownFormField(
                         items: controller.listSite
                             .map((e) => DropdownMenuItem(
-                          value: e.id.toString(),
-                          child: Text("${e.siteName}"),
-                        ))
+                                  value: e.id.toString(),
+                                  child: Text("${e.siteName}"),
+                                ))
                             .toList(),
                         onChanged: (item) {
-                          controller
-                              .onChangeSelectedSite(item.toString());
+                          controller.onChangeSelectedSite(item.toString());
                         },
                         label: "Site".tr,
                         value: controller.selectedSite.value != null
-                            ? controller.selectedSite.value?.id
-                            .toString()
+                            ? controller.selectedSite.value?.id.toString()
                             : "",
                       );
-                    }else{
+                    } else {
                       return CustomTextFormField(
                           isRequired: true,
                           readOnly: true,
@@ -278,167 +279,6 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-
-                  /*Obx(() {
-                    return Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 8),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: controller.showParticipantError.value ?  Colors.redAccent :  Colors.black,
-                          width: 1,),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Autocomplete<EmployeeModel>(
-                        optionsViewBuilder: (context, onSelected, options) {
-                          return Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 10.0, vertical: 4.0),
-                            child: Align(
-                              alignment: Alignment.topCenter,
-                              child: Material(
-                                elevation: 4.0,
-                                child: ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                      maxHeight: 200),
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: options.length,
-                                    itemBuilder: (BuildContext context,
-                                        int index) {
-                                      final EmployeeModel option = controller.listEmployee.elementAt(index);
-                                      return TextButton(
-                                        onPressed: () {
-                                          onSelected(option);
-                                        },
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 0.0),
-                                            child: Text(
-                                              "${option.employeeName}",
-                                              textAlign: TextAlign.left,
-                                              style: listSubTitleTextStyle
-                                                  .copyWith(
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        optionsBuilder: (TextEditingValue textEditingValue) async{
-                          if (textEditingValue.text == '') {
-                            return const Iterable<EmployeeModel>.empty();
-                          }
-                          final list = await controller.getEmployeeByKeyword(textEditingValue.text);
-                          return list;
-                          */ /*return controller.listEmployee.where((EmployeeModel option) {
-                            return option.employeeName!.contains(textEditingValue.text.toLowerCase()) || option.email!.contains(textEditingValue.text.toLowerCase());
-                          });*/ /*
-                        },
-                        onSelected: (EmployeeModel selected) {
-                          controller.listSelectedEmployee.add(selected);
-                          controller.autocompleteController.text = "";
-                        },
-                        fieldViewBuilder: (context, ttec, tfn,
-                            onFieldSubmitted) {
-                          controller.autocompleteController = ttec;
-                          return Obx(() {
-                            return Wrap(
-                              runSpacing: 8,
-                              runAlignment: WrapAlignment.center,
-                              children: [
-                                ...controller.listSelectedEmployee
-                                    .mapIndexed((index, item) =>
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(4.0),
-                                        ),
-                                        color: Color(0xFFe4e4e4),
-                                      ),
-                                      margin: const EdgeInsets.only(
-                                          right: 5.0, left: 5),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0, vertical: 4.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          InkWell(
-                                            child: Text(
-                                              item.employeeName ?? "",
-                                              style: listSubTitleTextStyle,
-                                            ),
-                                            onTap: () {
-                                              //print("$tag selected");
-                                            },
-                                          ),
-                                          const SizedBox(width: 4.0),
-                                          InkWell(
-                                            child: const Icon(
-                                              Icons.cancel,
-                                              size: 14.0,
-                                              color: greyColor,
-                                            ),
-                                            onTap: () {
-                                              controller.deleteParticipantItem(item);
-                                              controller.updateButton();
-                                            },
-                                          )
-                                        ],
-                                      ),
-                                    ))
-                                    .toList(),
-                                SizedBox(
-                                  width: 100,
-                                  child: TextFormField(
-                                    controller: ttec,
-                                    focusNode: tfn,
-                                    validator: (value) {
-                                      controller.showParticipantError(
-                                          controller.listSelectedEmployee
-                                              .isEmpty);
-
-                                      if(controller.listSelectedEmployee
-                                          .isEmpty){
-                                        return "";
-                                      }
-                                      return null;
-                                    },
-                                    decoration: InputDecoration(
-                                      isDense: true,
-                                      hintText: "Participant".tr,
-                                      border: InputBorder.none,
-                                      contentPadding: const EdgeInsets
-                                          .symmetric(
-                                          horizontal: 4.0, vertical: 4.0),
-                                      errorText: null,
-                                      errorBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                        gapPadding: 0,
-                                      ),
-                                      errorStyle: const TextStyle(
-                                        height: 0
-                                      )
-                                    ),
-
-                                  ),
-                                )
-                              ],
-                            );
-                          });
-                        },
-                      ),
-                    );
-                  }),*/
-
                   Obx(() {
                     return Container(
                       width: double.infinity,
@@ -530,18 +370,17 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                 controller.listSelectedEmployee.add(suggestion);
                                 controller.autocompleteController.text = "";
                               },
-                              debounceDuration: const Duration(milliseconds: 1500),
+                              debounceDuration:
+                                  const Duration(milliseconds: 1500),
                               hideOnLoading: true,
                               hideSuggestionsOnKeyboardHide: true,
                               keepSuggestionsOnLoading: false,
                               minCharsForSuggestions: 1,
                               validator: (value) {
                                 controller.showParticipantError(
-                                    controller.listSelectedEmployee
-                                        .isEmpty);
+                                    controller.listSelectedEmployee.isEmpty);
 
-                                if(controller.listSelectedEmployee
-                                    .isEmpty){
+                                if (controller.listSelectedEmployee.isEmpty) {
                                   return "";
                                 }
                                 return null;
@@ -559,22 +398,224 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                         child: Text(
                           "This field is required",
                           style:
+                              TextStyle(color: Colors.redAccent, fontSize: 12),
+                        ),
+                      );
+                    }
+                    return const SizedBox();
+                  }),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: "External Participant".tr,
+                      style: formlabelTextStyle,
+                      children: const <TextSpan>[],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Obx(() {
+                    return Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: controller.showExternalParticipantError.value
+                              ? Colors.redAccent
+                              : Colors.black,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 8),
+                      child: Wrap(
+                        runSpacing: 8,
+                        runAlignment: WrapAlignment.center,
+                        children: [
+                          ...controller.listExternalParticipant
+                              .mapIndexed((index, item) => Container(
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(4.0),
+                                      ),
+                                      color: Color(0xFFe4e4e4),
+                                    ),
+                                    margin: const EdgeInsets.only(
+                                        right: 5.0, left: 5),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0, vertical: 4.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        InkWell(
+                                          child: Text(
+                                            item,
+                                            style: listSubTitleTextStyle,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 4.0),
+                                        InkWell(
+                                          child: const Icon(
+                                            Icons.cancel,
+                                            size: 14.0,
+                                            color: greyColor,
+                                          ),
+                                          onTap: () {
+                                            controller
+                                                .deleteExternalParticipant(
+                                                    index);
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                  ))
+                              .toList(),
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  hintText: "External Participant".tr,
+                                  border: InputBorder.none,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 4.0, vertical: 4.0),
+                                  errorText: null,
+                                  errorBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    gapPadding: 0,
+                                  ),
+                                  errorStyle: const TextStyle(height: 0)),
+                              controller : controller.externalParticipantController,
+                              onFieldSubmitted: (value){
+                                controller.addExternalParticipant(value);
+                              },
+                              onTapOutside: (_){
+                                if(controller.externalParticipantController.text.isNotEmpty){
+                                  controller.addExternalParticipant(controller.externalParticipantController.text);
+                                }
+                              },
+                              onChanged: (value){
+                                if(value.isNotEmpty){
+                                  controller.showExternalParticipantError(!value.isEmail);
+                                }else{
+                                  controller.showExternalParticipantError(false);
+                                }
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+                  Obx(() {
+                    if (controller.showExternalParticipantError.value) {
+                      return const Padding(
+                        padding: EdgeInsets.only(left: 10, top: 8),
+                        child: Text(
+                          "This field is not a valid email address",
+                          style:
                           TextStyle(color: Colors.redAccent, fontSize: 12),
                         ),
                       );
                     }
                     return const SizedBox();
                   }),
-
-
                   const SizedBox(
                     height: 8,
                   ),
+                  RichText(
+                    text: TextSpan(
+                      text: "Online Meeting?".tr,
+                      style: formlabelTextStyle,
+                      children: const <TextSpan>[],
+                    ),
+                  ),
+                  Obx(() {
+                    return Switch(
+                      value: controller.isOnlineMeeting.value,
+                      onChanged: (value) {
+                        controller.isOnlineMeeting(value);
+                      },
+                      activeColor: infoColor,
+                    );
+                  }),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Obx(() {
+                    if (controller.isOnlineMeeting.value) {
+                      return CustomTextFormField(
+                          readOnly: true,
+                          controller: controller.linkController,
+                          label: "Link".tr);
+                    }
+                    return const SizedBox();
+                  }),
+                  Obx(() {
+                    return SizedBox(
+                      height: controller.isOnlineMeeting.value ? 8 : 0,
+                    );
+                  }),
+                  RichText(
+                    text: TextSpan(
+                      text: "Recurrence?".tr,
+                      style: formlabelTextStyle,
+                      children: const <TextSpan>[],
+                    ),
+                  ),
+                  Obx(() {
+                    return Switch(
+                      value: controller.isRecurence.value,
+                      onChanged: (value) {
+                        controller.isRecurence(value);
+                      },
+                      activeColor: infoColor,
+                    );
+                  }),
+                  const SizedBox(
+                    height: 8,
+                  ),
+
+                  Obx(() {
+                    if (controller.isRecurence.value) {
+                      return CustomTextFormField(
+                          readOnly: true,
+                          onTap: () async{
+                            print("TESSS DATE222 ${controller.selectedRecurrence.value?.date}");
+
+                            RecurrenceModel? result = await Get.dialog(
+                                RecurrenceDialog(
+                                  recurrenceModel: controller.selectedRecurrence.value,
+                                )
+                            );
+                            if(result!=null){
+                              controller.recurrenceController.text = result.text ?? "";
+                              controller.selectedRecurrence.value = result;
+                            }
+                          },
+                          controller: controller.recurrenceController,
+                          label: "Recurrence".tr);
+                    }
+                    return const SizedBox();
+                  }),
+                  Obx(() {
+                    return SizedBox(
+                      height: controller.isRecurence.value ? 8 : 0,
+                    );
+                  }),
                   CustomTextFormField(
-                      validator:
-                          ValidationBuilder(optional: true).validLink().build(),
-                      controller: controller.linkController,
-                      label: "Link".tr),
+                      controller: controller.facilityController,
+                      label: "Facility".tr),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  CustomFormFilePicker(
+                    label: "Attachment".tr,
+                    onFileSelected: (File value) {},
+                  ),
                   const SizedBox(
                     height: 8,
                   ),
