@@ -149,6 +149,22 @@ class RequestATKDetailScreen extends StatelessWidget {
                           CustomTextFormField(
                               readOnly: true,
                               isRequired: true,
+                              controller: controller.companyController,
+                              label: "Company".tr),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          CustomTextFormField(
+                              readOnly: true,
+                              isRequired: true,
+                              controller: controller.siteController,
+                              label: "Site".tr),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          CustomTextFormField(
+                              readOnly: true,
+                              isRequired: true,
                               controller: controller.createdDateController,
                               label: "Created Date".tr),
                           const SizedBox(
