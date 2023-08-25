@@ -38,6 +38,14 @@ class BookingMeetingRoomModel {
   String? siteName;
   String? siteCode;
   String? status;
+  dynamic facility;
+  dynamic external;
+  dynamic isOnlineMeeting;
+  dynamic isRecurrence;
+  String? recurrence;
+  String? reccurrence;
+  String? attachment;
+  String? attachmentPath;
 
   BookingMeetingRoomModel(
       {
@@ -74,6 +82,14 @@ class BookingMeetingRoomModel {
         this.siteCode,
         this.status,
         this.participant,
+        this.facility,
+        this.external,
+        this.isOnlineMeeting,
+        this.isRecurrence,
+        this.recurrence,
+        this.reccurrence,
+        this.attachment,
+        this.attachmentPath,
       });
 
   static BookingMeetingRoomModel fromJsonModel(Object? json) =>

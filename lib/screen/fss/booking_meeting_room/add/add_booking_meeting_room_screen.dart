@@ -568,9 +568,9 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   ),
                   Obx(() {
                     return Switch(
-                      value: controller.isRecurence.value,
+                      value: controller.isRecurrence.value,
                       onChanged: (value) {
-                        controller.isRecurence(value);
+                        controller.isRecurrence(value);
                       },
                       activeColor: infoColor,
                     );
@@ -580,11 +580,10 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   ),
 
                   Obx(() {
-                    if (controller.isRecurence.value) {
+                    if (controller.isRecurrence.value) {
                       return CustomTextFormField(
                           readOnly: true,
                           onTap: () async{
-                            print("TESSS DATE222 ${controller.selectedRecurrence.value?.date}");
 
                             RecurrenceModel? result = await Get.dialog(
                                 RecurrenceDialog(
@@ -603,18 +602,130 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   }),
                   Obx(() {
                     return SizedBox(
-                      height: controller.isRecurence.value ? 8 : 0,
+                      height: controller.isRecurrence.value ? 8 : 0,
                     );
                   }),
-                  CustomTextFormField(
-                      controller: controller.facilityController,
-                      label: "Facility".tr),
+
+
+                  RichText(
+                    text: TextSpan(
+                      text: "Facility".tr,
+                      style: formlabelTextStyle,
+                      children: const <TextSpan>[
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Obx(() {
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 8),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Wrap(
+                        runSpacing: 8,
+                        runAlignment: WrapAlignment.center,
+                        children: [
+                          ...controller.listSelectedFacility
+                              .mapIndexed((index, item) => Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(4.0),
+                              ),
+                              color: Color(0xFFe4e4e4),
+                            ),
+                            margin: const EdgeInsets.only(
+                                right: 5.0, left: 5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 4.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                InkWell(
+                                  child: Text(
+                                    item,
+                                    style: listSubTitleTextStyle,
+                                  ),
+                                ),
+                                const SizedBox(width: 4.0),
+                                InkWell(
+                                  child: const Icon(
+                                    Icons.cancel,
+                                    size: 14.0,
+                                    color: greyColor,
+                                  ),
+                                  onTap: () {
+                                    controller.deleteFacility(index);
+                                    controller.updateButton();
+                                  },
+                                )
+                              ],
+                            ),
+                          ))
+                              .toList(),
+                          SizedBox(
+                            width: double.infinity,
+                            child: TypeAheadFormField<String>(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                controller: controller.facilityAutocompleteController,
+                                autofocus: false,
+                                style: Theme.of(context).textTheme.titleMedium,
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    hintText: "Facility".tr,
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0, vertical: 4.0),
+                                    errorText: null,
+                                    errorBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      gapPadding: 0,
+                                    ),
+                                    errorStyle: const TextStyle(height: 0)),
+                              ),
+                              suggestionsCallback: (pattern) async {
+                                final list = await controller.getFacilityByKeyword(pattern);
+                                return list;
+                              },
+                              itemBuilder: (context, suggestion) {
+                                return ListTile(
+                                  title: Text(suggestion),
+                                );
+                              },
+                              onSuggestionSelected: (suggestion) {
+                                controller.addFacility(suggestion);
+                                controller.facilityAutocompleteController.text = "";
+                              },
+                              debounceDuration:
+                              const Duration(milliseconds: 1500),
+                              hideOnLoading: false,
+                              hideSuggestionsOnKeyboardHide: true,
+                              keepSuggestionsOnLoading: false,
+                              minCharsForSuggestions: 0,
+
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+
                   const SizedBox(
                     height: 8,
                   ),
                   CustomFormFilePicker(
                     label: "Attachment".tr,
-                    onFileSelected: (File value) {},
+                    onFileSelected: (File value) {
+                      controller.selectedFile = value;
+                    },
                   ),
                   const SizedBox(
                     height: 8,

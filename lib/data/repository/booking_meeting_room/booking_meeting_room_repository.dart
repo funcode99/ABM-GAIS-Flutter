@@ -106,10 +106,30 @@ class BookingMeetingRoomRepository
   Future<Either<BaseError, BookingMeetingRoomModel>> saveData(model) async{
     final bookingMeetingRoomModel = model as BookingMeetingRoomModel;
 
+    final formData = Dio.FormData.fromMap(bookingMeetingRoomModel.toJson());
+    if(bookingMeetingRoomModel.attachmentPath!=null){
+      formData.files.add(MapEntry("attachment", await Dio.MultipartFile.fromFile(bookingMeetingRoomModel.attachmentPath!)));
+    }
+
+    //from backend, use participant[] instead of participant, :)
+    formData.fields.add(
+      MapEntry("participant[]", bookingMeetingRoomModel.participant.toString())
+    );
+
+    formData.fields.add(
+        MapEntry("facility[]", bookingMeetingRoomModel.facility.toString())
+    );
+
+    formData.fields.add(
+        MapEntry("external[]", bookingMeetingRoomModel.external.toString())
+    );
+
+    print(formData.fields);
+
     try {
       Dio.Response response = await network.dio.post(
           '/api/book_meeting_room/store/',
-          data: bookingMeetingRoomModel.toJson()
+          data: formData
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, BookingMeetingRoomModel.fromJsonModel);
       return right(apiResponseModel.data);

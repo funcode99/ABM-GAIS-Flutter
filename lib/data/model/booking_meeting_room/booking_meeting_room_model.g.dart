@@ -46,6 +46,14 @@ BookingMeetingRoomModel _$BookingMeetingRoomModelFromJson(
       participant: (json['participant'] as List<dynamic>?)
           ?.map((e) => e as int)
           .toList(),
+      facility: json['facility'],
+      external: json['external'],
+      isOnlineMeeting: json['is_online_meeting'],
+      isRecurrence: json['is_recurrence'],
+      recurrence: json['recurrence'] as String?,
+      reccurrence: json['reccurrence'] as String?,
+      attachment: json['attachment'] as String?,
+      attachmentPath: json['attachment_path'] as String?,
     );
 
 Map<String, dynamic> _$BookingMeetingRoomModelToJson(
@@ -85,4 +93,12 @@ Map<String, dynamic> _$BookingMeetingRoomModelToJson(
       'site_name': instance.siteName,
       'site_code': instance.siteCode,
       'status': instance.status,
+      'facility': instance.facility,
+      'external': instance.external,
+      'is_online_meeting': instance.isOnlineMeeting,
+      'is_recurrence': instance.isRecurrence,
+      'recurrence': instance.recurrence,
+      'reccurrence': instance.reccurrence,
+      'attachment': instance.attachment,
+      'attachment_path': instance.attachmentPath,
     };
