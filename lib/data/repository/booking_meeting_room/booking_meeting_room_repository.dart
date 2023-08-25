@@ -111,20 +111,37 @@ class BookingMeetingRoomRepository
       formData.files.add(MapEntry("attachment", await Dio.MultipartFile.fromFile(bookingMeetingRoomModel.attachmentPath!)));
     }
 
+    //typo from backend
+    formData.fields.add(
+        MapEntry("reccurence", "${bookingMeetingRoomModel.reccurrence}")
+    );
+
     //from backend, use participant[] instead of participant, :)
-    formData.fields.add(
-      MapEntry("participant[]", bookingMeetingRoomModel.participant.toString())
-    );
+    if(bookingMeetingRoomModel.participant != null){
+      for(int participant in bookingMeetingRoomModel.participant!){
+        formData.fields.add(
+            MapEntry("participant[]", participant.toString())
+        );
+      }
+    }
 
-    formData.fields.add(
-        MapEntry("facility[]", bookingMeetingRoomModel.facility.toString())
-    );
+    if(bookingMeetingRoomModel.facility != null && bookingMeetingRoomModel.facility.toString().isNotEmpty){
+      List<String> facilities = List<String>.from(bookingMeetingRoomModel.facility);
+      for(String item in facilities){
+        formData.fields.add(
+            MapEntry("facility[]", item)
+        );
+      }
+    }
 
-    formData.fields.add(
-        MapEntry("external[]", bookingMeetingRoomModel.external.toString())
-    );
-
-    print(formData.fields);
+    if(bookingMeetingRoomModel.external != null && bookingMeetingRoomModel.external.toString().isNotEmpty){
+      List<String> externals = List<String>.from(bookingMeetingRoomModel.external);
+      for(String item in externals){
+        formData.fields.add(
+            MapEntry("external[]", item)
+        );
+      }
+    }
 
     try {
       Dio.Response response = await network.dio.post(

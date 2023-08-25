@@ -7,11 +7,11 @@ part 'booking_meeting_room_model.g.dart';
 class BookingMeetingRoomModel {
   int? no;
   int? id;
-  int? idMeetingRoom;
+  dynamic idMeetingRoom;
   String? noBookingMeeting;
   String? title;
-  int? idCompany;
-  int? idSite;
+  dynamic idCompany;
+  dynamic idSite;
   int? idEmployee;
   String? remarks;
   String? notes;
@@ -19,8 +19,8 @@ class BookingMeetingRoomModel {
   String? startTime;
   String? endDate;
   String? endTime;
-  int? floor;
-  int? capacity;
+  dynamic floor;
+  dynamic capacity;
   String? session;
   int? codeStatusDoc;
   String? link;

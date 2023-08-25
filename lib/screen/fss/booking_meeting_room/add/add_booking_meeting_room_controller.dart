@@ -29,7 +29,6 @@ class AddBookingMeetingRoomController extends BaseController
   final TextEditingController meetingRoomController = TextEditingController();
   final TextEditingController floorController = TextEditingController();
   final TextEditingController capacityController = TextEditingController();
-  final TextEditingController participantController = TextEditingController();
   final TextEditingController externalParticipantController = TextEditingController();
   final TextEditingController linkController = TextEditingController();
   final TextEditingController recurrenceController = TextEditingController();
@@ -256,14 +255,13 @@ class AddBookingMeetingRoomController extends BaseController
         external: listExternalParticipant,
         isOnlineMeeting: isOnlineMeeting.value ? 1: 0,
         isRecurrence: isRecurrence.value ? 1: 0,
-        recurrence: selectedRecurrence.value?.value,
-        reccurrence: selectedRecurrence.value?.value, //typo from backend,
+        recurrence: isRecurrence.value ? selectedRecurrence.value?.value : "",
+        reccurrence: isRecurrence.value ? selectedRecurrence.value?.value : "", //typo from backend,
         remarks: remarksController.text,
         attachmentPath: selectedFile?.path
     );
 
 
-    print(jsonEncode(meetingRoomModel.toJson()));
     final result = await _repository.saveData(meetingRoomModel);
 
     result.fold(
