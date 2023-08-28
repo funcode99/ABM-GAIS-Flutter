@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' as Dio;
 import 'package:gais/base/base_error.dart';
@@ -543,6 +545,37 @@ class MasterRepository{
       return left(BaseError(message: "General error occurred"));
     }
   }
+
+  Future<Either<BaseError, List<String>>> getFacilityByRoomId(dynamic id)async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/master_meeting_room/get/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, RoomModel.fromJsonModelList);
+      List<RoomModel> listRoom = apiResponseModel.data;
+      if(listRoom.isEmpty){
+        return right([]);
+      }
+
+      RoomModel roomModel = listRoom.first;
+      List<String> listFacility = List<String>.from(roomModel.facility) ?? [];
+
+      return right(listFacility);
+
+    } on Dio.DioError catch (e) {
+      print(e);
+
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print(e);
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print(e);
+
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
 
 
 }

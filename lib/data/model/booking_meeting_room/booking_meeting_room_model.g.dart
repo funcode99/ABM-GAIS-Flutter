@@ -11,11 +11,11 @@ BookingMeetingRoomModel _$BookingMeetingRoomModelFromJson(
     BookingMeetingRoomModel(
       no: json['no'] as int?,
       id: json['id'] as int?,
-      idMeetingRoom: json['id_meeting_room'] as int?,
+      idMeetingRoom: json['id_meeting_room'],
       noBookingMeeting: json['no_booking_meeting'] as String?,
       title: json['title'] as String?,
-      idCompany: json['id_company'] as int?,
-      idSite: json['id_site'] as int?,
+      idCompany: json['id_company'],
+      idSite: json['id_site'],
       idEmployee: json['id_employee'] as int?,
       remarks: json['remarks'] as String?,
       notes: json['notes'] as String?,
@@ -23,8 +23,8 @@ BookingMeetingRoomModel _$BookingMeetingRoomModelFromJson(
       startTime: json['start_time'] as String?,
       endDate: json['end_date'] as String?,
       endTime: json['end_time'] as String?,
-      floor: json['floor'] as int?,
-      capacity: json['capacity'] as int?,
+      floor: json['floor'],
+      capacity: json['capacity'],
       session: json['session'] as String?,
       codeStatusDoc: json['code_status_doc'] as int?,
       link: json['link'] as String?,
@@ -46,6 +46,14 @@ BookingMeetingRoomModel _$BookingMeetingRoomModelFromJson(
       participant: (json['participant'] as List<dynamic>?)
           ?.map((e) => e as int)
           .toList(),
+      facility: json['facility'],
+      external: json['external'],
+      isOnlineMeeting: json['is_online_meeting'],
+      isRecurrence: json['is_recurrence'],
+      recurrence: json['recurrence'] as String?,
+      reccurrence: json['reccurrence'] as String?,
+      attachment: json['attachment'] as String?,
+      attachmentPath: json['attachment_path'] as String?,
     );
 
 Map<String, dynamic> _$BookingMeetingRoomModelToJson(
@@ -85,4 +93,12 @@ Map<String, dynamic> _$BookingMeetingRoomModelToJson(
       'site_name': instance.siteName,
       'site_code': instance.siteCode,
       'status': instance.status,
+      'facility': instance.facility,
+      'external': instance.external,
+      'is_online_meeting': instance.isOnlineMeeting,
+      'is_recurrence': instance.isRecurrence,
+      'recurrence': instance.recurrence,
+      'reccurrence': instance.reccurrence,
+      'attachment': instance.attachment,
+      'attachment_path': instance.attachmentPath,
     };

@@ -17,6 +17,7 @@ class RoomModel {
   dynamic updatedBy;
   String? deletedAt;
   String? codeMeetingRoom;
+  dynamic facility;
 
   RoomModel({
     this.id,
@@ -32,6 +33,7 @@ class RoomModel {
     this.updatedBy,
     this.deletedAt,
     this.codeMeetingRoom,
+    this.facility,
   });
 
   static RoomModel fromJsonModel(Object? json) =>
