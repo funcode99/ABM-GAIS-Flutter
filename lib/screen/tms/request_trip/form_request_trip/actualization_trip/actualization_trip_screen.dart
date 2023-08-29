@@ -193,7 +193,11 @@ class ActualizationTripScreen extends StatelessWidget {
                                                         decoration: BoxDecoration(color: successColor, borderRadius: BorderRadius.circular(6)),
                                                         child: const Icon(IconlyBold.edit, color: whiteColor),
                                                       ),
-                                                      onTap: () {},
+                                                      onTap: () {
+                                                        Get.to(const ActActivitiesDetailScreen(),
+                                                                arguments: {"idActual": controller.actualID, "id": e.id, 'isEdit': true})
+                                                            ?.then((value) => controller.fetchList());
+                                                      },
                                                     ),
                                                     GestureDetector(
                                                       child: Container(
@@ -205,6 +209,7 @@ class ActualizationTripScreen extends StatelessWidget {
                                                       onTap: () {
                                                         Get.dialog(DeleteConfirmationDialog(
                                                           onDeletePressed: () {
+                                                            controller.deleteActivities(e.id!);
                                                             Get.back();
                                                           },
                                                         ));
@@ -259,16 +264,7 @@ class ActualizationTripScreen extends StatelessWidget {
                             title: "Submit",
                             onPressed: () {
                               if (controller.formKey.currentState?.validate() == true) {
-                                Get.showSnackbar(const GetSnackBar(
-                                  icon: Icon(
-                                    Icons.error,
-                                    color: Colors.white,
-                                  ),
-                                  message: "Submit Failed",
-                                  isDismissible: true,
-                                  duration: Duration(seconds: 3),
-                                  backgroundColor: Colors.red,
-                                ));
+                                controller.updateActualization();
                               }
                             },
                           )

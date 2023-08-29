@@ -2,11 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/data/model/actualization_trip/get_activities_byactualid_model.dart';
 import 'package:gais/data/model/actualization_trip/get_actual_bytripid_model.dart';
+import 'package:gais/data/model/actualization_trip/get_actual_trip_model.dart';
 import 'package:gais/data/model/actualization_trip/get_trip_info_byactualid_model.dart';
 import 'package:gais/data/model/actualization_trip/save_activities_model.dart';
 import 'package:gais/data/model/actualization_trip/save_actual_trip_model.dart';
 import 'package:gais/data/model/actualization_trip/save_trip_info_model.dart';
 import 'package:gais/data/model/actualization_trip/update_activites_model.dart';
+import 'package:gais/data/model/actualization_trip/update_actual_trip_model.dart';
 import 'package:gais/data/model/actualization_trip/update_trip_info_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:gais/data/repository/actualization_trip/actualization_trip_repository.dart';
@@ -235,6 +237,7 @@ class ActualizationTripImpl implements ActualizationTripRepository {
       );
       return GetActivitiesByactualidModel.fromJson(response.data);
     } on DioError catch (e) {
+      print("response error : ${e.response?.data}");
       return e.error;
     }
   }
@@ -274,6 +277,63 @@ class ActualizationTripImpl implements ActualizationTripRepository {
         "/api/actual_trip/delete_activities/$id",
       );
       return response.data;
+    } on DioError catch (e) {
+      return e.error;
+    }
+  }
+
+  @override
+  Future submitActualizationTripByID(String id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.post(
+        "/api/actual_trip/delete_activities/$id",
+      );
+      return response.data;
+    } on DioError catch (e) {
+      return e.error;
+    }
+  }
+
+  @override
+  Future<UpdateActualTripModel> updateActualizationTrip(
+    String id,
+    String idRequestTrip,
+    String purpose,
+    String totalTLK,
+    String notes,
+  ) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+
+    var formData = FormData.fromMap({
+      "id_request_trip": idRequestTrip,
+      "purpose": purpose,
+      "total_tlk": totalTLK,
+      "notes": notes,
+    });
+    try {
+      Response response = await network.dio.post(
+        "/api/actual_trip/update_data/$id",
+        data: formData,
+      );
+      return UpdateActualTripModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print("response error : ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+  @override
+  Future<GetActualTripModel> getActualTripByID(String id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/actual_trip/get_data/$id",
+      );
+      return GetActualTripModel.fromJson(response.data);
     } on DioError catch (e) {
       return e.error;
     }

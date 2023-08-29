@@ -1,11 +1,13 @@
 import 'package:gais/data/model/actualization_trip/get_activities_byactualid_model.dart';
 import 'package:gais/data/model/actualization_trip/get_actual_bytripid_model.dart';
+import 'package:gais/data/model/actualization_trip/get_actual_trip_model.dart';
 import 'package:gais/data/model/actualization_trip/get_trip_info_byactualid_model.dart';
 import 'package:gais/data/model/actualization_trip/save_activities_model.dart';
 import 'package:gais/data/model/actualization_trip/save_actual_trip_model.dart';
 import 'package:gais/data/model/actualization_trip/save_trip_info_model.dart';
 import 'package:gais/data/model/actualization_trip/update_activites_model.dart';
 import 'package:gais/data/model/actualization_trip/update_trip_info_model.dart';
+import 'package:gais/data/model/actualization_trip/update_actual_trip_model.dart';
 
 abstract class ActualizationTripRepository {
   Future<GetActualBytripidModel> getActualBytripID(String id);
@@ -72,4 +74,15 @@ abstract class ActualizationTripRepository {
 
   Future deleteActivitiesByID(String id);
 
+  Future<UpdateActualTripModel> updateActualizationTrip(
+    String id,
+    String idRequestTrip,
+    String purpose,
+    String totalTLK,
+    String notes,
+  );
+
+  Future submitActualizationTripByID(String id);
+
+  Future<GetActualTripModel> getActualTripByID(String id);
 }
