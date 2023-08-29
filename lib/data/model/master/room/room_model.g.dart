@@ -20,6 +20,7 @@ RoomModel _$RoomModelFromJson(Map<String, dynamic> json) => RoomModel(
       updatedBy: json['updated_by'],
       deletedAt: json['deleted_at'] as String?,
       codeMeetingRoom: json['code_meeting_room'] as String?,
+      facility: json['facility'],
     );
 
 Map<String, dynamic> _$RoomModelToJson(RoomModel instance) => <String, dynamic>{
@@ -36,4 +37,5 @@ Map<String, dynamic> _$RoomModelToJson(RoomModel instance) => <String, dynamic>{
       'updated_by': instance.updatedBy,
       'deleted_at': instance.deletedAt,
       'code_meeting_room': instance.codeMeetingRoom,
+      'facility': instance.facility,
     };
