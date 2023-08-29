@@ -54,6 +54,10 @@ class BookingMeetingRoomModel {
   String? nameStarted;
   String? nameEnded;
   List<dynamic>? days;
+  String? durationStart;
+  String? durationEnd;
+  String? recurrenceStart;
+  String? recurrenceEnd;
 
   BookingMeetingRoomModel(
       {
@@ -104,6 +108,10 @@ class BookingMeetingRoomModel {
         this.nameStarted,
         this.nameEnded,
         this.days,
+        this.durationStart,
+        this.durationEnd,
+        this.recurrenceStart,
+        this.recurrenceEnd,
       });
 
   static BookingMeetingRoomModel fromJsonModel(Object? json) =>

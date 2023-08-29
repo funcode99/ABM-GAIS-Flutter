@@ -89,6 +89,10 @@ class DetailBookingMeetingRoomController extends BaseController
   final listSelectedFacility = <String>[].obs;
   final listNotSelectedFacility = <String>[].obs;
 
+  final showStartMeetingButton = false.obs;
+  final showEndMeetingButton = false.obs;
+  final showCancelButton = false.obs;
+
   final BookingMeetingRoomRepository _repository = Get.find();
 
   @override
@@ -131,8 +135,6 @@ class DetailBookingMeetingRoomController extends BaseController
     listEmployee.addAll(employees);
 
     setValue();
-
-    linkController.text = "${selectedItem.value.link}";
 
   }
 
@@ -206,6 +208,28 @@ class DetailBookingMeetingRoomController extends BaseController
 
 
     attachmentController.text = selectedItem.value.attachment ?? "";
+    linkController.text = "${selectedItem.value.link}";
+
+    //set button flag
+    if(selectedItem.value.durationStart == null){
+
+      //show cancel button
+      showCancelButton.value = true;
+
+      String startDateTimeString = "${selectedItem.value.startDate} ${selectedItem.value.startTime}";
+      // String startDateTimeString = "2023-08-29 15:15:00";
+      DateTime? startDateTime = startDateTimeString.toDate(originFormat:"yyyy-MM-dd HH:mm:ss");
+      if(startDateTime!=null){
+        DateTime today = DateTime.now();
+        if(today.isAfter(startDateTime)){
+          showStartMeetingButton.value = true;
+        }
+      }
+    }else{
+      if(selectedItem.value.durationEnd == null){
+        showEndMeetingButton.value = true;
+      }
+    }
   }
 
   void detailHeader() async {

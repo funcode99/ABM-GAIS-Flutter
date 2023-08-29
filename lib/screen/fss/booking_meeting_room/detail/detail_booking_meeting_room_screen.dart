@@ -146,15 +146,44 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              controller.cancelHeader();
-                            },
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(75, 30),
-                                backgroundColor: redColor),
-                            child: Text("Cancel".tr),
-                          )
+                          if(controller.showCancelButton.value)
+                            ElevatedButton(
+                              onPressed: () {
+                                controller.cancelHeader();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size(75, 30),
+                                  backgroundColor: redColor),
+                              child: Text("Cancel".tr),
+                            ),
+
+                          SizedBox(
+                            width: controller.showStartMeetingButton.value ? 8 : 0,
+                          ),
+
+                          if(controller.showStartMeetingButton.value)
+                            ElevatedButton(
+                              onPressed: () {
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size(75, 30),
+                                  backgroundColor: successColor),
+                              child: Text("Start Meeting".tr),
+                            ),
+
+                          SizedBox(
+                            width: controller.showEndMeetingButton.value ? 8 : 0,
+                          ),
+
+                          if(controller.showEndMeetingButton.value)
+                            ElevatedButton(
+                              onPressed: () {
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size(75, 30),
+                                  backgroundColor: successColor),
+                              child: Text("End Meeting".tr),
+                            )
                         ],
                       );
                     }

@@ -60,6 +60,10 @@ BookingMeetingRoomModel _$BookingMeetingRoomModelFromJson(
       nameStarted: json['name_started'] as String?,
       nameEnded: json['name_ended'] as String?,
       days: json['days'] as List<dynamic>?,
+      durationStart: json['duration_start'] as String?,
+      durationEnd: json['duration_end'] as String?,
+      recurrenceStart: json['recurrence_start'] as String?,
+      recurrenceEnd: json['recurrence_end'] as String?,
     )..facilityArray = (json['facility_array'] as List<dynamic>?)
         ?.map((e) => FacilityModel.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -116,4 +120,8 @@ Map<String, dynamic> _$BookingMeetingRoomModelToJson(
       'name_started': instance.nameStarted,
       'name_ended': instance.nameEnded,
       'days': instance.days,
+      'duration_start': instance.durationStart,
+      'duration_end': instance.durationEnd,
+      'recurrence_start': instance.recurrenceStart,
+      'recurrence_end': instance.recurrenceEnd,
     };
