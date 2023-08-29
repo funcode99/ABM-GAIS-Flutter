@@ -349,7 +349,8 @@ class ActualizationTripImpl implements ActualizationTripRepository {
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
-    search.printInfo();
+    search.printInfo(info: "search ");
+    status.printInfo(info: "status");
     try {
       Response response = await network.dio.get(
         "/api/actual_trip/get_data/",
@@ -357,9 +358,10 @@ class ActualizationTripImpl implements ActualizationTripRepository {
           "perPage": perPage,
           "page": page,
           "search": search,
+          "status": status,
         },
       );
-      GetAllActualizationTripModel.fromJson(response.data).data?.total.printInfo(info: "=> response info");
+      print("response : ${response.data}");
       return GetAllActualizationTripModel.fromJson(response.data);
     } on DioError catch (e) {
       //print("response error: ${e.response?.data}");

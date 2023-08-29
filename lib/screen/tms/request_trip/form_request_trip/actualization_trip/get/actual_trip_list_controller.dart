@@ -11,8 +11,9 @@ class ActualTripListController extends BaseController {
 
   bool dataisnull = false;
   bool isLoading = false;
-  String? searchValue;
-  String? filterValue;
+  bool searchNotFound = false;
+  String? searchValue = "";
+  String? filterValue = "1";
   int currentPage = 1;
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
 
@@ -22,6 +23,7 @@ class ActualTripListController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    Future.wait([fetchList(1)]);
   }
 
   void resetFilter() {
@@ -39,8 +41,31 @@ class ActualTripListController extends BaseController {
   }
 
   Future<void> fetchList(int page) async {
-    try {} catch (e) {
-      e.printError();
+    actualList = [];
+    isLoading = true;
+    try {
+      var actualTrip = await actualizationTrip.getActualTripList(
+        "10",
+        searchValue.toString(),
+        filterValue.toString(),
+        page.toString(),
+      );
+      actualModel = actualTrip;
+      actualList.addAll(actualModel?.data?.data?.toSet().toList() ?? []);
+      isLoading = false;
+      searchNotFound = actualModel?.data?.data?.isEmpty ?? false;
+      dataisnull = actualModel?.data?.data?.isEmpty ?? false;
+      print("data null $dataisnull");
+      print("actual: ${actualModel?.success.toString()}");
+      print("actual: ${actualList.first.noAct.toString()}");
+
+    } catch (e, i) {
+      dataisnull = true;
+      searchNotFound = true;
+      isLoading = false;
+      i.printError();
+      e.printError(info: "=> getError");
     }
+    update();
   }
 }

@@ -8,7 +8,6 @@ import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
-import 'package:gais/reusable/form/custom_dropdown_field.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/home/home_screen.dart';
@@ -177,13 +176,17 @@ class ActualTripListScreen extends StatelessWidget {
                                       controller.dateFormat.format(DateTime.parse(controller.actualList[index].createdAt.toString())).toString(),
                                   content: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Request Trip", style: listTitleTextStyle),
-                                          Text(controller.actualList[index].noRequestTrip ?? "", style: listSubTitleTextStyle)
-                                        ],
+                                      Container(
+                                        width: Get.width/3,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Request Trip", style: listTitleTextStyle),
+                                            Text(controller.actualList[index].noRequestTrip ?? "", style: listSubTitleTextStyle)
+                                          ],
+                                        ),
                                       ),
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
