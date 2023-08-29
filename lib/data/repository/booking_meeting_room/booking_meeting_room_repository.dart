@@ -136,13 +136,20 @@ class BookingMeetingRoomRepository
 
     if(bookingMeetingRoomModel.external != null && bookingMeetingRoomModel.external.toString().isNotEmpty){
       List<String> externals = List<String>.from(bookingMeetingRoomModel.external);
-      for(String item in externals){
+      if(externals.isNotEmpty){
+        for(String item in externals){
+          formData.fields.add(
+              MapEntry("external[]", item)
+          );
+        }
+      }/*else{
         formData.fields.add(
-            MapEntry("external[]", item)
+            const MapEntry("external[]", null)
         );
-      }
+      }*/
     }
 
+    print(formData.fields);
     try {
       Dio.Response response = await network.dio.post(
           '/api/book_meeting_room/store/',

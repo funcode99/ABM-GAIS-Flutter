@@ -9,6 +9,7 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/data/model/booking_meeting_room/recurrence_model.dart';
 import 'package:gais/data/model/master/employee/employee_model.dart';
+import 'package:gais/data/model/master/facility/facility_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/calendar/custom_calendar_picker.dart';
 import 'package:gais/reusable/custombackbutton.dart';
@@ -145,7 +146,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   CustomTextFormField(
                       isRequired: true,
                       controller: controller.titleController,
-                      label: "Title".tr),
+                      label: "Subject".tr),
                   const SizedBox(
                     height: 8,
                   ),
@@ -651,7 +652,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                               children: [
                                 InkWell(
                                   child: Text(
-                                    item,
+                                    "${item.facilityName}",
                                     style: listSubTitleTextStyle,
                                   ),
                                 ),
@@ -663,7 +664,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                                     color: greyColor,
                                   ),
                                   onTap: () {
-                                    controller.deleteFacility(index);
+                                    controller.deleteFacility(item.id);
                                     controller.updateButton();
                                   },
                                 )
@@ -673,7 +674,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                               .toList(),
                           SizedBox(
                             width: double.infinity,
-                            child: TypeAheadFormField<String>(
+                            child: TypeAheadFormField<FacilityModel>(
                               textFieldConfiguration: TextFieldConfiguration(
                                 controller: controller.facilityAutocompleteController,
                                 autofocus: false,
@@ -697,7 +698,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                               },
                               itemBuilder: (context, suggestion) {
                                 return ListTile(
-                                  title: Text(suggestion),
+                                  title: Text("${suggestion.facilityName}"),
                                 );
                               },
                               onSuggestionSelected: (suggestion) {
@@ -733,7 +734,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                   CustomTextFormField(
                       multiLine: true,
                       controller: controller.remarksController,
-                      label: "Remarks".tr),
+                      label: "Description".tr),
                   const SizedBox(
                     height: 32,
                   ),
