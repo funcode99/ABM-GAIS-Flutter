@@ -28,6 +28,7 @@ import 'package:gais/util/ext/date_ext.dart';
 import 'package:gais/util/validator/custom_validation_builder.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailBookingMeetingRoomScreen extends StatelessWidget {
   const DetailBookingMeetingRoomScreen({super.key});
@@ -39,9 +40,8 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
       selectedItem = Get.arguments["item"];
     }
 
-    final DetailBookingMeetingRoomController controller =
-    Get.put(DetailBookingMeetingRoomController()
-      ..selectedItem(selectedItem));
+    final DetailBookingMeetingRoomController controller = Get.put(
+        DetailBookingMeetingRoomController()..selectedItem(selectedItem));
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -91,11 +91,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                     child: Obx(() {
                       return Text(
                         controller.selectedItem.value.noBookingMeeting ?? "-",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyText1
-                            ?.copyWith(
+                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
                             fontSize: 14, fontWeight: FontWeight.w400),
                         textAlign: TextAlign.center,
                       );
@@ -103,7 +99,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                   ),
                   Obx(() {
                     if (controller.selectedItem.value.codeStatusDoc
-                        .toString() ==
+                            .toString() ==
                         "0") {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -124,25 +120,25 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                           ),
                           controller.onEdit.value
                               ? ElevatedButton(
-                            onPressed: controller.enableButton.value
-                                ? () {
-                              controller.updateData();
-                            }
-                                : null,
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(75, 30),
-                                backgroundColor: successColor),
-                            child: Text("Save".tr),
-                          )
+                                  onPressed: controller.enableButton.value
+                                      ? () {
+                                          controller.updateData();
+                                        }
+                                      : null,
+                                  style: ElevatedButton.styleFrom(
+                                      minimumSize: const Size(75, 30),
+                                      backgroundColor: successColor),
+                                  child: Text("Save".tr),
+                                )
                               : ElevatedButton(
-                            onPressed: () {
-                              controller.submitHeader();
-                            },
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(75, 30),
-                                backgroundColor: successColor),
-                            child: Text("Book".tr),
-                          ),
+                                  onPressed: () {
+                                    controller.submitHeader();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      minimumSize: const Size(75, 30),
+                                      backgroundColor: successColor),
+                                  child: Text("Book".tr),
+                                ),
                         ],
                       );
                     } else if (controller.selectedItem.value.codeStatusDoc ==
@@ -234,33 +230,29 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                 isRequired: true,
                                 readOnly: !controller.onEdit.value,
                                 suffixIcon: const Icon(IconlyLight.calendar),
-                                onTap: controller.onEdit.value ? () {
-                                  showCustomCalendarPicker(
-                                    context,
-                                    dismissible: true,
-                                    minimumDate: DateTime.now(),
-                                    maximumDate:
-                                    DateTime.now().add(
-                                        const Duration(days: 365)),
-                                    endDate: controller.endDate.value,
-                                    startDate: controller.startDate.value,
-                                    backgroundColor: Colors.white,
-                                    primaryColor: Colors.green,
-                                    onApplyClick: (start, end) {
-                                      controller.startDate.value = start;
-                                      controller.endDate.value = end;
-                                      controller.dateController.text =
-                                      "${controller.dateFormat.format(
-                                          start)} ${end !=
-                                          null ? "-" : ""} ${end != null
-                                          ? controller
-                                          .dateFormat.format(end)
-                                          : ""}";
-                                      controller.update();
-                                    },
-                                    onCancelClick: () {},
-                                  );
-                                } : null,
+                                onTap: controller.onEdit.value
+                                    ? () {
+                                        showCustomCalendarPicker(
+                                          context,
+                                          dismissible: true,
+                                          minimumDate: DateTime.now(),
+                                          maximumDate: DateTime.now()
+                                              .add(const Duration(days: 365)),
+                                          endDate: controller.endDate.value,
+                                          startDate: controller.startDate.value,
+                                          backgroundColor: Colors.white,
+                                          primaryColor: Colors.green,
+                                          onApplyClick: (start, end) {
+                                            controller.startDate.value = start;
+                                            controller.endDate.value = end;
+                                            controller.dateController.text =
+                                                "${controller.dateFormat.format(start)} ${end != null ? "-" : ""} ${end != null ? controller.dateFormat.format(end) : ""}";
+                                            controller.update();
+                                          },
+                                          onCancelClick: () {},
+                                        );
+                                      }
+                                    : null,
                                 controller: controller.dateController,
                                 label: "Date".tr);
                           }),
@@ -272,25 +264,25 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                 isRequired: true,
                                 readOnly: !controller.onEdit.value,
                                 suffixIcon: const Icon(IconlyLight.time_circle),
-                                onTap: controller.onEdit.value ? () {
-                                  FocusScope.of(context).requestFocus(
-                                      FocusNode());
-                                  Get.dialog(MeetingRoomTimePickerDialog(
-                                    startDate: controller.startDate.value,
-                                    endDate: controller.endDate.value,
-                                    startTime: controller.startTime.value,
-                                    endTime: controller.endTime.value,
-                                    onConfirmClick: (startTime, endTime) {
-                                      controller.startTime.value = startTime;
-                                      controller.endTime.value = endTime;
-                                      controller.timeController.text =
-                                      "${startTime
-                                          ?.toStringWithFormat()} ${endTime !=
-                                          null ? "-" : ""} ${endTime
-                                          ?.toStringWithFormat() ?? ""}";
-                                    },
-                                  ));
-                                } : null,
+                                onTap: controller.onEdit.value
+                                    ? () {
+                                        FocusScope.of(context)
+                                            .requestFocus(FocusNode());
+                                        Get.dialog(MeetingRoomTimePickerDialog(
+                                          startDate: controller.startDate.value,
+                                          endDate: controller.endDate.value,
+                                          startTime: controller.startTime.value,
+                                          endTime: controller.endTime.value,
+                                          onConfirmClick: (startTime, endTime) {
+                                            controller.startTime.value =
+                                                startTime;
+                                            controller.endTime.value = endTime;
+                                            controller.timeController.text =
+                                                "${startTime?.toStringWithFormat()} ${endTime != null ? "-" : ""} ${endTime?.toStringWithFormat() ?? ""}";
+                                          },
+                                        ));
+                                      }
+                                    : null,
                                 controller: controller.timeController,
                                 label: "Time Detail".tr);
                           }),
@@ -307,15 +299,14 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                               return CustomDropDownFormField(
                                 isRequired: true,
                                 items: controller.listRoom
-                                    .map((e) =>
-                                    DropdownMenuItem(
-                                      value: e.id.toString(),
-                                      child: Text("${e.nameMeetingRoom}"),
-                                    ))
+                                    .map((e) => DropdownMenuItem(
+                                          value: e.id.toString(),
+                                          child: Text("${e.nameMeetingRoom}"),
+                                        ))
                                     .toList(),
                                 onChanged: (item) {
-                                  controller.onChangeSelectedRoom(
-                                      item.toString());
+                                  controller
+                                      .onChangeSelectedRoom(item.toString());
                                 },
                                 label: "Meeting Room".tr,
                                 value: controller.selectedRoom.value?.id
@@ -372,7 +363,6 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                           const SizedBox(
                             height: 8,
                           ),
-
                           Obx(() {
                             return Container(
                               width: double.infinity,
@@ -386,14 +376,15 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                   color: controller.showParticipantError.value
                                       ? Colors.redAccent
                                       : Colors.black,
-                                  width: 1,),
+                                  width: 1,
+                                ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Obx(() {
                                 if (controller.onEdit.value) {
                                   return Autocomplete<EmployeeModel>(
-                                    optionsViewBuilder: (context, onSelected,
-                                        options) {
+                                    optionsViewBuilder:
+                                        (context, onSelected, options) {
                                       return Container(
                                         margin: const EdgeInsets.symmetric(
                                             horizontal: 10.0, vertical: 4.0),
@@ -407,31 +398,31 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                               child: ListView.builder(
                                                 shrinkWrap: true,
                                                 itemCount: options.length,
-                                                itemBuilder: (
-                                                    BuildContext context,
-                                                    int index) {
-                                                  final EmployeeModel option = options
-                                                      .elementAt(index);
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  final EmployeeModel option =
+                                                      options.elementAt(index);
                                                   return TextButton(
                                                     onPressed: () {
                                                       onSelected(option);
                                                     },
                                                     child: Align(
-                                                      alignment: Alignment
-                                                          .centerLeft,
+                                                      alignment:
+                                                          Alignment.centerLeft,
                                                       child: Padding(
-                                                        padding: const EdgeInsets
-                                                            .symmetric(
-                                                            vertical: 0.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                vertical: 0.0),
                                                         child: Text(
-                                                          "${option
-                                                              .employeeName}",
-                                                          textAlign: TextAlign
-                                                              .left,
+                                                          "${option.employeeName}",
+                                                          textAlign:
+                                                              TextAlign.left,
                                                           style: listSubTitleTextStyle
                                                               .copyWith(
-                                                              color: Colors
-                                                                  .black),
+                                                                  color: Colors
+                                                                      .black),
                                                         ),
                                                       ),
                                                     ),
@@ -443,30 +434,30 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                         ),
                                       );
                                     },
-                                    optionsBuilder: (
-                                        TextEditingValue textEditingValue) {
+                                    optionsBuilder:
+                                        (TextEditingValue textEditingValue) {
                                       if (textEditingValue.text == '') {
                                         return const Iterable<
                                             EmployeeModel>.empty();
                                       }
-                                      return controller.listEmployee.where((
-                                          EmployeeModel option) {
+                                      return controller.listEmployee
+                                          .where((EmployeeModel option) {
                                         return option.employeeName!.contains(
-                                            textEditingValue.text
-                                                .toLowerCase()) ||
+                                                textEditingValue.text
+                                                    .toLowerCase()) ||
                                             option.email!.contains(
                                                 textEditingValue.text
                                                     .toLowerCase());
                                       });
                                     },
                                     onSelected: (EmployeeModel selected) {
-                                      controller.listSelectedEmployee.add(
-                                          selected);
+                                      controller.listSelectedEmployee
+                                          .add(selected);
                                       controller.autocompleteController.text =
-                                      "";
+                                          "";
                                     },
-                                    fieldViewBuilder: (context, ttec, tfn,
-                                        onFieldSubmitted) {
+                                    fieldViewBuilder:
+                                        (context, ttec, tfn, onFieldSubmitted) {
                                       controller.autocompleteController = ttec;
                                       return Obx(() {
                                         return Wrap(
@@ -475,53 +466,58 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                           children: [
                                             ...controller.listSelectedEmployee
                                                 .mapIndexed((index, item) =>
-                                                Container(
-                                                  decoration: const BoxDecoration(
-                                                    borderRadius: BorderRadius
-                                                        .all(
-                                                      Radius.circular(4.0),
-                                                    ),
-                                                    color: Color(0xFFe4e4e4),
-                                                  ),
-                                                  margin: const EdgeInsets.only(
-                                                      right: 5.0, left: 5),
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 10.0,
-                                                      vertical: 4.0),
-                                                  child: Row(
-                                                    mainAxisSize: MainAxisSize
-                                                        .min,
-                                                    children: [
-                                                      InkWell(
-                                                        child: Text(
-                                                          item.employeeName ??
-                                                              "",
-                                                          style: listSubTitleTextStyle,
+                                                    Container(
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(4.0),
                                                         ),
-                                                        onTap: () {
-                                                          //print("$tag selected");
-                                                        },
+                                                        color:
+                                                            Color(0xFFe4e4e4),
                                                       ),
-                                                      const SizedBox(
-                                                          width: 4.0),
-                                                      InkWell(
-                                                        child: const Icon(
-                                                          Icons.cancel,
-                                                          size: 14.0,
-                                                          color: greyColor,
-                                                        ),
-                                                        onTap: () {
-                                                          controller
-                                                              .deleteParticipantItem(
-                                                              item);
-                                                          controller
-                                                              .updateButton();
-                                                        },
-                                                      )
-                                                    ],
-                                                  ),
-                                                ))
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              right: 5.0,
+                                                              left: 5),
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 10.0,
+                                                          vertical: 4.0),
+                                                      child: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          InkWell(
+                                                            child: Text(
+                                                              item.employeeName ??
+                                                                  "",
+                                                              style:
+                                                                  listSubTitleTextStyle,
+                                                            ),
+                                                            onTap: () {
+                                                              //print("$tag selected");
+                                                            },
+                                                          ),
+                                                          const SizedBox(
+                                                              width: 4.0),
+                                                          InkWell(
+                                                            child: const Icon(
+                                                              Icons.cancel,
+                                                              size: 14.0,
+                                                              color: greyColor,
+                                                            ),
+                                                            onTap: () {
+                                                              controller
+                                                                  .deleteParticipantItem(
+                                                                      item);
+                                                              controller
+                                                                  .updateButton();
+                                                            },
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ))
                                                 .toList(),
                                             SizedBox(
                                               width: 100,
@@ -529,8 +525,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                                 controller: ttec,
                                                 focusNode: tfn,
                                                 validator: (value) {
-                                                  controller
-                                                      .showParticipantError(
+                                                  controller.showParticipantError(
                                                       controller
                                                           .listSelectedEmployee
                                                           .isEmpty);
@@ -546,21 +541,20 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                                     isDense: true,
                                                     hintText: "Participant".tr,
                                                     border: InputBorder.none,
-                                                    contentPadding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 4.0,
-                                                        vertical: 4.0),
+                                                    contentPadding:
+                                                        const EdgeInsets
+                                                                .symmetric(
+                                                            horizontal: 4.0,
+                                                            vertical: 4.0),
                                                     errorText: null,
-                                                    errorBorder: const OutlineInputBorder(
-                                                      borderSide: BorderSide
-                                                          .none,
+                                                    errorBorder:
+                                                        const OutlineInputBorder(
+                                                      borderSide:
+                                                          BorderSide.none,
                                                       gapPadding: 0,
                                                     ),
                                                     errorStyle: const TextStyle(
-                                                        height: 0
-                                                    )
-                                                ),
-
+                                                        height: 0)),
                                               ),
                                             )
                                           ],
@@ -576,25 +570,19 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                         .map((EmployeeModel item) {
                                       return Container(
                                         decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius
-                                              .all(
+                                          borderRadius: BorderRadius.all(
                                             Radius.circular(4.0),
                                           ),
-                                          color:
-                                          Colors.white,
+                                          color: Colors.white,
                                         ),
-                                        margin:
-                                        const EdgeInsets.only(
+                                        margin: const EdgeInsets.only(
                                             right: 5.0, left: 5),
-                                        padding: const EdgeInsets
-                                            .symmetric(
-                                            horizontal: 10.0,
-                                            vertical: 4.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0, vertical: 4.0),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           mainAxisAlignment:
-                                          MainAxisAlignment
-                                              .spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             InkWell(
                                               child: Text(
@@ -605,8 +593,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                                 //print("$tag selected");
                                               },
                                             ),
-                                            const SizedBox(
-                                                width: 4.0),
+                                            const SizedBox(width: 4.0),
                                           ],
                                         ),
                                       );
@@ -619,16 +606,14 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                               return const Padding(
                                 padding: EdgeInsets.only(left: 10, top: 8),
                                 child: Text(
-                                  "This field is required", style: TextStyle(
-                                    color: Colors.redAccent,
-                                    fontSize: 12
-                                ),),
+                                  "This field is required",
+                                  style: TextStyle(
+                                      color: Colors.redAccent, fontSize: 12),
+                                ),
                               );
                             }
                             return const SizedBox();
                           }),
-
-
                           const SizedBox(
                             height: 8,
                           ),
@@ -649,8 +634,8 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                     ? neutralColor
                                     : Colors.white,
                                 border: Border.all(
-                                  color: controller.showExternalParticipantError
-                                      .value
+                                  color: controller
+                                          .showExternalParticipantError.value
                                       ? Colors.redAccent
                                       : Colors.black,
                                   width: 1,
@@ -668,73 +653,79 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                     children: [
                                       ...controller.listExternalParticipant
                                           .mapIndexed((index, item) =>
-                                          Container(
-                                            decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(4.0),
-                                              ),
-                                              color: Color(0xFFe4e4e4),
-                                            ),
-                                            margin: const EdgeInsets.only(
-                                                right: 5.0, left: 5),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10.0,
-                                                vertical: 4.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                InkWell(
-                                                  child: Text(
-                                                    item,
-                                                    style: listSubTitleTextStyle,
+                                              Container(
+                                                decoration: const BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(4.0),
                                                   ),
+                                                  color: Color(0xFFe4e4e4),
                                                 ),
-                                                const SizedBox(width: 4.0),
-                                                InkWell(
-                                                  child: const Icon(
-                                                    Icons.cancel,
-                                                    size: 14.0,
-                                                    color: greyColor,
-                                                  ),
-                                                  onTap: () {
-                                                    controller
-                                                        .deleteExternalParticipant(
-                                                        index);
-                                                  },
-                                                )
-                                              ],
-                                            ),
-                                          ))
+                                                margin: const EdgeInsets.only(
+                                                    right: 5.0, left: 5),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10.0,
+                                                        vertical: 4.0),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    InkWell(
+                                                      child: Text(
+                                                        item,
+                                                        style:
+                                                            listSubTitleTextStyle,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 4.0),
+                                                    InkWell(
+                                                      child: const Icon(
+                                                        Icons.cancel,
+                                                        size: 14.0,
+                                                        color: greyColor,
+                                                      ),
+                                                      onTap: () {
+                                                        controller
+                                                            .deleteExternalParticipant(
+                                                                index);
+                                                      },
+                                                    )
+                                                  ],
+                                                ),
+                                              ))
                                           .toList(),
                                       SizedBox(
                                         width: double.infinity,
                                         child: TextFormField(
                                           decoration: InputDecoration(
                                               isDense: true,
-                                              hintText: "External Participant"
-                                                  .tr,
+                                              hintText:
+                                                  "External Participant".tr,
                                               border: InputBorder.none,
-                                              contentPadding: const EdgeInsets
-                                                  .symmetric(
-                                                  horizontal: 4.0,
-                                                  vertical: 4.0),
+                                              contentPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 4.0,
+                                                      vertical: 4.0),
                                               errorText: null,
-                                              errorBorder: const OutlineInputBorder(
+                                              errorBorder:
+                                                  const OutlineInputBorder(
                                                 borderSide: BorderSide.none,
                                                 gapPadding: 0,
                                               ),
-                                              errorStyle: const TextStyle(
-                                                  height: 0)),
+                                              errorStyle:
+                                                  const TextStyle(height: 0)),
                                           controller: controller
                                               .externalParticipantController,
                                           onFieldSubmitted: (value) {
-                                            controller.addExternalParticipant(
-                                                value);
+                                            controller
+                                                .addExternalParticipant(value);
                                           },
                                           onTapOutside: (_) {
                                             if (controller
                                                 .externalParticipantController
-                                                .text.isNotEmpty) {
+                                                .text
+                                                .isNotEmpty) {
                                               controller.addExternalParticipant(
                                                   controller
                                                       .externalParticipantController
@@ -745,11 +736,11 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                             if (value.isNotEmpty) {
                                               controller
                                                   .showExternalParticipantError(
-                                                  !value.isEmail);
+                                                      !value.isEmail);
                                             } else {
                                               controller
                                                   .showExternalParticipantError(
-                                                  false);
+                                                      false);
                                             }
                                           },
                                         ),
@@ -765,25 +756,19 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                           .map((String item) {
                                         return Container(
                                           decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius
-                                                .all(
+                                            borderRadius: BorderRadius.all(
                                               Radius.circular(4.0),
                                             ),
-                                            color:
-                                            Colors.white,
+                                            color: Colors.white,
                                           ),
-                                          margin:
-                                          const EdgeInsets.only(
+                                          margin: const EdgeInsets.only(
                                               right: 5.0, left: 5),
-                                          padding: const EdgeInsets
-                                              .symmetric(
-                                              horizontal: 10.0,
-                                              vertical: 4.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0, vertical: 4.0),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.min,
                                             mainAxisAlignment:
-                                            MainAxisAlignment
-                                                .spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               InkWell(
                                                 child: Text(
@@ -794,8 +779,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                                   //print("$tag selected");
                                                 },
                                               ),
-                                              const SizedBox(
-                                                  width: 4.0),
+                                              const SizedBox(width: 4.0),
                                             ],
                                           ),
                                         );
@@ -810,8 +794,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                 padding: EdgeInsets.only(left: 10, top: 8),
                                 child: Text(
                                   "This field is not a valid email address",
-                                  style:
-                                  TextStyle(
+                                  style: TextStyle(
                                       color: Colors.redAccent, fontSize: 12),
                                 ),
                               );
@@ -831,11 +814,12 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                           Obx(() {
                             return Switch(
                               value: controller.isOnlineMeeting.value,
-                              onChanged: controller.onEdit.value ? (value) {
-                                controller.isOnlineMeeting(value);
-                              } : null,
+                              onChanged: controller.onEdit.value
+                                  ? (value) {
+                                      controller.isOnlineMeeting(value);
+                                    }
+                                  : null,
                               activeColor: infoColor,
-
                             );
                           }),
                           const SizedBox(
@@ -865,34 +849,36 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                           Obx(() {
                             return Switch(
                               value: controller.isRecurrence.value,
-                              onChanged: controller.onEdit.value ? (value) {
-                                controller.isRecurrence(value);
-                              } : null,
+                              onChanged: controller.onEdit.value
+                                  ? (value) {
+                                      controller.isRecurrence(value);
+                                    }
+                                  : null,
                               activeColor: infoColor,
                             );
                           }),
                           const SizedBox(
                             height: 8,
                           ),
-
                           Obx(() {
                             if (controller.isRecurrence.value) {
                               return CustomTextFormField(
                                   readOnly: !controller.onEdit.value,
-                                  onTap: controller.onEdit.value ? () async {
-                                    RecurrenceModel? result = await Get.dialog(
-                                        RecurrenceDialog(
-                                          recurrenceModel: controller
-                                              .selectedRecurrence.value,
-                                        )
-                                    );
-                                    if (result != null) {
-                                      controller.recurrenceController.text =
-                                          result.text ?? "";
-                                      controller.selectedRecurrence.value =
-                                          result;
-                                    }
-                                  } : null,
+                                  onTap: controller.onEdit.value
+                                      ? () async {
+                                          RecurrenceModel? result =
+                                              await Get.dialog(RecurrenceDialog(
+                                            recurrenceModel: controller
+                                                .selectedRecurrence.value,
+                                          ));
+                                          if (result != null) {
+                                            controller.recurrenceController
+                                                .text = result.text ?? "";
+                                            controller.selectedRecurrence
+                                                .value = result;
+                                          }
+                                        }
+                                      : null,
                                   controller: controller.recurrenceController,
                                   label: "Recurrence".tr);
                             }
@@ -903,14 +889,11 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                               height: controller.isRecurrence.value ? 8 : 0,
                             );
                           }),
-
-
                           RichText(
                             text: TextSpan(
                               text: "Facility".tr,
                               style: formlabelTextStyle,
-                              children: const <TextSpan>[
-                              ],
+                              children: const <TextSpan>[],
                             ),
                           ),
                           const SizedBox(
@@ -939,70 +922,77 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                     children: [
                                       ...controller.listSelectedFacility
                                           .mapIndexed((index, item) =>
-                                          Container(
-                                            decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(4.0),
-                                              ),
-                                              color: Color(0xFFe4e4e4),
-                                            ),
-                                            margin: const EdgeInsets.only(
-                                                right: 5.0, left: 5),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10.0,
-                                                vertical: 4.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                InkWell(
-                                                  child: Text(
-                                                    item,
-                                                    style: listSubTitleTextStyle,
+                                              Container(
+                                                decoration: const BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(4.0),
                                                   ),
+                                                  color: Color(0xFFe4e4e4),
                                                 ),
-                                                const SizedBox(width: 4.0),
-                                                InkWell(
-                                                  child: const Icon(
-                                                    Icons.cancel,
-                                                    size: 14.0,
-                                                    color: greyColor,
-                                                  ),
-                                                  onTap: () {
-                                                    controller.deleteFacility(
-                                                        index);
-                                                    controller.updateButton();
-                                                  },
-                                                )
-                                              ],
-                                            ),
-                                          ))
+                                                margin: const EdgeInsets.only(
+                                                    right: 5.0, left: 5),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10.0,
+                                                        vertical: 4.0),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    InkWell(
+                                                      child: Text(
+                                                        item,
+                                                        style:
+                                                            listSubTitleTextStyle,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 4.0),
+                                                    InkWell(
+                                                      child: const Icon(
+                                                        Icons.cancel,
+                                                        size: 14.0,
+                                                        color: greyColor,
+                                                      ),
+                                                      onTap: () {
+                                                        controller
+                                                            .deleteFacility(
+                                                                index);
+                                                        controller
+                                                            .updateButton();
+                                                      },
+                                                    )
+                                                  ],
+                                                ),
+                                              ))
                                           .toList(),
                                       SizedBox(
                                         width: double.infinity,
                                         child: TypeAheadFormField<String>(
-                                          textFieldConfiguration: TextFieldConfiguration(
+                                          textFieldConfiguration:
+                                              TextFieldConfiguration(
                                             controller: controller
                                                 .facilityAutocompleteController,
                                             autofocus: false,
-                                            style: Theme
-                                                .of(context)
+                                            style: Theme.of(context)
                                                 .textTheme
                                                 .titleMedium,
                                             decoration: InputDecoration(
                                                 isDense: true,
                                                 hintText: "Facility".tr,
                                                 border: InputBorder.none,
-                                                contentPadding: const EdgeInsets
-                                                    .symmetric(
-                                                    horizontal: 4.0,
-                                                    vertical: 4.0),
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 4.0,
+                                                        vertical: 4.0),
                                                 errorText: null,
-                                                errorBorder: const OutlineInputBorder(
+                                                errorBorder:
+                                                    const OutlineInputBorder(
                                                   borderSide: BorderSide.none,
                                                   gapPadding: 0,
                                                 ),
-                                                errorStyle: const TextStyle(
-                                                    height: 0)),
+                                                errorStyle:
+                                                    const TextStyle(height: 0)),
                                           ),
                                           suggestionsCallback: (pattern) async {
                                             final list = await controller
@@ -1020,13 +1010,12 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                                 .facilityAutocompleteController
                                                 .text = "";
                                           },
-                                          debounceDuration:
-                                          const Duration(milliseconds: 1500),
+                                          debounceDuration: const Duration(
+                                              milliseconds: 1500),
                                           hideOnLoading: false,
                                           hideSuggestionsOnKeyboardHide: true,
                                           keepSuggestionsOnLoading: false,
                                           minCharsForSuggestions: 0,
-
                                         ),
                                       )
                                     ],
@@ -1035,30 +1024,23 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                 return Wrap(
                                     runSpacing: 8,
                                     runAlignment: WrapAlignment.center,
-                                    children: controller
-                                        .listSelectedFacility
+                                    children: controller.listSelectedFacility
                                         .map((String item) {
                                       return Container(
                                         decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius
-                                              .all(
+                                          borderRadius: BorderRadius.all(
                                             Radius.circular(4.0),
                                           ),
-                                          color:
-                                          Colors.white,
+                                          color: Colors.white,
                                         ),
-                                        margin:
-                                        const EdgeInsets.only(
+                                        margin: const EdgeInsets.only(
                                             right: 5.0, left: 5),
-                                        padding: const EdgeInsets
-                                            .symmetric(
-                                            horizontal: 10.0,
-                                            vertical: 4.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0, vertical: 4.0),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           mainAxisAlignment:
-                                          MainAxisAlignment
-                                              .spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             InkWell(
                                               child: Text(
@@ -1069,8 +1051,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                                 //print("$tag selected");
                                               },
                                             ),
-                                            const SizedBox(
-                                                width: 4.0),
+                                            const SizedBox(width: 4.0),
                                           ],
                                         ),
                                       );
@@ -1078,12 +1059,11 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                               }),
                             );
                           }),
-
                           const SizedBox(
                             height: 8,
                           ),
                           Obx(() {
-                            if(controller.onEdit.value){
+                            if (controller.onEdit.value) {
                               return CustomFormFilePicker(
                                 label: "Attachment".tr,
                                 onFileSelected: (File value) {
@@ -1092,12 +1072,35 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                               );
                             }
                             return CustomTextFormField(
-                                readOnly: !controller.onEdit.value,
-                                controller: controller.attachmentController,
-                                label: "Attachment".tr);
+                              readOnly: true,
+                              backgroundColor: neutralColor,
+                              controller: controller.attachmentController,
+                              label: "Attachment".tr,
+                              onTap: () async {
+                                if (controller.selectedItem.value.attachmentPath
+                                    .toString()
+                                    .isImageFileName) {
+                                  Get.dialog(Dialog(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 16),
+                                      child: Image.network(controller
+                                          .selectedItem.value.attachmentPath
+                                          .toString()),
+                                    ),
+                                  ));
+                                } else {
+                                  if (!await launchUrl(Uri.parse(controller
+                                      .selectedItem.value.attachmentPath
+                                      .toString()))) {
+                                    throw Exception(
+                                        'Could not launch ${controller.selectedItem.value.attachmentPath.toString()}');
+                                  }
+                                }
+                              },
+                            );
 
                           }),
-
                           const SizedBox(
                             height: 8,
                           ),
