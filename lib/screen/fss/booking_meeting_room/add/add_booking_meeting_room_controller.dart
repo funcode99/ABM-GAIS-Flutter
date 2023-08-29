@@ -243,16 +243,22 @@ class AddBookingMeetingRoomController extends BaseController
   }
 
   void saveData() async {
+    String startDateString = startDate.value.toString().toDateFormat(targetFormat: "yyyy-MM-dd", originFormat: "yyyy-MM-dd HH:mm:ss");
+    String endDateString = endDate.value != null ? endDate.value.toString().toDateFormat(targetFormat: "yyyy-MM-dd", originFormat: "yyyy-MM-dd HH:mm:ss") : startDateString;
+    String startTimeString = startTime.value.toString().toDateFormat(targetFormat: "HH:mm:ss", originFormat: "yyyy-MM-dd HH:mm:ss");
+    String endTimeString = endTime.value != null ? endTime.value.toString().toDateFormat(targetFormat: "HH:mm:ss", originFormat: "yyyy-MM-dd HH:mm:ss") : startTimeString;
+
+
     BookingMeetingRoomModel meetingRoomModel = BookingMeetingRoomModel(
         idCompany: selectedCompany.value?.id.toString().toInt(),
         idSite: selectedSite.value?.id.toString().toInt(),
         floor: floorController.text.toInt() ?? 0,
         capacity: capacityController.text.toInt() ?? 0,
         title: titleController.text,
-        startDate: startDate.value.toString(),
-        endDate: endDate.value != null ? endDate.value.toString() : startDate.value.toString(),
-        startTime: startTime.toString(),
-        endTime: endTime.value != null ? endTime.value.toString() : startTime.value.toString(),
+        startDate: startDateString,
+        endDate: isRecurrence.value ? selectedRecurrence.value?.value == "weekly" ? startDateString : endDateString : endDateString,
+        startTime: startTimeString,
+        endTime: endTimeString,
         idMeetingRoom: selectedRoom.value?.id,
         session: isOnlineMeeting.value ? "hybrid" : "offline",
         participant: listSelectedEmployee.map((element) => element.id.toString().toInt()).toList(),
@@ -265,7 +271,8 @@ class AddBookingMeetingRoomController extends BaseController
         recurrence: isRecurrence.value ? selectedRecurrence.value?.value : "",
         reccurrence: isRecurrence.value ? selectedRecurrence.value?.value : "", //typo from backend,
         remarks: remarksController.text,
-        attachmentPath: selectedFile?.path
+        attachmentPath: selectedFile?.path,
+        untilOcurs: isRecurrence.value ? selectedRecurrence.value?.date?.toDateFormat(targetFormat: "yyyy-MM-dd", originFormat: "yyyy-MM-dd HH:mm:ss.SSS"): ""
     );
 
 
@@ -276,8 +283,9 @@ class AddBookingMeetingRoomController extends BaseController
         (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
         (meetingRoomModel) {
-      Get.off(() => const DetailBookingMeetingRoomScreen(),
-          arguments: {"item": meetingRoomModel});
+      /*Get.off(() => const DetailBookingMeetingRoomScreen(),
+          arguments: {"item": meetingRoomModel});*/
+          Get.back(result: true);
 
     });
   }

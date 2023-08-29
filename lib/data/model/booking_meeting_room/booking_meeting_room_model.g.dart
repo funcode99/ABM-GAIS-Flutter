@@ -54,7 +54,15 @@ BookingMeetingRoomModel _$BookingMeetingRoomModelFromJson(
       reccurrence: json['reccurrence'] as String?,
       attachment: json['attachment'] as String?,
       attachmentPath: json['attachment_path'] as String?,
-    );
+      untilOcurs: json['until_ocurs'] as String?,
+      nameApproved: json['name_approved'] as String?,
+      nameRejected: json['name_rejected'] as String?,
+      nameStarted: json['name_started'] as String?,
+      nameEnded: json['name_ended'] as String?,
+      days: json['days'] as List<dynamic>?,
+    )..facilityArray = (json['facility_array'] as List<dynamic>?)
+        ?.map((e) => FacilityModel.fromJson(e as Map<String, dynamic>))
+        .toList();
 
 Map<String, dynamic> _$BookingMeetingRoomModelToJson(
         BookingMeetingRoomModel instance) =>
@@ -94,6 +102,7 @@ Map<String, dynamic> _$BookingMeetingRoomModelToJson(
       'site_code': instance.siteCode,
       'status': instance.status,
       'facility': instance.facility,
+      'facility_array': instance.facilityArray?.map((e) => e.toJson()).toList(),
       'external': instance.external,
       'is_online_meeting': instance.isOnlineMeeting,
       'is_recurrence': instance.isRecurrence,
@@ -101,4 +110,10 @@ Map<String, dynamic> _$BookingMeetingRoomModelToJson(
       'reccurrence': instance.reccurrence,
       'attachment': instance.attachment,
       'attachment_path': instance.attachmentPath,
+      'until_ocurs': instance.untilOcurs,
+      'name_approved': instance.nameApproved,
+      'name_rejected': instance.nameRejected,
+      'name_started': instance.nameStarted,
+      'name_ended': instance.nameEnded,
+      'days': instance.days,
     };

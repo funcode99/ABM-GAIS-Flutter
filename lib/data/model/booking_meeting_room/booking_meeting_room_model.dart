@@ -1,4 +1,5 @@
 import 'package:gais/data/model/booking_meeting_room/participant_model.dart';
+import 'package:gais/data/model/master/facility/facility_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'booking_meeting_room_model.g.dart';
@@ -39,6 +40,7 @@ class BookingMeetingRoomModel {
   String? siteCode;
   String? status;
   dynamic facility;
+  List<FacilityModel>? facilityArray;
   dynamic external;
   dynamic isOnlineMeeting;
   dynamic isRecurrence;
@@ -46,6 +48,12 @@ class BookingMeetingRoomModel {
   String? reccurrence;
   String? attachment;
   String? attachmentPath;
+  String? untilOcurs;
+  String? nameApproved;
+  String? nameRejected;
+  String? nameStarted;
+  String? nameEnded;
+  List<dynamic>? days;
 
   BookingMeetingRoomModel(
       {
@@ -90,6 +98,12 @@ class BookingMeetingRoomModel {
         this.reccurrence,
         this.attachment,
         this.attachmentPath,
+        this.untilOcurs,
+        this.nameApproved,
+        this.nameRejected,
+        this.nameStarted,
+        this.nameEnded,
+        this.days,
       });
 
   static BookingMeetingRoomModel fromJsonModel(Object? json) =>

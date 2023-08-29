@@ -212,7 +212,7 @@ class ApprovalLogItem extends StatelessWidget {
                                       if (!await launchUrl(
                                           Uri.parse(item.path.toString()))) {
                                         throw Exception(
-                                            'Could not launch ${item.path.toString}');
+                                            'Could not launch ${item.path.toString()}');
                                       }
                                     }
                                   },
