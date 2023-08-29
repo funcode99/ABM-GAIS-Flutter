@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
@@ -13,6 +14,7 @@ import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_tri
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/add/activities_detail/act_activities_detail_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/add/trip_info/act_trip_info_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -239,6 +241,8 @@ class ActualizationTripScreen extends StatelessWidget {
                         controller: controller.totalTLK,
                         label: "Total TLK",
                         isRequired: true,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly, ThousandsSeparatorInputFormatter()],
+                        inputType: TextInputType.number,
                       ),
                       const SizedBox(height: 10),
                       CustomTextFormField(

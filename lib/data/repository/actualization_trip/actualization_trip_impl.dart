@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/data/model/actualization_trip/get_activities_byactualid_model.dart';
 import 'package:gais/data/model/actualization_trip/get_actual_bytripid_model.dart';
 import 'package:gais/data/model/actualization_trip/get_actual_trip_model.dart';
+import 'package:gais/data/model/actualization_trip/get_all_actualization_trip_model.dart';
 import 'package:gais/data/model/actualization_trip/get_trip_info_byactualid_model.dart';
 import 'package:gais/data/model/actualization_trip/save_activities_model.dart';
 import 'package:gais/data/model/actualization_trip/save_actual_trip_model.dart';
@@ -336,6 +337,33 @@ class ActualizationTripImpl implements ActualizationTripRepository {
       return GetActualTripModel.fromJson(response.data);
     } on DioError catch (e) {
       return e.error;
+    }
+  }
+
+  @override
+  Future<GetAllActualizationTripModel> getActualTripList(
+    String perPage,
+    String search,
+    String status,
+    String page,
+  ) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    search.printInfo();
+    try {
+      Response response = await network.dio.get(
+        "/api/actual_trip/get_data/",
+        queryParameters: {
+          "perPage": perPage,
+          "page": page,
+          "search": search,
+        },
+      );
+      GetAllActualizationTripModel.fromJson(response.data).data?.total.printInfo(info: "=> response info");
+      return GetAllActualizationTripModel.fromJson(response.data);
+    } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
+      return GetAllActualizationTripModel.fromJson(e.response?.data);
     }
   }
 }

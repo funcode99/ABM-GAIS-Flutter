@@ -58,8 +58,7 @@ class FormRequestTripScreen extends StatelessWidget {
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: SliverAppBarDelegate(
-                      // minHeight: controller.rtStatus == "Draft" || controller.rtStatus == "Revision" ? 120 : 80,
-                      minHeight: 120,
+                      minHeight: controller.rtStatus == "Draft" || controller.rtStatus == "Revision" || controller.rtStatus == "Confirmed" ? 120 : 80,
                       maxHeight: 32,
                       child: Container(
                         color: whiteColor,

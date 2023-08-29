@@ -1,6 +1,7 @@
 import 'package:gais/data/model/actualization_trip/get_activities_byactualid_model.dart';
 import 'package:gais/data/model/actualization_trip/get_actual_bytripid_model.dart';
 import 'package:gais/data/model/actualization_trip/get_actual_trip_model.dart';
+import 'package:gais/data/model/actualization_trip/get_all_actualization_trip_model.dart';
 import 'package:gais/data/model/actualization_trip/get_trip_info_byactualid_model.dart';
 import 'package:gais/data/model/actualization_trip/save_activities_model.dart';
 import 'package:gais/data/model/actualization_trip/save_actual_trip_model.dart';
@@ -85,4 +86,11 @@ abstract class ActualizationTripRepository {
   Future submitActualizationTripByID(String id);
 
   Future<GetActualTripModel> getActualTripByID(String id);
+
+  Future<GetAllActualizationTripModel> getActualTripList(
+    String perPage,
+    String search,
+    String status,
+    String page,
+  );
 }

@@ -4,7 +4,6 @@ import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/screen/approval/request_atk/list/approval_request_atk_list_screen.dart';
 import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_list_screen.dart';
-import 'package:gais/screen/approval_delegation/list/approval_delegation_list_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/list/booking_meeting_room_list_screen.dart';
 import 'package:gais/screen/fss/dashboard_meeting_room/dashboard_meeting_room_screen.dart';
 import 'package:gais/screen/fss/management_item_atk/list/management_item_atk_list_screen.dart';
@@ -17,6 +16,7 @@ import 'package:gais/screen/menu/poolcar_menu_screen.dart';
 import 'package:gais/screen/menu/submenu_screen.dart';
 import 'package:gais/screen/receptionist/list/list_document_delivery_screen.dart';
 import 'package:gais/screen/tms/pool_car/list/pool_car_list_screen.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/get/actual_trip_list_screen.dart';
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -66,36 +66,37 @@ class MenuScreen extends StatelessWidget {
                                           height: 25,
                                         ),
                                       ),
-                                      Text("Request Trip", style: menuSubTitleTextStyle),
+                                      Text("Request Trip\n", style: menuSubTitleTextStyle),
                                     ],
                                   ),
                                   onTap: () => Get.off(const RequestTripListScreen()),
                                 ),
                                 GestureDetector(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: infoColor,
-                                          borderRadius: BorderRadius.circular(50),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: infoColor,
+                                            borderRadius: BorderRadius.circular(50),
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                          margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                          height: 50,
+                                          width: 50,
+                                          child: SvgPicture.asset(
+                                            ImageConstant.car,
+                                            height: 25,
+                                          ),
                                         ),
-                                        padding: const EdgeInsets.all(10),
-                                        margin: const EdgeInsets.only(top: 25, bottom: 5),
-                                        height: 50,
-                                        width: 50,
-                                        child: SvgPicture.asset(
-                                          ImageConstant.car,
-                                          height: 25,
-                                        ),
-                                      ),
-                                      Text("Pool Car", style: menuSubTitleTextStyle),
-                                    ],
-                                  ),
-                                  onTap: () => controller.approvalAuth
-                                      ? Get.to(() => const PoolcarMenuScreen(), arguments: false)
-                                      : Get.to(() => const PoolCarListScreen(), arguments: false) // null untuk navigate yang bukan super admin/admin
-                                ),
+                                        Text("Pool Car\n", style: menuSubTitleTextStyle),
+                                      ],
+                                    ),
+                                    onTap: () => controller.approvalAuth
+                                        ? Get.to(() => const PoolcarMenuScreen(), arguments: false)
+                                        : Get.to(() => const PoolCarListScreen(),
+                                            arguments: false) // null untuk navigate yang bukan super admin/admin
+                                    ),
                                 GestureDetector(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,10 +115,33 @@ class MenuScreen extends StatelessWidget {
                                           height: 25,
                                         ),
                                       ),
-                                      Text("Cash Advance", style: menuSubTitleTextStyle),
+                                      Text("Cash Advance\n", style: menuSubTitleTextStyle),
                                     ],
                                   ),
                                   onTap: () => Get.to(() => const SubmenuScreen(), arguments: false),
+                                ),
+                                GestureDetector(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: infoColor,
+                                          borderRadius: BorderRadius.circular(50),
+                                        ),
+                                        padding: const EdgeInsets.all(10),
+                                        margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                        height: 50,
+                                        width: 50,
+                                        child: SvgPicture.asset(
+                                          ImageConstant.locationRefresh,
+                                          height: 25,
+                                        ),
+                                      ),
+                                      Text("Actualization\nTrip", style: menuSubTitleTextStyle, textAlign: TextAlign.center),
+                                    ],
+                                  ),
+                                  onTap: () => Get.off(const ActualTripListScreen()),
                                 ),
                               ],
                             ),
@@ -137,7 +161,7 @@ class MenuScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 10),
+                        margin: const EdgeInsets.only(left: 10),
                         child: Text("Facility Service System", style: listTitleTextStyle),
                       ),
                       Row(
@@ -243,7 +267,7 @@ class MenuScreen extends StatelessWidget {
                                 Text("Document\nDelivery", textAlign: TextAlign.center, style: menuSubTitleTextStyle)
                               ],
                             ),
-                            onTap: () => Get.off(DocumentDeliveryListScreen()),
+                            onTap: () => Get.off(const DocumentDeliveryListScreen()),
                           ),
                         ],
                       ),
@@ -418,32 +442,32 @@ class MenuScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  if(controller.approvalAuth)
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.to(const StockInListScreen());
-                                    },
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: infoColor,
-                                            borderRadius: BorderRadius.circular(50),
+                                  if (controller.approvalAuth)
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.to(const StockInListScreen());
+                                      },
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: infoColor,
+                                              borderRadius: BorderRadius.circular(50),
+                                            ),
+                                            padding: const EdgeInsets.all(10),
+                                            margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                            height: 50,
+                                            width: 50,
+                                            child: SvgPicture.asset(
+                                              ImageConstant.paperPlus,
+                                              height: 25,
+                                            ),
                                           ),
-                                          padding: const EdgeInsets.all(10),
-                                          margin: const EdgeInsets.only(top: 25, bottom: 5),
-                                          height: 50,
-                                          width: 50,
-                                          child: SvgPicture.asset(
-                                            ImageConstant.paperPlus,
-                                            height: 25,
-                                          ),
-                                        ),
-                                        Text("Stock In".tr, textAlign: TextAlign.center, style: menuSubTitleTextStyle)
-                                      ],
+                                          Text("Stock In".tr, textAlign: TextAlign.center, style: menuSubTitleTextStyle)
+                                        ],
+                                      ),
                                     ),
-                                  ),
                                 ],
                               ),
                             ),
