@@ -58,8 +58,7 @@ class FormRequestTripScreen extends StatelessWidget {
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: SliverAppBarDelegate(
-                      // minHeight: controller.rtStatus == "Draft" || controller.rtStatus == "Revision" ? 120 : 80,
-                      minHeight: 120,
+                      minHeight: controller.rtStatus == "Draft" || controller.rtStatus == "Revision" || controller.rtStatus == "Confirmed" ? 120 : 80,
                       maxHeight: 32,
                       child: Container(
                         color: whiteColor,
@@ -86,14 +85,16 @@ class FormRequestTripScreen extends StatelessWidget {
                                   ? MainAxisAlignment.spaceEvenly
                                   : MainAxisAlignment.center,
                               children: [
-                                CustomFilledButton(
-                                  color: orangeColor,
-                                  title: "Actualization",
-                                  width: Get.width / 4,
-                                  onPressed: () {
-                                    controller.checkActual();
-                                  },
-                                ),
+                                controller.rtStatus == "Confirmed"
+                                    ? CustomFilledButton(
+                                        color: orangeColor,
+                                        title: "Actualization",
+                                        width: Get.width / 4,
+                                        onPressed: () {
+                                          controller.checkActual();
+                                        },
+                                      )
+                                    : Container(),
                                 controller.rtStatus == "Draft" || controller.rtStatus == "Revision"
                                     ? CustomFilledButton(
                                         color: Colors.transparent,

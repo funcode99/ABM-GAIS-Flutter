@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
@@ -13,6 +14,7 @@ import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_tri
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/add/activities_detail/act_activities_detail_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/add/trip_info/act_trip_info_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -91,11 +93,13 @@ class ActualizationTripScreen extends StatelessWidget {
                                                         child: const Icon(IconlyBold.edit, color: whiteColor),
                                                       ),
                                                       onTap: () {
-                                                        Get.dialog(DeleteConfirmationDialog(
-                                                          onDeletePressed: () {
-                                                            Get.back();
-                                                          },
-                                                        ));
+                                                        Get.to(const ActTripInfoScreen(), arguments: {
+                                                          "id": e.id,
+                                                          "idActual": controller.actualID,
+                                                          "idZona": controller.zonaID,
+                                                          "tlkRate": controller.tlkRate,
+                                                          'isEdit': true
+                                                        })?.then((value) => controller.fetchList());
                                                       },
                                                     ),
                                                     GestureDetector(
@@ -106,8 +110,11 @@ class ActualizationTripScreen extends StatelessWidget {
                                                         child: const Icon(IconlyBold.delete, color: whiteColor),
                                                       ),
                                                       onTap: () {
+                                                        print(e.id);
                                                         Get.dialog(DeleteConfirmationDialog(
                                                           onDeletePressed: () {
+                                                            controller.deleteTripInfo(e.id.toString());
+                                                            controller.fetchList();
                                                             Get.back();
                                                           },
                                                         ));
@@ -130,9 +137,12 @@ class ActualizationTripScreen extends StatelessWidget {
                         title: "Add Trip",
                         icon: Icons.add,
                         margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                        onPressed: () => Get.to(const ActTripInfoScreen(),
-                                arguments: {"idActual": controller.actualID, "idZona": controller.zonaID, "tlkRate": controller.tlkRate})
-                            ?.then((value) => controller.fetchList()),
+                        onPressed: () => Get.to(const ActTripInfoScreen(), arguments: {
+                          "idActual": controller.actualID,
+                          "idZona": controller.zonaID,
+                          "tlkRate": controller.tlkRate,
+                          'isEdit': false
+                        })?.then((value) => controller.fetchList()),
                       ),
                       CustomTextFormField(
                         controller: controller.purpose,
@@ -186,11 +196,9 @@ class ActualizationTripScreen extends StatelessWidget {
                                                         child: const Icon(IconlyBold.edit, color: whiteColor),
                                                       ),
                                                       onTap: () {
-                                                        Get.dialog(DeleteConfirmationDialog(
-                                                          onDeletePressed: () {
-                                                            Get.back();
-                                                          },
-                                                        ));
+                                                        Get.to(const ActActivitiesDetailScreen(),
+                                                                arguments: {"idActual": controller.actualID, "id": e.id, 'isEdit': true})
+                                                            ?.then((value) => controller.fetchList());
                                                       },
                                                     ),
                                                     GestureDetector(
@@ -203,6 +211,7 @@ class ActualizationTripScreen extends StatelessWidget {
                                                       onTap: () {
                                                         Get.dialog(DeleteConfirmationDialog(
                                                           onDeletePressed: () {
+                                                            controller.deleteActivities(e.id!);
                                                             Get.back();
                                                           },
                                                         ));
@@ -225,13 +234,15 @@ class ActualizationTripScreen extends StatelessWidget {
                         title: "Add Activities",
                         icon: Icons.add,
                         margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                        onPressed: () => Get.to(const ActActivitiesDetailScreen(), arguments: {"idActual": controller.actualID})
+                        onPressed: () => Get.to(const ActActivitiesDetailScreen(), arguments: {"idActual": controller.actualID, 'isEdit': false})
                             ?.then((value) => controller.fetchList()),
                       ),
                       CustomTextFormField(
                         controller: controller.totalTLK,
                         label: "Total TLK",
                         isRequired: true,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly, ThousandsSeparatorInputFormatter()],
+                        inputType: TextInputType.number,
                       ),
                       const SizedBox(height: 10),
                       CustomTextFormField(
@@ -256,7 +267,9 @@ class ActualizationTripScreen extends StatelessWidget {
                             color: successColor,
                             title: "Submit",
                             onPressed: () {
-                              if (controller.formKey.currentState?.validate() == true) {}
+                              if (controller.formKey.currentState?.validate() == true) {
+                                controller.updateActualization();
+                              }
                             },
                           )
                         ],
