@@ -212,7 +212,6 @@ class BookingMeetingRoomRepository
     throw UnimplementedError();
   }
 
-  @override
   Future<Either<BaseError, bool>> cancelData(int id) async{
     try {
       Dio.Response response = await network.dio.post(
@@ -229,5 +228,41 @@ class BookingMeetingRoomRepository
       return left(BaseError(message: "General error occurred"));
     }
   }
+
+  Future<Either<BaseError, bool>> startMeeting(int id) async{
+    try {
+      Dio.Response response = await network.dio.post(
+        '/api/book_meeting_room/start_meeting/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, BookingMeetingRoomModel.fromJsonModel);
+      return right(apiResponseModel.success ?? false);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  Future<Either<BaseError, bool>> endMeeting(int id) async{
+    try {
+      Dio.Response response = await network.dio.post(
+        '/api/book_meeting_room/end_meeting/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, BookingMeetingRoomModel.fromJsonModel);
+      return right(apiResponseModel.success ?? false);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+
 
 }

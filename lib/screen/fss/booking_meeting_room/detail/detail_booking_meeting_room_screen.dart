@@ -163,7 +163,9 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                           ),
                           if (controller.showStartMeetingButton.value)
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                controller.startMeeting();
+                              },
                               style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(75, 30),
                                   backgroundColor: successColor),
@@ -175,7 +177,9 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                           ),
                           if (controller.showEndMeetingButton.value)
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                controller.endMeeting();
+                              },
                               style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(75, 30),
                                   backgroundColor: successColor),

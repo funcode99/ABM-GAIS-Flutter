@@ -293,6 +293,26 @@ class DetailBookingMeetingRoomController extends BaseController
         });
   }
 
+  void startMeeting() async {
+    final result = await _repository.startMeeting(selectedItem.value.id!);
+    result.fold(
+            (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (result) {
+          detailHeader();
+        });
+  }
+
+  void endMeeting() async {
+    final result = await _repository.endMeeting(selectedItem.value.id!);
+    result.fold(
+            (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (result) {
+          detailHeader();
+        });
+  }
+
   void onChangeSelectedRoom(String id) {
     final selected = listRoom.firstWhere(
             (item) => item.id.toString() == id.toString(),
