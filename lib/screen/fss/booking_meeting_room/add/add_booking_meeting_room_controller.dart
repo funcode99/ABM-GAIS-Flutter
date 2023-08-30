@@ -10,14 +10,11 @@ import 'package:gais/data/model/booking_meeting_room/recurrence_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/model/master/facility/facility_model.dart';
-import 'package:gais/data/model/master/facility/facility_model.dart';
-import 'package:gais/data/model/master/facility/facility_model.dart';
 import 'package:gais/data/model/master/room/room_model.dart';
 import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
-import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
 import 'package:gais/util/enum/role_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
@@ -272,7 +269,8 @@ class AddBookingMeetingRoomController extends BaseController
         reccurrence: isRecurrence.value ? selectedRecurrence.value?.value : "", //typo from backend,
         remarks: remarksController.text,
         attachmentPath: selectedFile?.path,
-        untilOcurs: isRecurrence.value ? selectedRecurrence.value?.date?.toDateFormat(targetFormat: "yyyy-MM-dd", originFormat: "yyyy-MM-dd HH:mm:ss.SSS"): ""
+        untilOcurs: isRecurrence.value ? selectedRecurrence.value?.date?.toDateFormat(targetFormat: "yyyy-MM-dd", originFormat: "yyyy-MM-dd HH:mm:ss.SSS"): "",
+        days: selectedRecurrence.value?.recurrenceDays?.where((element) => element.isSelected).map((e) => e.value).toList()
     );
 
 
