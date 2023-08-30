@@ -41,9 +41,6 @@ class RecurrenceDialogController extends BaseController with MasterDataMixin{
     listRecurrence.add(RecurrenceModel(value: "yearly", text: "Yearly"));
     // final statuses = await getListStatusDoc();
     // listStatus.addAll(statuses);
-    print("TESSS TEXT ${selectedRecurrence.value?.text}");
-    print("TESSS VALUE ${selectedRecurrence.value?.value}");
-    print("TESSS DATE ${selectedRecurrence.value?.date}");
     if(selectedRecurrence.value!=null){
       if(selectedRecurrence.value?.date!=null){
         occursUntilDate.value = selectedRecurrence.value?.date?.toDate(originFormat: "yyyy-MM-dd HH:mm:ss");

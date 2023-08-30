@@ -18,6 +18,7 @@ class CustomTextFormField extends StatelessWidget {
       this.inputFormatters,
       this.onTap,
       this.suffixIcon,
+      this.backgroundColor,
       this.multiLine = false,
       this.inputType}) {
     if (isRequired && !readOnly) {
@@ -37,6 +38,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? inputType;
   final GestureTapCallback? onTap;
   final Widget? suffixIcon;
+  final Color? backgroundColor;
   final bool multiLine;
 
   @override
@@ -86,7 +88,7 @@ class CustomTextFormField extends StatelessWidget {
                 ),
             decoration: InputDecoration(
                 fillColor:
-                    onTap != null || !readOnly ? whiteColor : neutralColor,
+                    backgroundColor ?? (onTap != null || !readOnly ? whiteColor : neutralColor),
                 //jika ontap!=null, maka state "active". jika bukan readyonly, maka state "active". Jika readonly dan ontap == null maka state "inactive"
                 suffixIcon: suffixIcon,
                 contentPadding:

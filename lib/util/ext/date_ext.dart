@@ -49,6 +49,48 @@ extension DateExt on DateTime {
     return dateFormat.format(this);
   }
 
+  String getDifferencesString({required DateTime otherDate}) {
+    late DateTime firstDate;
+    late DateTime secondDate;
+    if(isBefore(otherDate)){
+      firstDate = otherDate;
+      secondDate = this;
+    }else{
+      firstDate = this;
+      secondDate = otherDate;
+    }
+
+    int diffInSeconds = firstDate.difference(secondDate).inSeconds;
+    print("FIRSTDATE $firstDate");
+    print("SEECONDDATE $secondDate");
+    print("SECONDS $diffInSeconds");
+
+    int days = (diffInSeconds / (60*60*24)).floor();
+    int hours = ((diffInSeconds - days * 60*60*24) / (60*60)).floor();
+    int minutes = ((diffInSeconds - days * 60*60*24 - hours * 60*60)/ 60).floor();
+    int seconds = ((diffInSeconds - days * 60*60*24 - hours * 60*60 - minutes * 60)).floor();
+
+
+    print("days $days hours $hours minutes $minutes seconds $seconds");
+    String result = "";
+    if(days > 0){
+      result += "$days d";
+    }
+
+    if(hours > 0){
+      result += " $hours h";
+    }
+
+    if(minutes > 0){
+      result += " $minutes m";
+    }
+
+    if(seconds > 0){
+      result += " $seconds s";
+    }
+
+    return result;
+  }
 
 
 }
