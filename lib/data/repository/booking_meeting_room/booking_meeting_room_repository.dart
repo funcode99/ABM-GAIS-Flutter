@@ -134,6 +134,14 @@ class BookingMeetingRoomRepository
       }
     }
 
+    if(bookingMeetingRoomModel.days != null && bookingMeetingRoomModel.days.toString().isNotEmpty){
+      for(String item in bookingMeetingRoomModel.days!){
+        formData.fields.add(
+            MapEntry("days[]", item)
+        );
+      }
+    }
+
     if(bookingMeetingRoomModel.external != null && bookingMeetingRoomModel.external.toString().isNotEmpty){
       List<String> externals = List<String>.from(bookingMeetingRoomModel.external);
       if(externals.isNotEmpty){
