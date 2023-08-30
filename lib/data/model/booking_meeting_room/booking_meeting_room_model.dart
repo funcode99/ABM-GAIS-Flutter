@@ -26,6 +26,8 @@ class BookingMeetingRoomModel {
   int? codeStatusDoc;
   String? link;
   String? createdAt;
+  String? approvedAt;
+  String? rejectedAt;
   dynamic createdBy;
   String? updatedAt;
   dynamic updatedBy;
@@ -81,6 +83,8 @@ class BookingMeetingRoomModel {
         this.codeStatusDoc,
         this.link,
         this.createdAt,
+        this.approvedAt,
+        this.rejectedAt,
         this.createdBy,
         this.updatedAt,
         this.updatedBy,

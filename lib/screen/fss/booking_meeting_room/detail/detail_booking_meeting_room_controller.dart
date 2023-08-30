@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/approval_log_model.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
 import 'package:gais/data/model/booking_meeting_room/participant_model.dart';
 import 'package:gais/data/model/booking_meeting_room/recurrence_model.dart';
@@ -93,6 +94,8 @@ class DetailBookingMeetingRoomController extends BaseController
   final showStartMeetingButton = false.obs;
   final showEndMeetingButton = false.obs;
   final showCancelButton = false.obs;
+
+  final listLogApproval = <ApprovalLogModel>[].obs;
 
   final BookingMeetingRoomRepository _repository = Get.find();
 
@@ -233,6 +236,30 @@ class DetailBookingMeetingRoomController extends BaseController
         showEndMeetingButton.value = true;
       }
     }
+
+    //set approval log
+    if(selectedItem.value.approvedAt != null && selectedItem.value.nameApproved != null){
+      listLogApproval.add(
+        ApprovalLogModel(
+          date: selectedItem.value.approvedAt,
+          notes: selectedItem.value.notes,
+          codeStatus: 0,
+          text: "${selectedItem.value.nameApproved} was approved your booking"
+        )
+      );
+    }
+
+    if(selectedItem.value.rejectedAt != null && selectedItem.value.nameRejected != null){
+      listLogApproval.add(
+          ApprovalLogModel(
+              date: selectedItem.value.rejectedAt,
+              notes: selectedItem.value.notes,
+              codeStatus: 0,
+              text: "${selectedItem.value.nameRejected} was rejected your booking"
+          )
+      );
+    }
+
   }
 
   void detailHeader() async {
@@ -369,6 +396,22 @@ class DetailBookingMeetingRoomController extends BaseController
     tempFacility.where((element) => element.toLowerCase().contains(keyword.toLowerCase()));
 
     return Future.value(tempFacility);
+  }
+
+  String? getDuration(){
+    String dateString = selectedItem.value.durationStart ?? "";
+    String dateStringTwo = selectedItem.value.durationEnd ?? "";
+
+    try{
+      DateTime dateTime = dateString.toDate(originFormat: "yyyy-MM-dd HH:mm:ss")!;
+      DateTime dateTimeTwo = dateStringTwo.toDate(originFormat: "yyyy-MM-dd HH:mm:ss")!;
+
+      return dateTime.getDifferencesString(otherDate: dateTimeTwo);
+    }catch(e){
+      print("ERROR GET DURATION $e");
+    }
+
+    return "";
   }
 
 }

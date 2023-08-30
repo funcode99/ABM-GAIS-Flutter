@@ -19,6 +19,7 @@ import 'package:gais/reusable/dialog/recurrence_dialog.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/custom_form_file_picker.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/list/approval_log_list.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_controller.dart';
@@ -238,54 +239,20 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                             topRight: Radius.circular(8),
                             topLeft: Radius.circular(8)),
                       ),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            child: Obx(() {
-                              return Container(
-                                alignment: Alignment.center,
-                                margin: const EdgeInsets.only(top: 10, left: 5),
-                                width: 100,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: controller.selectedTab.value ==
-                                          TabEnum.detail
-                                      ? whiteColor
-                                      : neutralColor,
-                                  borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(8),
-                                      topLeft: Radius.circular(8)),
-                                  gradient: LinearGradient(stops: const [
-                                    0.1,
-                                    0
-                                  ], colors: [
-                                    controller.selectedTab.value ==
-                                            TabEnum.detail
-                                        ? blackColor
-                                        : whiteColor,
-                                    Colors.white
-                                  ]),
-                                ),
-                                child: const Text("Detail"),
-                              );
-                            }),
-                            onTap: () {
-                              controller.selectedTab(TabEnum.detail);
-                            },
-                          ),
-                          Obx(() {
-                            if(controller.selectedItem.value.recurrenceStart != null && controller.selectedItem.value.recurrenceEnd != null){
-                              return GestureDetector(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              child: Obx(() {
+                                return Container(
                                   alignment: Alignment.center,
-                                  margin:
-                                      const EdgeInsets.only(top: 10, left: 5),
+                                  margin: const EdgeInsets.only(top: 10, left: 5),
+                                  width: 100,
                                   height: 50,
                                   decoration: BoxDecoration(
                                     color: controller.selectedTab.value ==
-                                            TabEnum.recurrence
+                                            TabEnum.detail
                                         ? whiteColor
                                         : neutralColor,
                                     borderRadius: const BorderRadius.only(
@@ -296,22 +263,141 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                       0
                                     ], colors: [
                                       controller.selectedTab.value ==
-                                              TabEnum.recurrence
+                                              TabEnum.detail
                                           ? blackColor
                                           : whiteColor,
                                       Colors.white
                                     ]),
                                   ),
-                                  child: const Text("Recurrence"),
-                                ),
-                                onTap: () {
-                                  controller.selectedTab(TabEnum.recurrence);
-                                },
-                              );
-                            }
-                            return const SizedBox();
-                          }),
-                        ],
+                                  child: const Text("Detail"),
+                                );
+                              }),
+                              onTap: () {
+                                controller.selectedTab(TabEnum.detail);
+                              },
+                            ),
+
+                            Obx(() {
+                              if(controller.selectedItem.value.recurrenceStart != null && controller.selectedItem.value.recurrenceEnd != null){
+                                return GestureDetector(
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    alignment: Alignment.center,
+                                    margin:
+                                        const EdgeInsets.only(top: 10, left: 5),
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: controller.selectedTab.value ==
+                                              TabEnum.recurrence
+                                          ? whiteColor
+                                          : neutralColor,
+                                      borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(8),
+                                          topLeft: Radius.circular(8)),
+                                      gradient: LinearGradient(stops: const [
+                                        0.1,
+                                        0
+                                      ], colors: [
+                                        controller.selectedTab.value ==
+                                                TabEnum.recurrence
+                                            ? blackColor
+                                            : whiteColor,
+                                        Colors.white
+                                      ]),
+                                    ),
+                                    child: const Text("Recurrence"),
+                                  ),
+                                  onTap: () {
+                                    controller.selectedTab(TabEnum.recurrence);
+                                  },
+                                );
+                              }
+                              return const SizedBox();
+                            }),
+
+                            //approval
+                            Obx(() {
+                              if((controller.selectedItem.value.nameApproved != null && controller.selectedItem.value.approvedAt != null) || (controller.selectedItem.value.nameRejected != null && controller.selectedItem.value.rejectedAt != null)){
+                                return GestureDetector(
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    alignment: Alignment.center,
+                                    margin:
+                                        const EdgeInsets.only(top: 10, left: 5),
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: controller.selectedTab.value ==
+                                              TabEnum.approval
+                                          ? whiteColor
+                                          : neutralColor,
+                                      borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(8),
+                                          topLeft: Radius.circular(8)),
+                                      gradient: LinearGradient(stops: const [
+                                        0.1,
+                                        0
+                                      ], colors: [
+                                        controller.selectedTab.value ==
+                                                TabEnum.approval
+                                            ? blackColor
+                                            : whiteColor,
+                                        Colors.white
+                                      ]),
+                                    ),
+                                    child: const Text("Approval Info"),
+                                  ),
+                                  onTap: () {
+                                    controller.selectedTab(TabEnum.approval);
+                                  },
+                                );
+                              }
+                              return const SizedBox();
+                            }),
+
+                            //duration
+                            //xxx
+                            Obx(() {
+                              if(controller.selectedItem.value.durationStart != null && controller.selectedItem.value.durationEnd != null){
+                                return GestureDetector(
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    alignment: Alignment.center,
+                                    margin:
+                                    const EdgeInsets.only(top: 10, left: 5),
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: controller.selectedTab.value ==
+                                          TabEnum.duration
+                                          ? whiteColor
+                                          : neutralColor,
+                                      borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(8),
+                                          topLeft: Radius.circular(8)),
+                                      gradient: LinearGradient(stops: const [
+                                        0.1,
+                                        0
+                                      ], colors: [
+                                        controller.selectedTab.value ==
+                                            TabEnum.duration
+                                            ? blackColor
+                                            : whiteColor,
+                                        Colors.white
+                                      ]),
+                                    ),
+                                    child: const Text("Room Used Duration"),
+                                  ),
+                                  onTap: () {
+                                    controller.selectedTab(TabEnum.duration);
+                                  },
+                                );
+                              }
+                              return const SizedBox();
+                            }),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -323,991 +409,435 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                         return Container(
                           margin: const EdgeInsets.symmetric(
                               vertical: 16, horizontal: 8),
-                          child: Column(
-                            children: [
-                              Card(
-                                elevation: 2,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      CustomTextFormField(
-                                          isRequired: true,
-                                          readOnly: true,
-                                          controller:
-                                              controller.companyController,
-                                          label: "Company".tr),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      CustomTextFormField(
-                                          isRequired: true,
-                                          readOnly: true,
-                                          controller: controller.siteController,
-                                          label: "Site".tr),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Obx(() {
-                                        return CustomTextFormField(
-                                            isRequired: true,
-                                            readOnly: !controller.onEdit.value,
-                                            controller:
-                                                controller.titleController,
-                                            label: "Title".tr);
-                                      }),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Obx(() {
-                                        return CustomTextFormField(
-                                            isRequired: true,
-                                            readOnly: !controller.onEdit.value,
-                                            suffixIcon: const Icon(
-                                                IconlyLight.calendar),
-                                            onTap: controller.onEdit.value
-                                                ? () {
-                                                    showCustomCalendarPicker(
-                                                      context,
-                                                      dismissible: true,
-                                                      minimumDate:
-                                                          DateTime.now(),
-                                                      maximumDate:
-                                                          DateTime.now().add(
-                                                              const Duration(
-                                                                  days: 365)),
-                                                      endDate: controller
-                                                          .endDate.value,
-                                                      startDate: controller
-                                                          .startDate.value,
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                      primaryColor:
-                                                          Colors.green,
-                                                      onApplyClick:
-                                                          (start, end) {
-                                                        controller.startDate
-                                                            .value = start;
-                                                        controller.endDate
-                                                            .value = end;
-                                                        controller
-                                                                .dateController
-                                                                .text =
-                                                            "${controller.dateFormat.format(start)} ${end != null ? "-" : ""} ${end != null ? controller.dateFormat.format(end) : ""}";
-                                                        controller.update();
-                                                      },
-                                                      onCancelClick: () {},
-                                                    );
-                                                  }
-                                                : null,
-                                            controller:
-                                                controller.dateController,
-                                            label: "Date".tr);
-                                      }),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Obx(() {
-                                        return CustomTextFormField(
-                                            isRequired: true,
-                                            readOnly: !controller.onEdit.value,
-                                            suffixIcon: const Icon(
-                                                IconlyLight.time_circle),
-                                            onTap: controller.onEdit.value
-                                                ? () {
-                                                    FocusScope.of(context)
-                                                        .requestFocus(
-                                                            FocusNode());
-                                                    Get.dialog(
-                                                        MeetingRoomTimePickerDialog(
-                                                      startDate: controller
-                                                          .startDate.value,
-                                                      endDate: controller
-                                                          .endDate.value,
-                                                      startTime: controller
-                                                          .startTime.value,
-                                                      endTime: controller
-                                                          .endTime.value,
-                                                      onConfirmClick:
-                                                          (startTime, endTime) {
-                                                        controller.startTime
-                                                            .value = startTime;
-                                                        controller.endTime
-                                                            .value = endTime;
-                                                        controller
-                                                                .timeController
-                                                                .text =
-                                                            "${startTime?.toStringWithFormat()} ${endTime != null ? "-" : ""} ${endTime?.toStringWithFormat() ?? ""}";
-                                                      },
-                                                    ));
-                                                  }
-                                                : null,
-                                            controller:
-                                                controller.timeController,
-                                            label: "Time Detail".tr);
-                                      }),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      /*CustomTextFormField(
+                          child: Card(
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                children: [
+                                  CustomTextFormField(
+                                      isRequired: true,
+                                      readOnly: true,
+                                      controller:
+                                          controller.companyController,
+                                      label: "Company".tr),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  CustomTextFormField(
+                                      isRequired: true,
+                                      readOnly: true,
+                                      controller: controller.siteController,
+                                      label: "Site".tr),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Obx(() {
+                                    return CustomTextFormField(
+                                        isRequired: true,
+                                        readOnly: !controller.onEdit.value,
+                                        controller:
+                                            controller.titleController,
+                                        label: "Title".tr);
+                                  }),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Obx(() {
+                                    return CustomTextFormField(
+                                        isRequired: true,
+                                        readOnly: !controller.onEdit.value,
+                                        suffixIcon: const Icon(
+                                            IconlyLight.calendar),
+                                        onTap: controller.onEdit.value
+                                            ? () {
+                                                showCustomCalendarPicker(
+                                                  context,
+                                                  dismissible: true,
+                                                  minimumDate:
+                                                      DateTime.now(),
+                                                  maximumDate:
+                                                      DateTime.now().add(
+                                                          const Duration(
+                                                              days: 365)),
+                                                  endDate: controller
+                                                      .endDate.value,
+                                                  startDate: controller
+                                                      .startDate.value,
+                                                  backgroundColor:
+                                                      Colors.white,
+                                                  primaryColor:
+                                                      Colors.green,
+                                                  onApplyClick:
+                                                      (start, end) {
+                                                    controller.startDate
+                                                        .value = start;
+                                                    controller.endDate
+                                                        .value = end;
+                                                    controller
+                                                            .dateController
+                                                            .text =
+                                                        "${controller.dateFormat.format(start)} ${end != null ? "-" : ""} ${end != null ? controller.dateFormat.format(end) : ""}";
+                                                    controller.update();
+                                                  },
+                                                  onCancelClick: () {},
+                                                );
+                                              }
+                                            : null,
+                                        controller:
+                                            controller.dateController,
+                                        label: "Date".tr);
+                                  }),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Obx(() {
+                                    return CustomTextFormField(
+                                        isRequired: true,
+                                        readOnly: !controller.onEdit.value,
+                                        suffixIcon: const Icon(
+                                            IconlyLight.time_circle),
+                                        onTap: controller.onEdit.value
+                                            ? () {
+                                                FocusScope.of(context)
+                                                    .requestFocus(
+                                                        FocusNode());
+                                                Get.dialog(
+                                                    MeetingRoomTimePickerDialog(
+                                                  startDate: controller
+                                                      .startDate.value,
+                                                  endDate: controller
+                                                      .endDate.value,
+                                                  startTime: controller
+                                                      .startTime.value,
+                                                  endTime: controller
+                                                      .endTime.value,
+                                                  onConfirmClick:
+                                                      (startTime, endTime) {
+                                                    controller.startTime
+                                                        .value = startTime;
+                                                    controller.endTime
+                                                        .value = endTime;
+                                                    controller
+                                                            .timeController
+                                                            .text =
+                                                        "${startTime?.toStringWithFormat()} ${endTime != null ? "-" : ""} ${endTime?.toStringWithFormat() ?? ""}";
+                                                  },
+                                                ));
+                                              }
+                                            : null,
+                                        controller:
+                                            controller.timeController,
+                                        label: "Time Detail".tr);
+                                  }),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  /*CustomTextFormField(
                           isRequired: true,
                           suffixIcon: const Icon(IconlyLight.lock),
                           controller: controller.meetingRoomController,
                           label: "Meeting Room".tr),*/
-                                      Obx(() {
-                                        if (controller.onEdit.value) {
-                                          return CustomDropDownFormField(
-                                            isRequired: true,
-                                            items: controller.listRoom
-                                                .map((e) => DropdownMenuItem(
-                                                      value: e.id.toString(),
-                                                      child: Text(
-                                                          "${e.nameMeetingRoom}"),
-                                                    ))
-                                                .toList(),
-                                            onChanged: (item) {
-                                              controller.onChangeSelectedRoom(
-                                                  item.toString());
-                                            },
-                                            label: "Meeting Room".tr,
-                                            value: controller
-                                                .selectedRoom.value?.id
-                                                .toString(),
-                                          );
-                                        }
+                                  Obx(() {
+                                    if (controller.onEdit.value) {
+                                      return CustomDropDownFormField(
+                                        isRequired: true,
+                                        items: controller.listRoom
+                                            .map((e) => DropdownMenuItem(
+                                                  value: e.id.toString(),
+                                                  child: Text(
+                                                      "${e.nameMeetingRoom}"),
+                                                ))
+                                            .toList(),
+                                        onChanged: (item) {
+                                          controller.onChangeSelectedRoom(
+                                              item.toString());
+                                        },
+                                        label: "Meeting Room".tr,
+                                        value: controller
+                                            .selectedRoom.value?.id
+                                            .toString(),
+                                      );
+                                    }
 
-                                        return CustomTextFormField(
-                                            isRequired: true,
-                                            readOnly: true,
-                                            suffixIcon:
-                                                const Icon(IconlyLight.lock),
-                                            controller: controller
-                                                .meetingRoomController,
-                                            label: "Meeting Room".tr);
-                                      }),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      CustomTextFormField(
-                                          isRequired: true,
-                                          readOnly: true,
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
-                                          ],
-                                          inputType: TextInputType.number,
-                                          controller:
-                                              controller.floorController,
-                                          label: "Floor".tr),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      CustomTextFormField(
-                                          isRequired: true,
-                                          readOnly: true,
-                                          suffixIcon:
-                                              const Icon(IconlyLight.user),
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
-                                          ],
-                                          inputType: TextInputType.number,
-                                          controller:
-                                              controller.capacityController,
-                                          label: "Capacity".tr),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          text: "Participant".tr,
-                                          style: formlabelTextStyle,
-                                          children: const <TextSpan>[
-                                            TextSpan(
-                                                text: "*",
-                                                style: TextStyle(
-                                                    color: Colors.red)),
-                                          ],
+                                    return CustomTextFormField(
+                                        isRequired: true,
+                                        readOnly: true,
+                                        suffixIcon:
+                                            const Icon(IconlyLight.lock),
+                                        controller: controller
+                                            .meetingRoomController,
+                                        label: "Meeting Room".tr);
+                                  }),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  CustomTextFormField(
+                                      isRequired: true,
+                                      readOnly: true,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter
+                                            .digitsOnly,
+                                      ],
+                                      inputType: TextInputType.number,
+                                      controller:
+                                          controller.floorController,
+                                      label: "Floor".tr),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  CustomTextFormField(
+                                      isRequired: true,
+                                      readOnly: true,
+                                      suffixIcon:
+                                          const Icon(IconlyLight.user),
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter
+                                            .digitsOnly,
+                                      ],
+                                      inputType: TextInputType.number,
+                                      controller:
+                                          controller.capacityController,
+                                      label: "Capacity".tr),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "Participant".tr,
+                                      style: formlabelTextStyle,
+                                      children: const <TextSpan>[
+                                        TextSpan(
+                                            text: "*",
+                                            style: TextStyle(
+                                                color: Colors.red)),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Obx(() {
+                                    return Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 8),
+                                      decoration: BoxDecoration(
+                                        color: !controller.onEdit.value
+                                            ? neutralColor
+                                            : Colors.white,
+                                        border: Border.all(
+                                          color: controller
+                                                  .showParticipantError
+                                                  .value
+                                              ? Colors.redAccent
+                                              : Colors.black,
+                                          width: 1,
                                         ),
+                                        borderRadius:
+                                            BorderRadius.circular(8),
                                       ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Obx(() {
-                                        return Container(
-                                          width: double.infinity,
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12, horizontal: 8),
-                                          decoration: BoxDecoration(
-                                            color: !controller.onEdit.value
-                                                ? neutralColor
-                                                : Colors.white,
-                                            border: Border.all(
-                                              color: controller
-                                                      .showParticipantError
-                                                      .value
-                                                  ? Colors.redAccent
-                                                  : Colors.black,
-                                              width: 1,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: Obx(() {
-                                            if (controller.onEdit.value) {
-                                              return Autocomplete<
-                                                  EmployeeModel>(
-                                                optionsViewBuilder: (context,
-                                                    onSelected, options) {
-                                                  return Container(
-                                                    margin: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 10.0,
-                                                        vertical: 4.0),
-                                                    child: Align(
-                                                      alignment:
-                                                          Alignment.topCenter,
-                                                      child: Material(
-                                                        elevation: 4.0,
-                                                        child: ConstrainedBox(
-                                                          constraints:
-                                                              const BoxConstraints(
-                                                                  maxHeight:
-                                                                      200),
-                                                          child:
-                                                              ListView.builder(
-                                                            shrinkWrap: true,
-                                                            itemCount:
-                                                                options.length,
-                                                            itemBuilder:
-                                                                (BuildContext
-                                                                        context,
-                                                                    int index) {
-                                                              final EmployeeModel
-                                                                  option =
-                                                                  options
-                                                                      .elementAt(
-                                                                          index);
-                                                              return TextButton(
-                                                                onPressed: () {
-                                                                  onSelected(
-                                                                      option);
-                                                                },
-                                                                child: Align(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .centerLeft,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .symmetric(
-                                                                        vertical:
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      "${option.employeeName}",
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left,
-                                                                      style: listSubTitleTextStyle.copyWith(
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              );
+                                      child: Obx(() {
+                                        if (controller.onEdit.value) {
+                                          return Autocomplete<
+                                              EmployeeModel>(
+                                            optionsViewBuilder: (context,
+                                                onSelected, options) {
+                                              return Container(
+                                                margin: const EdgeInsets
+                                                        .symmetric(
+                                                    horizontal: 10.0,
+                                                    vertical: 4.0),
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.topCenter,
+                                                  child: Material(
+                                                    elevation: 4.0,
+                                                    child: ConstrainedBox(
+                                                      constraints:
+                                                          const BoxConstraints(
+                                                              maxHeight:
+                                                                  200),
+                                                      child:
+                                                          ListView.builder(
+                                                        shrinkWrap: true,
+                                                        itemCount:
+                                                            options.length,
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          final EmployeeModel
+                                                              option =
+                                                              options
+                                                                  .elementAt(
+                                                                      index);
+                                                          return TextButton(
+                                                            onPressed: () {
+                                                              onSelected(
+                                                                  option);
                                                             },
-                                                          ),
-                                                        ),
+                                                            child: Align(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .centerLeft,
+                                                              child:
+                                                                  Padding(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        0.0),
+                                                                child: Text(
+                                                                  "${option.employeeName}",
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .left,
+                                                                  style: listSubTitleTextStyle.copyWith(
+                                                                      color:
+                                                                          Colors.black),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
                                                       ),
                                                     ),
-                                                  );
-                                                },
-                                                optionsBuilder:
-                                                    (TextEditingValue
-                                                        textEditingValue) {
-                                                  if (textEditingValue.text ==
-                                                      '') {
-                                                    return const Iterable<
-                                                        EmployeeModel>.empty();
-                                                  }
-                                                  return controller.listEmployee
-                                                      .where((EmployeeModel
-                                                          option) {
-                                                    return option.employeeName!
-                                                            .contains(
-                                                                textEditingValue
-                                                                    .text
-                                                                    .toLowerCase()) ||
-                                                        option.email!.contains(
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            optionsBuilder:
+                                                (TextEditingValue
+                                                    textEditingValue) {
+                                              if (textEditingValue.text ==
+                                                  '') {
+                                                return const Iterable<
+                                                    EmployeeModel>.empty();
+                                              }
+                                              return controller.listEmployee
+                                                  .where((EmployeeModel
+                                                      option) {
+                                                return option.employeeName!
+                                                        .contains(
                                                             textEditingValue
                                                                 .text
-                                                                .toLowerCase());
-                                                  });
-                                                },
-                                                onSelected:
-                                                    (EmployeeModel selected) {
-                                                  controller
-                                                      .listSelectedEmployee
-                                                      .add(selected);
-                                                  controller
-                                                      .autocompleteController
-                                                      .text = "";
-                                                },
-                                                fieldViewBuilder: (context,
-                                                    ttec,
-                                                    tfn,
-                                                    onFieldSubmitted) {
-                                                  controller
-                                                          .autocompleteController =
-                                                      ttec;
-                                                  return Obx(() {
-                                                    return Wrap(
-                                                      runSpacing: 8,
-                                                      runAlignment:
-                                                          WrapAlignment.center,
-                                                      children: [
-                                                        ...controller
-                                                            .listSelectedEmployee
-                                                            .mapIndexed(
-                                                                (index, item) =>
-                                                                    Container(
-                                                                      decoration:
-                                                                          const BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              4.0),
-                                                                        ),
-                                                                        color: Color(
-                                                                            0xFFe4e4e4),
-                                                                      ),
-                                                                      margin: const EdgeInsets
-                                                                              .only(
-                                                                          right:
-                                                                              5.0,
-                                                                          left:
-                                                                              5),
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          horizontal:
-                                                                              10.0,
-                                                                          vertical:
-                                                                              4.0),
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.min,
-                                                                        children: [
-                                                                          InkWell(
-                                                                            child:
-                                                                                Text(
-                                                                              item.employeeName ?? "",
-                                                                              style: listSubTitleTextStyle,
-                                                                            ),
-                                                                            onTap:
-                                                                                () {
-                                                                              //print("$tag selected");
-                                                                            },
-                                                                          ),
-                                                                          const SizedBox(
-                                                                              width: 4.0),
-                                                                          InkWell(
-                                                                            child:
-                                                                                const Icon(
-                                                                              Icons.cancel,
-                                                                              size: 14.0,
-                                                                              color: greyColor,
-                                                                            ),
-                                                                            onTap:
-                                                                                () {
-                                                                              controller.deleteParticipantItem(item);
-                                                                              controller.updateButton();
-                                                                            },
-                                                                          )
-                                                                        ],
-                                                                      ),
-                                                                    ))
-                                                            .toList(),
-                                                        SizedBox(
-                                                          width: 100,
-                                                          child: TextFormField(
-                                                            controller: ttec,
-                                                            focusNode: tfn,
-                                                            validator: (value) {
-                                                              controller.showParticipantError(
-                                                                  controller
-                                                                      .listSelectedEmployee
-                                                                      .isEmpty);
-
-                                                              if (controller
-                                                                  .listSelectedEmployee
-                                                                  .isEmpty) {
-                                                                return "";
-                                                              }
-                                                              return null;
-                                                            },
-                                                            decoration:
-                                                                InputDecoration(
-                                                                    isDense:
-                                                                        true,
-                                                                    hintText:
-                                                                        "Participant"
-                                                                            .tr,
-                                                                    border:
-                                                                        InputBorder
-                                                                            .none,
-                                                                    contentPadding: const EdgeInsets
-                                                                            .symmetric(
-                                                                        horizontal:
-                                                                            4.0,
-                                                                        vertical:
-                                                                            4.0),
-                                                                    errorText:
-                                                                        null,
-                                                                    errorBorder:
-                                                                        const OutlineInputBorder(
-                                                                      borderSide:
-                                                                          BorderSide
-                                                                              .none,
-                                                                      gapPadding:
-                                                                          0,
-                                                                    ),
-                                                                    errorStyle:
-                                                                        const TextStyle(
-                                                                            height:
-                                                                                0)),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    );
-                                                  });
-                                                },
-                                              );
-                                            }
-                                            return Wrap(
-                                                runSpacing: 8,
-                                                runAlignment:
-                                                    WrapAlignment.center,
-                                                children: controller
-                                                    .listSelectedEmployee
-                                                    .map((EmployeeModel item) {
-                                                  return Container(
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(4.0),
-                                                      ),
-                                                      color: Colors.white,
-                                                    ),
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            right: 5.0,
-                                                            left: 5),
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 10.0,
-                                                        vertical: 4.0),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        InkWell(
-                                                          child: Text(
-                                                            item.employeeName ??
-                                                                "",
-                                                            style:
-                                                                listSubTitleTextStyle,
-                                                          ),
-                                                          onTap: () {
-                                                            //print("$tag selected");
-                                                          },
-                                                        ),
-                                                        const SizedBox(
-                                                            width: 4.0),
-                                                      ],
-                                                    ),
-                                                  );
-                                                }).toList());
-                                          }),
-                                        );
-                                      }),
-                                      Obx(() {
-                                        if (controller
-                                            .showParticipantError.value) {
-                                          return const Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 10, top: 8),
-                                            child: Text(
-                                              "This field is required",
-                                              style: TextStyle(
-                                                  color: Colors.redAccent,
-                                                  fontSize: 12),
-                                            ),
-                                          );
-                                        }
-                                        return const SizedBox();
-                                      }),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          text: "External Participant".tr,
-                                          style: formlabelTextStyle,
-                                          children: const <TextSpan>[],
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Obx(() {
-                                        return Container(
-                                          decoration: BoxDecoration(
-                                            color: !controller.onEdit.value
-                                                ? neutralColor
-                                                : Colors.white,
-                                            border: Border.all(
-                                              color: controller
-                                                      .showExternalParticipantError
-                                                      .value
-                                                  ? Colors.redAccent
-                                                  : Colors.black,
-                                              width: 1,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          width: double.infinity,
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12, horizontal: 8),
-                                          child: Obx(() {
-                                            if (controller.onEdit.value) {
-                                              return Wrap(
-                                                runSpacing: 8,
-                                                runAlignment:
-                                                    WrapAlignment.center,
-                                                children: [
-                                                  ...controller
-                                                      .listExternalParticipant
-                                                      .mapIndexed((index,
-                                                              item) =>
-                                                          Container(
-                                                            decoration:
-                                                                const BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .all(
-                                                                Radius.circular(
-                                                                    4.0),
-                                                              ),
-                                                              color: Color(
-                                                                  0xFFe4e4e4),
-                                                            ),
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right: 5.0,
-                                                                    left: 5),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        10.0,
-                                                                    vertical:
-                                                                        4.0),
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: [
-                                                                InkWell(
-                                                                  child: Text(
-                                                                    item,
-                                                                    style:
-                                                                        listSubTitleTextStyle,
-                                                                  ),
-                                                                ),
-                                                                const SizedBox(
-                                                                    width: 4.0),
-                                                                InkWell(
-                                                                  child:
-                                                                      const Icon(
-                                                                    Icons
-                                                                        .cancel,
-                                                                    size: 14.0,
-                                                                    color:
-                                                                        greyColor,
-                                                                  ),
-                                                                  onTap: () {
-                                                                    controller
-                                                                        .deleteExternalParticipant(
-                                                                            index);
-                                                                  },
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ))
-                                                      .toList(),
-                                                  SizedBox(
-                                                    width: double.infinity,
-                                                    child: TextFormField(
-                                                      decoration:
-                                                          InputDecoration(
-                                                              isDense: true,
-                                                              hintText:
-                                                                  "External Participant"
-                                                                      .tr,
-                                                              border:
-                                                                  InputBorder
-                                                                      .none,
-                                                              contentPadding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          4.0,
-                                                                      vertical:
-                                                                          4.0),
-                                                              errorText: null,
-                                                              errorBorder:
-                                                                  const OutlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide
-                                                                        .none,
-                                                                gapPadding: 0,
-                                                              ),
-                                                              errorStyle:
-                                                                  const TextStyle(
-                                                                      height:
-                                                                          0)),
-                                                      controller: controller
-                                                          .externalParticipantController,
-                                                      onFieldSubmitted:
-                                                          (value) {
-                                                        controller
-                                                            .addExternalParticipant(
-                                                                value);
-                                                      },
-                                                      onTapOutside: (_) {
-                                                        if (controller
-                                                            .externalParticipantController
+                                                                .toLowerCase()) ||
+                                                    option.email!.contains(
+                                                        textEditingValue
                                                             .text
-                                                            .isNotEmpty) {
-                                                          controller
-                                                              .addExternalParticipant(
-                                                                  controller
-                                                                      .externalParticipantController
-                                                                      .text);
-                                                        }
-                                                      },
-                                                      onChanged: (value) {
-                                                        if (value.isNotEmpty) {
-                                                          controller
-                                                              .showExternalParticipantError(
-                                                                  !value
-                                                                      .isEmail);
-                                                        } else {
-                                                          controller
-                                                              .showExternalParticipantError(
-                                                                  false);
-                                                        }
-                                                      },
-                                                    ),
-                                                  )
-                                                ],
-                                              );
-                                            } else {
-                                              return Wrap(
+                                                            .toLowerCase());
+                                              });
+                                            },
+                                            onSelected:
+                                                (EmployeeModel selected) {
+                                              controller
+                                                  .listSelectedEmployee
+                                                  .add(selected);
+                                              controller
+                                                  .autocompleteController
+                                                  .text = "";
+                                            },
+                                            fieldViewBuilder: (context,
+                                                ttec,
+                                                tfn,
+                                                onFieldSubmitted) {
+                                              controller
+                                                      .autocompleteController =
+                                                  ttec;
+                                              return Obx(() {
+                                                return Wrap(
                                                   runSpacing: 8,
                                                   runAlignment:
                                                       WrapAlignment.center,
-                                                  children: controller
-                                                      .listExternalParticipant
-                                                      .map((String item) {
-                                                    return Container(
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                          Radius.circular(4.0),
-                                                        ),
-                                                        color: Colors.white,
-                                                      ),
-                                                      margin:
-                                                          const EdgeInsets.only(
-                                                              right: 5.0,
-                                                              left: 5),
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 10.0,
-                                                          vertical: 4.0),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          InkWell(
-                                                            child: Text(
-                                                              item ?? "",
-                                                              style:
-                                                                  listSubTitleTextStyle,
-                                                            ),
-                                                            onTap: () {
-                                                              //print("$tag selected");
-                                                            },
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 4.0),
-                                                        ],
-                                                      ),
-                                                    );
-                                                  }).toList());
-                                            }
-                                          }),
-                                        );
-                                      }),
-                                      Obx(() {
-                                        if (controller
-                                            .showExternalParticipantError
-                                            .value) {
-                                          return const Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 10, top: 8),
-                                            child: Text(
-                                              "This field is not a valid email address",
-                                              style: TextStyle(
-                                                  color: Colors.redAccent,
-                                                  fontSize: 12),
-                                            ),
-                                          );
-                                        }
-                                        return const SizedBox();
-                                      }),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          text: "Online Meeting?".tr,
-                                          style: formlabelTextStyle,
-                                          children: const <TextSpan>[],
-                                        ),
-                                      ),
-                                      Obx(() {
-                                        return Switch(
-                                          value:
-                                              controller.isOnlineMeeting.value,
-                                          onChanged: controller.onEdit.value
-                                              ? (value) {
-                                                  controller
-                                                      .isOnlineMeeting(value);
-                                                }
-                                              : null,
-                                          activeColor: infoColor,
-                                        );
-                                      }),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Obx(() {
-                                        if (controller.isOnlineMeeting.value) {
-                                          return CustomTextFormField(
-                                              readOnly: true,
-                                              controller:
-                                                  controller.linkController,
-                                              label: "Link".tr);
-                                        }
-                                        return const SizedBox();
-                                      }),
-                                      Obx(() {
-                                        return SizedBox(
-                                          height:
-                                              controller.isOnlineMeeting.value
-                                                  ? 8
-                                                  : 0,
-                                        );
-                                      }),
-                                      RichText(
-                                        text: TextSpan(
-                                          text: "Recurrence?".tr,
-                                          style: formlabelTextStyle,
-                                          children: const <TextSpan>[],
-                                        ),
-                                      ),
-                                      Obx(() {
-                                        return Switch(
-                                          value: controller.isRecurrence.value,
-                                          onChanged: controller.onEdit.value
-                                              ? (value) {
-                                                  controller
-                                                      .isRecurrence(value);
-                                                }
-                                              : null,
-                                          activeColor: infoColor,
-                                        );
-                                      }),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Obx(() {
-                                        if (controller.isRecurrence.value) {
-                                          return CustomTextFormField(
-                                              readOnly:
-                                                  !controller.onEdit.value,
-                                              onTap: controller.onEdit.value
-                                                  ? () async {
-                                                      RecurrenceModel? result =
-                                                          await Get.dialog(
-                                                              RecurrenceDialog(
-                                                        recurrenceModel: controller
-                                                            .selectedRecurrence
-                                                            .value,
-                                                      ));
-                                                      if (result != null) {
-                                                        controller
-                                                            .recurrenceController
-                                                            .text = result
-                                                                .text ??
-                                                            "";
-                                                        controller
-                                                            .selectedRecurrence
-                                                            .value = result;
-                                                      }
-                                                    }
-                                                  : null,
-                                              controller: controller
-                                                  .recurrenceController,
-                                              label: "Recurrence".tr);
-                                        }
-                                        return const SizedBox();
-                                      }),
-                                      Obx(() {
-                                        return SizedBox(
-                                          height: controller.isRecurrence.value
-                                              ? 8
-                                              : 0,
-                                        );
-                                      }),
-                                      RichText(
-                                        text: TextSpan(
-                                          text: "Facility".tr,
-                                          style: formlabelTextStyle,
-                                          children: const <TextSpan>[],
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Obx(() {
-                                        return Container(
-                                          width: double.infinity,
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12, horizontal: 8),
-                                          decoration: BoxDecoration(
-                                            color: !controller.onEdit.value
-                                                ? neutralColor
-                                                : Colors.white,
-                                            border: Border.all(
-                                              color: Colors.black,
-                                              width: 1,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: Obx(() {
-                                            if (controller.onEdit.value) {
-                                              return Wrap(
-                                                runSpacing: 8,
-                                                runAlignment:
-                                                    WrapAlignment.center,
-                                                children: [
-                                                  ...controller
-                                                      .listSelectedFacility
-                                                      .mapIndexed((index,
-                                                              item) =>
-                                                          Container(
-                                                            decoration:
-                                                                const BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .all(
-                                                                Radius.circular(
-                                                                    4.0),
-                                                              ),
-                                                              color: Color(
-                                                                  0xFFe4e4e4),
-                                                            ),
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right: 5.0,
-                                                                    left: 5),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        10.0,
-                                                                    vertical:
-                                                                        4.0),
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: [
-                                                                InkWell(
-                                                                  child: Text(
-                                                                    item,
-                                                                    style:
-                                                                        listSubTitleTextStyle,
+                                                  children: [
+                                                    ...controller
+                                                        .listSelectedEmployee
+                                                        .mapIndexed(
+                                                            (index, item) =>
+                                                                Container(
+                                                                  decoration:
+                                                                      const BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.all(
+                                                                      Radius.circular(
+                                                                          4.0),
+                                                                    ),
+                                                                    color: Color(
+                                                                        0xFFe4e4e4),
                                                                   ),
-                                                                ),
-                                                                const SizedBox(
-                                                                    width: 4.0),
-                                                                InkWell(
+                                                                  margin: const EdgeInsets
+                                                                          .only(
+                                                                      right:
+                                                                          5.0,
+                                                                      left:
+                                                                          5),
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          10.0,
+                                                                      vertical:
+                                                                          4.0),
                                                                   child:
-                                                                      const Icon(
-                                                                    Icons
-                                                                        .cancel,
-                                                                    size: 14.0,
-                                                                    color:
-                                                                        greyColor,
+                                                                      Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize.min,
+                                                                    children: [
+                                                                      InkWell(
+                                                                        child:
+                                                                            Text(
+                                                                          item.employeeName ?? "",
+                                                                          style: listSubTitleTextStyle,
+                                                                        ),
+                                                                        onTap:
+                                                                            () {
+                                                                          //print("$tag selected");
+                                                                        },
+                                                                      ),
+                                                                      const SizedBox(
+                                                                          width: 4.0),
+                                                                      InkWell(
+                                                                        child:
+                                                                            const Icon(
+                                                                          Icons.cancel,
+                                                                          size: 14.0,
+                                                                          color: greyColor,
+                                                                        ),
+                                                                        onTap:
+                                                                            () {
+                                                                          controller.deleteParticipantItem(item);
+                                                                          controller.updateButton();
+                                                                        },
+                                                                      )
+                                                                    ],
                                                                   ),
-                                                                  onTap: () {
-                                                                    controller
-                                                                        .deleteFacility(
-                                                                            index);
-                                                                    controller
-                                                                        .updateButton();
-                                                                  },
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ))
-                                                      .toList(),
-                                                  SizedBox(
-                                                    width: double.infinity,
-                                                    child: TypeAheadFormField<
-                                                        String>(
-                                                      textFieldConfiguration:
-                                                          TextFieldConfiguration(
-                                                        controller: controller
-                                                            .facilityAutocompleteController,
-                                                        autofocus: false,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .titleMedium,
+                                                                ))
+                                                        .toList(),
+                                                    SizedBox(
+                                                      width: 100,
+                                                      child: TextFormField(
+                                                        controller: ttec,
+                                                        focusNode: tfn,
+                                                        validator: (value) {
+                                                          controller.showParticipantError(
+                                                              controller
+                                                                  .listSelectedEmployee
+                                                                  .isEmpty);
+
+                                                          if (controller
+                                                              .listSelectedEmployee
+                                                              .isEmpty) {
+                                                            return "";
+                                                          }
+                                                          return null;
+                                                        },
                                                         decoration:
                                                             InputDecoration(
-                                                                isDense: true,
+                                                                isDense:
+                                                                    true,
                                                                 hintText:
-                                                                    "Facility"
+                                                                    "Participant"
                                                                         .tr,
                                                                 border:
                                                                     InputBorder
@@ -1318,176 +848,728 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                                                         4.0,
                                                                     vertical:
                                                                         4.0),
-                                                                errorText: null,
+                                                                errorText:
+                                                                    null,
                                                                 errorBorder:
                                                                     const OutlineInputBorder(
                                                                   borderSide:
                                                                       BorderSide
                                                                           .none,
-                                                                  gapPadding: 0,
+                                                                  gapPadding:
+                                                                      0,
                                                                 ),
                                                                 errorStyle:
                                                                     const TextStyle(
                                                                         height:
                                                                             0)),
                                                       ),
-                                                      suggestionsCallback:
-                                                          (pattern) async {
-                                                        final list =
-                                                            await controller
-                                                                .getFacilityByKeyword(
-                                                                    pattern);
-                                                        return list;
-                                                      },
-                                                      itemBuilder: (context,
-                                                          suggestion) {
-                                                        return ListTile(
-                                                          title:
-                                                              Text(suggestion),
-                                                        );
-                                                      },
-                                                      onSuggestionSelected:
-                                                          (suggestion) {
-                                                        controller.addFacility(
-                                                            suggestion);
-                                                        controller
-                                                            .facilityAutocompleteController
-                                                            .text = "";
-                                                      },
-                                                      debounceDuration:
-                                                          const Duration(
-                                                              milliseconds:
-                                                                  1500),
-                                                      hideOnLoading: false,
-                                                      hideSuggestionsOnKeyboardHide:
-                                                          true,
-                                                      keepSuggestionsOnLoading:
-                                                          false,
-                                                      minCharsForSuggestions: 0,
-                                                    ),
-                                                  )
-                                                ],
-                                              );
-                                            }
-                                            return Wrap(
-                                                runSpacing: 8,
-                                                runAlignment:
-                                                    WrapAlignment.center,
-                                                children: controller
-                                                    .listSelectedFacility
-                                                    .map((String item) {
-                                                  return Container(
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(4.0),
-                                                      ),
-                                                      color: Colors.white,
-                                                    ),
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            right: 5.0,
-                                                            left: 5),
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 10.0,
-                                                        vertical: 4.0),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        InkWell(
-                                                          child: Text(
-                                                            item ?? "",
-                                                            style:
-                                                                listSubTitleTextStyle,
-                                                          ),
-                                                          onTap: () {
-                                                            //print("$tag selected");
-                                                          },
-                                                        ),
-                                                        const SizedBox(
-                                                            width: 4.0),
-                                                      ],
-                                                    ),
-                                                  );
-                                                }).toList());
-                                          }),
-                                        );
-                                      }),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Obx(() {
-                                        if (controller.onEdit.value) {
-                                          return CustomFormFilePicker(
-                                            label: "Attachment".tr,
-                                            onFileSelected: (File value) {
-                                              controller.selectedFile = value;
+                                                    )
+                                                  ],
+                                                );
+                                              });
                                             },
                                           );
                                         }
-                                        return CustomTextFormField(
-                                          readOnly: true,
-                                          backgroundColor: neutralColor,
-                                          controller:
-                                              controller.attachmentController,
-                                          label: "Attachment".tr,
-                                          onTap: () async {
-                                            if (controller.selectedItem.value
-                                                .attachmentPath
-                                                .toString()
-                                                .isImageFileName) {
-                                              Get.dialog(Dialog(
-                                                child: Padding(
+                                        return Wrap(
+                                            runSpacing: 8,
+                                            runAlignment:
+                                                WrapAlignment.center,
+                                            children: controller
+                                                .listSelectedEmployee
+                                                .map((EmployeeModel item) {
+                                              return Container(
+                                                decoration:
+                                                    const BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(4.0),
+                                                  ),
+                                                  color: Colors.white,
+                                                ),
+                                                margin:
+                                                    const EdgeInsets.only(
+                                                        right: 5.0,
+                                                        left: 5),
+                                                padding: const EdgeInsets
+                                                        .symmetric(
+                                                    horizontal: 10.0,
+                                                    vertical: 4.0),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    InkWell(
+                                                      child: Text(
+                                                        item.employeeName ??
+                                                            "",
+                                                        style:
+                                                            listSubTitleTextStyle,
+                                                      ),
+                                                      onTap: () {
+                                                        //print("$tag selected");
+                                                      },
+                                                    ),
+                                                    const SizedBox(
+                                                        width: 4.0),
+                                                  ],
+                                                ),
+                                              );
+                                            }).toList());
+                                      }),
+                                    );
+                                  }),
+                                  Obx(() {
+                                    if (controller
+                                        .showParticipantError.value) {
+                                      return const Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 10, top: 8),
+                                        child: Text(
+                                          "This field is required",
+                                          style: TextStyle(
+                                              color: Colors.redAccent,
+                                              fontSize: 12),
+                                        ),
+                                      );
+                                    }
+                                    return const SizedBox();
+                                  }),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "External Participant".tr,
+                                      style: formlabelTextStyle,
+                                      children: const <TextSpan>[],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Obx(() {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color: !controller.onEdit.value
+                                            ? neutralColor
+                                            : Colors.white,
+                                        border: Border.all(
+                                          color: controller
+                                                  .showExternalParticipantError
+                                                  .value
+                                              ? Colors.redAccent
+                                              : Colors.black,
+                                          width: 1,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(8),
+                                      ),
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 8),
+                                      child: Obx(() {
+                                        if (controller.onEdit.value) {
+                                          return Wrap(
+                                            runSpacing: 8,
+                                            runAlignment:
+                                                WrapAlignment.center,
+                                            children: [
+                                              ...controller
+                                                  .listExternalParticipant
+                                                  .mapIndexed((index,
+                                                          item) =>
+                                                      Container(
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .all(
+                                                            Radius.circular(
+                                                                4.0),
+                                                          ),
+                                                          color: Color(
+                                                              0xFFe4e4e4),
+                                                        ),
+                                                        margin:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 5.0,
+                                                                left: 5),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal:
+                                                                    10.0,
+                                                                vertical:
+                                                                    4.0),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize
+                                                                  .min,
+                                                          children: [
+                                                            InkWell(
+                                                              child: Text(
+                                                                item,
+                                                                style:
+                                                                    listSubTitleTextStyle,
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 4.0),
+                                                            InkWell(
+                                                              child:
+                                                                  const Icon(
+                                                                Icons
+                                                                    .cancel,
+                                                                size: 14.0,
+                                                                color:
+                                                                    greyColor,
+                                                              ),
+                                                              onTap: () {
+                                                                controller
+                                                                    .deleteExternalParticipant(
+                                                                        index);
+                                                              },
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ))
+                                                  .toList(),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: TextFormField(
+                                                  decoration:
+                                                      InputDecoration(
+                                                          isDense: true,
+                                                          hintText:
+                                                              "External Participant"
+                                                                  .tr,
+                                                          border:
+                                                              InputBorder
+                                                                  .none,
+                                                          contentPadding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      4.0,
+                                                                  vertical:
+                                                                      4.0),
+                                                          errorText: null,
+                                                          errorBorder:
+                                                              const OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide
+                                                                    .none,
+                                                            gapPadding: 0,
+                                                          ),
+                                                          errorStyle:
+                                                              const TextStyle(
+                                                                  height:
+                                                                      0)),
+                                                  controller: controller
+                                                      .externalParticipantController,
+                                                  onFieldSubmitted:
+                                                      (value) {
+                                                    controller
+                                                        .addExternalParticipant(
+                                                            value);
+                                                  },
+                                                  onTapOutside: (_) {
+                                                    if (controller
+                                                        .externalParticipantController
+                                                        .text
+                                                        .isNotEmpty) {
+                                                      controller
+                                                          .addExternalParticipant(
+                                                              controller
+                                                                  .externalParticipantController
+                                                                  .text);
+                                                    }
+                                                  },
+                                                  onChanged: (value) {
+                                                    if (value.isNotEmpty) {
+                                                      controller
+                                                          .showExternalParticipantError(
+                                                              !value
+                                                                  .isEmail);
+                                                    } else {
+                                                      controller
+                                                          .showExternalParticipantError(
+                                                              false);
+                                                    }
+                                                  },
+                                                ),
+                                              )
+                                            ],
+                                          );
+                                        } else {
+                                          return Wrap(
+                                              runSpacing: 8,
+                                              runAlignment:
+                                                  WrapAlignment.center,
+                                              children: controller
+                                                  .listExternalParticipant
+                                                  .map((String item) {
+                                                return Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(4.0),
+                                                    ),
+                                                    color: Colors.white,
+                                                  ),
+                                                  margin:
+                                                      const EdgeInsets.only(
+                                                          right: 5.0,
+                                                          left: 5),
                                                   padding: const EdgeInsets
                                                           .symmetric(
-                                                      horizontal: 16,
-                                                      vertical: 16),
-                                                  child: Image.network(
-                                                      controller.selectedItem
-                                                          .value.attachmentPath
-                                                          .toString()),
-                                                ),
-                                              ));
-                                            } else {
-                                              if (!await launchUrl(Uri.parse(
-                                                  controller.selectedItem.value
-                                                      .attachmentPath
-                                                      .toString()))) {
-                                                throw Exception(
-                                                    'Could not launch ${controller.selectedItem.value.attachmentPath.toString()}');
-                                              }
-                                            }
-                                          },
-                                        );
+                                                      horizontal: 10.0,
+                                                      vertical: 4.0),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      InkWell(
+                                                        child: Text(
+                                                          item ?? "",
+                                                          style:
+                                                              listSubTitleTextStyle,
+                                                        ),
+                                                        onTap: () {
+                                                          //print("$tag selected");
+                                                        },
+                                                      ),
+                                                      const SizedBox(
+                                                          width: 4.0),
+                                                    ],
+                                                  ),
+                                                );
+                                              }).toList());
+                                        }
                                       }),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Obx(() {
-                                        return CustomTextFormField(
-                                            readOnly: !controller.onEdit.value,
-                                            multiLine: true,
-                                            controller:
-                                                controller.remarksController,
-                                            label: "Remarks".tr);
-                                      }),
-                                      const SizedBox(
-                                        height: 32,
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                    ],
+                                    );
+                                  }),
+                                  Obx(() {
+                                    if (controller
+                                        .showExternalParticipantError
+                                        .value) {
+                                      return const Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 10, top: 8),
+                                        child: Text(
+                                          "This field is not a valid email address",
+                                          style: TextStyle(
+                                              color: Colors.redAccent,
+                                              fontSize: 12),
+                                        ),
+                                      );
+                                    }
+                                    return const SizedBox();
+                                  }),
+                                  const SizedBox(
+                                    height: 8,
                                   ),
-                                ),
-                              )
-                            ],
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "Online Meeting?".tr,
+                                      style: formlabelTextStyle,
+                                      children: const <TextSpan>[],
+                                    ),
+                                  ),
+                                  Obx(() {
+                                    return Switch(
+                                      value:
+                                          controller.isOnlineMeeting.value,
+                                      onChanged: controller.onEdit.value
+                                          ? (value) {
+                                              controller
+                                                  .isOnlineMeeting(value);
+                                            }
+                                          : null,
+                                      activeColor: infoColor,
+                                    );
+                                  }),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Obx(() {
+                                    if (controller.isOnlineMeeting.value) {
+                                      return CustomTextFormField(
+                                          readOnly: true,
+                                          controller:
+                                              controller.linkController,
+                                          label: "Link".tr);
+                                    }
+                                    return const SizedBox();
+                                  }),
+                                  Obx(() {
+                                    return SizedBox(
+                                      height:
+                                          controller.isOnlineMeeting.value
+                                              ? 8
+                                              : 0,
+                                    );
+                                  }),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "Recurrence?".tr,
+                                      style: formlabelTextStyle,
+                                      children: const <TextSpan>[],
+                                    ),
+                                  ),
+                                  Obx(() {
+                                    return Switch(
+                                      value: controller.isRecurrence.value,
+                                      onChanged: controller.onEdit.value
+                                          ? (value) {
+                                              controller
+                                                  .isRecurrence(value);
+                                            }
+                                          : null,
+                                      activeColor: infoColor,
+                                    );
+                                  }),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Obx(() {
+                                    if (controller.isRecurrence.value) {
+                                      return CustomTextFormField(
+                                          readOnly:
+                                              !controller.onEdit.value,
+                                          onTap: controller.onEdit.value
+                                              ? () async {
+                                                  RecurrenceModel? result =
+                                                      await Get.dialog(
+                                                          RecurrenceDialog(
+                                                    recurrenceModel: controller
+                                                        .selectedRecurrence
+                                                        .value,
+                                                  ));
+                                                  if (result != null) {
+                                                    controller
+                                                        .recurrenceController
+                                                        .text = result
+                                                            .text ??
+                                                        "";
+                                                    controller
+                                                        .selectedRecurrence
+                                                        .value = result;
+                                                  }
+                                                }
+                                              : null,
+                                          controller: controller
+                                              .recurrenceController,
+                                          label: "Recurrence".tr);
+                                    }
+                                    return const SizedBox();
+                                  }),
+                                  Obx(() {
+                                    return SizedBox(
+                                      height: controller.isRecurrence.value
+                                          ? 8
+                                          : 0,
+                                    );
+                                  }),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "Facility".tr,
+                                      style: formlabelTextStyle,
+                                      children: const <TextSpan>[],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Obx(() {
+                                    return Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 8),
+                                      decoration: BoxDecoration(
+                                        color: !controller.onEdit.value
+                                            ? neutralColor
+                                            : Colors.white,
+                                        border: Border.all(
+                                          color: Colors.black,
+                                          width: 1,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(8),
+                                      ),
+                                      child: Obx(() {
+                                        if (controller.onEdit.value) {
+                                          return Wrap(
+                                            runSpacing: 8,
+                                            runAlignment:
+                                                WrapAlignment.center,
+                                            children: [
+                                              ...controller
+                                                  .listSelectedFacility
+                                                  .mapIndexed((index,
+                                                          item) =>
+                                                      Container(
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .all(
+                                                            Radius.circular(
+                                                                4.0),
+                                                          ),
+                                                          color: Color(
+                                                              0xFFe4e4e4),
+                                                        ),
+                                                        margin:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 5.0,
+                                                                left: 5),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal:
+                                                                    10.0,
+                                                                vertical:
+                                                                    4.0),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize
+                                                                  .min,
+                                                          children: [
+                                                            InkWell(
+                                                              child: Text(
+                                                                item,
+                                                                style:
+                                                                    listSubTitleTextStyle,
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 4.0),
+                                                            InkWell(
+                                                              child:
+                                                                  const Icon(
+                                                                Icons
+                                                                    .cancel,
+                                                                size: 14.0,
+                                                                color:
+                                                                    greyColor,
+                                                              ),
+                                                              onTap: () {
+                                                                controller
+                                                                    .deleteFacility(
+                                                                        index);
+                                                                controller
+                                                                    .updateButton();
+                                                              },
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ))
+                                                  .toList(),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: TypeAheadFormField<
+                                                    String>(
+                                                  textFieldConfiguration:
+                                                      TextFieldConfiguration(
+                                                    controller: controller
+                                                        .facilityAutocompleteController,
+                                                    autofocus: false,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium,
+                                                    decoration:
+                                                        InputDecoration(
+                                                            isDense: true,
+                                                            hintText:
+                                                                "Facility"
+                                                                    .tr,
+                                                            border:
+                                                                InputBorder
+                                                                    .none,
+                                                            contentPadding: const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal:
+                                                                    4.0,
+                                                                vertical:
+                                                                    4.0),
+                                                            errorText: null,
+                                                            errorBorder:
+                                                                const OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide
+                                                                      .none,
+                                                              gapPadding: 0,
+                                                            ),
+                                                            errorStyle:
+                                                                const TextStyle(
+                                                                    height:
+                                                                        0)),
+                                                  ),
+                                                  suggestionsCallback:
+                                                      (pattern) async {
+                                                    final list =
+                                                        await controller
+                                                            .getFacilityByKeyword(
+                                                                pattern);
+                                                    return list;
+                                                  },
+                                                  itemBuilder: (context,
+                                                      suggestion) {
+                                                    return ListTile(
+                                                      title:
+                                                          Text(suggestion),
+                                                    );
+                                                  },
+                                                  onSuggestionSelected:
+                                                      (suggestion) {
+                                                    controller.addFacility(
+                                                        suggestion);
+                                                    controller
+                                                        .facilityAutocompleteController
+                                                        .text = "";
+                                                  },
+                                                  debounceDuration:
+                                                      const Duration(
+                                                          milliseconds:
+                                                              1500),
+                                                  hideOnLoading: false,
+                                                  hideSuggestionsOnKeyboardHide:
+                                                      true,
+                                                  keepSuggestionsOnLoading:
+                                                      false,
+                                                  minCharsForSuggestions: 0,
+                                                ),
+                                              )
+                                            ],
+                                          );
+                                        }
+                                        return Wrap(
+                                            runSpacing: 8,
+                                            runAlignment:
+                                                WrapAlignment.center,
+                                            children: controller
+                                                .listSelectedFacility
+                                                .map((String item) {
+                                              return Container(
+                                                decoration:
+                                                    const BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(4.0),
+                                                  ),
+                                                  color: Colors.white,
+                                                ),
+                                                margin:
+                                                    const EdgeInsets.only(
+                                                        right: 5.0,
+                                                        left: 5),
+                                                padding: const EdgeInsets
+                                                        .symmetric(
+                                                    horizontal: 10.0,
+                                                    vertical: 4.0),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    InkWell(
+                                                      child: Text(
+                                                        item ?? "",
+                                                        style:
+                                                            listSubTitleTextStyle,
+                                                      ),
+                                                      onTap: () {
+                                                        //print("$tag selected");
+                                                      },
+                                                    ),
+                                                    const SizedBox(
+                                                        width: 4.0),
+                                                  ],
+                                                ),
+                                              );
+                                            }).toList());
+                                      }),
+                                    );
+                                  }),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Obx(() {
+                                    if (controller.onEdit.value) {
+                                      return CustomFormFilePicker(
+                                        label: "Attachment".tr,
+                                        onFileSelected: (File value) {
+                                          controller.selectedFile = value;
+                                        },
+                                      );
+                                    }
+                                    return CustomTextFormField(
+                                      readOnly: true,
+                                      backgroundColor: neutralColor,
+                                      controller:
+                                          controller.attachmentController,
+                                      label: "Attachment".tr,
+                                      onTap: () async {
+                                        if (controller.selectedItem.value
+                                            .attachmentPath
+                                            .toString()
+                                            .isImageFileName) {
+                                          Get.dialog(Dialog(
+                                            child: Padding(
+                                              padding: const EdgeInsets
+                                                      .symmetric(
+                                                  horizontal: 16,
+                                                  vertical: 16),
+                                              child: Image.network(
+                                                  controller.selectedItem
+                                                      .value.attachmentPath
+                                                      .toString()),
+                                            ),
+                                          ));
+                                        } else {
+                                          if (!await launchUrl(Uri.parse(
+                                              controller.selectedItem.value
+                                                  .attachmentPath
+                                                  .toString()))) {
+                                            throw Exception(
+                                                'Could not launch ${controller.selectedItem.value.attachmentPath.toString()}');
+                                          }
+                                        }
+                                      },
+                                    );
+                                  }),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Obx(() {
+                                    return CustomTextFormField(
+                                        readOnly: !controller.onEdit.value,
+                                        multiLine: true,
+                                        controller:
+                                            controller.remarksController,
+                                        label: "Remarks".tr);
+                                  }),
+                                  const SizedBox(
+                                    height: 32,
+                                  ),
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         );
                       } else if (controller.selectedTab.value ==
@@ -1495,79 +1577,20 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                         return Container(
                           margin: const EdgeInsets.symmetric(
                               vertical: 16, horizontal: 8),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: const Color(0xffEFF4FF)),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 16, horizontal: 20),
-                            child: Row(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Start Date",
-                                      style: listSubTitleTextStyle.copyWith(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    const SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                      "Recurrence",
-                                      style: listSubTitleTextStyle.copyWith(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    const SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                      "End Date",
-                                      style: listSubTitleTextStyle.copyWith(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      ":",
-                                      style: listSubTitleTextStyle.copyWith(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    const SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                      ":",
-                                      style: listSubTitleTextStyle.copyWith(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    const SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                      ":",
-                                      style: listSubTitleTextStyle.copyWith(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                          child: Card(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: const Color(0xffEFF4FF)),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 16, horizontal: 20),
+                              child: Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "${controller.selectedItem.value.recurrenceStart?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
+                                        "Start Date",
                                         style: listSubTitleTextStyle.copyWith(
                                             fontWeight: FontWeight.w600),
                                       ),
@@ -1575,7 +1598,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                         width: 4,
                                       ),
                                       Text(
-                                        "${controller.selectedItem.value.recurrence?.capitalizeFirst}",
+                                        "Recurrence",
                                         style: listSubTitleTextStyle.copyWith(
                                             fontWeight: FontWeight.w600),
                                       ),
@@ -1583,18 +1606,199 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                         width: 4,
                                       ),
                                       Text(
-                                        "${controller.selectedItem.value.recurrenceEnd?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
+                                        "End Date",
                                         style: listSubTitleTextStyle.copyWith(
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ],
                                   ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        ":",
+                                        style: listSubTitleTextStyle.copyWith(
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                        ":",
+                                        style: listSubTitleTextStyle.copyWith(
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                        ":",
+                                        style: listSubTitleTextStyle.copyWith(
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${controller.selectedItem.value.recurrenceStart?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
+                                          style: listSubTitleTextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(
+                                          "${controller.selectedItem.value.recurrence?.capitalizeFirst}",
+                                          style: listSubTitleTextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(
+                                          "${controller.selectedItem.value.recurrenceEnd?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
+                                          style: listSubTitleTextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      } else if (controller.selectedTab.value ==
+                          TabEnum.approval) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 16, horizontal: 8),
+                          child: controller.listLogApproval.isEmpty
+                            ? const SizedBox()
+                          : Card(
+                            child: ApprovalLogList(
+                              list: controller.listLogApproval,
+                              waitingApprovalValue: 0),
+                          ),
+                        );
+                      }else if (controller.selectedTab.value ==
+                          TabEnum.duration) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 16, horizontal: 8),
+                          child: Card(
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                TimeLineItemWidget(
+                                  contentWidget: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        controller.selectedItem.value.nameStarted != null ? "${controller.selectedItem.value.nameStarted} start meeting" : "-",
+                                        style: titleTextStyle.copyWith(
+                                            fontSize: 14, fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                          controller.selectedItem.value.durationStart?.toDateFormat(
+                                              targetFormat: "EEEE, dd MMMM yyyy",
+                                              originFormat: "yyyy-MM-dd HH:mm:ss") ??
+                                              "-",
+                                        style: hintTextStyle.copyWith(
+                                            color: const Color(0xFF8C8C8C),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        controller.selectedItem.value.durationStart?.toDateFormat(
+                                            targetFormat: "EEEE, dd MMMM yyyy",
+                                            originFormat: "yyyy-MM-dd HH:mm:ss") ??
+                                            "-",
+                                        style: hintTextStyle.copyWith(
+                                            color: const Color(0xFF8C8C8C),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                TimeLineItemWidget(
+                                  contentWidget: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        controller.selectedItem.value.nameEnded != null ? "${controller.selectedItem.value.nameEnded} end meeting" : "-",
+                                        style: titleTextStyle.copyWith(
+                                            fontSize: 14, fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                          controller.selectedItem.value.durationEnd?.toDateFormat(
+                                              targetFormat: "EEEE, dd MMMM yyyy",
+                                              originFormat: "yyyy-MM-dd HH:mm:ss") ??
+                                              "-",
+                                        style: hintTextStyle.copyWith(
+                                            color: const Color(0xFF8C8C8C),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        controller.selectedItem.value.durationEnd?.toDateFormat(
+                                            targetFormat: "EEEE, dd MMMM yyyy",
+                                            originFormat: "yyyy-MM-dd HH:mm:ss") ??
+                                            "-",
+                                        style: hintTextStyle.copyWith(
+                                            color: const Color(0xFF8C8C8C),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                TimeLineItemWidget(
+                                  contentWidget: Text(
+                                    "Total Duration : ${controller.getDuration()}",
+                                    style: listTitleTextStyle,
+                                  ),
+                                  showContentIcon: false,
+                                ),
+                                const SizedBox(
+                                  height: 32,
                                 ),
                               ],
                             ),
                           ),
                         );
-                      } else {
+                      }else {
                         return const SizedBox();
                       }
                     }),
@@ -1611,4 +1815,65 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
       bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
+}
+
+
+class TimeLineItemWidget extends StatelessWidget{
+  const TimeLineItemWidget({super.key, required this.contentWidget, this.showContentIcon = true});
+  final Widget contentWidget;
+  final bool showContentIcon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 0, top: 8),
+      child: Row(
+        children: [
+          Container(
+            decoration:
+            const BoxDecoration(shape: BoxShape.circle, color: infoColor),
+            padding: const EdgeInsets.all(10),
+            child: const Icon(
+              IconlyBold.time_circle,
+              color: Colors.white,
+              size: 24,
+            ),
+          ),
+          const SizedBox(
+            width: 16,
+          ),
+          Expanded(
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 0),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: const Color(0xffEFF4FF)),
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    showContentIcon ? Container(
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: Color(0xFFC3C3C3)),
+                      padding: const EdgeInsets.all(8),
+                      child: const Icon(
+                        IconlyBold.profile,
+                        color: greyColor,
+                      ),
+                    ): const SizedBox(),
+                    SizedBox(
+                      width: showContentIcon ? 16 : 0,
+                    ),
+                    Expanded(
+                      child: contentWidget,
+                    )
+                  ],
+                ),
+              )
+          )
+        ],
+      ),
+    );
+  }
+
 }
