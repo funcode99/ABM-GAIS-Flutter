@@ -1,4 +1,6 @@
 enum TabEnum{
   detail,
-  approval
+  approval,
+  recurrence,
+  duration
 }

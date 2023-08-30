@@ -13,6 +13,7 @@ import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
+import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/date_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
@@ -94,6 +95,8 @@ class DetailBookingMeetingRoomController extends BaseController
   final showCancelButton = false.obs;
 
   final BookingMeetingRoomRepository _repository = Get.find();
+
+  final selectedTab = Rx<TabEnum>(TabEnum.detail);
 
   @override
   void onInit() {
