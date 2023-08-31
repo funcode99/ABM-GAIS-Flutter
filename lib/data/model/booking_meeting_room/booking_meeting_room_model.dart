@@ -55,7 +55,7 @@ class BookingMeetingRoomModel {
   String? nameRejected;
   String? nameStarted;
   String? nameEnded;
-  List<dynamic>? days;
+  dynamic days;
   String? durationStart;
   String? durationEnd;
   String? recurrenceStart;
