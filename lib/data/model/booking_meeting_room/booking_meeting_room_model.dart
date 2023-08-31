@@ -29,6 +29,7 @@ class BookingMeetingRoomModel {
   String? approvedAt;
   String? rejectedAt;
   dynamic createdBy;
+  dynamic isApproval;
   String? updatedAt;
   dynamic updatedBy;
   String? deletedAt;
@@ -71,6 +72,7 @@ class BookingMeetingRoomModel {
         this.idCompany,
         this.idSite,
         this.idEmployee,
+        this.isApproval,
         this.remarks,
         this.notes,
         this.startDate,

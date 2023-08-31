@@ -322,7 +322,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
 
                             //approval
                             Obx(() {
-                              if((controller.selectedItem.value.nameApproved != null && controller.selectedItem.value.approvedAt != null) || (controller.selectedItem.value.nameRejected != null && controller.selectedItem.value.rejectedAt != null)){
+                              if(controller.selectedItem.value.isApproval && ((controller.selectedItem.value.nameApproved != null && controller.selectedItem.value.approvedAt != null) || (controller.selectedItem.value.nameRejected != null && controller.selectedItem.value.rejectedAt != null))){
                                 return GestureDetector(
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
