@@ -16,14 +16,15 @@ import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
 class AddItemRequestATKScreen extends StatelessWidget {
-  const AddItemRequestATKScreen({super.key, this.item});
+  const AddItemRequestATKScreen({super.key, this.item, required this.siteID});
 
   final RequestATKDetailModel? item;
+  final int siteID;
 
   @override
   Widget build(BuildContext context) {
     final AddItemRequestATKController controller =
-    Get.put(AddItemRequestATKController())..requestATKDetailModel(item);
+    Get.put(AddItemRequestATKController())..requestATKDetailModel(item)..siteID(siteID);
 
     return Scaffold(
       backgroundColor: baseColor,

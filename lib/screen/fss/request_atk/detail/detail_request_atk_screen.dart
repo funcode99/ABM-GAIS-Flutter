@@ -312,7 +312,9 @@ class RequestATKDetailScreen extends StatelessWidget {
                                     backgroundColor: infoColor,
                                     onPressed: () async {
                                       final addedItem = await Get.to(
-                                              () => const AddItemRequestATKScreen());
+                                              () => AddItemRequestATKScreen(
+                                                siteID: controller.selectedItem.value.idSite!,
+                                              ));
                                       if (addedItem != null) {
                                         //add item
                                         controller.addDetail(addedItem);
@@ -348,6 +350,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                                             final updatedItem =
                                             await Get.to(() =>
                                                 AddItemRequestATKScreen(
+                                                    siteID: controller.selectedItem.value.idSite!,
                                                     item: item));
                                             if (updatedItem != null) {
                                               //add item
