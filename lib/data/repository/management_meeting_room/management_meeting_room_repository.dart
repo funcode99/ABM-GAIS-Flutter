@@ -14,7 +14,7 @@ abstract class ManagementMeetingRoomRepository {
     String idCompany,
     String idSite,
     String nameMeetingRoom,
-    String codeMeetingRoom,
+    // String codeMeetingRoom,
     String capacity,
     String floor,
     String status,
