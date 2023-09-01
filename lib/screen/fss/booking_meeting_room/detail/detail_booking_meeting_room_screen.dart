@@ -21,6 +21,7 @@ import 'package:gais/reusable/form/custom_form_file_picker.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list/approval_log_list.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
+import 'package:gais/reusable/timeline/timeline_item_widget.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_controller.dart';
 import 'package:gais/screen/fss/booking_meeting_room/widget/meeting_room_time_picker_dialog.dart';
@@ -102,7 +103,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                     if (controller.selectedItem.value.codeStatusDoc
                             .toString() ==
                         "0") {
-                      return Row(
+                      /*return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           OutlinedButton(
@@ -141,7 +142,8 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                   child: Text("Book".tr),
                                 ),
                         ],
-                      );
+                      );*/
+                      return const SizedBox();
                     } else if (controller.selectedItem.value.codeStatusDoc ==
                         BookingMeetingRoomEnum.booked.value) {
                       return Row(
@@ -1588,94 +1590,153 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                   color: const Color(0xffEFF4FF)),
                               padding: const EdgeInsets.symmetric(
                                   vertical: 16, horizontal: 20),
-                              child: Row(
+                              child: Column(
                                 children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  Row(
                                     children: [
-                                      Text(
-                                        "Start Date",
-                                        style: listSubTitleTextStyle.copyWith(
-                                            fontWeight: FontWeight.w600),
+                                      Expanded(
+                                        child: Text(
+                                          "Start Date",
+                                          style: listSubTitleTextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        flex: 2,
                                       ),
                                       const SizedBox(
-                                        width: 4,
+                                        width: 2,
                                       ),
-                                      Text(
-                                        "Recurrence",
-                                        style: listSubTitleTextStyle.copyWith(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      const SizedBox(
-                                        width: 4,
-                                      ),
-                                      Text(
-                                        "End Date",
-                                        style: listSubTitleTextStyle.copyWith(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    width: 8,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        ":",
-                                        style: listSubTitleTextStyle.copyWith(
-                                            fontWeight: FontWeight.w600),
+                                      Flexible(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: listSubTitleTextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                        ),
                                       ),
                                       const SizedBox(
-                                        width: 4,
+                                          width: 2,
                                       ),
-                                      Text(
-                                        ":",
-                                        style: listSubTitleTextStyle.copyWith(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      const SizedBox(
-                                        width: 4,
-                                      ),
-                                      Text(
-                                        ":",
-                                        style: listSubTitleTextStyle.copyWith(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    width: 8,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
                                           "${controller.selectedItem.value.recurrenceStart?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
                                           style: listSubTitleTextStyle.copyWith(
                                               fontWeight: FontWeight.w600),
                                         ),
-                                        const SizedBox(
-                                          width: 4,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          "Recurrence",
+                                          style: listSubTitleTextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
                                         ),
-                                        Text(
+                                        flex: 2,
+                                      ),
+                                      const SizedBox(
+                                        width: 2,
+                                      ),
+                                      Flexible(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: listSubTitleTextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                          width: 2,
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
                                           "${controller.selectedItem.value.recurrence?.capitalizeFirst}",
                                           style: listSubTitleTextStyle.copyWith(
                                               fontWeight: FontWeight.w600),
                                         ),
-                                        const SizedBox(
-                                          width: 4,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          "End Date",
+                                          style: listSubTitleTextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
                                         ),
-                                        Text(
+                                        flex: 2,
+                                      ),
+                                      const SizedBox(
+                                      width: 2,
+                                      ),
+                                      Flexible(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: listSubTitleTextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                          width: 2,
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
                                           "${controller.selectedItem.value.recurrenceEnd?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
                                           style: listSubTitleTextStyle.copyWith(
                                               fontWeight: FontWeight.w600),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          "Recurrence Parent",
+                                          style: listSubTitleTextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        flex: 2,
+                                      ),
+                                      const SizedBox(
+                                        width: 2,
+                                      ),
+                                      Flexible(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: listSubTitleTextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 2,
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          controller.selectedItem.value.noBookingMeeting ?? "-",
+                                          style: listSubTitleTextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -1733,7 +1794,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                       ),
                                       Text(
                                         controller.selectedItem.value.durationStart?.toDateFormat(
-                                            targetFormat: "EEEE, dd MMMM yyyy",
+                                            targetFormat: "HH:mm:ss a",
                                             originFormat: "yyyy-MM-dd HH:mm:ss") ??
                                             "-",
                                         style: hintTextStyle.copyWith(
@@ -1774,7 +1835,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                       ),
                                       Text(
                                         controller.selectedItem.value.durationEnd?.toDateFormat(
-                                            targetFormat: "EEEE, dd MMMM yyyy",
+                                            targetFormat: "HH:mm:ss a",
                                             originFormat: "yyyy-MM-dd HH:mm:ss") ??
                                             "-",
                                         style: hintTextStyle.copyWith(
@@ -1819,65 +1880,4 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
       bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
-}
-
-
-class TimeLineItemWidget extends StatelessWidget{
-  const TimeLineItemWidget({super.key, required this.contentWidget, this.showContentIcon = true});
-  final Widget contentWidget;
-  final bool showContentIcon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 0, top: 8),
-      child: Row(
-        children: [
-          Container(
-            decoration:
-            const BoxDecoration(shape: BoxShape.circle, color: infoColor),
-            padding: const EdgeInsets.all(10),
-            child: const Icon(
-              IconlyBold.time_circle,
-              color: Colors.white,
-              size: 24,
-            ),
-          ),
-          const SizedBox(
-            width: 16,
-          ),
-          Expanded(
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: const Color(0xffEFF4FF)),
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    showContentIcon ? Container(
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Color(0xFFC3C3C3)),
-                      padding: const EdgeInsets.all(8),
-                      child: const Icon(
-                        IconlyBold.profile,
-                        color: greyColor,
-                      ),
-                    ): const SizedBox(),
-                    SizedBox(
-                      width: showContentIcon ? 16 : 0,
-                    ),
-                    Expanded(
-                      child: contentWidget,
-                    )
-                  ],
-                ),
-              )
-          )
-        ],
-      ),
-    );
-  }
-
 }

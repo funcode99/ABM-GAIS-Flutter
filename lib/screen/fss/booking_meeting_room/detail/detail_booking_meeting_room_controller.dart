@@ -232,8 +232,13 @@ class DetailBookingMeetingRoomController extends BaseController
         }
       }
     }else{
+      showCancelButton.value = false;
+      showStartMeetingButton.value = false;
+
       if(selectedItem.value.durationEnd == null){
         showEndMeetingButton.value = true;
+      }else{
+        showEndMeetingButton.value = false;
       }
     }
 
