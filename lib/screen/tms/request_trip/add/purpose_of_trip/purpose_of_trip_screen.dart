@@ -232,10 +232,12 @@ class PurposeOfTripScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            CustomTextFormField(
-                              controller: controller.nomorDA,
-                              label: "DA Number",
-                            ),
+                            controller.isDANumber
+                                ? CustomTextFormField(
+                                    controller: controller.nomorDA,
+                                    label: "DA Number",
+                                  )
+                                : Container(),
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
                               items: controller.costCenterList

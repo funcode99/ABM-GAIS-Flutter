@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:gais/data/model/cash_advance/item_cash_advance_travel_model.dart';
 import 'package:gais/data/model/employee_info_model.dart';
 import 'package:gais/data/model/login_model.dart';
@@ -31,8 +30,8 @@ import 'package:gais/data/model/request_trip/get_detailca_bycashid_model.dart';
 import 'package:gais/data/model/request_trip/get_guest_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart';
 import 'package:gais/data/model/request_trip/get_other_transport_model.dart';
-import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart';
+import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:gais/data/model/request_trip/request_trip_list_model.dart';
 import 'package:gais/data/model/request_trip/save_accommodation_model.dart';
 import 'package:gais/data/model/request_trip/save_airlines_model.dart';
@@ -113,6 +112,7 @@ abstract class Repository {
     String zonaID,
     String tlkDay,
     String tlkTotal,
+    String daNumber,
     File? file,
   );
 

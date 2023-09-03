@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_city_model.dart';
 import 'package:gais/data/model/reference/get_flight_schedule_model.dart' as flight;
+import 'package:gais/data/model/antavaya/get_airport_model.dart' as city;
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -11,8 +12,11 @@ import 'package:intl/intl.dart';
 class CheckScheduleController extends BaseController {
   String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
-  int? departure = Get.arguments['departure'];
-  int? arrival = Get.arguments['arrival'];
+  String departure = Get.arguments['departure'];
+  String arrival = Get.arguments['arrival'];
+  DateTime departureDate = Get.arguments['departureDate'];
+  city.Data departureModel = Get.arguments['departureModel'];
+  city.Data arrivalModel = Get.arguments['arrivalModel'];
   String? airlinessID = Get.arguments['id'];
   bool? formEdit = Get.arguments['formEdit'];
 
@@ -53,16 +57,16 @@ class CheckScheduleController extends BaseController {
       flightScheduleModel = response;
       flightScheduleList.addAll(response.data?.toSet().toList() ?? []);
 
-      var cityData = await repository.getCityList();
-      cityModel = cityData;
-      cityModel?.data?.where((city) => city.id == departure).forEach((e) {
-        departureCity = "${e.cityName} (${e.cityCode})";
-        print("${e.cityName} (${e.cityCode})");
-      });
-      cityModel?.data?.where((city) => city.id == arrival).forEach((e) {
-        arrivalCity = "${e.cityName} (${e.cityCode})";
-        print("${e.cityName} (${e.cityCode})");
-      });
+      // var cityData = await repository.getCityList();
+      // cityModel = cityData;
+      // cityModel?.data?.where((city) => city.id == departure).forEach((e) {
+      //   departureCity = "${e.cityName} (${e.cityCode})";
+      //   print("${e.cityName} (${e.cityCode})");
+      // });
+      // cityModel?.data?.where((city) => city.id == arrival).forEach((e) {
+      //   arrivalCity = "${e.cityName} (${e.cityCode})";
+      //   print("${e.cityName} (${e.cityCode})");
+      // });
 
       update();
     } catch (e) {

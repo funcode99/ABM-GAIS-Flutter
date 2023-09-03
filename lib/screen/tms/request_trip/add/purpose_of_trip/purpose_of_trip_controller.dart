@@ -226,7 +226,6 @@ class PurposeOfTripController extends BaseController {
     } else {
       updateData();
     }
-
     // print("purposeID:$purposeID");
     // print("purpose : ${selectedPurpose}");
   }
@@ -249,6 +248,7 @@ class PurposeOfTripController extends BaseController {
         // "7",
         tlkDay.text.digitOnly(),
         totalTLK.text.digitOnly(),
+        nomorDA.text,
         gettedFile,
       )
           .then(

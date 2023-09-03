@@ -19,7 +19,6 @@ import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advan
 import 'package:gais/screen/tms/request_trip/add/other_transport/edit/edit_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/edit/edit_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
-import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/actualization_trip_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_controller.dart';
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
@@ -85,25 +84,33 @@ class FormRequestTripScreen extends StatelessWidget {
                                   ? MainAxisAlignment.spaceEvenly
                                   : MainAxisAlignment.center,
                               children: [
-                                controller.rtStatus == "Confirmed"
+                                // controller.rtStatus == "Confirmed"
+                                //     ? CustomFilledButton(
+                                //         color: orangeColor,
+                                //         title: "Actualization",
+                                //         width: Get.width / 4,
+                                //         onPressed: () {
+                                //           controller.checkActual();
+                                //         },
+                                //       )
+                                //     : Container(),
+                                controller.rtStatus == "Draft" || controller.rtStatus == "Revision" || controller.rtStatus == "Confirmed"
                                     ? CustomFilledButton(
-                                        color: orangeColor,
-                                        title: "Actualization",
-                                        width: Get.width / 4,
+                                        color: controller.rtStatus == "Confirmed" ? orangeColor : Colors.transparent,
+                                        title: controller.rtStatus == "Confirmed"
+                                            ? "Actualizations"
+                                            : controller.isEdit
+                                                ? "Cancel"
+                                                : "Edit",
+                                        borderColor: controller.rtStatus == "Confirmed" ? Colors.transparent : infoColor,
+                                        fontColor: controller.rtStatus == "Confirmed" ? whiteColor : infoColor,
+                                        width: controller.rtStatus == "Confirmed" ? Get.width / 3 : Get.width / 4,
                                         onPressed: () {
-                                          controller.checkActual();
-                                        },
-                                      )
-                                    : Container(),
-                                controller.rtStatus == "Draft" || controller.rtStatus == "Revision"
-                                    ? CustomFilledButton(
-                                        color: Colors.transparent,
-                                        title: controller.isEdit ? "Cancel" : "Edit",
-                                        borderColor: infoColor,
-                                        fontColor: infoColor,
-                                        width: Get.width / 4,
-                                        onPressed: () {
-                                          controller.isEdit = controller.isEdit == false ? true : false;
+                                          if (controller.rtStatus == "Confirmed") {
+                                            controller.checkActual();
+                                          } else {
+                                            controller.isEdit = controller.isEdit == false ? true : false;
+                                          }
                                           controller.update();
                                         },
                                       )
@@ -178,6 +185,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                       onChanged: (value) {
                                         controller.selectedPurpose = value.toString();
                                         controller.isAttachment = value == "1" || value == "2" || value == "3" || value == "5" ? true : false;
+                                        value == "3" ? controller.isDAnumber = true : controller.isDAnumber = false;
                                         controller.update();
                                         controller.checkItems();
                                         controller.update();
@@ -250,6 +258,14 @@ class FormRequestTripScreen extends StatelessWidget {
                                 label: "Notes to Purpose of Trip",
                                 readOnly: !controller.isEdit,
                               ),
+                              const SizedBox(height: 8),
+                              controller.isDAnumber
+                                  ? CustomTextFormField(
+                                      controller: controller.daNumber,
+                                      label: "Nomor DA",
+                                      readOnly: !controller.isEdit,
+                                    )
+                                  : Container(),
                               const SizedBox(height: 8),
                             ],
                           ),

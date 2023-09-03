@@ -44,6 +44,7 @@ class FormRequestTripController extends BaseController {
   final site = TextEditingController();
   final attachment = TextEditingController();
   final notes = TextEditingController();
+  final daNumber = TextEditingController();
   final tlkRequestor = TextEditingController();
   final tlkJobBand = TextEditingController();
   final tlkZona = TextEditingController();
@@ -58,6 +59,7 @@ class FormRequestTripController extends BaseController {
   bool isApproval = false;
   bool isEdit = false;
   bool isAttachment = false;
+  bool isDAnumber = false;
   String? selectedPurpose;
   String fileURL = "";
   String pdfPath = "";
@@ -341,11 +343,13 @@ class FormRequestTripController extends BaseController {
     siteID = rtModel?.data?.first.idSite?.toInt();
     site.text = rtModel?.data?.first.siteName ?? "";
     notes.text = rtModel?.data?.first.notes ?? "";
+    daNumber.text = rtModel?.data?.first.numberDa ?? "";
     selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
     isAttachment = selectedPurpose == "1" || selectedPurpose == "2" || selectedPurpose == "3" || selectedPurpose == "5" ? true : false;
+    isDAnumber = selectedPurpose == "3" ? true : false;
     print("attachment : ${rtModel?.data?.first.file}");
     if (isAttachment == true) {
-      attachment.text = rtModel?.data?.first.file.toString() != "{}" ? rtModel?.data?.first.file : "no attachment";
+      attachment.text = (rtModel?.data?.first.file.toString() != "{}" ? rtModel?.data?.first.file : "no attachment") ?? 'no attachment';
       fileURL = rtModel?.data?.first.file.toString() ?? "";
       print("file URL : $fileURL");
       if (fileURL != "{}") {
@@ -696,6 +700,7 @@ class FormRequestTripController extends BaseController {
         zonaID.toString(),
         tlkDay.toString(),
         tlk.toString(),
+        daNumber.text,
         gettedFile,
       )
           .then((value) {

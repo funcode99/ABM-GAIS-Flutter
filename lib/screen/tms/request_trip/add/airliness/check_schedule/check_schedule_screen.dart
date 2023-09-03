@@ -43,7 +43,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
               ),
               centerTitle: true,
               leading: CustomBackButton(
-                onPressed: () => Get.off(AirlinessScreen(), arguments: {
+                onPressed: () => Get.off(const AirlinessScreen(), arguments: {
                   'purposeID': controller.purposeID,
                   'codeDocument': controller.codeDocument,
                   'formEdit': controller.formEdit,
@@ -94,7 +94,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                           SizedBox(
                             width: Get.width / 4,
                             child: Text(
-                              controller.departureCity ?? "",
+                              "${controller.departureModel.cityName} (${controller.departureModel.code})" ?? "",
                               style: listTitleTextStyle.copyWith(color: whiteColor),
                               textAlign: TextAlign.center,
                             ),
@@ -103,7 +103,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                           SizedBox(
                             width: Get.width / 4,
                             child: Text(
-                              controller.arrivalCity ?? "",
+                              "${controller.arrivalModel.cityName} (${controller.arrivalModel.code})" ?? "",
                               style: listTitleTextStyle.copyWith(color: whiteColor),
                               textAlign: TextAlign.center,
                             ),
@@ -168,11 +168,11 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                       ),
                                                       Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [Text("6.00"), Text("CGK"), Text(e.flightNo.toString())],
+                                                        children: [const Text("6.00"), const Text("CGK"), Text(e.flightNo.toString())],
                                                       ),
                                                       Column(
                                                         children: [
-                                                          Icon(
+                                                          const Icon(
                                                             Icons.arrow_forward,
                                                             size: 19,
                                                           ),
@@ -180,9 +180,9 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                           Text(e.flightClass.toString())
                                                         ],
                                                       ),
-                                                      Column(
+                                                      const Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: const [Text("9.00"), Text("SUB"), Text("")],
+                                                        children: [Text("9.00"), Text("SUB"), Text("")],
                                                       ),
                                                       Column(
                                                         children: [
@@ -191,10 +191,10 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                             onTap: () =>
                                                                 controller.selectAirlines("1", "QG", e.flightNo.toString(), e.price.toString()),
                                                             child: Container(
-                                                              padding: EdgeInsets.all(8),
-                                                              margin: EdgeInsets.only(top: 5),
+                                                              padding: const EdgeInsets.all(8),
+                                                              margin: const EdgeInsets.only(top: 5),
                                                               decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(5)),
-                                                              child: Text(
+                                                              child: const Text(
                                                                 "Select",
                                                                 style: TextStyle(color: whiteColor, fontWeight: FontWeight.bold),
                                                               ),

@@ -1,6 +1,8 @@
 import 'package:gais/data/network_core.dart';
 import 'package:gais/data/repository/actualization_trip/actualization_trip_impl.dart';
 import 'package:gais/data/repository/actualization_trip/actualization_trip_repository.dart';
+import 'package:gais/data/repository/antavaya/antavaya_impl.dart';
+import 'package:gais/data/repository/antavaya/antavaya_repository.dart';
 import 'package:gais/data/repository/approval_delegation/approval_delegation_repository.dart';
 import 'package:gais/data/repository/approval_request_trip/approval_request_trip_impl.dart';
 import 'package:gais/data/repository/approval_request_trip/approval_request_trip_repository.dart';
@@ -25,18 +27,18 @@ import 'package:gais/data/repository/stock_in/stock_in_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:get/get.dart';
 
-
 class GlobalBinding extends Bindings {
   @override
   void dependencies() {
     Get.put<NetworkCore>(NetworkCore(), permanent: true);
     Get.put<StorageCore>(StorageCore(), permanent: true);
     Get.put<Repository>(RepositoryImpl(), permanent: true);
-    Get.put<DocumentDeliveryRepository>(DocumentDeliveryImpl(), permanent:  true);
+    Get.put<DocumentDeliveryRepository>(DocumentDeliveryImpl(), permanent: true);
     Get.put<ApprovalRequestTripRepository>(ApprovalRequestTripImpl(), permanent: true);
     Get.put<ManagementPoolCarRepository>(ManagementPoolCarImpl(), permanent: true);
     Get.put<ManagementMeetingRoomRepository>(ManagementMeetingRoomImpl(), permanent: true);
     Get.put<ActualizationTripRepository>(ActualizationTripImpl(), permanent: true);
+    Get.put<AntavayaRepository>(AntavayaImpl(), permanent: true);
 
     Get.put(CashAdvanceTravelRepository(), permanent: false);
     Get.put(CashAdvanceNonTravelRepository(), permanent: false);
@@ -46,7 +48,6 @@ class GlobalBinding extends Bindings {
     Get.put(BookingMeetingRoomRepository(), permanent: false);
     Get.put(PoolCarRepository(), permanent: false);
     Get.put(ApprovalDelegationRepository(), permanent: false);
-
 
     Get.put(DashboardRepository(), permanent: true);
     Get.put(NotificationRepository(), permanent: true);

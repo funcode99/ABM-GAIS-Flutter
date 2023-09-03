@@ -463,6 +463,7 @@ class RepositoryImpl implements Repository {
     String zonaID,
     String tlkDay,
     String tlkTotal,
+    String daNumber,
     File? file,
   ) async {
     var token = await storageSecure.read(key: "token");
@@ -480,6 +481,7 @@ class RepositoryImpl implements Repository {
       "id_zona": zonaID,
       "tlk_per_day": double.parse(tlkDay),
       "total_tlk": tlkTotal,
+      "number_da": daNumber,
     });
 
     if (file != null) {

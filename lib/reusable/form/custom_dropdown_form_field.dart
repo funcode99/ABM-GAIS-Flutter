@@ -89,7 +89,7 @@ class CustomDropDownFormField<T> extends StatelessWidget {
     );
   }
 
-  String _getIdSelectedValue(String selected) {
+  dynamic _getIdSelectedValue(String selected) {
     DropdownMenuItem? item = items?.firstWhere((DropdownMenuItem item) => (item.child as Text).data == selected) as DropdownMenuItem;
     return item.value;
   }
@@ -100,6 +100,7 @@ class CustomDropDownFormField<T> extends StatelessWidget {
         if (value != null) {
           DropdownMenuItem? item = items?.firstWhere((DropdownMenuItem item) => item.value == value) as DropdownMenuItem;
           Text textView = item.child as Text;
+
           return textView.data ?? hintText ?? label;
         }
       }

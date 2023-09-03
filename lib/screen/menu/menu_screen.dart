@@ -133,9 +133,10 @@ class MenuScreen extends StatelessWidget {
                                         margin: const EdgeInsets.only(top: 25, bottom: 5),
                                         height: 50,
                                         width: 50,
-                                        child: SvgPicture.asset(
+                                        alignment: Alignment.center,
+                                        child: Image.asset(
                                           ImageConstant.locationRefresh,
-                                          height: 25,
+                                          height: 25, width: 25,
                                         ),
                                       ),
                                       Text("Actualization\nTrip", style: menuSubTitleTextStyle, textAlign: TextAlign.center),

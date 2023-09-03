@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
-import 'package:gais/data/model/reference/get_city_model.dart' as city;
+import 'package:gais/const/color.dart';
+import 'package:gais/data/model/antavaya/get_airport_model.dart' as city;
 import 'package:gais/data/model/reference/get_flight_class_model.dart' as flight;
 import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,9 @@ class AddAirlinessController extends BaseController {
   final travellerName = TextEditingController();
   final departureDate = TextEditingController();
   final travellerflightClass = TextEditingController();
+  final passengerAdult = TextEditingController();
+  final passengerInfant = TextEditingController();
+  final passengerChild = TextEditingController();
 
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
   DateTime lastDate = DateTime.now().add(const Duration(days: 30));
@@ -26,9 +30,13 @@ class AddAirlinessController extends BaseController {
   String? flightClass;
   String? departure;
   String? arrival;
+  Color borderColor = greyColor;
+  bool isLoading = false;
 
   GetRequestTripByidModel? rtModel;
-  city.GetCityModel? cityModel;
+  // city.GetCityModel? cityModel;
+  city.Data? arrivalModel;
+  city.Data? departureModel;
   List<city.Data> cityList = [];
   List<flight.Data> flightList = [];
   flight.GetFlightClassModel? flightModel;
@@ -69,17 +77,17 @@ class AddAirlinessController extends BaseController {
       });
     }
 
-
     update();
   }
 
   Future<void> fetchList() async {
     cityList = [];
     flightList = [];
-
-    var dataCity = await repository.getCityList();
-    cityModel = dataCity;
-    cityList.addAll(dataCity.data?.toSet().toList() ?? []);
+    isLoading = true;
+    // var dataCity = await repository.getCityList();
+    // cityModel = dataCity;
+    // cityList.addAll(dataCity.data?.toSet().toList() ?? []);
+    await antavaya.getairport().then((value) => cityList.addAll(value.data?.toSet().toList() ?? []));
 
     var dataFlight = await repository.getFlightClassList();
     flightModel = dataFlight;
@@ -89,6 +97,7 @@ class AddAirlinessController extends BaseController {
     rtModel = rtData;
     lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
 
+    isLoading = false;
     update();
   }
 }

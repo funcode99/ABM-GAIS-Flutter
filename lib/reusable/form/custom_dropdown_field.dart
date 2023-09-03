@@ -7,7 +7,7 @@ class CustomDropDownField<T> extends StatelessWidget {
   CustomDropDownField(
       {super.key,
       required this.items,
-      required this.label,
+      this.label,
       this.value,
       this.hintText,
       this.readOnly = false,
@@ -20,7 +20,7 @@ class CustomDropDownField<T> extends StatelessWidget {
     }
   }
 
-  final String label;
+  final String? label;
   final String? hintText;
   final String? selectedItem;
   final bool readOnly;
@@ -42,7 +42,7 @@ class CustomDropDownField<T> extends StatelessWidget {
               contentPadding:
               EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
           icon: const Icon(Icons.keyboard_arrow_down),
-          hint: Text(hintText ?? label, style: hintTextStyle,),
+          hint: Text(hintText ?? label!, style: hintTextStyle,),
           value: value,
           isExpanded: true,
           items: items,
@@ -63,12 +63,12 @@ class CustomDropDownField<T> extends StatelessWidget {
         if (value != null) {
           DropdownMenuItem? item = items?.firstWhere((DropdownMenuItem item) => item.value == value) as DropdownMenuItem;
           Text textView = item.child as Text;
-          return textView.data ?? hintText ?? label;
+          return textView.data ?? hintText ?? label!;
         }
       }
     }
 
-    return hintText ?? label;
+    return hintText ?? label!;
   }
 
   @override
