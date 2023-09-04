@@ -140,8 +140,8 @@ mixin MasterDataMixin{
     return result.fold((l) => [], (list) => list);
   }
 
-  Future<List<FacilityModel>> getListFacility()async{
-    final result = await _repository.getListFacility();
+  Future<List<FacilityModel>> getListFacility({String? keyword})async{
+    final result = await _repository.getListFacility(keyword: keyword);
     return result.fold((l) => [], (list) => list);
   }
 

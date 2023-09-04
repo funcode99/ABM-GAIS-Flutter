@@ -128,7 +128,7 @@ class AddRoomInfoController extends BaseController with MasterDataMixin{
   Future<List<FacilityModel>> getFacilityByKeyword(String keyword)async{
 
     listFacility.clear();
-    final employees = await getListFacility();
+    final employees = await getListFacility(keyword: keyword);
     listFacility.addAll(employees);
 
     return listFacility;

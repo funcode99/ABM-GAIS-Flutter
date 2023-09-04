@@ -578,10 +578,13 @@ class MasterRepository{
   }
 
 
-  Future<Either<BaseError, List<FacilityModel>>> getListFacility()async{
+  Future<Either<BaseError, List<FacilityModel>>> getListFacility({String? keyword})async{
     try {
       Dio.Response response = await network.dio.get(
           '/api/facility',
+        queryParameters: {
+            "search" : keyword
+        }
       );
       /*ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
       PaginationModel paginationModel = apiResponseModel.data;

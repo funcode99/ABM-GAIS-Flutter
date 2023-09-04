@@ -251,7 +251,7 @@ class AddRoomInfoScreen extends StatelessWidget {
                                       hideOnLoading: true,
                                       hideSuggestionsOnKeyboardHide: true,
                                       keepSuggestionsOnLoading: false,
-                                      minCharsForSuggestions: 1,
+                                      minCharsForSuggestions: 0,
                                       validator: (value) {
                                         controller.showFacilitiesError = controller.listSelectedFacility.isEmpty;
                                         controller.update();
