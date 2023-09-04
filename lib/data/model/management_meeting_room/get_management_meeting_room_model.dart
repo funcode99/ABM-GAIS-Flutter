@@ -232,7 +232,11 @@ class Data2 {
       dynamic siteName, 
       dynamic siteCode, 
       String? nameCreated, 
-      dynamic nameUpdated,}){
+      dynamic nameUpdated,
+      dynamic facility,
+      dynamic approver,
+      dynamic approverArray,
+  }){
     _no = no;
     _id = id;
     _idCompany = idCompany;
@@ -253,6 +257,9 @@ class Data2 {
     _siteCode = siteCode;
     _nameCreated = nameCreated;
     _nameUpdated = nameUpdated;
+    _facility = facility;
+    _approver = approver;
+    _approverArray = approverArray;
 }
 
   Data2.fromJson(dynamic json) {
@@ -276,6 +283,9 @@ class Data2 {
     _siteCode = json['site_code'];
     _nameCreated = json['name_created'];
     _nameUpdated = json['name_updated'];
+    _facility = json['facility'];
+    _approver = json['approver'];
+    _approverArray = json['approver_array'];
   }
   num? _no;
   dynamic _id;
@@ -297,6 +307,9 @@ class Data2 {
   dynamic _siteCode;
   String? _nameCreated;
   dynamic _nameUpdated;
+  dynamic _facility;
+  dynamic _approver;
+  dynamic _approverArray;
 Data2 copyWith({  num? no,
   num? id,
   num? idCompany,
@@ -317,6 +330,9 @@ Data2 copyWith({  num? no,
   dynamic siteCode,
   String? nameCreated,
   dynamic nameUpdated,
+  dynamic facility,
+  dynamic approver,
+  dynamic approverArray,
 }) => Data2(  no: no ?? _no,
   id: id ?? _id,
   idCompany: idCompany ?? _idCompany,
@@ -337,6 +353,9 @@ Data2 copyWith({  num? no,
   siteCode: siteCode ?? _siteCode,
   nameCreated: nameCreated ?? _nameCreated,
   nameUpdated: nameUpdated ?? _nameUpdated,
+  facility: facility ?? _facility,
+  approver: approver ?? _approver,
+  approverArray: approverArray ?? _approverArray,
 );
   num? get no => _no;
   dynamic get id => _id;
@@ -358,6 +377,9 @@ Data2 copyWith({  num? no,
   dynamic get siteCode => _siteCode;
   String? get nameCreated => _nameCreated;
   dynamic get nameUpdated => _nameUpdated;
+  dynamic get facility => _facility;
+  dynamic get approver => _approver;
+  dynamic get approverArray => _approverArray;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -381,6 +403,9 @@ Data2 copyWith({  num? no,
     map['site_code'] = _siteCode;
     map['name_created'] = _nameCreated;
     map['name_updated'] = _nameUpdated;
+    map['facility'] = _facility;
+    map['approver'] = approver;
+    map['approver_array'] = approverArray;
     return map;
   }
 

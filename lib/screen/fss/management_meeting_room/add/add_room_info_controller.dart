@@ -8,15 +8,18 @@ import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/model/master/facility/facility_model.dart';
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
+import 'package:gais/data/model/management_meeting_room/get_management_meeting_room_model.dart' as mr;
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
+
 
 class AddRoomInfoController extends BaseController with MasterDataMixin{
   final TextEditingController companyController = TextEditingController();
   final TextEditingController siteController = TextEditingController();
 
   bool isEdit = Get.arguments['isEdit'];
+  dynamic id = Get.arguments['id'];
   bool loadCompany = false;
   bool loadSite = false;
 
@@ -48,10 +51,19 @@ class AddRoomInfoController extends BaseController with MasterDataMixin{
   List<comp.Data> companyList = [];
   List<site.Data> siteList = [];
 
+  mr.Data2? detailMeetingRoom;
+
+  String selectedAvailability = "Available";
+
   @override
   void onInit() {
     super.onInit();
     fetchCompanyList();
+
+    if(Get.arguments != null){
+      isEdit = Get.arguments['isEdit'];
+    }
+    if (isEdit == true) fetchEdit();
   }
 
   @override
@@ -99,6 +111,38 @@ class AddRoomInfoController extends BaseController with MasterDataMixin{
     update();
   }
 
+  Future<void> fetchEdit() async {
+    try {
+      await managementMeetingRoom.getByID(id).then((value) {
+        mrName.text = value.nameMeetingRoom ?? "";
+        capacity.text = "${value.capacity}" ?? "";
+        floor.text = "${value.floor}" ?? "";
+        availableStatus.text = "${value.availableStatus}" ?? "";
+        selectedAvailability = "${value.availableStatus}";
+
+        isApproval = value.isApproval ?? false;
+
+        List<dynamic> temp = value.facility;
+        List<FacilityModel> facilities = temp.map((e) => FacilityModel.fromJson(e)).toList();
+        listSelectedFacility.clear();
+        listSelectedFacility.addAll(facilities);
+
+        if(isApproval){
+          List<dynamic> tempApprover = value.approver;
+          List<EmployeeModel> approvers = tempApprover.map((e) => EmployeeModel.fromJson(e)).toList();
+          listSelectedApprover.clear();
+          listSelectedApprover.addAll(approvers);
+        }
+
+        update();
+
+      });
+    } catch (e) {
+      e.printError();
+    }
+    update();
+  }
+
   Future<void> saveMeetingRoom() async {
     String companyId = await storage.readString(StorageCore.companyID);
     String siteId = await storage.readString(StorageCore.siteID);
@@ -136,6 +180,44 @@ class AddRoomInfoController extends BaseController with MasterDataMixin{
     update();
   }
 
+  Future<void> updateMeetingRoom() async {
+    String companyId = await storage.readString(StorageCore.companyID);
+    String siteId = await storage.readString(StorageCore.siteID);
+
+    try {
+      await managementMeetingRoom
+          .update(
+        id,
+        companyId,
+        siteId,
+        mrName.text,
+        // mrCode.text,
+        capacity.text,
+        floor.text,
+        availableStatus.text,
+        isApproval,
+        listSelectedApprover.map((e) => e.id).toList(),
+        listSelectedFacility.map((e) => e.id).toList(),
+      )
+          .then((value) {
+        Get.back();
+        Get.showSnackbar(const GetSnackBar(
+          icon: Icon(
+            Icons.info,
+            color: Colors.white,
+          ),
+          message: "Data Updated",
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: successColor,
+        ));
+      });
+    } catch (e) {
+      e.printError();
+    }
+    update();
+  }
+
   void deleteFacilityItem(FacilityModel item) {
     listSelectedFacility.removeWhere((element) => item.id == element.id);
   }
@@ -160,7 +242,9 @@ class AddRoomInfoController extends BaseController with MasterDataMixin{
     listApprover.clear();
     final approvers = await getListSecretaryByCompanyId(companyID);
     listApprover.addAll(approvers);
-    listApprover.removeWhere((element) => listSelectedApprover.contains(element));
+    listApprover.removeWhere((element){
+      return listSelectedApprover.contains(element);
+    });
 
     return listApprover;
   }

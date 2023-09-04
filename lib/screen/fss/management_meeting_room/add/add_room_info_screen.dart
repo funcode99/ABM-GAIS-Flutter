@@ -140,6 +140,7 @@ class AddRoomInfoScreen extends StatelessWidget {
                                 controller.availableStatus.text = value!;
                                 controller.update();
                               },
+                              value: controller.selectedAvailability,
                             ),
                             const SizedBox(height: 8),
                             // CustomTextFormField(
@@ -444,7 +445,11 @@ class AddRoomInfoScreen extends StatelessWidget {
                                 title: "Save",
                                 onPressed: () {
                                   if (controller.formKey.currentState?.validate() == true) {
-                                    controller.saveMeetingRoom();
+                                    if(controller.isEdit){
+                                      controller.updateMeetingRoom();
+                                    }else{
+                                      controller.saveMeetingRoom();
+                                    }
                                   }
                                 },
                               ),
