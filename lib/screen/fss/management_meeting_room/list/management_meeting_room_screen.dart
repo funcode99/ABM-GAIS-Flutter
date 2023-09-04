@@ -130,8 +130,7 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                                   controller.fetchList(pageNumber);
                                   controller.update();
                                 },
-                                threshold: 5,
-                                pageTotal: controller.meetingRoomModel?.data?.lastPage?.toInt() ?? 1,
+                                pageTotal: controller.totalPage,
                                 // pageTotal: 5,
                                 pageInit: controller.currentPage,
                               ),
@@ -212,7 +211,7 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                           );
                         },
                         // childCount: !controller.dataisnull ? controller.ddList.length : 1,
-                        childCount: 2,
+                        childCount: controller.meetingRoomList.length,
                       ),
                     ),
                   ],

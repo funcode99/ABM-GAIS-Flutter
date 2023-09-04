@@ -19,6 +19,7 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
   final enableButton = false.obs;
 
   final requestATKDetailModel = Rxn<RequestATKDetailModel>();
+  final siteID = 0.obs;
 
   // final listWarehouse = <WarehouseModel>[].obs;
   // final selectedWarehouse = WarehouseModel().obs;
@@ -62,9 +63,9 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
   }
 
   _getItemData()async{
-    String idSite = await storage.readString(StorageCore.siteID);
+    // String idSite = await storage.readString(StorageCore.siteID);
 
-    final items = await getListItemBySiteId(idSite);
+    final items = await getListItemBySiteId(siteID.value);
     listItem(items);
     if(listItem.isNotEmpty){
       if(initEdit){

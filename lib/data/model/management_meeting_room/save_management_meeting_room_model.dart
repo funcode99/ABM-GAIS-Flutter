@@ -42,7 +42,7 @@ SaveManagementMeetingRoomModel copyWith({  bool? success,
 class Data {
   Data({
       String? createdAt, 
-      num? createdBy, 
+      dynamic createdBy,
       String? idCompany, 
       String? idSite, 
       String? nameMeetingRoom, 
@@ -79,7 +79,7 @@ class Data {
     _id = json['id'];
   }
   String? _createdAt;
-  num? _createdBy;
+  dynamic _createdBy;
   String? _idCompany;
   String? _idSite;
   String? _nameMeetingRoom;
@@ -90,7 +90,7 @@ class Data {
   String? _updatedAt;
   dynamic _id;
 Data copyWith({  String? createdAt,
-  num? createdBy,
+  dynamic createdBy,
   String? idCompany,
   String? idSite,
   String? nameMeetingRoom,
@@ -113,7 +113,7 @@ Data copyWith({  String? createdAt,
   id: id ?? _id,
 );
   String? get createdAt => _createdAt;
-  num? get createdBy => _createdBy;
+  dynamic get createdBy => _createdBy;
   String? get idCompany => _idCompany;
   String? get idSite => _idSite;
   String? get nameMeetingRoom => _nameMeetingRoom;

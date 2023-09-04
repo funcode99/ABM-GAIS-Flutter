@@ -182,7 +182,7 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                       children: [
                         ...controller.listHeader.mapIndexed((index, item) =>
                             CommonListItem(
-                                onTap: item.codeStatusDoc == BookingMeetingRoomEnum.draft.value ? null : (){
+                                onTap: /*item.codeStatusDoc == BookingMeetingRoomEnum.draft.value ? null : */(){
                                   Get.to(()=> const DetailBookingMeetingRoomScreen(), arguments: {
                                     "item": item
                                   })?.then((value) => controller.getHeader());
@@ -268,7 +268,7 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                action: item.codeStatusDoc == BookingMeetingRoomEnum.draft.value ? [
+                                action: /*item.codeStatusDoc == BookingMeetingRoomEnum.draft.value ? [
                                   CustomIconButton(
                                     title: "Edit".tr,
                                     iconData: IconlyBold.edit,
@@ -299,7 +299,7 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                       ));
                                     },
                                   )
-                                ] : []))
+                                ] : */[]))
                       ],
                     );
                   }),

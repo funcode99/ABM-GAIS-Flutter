@@ -6,6 +6,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_add_item.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -69,11 +70,31 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                         const SizedBox(
                           height: 8,
                         ),
-                        CustomTextFormField(
-                            isRequired: true,
-                            readOnly: true,
-                            controller: controller.siteController,
-                            label: "Site".tr),
+                        Obx((){
+                          if (controller.enableSelectSite.value) {
+                            return CustomDropDownFormField(
+                              items: controller.listSite
+                                  .map((e) => DropdownMenuItem(
+                                value: e.id.toString(),
+                                child: Text("${e.siteName}"),
+                              ))
+                                  .toList(),
+                              onChanged: (item) {
+                                controller.onChangeSelectedSite(item.toString());
+                              },
+                              label: "Site".tr,
+                              value: controller.selectedSite.value != null
+                                  ? controller.selectedSite.value?.id.toString()
+                                  : "",
+                            );
+                          } else {
+                            return CustomTextFormField(
+                                isRequired: true,
+                                readOnly: true,
+                                controller: controller.siteController,
+                                label: "Site".tr);
+                          }
+                        }),
                         const SizedBox(
                           height: 32,
                         ),
@@ -173,7 +194,7 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                                       iconData: IconlyBold.edit,
                                       backgroundColor: successColor,
                                       onPressed: () async{
-                                        final editedItem = await Get.to(()=>AddItemRequestATKScreen(item: element));
+                                        final editedItem = await Get.to(()=>AddItemRequestATKScreen(item: element, siteID: controller.selectedSite.value?.id,));
                                         if(editedItem!=null){
                                           controller.editItem(editedItem);
                                         }
@@ -203,7 +224,9 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                           child: ElevatedButton(
                             onPressed: () async {
                               final addedItem = await Get.to(
-                                  () => const AddItemRequestATKScreen());
+                                  () => AddItemRequestATKScreen(
+                                    siteID: controller.selectedSite.value?.id,
+                                  ));
                               if (addedItem != null) {
                                 controller.addItem(addedItem);
                               }

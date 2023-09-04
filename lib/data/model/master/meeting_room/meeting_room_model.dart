@@ -22,6 +22,9 @@ class MeetingRoomModel {
   String? companyCode;
   String? siteName;
   String? siteCode;
+  dynamic facility;
+  dynamic approver;
+  bool? isApproval;
 
   MeetingRoomModel({
     this.no,
@@ -42,6 +45,9 @@ class MeetingRoomModel {
     this.companyCode,
     this.siteName,
     this.siteCode,
+    this.approver,
+    this.facility,
+    this.isApproval,
   });
 
   static MeetingRoomModel fromJsonModel(Object? json) =>
