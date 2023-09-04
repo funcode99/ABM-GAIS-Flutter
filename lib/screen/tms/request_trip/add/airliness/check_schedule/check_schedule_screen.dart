@@ -145,13 +145,13 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                             height: Get.height,
                             child: TabBarView(
                               controller: tabController,
-                              children: controller.listOfDates
+                              children: controller.schedules
                                   .mapIndexed(
-                                    (i, e) => Expanded(
+                                    (i, schedule) => Expanded(
                                       child: ListView(
                                         children: [
                                           Column(
-                                            children: controller.scheduleList1
+                                            children: controller.schedules[i]
                                                 .map<Widget>(
                                                   (flight) => flight.classObjects!.isNotEmpty
                                                       ? Column(

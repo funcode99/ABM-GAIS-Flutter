@@ -38,6 +38,7 @@ class CheckScheduleController extends BaseController {
   List<schedule.Flights> scheduleList4 = [];
   List<flight.Data> flightScheduleList = [];
   GetCityModel? cityModel;
+  List<List<schedule.Flights>> schedules = [];
 
   @override
   void onInit() {
@@ -57,57 +58,30 @@ class CheckScheduleController extends BaseController {
     var initialDate = departureDate;
     var nextDate = DateTime.now().add(const Duration(days: 4));
     listOfDates = List<String>.generate(nextDate.difference(initialDate).inDays,
-            (i) => "${DateFormat("MMM").format(DateTime.now())} ${int.parse(DateFormat("dd").format(DateTime.now())) + i}");
+        (i) => "${DateFormat("MMM").format(DateTime.now())} ${int.parse(DateFormat("dd").format(DateTime.now())) + i}");
     return nextDate.difference(initialDate).inDays;
   }
 
   Future<void> fetchList() async {
+    isLoading = true;
     flightScheduleList = [];
     scheduleList1 = [];
     scheduleList2 = [];
     scheduleList3 = [];
     scheduleList4 = [];
+    schedules = [scheduleList1, scheduleList2, scheduleList3, scheduleList4];
     fetchSchedule(departureDate).then((value) => scheduleList1.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-    // fetchSchedule(departureDate.add(Duration(days: 1))).then((value) => scheduleList2.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-    // fetchSchedule(departureDate.add(Duration(days: 2))).then((value) => scheduleList3.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-    // fetchSchedule(departureDate.add(Duration(days: 3))).then((value) => scheduleList4.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-
-    isLoading = false;
+    fetchSchedule(departureDate.add(Duration(days: 1)))
+        .then((value) => scheduleList2.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+    fetchSchedule(departureDate.add(Duration(days: 2)))
+        .then((value) => scheduleList3.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+    fetchSchedule(departureDate.add(Duration(days: 3)))
+        .then((value) => scheduleList4.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
     update();
-    try {
-      // var response = await repository.getFlightScheduleList();
-      // flightScheduleModel = response;
-      // flightScheduleList.addAll(response.data?.toSet().toList() ?? []);
-
-      // var cityData = await repository.getCityList();
-      // cityModel = cityData;
-      // cityModel?.data?.where((city) => city.id == departure).forEach((e) {
-      //   departureCity = "${e.cityName} (${e.cityCode})";
-      //   print("${e.cityName} (${e.cityCode})");
-      // });
-      // cityModel?.data?.where((city) => city.id == arrival).forEach((e) {
-      //   arrivalCity = "${e.cityName} (${e.cityCode})";
-      //   print("${e.cityName} (${e.cityCode})");
-      // });
-
-      update();
-    } catch (e) {
-      Get.showSnackbar(
-        const GetSnackBar(
-          icon: Icon(
-            Icons.error,
-            color: Colors.white,
-          ),
-          message: 'Failed To Load Data',
-          isDismissible: true,
-          duration: Duration(seconds: 3),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
   }
 
   Future<schedule.GetAirportScheduleModel?> fetchSchedule(DateTime departDate) async {
+    isLoading = true;
     try {
       var scheduleData = await antavaya.getAirportSchedule(
         departureModel.code.toString(),
@@ -117,9 +91,10 @@ class CheckScheduleController extends BaseController {
         infant.toString(),
         child.toString(),
       );
+      isLoading = false;
       update();
       return scheduleData;
-    } catch (e,i) {
+    } catch (e, i) {
       e.printError();
       i.printError();
       return null;
@@ -127,27 +102,27 @@ class CheckScheduleController extends BaseController {
   }
 
   Future<void> selectAirlines(
-      String idFlight,
-      String codeAirliness,
-      String flightNo,
-      String price,
-      ) async {
+    String idFlight,
+    String codeAirliness,
+    String flightNo,
+    String price,
+  ) async {
     if (airlinessID != null) {
       try {
         await repository
             .updateAirlines(
-          airlinessID!,
-          purposeID.toString(),
-          idFlight,
-          flightNo, // flight_no
-          codeAirliness, // code airliness
-          price.digitOnly(), // ticket price
-        )
+              airlinessID!,
+              purposeID.toString(),
+              idFlight,
+              flightNo, // flight_no
+              codeAirliness, // code airliness
+              price.digitOnly(), // ticket price
+            )
             .then(
               (value) => formEdit == true
-              ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
-              : Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
-        );
+                  ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+                  : Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
+            );
       } catch (e, i) {
         e.printError();
         i.printError();
@@ -168,18 +143,18 @@ class CheckScheduleController extends BaseController {
       try {
         await repository
             .saveAirlines(
-          purposeID.toString(),
-          idFlight,
-          flightNo, // flight_no
-          codeAirliness, // code airliness
-          price.digitOnly(), // ticket price
-        )
+              purposeID.toString(),
+              idFlight,
+              flightNo, // flight_no
+              codeAirliness, // code airliness
+              price.digitOnly(), // ticket price
+            )
             .then((value) => Get.off(const AirlinessScreen(), arguments: {
-          'purposeID': purposeID,
-          'codeDocument': codeDocument,
-          'formEdit': formEdit,
-        }));
-      } catch (e,i) {
+                  'purposeID': purposeID,
+                  'codeDocument': codeDocument,
+                  'formEdit': formEdit,
+                }));
+      } catch (e, i) {
         e.printError();
         i.printError();
         Get.showSnackbar(
