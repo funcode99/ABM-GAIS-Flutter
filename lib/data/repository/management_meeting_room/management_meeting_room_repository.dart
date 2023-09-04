@@ -18,5 +18,8 @@ abstract class ManagementMeetingRoomRepository {
     String capacity,
     String floor,
     String status,
+    bool isApproval,
+    List<dynamic> approver,
+    List<dynamic> facility
     );
 }

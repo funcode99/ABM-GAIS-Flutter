@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/model/master/facility/facility_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
@@ -206,6 +207,7 @@ class AddRoomInfoScreen extends StatelessWidget {
                                           ),
                                           onTap: () {
                                             controller.deleteFacilityItem(item);
+                                            controller.update();
                                           },
                                         )
                                       ],
@@ -297,11 +299,141 @@ class AddRoomInfoScreen extends StatelessWidget {
                               height: 8,
                             ),
                             if (controller.isApproval)
-                              CustomTextFormField(
-                                  readOnly: false,
-                                  isRequired: true,
-                                  controller: TextEditingController(),
-                                  label: "Approver".tr),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "Approver".tr,
+                                      style: formlabelTextStyle,
+                                      children: const <TextSpan>[
+                                        TextSpan(
+                                            text: "*", style: TextStyle(color: Colors.red)),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 8),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: controller.showApproversError
+                                            ? Colors.redAccent
+                                            : Colors.black,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Wrap(
+                                      runSpacing: 8,
+                                      runAlignment: WrapAlignment.center,
+                                      children: [
+                                        ...controller.listSelectedApprover
+                                            .mapIndexed((index, item) => Container(
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(4.0),
+                                            ),
+                                            color: Color(0xFFe4e4e4),
+                                          ),
+                                          margin: const EdgeInsets.only(
+                                              right: 5.0, left: 5),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0, vertical: 4.0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              InkWell(
+                                                child: Text(
+                                                  item.employeeName ?? "",
+                                                  style: listSubTitleTextStyle,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 4.0),
+                                              InkWell(
+                                                child: const Icon(
+                                                  Icons.cancel,
+                                                  size: 14.0,
+                                                  color: greyColor,
+                                                ),
+                                                onTap: () {
+                                                  controller.deleteApproverItem(item);
+                                                  controller.update();
+                                                },
+                                              )
+                                            ],
+                                          ),
+                                        ))
+                                            .toList(),
+                                        SizedBox(
+                                          width: double.infinity,
+                                          child: TypeAheadFormField<EmployeeModel>(
+                                            textFieldConfiguration: TextFieldConfiguration(
+                                              controller: controller.autocompleteApproverController,
+                                              autofocus: false,
+                                              style: Theme.of(context).textTheme.titleMedium,
+                                              decoration: InputDecoration(
+                                                  isDense: true,
+                                                  hintText: "Approver".tr,
+                                                  border: InputBorder.none,
+                                                  contentPadding: const EdgeInsets.symmetric(
+                                                      horizontal: 4.0, vertical: 4.0),
+                                                  errorText: null,
+                                                  errorBorder: const OutlineInputBorder(
+                                                    borderSide: BorderSide.none,
+                                                    gapPadding: 0,
+                                                  ),
+                                                  errorStyle: const TextStyle(height: 0)),
+                                            ),
+                                            suggestionsCallback: (pattern) async {
+                                              final list = await controller.getApproverByKeyword(pattern);
+                                              return list;
+                                            },
+                                            itemBuilder: (context, suggestion) {
+                                              return ListTile(
+                                                title: Text("${suggestion.employeeName}"),
+                                              );
+                                            },
+                                            onSuggestionSelected: (suggestion) {
+                                              controller.listSelectedApprover.add(suggestion);
+                                              controller.autocompleteApproverController.text = "";
+                                              controller.update();
+                                            },
+                                            debounceDuration:
+                                            const Duration(milliseconds: 1500),
+                                            hideOnLoading: true,
+                                            hideSuggestionsOnKeyboardHide: true,
+                                            keepSuggestionsOnLoading: false,
+                                            minCharsForSuggestions: 0,
+                                            validator: (value) {
+                                              controller.showApproversError = controller.listSelectedApprover.isEmpty;
+                                              controller.update();
+
+                                              if (controller.listSelectedApprover.isEmpty) {
+                                                return "";
+                                              }
+                                              return null;
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  if (controller.showApproversError)
+                                    const Padding(
+                                      padding: EdgeInsets.only(left: 10, top: 8),
+                                      child: Text(
+                                        "This field is required",
+                                        style:
+                                        TextStyle(color: Colors.redAccent, fontSize: 12),
+                                      ),
+                                    ),
+                                ],
+                              ),
                             SizedBox(
                               height: controller.isApproval ? 8 : 0,
                             ),

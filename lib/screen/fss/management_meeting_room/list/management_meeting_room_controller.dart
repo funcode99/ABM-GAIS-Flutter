@@ -11,6 +11,7 @@ class ManagementMeetingRoomController extends BaseController {
   String? searchValue;
   int currentPage = 1;
   int perPage = 10;
+  int totalPage = 1;
 
   bool isLoading = false;
   bool dataisnull = false;
@@ -47,8 +48,14 @@ class ManagementMeetingRoomController extends BaseController {
         filterCapacity!= "-1" ? filterCapacity : null,
       )
           .then((value) {
+        meetingRoomList.clear();
         meetingRoomList.addAll(value.data?.data?.toSet().toList() ?? []);
         meetingRoomModel = value;
+        int tempTotalPage = (meetingRoomModel!.data!.total!/perPage).ceil();
+        totalPage = tempTotalPage;
+        currentPage = meetingRoomModel?.data?.currentPage?.toInt() ?? 1;
+
+        update();
       });
     } catch (e, i) {
       e.printError();

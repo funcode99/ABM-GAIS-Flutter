@@ -135,6 +135,11 @@ mixin MasterDataMixin{
     return result.fold((l) => [], (list) => list);
   }
 
+  Future<List<EmployeeModel>> getListSecretaryByCompanyId(dynamic id)async{
+    final result = await _repository.getListSecretaryByCompanyId(id);
+    return result.fold((l) => [], (list) => list);
+  }
+
   Future<List<CarModel>> getListCar({String? keyword, int? idSite})async{
     final result = await _repository.getListCar(keyword: keyword, idSite: idSite);
     return result.fold((l) => [], (list) => list);

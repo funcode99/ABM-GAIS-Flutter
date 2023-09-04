@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'employee_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class EmployeeModel {
+class EmployeeModel extends Equatable{
   int? no;
   dynamic id;
   String? employeeName;
@@ -106,4 +107,39 @@ class EmployeeModel {
       _$EmployeeModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$EmployeeModelToJson(this);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+    no,
+    id,
+    employeeName,
+    phoneNumber,
+    snEmployee,
+    email,
+    nik,
+    dob,
+    startDate,
+    endDate,
+    jenkel,
+    idDepartment,
+    idCompany,
+    idSite,
+    idJobBand,
+    foto,
+    fotoPath,
+    createdAt,
+    createdBy,
+    updatedAt,
+    updatedBy,
+    deletedAt,
+    snAtasan1,
+    snAtasan2,
+    companyCode,
+    siteName,
+    siteCode,
+    bandJobName,
+    departementName,
+    companyName,
+  ];
 }

@@ -49,19 +49,47 @@ class ManagementMeetingRoomImpl implements ManagementMeetingRoomRepository {
     String capacity,
     String floor,
     String status,
+    bool isApprover,
+    List<dynamic> approver,
+    List<dynamic> facility
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
-    var formData = FormData.fromMap({
-      "id_company": idCompany,
-      "id_site": idSite,
-      "name_meeting_room": nameMeetingRoom,
-      // "code_meeting_room": codeMeetingRoom,
-      "capacity": capacity,
-      "floor": floor,
-      "available_status": status,
-    });
+    Map<String, dynamic> mapData = {
+        "id_company": idCompany,
+        "id_site": idSite,
+        "name_meeting_room": nameMeetingRoom,
+        // "code_meeting_room": codeMeetingRoom,
+        "capacity": capacity,
+        "floor": floor,
+        "available_status": status,
+        "is_approval" : isApprover,
+      };
+
+    if(!isApprover){
+      mapData.putIfAbsent("approver[]", () => "");
+    }
+
+    print(mapData);
+    var formData = FormData.fromMap(mapData);
+
+    //from backend, use approver[] instead of approver, :)
+    for(dynamic item in approver){
+      formData.fields.add(
+          MapEntry("approver[]", item.toString())
+      );
+    }
+
+    //from backend, use facility[] instead of facility, :)
+    for(dynamic item in facility){
+      formData.fields.add(
+          MapEntry("facility[]", item.toString())
+      );
+    }
+
+    print("formdata");
+    print(formData.fields);
 
     try {
       Response response = await network.dio.post(
