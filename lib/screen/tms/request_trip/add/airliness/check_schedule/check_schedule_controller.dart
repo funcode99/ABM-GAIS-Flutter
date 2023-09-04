@@ -54,10 +54,10 @@ class CheckScheduleController extends BaseController {
   }
 
   int daysInMonth(DateTime date) {
-    var initialDate = DateTime.now();
+    var initialDate = departureDate;
     var nextDate = DateTime.now().add(const Duration(days: 4));
     listOfDates = List<String>.generate(nextDate.difference(initialDate).inDays,
-        (i) => "${DateFormat("MMM").format(DateTime.now())} ${int.parse(DateFormat("dd").format(DateTime.now())) + i}");
+            (i) => "${DateFormat("MMM").format(DateTime.now())} ${int.parse(DateFormat("dd").format(DateTime.now())) + i}");
     return nextDate.difference(initialDate).inDays;
   }
 
@@ -68,9 +68,9 @@ class CheckScheduleController extends BaseController {
     scheduleList3 = [];
     scheduleList4 = [];
     fetchSchedule(departureDate).then((value) => scheduleList1.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-    fetchSchedule(departureDate.add(Duration(days: 1))).then((value) => scheduleList2.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-    fetchSchedule(departureDate.add(Duration(days: 2))).then((value) => scheduleList3.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-    fetchSchedule(departureDate.add(Duration(days: 3))).then((value) => scheduleList4.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+    // fetchSchedule(departureDate.add(Duration(days: 1))).then((value) => scheduleList2.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+    // fetchSchedule(departureDate.add(Duration(days: 2))).then((value) => scheduleList3.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+    // fetchSchedule(departureDate.add(Duration(days: 3))).then((value) => scheduleList4.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
 
     isLoading = false;
     update();
@@ -127,27 +127,27 @@ class CheckScheduleController extends BaseController {
   }
 
   Future<void> selectAirlines(
-    String idFlight,
-    String codeAirliness,
-    String flightNo,
-    String price,
-  ) async {
+      String idFlight,
+      String codeAirliness,
+      String flightNo,
+      String price,
+      ) async {
     if (airlinessID != null) {
       try {
         await repository
             .updateAirlines(
-              airlinessID!,
-              purposeID.toString(),
-              idFlight,
-              flightNo, // flight_no
-              codeAirliness, // code airliness
-              price.digitOnly(), // ticket price
-            )
+          airlinessID!,
+          purposeID.toString(),
+          idFlight,
+          flightNo, // flight_no
+          codeAirliness, // code airliness
+          price.digitOnly(), // ticket price
+        )
             .then(
               (value) => formEdit == true
-                  ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
-                  : Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
-            );
+              ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+              : Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
+        );
       } catch (e, i) {
         e.printError();
         i.printError();
@@ -168,17 +168,17 @@ class CheckScheduleController extends BaseController {
       try {
         await repository
             .saveAirlines(
-              purposeID.toString(),
-              idFlight,
-              flightNo, // flight_no
-              codeAirliness, // code airliness
-              price.digitOnly(), // ticket price
-            )
+          purposeID.toString(),
+          idFlight,
+          flightNo, // flight_no
+          codeAirliness, // code airliness
+          price.digitOnly(), // ticket price
+        )
             .then((value) => Get.off(const AirlinessScreen(), arguments: {
-                  'purposeID': purposeID,
-                  'codeDocument': codeDocument,
-                  'formEdit': formEdit,
-                }));
+          'purposeID': purposeID,
+          'codeDocument': codeDocument,
+          'formEdit': formEdit,
+        }));
       } catch (e) {
         Get.showSnackbar(
           const GetSnackBar(
