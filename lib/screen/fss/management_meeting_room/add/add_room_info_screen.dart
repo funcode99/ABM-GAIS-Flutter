@@ -1,6 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/master/employee/employee_model.dart';
+import 'package:gais/data/model/master/facility/facility_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
@@ -51,7 +55,7 @@ class AddRoomInfoScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomDropDownFormField(
+                            /*CustomDropDownFormField(
                               // controller: controller.companyID,
                               label: "Company",
                               hintText: controller.loadCompany ? "Loading..." : "Company",
@@ -67,9 +71,14 @@ class AddRoomInfoScreen extends StatelessWidget {
                                 controller.fetchSiteList(value);
                                 controller.update();
                               },
-                            ),
+                            ),*/
+                            CustomTextFormField(
+                                isRequired: true,
+                                readOnly: true,
+                                controller: controller.companyController,
+                                label: "Company".tr),
                             const SizedBox(height: 8),
-                            CustomDropDownFormField(
+                            /*CustomDropDownFormField(
                               // controller: controller.siteID,
                               label: "Site",
                               hintText: controller.loadSite ? "Loading..." : "Site",
@@ -84,7 +93,12 @@ class AddRoomInfoScreen extends StatelessWidget {
                                 controller.siteID.text = value!;
                                 controller.update();
                               },
-                            ),
+                            ),*/
+                            CustomTextFormField(
+                                isRequired: true,
+                                readOnly: true,
+                                controller: controller.siteController,
+                                label: "Site".tr),
                             const SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.mrName,
@@ -92,12 +106,12 @@ class AddRoomInfoScreen extends StatelessWidget {
                               isRequired: true,
                             ),
                             const SizedBox(height: 8),
-                            CustomTextFormField(
+                            /*CustomTextFormField(
                               controller: controller.mrCode,
                               label: "Code Meeting Room",
                               isRequired: true,
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 8),*/
                             CustomTextFormField(
                               controller: controller.capacity,
                               label: "Capacity",
@@ -107,7 +121,6 @@ class AddRoomInfoScreen extends StatelessWidget {
                             CustomTextFormField(
                               controller: controller.floor,
                               label: "Floor",
-                              isRequired: true,
                             ),
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
@@ -127,6 +140,7 @@ class AddRoomInfoScreen extends StatelessWidget {
                                 controller.availableStatus.text = value!;
                                 controller.update();
                               },
+                              value: controller.selectedAvailability,
                             ),
                             const SizedBox(height: 8),
                             // CustomTextFormField(
@@ -134,6 +148,296 @@ class AddRoomInfoScreen extends StatelessWidget {
                             //   label: "Remarks",
                             //   multiLine: true,
                             // ),
+                            RichText(
+                              text: TextSpan(
+                                text: "Facilities".tr,
+                                style: formlabelTextStyle,
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                      text: "*", style: TextStyle(color: Colors.red)),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 8),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: controller.showFacilitiesError
+                                      ? Colors.redAccent
+                                      : Colors.black,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Wrap(
+                                runSpacing: 8,
+                                runAlignment: WrapAlignment.center,
+                                children: [
+                                  ...controller.listSelectedFacility
+                                      .mapIndexed((index, item) => Container(
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(4.0),
+                                      ),
+                                      color: Color(0xFFe4e4e4),
+                                    ),
+                                    margin: const EdgeInsets.only(
+                                        right: 5.0, left: 5),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0, vertical: 4.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        InkWell(
+                                          child: Text(
+                                            item.facilityName ?? "",
+                                            style: listSubTitleTextStyle,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 4.0),
+                                        InkWell(
+                                          child: const Icon(
+                                            Icons.cancel,
+                                            size: 14.0,
+                                            color: greyColor,
+                                          ),
+                                          onTap: () {
+                                            controller.deleteFacilityItem(item);
+                                            controller.update();
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                  ))
+                                      .toList(),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: TypeAheadFormField<FacilityModel>(
+                                      textFieldConfiguration: TextFieldConfiguration(
+                                        controller: controller.autocompleteController,
+                                        autofocus: false,
+                                        style: Theme.of(context).textTheme.titleMedium,
+                                        decoration: InputDecoration(
+                                            isDense: true,
+                                            hintText: "Facility".tr,
+                                            border: InputBorder.none,
+                                            contentPadding: const EdgeInsets.symmetric(
+                                                horizontal: 4.0, vertical: 4.0),
+                                            errorText: null,
+                                            errorBorder: const OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                              gapPadding: 0,
+                                            ),
+                                            errorStyle: const TextStyle(height: 0)),
+                                      ),
+                                      suggestionsCallback: (pattern) async {
+                                        final list = await controller.getFacilityByKeyword(pattern);
+                                        return list;
+                                      },
+                                      itemBuilder: (context, suggestion) {
+                                        return ListTile(
+                                          title: Text("${suggestion.facilityName}"),
+                                        );
+                                      },
+                                      onSuggestionSelected: (suggestion) {
+                                        controller.listSelectedFacility.add(suggestion);
+                                        controller.autocompleteController.text = "";
+                                        controller.update();
+                                      },
+                                      debounceDuration:
+                                      const Duration(milliseconds: 1500),
+                                      hideOnLoading: true,
+                                      hideSuggestionsOnKeyboardHide: true,
+                                      keepSuggestionsOnLoading: false,
+                                      minCharsForSuggestions: 0,
+                                      validator: (value) {
+                                        controller.showFacilitiesError = controller.listSelectedFacility.isEmpty;
+                                        controller.update();
+
+                                        if (controller.listSelectedFacility.isEmpty) {
+                                          return "";
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            if (controller.showFacilitiesError)
+                              const Padding(
+                                padding: EdgeInsets.only(left: 10, top: 8),
+                                child: Text(
+                                  "This field is required",
+                                  style:
+                                  TextStyle(color: Colors.redAccent, fontSize: 12),
+                                ),
+                              ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                text: "Approval".tr,
+                                style: formlabelTextStyle,
+                                children: const <TextSpan>[],
+                              ),
+                            ),
+                            Switch(
+                              value: controller.isApproval,
+                              onChanged: (value) {
+                                controller.isApproval = value;
+                                controller.update();
+                              },
+                              activeColor: infoColor,
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            if (controller.isApproval)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      text: "Approver".tr,
+                                      style: formlabelTextStyle,
+                                      children: const <TextSpan>[
+                                        TextSpan(
+                                            text: "*", style: TextStyle(color: Colors.red)),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 8),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: controller.showApproversError
+                                            ? Colors.redAccent
+                                            : Colors.black,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Wrap(
+                                      runSpacing: 8,
+                                      runAlignment: WrapAlignment.center,
+                                      children: [
+                                        ...controller.listSelectedApprover
+                                            .mapIndexed((index, item) => Container(
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(4.0),
+                                            ),
+                                            color: Color(0xFFe4e4e4),
+                                          ),
+                                          margin: const EdgeInsets.only(
+                                              right: 5.0, left: 5),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0, vertical: 4.0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              InkWell(
+                                                child: Text(
+                                                  item.employeeName ?? "",
+                                                  style: listSubTitleTextStyle,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 4.0),
+                                              InkWell(
+                                                child: const Icon(
+                                                  Icons.cancel,
+                                                  size: 14.0,
+                                                  color: greyColor,
+                                                ),
+                                                onTap: () {
+                                                  controller.deleteApproverItem(item);
+                                                  controller.update();
+                                                },
+                                              )
+                                            ],
+                                          ),
+                                        ))
+                                            .toList(),
+                                        SizedBox(
+                                          width: double.infinity,
+                                          child: TypeAheadFormField<EmployeeModel>(
+                                            textFieldConfiguration: TextFieldConfiguration(
+                                              controller: controller.autocompleteApproverController,
+                                              autofocus: false,
+                                              style: Theme.of(context).textTheme.titleMedium,
+                                              decoration: InputDecoration(
+                                                  isDense: true,
+                                                  hintText: "Approver".tr,
+                                                  border: InputBorder.none,
+                                                  contentPadding: const EdgeInsets.symmetric(
+                                                      horizontal: 4.0, vertical: 4.0),
+                                                  errorText: null,
+                                                  errorBorder: const OutlineInputBorder(
+                                                    borderSide: BorderSide.none,
+                                                    gapPadding: 0,
+                                                  ),
+                                                  errorStyle: const TextStyle(height: 0)),
+                                            ),
+                                            suggestionsCallback: (pattern) async {
+                                              final list = await controller.getApproverByKeyword(pattern);
+                                              return list;
+                                            },
+                                            itemBuilder: (context, suggestion) {
+                                              return ListTile(
+                                                title: Text("${suggestion.employeeName}"),
+                                              );
+                                            },
+                                            onSuggestionSelected: (suggestion) {
+                                              controller.listSelectedApprover.add(suggestion);
+                                              controller.autocompleteApproverController.text = "";
+                                              controller.update();
+                                            },
+                                            debounceDuration:
+                                            const Duration(milliseconds: 1500),
+                                            hideOnLoading: true,
+                                            hideSuggestionsOnKeyboardHide: true,
+                                            keepSuggestionsOnLoading: false,
+                                            minCharsForSuggestions: 0,
+                                            validator: (value) {
+                                              controller.showApproversError = controller.listSelectedApprover.isEmpty;
+                                              controller.update();
+
+                                              if (controller.listSelectedApprover.isEmpty) {
+                                                return "";
+                                              }
+                                              return null;
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  if (controller.showApproversError)
+                                    const Padding(
+                                      padding: EdgeInsets.only(left: 10, top: 8),
+                                      child: Text(
+                                        "This field is required",
+                                        style:
+                                        TextStyle(color: Colors.redAccent, fontSize: 12),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            SizedBox(
+                              height: controller.isApproval ? 8 : 0,
+                            ),
                             Center(
                               child: CustomFilledButton(
                                 width: Get.width / 2,
@@ -141,7 +445,11 @@ class AddRoomInfoScreen extends StatelessWidget {
                                 title: "Save",
                                 onPressed: () {
                                   if (controller.formKey.currentState?.validate() == true) {
-                                    controller.saveMeetingRoom();
+                                    if(controller.isEdit){
+                                      controller.updateMeetingRoom();
+                                    }else{
+                                      controller.saveMeetingRoom();
+                                    }
                                   }
                                 },
                               ),

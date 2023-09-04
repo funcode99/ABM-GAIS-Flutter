@@ -26,6 +26,9 @@ MeetingRoomModel _$MeetingRoomModelFromJson(Map<String, dynamic> json) =>
       companyCode: json['company_code'] as String?,
       siteName: json['site_name'] as String?,
       siteCode: json['site_code'] as String?,
+      approver: json['approver'],
+      facility: json['facility'],
+      isApproval: json['is_approval'] as bool?,
     );
 
 Map<String, dynamic> _$MeetingRoomModelToJson(MeetingRoomModel instance) =>
@@ -48,4 +51,7 @@ Map<String, dynamic> _$MeetingRoomModelToJson(MeetingRoomModel instance) =>
       'company_code': instance.companyCode,
       'site_name': instance.siteName,
       'site_code': instance.siteCode,
+      'facility': instance.facility,
+      'approver': instance.approver,
+      'is_approval': instance.isApproval,
     };

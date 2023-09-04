@@ -135,7 +135,8 @@ class BookingMeetingRoomRepository
     }
 
     if(bookingMeetingRoomModel.days != null && bookingMeetingRoomModel.days.toString().isNotEmpty){
-      for(String item in bookingMeetingRoomModel.days!){
+      List<String> days = List<String>.from(bookingMeetingRoomModel.days);
+      for(String item in days){
         formData.fields.add(
             MapEntry("days[]", item)
         );

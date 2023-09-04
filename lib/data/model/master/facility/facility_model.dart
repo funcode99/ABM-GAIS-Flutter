@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'facility_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class FacilityModel {
+class FacilityModel extends Equatable{
   dynamic id;
   String? facilityName;
 
@@ -50,4 +51,10 @@ class FacilityModel {
       _$FacilityModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$FacilityModelToJson(this);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+    id, facilityName
+  ];
 }
