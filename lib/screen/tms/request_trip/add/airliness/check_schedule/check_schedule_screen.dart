@@ -37,6 +37,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
         init: CheckScheduleController(),
         builder: (controller) {
           return Scaffold(
+            backgroundColor: baseColor,
             appBar: AppBar(
               title: Text(
                 "Airliness",
@@ -221,6 +222,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                                                       classObject.code.toString(),
                                                                                       flight.number.toString(),
                                                                                       flight.fare.toString(),
+                                                                                      flight,
                                                                                     ),
                                                                                     child: Container(
                                                                                       padding: const EdgeInsets.all(8),
@@ -299,7 +301,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                                                   size: 19,
                                                                                 ),
                                                                                 Text(flight.duration.toString()),
-                                                                                Text("${flight.totalTransit}x transit" ?? ""),
+                                                                                Text("${flight.totalTransit}x transit"),
                                                                                 Text(flight.connectingFlights?.first.classObjects?.first.category
                                                                                         .toString() ??
                                                                                     ""),
@@ -325,6 +327,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                                                         .toString(),
                                                                                     flight.number.toString(),
                                                                                     flight.fare.toString(),
+                                                                                    flight,
                                                                                   ),
                                                                                   child: Container(
                                                                                     padding: const EdgeInsets.all(8),

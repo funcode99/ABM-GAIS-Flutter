@@ -5,6 +5,7 @@ import 'package:gais/data/model/reference/get_city_model.dart';
 import 'package:gais/data/model/reference/get_flight_schedule_model.dart' as flight;
 import 'package:gais/data/model/antavaya/get_airport_model.dart' as city;
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/airliness/reservation/airport_reservation_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -70,12 +71,13 @@ class CheckScheduleController extends BaseController {
     scheduleList3 = [];
     scheduleList4 = [];
     schedules = [scheduleList1, scheduleList2, scheduleList3, scheduleList4];
+
     fetchSchedule(departureDate).then((value) => scheduleList1.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-    fetchSchedule(departureDate.add(Duration(days: 1)))
+    fetchSchedule(departureDate.add(const Duration(days: 1)))
         .then((value) => scheduleList2.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-    fetchSchedule(departureDate.add(Duration(days: 2)))
+    fetchSchedule(departureDate.add(const Duration(days: 2)))
         .then((value) => scheduleList3.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-    fetchSchedule(departureDate.add(Duration(days: 3)))
+    fetchSchedule(departureDate.add(const Duration(days: 3)))
         .then((value) => scheduleList4.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
     update();
   }
@@ -106,70 +108,77 @@ class CheckScheduleController extends BaseController {
     String codeAirliness,
     String flightNo,
     String price,
+    schedule.Flights flights,
   ) async {
-    if (airlinessID != null) {
-      try {
-        await repository
-            .updateAirlines(
-              airlinessID!,
-              purposeID.toString(),
-              idFlight,
-              flightNo, // flight_no
-              codeAirliness, // code airliness
-              price.digitOnly(), // ticket price
-            )
-            .then(
-              (value) => formEdit == true
-                  ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
-                  : Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
-            );
-      } catch (e, i) {
-        e.printError();
-        i.printError();
-        Get.showSnackbar(
-          const GetSnackBar(
-            icon: Icon(
-              Icons.error,
-              color: Colors.white,
-            ),
-            message: 'Failed To Update',
-            isDismissible: true,
-            duration: Duration(seconds: 3),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } else {
-      try {
-        await repository
-            .saveAirlines(
-              purposeID.toString(),
-              idFlight,
-              flightNo, // flight_no
-              codeAirliness, // code airliness
-              price.digitOnly(), // ticket price
-            )
-            .then((value) => Get.off(const AirlinessScreen(), arguments: {
-                  'purposeID': purposeID,
-                  'codeDocument': codeDocument,
-                  'formEdit': formEdit,
-                }));
-      } catch (e, i) {
-        e.printError();
-        i.printError();
-        Get.showSnackbar(
-          const GetSnackBar(
-            icon: Icon(
-              Icons.error,
-              color: Colors.white,
-            ),
-            message: 'Failed To Save',
-            isDismissible: true,
-            duration: Duration(seconds: 3),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
+    Get.to(AirportReservationScreen(), arguments: {
+      'purposeID': purposeID,
+      'codeDocument': codeDocument,
+      'formEdit': formEdit,
+      'flight': flights,
+    });
+    // if (airlinessID != null) {
+    //   try {
+    //     await repository
+    //         .updateAirlines(
+    //           airlinessID!,
+    //           purposeID.toString(),
+    //           idFlight,
+    //           flightNo, // flight_no
+    //           codeAirliness, // code airliness
+    //           price.digitOnly(), // ticket price
+    //         )
+    //         .then(
+    //           (value) => formEdit == true
+    //               ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+    //               : Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
+    //         );
+    //   } catch (e, i) {
+    //     e.printError();
+    //     i.printError();
+    //     Get.showSnackbar(
+    //       const GetSnackBar(
+    //         icon: Icon(
+    //           Icons.error,
+    //           color: Colors.white,
+    //         ),
+    //         message: 'Failed To Update',
+    //         isDismissible: true,
+    //         duration: Duration(seconds: 3),
+    //         backgroundColor: Colors.red,
+    //       ),
+    //     );
+    //   }
+    // } else {
+    //   try {
+    //     await repository
+    //         .saveAirlines(
+    //           purposeID.toString(),
+    //           idFlight,
+    //           flightNo, // flight_no
+    //           codeAirliness, // code airliness
+    //           price.digitOnly(), // ticket price
+    //         )
+    //         .then((value) => Get.off(const AirlinessScreen(), arguments: {
+    //               'purposeID': purposeID,
+    //               'codeDocument': codeDocument,
+    //               'formEdit': formEdit,
+    //             }));
+    //   } catch (e, i) {
+    //     e.printError();
+    //     i.printError();
+    //     Get.showSnackbar(
+    //       const GetSnackBar(
+    //         icon: Icon(
+    //           Icons.error,
+    //           color: Colors.white,
+    //         ),
+    //         message: 'Failed To Save',
+    //         isDismissible: true,
+    //         duration: Duration(seconds: 3),
+    //         backgroundColor: Colors.red,
+    //       ),
+    //     );
+    //   }
+    // }
   }
 }
