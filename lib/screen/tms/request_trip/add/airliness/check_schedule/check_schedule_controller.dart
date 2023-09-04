@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/antavaya/get_airport_schedule_model.dart' as schedule;
 import 'package:gais/data/model/reference/get_city_model.dart';
 import 'package:gais/data/model/reference/get_flight_schedule_model.dart' as flight;
 import 'package:gais/data/model/antavaya/get_airport_model.dart' as city;
@@ -17,14 +18,24 @@ class CheckScheduleController extends BaseController {
   DateTime departureDate = Get.arguments['departureDate'];
   city.Data departureModel = Get.arguments['departureModel'];
   city.Data arrivalModel = Get.arguments['arrivalModel'];
+  String? adult = Get.arguments['adult'];
+  String? infant = Get.arguments['infant'];
+  String? child = Get.arguments['child'];
   String? airlinessID = Get.arguments['id'];
   bool? formEdit = Get.arguments['formEdit'];
 
+  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
   List listOfDates = [];
   String? departureCity;
   String? arrivalCity;
+  bool isLoading = true;
 
   flight.GetFlightScheduleModel? flightScheduleModel;
+  schedule.GetAirportScheduleModel? scheduleModel1;
+  List<schedule.Flights> scheduleList1 = [];
+  List<schedule.Flights> scheduleList2 = [];
+  List<schedule.Flights> scheduleList3 = [];
+  List<schedule.Flights> scheduleList4 = [];
   List<flight.Data> flightScheduleList = [];
   GetCityModel? cityModel;
 
@@ -39,23 +50,34 @@ class CheckScheduleController extends BaseController {
   void dispose() {
     super.dispose();
     listOfDates = [];
-    print(listOfDates.length);
+    print(listOfDates);
   }
 
   int daysInMonth(DateTime date) {
-    var initialDate = new DateTime.now();
-    var nextDate = new DateTime.now().add(Duration(days: 4));
-    listOfDates = new List<String>.generate(nextDate.difference(initialDate).inDays,
+    var initialDate = DateTime.now();
+    var nextDate = DateTime.now().add(const Duration(days: 4));
+    listOfDates = List<String>.generate(nextDate.difference(initialDate).inDays,
         (i) => "${DateFormat("MMM").format(DateTime.now())} ${int.parse(DateFormat("dd").format(DateTime.now())) + i}");
     return nextDate.difference(initialDate).inDays;
   }
 
   Future<void> fetchList() async {
     flightScheduleList = [];
+    scheduleList1 = [];
+    scheduleList2 = [];
+    scheduleList3 = [];
+    scheduleList4 = [];
+    fetchSchedule(departureDate).then((value) => scheduleList1.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+    fetchSchedule(departureDate.add(Duration(days: 1))).then((value) => scheduleList2.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+    fetchSchedule(departureDate.add(Duration(days: 2))).then((value) => scheduleList3.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+    fetchSchedule(departureDate.add(Duration(days: 3))).then((value) => scheduleList4.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+
+    isLoading = false;
+    update();
     try {
-      var response = await repository.getFlightScheduleList();
-      flightScheduleModel = response;
-      flightScheduleList.addAll(response.data?.toSet().toList() ?? []);
+      // var response = await repository.getFlightScheduleList();
+      // flightScheduleModel = response;
+      // flightScheduleList.addAll(response.data?.toSet().toList() ?? []);
 
       // var cityData = await repository.getCityList();
       // cityModel = cityData;
@@ -85,6 +107,25 @@ class CheckScheduleController extends BaseController {
     }
   }
 
+  Future<schedule.GetAirportScheduleModel?> fetchSchedule(DateTime departDate) async {
+    try {
+      var scheduleData = await antavaya.getAirportSchedule(
+        departureModel.code.toString(),
+        arrivalModel.code.toString(),
+        dateFormat.format(departDate),
+        adult.toString(),
+        infant.toString(),
+        child.toString(),
+      );
+      update();
+      return scheduleData;
+    } catch (e,i) {
+      e.printError();
+      i.printError();
+      return null;
+    }
+  }
+
   Future<void> selectAirlines(
     String idFlight,
     String codeAirliness,
@@ -104,7 +145,7 @@ class CheckScheduleController extends BaseController {
             )
             .then(
               (value) => formEdit == true
-                  ? Get.off(FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+                  ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
                   : Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
             );
       } catch (e, i) {
@@ -133,8 +174,11 @@ class CheckScheduleController extends BaseController {
               codeAirliness, // code airliness
               price.digitOnly(), // ticket price
             )
-            .then(
-                (value) => Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}));
+            .then((value) => Get.off(const AirlinessScreen(), arguments: {
+                  'purposeID': purposeID,
+                  'codeDocument': codeDocument,
+                  'formEdit': formEdit,
+                }));
       } catch (e) {
         Get.showSnackbar(
           const GetSnackBar(

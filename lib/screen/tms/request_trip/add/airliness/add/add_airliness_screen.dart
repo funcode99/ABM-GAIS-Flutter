@@ -135,6 +135,7 @@ class AddAirlinessScreen extends StatelessWidget {
                               label: "Departure",
                               hintText: controller.isLoading ? "Loading..." : "Airport",
                               isRequired: true,
+                              // textStyle: controller.departureModel == null ? hintTextStyle : formTextStyle,
                               validator: (value) {
                                 if (value == null || controller.departure!.isEmpty) {
                                   return "This field is required";
@@ -316,6 +317,7 @@ class AddAirlinessScreen extends StatelessWidget {
                                         'arrivalModel': controller.arrivalModel,
                                         'departureDate': controller.selectedDate,
                                         'adult': controller.passengerAdult.text,
+                                        'infant': controller.passengerInfant.text,
                                         'child': controller.passengerChild.text,
                                         // 'flightClass': int.parse(controller.flightClass.toString()),
                                         'flightClass': controller.flightClassID,

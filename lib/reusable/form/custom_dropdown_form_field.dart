@@ -15,7 +15,8 @@ class CustomDropDownFormField<T> extends StatelessWidget {
       this.onChanged,
       this.isRequired = false,
       this.validator,
-      this.selectedItem}) {
+      this.selectedItem,
+      this.textStyle}) {
     if (isRequired) {
       validator ??= ValidationBuilder().required().build() as FormFieldValidator<T>?;
     }
@@ -25,6 +26,7 @@ class CustomDropDownFormField<T> extends StatelessWidget {
   final String? hintText;
   final String? selectedItem;
   final bool readOnly;
+  final TextStyle? textStyle;
   T? value;
   final ValueChanged<T?>? onChanged;
   bool isRequired;
@@ -35,25 +37,6 @@ class CustomDropDownFormField<T> extends StatelessWidget {
     if (items == null) {
       return const SizedBox();
     }
-
-    // if(items!.length <= 4){
-    //   return
-    //     DropdownButtonFormField(
-    //       // autovalidateMode: AutovalidateMode.always,
-    //       validator: validator,
-    //       decoration: const InputDecoration(
-    //           contentPadding:
-    //           EdgeInsets.symmetric(horizontal: 8, vertical: 2)),
-    //       icon: const Icon(Icons.keyboard_arrow_down),
-    //       hint: Text(hintText ?? label, style: hintTextStyle,),
-    //       value: value,
-    //       isExpanded: true,
-    //       items: items,
-    //       onChanged: onChanged,
-    //
-    //     );
-    // }
-
     return DropdownSearch<String>(
       validator: (value) {
         if (value == null || value.isEmpty || value == hintText || value == label) {
@@ -71,7 +54,6 @@ class CustomDropDownFormField<T> extends StatelessWidget {
           return Container(padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16), child: Text(item));
         },
       ),
-
       dropdownButtonProps: const DropdownButtonProps(
         icon: Icon(Icons.keyboard_arrow_down),
       ),
@@ -81,6 +63,7 @@ class CustomDropDownFormField<T> extends StatelessWidget {
           hintText: hintText ?? label,
           hintStyle: hintTextStyle,
         ),
+        baseStyle: textStyle,
       ),
       onChanged: (value) {
         onChanged!(_getIdSelectedValue(value ?? "") as T?);
