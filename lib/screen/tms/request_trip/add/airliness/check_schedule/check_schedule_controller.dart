@@ -179,7 +179,9 @@ class CheckScheduleController extends BaseController {
           'codeDocument': codeDocument,
           'formEdit': formEdit,
         }));
-      } catch (e) {
+      } catch (e,i) {
+        e.printError();
+        i.printError();
         Get.showSnackbar(
           const GetSnackBar(
             icon: Icon(

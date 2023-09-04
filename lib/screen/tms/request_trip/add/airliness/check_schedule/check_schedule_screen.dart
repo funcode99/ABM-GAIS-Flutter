@@ -218,7 +218,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                                                   GestureDetector(
                                                                                     onTap: () => controller.selectAirlines(
                                                                                       flight.id.toString(),
-                                                                                      flight.number!.substring(0, 2).toString(),
+                                                                                      classObject.code.toString(),
                                                                                       flight.number.toString(),
                                                                                       flight.fare.toString(),
                                                                                     ),
@@ -254,9 +254,23 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                                     child: Column(
                                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                                       children: [
-                                                                        Text(
-                                                                          flight.connectingFlights!.first.airlineName.toString(),
-                                                                          style: listTitleTextStyle,
+                                                                        Row(
+                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Text(
+                                                                              flight.connectingFlights!.first.airlineName.toString(),
+                                                                              style: listTitleTextStyle,
+                                                                            ),
+                                                                            GestureDetector(
+                                                                              onTap: () {
+                                                                                flight.showTransit = flight.showTransit == true ? false : true;
+                                                                                controller.update();
+                                                                              },
+                                                                              child: Icon(flight.showTransit
+                                                                                  ? Icons.keyboard_arrow_up
+                                                                                  : Icons.keyboard_arrow_down),
+                                                                            ),
+                                                                          ],
                                                                         ),
                                                                         Row(
                                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -307,7 +321,8 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                                                 GestureDetector(
                                                                                   onTap: () => controller.selectAirlines(
                                                                                     flight.id.toString(),
-                                                                                    flight.number!.substring(0, 2).toString(),
+                                                                                    flight.connectingFlights!.first.classObjects!.first.code
+                                                                                        .toString(),
                                                                                     flight.number.toString(),
                                                                                     flight.fare.toString(),
                                                                                   ),
@@ -324,72 +339,74 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                                                   ),
                                                                                 )
                                                                               ],
-                                                                            )
+                                                                            ),
                                                                           ],
                                                                         ),
                                                                       ],
                                                                     ),
                                                                   ),
                                                                 ),
-                                                                Column(
-                                                                  children: flight.connectingFlights!
-                                                                      .map(
-                                                                        (connectFlight) => Card(
-                                                                          elevation: 4,
-                                                                          child: Padding(
-                                                                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                                                                            child: Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children: [
-                                                                                Text(
-                                                                                  connectFlight.airlineName.toString(),
-                                                                                  style: listTitleTextStyle,
+                                                                flight.showTransit
+                                                                    ? Column(
+                                                                        children: flight.connectingFlights!
+                                                                            .map(
+                                                                              (connectFlight) => Card(
+                                                                                elevation: 4,
+                                                                                child: Padding(
+                                                                                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                                                                                  child: Column(
+                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                    children: [
+                                                                                      Text(
+                                                                                        connectFlight.airlineName.toString(),
+                                                                                        style: listTitleTextStyle,
+                                                                                      ),
+                                                                                      Row(
+                                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                        children: [
+                                                                                          Image.network(connectFlight.airlineImageUrl.toString(),
+                                                                                              height: 40, width: 40),
+                                                                                          Column(
+                                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                            children: [
+                                                                                              Text(connectFlight.departTime.toString()),
+                                                                                              Text(connectFlight.origin.toString()),
+                                                                                              Text(connectFlight.number.toString(),
+                                                                                                  style: listTitleTextStyle),
+                                                                                            ],
+                                                                                          ),
+                                                                                          Column(
+                                                                                            children: [
+                                                                                              const Icon(
+                                                                                                Icons.arrow_forward,
+                                                                                                size: 19,
+                                                                                              ),
+                                                                                              Text(connectFlight.duration.toString()),
+                                                                                              Text(connectFlight.classObjects?.first.category
+                                                                                                      .toString() ??
+                                                                                                  ""),
+                                                                                            ],
+                                                                                          ),
+                                                                                          Column(
+                                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                            children: [
+                                                                                              Text(connectFlight.arriveTime.toString()),
+                                                                                              Text(connectFlight.destination.toString()),
+                                                                                              const Text(""),
+                                                                                            ],
+                                                                                          ),
+                                                                                          SizedBox(width: 60)
+                                                                                        ],
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
                                                                                 ),
-                                                                                Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                  children: [
-                                                                                    Image.network(connectFlight.airlineImageUrl.toString(),
-                                                                                        height: 40, width: 40),
-                                                                                    Column(
-                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                      children: [
-                                                                                        Text(connectFlight.departTime.toString()),
-                                                                                        Text(connectFlight.origin.toString()),
-                                                                                        Text(connectFlight.number.toString(),
-                                                                                            style: listTitleTextStyle),
-                                                                                      ],
-                                                                                    ),
-                                                                                    Column(
-                                                                                      children: [
-                                                                                        const Icon(
-                                                                                          Icons.arrow_forward,
-                                                                                          size: 19,
-                                                                                        ),
-                                                                                        Text(connectFlight.duration.toString()),
-                                                                                        Text(connectFlight.classObjects?.first.category
-                                                                                                .toString() ??
-                                                                                            ""),
-                                                                                      ],
-                                                                                    ),
-                                                                                    Column(
-                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                      children: [
-                                                                                        Text(connectFlight.arriveTime.toString()),
-                                                                                        Text(connectFlight.destination.toString()),
-                                                                                        const Text(""),
-                                                                                      ],
-                                                                                    ),
-                                                                                    SizedBox(width: 60)
-                                                                                  ],
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                        ),
+                                                                              ),
+                                                                            )
+                                                                            .toList(),
                                                                       )
-                                                                      .toList(),
-                                                                )
+                                                                    : Container(),
                                                               ],
                                                             )
                                                           : Container(),
