@@ -48,7 +48,6 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
       selectedItem = Get.arguments["item"];
     }
 
-    print("approvalActionEnum ${approvalActionEnum}");
     final DetailBookingMeetingRoomController controller = Get.put(
         DetailBookingMeetingRoomController()..selectedItem(selectedItem))..approvalActionEnum(approvalActionEnum);
 
@@ -1240,10 +1239,29 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                   ),
                                   Obx(() {
                                     if (controller.isOnlineMeeting.value) {
+                                      if(controller.selectedItem.value.link != null){
+                                        if(controller.selectedItem.value.link!.isNotEmpty){
+                                          return Container(
+                                            margin: const EdgeInsets.only(bottom: 8),
+                                            child: OutlinedButton(
+                                              onPressed: () async{
+                                                if (!await launchUrl(Uri.parse(controller.selectedItem.value.link.toString()))) {
+                                                throw Exception(
+                                                'Could not launch ${controller.selectedItem.value.link.toString()}');
+                                                }
+                                              },
+                                              style: OutlinedButton.styleFrom(
+                                                minimumSize: const Size(75, 30),
+                                              ),
+                                              child: Text("Join Here".tr),
+                                            ),
+                                          );
+                                        }
+                                      }
                                       return CustomTextFormField(
                                           readOnly: true,
                                           controller:
-                                              controller.linkController,
+                                          controller.linkController,
                                           label: "Link".tr);
                                     }
                                     return const SizedBox();
