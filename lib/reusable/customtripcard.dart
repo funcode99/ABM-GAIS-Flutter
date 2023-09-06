@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/util/color/color_util.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -99,7 +100,7 @@ class CustomTripCard extends StatelessWidget {
                           alignment: Alignment.center,
                           width: Get.width/5,
                           padding: EdgeInsets.symmetric(vertical: 10),
-                          decoration: BoxDecoration(color: greenColor, borderRadius: BorderRadius.circular(5)),
+                          decoration: BoxDecoration(color: ColorUtil.getStatusColorByText(status!), borderRadius: BorderRadius.circular(5)),
                           child: Text(
                             status ?? "",
                             style: TextStyle(fontSize: 12, color: whiteColor, fontWeight: FontWeight.bold),
