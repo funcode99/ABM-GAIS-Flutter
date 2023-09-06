@@ -11,6 +11,7 @@ import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 
 enum ApproveEnum { onBehalf, fullApprove }
+enum ApproveFormEnum { onlyApproveOnBehalf, onlyFullApprove, both }
 
 class ApprovalConfirmationController extends BaseController with MasterDataMixin{
   final TextEditingController noteController = TextEditingController();
@@ -23,6 +24,7 @@ class ApprovalConfirmationController extends BaseController with MasterDataMixin
   final selectedEmployee= Rxn<EmployeeModel>();
   final enableOnBehalf = false.obs;
   final selectedEnum = Rx<ApproveEnum>(ApproveEnum.onBehalf);
+  final selectedFormEnum = Rx<ApproveFormEnum>(ApproveFormEnum.both);
 
   File? selectedFile;
   final enableButton = false.obs;
@@ -37,6 +39,13 @@ class ApprovalConfirmationController extends BaseController with MasterDataMixin
   void onReady() {
     super.onReady();
     initData();
+
+    if(selectedFormEnum.value == ApproveFormEnum.onlyFullApprove){
+      selectedEnum.value = ApproveEnum.fullApprove;
+      enableButton.value = true;
+    }else{
+      selectedEnum.value = ApproveEnum.onBehalf;
+    }
   }
 
   void initData()async{

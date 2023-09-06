@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/approval_log_model.dart';
+import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
 import 'package:gais/data/model/booking_meeting_room/participant_model.dart';
 import 'package:gais/data/model/booking_meeting_room/recurrence_model.dart';
@@ -13,7 +14,11 @@ import 'package:gais/data/model/master/room/room_model.dart';
 import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
 import 'package:gais/data/storage_core.dart';
+import 'package:gais/reusable/dialog/approval_confirmation_controller.dart';
+import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
+import 'package:gais/util/enum/approval_action_enum.dart';
+import 'package:gais/util/enum/role_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/date_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -21,6 +26,8 @@ import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:textfield_tags/textfield_tags.dart';
+
+import '../../../../reusable/dialog/reject_dialog.dart';
 
 class DetailBookingMeetingRoomController extends BaseController
     with MasterDataMixin {
@@ -101,6 +108,11 @@ class DetailBookingMeetingRoomController extends BaseController
 
   final selectedTab = Rx<TabEnum>(TabEnum.detail);
 
+  final approvalActionEnum = Rxn<ApprovalActionEnum>();
+  final approvalModel = Rxn<ApprovalModel>();
+
+  final isSecretary = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -111,14 +123,24 @@ class DetailBookingMeetingRoomController extends BaseController
     super.onReady();
     initData();
     detailHeader();
+
+    if (approvalActionEnum.value == ApprovalActionEnum.approve) {
+      openApproveDialog();
+    } else if (approvalActionEnum.value == ApprovalActionEnum.reject) {
+      openRejectDialog();
+    }
+
   }
 
   void initData()async{
     String companyName = await storage.readString(StorageCore.companyName);
     String siteName = await storage.readString(StorageCore.siteName);
     String idSite = await storage.readString(StorageCore.siteID);
+    String codeRole = await storage.readString(StorageCore.codeRole);
     companyController.text = companyName;
     siteController.text = siteName;
+    // isSecretary.value = true;
+    isSecretary.value = codeRole == RoleEnum.secretary.value;
 
     listCompany.add(CompanyModel(id: "", companyName: "Company"));
     final companies = await getListCompany();
@@ -437,6 +459,58 @@ class DetailBookingMeetingRoomController extends BaseController
     }
 
     return "";
+  }
+
+
+  openApproveDialog() async {
+    ApprovalModel? result = await Get.dialog(const ApprovalConfirmationDialog(
+      approveFormEnum: ApproveFormEnum.onlyFullApprove,
+    ));
+
+    if (result != null) {
+      approvalModel(result);
+      approve();
+    }
+  }
+
+  openRejectDialog() async {
+    ApprovalModel? result = await Get.dialog(const RejectDialog(
+      rejectFormEnum: RejectFormEnum.onlyFullReject,
+    ));
+    if (result != null) {
+      approvalModel(result);
+      reject();
+    }
+  }
+
+  void reject() async {
+    final result = await _repository.reject(approvalModel.value, selectedItem.value.id!);
+    result.fold(
+            (l) => showApprovalFailDialog("Request failed to be approved!".tr)
+            .then((value) => detailHeader()), (r) {
+      if (r) {
+        showApprovalSuccessDialog("The request was successfully rejected!".tr)
+            .then((value) => detailHeader());
+      } else {
+        showApprovalFailDialog("Request failed to be rejected!".tr)
+            .then((value) => detailHeader());
+      }
+    });
+  }
+
+  void approve() async {
+    final result = await _repository.approve(approvalModel.value, selectedItem.value.id!);
+    result.fold(
+            (l) => showApprovalFailDialog("Request failed to be approved!".tr)
+            .then((value) => detailHeader()), (r) {
+      if (r) {
+        showApprovalSuccessDialog("The request was successfully approved!".tr)
+            .then((value) => detailHeader());
+      } else {
+        showApprovalFailDialog("Request failed to be approved!".tr)
+            .then((value) => detailHeader());
+      }
+    });
   }
 
 }
