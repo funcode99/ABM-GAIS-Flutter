@@ -120,6 +120,7 @@ class AirlinessScreen extends StatelessWidget {
                             'purposeID': controller.purposeID,
                             'codeDocument': controller.codeDocument,
                             'formEdit': controller.formEdit,
+                            'isEdit': false,
                           })?.then((result) {
                             controller.fetchList();
                             controller.update();

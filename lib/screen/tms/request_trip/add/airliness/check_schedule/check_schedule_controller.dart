@@ -23,6 +23,7 @@ class CheckScheduleController extends BaseController {
   String? infant = Get.arguments['infant'];
   String? child = Get.arguments['child'];
   String? airlinessID = Get.arguments['id'];
+  bool? isEdit = Get.arguments['isEdit'];
   bool? formEdit = Get.arguments['formEdit'];
 
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
@@ -92,6 +93,7 @@ class CheckScheduleController extends BaseController {
         adult.toString(),
         infant.toString(),
         child.toString(),
+        [2],
       );
       isLoading = false;
       update();
@@ -115,70 +117,8 @@ class CheckScheduleController extends BaseController {
       'codeDocument': codeDocument,
       'formEdit': formEdit,
       'flight': flights,
+      'airlinessID': airlinessID,
+      'isEdit': isEdit,
     });
-    // if (airlinessID != null) {
-    //   try {
-    //     await repository
-    //         .updateAirlines(
-    //           airlinessID!,
-    //           purposeID.toString(),
-    //           idFlight,
-    //           flightNo, // flight_no
-    //           codeAirliness, // code airliness
-    //           price.digitOnly(), // ticket price
-    //         )
-    //         .then(
-    //           (value) => formEdit == true
-    //               ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
-    //               : Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
-    //         );
-    //   } catch (e, i) {
-    //     e.printError();
-    //     i.printError();
-    //     Get.showSnackbar(
-    //       const GetSnackBar(
-    //         icon: Icon(
-    //           Icons.error,
-    //           color: Colors.white,
-    //         ),
-    //         message: 'Failed To Update',
-    //         isDismissible: true,
-    //         duration: Duration(seconds: 3),
-    //         backgroundColor: Colors.red,
-    //       ),
-    //     );
-    //   }
-    // } else {
-    //   try {
-    //     await repository
-    //         .saveAirlines(
-    //           purposeID.toString(),
-    //           idFlight,
-    //           flightNo, // flight_no
-    //           codeAirliness, // code airliness
-    //           price.digitOnly(), // ticket price
-    //         )
-    //         .then((value) => Get.off(const AirlinessScreen(), arguments: {
-    //               'purposeID': purposeID,
-    //               'codeDocument': codeDocument,
-    //               'formEdit': formEdit,
-    //             }));
-    //   } catch (e, i) {
-    //     e.printError();
-    //     i.printError();
-    //     Get.showSnackbar(
-    //       const GetSnackBar(
-    //         icon: Icon(
-    //           Icons.error,
-    //           color: Colors.white,
-    //         ),
-    //         message: 'Failed To Save',
-    //         isDismissible: true,
-    //         duration: Duration(seconds: 3),
-    //         backgroundColor: Colors.red,
-    //       ),
-    //     );
-    //   }
-    // }
   }
 }

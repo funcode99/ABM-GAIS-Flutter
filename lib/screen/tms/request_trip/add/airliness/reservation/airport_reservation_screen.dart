@@ -164,6 +164,12 @@ class AirportReservationScreen extends StatelessWidget {
                             inputType: TextInputType.number,
                           ),
                           SizedBox(height: 8),
+                          CustomTextFormField(
+                            controller: controller.bookEmail,
+                            label: "Email",
+                            isRequired: true,
+                          ),
+                          SizedBox(height: 8),
                           Container(
                             margin: const EdgeInsets.symmetric(vertical: 10),
                             child: Row(
@@ -236,6 +242,9 @@ class AirportReservationScreen extends StatelessWidget {
                               Text("No"),
                             ],
                           ),
+                          controller.isSeniorCitizen == null
+                              ? Text('        The field is required', style: TextStyle(color: errorColor, fontSize: 12))
+                              : Container(),
                           CustomTextFormField(
                             controller: controller.passMobilePhone,
                             label: "Mobile Phone",
@@ -311,7 +320,11 @@ class AirportReservationScreen extends StatelessWidget {
                                 color: infoColor,
                                 title: "Book",
                                 width: 100,
-                                onPressed: () {},
+                                onPressed: () {
+                                  if (controller.formKey.currentState?.validate() == true) {
+                                    controller.saveReservation();
+                                  }
+                                },
                               ),
                             ],
                           )

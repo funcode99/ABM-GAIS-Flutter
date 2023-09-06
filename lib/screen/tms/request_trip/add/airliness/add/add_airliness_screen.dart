@@ -308,7 +308,7 @@ class AddAirlinessScreen extends StatelessWidget {
                                         controller.passengerAdult.text.isNotEmpty &&
                                         controller.passengerInfant.text.isNotEmpty &&
                                         controller.passengerChild.text.isNotEmpty) {
-                                      Get.to(const CheckScheduleScreen(), arguments: {
+                                      Get.off(const CheckScheduleScreen(), arguments: {
                                         'purposeID': controller.purposeID,
                                         'codeDocument': controller.codeDocument,
                                         'departure': controller.departure.toString(),

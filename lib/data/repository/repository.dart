@@ -210,6 +210,7 @@ abstract class Repository {
     String flightNo,
     String codeAirlines,
     String ticketPrice,
+    String pnrID,
   );
 
   Future<UpdateAirlinessModel> updateAirlines(
@@ -219,6 +220,7 @@ abstract class Repository {
     String flightNo,
     String codeAirlines,
     String ticketPrice,
+    String pnrID,
   );
 
   Future deleteAirliness(String id);

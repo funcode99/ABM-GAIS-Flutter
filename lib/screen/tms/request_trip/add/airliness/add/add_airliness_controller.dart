@@ -12,6 +12,7 @@ class AddAirlinessController extends BaseController {
   int? codeDocument = Get.arguments['codeDocument'];
   String? airlinessID = Get.arguments['id'];
   bool? formEdit = Get.arguments['formEdit'];
+  bool? isEdit = Get.arguments['isEdit'];
 
   final formKey = GlobalKey<FormState>();
   final travellerName = TextEditingController();
@@ -34,6 +35,7 @@ class AddAirlinessController extends BaseController {
   bool isLoading = false;
 
   GetRequestTripByidModel? rtModel;
+
   // city.GetCityModel? cityModel;
   city.Data? arrivalModel;
   city.Data? departureModel;
