@@ -1,22 +1,28 @@
 class SaveReservationFlightModel {
   SaveReservationFlightModel({
-      String? pnrId,}){
-    _pnrId = pnrId;
-}
+    String? pnrid,
+  }) {
+    _pnrid = pnrid;
+  }
 
   SaveReservationFlightModel.fromJson(dynamic json) {
-    _pnrId = json['PnrId'];
+    _pnrid = json['pnrid'];
   }
-  String? _pnrId;
-SaveReservationFlightModel copyWith({  String? pnrId,
-}) => SaveReservationFlightModel(  pnrId: pnrId ?? _pnrId,
-);
-  String? get pnrId => _pnrId;
+
+  String? _pnrid;
+
+  SaveReservationFlightModel copyWith({
+    String? pnrid,
+  }) =>
+      SaveReservationFlightModel(
+        pnrid: pnrid ?? _pnrid,
+      );
+
+  String? get pnrid => _pnrid;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['PnrId'] = _pnrId;
+    map['pnrid'] = _pnrid;
     return map;
   }
-
 }

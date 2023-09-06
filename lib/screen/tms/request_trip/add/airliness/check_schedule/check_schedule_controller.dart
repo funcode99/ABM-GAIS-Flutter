@@ -1,13 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/antavaya/get_airport_schedule_model.dart' as schedule;
 import 'package:gais/data/model/reference/get_city_model.dart';
 import 'package:gais/data/model/reference/get_flight_schedule_model.dart' as flight;
 import 'package:gais/data/model/antavaya/get_airport_model.dart' as city;
-import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/reservation/airport_reservation_screen.dart';
-import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
-import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -42,10 +39,14 @@ class CheckScheduleController extends BaseController {
   GetCityModel? cityModel;
   List<List<schedule.Flights>> schedules = [];
 
+  // schedules = [scheduleList1, scheduleList2, scheduleList3, scheduleList4];
+
   @override
   void onInit() {
     super.onInit();
     daysInMonth(DateTime(DateTime.now().month));
+    schedules = [scheduleList1, scheduleList2, scheduleList3, scheduleList4];
+    update();
     Future.wait([fetchList()]);
   }
 
@@ -58,28 +59,35 @@ class CheckScheduleController extends BaseController {
 
   int daysInMonth(DateTime date) {
     var initialDate = departureDate;
-    var nextDate = DateTime.now().add(const Duration(days: 4));
+    var nextDate = initialDate.add(const Duration(days: 4));
     listOfDates = List<String>.generate(nextDate.difference(initialDate).inDays,
-        (i) => "${DateFormat("MMM").format(DateTime.now())} ${int.parse(DateFormat("dd").format(DateTime.now())) + i}");
+        (i) => "${DateFormat("MMM").format(initialDate)} ${int.parse(DateFormat("dd").format(initialDate)) + i}");
     return nextDate.difference(initialDate).inDays;
   }
 
   Future<void> fetchList() async {
     isLoading = true;
-    flightScheduleList = [];
-    scheduleList1 = [];
-    scheduleList2 = [];
-    scheduleList3 = [];
-    scheduleList4 = [];
-    schedules = [scheduleList1, scheduleList2, scheduleList3, scheduleList4];
+    print(schedules.length);
+    // flightScheduleList = [];
+    // scheduleList1 = [];
+    // scheduleList2 = [];
+    // scheduleList3 = [];
+    // scheduleList4 = [];
 
-    fetchSchedule(departureDate).then((value) => scheduleList1.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-    fetchSchedule(departureDate.add(const Duration(days: 1)))
-        .then((value) => scheduleList2.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-    fetchSchedule(departureDate.add(const Duration(days: 2)))
-        .then((value) => scheduleList3.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-    fetchSchedule(departureDate.add(const Duration(days: 3)))
-        .then((value) => scheduleList4.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+    schedules.forEachIndexed((i, sc) {
+      fetchSchedule(departureDate.add(Duration(days: i)))
+          .then((value) => schedules[i].addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+      update();
+    });
+
+    // fetchSchedule(departureDate).then((value) => scheduleList1.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+    // fetchSchedule(departureDate.add(const Duration(days: 1)))
+    //     .then((value) => scheduleList2.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+    // fetchSchedule(departureDate.add(const Duration(days: 2)))
+    //     .then((value) => scheduleList3.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+    // fetchSchedule(departureDate.add(const Duration(days: 3)))
+    //     .then((value) => scheduleList4.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
+
     update();
   }
 
@@ -93,7 +101,7 @@ class CheckScheduleController extends BaseController {
         adult.toString(),
         infant.toString(),
         child.toString(),
-        [2],
+        "2",
       );
       isLoading = false;
       update();
@@ -119,6 +127,9 @@ class CheckScheduleController extends BaseController {
       'flight': flights,
       'airlinessID': airlinessID,
       'isEdit': isEdit,
+      'adult': adult,
+      'child': child,
+      'infant': infant,
     });
   }
 }

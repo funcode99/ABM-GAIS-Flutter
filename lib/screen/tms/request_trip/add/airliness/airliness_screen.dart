@@ -87,7 +87,7 @@ class AirlinessScreen extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text("Departure", style: listTitleTextStyle),
-                                          Text("CGK (06.00)", style: listSubTitleTextStyle),
+                                          Text("", style: listSubTitleTextStyle),
                                         ],
                                       ),
                                       Column(

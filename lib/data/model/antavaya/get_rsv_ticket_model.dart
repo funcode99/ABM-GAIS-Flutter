@@ -1,3 +1,5 @@
+import 'package:gais/data/model/antavaya/get_ssr_model.dart';
+
 class GetRsvTicketModel {
   GetRsvTicketModel({
     String? id,
@@ -976,151 +978,6 @@ class Properties {
   }
 }
 
-class Ssrs {
-  Ssrs({
-    String? ssrCode,
-    String? originCode,
-    String? destinationCode,
-    double? ssrFare,
-    String? ccy,
-    String? ssrName,
-    int? ssrType,
-    String? flightNumber,
-    dynamic paxType,
-    dynamic quantity,
-    dynamic image,
-    dynamic shortDesc,
-    dynamic longDesc,
-    double? tax,
-  }) {
-    _ssrCode = ssrCode;
-    _originCode = originCode;
-    _destinationCode = destinationCode;
-    _ssrFare = ssrFare;
-    _ccy = ccy;
-    _ssrName = ssrName;
-    _ssrType = ssrType;
-    _flightNumber = flightNumber;
-    _paxType = paxType;
-    _quantity = quantity;
-    _image = image;
-    _shortDesc = shortDesc;
-    _longDesc = longDesc;
-    _tax = tax;
-  }
-
-  Ssrs.fromJson(dynamic json) {
-    _ssrCode = json['SsrCode'];
-    _originCode = json['OriginCode'];
-    _destinationCode = json['DestinationCode'];
-    _ssrFare = json['SsrFare'];
-    _ccy = json['Ccy'];
-    _ssrName = json['SsrName'];
-    _ssrType = json['SsrType'];
-    _flightNumber = json['FlightNumber'];
-    _paxType = json['PaxType'];
-    _quantity = json['Quantity'];
-    _image = json['Image'];
-    _shortDesc = json['ShortDesc'];
-    _longDesc = json['LongDesc'];
-    _tax = json['Tax'];
-  }
-
-  String? _ssrCode;
-  String? _originCode;
-  String? _destinationCode;
-  double? _ssrFare;
-  String? _ccy;
-  String? _ssrName;
-  int? _ssrType;
-  String? _flightNumber;
-  dynamic _paxType;
-  dynamic _quantity;
-  dynamic _image;
-  dynamic _shortDesc;
-  dynamic _longDesc;
-  double? _tax;
-
-  Ssrs copyWith({
-    String? ssrCode,
-    String? originCode,
-    String? destinationCode,
-    double? ssrFare,
-    String? ccy,
-    String? ssrName,
-    int? ssrType,
-    String? flightNumber,
-    dynamic paxType,
-    dynamic quantity,
-    dynamic image,
-    dynamic shortDesc,
-    dynamic longDesc,
-    double? tax,
-  }) =>
-      Ssrs(
-        ssrCode: ssrCode ?? _ssrCode,
-        originCode: originCode ?? _originCode,
-        destinationCode: destinationCode ?? _destinationCode,
-        ssrFare: ssrFare ?? _ssrFare,
-        ccy: ccy ?? _ccy,
-        ssrName: ssrName ?? _ssrName,
-        ssrType: ssrType ?? _ssrType,
-        flightNumber: flightNumber ?? _flightNumber,
-        paxType: paxType ?? _paxType,
-        quantity: quantity ?? _quantity,
-        image: image ?? _image,
-        shortDesc: shortDesc ?? _shortDesc,
-        longDesc: longDesc ?? _longDesc,
-        tax: tax ?? _tax,
-      );
-
-  String? get ssrCode => _ssrCode;
-
-  String? get originCode => _originCode;
-
-  String? get destinationCode => _destinationCode;
-
-  double? get ssrFare => _ssrFare;
-
-  String? get ccy => _ccy;
-
-  String? get ssrName => _ssrName;
-
-  int? get ssrType => _ssrType;
-
-  String? get flightNumber => _flightNumber;
-
-  dynamic get paxType => _paxType;
-
-  dynamic get quantity => _quantity;
-
-  dynamic get image => _image;
-
-  dynamic get shortDesc => _shortDesc;
-
-  dynamic get longDesc => _longDesc;
-
-  double? get tax => _tax;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['SsrCode'] = _ssrCode;
-    map['OriginCode'] = _originCode;
-    map['DestinationCode'] = _destinationCode;
-    map['SsrFare'] = _ssrFare;
-    map['Ccy'] = _ccy;
-    map['SsrName'] = _ssrName;
-    map['SsrType'] = _ssrType;
-    map['FlightNumber'] = _flightNumber;
-    map['PaxType'] = _paxType;
-    map['Quantity'] = _quantity;
-    map['Image'] = _image;
-    map['ShortDesc'] = _shortDesc;
-    map['LongDesc'] = _longDesc;
-    map['Tax'] = _tax;
-    return map;
-  }
-}
 
 class Passport {
   Passport({
@@ -1263,6 +1120,7 @@ class Contact {
 
 class Segments {
   Segments({
+    String? airline,
     String? classID,
     String? airlineName,
     String? origin,
@@ -1280,6 +1138,7 @@ class Segments {
     String? flightId,
     String? flightNumber,
   }) {
+    _airline = airline;
     _classID = classID;
     _airlineName = airlineName;
     _origin = origin;
@@ -1299,6 +1158,7 @@ class Segments {
   }
 
   Segments.fromJson(dynamic json) {
+    _airline = json['Airline'];
     _classID = json['ClassId'];
     _airlineName = json['AirlineName'];
     _origin = json['Origin'];
@@ -1317,6 +1177,7 @@ class Segments {
     _flightNumber = json['FlightNumber'];
   }
 
+  String? _airline;
   String? _classID;
   String? _airlineName;
   String? _origin;
@@ -1335,6 +1196,7 @@ class Segments {
   String? _flightNumber;
 
   Segments copyWith({
+    String? airline,
     String? classID,
     String? airlineName,
     String? origin,
@@ -1353,6 +1215,7 @@ class Segments {
     String? flightNumber,
   }) =>
       Segments(
+        airline: airline ?? _airline,
         classID: classID ?? _classID,
         airlineName: airlineName ?? _airlineName,
         origin: origin ?? _origin,
@@ -1370,6 +1233,8 @@ class Segments {
         flightId: flightId ?? _flightId,
         flightNumber: flightNumber ?? _flightNumber,
       );
+
+  String? get airline => _airline;
 
   String? get classID => _classID;
 
@@ -1405,6 +1270,7 @@ class Segments {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    map['Airline'] = _airline;
     map['ClassId'] = _classID;
     map['AirlineName'] = _airlineName;
     map['Origin'] = _origin;
