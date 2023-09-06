@@ -80,6 +80,8 @@ class AddRoomInfoController extends BaseController with MasterDataMixin{
 
     companyController.text = companyName;
     siteController.text = siteName;
+
+    availableStatus.text = selectedAvailability;
   }
 
   Future<void> fetchCompanyList() async {
