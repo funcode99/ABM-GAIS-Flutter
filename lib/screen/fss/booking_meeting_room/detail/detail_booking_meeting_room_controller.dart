@@ -160,8 +160,8 @@ class DetailBookingMeetingRoomController extends BaseController
       onChangeSelectedRoom("");
     }
 
-    final employees = await getListEmployee();
-    listEmployee.addAll(employees);
+    // final employees = await getListEmployee();
+    // listEmployee.addAll(employees);
 
     setValue();
 
@@ -230,6 +230,7 @@ class DetailBookingMeetingRoomController extends BaseController
       listSelectedFacility.value = List<String>.from(selectedItem.value.facility);
     }*/
     if(selectedItem.value.facilityArray != null){
+      listSelectedFacility.clear();
       for(FacilityModel item in selectedItem.value.facilityArray!){
         listSelectedFacility.add("${item.facilityName}");
       }
