@@ -512,7 +512,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                           isEdit: controller.isEdit,
                                                           editAction: () {
                                                             Get.off(const CheckScheduleScreen(), arguments: {
-                                                              'id': e.id?.toInt(),
+                                                              'id': e.id,
                                                               'purposeID': controller.purposeID,
                                                               'codeDocument': controller.codeDocument,
                                                               'formEdit': true,

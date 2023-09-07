@@ -791,6 +791,7 @@ class RepositoryImpl implements Repository {
     String flightNo,
     String codeAirlines,
     String ticketPrice,
+    String pnrID,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -801,6 +802,7 @@ class RepositoryImpl implements Repository {
       "flight_no": flightNo,
       "code_airlines": codeAirlines,
       "ticket_price": ticketPrice,
+      "pnrid": pnrID,
     });
 
     try {
@@ -823,6 +825,7 @@ class RepositoryImpl implements Repository {
     String flightNo,
     String codeAirlines,
     String ticketPrice,
+    String pnrID,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -833,6 +836,7 @@ class RepositoryImpl implements Repository {
       "flight_no": flightNo,
       "code_airlines": codeAirlines,
       "ticket_price": ticketPrice,
+      "pnrid": pnrID,
     });
 
     try {

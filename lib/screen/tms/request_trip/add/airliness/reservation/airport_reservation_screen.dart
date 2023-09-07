@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customformlabel.dart';
@@ -53,7 +54,7 @@ class AirportReservationScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  controller.flight.airlineName.toString(),
+                                  controller.flight.airlineName ?? controller.flight.connectingFlights?.first.airlineName ?? '',
                                   style: listTitleTextStyle,
                                 ),
                               ],
@@ -63,7 +64,7 @@ class AirportReservationScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Image.network(
-                                  controller.flight.airlineImageUrl.toString(),
+                                  controller.flight.airlineImageUrl ?? controller.flight.connectingFlights?.first.airlineImageUrl.toString() ?? '',
                                   height: 40,
                                   width: 40,
                                 ),
@@ -85,7 +86,12 @@ class AirportReservationScreen extends StatelessWidget {
                                       size: 19,
                                     ),
                                     Text(controller.flight.duration.toString()),
-                                    Text(controller.flight.classObjects?.first.category.toString() ?? ""),
+                                    controller.flight.totalTransit != 0 ? Text('${controller.flight.totalTransit}x Transit') : Container(),
+                                    Text(controller.flight.classObjects!.isNotEmpty
+                                        ? controller.flight.classObjects?.first.category.toString() ?? ''
+                                        : controller.flight.connectingFlights?.first.classObjects?.first.category.toString() ?? ''),
+
+                                    // Text(controller.flight.connectingFlights?.first.classObjects?.first.category ?? ''),
                                   ],
                                 ),
                                 Column(
@@ -94,6 +100,7 @@ class AirportReservationScreen extends StatelessWidget {
                                     Text(controller.flight.arriveTime.toString()),
                                     Text(controller.flight.destination.toString()),
                                     const Text(""),
+                                    controller.flight.totalTransit != 0 ? Text('') : Container(),
                                   ],
                                 ),
                                 Column(
@@ -125,7 +132,7 @@ class AirportReservationScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: Get.width / 5,
                                 child: CustomTextFormField(
                                   controller: controller.bookTitle,
@@ -133,7 +140,7 @@ class AirportReservationScreen extends StatelessWidget {
                                   isRequired: true,
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 width: Get.width - (Get.width / 3),
                                 child: CustomTextFormField(
                                   controller: controller.bookFirstName,
@@ -143,27 +150,33 @@ class AirportReservationScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.bookLastName,
                             label: "Last Name",
                             isRequired: true,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.bookHomePhone,
                             label: "Home Phone",
                             isRequired: true,
                             inputType: TextInputType.number,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.bookMobilePhone,
                             label: "Mobile Phone",
                             isRequired: true,
                             inputType: TextInputType.number,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
+                          CustomTextFormField(
+                            controller: controller.bookEmail,
+                            label: "Email",
+                            isRequired: true,
+                          ),
+                          const SizedBox(height: 8),
                           Container(
                             margin: const EdgeInsets.symmetric(vertical: 10),
                             child: Row(
@@ -176,7 +189,7 @@ class AirportReservationScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: Get.width / 5,
                                 child: CustomTextFormField(
                                   controller: controller.passTitle,
@@ -184,7 +197,7 @@ class AirportReservationScreen extends StatelessWidget {
                                   isRequired: true,
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 width: Get.width - (Get.width / 3),
                                 child: CustomTextFormField(
                                   controller: controller.passFirstName,
@@ -194,26 +207,26 @@ class AirportReservationScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.passLastName,
                             label: "Last Name",
                             isRequired: true,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.passBirthDate,
                             label: "Birth Date",
                             isRequired: true,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.passEmail,
                             label: "Email",
                             isRequired: true,
                           ),
-                          SizedBox(height: 8),
-                          CustomFormLabel(label: "Is Senior Citizen?", showRequired: true),
+                          const SizedBox(height: 8),
+                          const CustomFormLabel(label: "Is Senior Citizen?", showRequired: true),
                           Row(
                             children: [
                               Radio(
@@ -224,7 +237,7 @@ class AirportReservationScreen extends StatelessWidget {
                                   controller.update();
                                 },
                               ),
-                              Text("Yes"),
+                              const Text("Yes"),
                               Radio(
                                 value: false,
                                 groupValue: controller.isSeniorCitizen,
@@ -233,61 +246,64 @@ class AirportReservationScreen extends StatelessWidget {
                                   controller.update();
                                 },
                               ),
-                              Text("No"),
+                              const Text("No"),
                             ],
                           ),
+                          controller.isSeniorCitizen == null
+                              ? const Text('        The field is required', style: TextStyle(color: errorColor, fontSize: 12))
+                              : Container(),
                           CustomTextFormField(
                             controller: controller.passMobilePhone,
                             label: "Mobile Phone",
                             isRequired: true,
                             inputType: TextInputType.number,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.passIDNumber,
                             label: "ID Number",
                             isRequired: true,
                             inputType: TextInputType.number,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.passPassportNumber,
                             label: "Passport Number",
                             isRequired: true,
                             inputType: TextInputType.number,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.passPassportOrigin,
                             label: "Passport Origin",
                             isRequired: true,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.passPassportExpire,
                             label: "Passport Expire",
                             isRequired: true,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.passEmergencyFullName,
                             label: "Emergency Full Name",
                             isRequired: true,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.passEmergencyEmail,
                             label: "Emergency Email",
                             isRequired: true,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: controller.passEmergencyPhone,
                             label: "Emergency Phone",
                             isRequired: true,
                             inputType: TextInputType.number,
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -311,7 +327,11 @@ class AirportReservationScreen extends StatelessWidget {
                                 color: infoColor,
                                 title: "Book",
                                 width: 100,
-                                onPressed: () {},
+                                onPressed: () {
+                                  if (controller.formKey.currentState?.validate() == true) {
+                                    controller.saveData();
+                                  }
+                                },
                               ),
                             ],
                           )
@@ -322,6 +342,7 @@ class AirportReservationScreen extends StatelessWidget {
                 ),
               ),
             ),
+            bottomNavigationBar: const BottomBar(menu: 0),
           );
         });
   }
