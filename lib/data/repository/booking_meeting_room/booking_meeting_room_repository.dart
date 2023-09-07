@@ -1,16 +1,18 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart' as Dio;
 import 'package:dio/dio.dart';
+import 'package:gais/base/approval_base_repository.dart';
 import 'package:gais/base/base_error.dart';
 import 'package:gais/base/base_repository.dart';
 import 'package:gais/data/model/api_response_model.dart';
+import 'package:gais/data/model/approval_log_model.dart';
+import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:get/get.dart';
 
-class BookingMeetingRoomRepository
-    implements BaseRepository<BookingMeetingRoomModel, bool> {
+class BookingMeetingRoomRepository implements BaseRepository<BookingMeetingRoomModel, bool>, ApprovalBaseRepository<BookingMeetingRoomModel> {
   final network = Get.find<NetworkCore>();
 
   @override
@@ -268,6 +270,90 @@ class BookingMeetingRoomRepository
       return left(BaseError(message: e.message));
     } catch (e){
       print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  @override
+  Future<Either<BaseError, bool>> approve(model, int id) async{
+    try {
+      final approvalModel = model as ApprovalModel;
+
+      final formData = Dio.FormData.fromMap(approvalModel.toJson());
+      if(approvalModel.approvedBehalf != null){
+        if(approvalModel.path!=null){
+          formData.files.add(MapEntry("file", await Dio.MultipartFile.fromFile(approvalModel.path!)));
+        }
+      }
+
+      Dio.Response response = await network.dio.post(
+          '/api/book_meeting_room/booked/$id',
+          data: formData
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, BookingMeetingRoomModel.fromJsonModel);
+      return right(apiResponseModel.success ?? false);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  @override
+  Future<Either<BaseError, List<ApprovalLogModel>>> getApprovalLog(int id) {
+    // TODO: implement getApprovalLog
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<BaseError, List<BookingMeetingRoomModel>>> getDataApproval({Map<String, dynamic>? data}) {
+    // TODO: implement getDataApproval
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<BaseError, PaginationModel>> getPaginationDataApproval({Map<String, dynamic>? data}) {
+    // TODO: implement getPaginationDataApproval
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<BaseError, PaginationModel>> getPaginationDataApprovalHistory({Map<String, dynamic>? data}) {
+    // TODO: implement getPaginationDataApprovalHistory
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<BaseError, bool>> reject(model, int id) async{
+    try {
+      final approvalModel = model as ApprovalModel;
+
+      final formData = Dio.FormData.fromMap(approvalModel.toJson());
+      if(approvalModel.approvedBehalf != null){
+        if(approvalModel.path!=null){
+          formData.files.add(MapEntry("file", await Dio.MultipartFile.fromFile(approvalModel.path!)));
+        }
+      }
+
+      Dio.Response response = await network.dio.post(
+          '/api/book_meeting_room/rejected/$id',
+          data: formData
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, BookingMeetingRoomModel.fromJsonModel);
+      return right(apiResponseModel.success ?? false);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
       return left(BaseError(message: "General error occurred"));
     }
   }

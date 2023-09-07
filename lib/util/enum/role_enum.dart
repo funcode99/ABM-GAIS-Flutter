@@ -4,7 +4,8 @@ enum RoleEnum {
   admin("ADM"),
   receptionist("RCPTN"),
   employee("EMPLY"),
-  driver("DRVR");
+  driver("DRVR"),
+  secretary("SCTR");
 
   const RoleEnum(this.value);
 

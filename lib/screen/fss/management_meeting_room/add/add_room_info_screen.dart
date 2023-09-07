@@ -130,8 +130,8 @@ class AddRoomInfoScreen extends StatelessWidget {
                                   child: Text("Available"),
                                 ),
                                 DropdownMenuItem(
-                                  value: "Booked",
-                                  child: Text("Booked"),
+                                  value: "Unavailable",
+                                  child: Text("Unavailable"),
                                 ),
                               ],
                               label: "Available Status",

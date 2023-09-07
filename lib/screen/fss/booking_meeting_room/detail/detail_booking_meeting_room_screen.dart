@@ -1,11 +1,9 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:form_validator/form_validator.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
@@ -14,6 +12,7 @@ import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/calendar/custom_calendar_picker.dart';
 import 'package:gais/reusable/custombackbutton.dart';
+import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
 import 'package:gais/reusable/dialog/recurrence_dialog.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
@@ -26,17 +25,21 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_controller.dart';
 import 'package:gais/screen/fss/booking_meeting_room/widget/meeting_room_time_picker_dialog.dart';
 import 'package:gais/util/color/color_util.dart';
+import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/date_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
-import 'package:gais/util/validator/custom_validation_builder.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailBookingMeetingRoomScreen extends StatelessWidget {
-  const DetailBookingMeetingRoomScreen({super.key});
+  const DetailBookingMeetingRoomScreen(
+      {Key? key, this.approvalActionEnum = ApprovalActionEnum.none})
+      : super(key: key);
+
+  final ApprovalActionEnum approvalActionEnum;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
     }
 
     final DetailBookingMeetingRoomController controller = Get.put(
-        DetailBookingMeetingRoomController()..selectedItem(selectedItem));
+        DetailBookingMeetingRoomController()..selectedItem(selectedItem))..approvalActionEnum(approvalActionEnum);
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -100,10 +103,11 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                     }),
                   ),
                   Obx(() {
-                    if (controller.selectedItem.value.codeStatusDoc
+
+                    /*if (controller.selectedItem.value.codeStatusDoc
                             .toString() ==
                         "0") {
-                      /*return Row(
+                      return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           OutlinedButton(
@@ -142,9 +146,36 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                   child: Text("Book".tr),
                                 ),
                         ],
-                      );*/
-                      return const SizedBox();
-                    } else if (controller.selectedItem.value.codeStatusDoc ==
+                      );
+                      return const SizedBox();*/
+                    if (controller.selectedItem.value.codeStatusDoc ==
+                        BookingMeetingRoomEnum.draft.value && controller.isSecretary.value) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomIconButton(
+                            title: "Approve".tr,
+                            iconData: Icons.check,
+                            backgroundColor: successColor,
+                            onPressed: () {
+                              controller.openApproveDialog();
+                            },
+                          ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          CustomIconButton(
+                            title: "Reject".tr,
+                            iconData: Icons.close,
+                            backgroundColor: redColor,
+                            onPressed: () {
+                              controller.openRejectDialog();
+                            },
+                          )
+                        ],
+                      );
+                    }
+                    else if (controller.selectedItem.value.codeStatusDoc ==
                         BookingMeetingRoomEnum.booked.value) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -1208,10 +1239,29 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                   ),
                                   Obx(() {
                                     if (controller.isOnlineMeeting.value) {
+                                      if(controller.selectedItem.value.link != null){
+                                        if(controller.selectedItem.value.link!.isNotEmpty){
+                                          return Container(
+                                            margin: const EdgeInsets.only(bottom: 8),
+                                            child: OutlinedButton(
+                                              onPressed: () async{
+                                                if (!await launchUrl(Uri.parse(controller.selectedItem.value.link.toString()))) {
+                                                throw Exception(
+                                                'Could not launch ${controller.selectedItem.value.link.toString()}');
+                                                }
+                                              },
+                                              style: OutlinedButton.styleFrom(
+                                                minimumSize: const Size(75, 30),
+                                              ),
+                                              child: Text("Join Here".tr),
+                                            ),
+                                          );
+                                        }
+                                      }
                                       return CustomTextFormField(
                                           readOnly: true,
                                           controller:
-                                              controller.linkController,
+                                          controller.linkController,
                                           label: "Link".tr);
                                     }
                                     return const SizedBox();

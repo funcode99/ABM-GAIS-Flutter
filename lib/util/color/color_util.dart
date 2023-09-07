@@ -26,6 +26,7 @@ class ColorUtil{
       case "fully rejected":
       case "revision":
       case "expired":
+      case "unavailable":
         result = redColor;
         break;
       case "done":

@@ -19,6 +19,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/list/booking_meeting_room_list_controller.dart';
+import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -268,15 +269,19 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                action: /*item.codeStatusDoc == BookingMeetingRoomEnum.draft.value ? [
+                                action: item.codeStatusDoc == BookingMeetingRoomEnum.draft.value && controller.isSecretary.value? [
                                   CustomIconButton(
-                                    title: "Edit".tr,
-                                    iconData: IconlyBold.edit,
+                                    title: "Approve".tr,
+                                    iconData: Icons.check,
                                     backgroundColor: successColor,
                                     onPressed: () {
                                       Get.to(
                                               () =>
-                                          const DetailBookingMeetingRoomScreen(),
+                                          const DetailBookingMeetingRoomScreen(
+                                            approvalActionEnum:
+                                            ApprovalActionEnum
+                                                .approve,
+                                          ),
                                           arguments: {
                                             "item": item
                                           })?.then((value) =>
@@ -284,22 +289,25 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                                     },
                                   ),
                                   const SizedBox(
-                                    width: 8,
+                                    width: 4,
                                   ),
                                   CustomIconButton(
-                                    title: "Delete".tr,
-                                    iconData: IconlyBold.delete,
+                                    title: "Reject".tr,
+                                    iconData: Icons.close,
                                     backgroundColor: redColor,
                                     onPressed: () {
-                                      Get.dialog(DeleteConfirmationDialog(
-                                        onDeletePressed: () {
-                                          Get.close(1);
-                                          controller.deleteHeader(item);
-                                        },
-                                      ));
+                                      Get.to(
+                                              () =>
+                                          const DetailBookingMeetingRoomScreen(
+                                            approvalActionEnum: ApprovalActionEnum.reject,
+                                          ),
+                                          arguments: {
+                                            "item": item
+                                          })?.then((value) =>
+                                          controller.getHeader());
                                     },
                                   )
-                                ] : */[]))
+                                ] : []))
                       ],
                     );
                   }),

@@ -5,7 +5,9 @@ import 'package:gais/data/model/master/meeting_room/meeting_room_model.dart';
 import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
+import 'package:gais/util/enum/role_enum.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -36,6 +38,8 @@ class BookingMeetingRoomListController extends BaseController with MasterDataMix
   final currentPage = 1.obs;
   int limit = 10;
 
+  final isSecretary = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -61,6 +65,10 @@ class BookingMeetingRoomListController extends BaseController with MasterDataMix
     final meetingRooms = await getListMeetingRoom();
     listMeetingRoom.addAll(meetingRooms);
     onChangeSelectedMeetingRoom("");
+
+    String codeRole = await storage.readString(StorageCore.codeRole);
+    // isSecretary.value = true;
+    isSecretary.value = codeRole == RoleEnum.secretary.value;
   }
 
   void getHeader({int page = 1}) async {
