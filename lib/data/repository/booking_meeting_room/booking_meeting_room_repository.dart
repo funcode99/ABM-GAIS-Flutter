@@ -223,10 +223,13 @@ class BookingMeetingRoomRepository implements BaseRepository<BookingMeetingRoomM
     throw UnimplementedError();
   }
 
-  Future<Either<BaseError, bool>> cancelData(int id) async{
+  Future<Either<BaseError, bool>> cancelData(model, dynamic id) async{
     try {
+      final approvalModel = model as ApprovalModel;
+
       Dio.Response response = await network.dio.post(
         '/api/book_meeting_room/cancel/$id',
+        data: approvalModel.toJson()
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, BookingMeetingRoomModel.fromJsonModel);
       return right(apiResponseModel.success ?? false);
