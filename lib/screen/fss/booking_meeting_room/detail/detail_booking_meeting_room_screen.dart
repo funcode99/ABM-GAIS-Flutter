@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
 import 'package:gais/data/model/booking_meeting_room/recurrence_model.dart';
 import 'package:gais/data/model/master/employee/employee_model.dart';
@@ -14,6 +15,7 @@ import 'package:gais/reusable/calendar/custom_calendar_picker.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
+import 'package:gais/reusable/dialog/cancel_dialog.dart';
 import 'package:gais/reusable/dialog/recurrence_dialog.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/custom_form_file_picker.dart';
@@ -183,7 +185,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                           if (controller.showCancelButton.value)
                             ElevatedButton(
                               onPressed: () {
-                                controller.cancelHeader();
+                                controller.openCancelDialog();
                               },
                               style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(75, 30),

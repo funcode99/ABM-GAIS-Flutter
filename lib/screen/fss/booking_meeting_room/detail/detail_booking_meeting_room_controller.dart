@@ -16,6 +16,7 @@ import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_r
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/dialog/approval_confirmation_controller.dart';
 import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
+import 'package:gais/reusable/dialog/cancel_dialog.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/util/enum/role_enum.dart';
@@ -191,7 +192,7 @@ class DetailBookingMeetingRoomController extends BaseController
 
 
     linkController.text = selectedItem.value.link ?? "";
-    remarksController.text = selectedItem.value.remarks ?? "";
+    remarksController.text = selectedItem.value.remarks ??  selectedItem.value.notes ?? "";
     meetingRoomController.text = selectedItem.value.nameMeetingRoom ?? "";
     floorController.text = "${selectedItem.value.floor ?? ""}";
     capacityController.text = "${selectedItem.value.capacity ?? ""}";
@@ -311,7 +312,7 @@ class DetailBookingMeetingRoomController extends BaseController
   }
 
   void cancelHeader() async {
-    final result = await _repository.cancelData(selectedItem.value.id!);
+    final result = await _repository.cancelData(approvalModel.value, selectedItem.value.id!);
     result.fold(
             (l) => Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
@@ -461,6 +462,14 @@ class DetailBookingMeetingRoomController extends BaseController
     return "";
   }
 
+  openCancelDialog() async {
+    ApprovalModel? result = await Get.dialog(const CancelDialog());
+
+    if (result != null) {
+      approvalModel(result);
+      cancelHeader();
+    }
+  }
 
   openApproveDialog() async {
     ApprovalModel? result = await Get.dialog(const ApprovalConfirmationDialog(
