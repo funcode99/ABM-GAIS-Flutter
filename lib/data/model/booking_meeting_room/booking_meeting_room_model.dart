@@ -61,6 +61,11 @@ class BookingMeetingRoomModel {
   String? durationEnd;
   String? recurrenceStart;
   String? recurrenceEnd;
+  dynamic duration;
+  int? durationInMinute;
+  int? position;
+  int? hour;
+  int? minute;
 
   BookingMeetingRoomModel(
       {
@@ -118,6 +123,11 @@ class BookingMeetingRoomModel {
         this.durationEnd,
         this.recurrenceStart,
         this.recurrenceEnd,
+        this.hour,
+        this.duration,
+        this.position,
+        this.minute,
+        this.durationInMinute,
       });
 
   static BookingMeetingRoomModel fromJsonModel(Object? json) =>
