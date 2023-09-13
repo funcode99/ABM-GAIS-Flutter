@@ -7,6 +7,7 @@ import 'package:gais/data/repository/approval_delegation/approval_delegation_rep
 import 'package:gais/data/repository/approval_request_trip/approval_request_trip_impl.dart';
 import 'package:gais/data/repository/approval_request_trip/approval_request_trip_repository.dart';
 import 'package:gais/data/repository/booking_meeting_room/booking_meeting_room_repository.dart';
+import 'package:gais/data/repository/booking_meeting_room/dashboard_meeting_room_repository.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_non_travel_repository.dart';
 import 'package:gais/data/repository/cash_advance/cash_advance_travel_repository.dart';
 import 'package:gais/data/repository/dashboard/dashboard_repository.dart';
@@ -52,5 +53,8 @@ class GlobalBinding extends Bindings {
     Get.put(DashboardRepository(), permanent: true);
     Get.put(NotificationRepository(), permanent: true);
     Get.put(MasterRepository(), permanent: true);
+
+    Get.put(DashboardMeetingRoomRepository(), permanent: true);
+
   }
 }
