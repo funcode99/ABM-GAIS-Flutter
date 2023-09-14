@@ -124,6 +124,8 @@ class AddBookingMeetingRoomController extends BaseController
       selectedCompany.value = CompanyModel(
           id: idCompany
       );
+
+      listCompany.add(CompanyModel(id: idCompany, companyName: companyName));
       companyController.text = companyName;
       onChangeSelectedCompany(idCompany);
     }
@@ -132,14 +134,13 @@ class AddBookingMeetingRoomController extends BaseController
       enableSelectSite(true);
 
       listSite.add(SiteModel(id: "", siteName: "Site"));
-      final sites = await getListSite();
-      listSite.addAll(sites);
 
       onChangeSelectedSite(listSite.first.id);
     }else{
       selectedSite.value = SiteModel(
           id: idSite
       );
+      listSite.add(SiteModel(id: idSite, siteName: siteName));
       siteController.text = siteName;
       onChangeSelectedSite(idSite);
     }
@@ -274,7 +275,6 @@ class AddBookingMeetingRoomController extends BaseController
     );
 
 
-    print(jsonEncode(meetingRoomModel.toJson()));
     final result = await _repository.saveData(meetingRoomModel);
 
     result.fold(
