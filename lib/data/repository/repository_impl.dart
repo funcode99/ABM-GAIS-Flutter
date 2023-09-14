@@ -897,16 +897,16 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<GetAirlinessModel> getAirlinessBytripList() async {
+  Future<GetAirlinessModel> getAirlinessBytripList(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       Response response = await network.dio.get(
-        "/api/flight_trip/get",
+        "/api/flight_trip/get_by_travel_id/trip_id/$id",
       );
       return GetAirlinessModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
+      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -921,7 +921,7 @@ class RepositoryImpl implements Repository {
       );
       return GetAirlinessModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
+      print("response error: ${e.response?.data}");
       return e.error;
     }
   }

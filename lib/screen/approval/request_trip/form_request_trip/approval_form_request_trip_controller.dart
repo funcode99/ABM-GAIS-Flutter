@@ -349,7 +349,7 @@ class ApprovalFormRequestTripController extends BaseController {
       var guestData = await repository.getGuestBytripList(purposeID);
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var airlinessData = await repository.getAirlinessBytripList();
+      var airlinessData = await repository.getAirlinessBytripList(purposeID);
       airlinessList.addAll(airlinessData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
       var tvData = await repository.getTaxiVoucherBytripList(purposeID);

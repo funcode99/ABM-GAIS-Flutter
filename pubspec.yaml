@@ -51,7 +51,7 @@ dependencies:
   url_launcher: ^6.1.12
   time_planner:
     git:
-      url: git@github.com:fajarainul/time_planner.git
+      url: https://github.com/fajarainul/time_planner.git
 #    path: ../time_planner
 
 

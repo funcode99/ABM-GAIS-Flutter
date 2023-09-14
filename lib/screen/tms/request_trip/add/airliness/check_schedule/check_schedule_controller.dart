@@ -28,6 +28,7 @@ class CheckScheduleController extends BaseController {
   String? departureCity;
   String? arrivalCity;
   bool isLoading = true;
+  List airliness = ["2", "4", "5", "6", "11", "22", "48"];
 
   flight.GetFlightScheduleModel? flightScheduleModel;
   schedule.GetAirportScheduleModel? scheduleModel1;
@@ -75,7 +76,7 @@ class CheckScheduleController extends BaseController {
     // scheduleList4 = [];
 
     schedules.forEachIndexed((i, sc) {
-      fetchSchedule(departureDate.add(Duration(days: i)))
+      fetchSchedule(departureDate.add(Duration(days: i)), "2")
           .then((value) => schedules[i].addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
       update();
     });
@@ -91,7 +92,7 @@ class CheckScheduleController extends BaseController {
     update();
   }
 
-  Future<schedule.GetAirportScheduleModel?> fetchSchedule(DateTime departDate) async {
+  Future<schedule.GetAirportScheduleModel?> fetchSchedule(DateTime departDate, String airlines) async {
     isLoading = true;
     try {
       var scheduleData = await antavaya.getAirportSchedule(
@@ -101,7 +102,7 @@ class CheckScheduleController extends BaseController {
         adult.toString(),
         infant.toString(),
         child.toString(),
-        "2",
+        airlines,
       );
       isLoading = false;
       update();

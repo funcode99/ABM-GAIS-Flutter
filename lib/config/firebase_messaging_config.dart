@@ -16,15 +16,15 @@ String? payload;
 
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
-  if(payload != null){
+  if (payload != null) {
     Map<String, dynamic> data = jsonDecode(notificationResponse.payload!);
     FirebaseMessagingConfig._handleTapOnNotification(data);
   }
 }
 
-class FirebaseMessagingConfig{
+class FirebaseMessagingConfig {
 
-  static Future<void> init() async{
+  static Future<void> init() async {
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
       'high_importance_channel',
       'High Importance Notifications',
@@ -51,14 +51,14 @@ class FirebaseMessagingConfig{
     );
 
     InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS:initializationSettingsDarwin
+        android: initializationSettingsAndroid,
+        iOS: initializationSettingsDarwin
     );
 
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) {
-        if(notificationResponse.payload != null){
+        if (notificationResponse.payload != null) {
           Map<String, dynamic> data = jsonDecode(notificationResponse.payload!);
           _handleTapOnNotification(data);
         }
@@ -85,9 +85,9 @@ class FirebaseMessagingConfig{
 
 
     FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true
+        alert: true,
+        badge: true,
+        sound: true
     );
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -118,25 +118,24 @@ class FirebaseMessagingConfig{
       _handleTapOnNotification(message.data);
     });
 
-    FirebaseMessaging.instance.getInitialMessage().then((message){
-      if(message!=null){
-        Future.delayed(const Duration(seconds: 1), (){
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) {
+        Future.delayed(const Duration(seconds: 1), () {
           _handleTapOnNotification(message.data);
         });
       }
     });
-
   }
 
-  static void _handleTapOnNotification(Map<String, dynamic> data){
+  static void _handleTapOnNotification(Map<String, dynamic> data) {
     if (data.containsKey("is_approval")) {
-      if(data["is_approval"].toString() == "0"){
+      if (data["is_approval"].toString() == "0") {
         NotificationNavigation.navigateToPage(
           codeDocument: data["code_document"],
           id: data["id_document"],
           typeDocument: data["type_document"],
         );
-      }else{
+      } else {
         NotificationNavigation.navigateToPageApproval(
           codeDocument: data["code_document"],
           id: data["id_document"],

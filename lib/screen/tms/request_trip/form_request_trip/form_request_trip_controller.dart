@@ -147,7 +147,7 @@ class FormRequestTripController extends BaseController {
     tlkTotal.text;
     tlkTotalMeals.text;
     isEdit = false;
-    Future.wait([fetchRequestTrip(), fetchList(), fetchApprovalInfo(), checkRole()]);
+    Future.wait([fetchRequestTrip(), fetchList(), fetchApprovalInfo(), checkRole(), fetchAirliness()]);
     purposeID.printInfo(info: "purposeID");
   }
 
@@ -421,8 +421,27 @@ class FormRequestTripController extends BaseController {
       var guestData = await repository.getGuestBytripList(purposeID);
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var airlinessData = await repository.getAirlinessBytripList();
-      airlinessList.addAll(airlinessData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+      var airlinessData = await repository.getAirlinessBytripList(purposeID);
+      airlinessData.data?.forEach((e) async {
+        print(e.pnrid);
+        await antavaya.getRsvTicket(e.pnrid).then((rsv) {
+          print("rsv: ${rsv.airline.toString()}");
+          airlinessList.add(airliness.Data(
+            id: e.id,
+            idRequestTrip: e.idRequestTrip,
+            pnrid: e.pnrid,
+            employeeName: rsv.passengers?.first.firstName,
+            createdAt: e.createdAt,
+            departure: rsv.flightDetails?.first.origin,
+            arrival: rsv.flightDetails?.first.destination,
+            departureTime: rsv.flightDetails?.first.departTime,
+            arrivalTime: rsv.flightDetails?.first.arriveTime,
+            flightNo: rsv.flightDetails?.first.flightNumber,
+          ));
+          update();
+        });
+      });
+      // airlinessList.addAll(airlinessData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
       var tvData = await repository.getTaxiVoucherBytripList(purposeID);
       tvList.addAll(tvData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
@@ -433,14 +452,18 @@ class FormRequestTripController extends BaseController {
       var accData = await repository.getAccommodationBytripList(purposeID);
       accommodationsList.addAll(accData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var caData = await repository.getCashAdvanceTravelList(purposeID);
-      caList.addAll(caData.data?.toSet().toList() ?? []);
+      // var caData = await repository.getCashAdvanceTravelList(purposeID);
+      // caList.addAll(caData.data?.toSet().toList() ?? []);
     } catch (e, i) {
       e.printError();
       i.printError();
     }
 
     update();
+  }
+
+  Future fetchAirliness() async{
+
   }
 
   Future<void> fetchApprovalInfo() async {

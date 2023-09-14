@@ -26,16 +26,23 @@ class AirlinessController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-
     purposeID.printInfo(info: "purposeID");
     codeDocument.printInfo(info: "code document");
     Future.wait([fetchList()]);
   }
 
+  Future<void> fetchFlight(String pnrID) async {
+    try {
+      await antavaya.getRsvTicket(pnrID);
+    } catch (e) {
+      e.printError();
+    }
+  }
+
   Future<void> fetchList() async {
     airlinessList = [];
     try {
-      var airliessData = await repository.getAirlinessBytripList();
+      var airliessData = await repository.getAirlinessBytripList(purposeID);
       airlinessModel = airliessData;
       airlinessList.addAll(airliessData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 

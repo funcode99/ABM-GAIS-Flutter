@@ -29,15 +29,13 @@ class AntavayaImpl implements AntavayaRepository {
   }
 
   @override
-  Future<GetAirportScheduleModel> getAirportSchedule(
-    String origin,
-    String destination,
-    String departDate,
-    String adult,
-    String infant,
-    String child,
-    String airliness,
-  ) async {
+  Future<GetAirportScheduleModel> getAirportSchedule(String origin,
+      String destination,
+      String departDate,
+      String adult,
+      String infant,
+      String child,
+      String airliness,) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -64,17 +62,15 @@ class AntavayaImpl implements AntavayaRepository {
   }
 
   @override
-  Future saveFlightReservation(
-    String contactTitle,
-    String contactFirstName,
-    String contactLastName,
-    String contactEmail,
-    String contactHomePhone,
-    String contactMobilePhone,
-    Passengers passengers,
-    Segments segments,
-    String flightType,
-  ) async {
+  Future saveFlightReservation(String contactTitle,
+      String contactFirstName,
+      String contactLastName,
+      String contactEmail,
+      String contactHomePhone,
+      String contactMobilePhone,
+      Passengers passengers,
+      Segments segments,
+      String flightType,) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -193,12 +189,16 @@ class AntavayaImpl implements AntavayaRepository {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
+    pnrID.printInfo(info: 'pnrid');
     try {
       Response response = await network.dio.get(
-        "/api/antavaya/flight/get_reservation_flight/$pnrID",
+        "/api/antavaya/flight/get_reservation_flight/",
+        queryParameters: {'Id': pnrID},
       );
+      print(response.data);
       return GetRsvTicketModel.fromJson(response.data);
     } on DioError catch (e) {
+      print('antavaya error: ${e.response?.data}');
       return e.error;
     }
   }
