@@ -23,6 +23,7 @@ import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
+import 'package:gais/util/color/color_util.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -68,7 +69,8 @@ class FormRequestTripScreen extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                               margin: const EdgeInsets.only(bottom: 4),
-                              decoration: BoxDecoration(color: greenColor, borderRadius: BorderRadius.circular(8)),
+                              decoration: BoxDecoration(
+                                  color: ColorUtil.getStatusColorByText(controller.rtStatus.toString()), borderRadius: BorderRadius.circular(8)),
                               child: Text(controller.rtStatus.toString()),
                             ),
                             Container(
@@ -508,6 +510,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                           listNumber: i + 1,
                                                           title: e.employeeName.toString(),
                                                           subtitle: controller.dateFormat.format(DateTime.parse(e.createdAt.toString())).toString(),
+                                                          // subtitle: e.pnrid.toString(),
                                                           info: e.flightNo,
                                                           isEdit: controller.isEdit,
                                                           editAction: () {
@@ -546,7 +549,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Text("Price", style: listTitleTextStyle),
-                                                                  Text(e.ticketPrice.toString(), style: listSubTitleTextStyle),
+                                                                  Text(e.ticketPrice!.toInt().toCurrency(), style: listSubTitleTextStyle),
                                                                 ],
                                                               )
                                                             ],

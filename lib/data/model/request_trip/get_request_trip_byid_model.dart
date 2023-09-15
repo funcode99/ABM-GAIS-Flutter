@@ -170,7 +170,7 @@ class Data {
   String? _codeDocument;
   num? _idSite;
   String? _notes;
-  String? _file;
+  dynamic _file;
   num? _idCityFrom;
   num? _idCityTo;
   String? _dateDeparture;
@@ -285,7 +285,7 @@ Data copyWith({  String? id,
   String? get codeDocument => _codeDocument;
   num? get idSite => _idSite;
   String? get notes => _notes;
-  String? get file => _file;
+  dynamic get file => _file;
   num? get idCityFrom => _idCityFrom;
   num? get idCityTo => _idCityTo;
   String? get dateDeparture => _dateDeparture;

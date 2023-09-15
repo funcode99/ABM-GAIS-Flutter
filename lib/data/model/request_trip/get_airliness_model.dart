@@ -1,16 +1,13 @@
-/// success : true
-/// message : "Success Get Data"
-/// data : [{"id":15,"id_request_trip":35,"id_vendor":1,"flight_no":"QG828","code_airlines":"QG","ticket_price":"899000","code_status_doc":0,"created_at":"2023-05-26 09:14:41","created_by":"2","updated_at":"2023-05-26 09:14:41","updated_by":null,"no_request_trip":"1","employee_name":"John Doe","vendor":"Antavaya"},{"id":13,"id_request_trip":27,"id_vendor":1,"flight_no":"QG828","code_airlines":"QG","ticket_price":"899000","code_status_doc":1,"created_at":"2023-05-25 02:51:11","created_by":"2","updated_at":"2023-05-25 02:51:11","updated_by":null,"no_request_trip":"1","employee_name":"John Doe","vendor":"Antavaya"},{"id":11,"id_request_trip":15,"id_vendor":1,"flight_no":"QG828","code_airlines":"QG","ticket_price":"899000","code_status_doc":1,"created_at":"2023-05-22 21:19:13","created_by":"2","updated_at":"2023-05-22 21:19:13","updated_by":null,"no_request_trip":"REQ/ABM/123","employee_name":"John Doe","vendor":"Antavaya"},{"id":14,"id_request_trip":27,"id_vendor":2,"flight_no":"QG828","code_airlines":"QG","ticket_price":"899000","code_status_doc":1,"created_at":"2023-05-25 02:51:56","created_by":"2","updated_at":"2023-05-25 02:51:56","updated_by":null,"no_request_trip":"1","employee_name":"John Doe","vendor":"Aerowisata"},{"id":12,"id_request_trip":23,"id_vendor":2,"flight_no":"QG828","code_airlines":"QG","ticket_price":"899000","code_status_doc":1,"created_at":"2023-05-24 00:30:39","created_by":"2","updated_at":"2023-05-24 00:30:39","updated_by":null,"no_request_trip":"REQ/ABM/123","employee_name":"John Doe","vendor":"Aerowisata"},{"id":9,"id_request_trip":3,"id_vendor":2,"flight_no":"QG828","code_airlines":"QG","ticket_price":"899000","code_status_doc":0,"created_at":"2023-05-21 05:57:26","created_by":"2","updated_at":"2023-05-21 05:57:26","updated_by":null,"no_request_trip":"REQ/ABM/123","employee_name":"John Doe","vendor":"Aerowisata"},{"id":5,"id_request_trip":3,"id_vendor":2,"flight_no":"QG828","code_airlines":"QG","ticket_price":"899000","code_status_doc":0,"created_at":"2023-05-19 08:10:59","created_by":"2","updated_at":"2023-05-19 08:10:59","updated_by":null,"no_request_trip":"REQ/ABM/123","employee_name":"John Doe","vendor":"Aerowisata"}]
-
 class GetAirlinessModel {
   GetAirlinessModel({
-      bool? success, 
-      String? message, 
-      List<Data>? data,}){
+    bool? success,
+    String? message,
+    List<Data>? data,
+  }) {
     _success = success;
     _message = message;
     _data = data;
-}
+  }
 
   GetAirlinessModel.fromJson(dynamic json) {
     _success = json['success'];
@@ -22,18 +19,26 @@ class GetAirlinessModel {
       });
     }
   }
+
   bool? _success;
   String? _message;
   List<Data>? _data;
-GetAirlinessModel copyWith({  bool? success,
-  String? message,
-  List<Data>? data,
-}) => GetAirlinessModel(  success: success ?? _success,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+
+  GetAirlinessModel copyWith({
+    bool? success,
+    String? message,
+    List<Data>? data,
+  }) =>
+      GetAirlinessModel(
+        success: success ?? _success,
+        message: message ?? _message,
+        data: data ?? _data,
+      );
+
   bool? get success => _success;
+
   String? get message => _message;
+
   List<Data>? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -45,40 +50,30 @@ GetAirlinessModel copyWith({  bool? success,
     }
     return map;
   }
-
 }
-
-/// id : 15
-/// id_request_trip : 35
-/// id_vendor : 1
-/// flight_no : "QG828"
-/// code_airlines : "QG"
-/// ticket_price : "899000"
-/// code_status_doc : 0
-/// created_at : "2023-05-26 09:14:41"
-/// created_by : "2"
-/// updated_at : "2023-05-26 09:14:41"
-/// updated_by : null
-/// no_request_trip : "1"
-/// employee_name : "John Doe"
-/// vendor : "Antavaya"
 
 class Data {
   Data({
-      num? id, 
-      num? idRequestTrip, 
-      num? idVendor, 
-      String? flightNo, 
-      String? codeAirlines, 
-      String? ticketPrice, 
-      num? codeStatusDoc, 
-      String? createdAt, 
-      String? createdBy, 
-      String? updatedAt, 
-      dynamic updatedBy, 
-      String? noRequestTrip, 
-      String? employeeName, 
-      String? vendor,}){
+    String? id,
+    String? idRequestTrip,
+    int? idVendor,
+    String? flightNo,
+    String? codeAirlines,
+    String? ticketPrice,
+    int? codeStatusDoc,
+    String? createdAt,
+    String? createdBy,
+    String? updatedAt,
+    dynamic updatedBy,
+    dynamic pnrid,
+    String? noRequestTrip,
+    String? employeeName,
+    String? vendor,
+    String? departure,
+    String? arrival,
+    String? departureTime,
+    String? arrivalTime,
+  }) {
     _id = id;
     _idRequestTrip = idRequestTrip;
     _idVendor = idVendor;
@@ -90,10 +85,16 @@ class Data {
     _createdBy = createdBy;
     _updatedAt = updatedAt;
     _updatedBy = updatedBy;
+    _pnrid = pnrid;
     _noRequestTrip = noRequestTrip;
     _employeeName = employeeName;
     _vendor = vendor;
-}
+    _departure = departure;
+    _arrival = arrival;
+    _departureTime = departureTime;
+    _arrivalTime = arrivalTime;
+
+  }
 
   Data.fromJson(dynamic json) {
     _id = json['id'];
@@ -107,67 +108,116 @@ class Data {
     _createdBy = json['created_by'];
     _updatedAt = json['updated_at'];
     _updatedBy = json['updated_by'];
+    _pnrid = json['pnrid'];
     _noRequestTrip = json['no_request_trip'];
     _employeeName = json['employee_name'];
     _vendor = json['vendor'];
+    _departure = json['departure'];
+    _arrival = json['arrival'];
+    _departureTime = json['departure_time'];
+    _arrivalTime = json['arrival_time'];
   }
-  dynamic _id;
-  dynamic _idRequestTrip;
-  num? _idVendor;
+
+  String? _id;
+  String? _idRequestTrip;
+  int? _idVendor;
   String? _flightNo;
   String? _codeAirlines;
   String? _ticketPrice;
-  num? _codeStatusDoc;
+  int? _codeStatusDoc;
   String? _createdAt;
   String? _createdBy;
   String? _updatedAt;
   dynamic _updatedBy;
+  dynamic _pnrid;
   String? _noRequestTrip;
   String? _employeeName;
   String? _vendor;
-Data copyWith({  num? id,
-  num? idRequestTrip,
-  num? idVendor,
-  String? flightNo,
-  String? codeAirlines,
-  String? ticketPrice,
-  num? codeStatusDoc,
-  String? createdAt,
-  String? createdBy,
-  String? updatedAt,
-  dynamic updatedBy,
-  String? noRequestTrip,
-  String? employeeName,
-  String? vendor,
-}) => Data(  id: id ?? _id,
-  idRequestTrip: idRequestTrip ?? _idRequestTrip,
-  idVendor: idVendor ?? _idVendor,
-  flightNo: flightNo ?? _flightNo,
-  codeAirlines: codeAirlines ?? _codeAirlines,
-  ticketPrice: ticketPrice ?? _ticketPrice,
-  codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
-  createdAt: createdAt ?? _createdAt,
-  createdBy: createdBy ?? _createdBy,
-  updatedAt: updatedAt ?? _updatedAt,
-  updatedBy: updatedBy ?? _updatedBy,
-  noRequestTrip: noRequestTrip ?? _noRequestTrip,
-  employeeName: employeeName ?? _employeeName,
-  vendor: vendor ?? _vendor,
-);
-  dynamic get id => _id;
-  dynamic get idRequestTrip => _idRequestTrip;
-  num? get idVendor => _idVendor;
+  String? _departure;
+  String? _arrival;
+  String? _departureTime;
+  String? _arrivalTime;
+
+  Data copyWith({
+    String? id,
+    String? idRequestTrip,
+    int? idVendor,
+    String? flightNo,
+    String? codeAirlines,
+    String? ticketPrice,
+    int? codeStatusDoc,
+    String? createdAt,
+    String? createdBy,
+    String? updatedAt,
+    dynamic updatedBy,
+    dynamic pnrid,
+    String? noRequestTrip,
+    String? employeeName,
+    String? vendor,
+    String? departure,
+    String? arrival,
+    String? departureTime,
+    String? arrivalTime,
+  }) =>
+      Data(
+        id: id ?? _id,
+        idRequestTrip: idRequestTrip ?? _idRequestTrip,
+        idVendor: idVendor ?? _idVendor,
+        flightNo: flightNo ?? _flightNo,
+        codeAirlines: codeAirlines ?? _codeAirlines,
+        ticketPrice: ticketPrice ?? _ticketPrice,
+        codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
+        createdAt: createdAt ?? _createdAt,
+        createdBy: createdBy ?? _createdBy,
+        updatedAt: updatedAt ?? _updatedAt,
+        updatedBy: updatedBy ?? _updatedBy,
+        pnrid: pnrid ?? _pnrid,
+        noRequestTrip: noRequestTrip ?? _noRequestTrip,
+        employeeName: employeeName ?? _employeeName,
+        vendor: vendor ?? _vendor,
+        departure: departure ?? _departure,
+        arrival: arrival ?? _arrival,
+        departureTime: departureTime ?? _departureTime,
+        arrivalTime: arrivalTime ?? _arrivalTime,
+      );
+
+  String? get id => _id;
+
+  String? get idRequestTrip => _idRequestTrip;
+
+  int? get idVendor => _idVendor;
+
   String? get flightNo => _flightNo;
+
   String? get codeAirlines => _codeAirlines;
+
   String? get ticketPrice => _ticketPrice;
-  num? get codeStatusDoc => _codeStatusDoc;
+
+  int? get codeStatusDoc => _codeStatusDoc;
+
   String? get createdAt => _createdAt;
+
   String? get createdBy => _createdBy;
+
   String? get updatedAt => _updatedAt;
+
   dynamic get updatedBy => _updatedBy;
+
+  dynamic get pnrid => _pnrid;
+
   String? get noRequestTrip => _noRequestTrip;
+
   String? get employeeName => _employeeName;
+
   String? get vendor => _vendor;
+
+  String? get departure => _departure;
+
+  String? get arrival => _arrival;
+
+  String? get departureTime => _departureTime;
+
+  String? get arrivalTime => _arrivalTime;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -182,10 +232,14 @@ Data copyWith({  num? id,
     map['created_by'] = _createdBy;
     map['updated_at'] = _updatedAt;
     map['updated_by'] = _updatedBy;
+    map['pnrid'] = _pnrid;
     map['no_request_trip'] = _noRequestTrip;
     map['employee_name'] = _employeeName;
     map['vendor'] = _vendor;
+    map['departure'] = _departure;
+    map['arrival'] = _arrival;
+    map['departure_time'] = _departureTime;
+    map['arrival_time'] = _arrivalTime;
     return map;
   }
-
 }

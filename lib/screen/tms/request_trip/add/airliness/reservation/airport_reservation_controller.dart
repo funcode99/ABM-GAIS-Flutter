@@ -48,7 +48,6 @@ class AirportReservationController extends BaseController {
   bool isLoading = false;
   String? pnrID;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -211,11 +210,11 @@ class AirportReservationController extends BaseController {
               flight.fare.toString(),
               pnrID,
             )
-            .then((value) => Get.off(const AirlinessScreen(), arguments: {
-                  'purposeID': purposeID,
-                  'codeDocument': codeDocument,
-                  'formEdit': formEdit,
-                }));
+            .then(
+              (value) => formEdit == true
+                  ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+                  : Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
+            );
       } catch (e, i) {
         e.printError();
         i.printError();

@@ -77,7 +77,7 @@ class CustomTripCard extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
+                          SizedBox(
                             width: Get.width /2.2,
                             child: Text(
                               title,
@@ -99,11 +99,11 @@ class CustomTripCard extends StatelessWidget {
                       ? Container(
                           alignment: Alignment.center,
                           width: Get.width/5,
-                          padding: EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
                           decoration: BoxDecoration(color: ColorUtil.getStatusColorByText(status!), borderRadius: BorderRadius.circular(5)),
                           child: Text(
                             status ?? "",
-                            style: TextStyle(fontSize: 12, color: whiteColor, fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontSize: 12, color: whiteColor, fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                         )

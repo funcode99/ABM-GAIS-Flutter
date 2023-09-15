@@ -227,7 +227,7 @@ abstract class Repository {
 
   Future<GetAirlinessVendorModel> getAirlinessVendorList();
 
-  Future<GetAirlinessModel> getAirlinessBytripList();
+  Future<GetAirlinessModel> getAirlinessBytripList(String id);
 
   Future<GetAirlinessModel> getAirlinessByid(String id);
 
