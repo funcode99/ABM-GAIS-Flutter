@@ -380,7 +380,11 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
 
       selectedRoom(selected);
       listShowedRoom.clear();
-      listShowedRoom.add(selected);
+      if(id.isNotEmpty){
+        listShowedRoom.add(selected);
+      }else{
+        listShowedRoom.addAll(listRoom);
+      }
     }
   }
 
