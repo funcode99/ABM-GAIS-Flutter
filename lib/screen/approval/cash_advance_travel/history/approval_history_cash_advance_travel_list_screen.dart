@@ -10,6 +10,7 @@ import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/screen/approval/cash_advance_travel/detail/approval_cash_advance_travel_detail_screen.dart';
 import 'package:gais/screen/approval/cash_advance_travel/history/approval_history_cash_advance_travel_list_controller.dart';
@@ -139,6 +140,9 @@ class ApprovalHistoryCashAdvanceTravelListScreen extends StatelessWidget {
                   controller.getHeader();
                 },
                 child: Obx(() {
+                  if(controller.isLoading.value){
+                    return const CustomIndicator();
+                  }
                   return controller.listHeader.isEmpty
                       ? const DataEmpty()
                       : ListView(

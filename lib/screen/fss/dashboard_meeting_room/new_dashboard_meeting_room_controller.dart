@@ -121,6 +121,8 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
     DateTime.now().copyDateWith(hour: 17, minute: 00, second: 0),
   ];
 
+  final isLoading = true.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -227,6 +229,8 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
   }
 
   void getHeader() async {
+    isLoading(true);
+
     String date = "$selectedYear-$selectedMonth-$selectedDate";
     final result = await _repository.getData(
         data: {
@@ -241,12 +245,15 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
     result.fold((l) {
         Get.showSnackbar(CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
         listHeader.clear();
-      },
+        isLoading(false);
+
+    },
       (r) {
         listHeader.clear();
         listHeader.addAll(r);
 
         populateMapping();
+        isLoading(false);
       });
   }
 

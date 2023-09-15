@@ -8,8 +8,7 @@ import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class ApprovalHistoryCashAdvanceNonTravelListController extends BaseController{
-
+class ApprovalHistoryCashAdvanceNonTravelListController extends BaseController {
   final TextEditingController dateRangeController = TextEditingController();
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat formatFilter = DateFormat("yyyy-MM-dd");
@@ -19,7 +18,8 @@ class ApprovalHistoryCashAdvanceNonTravelListController extends BaseController{
   final startDateTemp = Rxn<DateTime>();
   final endDateTemp = Rxn<DateTime>();
 
-  final CashAdvanceNonTravelRepository _cashAdvanceTravelNonRepository = Get.find();
+  final CashAdvanceNonTravelRepository _cashAdvanceTravelNonRepository =
+      Get.find();
   final listHeader = <ApprovalCashAdvanceModel>[].obs;
 
   final listStatus = <StatusDocModel>[].obs;
@@ -33,6 +33,8 @@ class ApprovalHistoryCashAdvanceNonTravelListController extends BaseController{
   final currentPage = 1.obs;
   int limit = 10;
 
+  final isLoading = true.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -45,7 +47,7 @@ class ApprovalHistoryCashAdvanceNonTravelListController extends BaseController{
     initData();
   }
 
-  void initData()async{
+  void initData() async {
     listStatus.add(StatusDocModel(code: "", status: "Status"));
     listStatus.add(StatusDocModel(code: 4, status: "Revision"));
     listStatus.add(StatusDocModel(code: 9, status: "Rejected"));
@@ -56,68 +58,70 @@ class ApprovalHistoryCashAdvanceNonTravelListController extends BaseController{
   }
 
   void getHeader({int page = 1}) async {
-    final result = await _cashAdvanceTravelNonRepository.getPaginationDataApprovalHistory(
-        data: {
-          "page" : page,
-          "perPage" : limit,
-          "search" : keyword.value,
-          "start_date" : startDate.value != null ? formatFilter.format(startDate.value!) : "",
-          "end_date" : endDate.value != null ? formatFilter.format(endDate.value!) : "",
-          "status" : selectedStatus.value?.code ?? "",
-        }
-    );
+    isLoading(true);
+    final result = await _cashAdvanceTravelNonRepository
+        .getPaginationDataApprovalHistory(data: {
+      "page": page,
+      "perPage": limit,
+      "search": keyword.value,
+      "start_date":
+          startDate.value != null ? formatFilter.format(startDate.value!) : "",
+      "end_date":
+          endDate.value != null ? formatFilter.format(endDate.value!) : "",
+      "status": selectedStatus.value?.code ?? "",
+    });
 
-    result.fold(
-            (l) {
-          Get.showSnackbar(
-              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
-          listHeader.clear();
-          totalPage(1);
-          currentPage(1);
-        },
-            (r) {
-          paginationModel = r;
-          int tempTotalPage = (paginationModel!.total!/limit).ceil();
-          totalPage(tempTotalPage);
-          currentPage(paginationModel?.currentPage);
+    result.fold((l) {
+      Get.showSnackbar(
+          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+      listHeader.clear();
+      totalPage(1);
+      currentPage(1);
+      isLoading(false);
+    }, (r) {
+      paginationModel = r;
+      int tempTotalPage = (paginationModel!.total! / limit).ceil();
+      totalPage(tempTotalPage);
+      currentPage(paginationModel?.currentPage);
 
-          listHeader.value = paginationModel!.data!
-              .map((e) => ApprovalCashAdvanceModel.fromJson(e))
-              .toList();
-          listHeader.refresh();
-        });
+      listHeader.value = paginationModel!.data!
+          .map((e) => ApprovalCashAdvanceModel.fromJson(e))
+          .toList();
+      listHeader.refresh();
+      isLoading(false);
+    });
   }
 
-  void applySearch(String search){
+  void applySearch(String search) {
     keyword(search);
     getHeader(page: 1);
   }
 
-  void resetFilter(){
+  void resetFilter() {
     endDateTemp.value = null;
     startDateTemp.value = null;
     dateRangeController.text = "";
     onChangeSelectedStatus("");
   }
 
-  void openFilter(){
+  void openFilter() {
     startDateTemp.value = startDate.value;
     endDateTemp.value = endDate.value;
-    if(DateUtils.isSameDay(startDateTemp.value, endDateTemp.value)){
+    if (DateUtils.isSameDay(startDateTemp.value, endDateTemp.value)) {
       endDateTemp.value = null;
     }
 
-    if(startDateTemp.value!=null){
-      dateRangeController.text = "${dateFormat.format(startDate.value!)} - ${dateFormat.format(endDate.value!)}";
-    }else{
+    if (startDateTemp.value != null) {
+      dateRangeController.text =
+          "${dateFormat.format(startDate.value!)} - ${dateFormat.format(endDate.value!)}";
+    } else {
       dateRangeController.text = "";
     }
 
     selectedStatusTemp.value = selectedStatus.value;
-
   }
 
-  void applyFilter(){
+  void applyFilter() {
     startDate.value = startDateTemp.value;
     endDate.value = endDateTemp.value;
     selectedStatus.value = selectedStatusTemp.value;
@@ -126,8 +130,8 @@ class ApprovalHistoryCashAdvanceNonTravelListController extends BaseController{
   }
 
   void onChangeSelectedStatus(String id) {
-    final selected = listStatus.firstWhere((item) => item.code.toString() == id.toString());
+    final selected =
+        listStatus.firstWhere((item) => item.code.toString() == id.toString());
     selectedStatusTemp(selected);
   }
-
 }

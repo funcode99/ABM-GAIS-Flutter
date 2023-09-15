@@ -5,6 +5,7 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/dataempty.dart';
+import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/detail/detail_booking_meeting_room_screen.dart';
@@ -363,6 +364,9 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
           ),
           Expanded(
               child: Obx(() {
+                if(controller.isLoading.value){
+                  return const CustomIndicator();
+                }
                 if (controller
                     .listMappedRoom
                     .isEmpty) {

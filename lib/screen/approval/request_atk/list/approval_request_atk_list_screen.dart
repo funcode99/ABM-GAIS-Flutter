@@ -12,6 +12,7 @@ import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/request_atk/detail/detail_approval_request_atk_screen.dart';
@@ -133,6 +134,9 @@ class ApprovalRequestATKListScreen extends StatelessWidget {
                 controller.getHeader();
               },
               child: Obx(() {
+                if(controller.isLoading.value){
+                  return const CustomIndicator();
+                }
                 return controller.listHeader.isEmpty
                     ? const DataEmpty()
                     : ListView(

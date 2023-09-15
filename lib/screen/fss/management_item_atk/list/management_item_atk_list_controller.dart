@@ -59,6 +59,7 @@ class ManagementItemATKListController extends BaseController
   final currentPage = 1.obs;
   int limit = 10;
   final isEmployee = false.obs;
+  final isLoading = true.obs;
 
   @override
   void onInit() {
@@ -121,6 +122,7 @@ class ManagementItemATKListController extends BaseController
   }
 
   void getHeader({int page = 1}) async {
+    isLoading(true);
     String codeRole = await storage.readString(StorageCore.codeRole);
 
     if(codeRole != RoleEnum.administrator.value){
@@ -154,6 +156,7 @@ class ManagementItemATKListController extends BaseController
       listHeader.clear();
       totalPage(1);
       currentPage(1);
+      isLoading(false);
     }, (r) {
       paginationModel = r;
       int tempTotalPage = (paginationModel!.total! / limit).ceil();
@@ -164,6 +167,7 @@ class ManagementItemATKListController extends BaseController
           .map((e) => ManagementItemATKModel.fromJson(e))
           .toList();
       listHeader.refresh();
+      isLoading(false);
     });
   }
 
@@ -231,9 +235,9 @@ class ManagementItemATKListController extends BaseController
   }
 
   void onChangeSelectedSite(String id) {
-    final selected = listSite.firstWhere(
+    final selected = listSiteFiltered.firstWhere(
             (item) => item.id.toString() == id.toString(),
-        orElse: () => listSite.first);
+        orElse: () => listSiteFiltered.first);
     selectedSiteTemp(selected);
 
     //clear warehouse and filter warehouses
