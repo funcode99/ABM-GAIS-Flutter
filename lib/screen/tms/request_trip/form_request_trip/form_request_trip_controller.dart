@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
-import 'package:gais/data/model/antavaya/get_reservation_ticket_model.dart';
 import 'package:gais/data/model/approval_request_trip/approval_info_model.dart' as ai;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
 import 'package:gais/data/model/reference/get_site_model.dart' as st;
@@ -453,6 +452,9 @@ class FormRequestTripController extends BaseController {
             arrivalTime: reservation['FlightDetails'][0]['ArriveTime'],
             flightNo: reservation['FlightDetails'][0]['FlightNumber'],
             ticketPrice: e.ticketPrice,
+            departureDate: reservation['FlightDetails'][0]['DepartDate'],
+            arrivalDate: reservation['FlightDetails'][0]['ArriveDate'],
+            flightClass: reservation['FlightDetails'][0]['Class'],
           ));
           update();
         });

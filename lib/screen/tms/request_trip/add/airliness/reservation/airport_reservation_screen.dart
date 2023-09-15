@@ -246,6 +246,26 @@ class AirportReservationScreen extends StatelessWidget {
                                 controller: controller.passBirthDate,
                                 label: "Birth Date",
                                 isRequired: true,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "This field is required";
+                                  }
+                                  return null;
+                                },
+                                suffixIcon: const Icon(Icons.calendar_month),
+                                readOnly: true,
+                                onTap: () => showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime.now(),
+                                ).then(
+                                  (date) {
+                                    controller.birthDate = date!;
+                                    controller.passBirthDate.text = controller.dateFormat.format(date);
+                                    controller.update();
+                                  },
+                                ),
                               ),
                               const SizedBox(height: 8),
                               CustomTextFormField(
