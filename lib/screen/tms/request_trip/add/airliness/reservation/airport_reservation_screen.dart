@@ -6,7 +6,6 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customformlabel.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
-import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/reservation/airport_reservation_controller.dart';
@@ -14,6 +13,7 @@ import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
+import 'package:email_validator/email_validator.dart';
 
 class AirportReservationScreen extends StatelessWidget {
   const AirportReservationScreen({super.key});
@@ -105,7 +105,7 @@ class AirportReservationScreen extends StatelessWidget {
                                         Text(controller.flight.arriveTime.toString()),
                                         Text(controller.flight.destination.toString()),
                                         const Text(""),
-                                        controller.flight.totalTransit != 0 ? Text('') : Container(),
+                                        controller.flight.totalTransit != 0 ? const Text('') : Container(),
                                       ],
                                     ),
                                     Column(
@@ -169,7 +169,7 @@ class AirportReservationScreen extends StatelessWidget {
                                 inputType: TextInputType.number,
                                 validator: (value) {
                                   print(value!.length);
-                                  if (value == null || value.isEmpty || value.length <5 ) {
+                                  if (value == null || value.isEmpty || value.length < 5) {
                                     return 'Number must be between 5 and 20 characters';
                                   }
                                   return null;
@@ -183,7 +183,7 @@ class AirportReservationScreen extends StatelessWidget {
                                 inputType: TextInputType.number,
                                 validator: (value) {
                                   print(value!.length);
-                                  if (value == null || value.isEmpty || value.length <5 ) {
+                                  if (value == null || value.isEmpty || value.length < 5) {
                                     return 'Number must be between 5 and 20 characters';
                                   }
                                   return null;
@@ -194,6 +194,15 @@ class AirportReservationScreen extends StatelessWidget {
                                 controller: controller.bookEmail,
                                 label: "Email",
                                 isRequired: true,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'The field is required';
+                                  }
+                                  if (!(EmailValidator.validate(value!))) {
+                                    return 'Check your email format';
+                                  }
+                                  return null;
+                                },
                               ),
                               const SizedBox(height: 8),
                               Container(
@@ -243,6 +252,15 @@ class AirportReservationScreen extends StatelessWidget {
                                 controller: controller.passEmail,
                                 label: "Email",
                                 isRequired: true,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'The field is required';
+                                  }
+                                  if (!(EmailValidator.validate(value!))) {
+                                    return 'Check your email format';
+                                  }
+                                  return null;
+                                },
                               ),
                               const SizedBox(height: 8),
                               const CustomFormLabel(label: "Is Senior Citizen?", showRequired: true),
@@ -278,7 +296,7 @@ class AirportReservationScreen extends StatelessWidget {
                                 inputType: TextInputType.number,
                                 validator: (value) {
                                   print(value!.length);
-                                  if (value == null || value.isEmpty || value.length <5 ) {
+                                  if (value == null || value.isEmpty || value.length < 5) {
                                     return 'Number must be between 5 and 20 characters';
                                   }
                                   return null;
@@ -321,6 +339,15 @@ class AirportReservationScreen extends StatelessWidget {
                                 controller: controller.passEmergencyEmail,
                                 label: "Emergency Email",
                                 isRequired: true,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'The field is required';
+                                  }
+                                  if (!(EmailValidator.validate(value!))) {
+                                    return 'Check your email format';
+                                  }
+                                  return null;
+                                },
                               ),
                               const SizedBox(height: 8),
                               CustomTextFormField(
@@ -330,7 +357,7 @@ class AirportReservationScreen extends StatelessWidget {
                                 inputType: TextInputType.number,
                                 validator: (value) {
                                   print(value!.length);
-                                  if (value == null || value.isEmpty || value.length <5 ) {
+                                  if (value == null || value.isEmpty || value.length < 5) {
                                     return 'Number must be between 5 and 20 characters';
                                   }
                                   return null;
@@ -378,11 +405,11 @@ class AirportReservationScreen extends StatelessWidget {
                 controller.isLoading
                     ? Container(
                         color: neutralColor.withOpacity(0.4),
-                        child: Center(
+                        child: const Center(
                           child: CircularProgressIndicator(),
                         ),
                       )
-                    : SizedBox(),
+                    : const SizedBox(),
               ],
             ),
             bottomNavigationBar: const BottomBar(menu: 0),
