@@ -5,6 +5,7 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/antavaya/get_airport_schedule_model.dart' as schedule;
 import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
+import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
@@ -55,10 +56,13 @@ class AirportReservationController extends BaseController {
   }
 
   Future<void> saveData() async {
+    isLoading = true;
+    update();
     getSegment();
   }
 
   Future<void> getSegment() async {
+    isLoading = true;
     try {
       await antavaya
           .getSSR(
@@ -124,6 +128,7 @@ class AirportReservationController extends BaseController {
       e.printError();
       i.printError();
     }
+    isLoading = false;
     update();
   }
 

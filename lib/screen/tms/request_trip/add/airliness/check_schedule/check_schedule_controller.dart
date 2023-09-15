@@ -67,7 +67,6 @@ class CheckScheduleController extends BaseController {
   }
 
   Future<void> fetchList() async {
-    isLoading = true;
     print(schedules.length);
     // flightScheduleList = [];
     // scheduleList1 = [];
@@ -76,9 +75,13 @@ class CheckScheduleController extends BaseController {
     // scheduleList4 = [];
 
     schedules.forEachIndexed((i, sc) {
-      fetchSchedule(departureDate.add(Duration(days: i)), "2")
-          .then((value) => schedules[i].addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-      update();
+      airliness.forEach((e) {
+        fetchSchedule(departureDate.add(Duration(days: i)), e).then((value) {
+          schedules[i].addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []);
+          print(schedules[i]);
+        });
+        update();
+      });
     });
 
     // fetchSchedule(departureDate).then((value) => scheduleList1.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
@@ -93,7 +96,6 @@ class CheckScheduleController extends BaseController {
   }
 
   Future<schedule.GetAirportScheduleModel?> fetchSchedule(DateTime departDate, String airlines) async {
-    isLoading = true;
     try {
       var scheduleData = await antavaya.getAirportSchedule(
         departureModel.code.toString(),
@@ -104,6 +106,7 @@ class CheckScheduleController extends BaseController {
         child.toString(),
         airlines,
       );
+      print("length : ${schedules[1].length}");
       isLoading = false;
       update();
       return scheduleData;

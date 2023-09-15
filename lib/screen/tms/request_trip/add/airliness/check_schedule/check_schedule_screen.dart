@@ -282,11 +282,17 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                                                 children: [
-                                                                                  Image.network(
-                                                                                    flight.connectingFlights!.first.airlineImageUrl.toString(),
-                                                                                    height: 40,
-                                                                                    width: 40,
-                                                                                  ),
+                                                                                  flight.connectingFlights!.first.airlineImageUrl != null
+                                                                                      ? Image.network(
+                                                                                          flight.connectingFlights!.first.airlineImageUrl.toString(),
+                                                                                          height: 40,
+                                                                                          width: 40,
+                                                                                        )
+                                                                                      : SvgPicture.asset(
+                                                                                          ImageConstant.airplane,
+                                                                                          height: 40,
+                                                                                          color: blueColor,
+                                                                                        ),
                                                                                   Column(
                                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                                     children: [
@@ -375,10 +381,16 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                               crossAxisAlignment: CrossAxisAlignment.center,
                                                                                               children: [
-                                                                                                Image.network(
-                                                                                                    connectFlight.airlineImageUrl.toString(),
-                                                                                                    height: 40,
-                                                                                                    width: 40),
+                                                                                                connectFlight.airlineImageUrl != null
+                                                                                                    ? Image.network(
+                                                                                                        connectFlight.airlineImageUrl.toString(),
+                                                                                                        height: 40,
+                                                                                                        width: 40)
+                                                                                                    : SvgPicture.asset(
+                                                                                                        ImageConstant.airplane,
+                                                                                                        height: 40,
+                                                                                                        color: blueColor,
+                                                                                                      ),
                                                                                                 Column(
                                                                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                                                                   children: [

@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/data/model/antavaya/get_airport_model.dart';
 import 'package:gais/data/model/antavaya/get_airport_schedule_model.dart';
+import 'package:gais/data/model/antavaya/get_reservation_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
 import 'package:gais/data/model/antavaya/save_reservation_flight_model.dart';
@@ -54,7 +55,6 @@ class AntavayaImpl implements AntavayaRepository {
         data: formData,
       );
 
-      print(response.data);
       return GetAirportScheduleModel.fromJson(response.data);
     } on DioError catch (e) {
       return e.error;
@@ -180,12 +180,13 @@ class AntavayaImpl implements AntavayaRepository {
       print(response.data);
       return response.data;
     } on DioError catch (e) {
+      print('reservation error: ${e.response?.data}');
       return e.error;
     }
   }
 
   @override
-  Future<GetRsvTicketModel> getRsvTicket(String pnrID) async {
+  Future getRsvTicket(String pnrID) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -195,8 +196,7 @@ class AntavayaImpl implements AntavayaRepository {
         "/api/antavaya/flight/get_reservation_flight/",
         queryParameters: {'Id': pnrID},
       );
-      print(response.data);
-      return GetRsvTicketModel.fromJson(response.data);
+      return response.data;
     } on DioError catch (e) {
       print('antavaya error: ${e.response?.data}');
       return e.error;
@@ -235,6 +235,7 @@ class AntavayaImpl implements AntavayaRepository {
       print(response.data);
       return GetSsrModel.fromJson(response.data);
     } on DioError catch (e) {
+      print('getSSR error: ${e.response?.data}');
       return e.error;
     }
   }

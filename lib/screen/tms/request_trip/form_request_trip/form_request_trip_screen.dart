@@ -535,14 +535,14 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Text("Departure", style: listTitleTextStyle),
-                                                                  Text("CGK (06.00)", style: listSubTitleTextStyle),
+                                                                  Text("${e.departure} (${e.departureTime})", style: listSubTitleTextStyle),
                                                                 ],
                                                               ),
                                                               Column(
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Text("Arrival", style: listTitleTextStyle),
-                                                                  Text("SUB (09.00)", style: listSubTitleTextStyle),
+                                                                  Text("${e.arrival} (${e.arrivalTime})", style: listSubTitleTextStyle),
                                                                 ],
                                                               ),
                                                               Column(
