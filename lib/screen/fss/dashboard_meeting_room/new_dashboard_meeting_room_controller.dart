@@ -22,8 +22,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class NewDashboardMeetingRoomController extends BaseController with MasterDataMixin {
-  List listYears = [];
-  final listDates = <WeekModel>[].obs;
+  final listYears = [].obs;
   List listMonths = [
     {"id": 1, "value": "January"},
     {"id": 2, "value": "February"},
@@ -39,19 +38,15 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
     {"id": 12, "value": "December"}
   ];
 
-  List listDays = [""];
+  final DateFormat dayDateFormat = DateFormat("EE");
+  final DateFormat requestDateFormat = DateFormat("yyyy-MM-dd");
 
-  DateTime? initialDate;
-  DateTime? nextDate;
-  DateTime? currentDate;
-  int? selectedDate = DateTime.now().day;
-  int? selectedMonth = DateTime.now().month;
-  int selectedYear = DateTime.now().year;
+  final selectedMonth = DateTime.now().month.obs;
+  final selectedYear = DateTime.now().year.obs;
 
-  bool loadCompany = false;
-  bool loadSite = false;
-  bool loadFloor = false;
-  bool loadRoom = false;
+  final selectedDate = Rxn<DateTime>();
+  final listDate = <DateTime>[].obs;
+  final firstDate = Rxn<DateTime>();
 
   final listCompany = <CompanyModel>[].obs;
   final selectedCompany = Rxn<CompanyModel>();
@@ -67,25 +62,6 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
 
   final companyName = "".obs;
   final siteName = "".obs;
-
-  List listOfDates(DateTime now) {
-    listDates.clear();
-    int currentDay = now.weekday;
-    initialDate = now.subtract(Duration(days: currentDay - 1));
-    nextDate = initialDate?.add(const Duration(days: 5));
-    currentDate = initialDate;
-    listDates.value = List<WeekModel>.generate(
-        nextDate!.difference(initialDate!).inDays,
-            (i) => WeekModel(
-          day: DateFormat("EE").format(initialDate!.add(Duration(days: i))),
-          date: int.parse(DateFormat("dd").format(initialDate!.add(Duration(days: i)))),
-        )
-      // "${DateFormat("EE").format(initialDate!.add(Duration(days: i)))}\n${DateFormat("dd").format(initialDate!.add(Duration(days: i)))}",
-    );
-
-    return listDates;
-  }
-
 
   DateTime? startDate;
   DateTime? endDate;
@@ -126,13 +102,9 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
   @override
   void onInit() {
     super.onInit();
-    listYears = Iterable<int>.generate((DateTime.now().year) + 1).skip(2020).toList().reversed.toList();
-    listOfDates(DateTime.now());
-    getHeader();
-
-    /*selectedCompany.listen((p0) {
-      getHeader();
-    });*/
+    listYears.value = Iterable<int>.generate((DateTime.now().year) + 10).skip(2020).toList().reversed.toList();
+    generateListOfDates(DateTime.now());
+    // getHeader();
 
     selectedSite.listen((p0) {
       getHeader();
@@ -141,6 +113,7 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
     /*selectedRoom.listen((p0) {
       getHeader();
     });*/
+
     listMap.listen((p0) {
       setListMappedBooking();
       setListMappedRoom();
@@ -154,14 +127,24 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
       populateMapping();
     });
 
+    selectedDate.listen((p0) {
+      getHeader();
+      if(p0 != null){
+        if(!listYears.contains(p0.year)){
+          listYears.add(p0.year);
+          listYears.sort((a, b) => b.compareTo(a));
+          selectedYear.value = p0.year;
+        }
+      }
+    });
+
   }
 
   @override
   void dispose() {
     super.dispose();
-    selectedDate = DateTime.now().day;
-    selectedMonth = DateTime.now().month;
-    selectedYear = DateTime.now().year;
+    selectedMonth.value = DateTime.now().month;
+    selectedYear.value = DateTime.now().year;
   }
 
 
@@ -231,7 +214,7 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
   void getHeader() async {
     isLoading(true);
 
-    String date = "$selectedYear-$selectedMonth-$selectedDate";
+    String date = requestDateFormat.format(selectedDate.value!);
     final result = await _repository.getData(
         data: {
           "start_date" : date,
@@ -418,4 +401,40 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
       listShowedRoom.addAll(filtered);
     }
   }
+
+  void generateNextWeek(){
+    if(firstDate.value != null){
+      generateListOfDates(firstDate.value!.add(const Duration(days: 7)));
+    }
+  }
+
+  void generatePrevWeek(){
+    if(firstDate.value != null){
+      generateListOfDates(firstDate.value!.subtract(const Duration(days: 7)));
+    }
+  }
+
+  void generateListOfDates(DateTime benchmarkDate, {bool firstDateSelected = false}){
+    listDate.clear();
+    DateTime today = DateTime.now().copyDateWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+    int currentDay = benchmarkDate.weekday;
+
+    firstDate.value = benchmarkDate.subtract(Duration(days: currentDay - 1));
+    for(int i = 0; i<7 ; i++){
+      listDate.add(firstDate.value!.add(Duration(days: i)).copyDateWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0));
+    }
+
+    if(firstDateSelected){
+      selectedDate.value = DateTime(benchmarkDate.year, benchmarkDate.month, 1);
+    }else{
+      if(today.millisecondsSinceEpoch >= listDate.first.millisecondsSinceEpoch && today.millisecondsSinceEpoch <= listDate.last.millisecondsSinceEpoch){
+        selectedDate.value = today;
+      }else{
+        selectedDate.value = listDate.first;
+      }
+    }
+
+    listDate.refresh();
+  }
+
 }

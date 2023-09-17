@@ -43,64 +43,62 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
                 height: 40,
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 // decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: greyColor)),
-                child: DropdownButton(
-                  hint: Text(
-                    "Month",
-                    style: appTitle,
-                  ),
-                  underline: const SizedBox(),
-                  icon: const Icon(Icons.keyboard_arrow_down),
-                  borderRadius: BorderRadius.circular(8),
-                  value: controller.selectedMonth.toString(),
-                  items: controller.listMonths.map((item) {
-                    return DropdownMenuItem<String>(
-                      value: item["id"].toString(),
-                      child: Text(
-                        item["value"].toString(),
-                        style: appTitle,
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    controller.selectedMonth = value!.toInt();
-                    controller.listOfDates(DateTime(controller
-                        .selectedYear, controller.selectedMonth!,
-                        controller.selectedDate!));
-                    controller.update();
-                  },
-                ),
+                child: Obx(() {
+                  return DropdownButton(
+                    hint: Text(
+                      "Month",
+                      style: appTitle,
+                    ),
+                    underline: const SizedBox(),
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    borderRadius: BorderRadius.circular(8),
+                    value: controller.selectedDate.value?.month.toString(),
+                    items: controller.listMonths.map((item) {
+                      return DropdownMenuItem<String>(
+                        value: item["id"].toString(),
+                        child: Text(
+                          item["value"].toString(),
+                          style: appTitle,
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      controller.selectedMonth.value = value!.toInt();
+                      controller.generateListOfDates(DateTime(controller.selectedYear.value, controller.selectedMonth.value, 1), firstDateSelected: true);
+                    },
+                  );
+                }),
               ),
               Container(
                 // width: 200,
                 height: 40,
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 // decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: greyColor)),
-                child: DropdownButton(
-                  hint: Text(
-                    "Year",
-                    style: appTitle,
-                  ),
-                  underline: const SizedBox(),
-                  icon: const Icon(Icons.keyboard_arrow_down),
-                  borderRadius: BorderRadius.circular(8),
-                  value: controller.selectedYear.toString(),
-                  items: controller.listYears.map((item) {
-                    return DropdownMenuItem<String>(
-                      value: item.toString(),
-                      child: Text(
-                        item.toString(),
-                        style: appTitle,
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    controller.selectedYear = value!.toInt();
-                    controller.listOfDates(DateTime(controller
-                        .selectedYear, controller.selectedMonth!,
-                        controller.selectedDate!));
-                    controller.update();
-                  },
-                ),
+                child: Obx(() {
+                  return DropdownButton(
+                    hint: Text(
+                      "Year",
+                      style: appTitle,
+                    ),
+                    underline: const SizedBox(),
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    borderRadius: BorderRadius.circular(8),
+                    value: controller.selectedDate.value?.year.toString(),
+                    items: controller.listYears.map((item) {
+                      return DropdownMenuItem<String>(
+                        value: item.toString(),
+                        child: Text(
+                          item.toString(),
+                          style: appTitle,
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      controller.selectedYear.value = value!.toInt();
+                      controller.generateListOfDates(DateTime(controller.selectedYear.value, controller.selectedMonth.value, 1), firstDateSelected: true);
+                    },
+                  );
+                }),
               ),
             ],
           ),
@@ -118,9 +116,7 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        controller.listOfDates(
-                            controller.currentDate!.subtract(
-                                const Duration(days: 7)));
+                        controller.generatePrevWeek();
                       },
                       child: Container(
                         width: 32,
@@ -131,66 +127,79 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
                             Icons.keyboard_arrow_left, color: whiteColor),
                       ),
                     ),
-                    Obx(() {
-                      return Row(
-                        children: controller.listDates
-                            .map((e) =>
-                            GestureDetector(
-                              onTap: () {
-                                controller.selectedDate = e.date!.toInt();
-                                controller.getHeader();
-                              },
-                              child: Column(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(6),
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 5),
-                                    decoration: BoxDecoration(
-                                        color: e.date ==
-                                            controller.selectedDate
-                                            ? infoColor
-                                            : baseColor,
-                                        borderRadius: BorderRadius.circular(
-                                            5)),
-                                    child: Text(
-                                      " ${e.day} ",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: e.date ==
-                                          controller.selectedDate
-                                          ? whiteColor
-                                          : blackColor),
+                    Expanded(
+                      child: Center(
+                        child: Obx(() {
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: controller.listDate
+                                  .map((e) =>
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.selectedDate.value = e;
+                                      controller.getHeader();
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(6),
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 5),
+                                          decoration: BoxDecoration(
+                                              color: e.isAtSameMomentAs(
+                                                  controller.selectedDate
+                                                      .value!)
+                                                  ? infoColor
+                                                  : baseColor,
+                                              borderRadius: BorderRadius
+                                                  .circular(
+                                                  5)),
+                                          child: Text(
+                                            " ${controller.dayDateFormat.format(
+                                                e)[0]} ",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: e.isAtSameMomentAs(
+                                                    controller.selectedDate
+                                                        .value!)
+                                                    ? whiteColor
+                                                    : blackColor),
+                                          ),
+                                        ),
+                                        Container(
+                                            padding: const EdgeInsets.all(6),
+                                            margin: const EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                                color: e.isAtSameMomentAs(
+                                                    controller.selectedDate
+                                                        .value!)
+                                                    ? infoColor
+                                                    : baseColor,
+                                                borderRadius: BorderRadius
+                                                    .circular(50)),
+                                            child: Text(
+                                              " ${e.day} ",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: e.isAtSameMomentAs(
+                                                      controller.selectedDate
+                                                          .value!)
+                                                      ? whiteColor
+                                                      : blackColor),
+                                            )),
+                                      ],
                                     ),
-                                  ),
-                                  Container(
-                                      padding: const EdgeInsets.all(6),
-                                      margin: const EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                          color: e.date ==
-                                              controller.selectedDate
-                                              ? infoColor
-                                              : baseColor,
-                                          borderRadius: BorderRadius
-                                              .circular(50)),
-                                      child: Text(
-                                        " ${e.date} ",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: e.date ==
-                                            controller.selectedDate
-                                            ? whiteColor
-                                            : blackColor),
-                                      )),
-                                ],
-                              ),
-                            ))
-                            .toList(),
-                      );
-                    }),
+                                  ))
+                                  .toList(),
+                            ),
+                          );
+                        }),
+                      ),
+                    ),
                     GestureDetector(
                       onTap: () {
-                        controller.listOfDates(
-                            controller.currentDate!.add(
-                                const Duration(days: 7)));
+                        controller.generateNextWeek();
                       },
                       child: Container(
                         width: 32,
@@ -210,10 +219,10 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
                   children: [
                     ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxWidth: Get.width / 2.3
+                          maxWidth: Get.width / 2.3
                       ),
                       child: LayoutBuilder(
-                        builder: (context, constraint){
+                        builder: (context, constraint) {
                           return Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
@@ -223,7 +232,8 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
                             child: Obx(() {
                               if (!controller.enableSelectCompany.value) {
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 15),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15),
                                   child: Text(
                                     "${controller.companyName}",
                                     overflow: TextOverflow.ellipsis,
@@ -233,14 +243,13 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
                               return DropdownButton(
                                 isExpanded: true,
                                 hint: Text(
-                                  controller.loadCompany
-                                      ? "Loading..."
-                                      : "Company",
+                                  "Company",
                                   style: listTitleTextStyle,
                                 ),
                                 underline: const SizedBox(),
                                 value: controller.selectedCompany.value != null
-                                    ? controller.selectedCompany.value?.id.toString()
+                                    ? controller.selectedCompany.value?.id
+                                    .toString()
                                     : "",
                                 icon: const Icon(Icons.arrow_drop_down),
                                 borderRadius: BorderRadius.circular(8),
@@ -256,7 +265,8 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
                                     ))
                                     .toList(),
                                 onChanged: (item) {
-                                  controller.onChangeSelectedCompany(item.toString());
+                                  controller.onChangeSelectedCompany(
+                                      item.toString());
                                 },
                               );
                             }),
@@ -269,7 +279,7 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
                           maxWidth: Get.width / 2.3
                       ),
                       child: LayoutBuilder(
-                        builder: (context, constraint){
+                        builder: (context, constraint) {
                           return Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
@@ -279,7 +289,8 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
                             child: Obx(() {
                               if (!controller.enableSelectSite.value) {
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 15),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15),
                                   child: Text(
                                     "${controller.siteName}",
                                     overflow: TextOverflow.ellipsis,
@@ -296,13 +307,15 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
                                     ))
                                     .toList(),
                                 onChanged: (item) {
-                                  controller.onChangeSelectedSite(item.toString());
+                                  controller.onChangeSelectedSite(
+                                      item.toString());
                                 },
                                 value: controller.selectedSite.value != null
-                                    ? controller.selectedSite.value?.id.toString()
+                                    ? controller.selectedSite.value?.id
+                                    .toString()
                                     : "",
                                 hint: Text(
-                                  controller.loadSite ? "Loading..." : "Site",
+                                  "Site",
                                   style: listTitleTextStyle,
                                 ),
                                 underline: const SizedBox(),
@@ -322,7 +335,7 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
                           maxWidth: Get.width / 2.3
                       ),
                       child: LayoutBuilder(
-                        builder: (context, constraint){
+                        builder: (context, constraint) {
                           return Container(
                             decoration: BoxDecoration(
                                 color: baseColor, borderRadius: BorderRadius
@@ -339,10 +352,12 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
                                     ))
                                     .toList(),
                                 onChanged: (item) {
-                                  controller.onChangeSelectedRoom(item.toString());
+                                  controller.onChangeSelectedRoom(
+                                      item.toString());
                                 },
                                 value: controller.selectedRoom.value != null
-                                    ? controller.selectedRoom.value?.id.toString()
+                                    ? controller.selectedRoom.value?.id
+                                    .toString()
                                     : "",
                                 hint: Text(
                                   "Room",
@@ -364,7 +379,7 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
           ),
           Expanded(
               child: Obx(() {
-                if(controller.isLoading.value){
+                if (controller.isLoading.value) {
                   return const CustomIndicator();
                 }
                 if (controller
@@ -387,7 +402,8 @@ class NewDashboardMeetingRoomScreen extends StatelessWidget {
                       interstitialEvenColor: Colors.grey[50],
                       interstitialOddColor: Colors.grey[200],
                     ),
-                    headers: controller.listMappedRoom.isNotEmpty ? controller.listMappedRoom.mapIndexed((index,
+                    headers: controller.listMappedRoom.isNotEmpty ? controller
+                        .listMappedRoom.mapIndexed((index,
                         element) =>
                         TimePlannerTitle(
                           title: element,
