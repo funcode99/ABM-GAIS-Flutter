@@ -4,9 +4,8 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/screen/auth/login/login_screen.dart';
 import 'package:gais/util/lang/app_translation.dart';
+import 'package:gais/util/navigation/navigation_util.dart';
 import 'package:get/get.dart';
-
-final navigatorKey = GlobalKey<NavigatorState>();
 
 class Gais extends StatelessWidget {
   const Gais({Key? key}) : super(key: key);
@@ -31,7 +30,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      navigatorKey: navigatorKey,
+      navigatorKey: NotificationUtil.navigationKey,
       translations: AppTranslation(),
       locale: Get.deviceLocale,
       fallbackLocale: const Locale("en", "US"),

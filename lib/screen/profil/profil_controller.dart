@@ -1,5 +1,6 @@
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/screen/auth/login/login_screen.dart';
+import 'package:gais/util/auth/microsoft_auth_util.dart';
 import 'package:gais/util/firebase/firebase_util.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +17,9 @@ class ProfilController extends BaseController {
   void doLogout() async {
     try {
       await repository.logout();
+      //logout microsoft
+      final oauth = MicrosoftAuthUtil().getConfig();
+      oauth.logout();
     } catch (e, i) {
       print("LOGOUT ERROR $e");
     }finally{

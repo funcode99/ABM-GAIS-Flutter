@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   "Login",
                                   style: titleTextStyle,
                                 ),
-                                SizedBox(height: 25),
+                                const SizedBox(height: 25),
                                 RichText(
                                   text: TextSpan(
                                     text: 'Username ',
@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     }
                                   },
                                 ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 RichText(
                                   text: TextSpan(
                                     text: 'Password ',
@@ -92,11 +92,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                               ? controller.isObscurePasswordLogin = false
                                               : controller.isObscurePasswordLogin = true;
                                           controller.isObscurePasswordLogin != false
-                                              ? controller.showIcon = Icon(
+                                              ? controller.showIcon = const Icon(
                                                   IconlyBold.show,
                                                   color: Colors.black,
                                                 )
-                                              : controller.showIcon = Icon(
+                                              : controller.showIcon = const Icon(
                                                   IconlyBold.hide,
                                                   color: Colors.black,
                                                 );
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Container(
                                   alignment: Alignment.centerRight,
                                   child: TextButton(
-                                    onPressed: () => Get.to(ForgotPasswordScreen()),
+                                    onPressed: () => Get.to(const ForgotPasswordScreen()),
                                     child: Text("Forgot Password?",
                                         style: listTitleTextStyle.copyWith(color: infoColor, decoration: TextDecoration.underline)),
                                   ),
@@ -134,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     controller.loginMicrosoft();
                                   },
                                 ),
-                                SizedBox(height: 10),//akubersama@365officems.com
+                                const SizedBox(height: 10),
                               ],
                             ),
                           ),
@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller.isLoading==true
                     ? Container(
                         decoration: BoxDecoration(color: greyColor.withOpacity(0.5)),
-                        child: Center(
+                        child: const Center(
                           child: CircularProgressIndicator.adaptive(),
                         ),
                       )

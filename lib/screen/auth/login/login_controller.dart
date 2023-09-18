@@ -10,6 +10,7 @@ import 'package:gais/data/storage_core.dart';
 import 'package:gais/gais.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/screen/home/home_screen.dart';
+import 'package:gais/util/auth/microsoft_auth_util.dart';
 import 'package:gais/util/firebase/firebase_util.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -195,16 +196,7 @@ class LoginController extends BaseController {
   }
 
   Future<void> loginMicrosoft()async{
-    Map<String, dynamic> env = FlavorConfig.instance.variables;
-    final Config config = Config(
-        tenant: env['tenant'],
-        clientId: env['client_id'],
-        scope: 'offline_access openid profile User.Read Calendars.ReadWrite OnlineMeetings.ReadWrite',
-        navigatorKey: navigatorKey,
-        webUseRedirect: false,
-        loader: const Center(child: CircularProgressIndicator())
-    );
-    final AadOAuth oauth = AadOAuth(config);
+    final oauth = MicrosoftAuthUtil().getConfig();
 
     final result = await oauth.login(refreshIfAvailable: true);
     result.fold(
