@@ -1,8 +1,14 @@
+import 'package:aad_oauth/aad_oauth.dart';
+import 'package:aad_oauth/model/token.dart' as oauthToken;
+import 'package:aad_oauth/model/config.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/data/model/login_model.dart';
 import 'package:gais/data/storage_core.dart';
+import 'package:gais/gais.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/screen/home/home_screen.dart';
 import 'package:gais/util/firebase/firebase_util.dart';
 import 'package:get/get.dart';
@@ -56,12 +62,23 @@ class LoginController extends BaseController {
     update();
   }
 
-  Future<void> doLogin() async {
+  void setLocalStorage(LoginModel loginModel){
+
+  }
+  Future<void> doLogin({bool loginMicrosoft = false, String? accessToken, String? refreshToken, String? email}) async {
+    String username = usernameLoginController.text;
+    String password = passwordLoginController.text;
+
+    if(loginMicrosoft){
+      username = "mssso";
+      password = "mssso";
+    }
+
     isLoading = true;
     update();
     try {
       await repository
-          .postLogin(usernameLoginController.text, passwordLoginController.text)
+          .postLogin(username, password, refreshToken: refreshToken, accessToken: accessToken, email: email)
           .then((value) {
             storage.saveToken(value.token?.data?.accessToken ?? "token null");
             storage.saveId(value.users?.id.toString() ?? "");
@@ -175,5 +192,39 @@ class LoginController extends BaseController {
     }
 
     return Future.value();
+  }
+
+  Future<void> loginMicrosoft()async{
+    Map<String, dynamic> env = FlavorConfig.instance.variables;
+    final Config config = Config(
+        tenant: env['tenant'],
+        clientId: env['client_id'],
+        scope: 'offline_access openid profile User.Read Calendars.ReadWrite OnlineMeetings.ReadWrite',
+        navigatorKey: navigatorKey,
+        webUseRedirect: false,
+        loader: const Center(child: CircularProgressIndicator())
+    );
+    final AadOAuth oauth = AadOAuth(config);
+
+    final result = await oauth.login(refreshIfAvailable: true);
+    result.fold(
+      (l){
+        Get.showSnackbar(CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        print("ERROR $l");
+      },
+      (oauthToken.Token r) async{
+        print('Logged in successfully');
+        final accessToken = r.accessToken;
+        final refreshToken = r.refreshToken;
+
+        //get email
+        final email = await repository.getEmail(accessToken);
+        if(email!=null){
+          doLogin(loginMicrosoft: true, accessToken: accessToken, refreshToken: refreshToken, email: email);
+        }
+      },
+    );
+
+
   }
 }

@@ -8,9 +8,19 @@ import 'package:gais/screen/auth/login/login_controller.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return GetBuilder<LoginController>(
@@ -118,8 +128,13 @@ class LoginScreen extends StatelessWidget {
                                   alignment: Alignment.center,
                                   child: Text("OR", style: listTitleTextStyle),
                                 ),
-                                CustomFilledButton(color: infoColor, title: "Login via Falcon"),
-                                SizedBox(height: 10),
+                                CustomFilledButton(
+                                  color: infoColor, title: "Login via Falcon",
+                                  onPressed: ()async{
+                                    controller.loginMicrosoft();
+                                  },
+                                ),
+                                SizedBox(height: 10),//akubersama@365officems.com
                               ],
                             ),
                           ),

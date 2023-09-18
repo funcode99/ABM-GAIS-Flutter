@@ -49,10 +49,11 @@ dependencies:
   device_info_plus: ^9.0.3
   android_id: ^0.3.3
   url_launcher: ^6.1.12
+  aad_oauth: ^0.4.4
   time_planner:
     git:
       url: https://github.com/fajarainul/time_planner.git
-#    path: ../time_planner
+      #    path: ../time_planner
 
 
 dev_dependencies:
