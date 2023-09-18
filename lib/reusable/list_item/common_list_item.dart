@@ -16,7 +16,8 @@ class CommonListItem extends StatelessWidget {
         required this.action,
         this.padding,
         this.total,
-        this.onTap
+        this.onTap,
+        this.isEllipsis = true
       });
 
   final String number;
@@ -28,6 +29,7 @@ class CommonListItem extends StatelessWidget {
   final VoidCallback? onTap;
   final String? total;
   final EdgeInsets? padding;
+  final bool isEllipsis;
 
   @override
   Widget build(BuildContext context) {
@@ -101,11 +103,11 @@ class CommonListItem extends StatelessWidget {
                       backgroundColor: infoColor,
                       content: Text(total!,
                           style: listSubTitleTextStyle.copyWith(
-                            overflow: TextOverflow.ellipsis,
+                            overflow: isEllipsis ? TextOverflow.ellipsis : null,
                               color: whiteColor, fontSize: 14),
                           textAlign: TextAlign.center),
                       padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 32),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                     ),
                   ) : const SizedBox(),
                   const SizedBox(

@@ -14,6 +14,7 @@ import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/booking_meeting_room/add/add_booking_meeting_room_screen.dart';
@@ -177,6 +178,9 @@ class BookingMeetingRoomListScreen extends StatelessWidget {
                     controller.getHeader();
                   },
                   child: Obx(() {
+                    if(controller.isLoading.value){
+                      return const CustomIndicator();
+                    }
                     return controller.listHeader.isEmpty
                         ? const DataEmpty()
                         : ListView(

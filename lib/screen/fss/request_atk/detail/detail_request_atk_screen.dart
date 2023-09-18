@@ -302,7 +302,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                             Obx(() {
                               return controller.onEdit.value
                                   ? Container(
-                                margin: const EdgeInsets.only(right: 8, bottom: 8),
+                                margin: const EdgeInsets.only(right: 8, bottom: 8, top: 16),
                                 alignment: Alignment.topRight,
                                 child: SizedBox(
                                   width: 100,
@@ -430,7 +430,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                                                       style: listTitleTextStyle,
                                                     ),
                                                     Text(
-                                                      "${item.qtyUnsend ?? ""}",
+                                                      "${item.codeStatusDoc! > 2 ? item.qtyUnsend : 0  ?? ""}",
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .bodyText1

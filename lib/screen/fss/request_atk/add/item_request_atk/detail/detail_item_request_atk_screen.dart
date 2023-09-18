@@ -35,7 +35,7 @@ class _DetailItemRequestATKScreenState extends State<DetailItemRequestATKScreen>
     _uomController.text = "${widget.detailItem.uomName}";
     _siteController.text = "${widget.header.siteName}";
     _warehouseController.text = "${widget.detailItem.warehouseName}";
-    _remarksController.text = widget.detailItem.remarks ?? "";
+    _remarksController.text = widget.detailItem.remarksDetail ?? "";
   }
 
   @override

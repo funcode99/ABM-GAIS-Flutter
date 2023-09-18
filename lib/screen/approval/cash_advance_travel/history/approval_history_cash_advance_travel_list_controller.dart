@@ -33,6 +33,8 @@ class ApprovalHistoryCashAdvanceTravelListController extends BaseController{
   final currentPage = 1.obs;
   int limit = 10;
 
+  final isLoading = true.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -56,6 +58,7 @@ class ApprovalHistoryCashAdvanceTravelListController extends BaseController{
   }
 
   void getHeader({int page = 1}) async {
+    isLoading(true);
     final result = await _repository.getPaginationDataApprovalHistory(
         data: {
           "page" : page,
@@ -74,12 +77,14 @@ class ApprovalHistoryCashAdvanceTravelListController extends BaseController{
           listHeader.clear();
           totalPage(1);
           currentPage(1);
+          isLoading(false);
         },
             (r) {
           paginationModel = r;
           int tempTotalPage = (paginationModel!.total!/limit).ceil();
           totalPage(tempTotalPage);
           currentPage(paginationModel?.currentPage);
+          isLoading(false);
 
           listHeader.value = paginationModel!.data!
               .map((e) => ApprovalCashAdvanceModel.fromJson(e))

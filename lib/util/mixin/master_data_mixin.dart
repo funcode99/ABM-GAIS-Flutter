@@ -85,7 +85,7 @@ mixin MasterDataMixin{
     return result.fold((l) => [], (list) => list);
   }
 
-  Future<List<RoomModel>> getListMeetingRoomBySiteId(int idSite)async{
+  Future<List<RoomModel>> getListMeetingRoomBySiteId(dynamic idSite)async{
     final result = await _repository.getListMeetingRoomBySiteId(idSite);
     return result.fold((l) => [], (list) => list);
   }

@@ -3,11 +3,16 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
+import 'package:gais/data/model/master/company/company_model.dart';
+import 'package:gais/data/model/master/room/room_model.dart';
+import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
 import 'package:gais/data/model/week_model.dart';
 import 'package:gais/data/repository/booking_meeting_room/dashboard_meeting_room_repository.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
+import 'package:gais/util/enum/role_enum.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/date_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -17,8 +22,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class NewDashboardMeetingRoomController extends BaseController with MasterDataMixin {
-  List listYears = [];
-  List<WeekModel> listDates = [];
+  final listYears = [].obs;
   List listMonths = [
     {"id": 1, "value": "January"},
     {"id": 2, "value": "February"},
@@ -34,85 +38,41 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
     {"id": 12, "value": "December"}
   ];
 
-  List listDays = [""];
-  List<comp.Data> listCompany = [];
-  List<site.Data> listSite = [];
-  List listFloor = [];
-  List listRoom = [];
+  final DateFormat dayDateFormat = DateFormat("EE");
+  final DateFormat requestDateFormat = DateFormat("yyyy-MM-dd");
 
-  DateTime? initialDate;
-  DateTime? nextDate;
-  DateTime? currentDate;
-  int? selectedDate = DateTime.now().day;
-  int? selectedMonth = DateTime.now().month;
-  int selectedYear = DateTime.now().year;
-  int? selectedCompany;
-  int? selectedSite;
-  int? selectedFloor;
-  int? selectedRoom;
+  final selectedMonth = DateTime.now().month.obs;
+  final selectedYear = DateTime.now().year.obs;
 
-  bool loadCompany = false;
-  bool loadSite = false;
-  bool loadFloor = false;
-  bool loadRoom = false;
+  final selectedDate = Rxn<DateTime>();
+  final listDate = <DateTime>[].obs;
+  final firstDate = Rxn<DateTime>();
 
-  List listOfDates(DateTime now) {
-    listDates = [];
-    int currentDay = now.weekday;
-    initialDate = now.subtract(Duration(days: currentDay - 1));
-    nextDate = initialDate?.add(const Duration(days: 5));
-    currentDate = initialDate;
-    listDates = List<WeekModel>.generate(
-        nextDate!.difference(initialDate!).inDays,
-            (i) => WeekModel(
-          day: DateFormat("EE").format(initialDate!.add(Duration(days: i))),
-          date: int.parse(DateFormat("dd").format(initialDate!.add(Duration(days: i)))),
-        )
-      // "${DateFormat("EE").format(initialDate!.add(Duration(days: i)))}\n${DateFormat("dd").format(initialDate!.add(Duration(days: i)))}",
-    );
+  final listCompany = <CompanyModel>[].obs;
+  final selectedCompany = Rxn<CompanyModel>();
+  final enableSelectCompany = false.obs;
 
-    update();
-    return listDates;
-  }
+  final listSite = <SiteModel>[].obs;
+  final selectedSite = Rxn<SiteModel>();
+  final enableSelectSite = false.obs;
 
-  Future<void> listOfCompany() async {
-    loadCompany = true;
-    listCompany = [];
-    await repository.getCompanyList().then((value) => listCompany.addAll(value.data?.toSet().toList() ?? []));
-    loadCompany = false;
-    update();
-  }
+  final listShowedRoom = <RoomModel>[].obs;
+  final listRoom = <RoomModel>[].obs;
+  final selectedRoom = Rxn<RoomModel>();
 
-  Future<void> listOfSite(String idCompany) async {
-    loadSite = true;
-    listSite = [];
-    await repository.getSiteListByCompanyID(idCompany).then((value) => listSite.addAll(value.data?.toSet().toList() ?? []));
-    loadSite = false;
-    update();
-  }
-
-  Future<void> listOfFLoor(int idSite) async {
-    loadFloor = true;
-    listFloor = [];
-    loadFloor = false;
-    update();
-  }
-
-  Future<void> listOfRoom(int idFloor) async {
-    loadRoom = true;
-    listRoom = [];
-    loadRoom = false;
-    update();
-  }
+  final companyName = "".obs;
+  final siteName = "".obs;
 
   DateTime? startDate;
   DateTime? endDate;
   DateFormat formatFilter = DateFormat("yyyy-MM-dd");
   final DashboardMeetingRoomRepository _repository = Get.find();
 
-  List<BookingMeetingRoomModel> listHeader = [];
+  final listHeader = <BookingMeetingRoomModel>[].obs;
+  final listMappedBooking = <BookingMeetingRoomModel>[].obs;
+  final listMappedRoom = <String>[].obs;
 
-  Map<String, dynamic> listMap = {};
+  final listMap = {}.obs;
 
   final List<DateTime> _listHours = [
     DateTime.now().copyDateWith(hour: 7, minute: 30, second: 0),
@@ -137,59 +97,164 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
     DateTime.now().copyDateWith(hour: 17, minute: 00, second: 0),
   ];
 
+  final isLoading = true.obs;
+
   @override
   void onInit() {
     super.onInit();
-    listYears = Iterable<int>.generate((DateTime.now().year) + 1).skip(2020).toList().reversed.toList();
-    listOfDates(DateTime.now());
-    listOfCompany();
+    listYears.value = Iterable<int>.generate((DateTime.now().year) + 10).skip(2020).toList().reversed.toList();
+    generateListOfDates(DateTime.now());
+    // getHeader();
 
-    getHeader();
+    selectedSite.listen((p0) {
+      getHeader();
+    });
+
+    /*selectedRoom.listen((p0) {
+      getHeader();
+    });*/
+
+    listMap.listen((p0) {
+      setListMappedBooking();
+      setListMappedRoom();
+    });
+
+    listShowedRoom.listen((p0) {
+      populateMapping();
+    });
+
+    listHeader.listen((p0) {
+      populateMapping();
+    });
+
+    selectedDate.listen((p0) {
+      getHeader();
+      if(p0 != null){
+        if(!listYears.contains(p0.year)){
+          listYears.add(p0.year);
+          listYears.sort((a, b) => b.compareTo(a));
+          selectedYear.value = p0.year;
+        }
+      }
+    });
+
   }
 
   @override
   void dispose() {
     super.dispose();
-    selectedDate = DateTime.now().day;
-    selectedMonth = DateTime.now().month;
-    selectedYear = DateTime.now().year;
+    selectedMonth.value = DateTime.now().month;
+    selectedYear.value = DateTime.now().year;
   }
 
 
+  @override
+  void onReady() {
+    super.onReady();
+    initData();
+  }
+
+  initData() async {
+    String companyName = await storage.readString(StorageCore.companyName);
+    String idCompany = await storage.readString(StorageCore.companyID);
+    String siteName = await storage.readString(StorageCore.siteName);
+    String idSite = await storage.readString(StorageCore.siteID);
+    String codeRole = await storage.readString(StorageCore.codeRole);
+
+    listRoom.add(RoomModel(id: "", nameMeetingRoom: "Meeting Room"));
+
+    //TODO remove superadmin
+    if(codeRole == RoleEnum.administrator.value){
+    // if(codeRole == RoleEnum.administrator.value || codeRole == RoleEnum.superAdmin.value){
+      enableSelectCompany(true);
+
+      listCompany.add(CompanyModel(id: "", companyName: "Company"));
+      final companies = await getListCompany();
+      listCompany.addAll(companies);
+      onChangeSelectedCompany(idCompany);
+    }else{
+      selectedCompany.value = CompanyModel(
+          id: idCompany
+      );
+      listCompany.add(CompanyModel(id: idCompany, companyName: companyName));
+      onChangeSelectedCompany(idCompany);
+      this.companyName.value = companyName;
+    }
+
+    if(codeRole == RoleEnum.administrator.value || codeRole == RoleEnum.superAdmin.value){
+      enableSelectSite(true);
+
+      listSite.add(SiteModel(id: "", siteName: "Site"));
+
+      onChangeSelectedSite(listSite.first.id);
+    }else{
+      selectedSite.value = SiteModel(
+          id: idSite
+      );
+      listSite.add(SiteModel(id: idSite, siteName: siteName));
+      onChangeSelectedSite(idSite);
+      this.siteName.value = siteName;
+    }
+
+    onChangeSelectedRoom("");
+  }
+
+  void getMeetingRoom() async{
+    if(selectedSite.value != null){
+      if(selectedSite.value!.id != null){
+        listShowedRoom.clear();
+        listRoom.removeWhere((element) => element.id != "");
+        final list = await getListMeetingRoomBySiteId(selectedSite.value!.id);
+        listRoom.addAll(list);
+        listShowedRoom.addAll(list);
+      }
+    }
+  }
+
   void getHeader() async {
-    String date = "$selectedYear-$selectedMonth-$selectedDate";
+    isLoading(true);
+
+    String date = requestDateFormat.format(selectedDate.value!);
     final result = await _repository.getData(
         data: {
           "start_date" : date,
           "end_date" : date,
+          "id_company" : selectedCompany.value?.id,
+          "id_site" : selectedSite.value?.id,
+          "id_meeting_room[]" : selectedRoom.value?.id,
         }
     );
 
     result.fold((l) {
         Get.showSnackbar(CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
         listHeader.clear();
-      },
+        isLoading(false);
+
+    },
       (r) {
         listHeader.clear();
         listHeader.addAll(r);
 
         populateMapping();
+        isLoading(false);
       });
   }
-
 
   void populateMapping(){
     Map<String, dynamic> tempMap = {};
     int position = 0;
     listMap.clear();
 
-    for (BookingMeetingRoomModel element in listHeader) {
-      tempMap.putIfAbsent("${element.idMeetingRoom}", () => {
-        "room_name" : element.nameMeetingRoom,
-        "listBooking" : listHeader.where((e) => e.idMeetingRoom == element.idMeetingRoom).toList(),
-        "listMappedBooking" : [],
-      });
+    for (RoomModel element in listShowedRoom) {
+      if(element.id != ""){
+        tempMap.putIfAbsent("${element.id}", () => {
+          "room_name" : element.nameMeetingRoom,
+          "listBooking" : listHeader.where((e) => e.idMeetingRoom == element.id).toList(),
+          "listMappedBooking" : [],
+        });
+      }
     }
+
     tempMap.forEach((key, value) {
       List<BookingMeetingRoomModel> tempList = List<BookingMeetingRoomModel>.from(value["listBooking"]);
       List<BookingMeetingRoomModel> tempBookingMeetingRoomList = [];
@@ -229,27 +294,26 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
       position++;
 
     });
-    listMap = Map<String, dynamic>.from(tempMap);
-    update();
+    listMap.value = Map<String, dynamic>.from(tempMap);
   }
 
-  List<BookingMeetingRoomModel> getListBooking(){
+  void setListMappedBooking(){
     List<BookingMeetingRoomModel> result = [];
-
+    listMappedBooking.clear();
     listMap.forEach((key, value) {
       result.addAll(List<BookingMeetingRoomModel>.from(value["listMappedBooking"]));
     });
 
-    return result;
+    listMappedBooking.addAll(result);
   }
 
-  List<String> getListRoom(){
+  void setListMappedRoom(){
     List<String> result = [];
+    listMappedRoom.clear();
     listMap.forEach((key, value) {
       result.add(value["room_name"]);
     });
-
-    return result;
+    listMappedRoom.addAll(result);
   }
 
   Color getColor(dynamic codeStatusDoc){
@@ -270,6 +334,107 @@ class NewDashboardMeetingRoomController extends BaseController with MasterDataMi
         break;
     }
     return color;
+  }
+
+  void onChangeSelectedCompany(String id) {
+    if(listCompany.isNotEmpty){
+      final selected = listCompany.firstWhere(
+              (item) => item.id.toString() == id.toString(),
+          orElse: () => listCompany.first);
+      selectedCompany(selected);
+
+      //clear site and filter sites
+      onChangeSelectedSite("");
+      _filterSite(selected.id.toString());
+    }
+  }
+
+  void onChangeSelectedSite(String id) {
+    if(listSite.isNotEmpty){
+      final selected = listSite.firstWhere(
+              (item) => item.id.toString() == id.toString(),
+          orElse: () => listSite.first);
+      selectedSite(selected);
+
+      //clear warehouse and filter room
+      onChangeSelectedRoom("");
+      _filterMeetingRoom(selected.id.toString());
+    }
+  }
+
+  void onChangeSelectedRoom(String id) {
+    if(listRoom.isNotEmpty){
+      final selected = listRoom.firstWhere(
+              (item) => item.id.toString() == id.toString(),
+          orElse: () => listRoom.first);
+
+      selectedRoom(selected);
+      listShowedRoom.clear();
+      if(id.isNotEmpty){
+        listShowedRoom.add(selected);
+      }else{
+        listShowedRoom.addAll(listRoom);
+      }
+    }
+  }
+
+  void _filterSite(String idCompany)async{
+    listSite.removeWhere((element) => element.id != "");
+    if(idCompany.isNotEmpty){
+      final filtered = await getListSiteByCompanyId(idCompany.toInt());
+      listSite.addAll(filtered);
+      if(selectedSite.value?.id != null){
+        if(selectedSite.value!.id.toString().isEmpty){
+          String idSite = await storage.readString(StorageCore.siteID);
+          onChangeSelectedSite(idSite);
+        }
+      }
+    }
+  }
+
+  void _filterMeetingRoom(String idSite)async{
+    listRoom.removeWhere((element) => element.id != "");
+    listShowedRoom.clear();
+    if(idSite.isNotEmpty){
+      final filtered = await getListMeetingRoomBySiteId(idSite.toInt());
+      listRoom.addAll(filtered);
+      listShowedRoom.addAll(filtered);
+    }
+  }
+
+  void generateNextWeek(){
+    if(firstDate.value != null){
+      generateListOfDates(firstDate.value!.add(const Duration(days: 7)));
+    }
+  }
+
+  void generatePrevWeek(){
+    if(firstDate.value != null){
+      generateListOfDates(firstDate.value!.subtract(const Duration(days: 7)));
+    }
+  }
+
+  void generateListOfDates(DateTime benchmarkDate, {bool firstDateSelected = false}){
+    listDate.clear();
+    DateTime today = DateTime.now().copyDateWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+    int currentDay = benchmarkDate.weekday;
+
+    firstDate.value = benchmarkDate.subtract(Duration(days: currentDay - 1));
+    for(int i = 0; i<7 ; i++){
+      listDate.add(firstDate.value!.add(Duration(days: i)).copyDateWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0));
+    }
+
+    if(firstDateSelected){
+      selectedDate.value = DateTime(benchmarkDate.year, benchmarkDate.month, 1);
+    }else{
+      if(today.millisecondsSinceEpoch >= listDate.first.millisecondsSinceEpoch && today.millisecondsSinceEpoch <= listDate.last.millisecondsSinceEpoch){
+        selectedDate.value = today;
+      }else{
+        selectedDate.value = listDate.first;
+      }
+    }
+
+    listDate.refresh();
   }
 
 }

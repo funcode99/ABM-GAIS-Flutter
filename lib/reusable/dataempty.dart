@@ -9,8 +9,8 @@ class DataEmpty extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        margin: EdgeInsets.all(10),
-        padding: EdgeInsets.all(50),
+        margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(50),
         decoration: BoxDecoration(
           color: whiteColor,
           borderRadius: BorderRadius.circular(8)
@@ -19,7 +19,7 @@ class DataEmpty extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset("assets/img/data_notfound.png",),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text("Data not Found" , style: appTitle)
           ],
         ),
