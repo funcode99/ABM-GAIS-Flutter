@@ -322,4 +322,6 @@ abstract class Repository {
   Future<SubmitRequestTripModel> submitRequestTrip(String id);
 
   Future<void> registerFCM(String token);
+
+  Future<void> logout();
 }

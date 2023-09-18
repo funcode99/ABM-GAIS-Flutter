@@ -1331,9 +1331,20 @@ class RepositoryImpl implements Repository {
     }
   }
 
+  @override
   Future<void> registerFCM(String token) async {
     try {
       Response response = await network.dio.post("/api/users/fcm_create", data: {"fcm_token": token});
+      return Future.value();
+    } on DioError catch (e) {
+      e.printError();
+    }
+  }
+
+  @override
+  Future<void> logout() async {
+    try {
+      Response response = await network.dio.post("/api/users/logout", data: {"is_mobile": 1});
       return Future.value();
     } on DioError catch (e) {
       e.printError();

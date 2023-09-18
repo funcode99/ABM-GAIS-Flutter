@@ -1,5 +1,6 @@
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/screen/auth/login/login_screen.dart';
+import 'package:gais/util/firebase/firebase_util.dart';
 import 'package:get/get.dart';
 
 class ProfilController extends BaseController {
@@ -13,8 +14,17 @@ class ProfilController extends BaseController {
   }
 
   void doLogout() async {
-    storage.deleteToken();
-    Get.offAll(LoginScreen());
+    try {
+      await repository.logout();
+    } catch (e, i) {
+      print("LOGOUT ERROR $e");
+    }finally{
+      //delete FCM TOKEN
+      FirebaseUtil.deleteFCMToken();
+
+      storage.deleteToken();
+      Get.offAll(const LoginScreen());
+    }
   }
 
   Future<void> fetchList() async {
