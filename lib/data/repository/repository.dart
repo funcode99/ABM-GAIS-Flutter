@@ -50,7 +50,7 @@ import 'package:gais/data/model/request_trip/update_traveller_guest_model.dart';
 import 'package:gais/data/model/status_document_model.dart';
 
 abstract class Repository {
-  Future<LoginModel> postLogin(String username, String password);
+  Future<LoginModel> postLogin(String username, String password, {String? accessToken, String? refreshToken, String? email});
 
   Future<RequestTripListModel> getRequestTripList(
     int perPage,
@@ -322,4 +322,8 @@ abstract class Repository {
   Future<SubmitRequestTripModel> submitRequestTrip(String id);
 
   Future<void> registerFCM(String token);
+
+  Future<void> logout();
+
+  Future<String?> getEmail(String? accessToken);
 }

@@ -59,13 +59,16 @@ class RepositoryImpl implements Repository {
   final storageSecure = const FlutterSecureStorage();
 
   @override
-  Future<LoginModel> postLogin(String username, String password) async {
+  Future<LoginModel> postLogin(String username, String password, {String? accessToken, String? refreshToken, String? email}) async {
     try {
       Response response = await network.dio.post(
         '/api/login',
         data: {
+          "email" : email,
           "username": username,
           "password": password,
+          "access_token" : accessToken,
+          "refresh_token" : refreshToken,
         },
       );
       return LoginModel.fromJson(response.data);
@@ -1331,10 +1334,44 @@ class RepositoryImpl implements Repository {
     }
   }
 
+  @override
   Future<void> registerFCM(String token) async {
     try {
       Response response = await network.dio.post("/api/users/fcm_create", data: {"fcm_token": token});
       return Future.value();
+    } on DioError catch (e) {
+      e.printError();
+    }
+  }
+
+  @override
+  Future<void> logout() async {
+    try {
+      Response response = await network.dio.post("/api/users/logout", data: {"is_mobile": 1});
+      return Future.value();
+    } on DioError catch (e) {
+      e.printError();
+    }
+  }
+
+  @override
+  Future<String?> getEmail(String? accessToken) async{
+    try {
+      Dio dio = Dio();
+      dio.options = BaseOptions(
+          baseUrl: "https://graph.microsoft.com/v1.0",
+          connectTimeout: 20000,
+          receiveTimeout: 20000,
+          sendTimeout: 20000,
+          headers: {
+            'accept' : 'application/json',
+          }
+      );
+
+      dio.options.headers['Authorization'] = 'Bearer $accessToken';
+      Response response = await dio.get("/me");
+      Map<String, dynamic> responseData = Map<String, dynamic>.from(response.data);
+      return Future.value(responseData["mail"]);
     } on DioError catch (e) {
       e.printError();
     }
