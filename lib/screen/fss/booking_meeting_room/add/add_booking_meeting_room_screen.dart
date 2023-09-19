@@ -613,6 +613,8 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                       text: "Facility".tr,
                       style: formlabelTextStyle,
                       children: const <TextSpan>[
+                        TextSpan(
+                            text: "*", style: TextStyle(color: Colors.red)),
                       ],
                     ),
                   ),
@@ -626,7 +628,9 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                           vertical: 12, horizontal: 8),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Colors.black,
+                          color: controller.showFacilityError.value
+                              ? Colors.redAccent
+                              : Colors.black,
                           width: 1,
                         ),
                         borderRadius: BorderRadius.circular(8),
@@ -711,12 +715,37 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                               hideSuggestionsOnKeyboardHide: true,
                               keepSuggestionsOnLoading: false,
                               minCharsForSuggestions: 0,
+                              validator: (value) {
+                                controller.showFacilityError(
+                                    controller.listSelectedFacility.isEmpty);
 
+                                if (controller.listSelectedFacility.isEmpty) {
+                                  return "";
+                                }
+                                return null;
+                              },
                             ),
                           )
                         ],
                       ),
                     );
+                  }),
+
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Obx(() {
+                    if (controller.showFacilityError.value) {
+                      return const Padding(
+                        padding: EdgeInsets.only(left: 10, top: 8),
+                        child: Text(
+                          "This field is required",
+                          style:
+                          TextStyle(color: Colors.redAccent, fontSize: 12),
+                        ),
+                      );
+                    }
+                    return const SizedBox();
                   }),
 
                   const SizedBox(

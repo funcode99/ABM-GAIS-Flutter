@@ -80,6 +80,7 @@ class AddBookingMeetingRoomController extends BaseController
   final listExternalParticipant = <String>[].obs;
 
   final showParticipantError = false.obs;
+  final showFacilityError = false.obs;
   final showExternalParticipantError = false.obs;
 
   final isOnlineMeeting = false.obs;

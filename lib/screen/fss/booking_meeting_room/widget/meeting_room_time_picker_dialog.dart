@@ -27,6 +27,20 @@ class _MeetingRoomTimePickerDialogState
 
 
   List<DateTime> list = [
+    DateTime.now().copyDateWith(hour: 0, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 1, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 1, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 2, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 2, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 3, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 3, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 4, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 4, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 5, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 5, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 6, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 6, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 7, minute: 00, second: 0),
     DateTime.now().copyDateWith(hour: 7, minute: 30, second: 0),
     DateTime.now().copyDateWith(hour: 8, minute: 00, second: 0),
     DateTime.now().copyDateWith(hour: 8, minute: 30, second: 0),
@@ -47,6 +61,19 @@ class _MeetingRoomTimePickerDialogState
     DateTime.now().copyDateWith(hour: 16, minute: 00, second: 0),
     DateTime.now().copyDateWith(hour: 16, minute: 30, second: 0),
     DateTime.now().copyDateWith(hour: 17, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 17, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 18, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 18, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 19, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 19, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 20, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 20, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 21, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 21, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 22, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 22, minute: 30, second: 0),
+    DateTime.now().copyDateWith(hour: 23, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 23, minute: 30, second: 0),
   ];
 
   @override
