@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/booking_meeting_room/booking_meeting_room_model.dart';
@@ -34,6 +35,8 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
   final DateFormat dayDateFormat = DateFormat("EE");
   final DateFormat requestDateFormat = DateFormat("yyyy-MM-dd");
 
+  late TextEditingController autocompleteController = TextEditingController();
+
   final selectedMonth = DateTime.now().month.obs;
   final selectedYear = DateTime.now().year.obs;
 
@@ -50,6 +53,8 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
   final enableSelectSite = false.obs;
 
   final listShowedRoom = <RoomModel>[].obs;
+  final listSelectedRoom = <RoomModel>[].obs;
+  final listNotSelectedRoom = <RoomModel>[].obs;
   final listRoom = <RoomModel>[].obs;
   final selectedRoom = Rxn<RoomModel>();
 
@@ -154,8 +159,6 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
     String idSite = await storage.readString(StorageCore.siteID);
     String codeRole = await storage.readString(StorageCore.codeRole);
 
-    listRoom.add(RoomModel(id: "", nameMeetingRoom: "Meeting Room"));
-
     //TODO remove superadmin
     if(codeRole == RoleEnum.administrator.value){
     // if(codeRole == RoleEnum.administrator.value || codeRole == RoleEnum.superAdmin.value){
@@ -189,7 +192,7 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
       this.siteName.value = siteName;
     }
 
-    onChangeSelectedRoom("");
+    // onChangeSelectedRoom("");
   }
 
   void getMeetingRoom() async{
@@ -350,12 +353,14 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
       selectedSite(selected);
 
       //clear warehouse and filter room
-      onChangeSelectedRoom("");
+      // onChangeSelectedRoom("");
       _filterMeetingRoom(selected.id.toString());
     }
   }
 
   void onChangeSelectedRoom(String id) {
+    listSelectedRoom.clear();
+    listNotSelectedRoom.clear();
     if(listRoom.isNotEmpty){
       final selected = listRoom.firstWhere(
               (item) => item.id.toString() == id.toString(),
@@ -388,10 +393,13 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
   void _filterMeetingRoom(String idSite)async{
     listRoom.removeWhere((element) => element.id != "");
     listShowedRoom.clear();
+    listNotSelectedRoom.clear();
+    listSelectedRoom.clear();
     if(idSite.isNotEmpty){
       final filtered = await getListMeetingRoomBySiteId(idSite.toInt());
       listRoom.addAll(filtered);
       listShowedRoom.addAll(filtered);
+      listNotSelectedRoom.addAll(filtered);
     }
   }
 
@@ -428,6 +436,39 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
     }
 
     listDate.refresh();
+  }
+
+  void addMeetingRoom(RoomModel roomModel){
+    listSelectedRoom.add(listRoom.firstWhere((element) => element.id.toString() == roomModel.id.toString()));
+
+    listNotSelectedRoom.removeWhere((element) => element.id.toString() == roomModel.id.toString());
+
+    listShowedRoom.clear();
+    if(listSelectedRoom.isEmpty){
+      listShowedRoom.value = List<RoomModel>.from(listRoom);
+    }else{
+      listShowedRoom.value = List<RoomModel>.from(listSelectedRoom);
+    }
+  }
+
+  void deleteMeetingRoom(dynamic id) {
+    listNotSelectedRoom.add(listSelectedRoom.firstWhere((element) => element.id.toString() == id.toString()));
+    listSelectedRoom.removeWhere((element) => element.id.toString() == id.toString());
+
+    listNotSelectedRoom.sort((a, b) => a.id.compareTo(b.id));
+
+    listShowedRoom.clear();
+    if(listSelectedRoom.isEmpty){
+      listShowedRoom.value = List<RoomModel>.from(listRoom);
+    }else{
+      listShowedRoom.value = List<RoomModel>.from(listSelectedRoom);
+    }
+  }
+
+  Future<List<RoomModel>> getRoomByKeyword(String keyword) async{
+    List<RoomModel> tempFacility = listNotSelectedRoom.where((element) => element.nameMeetingRoom!.toLowerCase().contains(keyword.toLowerCase())).toList();
+
+    return Future.value(tempFacility);
   }
 
 }

@@ -1,7 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/master/room/room_model.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/indicator/custom_indicator.dart';
@@ -329,40 +331,111 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                     ),
                     ConstrainedBox(
                       constraints: BoxConstraints(
-                          maxWidth: Get.width / 2.3
+                          minWidth: Get.width / 2.3
                       ),
                       child: LayoutBuilder(
                         builder: (context, constraint) {
                           return Container(
+                            margin: EdgeInsets.only(right: 8),
                             decoration: BoxDecoration(
                                 color: baseColor, borderRadius: BorderRadius
                                 .circular(14)),
                             padding: const EdgeInsets.symmetric(horizontal: 9),
                             child: Obx(() {
-                              return DropdownButton(
-                                isExpanded: true,
-                                items: controller.listRoom
-                                    .map((e) =>
-                                    DropdownMenuItem(
-                                      value: e.id.toString(),
-                                      child: Text("${e.nameMeetingRoom}"),
-                                    ))
-                                    .toList(),
-                                onChanged: (item) {
-                                  controller.onChangeSelectedRoom(
-                                      item.toString());
-                                },
-                                value: controller.selectedRoom.value != null
-                                    ? controller.selectedRoom.value?.id
-                                    .toString()
-                                    : "",
-                                hint: Text(
-                                  "Room",
-                                  style: listTitleTextStyle,
+                              return Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                underline: const SizedBox(),
-                                icon: const Icon(Icons.arrow_drop_down),
-                                borderRadius: BorderRadius.circular(8),
+                                child: Wrap(
+                                  runSpacing: 8,
+                                  runAlignment: WrapAlignment.center,
+                                  children: [
+                                    ...controller.listSelectedRoom
+                                        .mapIndexed((index, item) => Container(
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(4.0),
+                                        ),
+                                        color: Colors.white,
+                                      ),
+                                      margin: const EdgeInsets.only(
+                                          right: 5.0, left: 5),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 4.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          InkWell(
+                                            child: Text(
+                                              item.nameMeetingRoom ?? "",
+                                              style: listSubTitleTextStyle,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 4.0),
+                                          InkWell(
+                                            child: const Icon(
+                                              Icons.cancel,
+                                              size: 14.0,
+                                              color: greyColor,
+                                            ),
+                                            onTap: () {
+                                              controller.deleteMeetingRoom(item.id);
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    ))
+                                        .toList(),
+                                    SizedBox(
+                                      width: 150,
+                                      child: TypeAheadFormField<RoomModel>(
+                                        textFieldConfiguration: TextFieldConfiguration(
+                                          controller: controller.autocompleteController,
+                                          autofocus: false,
+                                          style: Theme.of(context).textTheme.titleMedium,
+                                          decoration: InputDecoration(
+                                            fillColor: Colors.transparent,
+                                              isDense: true,
+                                              hintText: "Meeting Room".tr,
+                                              hintStyle: const TextStyle(
+                                                color: Colors.grey
+                                              ),
+                                              border: InputBorder.none,
+                                              contentPadding: const EdgeInsets.symmetric(
+                                                  horizontal: 4.0, vertical: 4.0),
+                                              errorText: null,
+                                              errorBorder: const OutlineInputBorder(
+                                                borderSide: BorderSide.none,
+                                                gapPadding: 0,
+                                              ),
+                                              errorStyle: const TextStyle(height: 0)),
+                                        ),
+                                        suggestionsCallback: (pattern) async {
+                                          final list = await controller.getRoomByKeyword(pattern);
+                                          return list;
+                                        },
+                                        itemBuilder: (context, suggestion) {
+                                          return ListTile(
+                                            title: Text("${suggestion.nameMeetingRoom}"),
+                                          );
+                                        },
+                                        onSuggestionSelected: (suggestion) {
+                                          controller.addMeetingRoom(suggestion);
+                                          controller.autocompleteController.text = "";
+                                        },
+                                        debounceDuration:
+                                        const Duration(milliseconds: 1500),
+                                        hideOnLoading: true,
+                                        hideSuggestionsOnKeyboardHide: true,
+                                        keepSuggestionsOnLoading: false,
+                                        minCharsForSuggestions: 0,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               );
                             }),
                           );
