@@ -69,6 +69,7 @@ class RepositoryImpl implements Repository {
           "password": password,
           "access_token" : accessToken,
           "refresh_token" : refreshToken,
+          "is_mobile" : 1
         },
       );
       return LoginModel.fromJson(response.data);
