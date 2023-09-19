@@ -6,7 +6,7 @@ import 'package:gais/screen/approval/request_atk/list/approval_request_atk_list_
 import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_list_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/list/booking_meeting_room_list_screen.dart';
 import 'package:gais/screen/fss/dashboard_meeting_room/dashboard_meeting_room_screen.dart';
-import 'package:gais/screen/fss/dashboard_meeting_room/new_dashboard_meeting_room_screen.dart';
+import 'package:gais/screen/fss/dashboard_meeting_room/dashboard_meeting_room_screen.dart';
 import 'package:gais/screen/fss/management_item_atk/list/management_item_atk_list_screen.dart';
 import 'package:gais/screen/fss/management_meeting_room/list/management_meeting_room_screen.dart';
 import 'package:gais/screen/fss/request_atk/list/request_atk_list_screen.dart';
@@ -200,7 +200,7 @@ class MenuScreen extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Get.to(() => const NewDashboardMeetingRoomScreen());
+                              Get.to(() => const DashboardMeetingRoomScreen());
                             },
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
