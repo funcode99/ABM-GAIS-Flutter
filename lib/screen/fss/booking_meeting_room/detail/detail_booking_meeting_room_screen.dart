@@ -1145,6 +1145,9 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                             ],
                                           );
                                         } else {
+                                          if(controller.listExternalParticipant.isEmpty){
+                                            return SizedBox(height: 28,);
+                                          }
                                           return Wrap(
                                               runSpacing: 8,
                                               runAlignment:

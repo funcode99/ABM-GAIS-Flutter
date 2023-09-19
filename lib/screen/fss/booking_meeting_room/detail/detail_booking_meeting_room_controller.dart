@@ -202,7 +202,9 @@ class DetailBookingMeetingRoomController extends BaseController
       listSelectedEmployee.add(EmployeeModel(id: item.idEmployee, employeeName: item.employeeName, email: item.email));
     }
 
-    listExternalParticipant.value = List<String>.from(selectedItem.value.external);
+    if(selectedItem.value.external!=null){
+      listExternalParticipant.value = List<String>.from(selectedItem.value.external);
+    }
 
     if(selectedItem.value.isRecurrence){
       isRecurrence.value = true;
