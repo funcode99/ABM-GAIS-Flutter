@@ -461,8 +461,8 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                   color: Colors.white,
                   child: TimePlanner(
                     key: Key(controller.listMappedRoom.length.toString()),
-                    startHour: 7,
-                    endHour: 17,
+                    startHour: 0,
+                    endHour: 23,
                     use24HourFormat: true,
                     setTimeOnAxis: false,
                     style: TimePlannerStyle(
