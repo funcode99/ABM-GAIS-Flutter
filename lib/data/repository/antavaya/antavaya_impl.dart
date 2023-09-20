@@ -1,12 +1,11 @@
-import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gais/data/model/antavaya/get_airport_model.dart';
 import 'package:gais/data/model/antavaya/get_airport_schedule_model.dart';
-import 'package:gais/data/model/antavaya/get_reservation_ticket_model.dart';
+import 'package:gais/data/model/antavaya/get_city_hotel_model.dart';
+import 'package:gais/data/model/antavaya/get_country_hotel_model.dart';
 import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
-import 'package:gais/data/model/antavaya/save_reservation_flight_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:gais/data/repository/antavaya/antavaya_repository.dart';
 import 'package:get/get.dart' hide Response, FormData, MultipartFile;
@@ -30,13 +29,15 @@ class AntavayaImpl implements AntavayaRepository {
   }
 
   @override
-  Future<GetAirportScheduleModel> getAirportSchedule(String origin,
-      String destination,
-      String departDate,
-      String adult,
-      String infant,
-      String child,
-      String airliness,) async {
+  Future<GetAirportScheduleModel> getAirportSchedule(
+    String origin,
+    String destination,
+    String departDate,
+    String adult,
+    String infant,
+    String child,
+    String airliness,
+  ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -62,15 +63,17 @@ class AntavayaImpl implements AntavayaRepository {
   }
 
   @override
-  Future saveFlightReservation(String contactTitle,
-      String contactFirstName,
-      String contactLastName,
-      String contactEmail,
-      String contactHomePhone,
-      String contactMobilePhone,
-      Passengers passengers,
-      Segments segments,
-      String flightType,) async {
+  Future saveFlightReservation(
+    String contactTitle,
+    String contactFirstName,
+    String contactLastName,
+    String contactEmail,
+    String contactHomePhone,
+    String contactMobilePhone,
+    Passengers passengers,
+    Segments segments,
+    String flightType,
+  ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -177,7 +180,6 @@ class AntavayaImpl implements AntavayaRepository {
         "/api/antavaya/flight/reservation_flight",
         data: formData,
       );
-      print(response.data);
       return response.data;
     } on DioError catch (e) {
       print('reservation error: ${e.response?.data}');
@@ -236,6 +238,37 @@ class AntavayaImpl implements AntavayaRepository {
       return GetSsrModel.fromJson(response.data);
     } on DioError catch (e) {
       print('getSSR error: ${e.response?.data}');
+      return e.error;
+    }
+  }
+
+  @override
+  Future<GetCityHotelModel> getCity(String id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/antavaya/hotel/get_city",
+        queryParameters: {
+          'id_country': id,
+        },
+      );
+      return GetCityHotelModel.fromJson(response.data);
+    } on DioError catch (e) {
+      return e.error;
+    }
+  }
+
+  @override
+  Future<GetCountryHotelModel> getCountry() async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/antavaya/hotel/get_country",
+      );
+      return GetCountryHotelModel.fromJson(response.data);
+    } on DioError catch (e) {
       return e.error;
     }
   }

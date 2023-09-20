@@ -113,8 +113,33 @@ class AddAccommodationScreen extends StatelessWidget {
                             Text("Requested Accommodation", style: formlabelTextStyle),
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
+                              label: "Country",
+                              hintText: controller.isLoading ? "Loading..." : "Country",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || controller.selectedCountry == null) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
+                              value: controller.selectedCountry,
+                              items: controller.countryList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.isoCountryCode,
+                                        child: Text(e.countryName.toString()),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                print(value);
+                                // controller.selectedCountry = value!.;
+                                // controller.fetchCity(value.);
+                                controller.update();
+                              },
+                            ),
+                            const SizedBox(height: 8),
+                            CustomDropDownFormField(
                               label: "City",
-                              hintText: "City",
+                              hintText: controller.isLoading ? "Loading..." : "City",
                               isRequired: true,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -125,8 +150,12 @@ class AddAccommodationScreen extends StatelessWidget {
                               value: controller.selectedCity,
                               items: controller.cityList
                                   .map((e) => DropdownMenuItem(
-                                        value: e.id.toString(),
+                                        value: e.cityKey.toString(),
                                         child: Text(e.cityName.toString()),
+                                        onTap: () {
+                                          controller.cityName = e.cityName;
+                                          controller.update();
+                                        },
                                       ))
                                   .toList(),
                               onChanged: (value) {
@@ -135,6 +164,7 @@ class AddAccommodationScreen extends StatelessWidget {
                               },
                             ),
                             const SizedBox(height: 8),
+
                             CustomTextFormField(
                               controller: controller.checkinDate,
                               label: "Check In",
@@ -149,10 +179,7 @@ class AddAccommodationScreen extends StatelessWidget {
                               readOnly: true,
                               suffixIcon: const Icon(Icons.calendar_month),
                               onTap: () => showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime.now(),
-                                      lastDate: controller.lastDate)
+                                      context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: controller.lastDate)
                                   .then((date) {
                                 controller.selectedDate = date!;
                                 controller.checkinDate.text = controller.dateFormat.format(date);
@@ -174,10 +201,7 @@ class AddAccommodationScreen extends StatelessWidget {
                               readOnly: true,
                               suffixIcon: const Icon(Icons.calendar_month),
                               onTap: () => showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime.now(),
-                                      lastDate: controller.lastDate)
+                                      context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: controller.lastDate)
                                   .then((date) {
                                 controller.selectedDate = date!;
                                 controller.checkoutDate.text = controller.dateFormat.format(date);
@@ -214,22 +238,24 @@ class AddAccommodationScreen extends StatelessWidget {
                               hintText: "Remarks",
                               multiLine: true,
                             ),
-                            controller.hasGuest ? SizedBox(
-                              // height: 50,
-                              child: Row(
-                                children: [
-                                  Checkbox(
-                                    checkColor: Colors.white,
-                                    value: controller.isSharing,
-                                    onChanged: (bool? value) {
-                                      controller.isSharing = value!;
-                                      controller.update();
-                                    },
-                                  ),
-                                  Text("Sharing with", style: listTitleTextStyle)
-                                ],
-                              ),
-                            ) : Container(),
+                            controller.hasGuest
+                                ? SizedBox(
+                                    // height: 50,
+                                    child: Row(
+                                      children: [
+                                        Checkbox(
+                                          checkColor: Colors.white,
+                                          value: controller.isSharing,
+                                          onChanged: (bool? value) {
+                                            controller.isSharing = value!;
+                                            controller.update();
+                                          },
+                                        ),
+                                        Text("Sharing with", style: listTitleTextStyle)
+                                      ],
+                                    ),
+                                  )
+                                : Container(),
                             controller.isSharing && controller.hasGuest
                                 ? TextFormField(
                                     controller: controller.sharingName,

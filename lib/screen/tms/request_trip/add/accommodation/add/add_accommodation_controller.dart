@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
-import 'package:gais/data/model/reference/get_city_model.dart' as city;
+import 'package:gais/data/model/antavaya/get_country_hotel_model.dart' as country;
+import 'package:gais/data/model/antavaya/get_city_hotel_model.dart' as city;
+
+// import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/data/model/reference/get_hotel_type_model.dart' as type;
 import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
 import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
@@ -31,17 +34,23 @@ class AddAccommodationController extends BaseController {
   int? jobBandID;
   DateTime? selectedDate;
   String? gender;
+  String selectedCountry = "ID";
   String? selectedCity;
+  String countryName = "Indonesia";
+  String? cityName;
   String? accommodationType;
   String? arrival;
   bool isSharing = false;
   bool createGL = false;
   bool isButtonEnabled = false;
   bool hasGuest = false;
+  bool isLoading = false;
 
   GetRequestTripByidModel? rtModel;
-  city.GetCityModel? cityModel;
-  List<city.Data> cityList = [];
+
+  // city.GetCityModel? cityModel;
+  List<city.Data2> cityList = [];
+  List<country.Data2> countryList = [];
   type.GetHotelTypeModel? hotelTypeModel;
   List<type.Data> hotelTypeList = [];
   List<guest.Data> shareList = [];
@@ -58,6 +67,18 @@ class AddAccommodationController extends BaseController {
     if (isEdit == true) {
       fetchData();
     }
+  }
+
+  Future<void> fetchCity(String id) async {
+    cityList = [];
+    isLoading = true;
+    try {
+      await antavaya.getCity(id).then((value) => cityList.addAll(value.data?.data?.toSet().toList() ?? []));
+    } catch (e) {
+      e.printError();
+    }
+    isLoading = false;
+    update();
   }
 
   Future<void> fetchData() async {
@@ -79,6 +100,7 @@ class AddAccommodationController extends BaseController {
   }
 
   Future<void> fetchList() async {
+    isLoading = true;
     try {
       await storage.readEmployeeInfo().then((value) {
         travellerID = int.parse(value.first.id.toString());
@@ -88,9 +110,13 @@ class AddAccommodationController extends BaseController {
         jobBandID = int.parse(value.first.idJobBand.toString());
       });
 
-      var dataCity = await repository.getCityList();
-      cityModel = dataCity;
-      cityList.addAll(dataCity.data?.toSet().toList() ?? []);
+      // var dataCity = await repository.getCityList();
+      // cityModel = dataCity;
+      // cityList.addAll(dataCity.data?.toSet().toList() ?? []);
+
+      await antavaya.getCountry().then((value) => countryList.addAll(value.data?.data?.toSet().toList() ?? []));
+
+      await antavaya.getCity(selectedCountry).then((value) => cityList.addAll(value.data?.data?.toSet().toList() ?? []));
 
       var hotelType = await repository.getHotelTypeList();
       hotelTypeModel = hotelType;
@@ -107,12 +133,11 @@ class AddAccommodationController extends BaseController {
       var guestData = await repository.getGuestBytripList(purposeID);
       hasGuest = bool.parse(guestData.success.toString());
       print(guestData.success);
-
     } catch (e, i) {
       e.printError();
       i.printError();
     }
-
+    isLoading = false;
     update();
   }
 
@@ -122,7 +147,9 @@ class AddAccommodationController extends BaseController {
       arguments: {
         'purposeID': purposeID,
         'codeDocument': codeDocument,
-        'city': int.parse(selectedCity.toString()),
+        'city': selectedCity,
+        'city_name': cityName,
+        'country': selectedCountry,
         'checkIn': checkinDate.text,
         'checkOut': checkoutDate.text,
         'accommodationType': int.parse(accommodationType.toString()),

@@ -11,7 +11,8 @@ class CheckAccommodationController extends BaseController {
   String id = Get.arguments['id'] ?? "0";
   String purposeID = Get.arguments['purposeID'];
   int? codeDocument = Get.arguments['codeDocument'];
-  int cityID = Get.arguments['city'];
+  String cityID = Get.arguments['city'];
+  String countryID = Get.arguments['country'];
   String checkinDate = Get.arguments['checkIn'];
   String checkoutDate = Get.arguments['checkOut'];
   int accommodationType = Get.arguments['accommodationType'];
@@ -39,8 +40,7 @@ class CheckAccommodationController extends BaseController {
     try {
       var response = await repository.getHotelList();
       hotelModel = response;
-      hotelList
-          .addAll(response.data?.where((e) => e.idCity == cityID && e.idTypeHotel == accommodationType).toSet().toList() ?? []);
+      hotelList.addAll(response.data?.where((e) => e.idCity == cityID && e.idTypeHotel == accommodationType).toSet().toList() ?? []);
       hotelList.forEach((element) {
         viewRoom.add(false);
       });
