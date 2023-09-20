@@ -318,9 +318,9 @@ class CustomCalendarState extends State<CustomCalendar> {
                             child: Text(
                               '${date.day}',
                               style: TextStyle(
-                                  color: getIsItStartAndEndDate(date)
+                                  color: getIsItStartAndEndDate(date) //xx
                                       ? Colors.white
-                                      : currentMonthDate.month == date.month
+                                      : currentMonthDate.month == date.month && (date.difference(currentMonthDate).inDays == 0 ||(date.isAfter(widget.minimumDate!) && date.isBefore(widget.maximumDate!)))
                                       ? Colors.black
                                       : Colors.grey.withOpacity(0.6),
                                   fontSize:
