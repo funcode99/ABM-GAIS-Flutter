@@ -50,6 +50,7 @@ dependencies:
   android_id: ^0.3.3
   url_launcher: ^6.1.12
   aad_oauth: ^0.4.4
+  email_validator: ^2.1.17
   time_planner:
     git:
       url: https://github.com/fajarainul/time_planner.git
