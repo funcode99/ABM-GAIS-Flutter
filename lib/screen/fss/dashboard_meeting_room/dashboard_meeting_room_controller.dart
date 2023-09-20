@@ -562,4 +562,17 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
     listSelectedBooking.removeWhere((element) => item == element);
   }
 
+  BookingMeetingRoomModel getItem(){
+    BookingMeetingRoomModel result = BookingMeetingRoomModel();
+    if(listSelectedBooking.length > 1){
+      BookingMeetingRoomModel temp = listSelectedBooking[0];
+      BookingMeetingRoomModel last = listSelectedBooking[listSelectedBooking.length - 1];
+
+      temp.endTime = last.endTime;
+    }else{
+      result = listSelectedBooking[0];
+    }
+
+    return result;
+  }
 }

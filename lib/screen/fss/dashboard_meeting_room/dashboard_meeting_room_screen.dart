@@ -5,6 +5,8 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/data/model/master/room/room_model.dart';
 import 'package:gais/reusable/custombackbutton.dart';
+import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -600,6 +602,12 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                         );
                       }).toList(),
                       ...controller.listSelectedBooking.mapIndexed((index, element) {
+                        int length = controller.listSelectedBooking.length;
+                        bool isEven = length.isEven;
+                        bool showAddButton = false;
+                        if(isEven){
+
+                        }
                         return TimePlannerTask(
                           color: const Color(0xffdefcf1),
                           dateTime: TimePlannerDateTime(day: element.position!,
@@ -614,11 +622,15 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                             controller.removeFromSelectedBooking(element);
                           },
                           child: Container(
+                            width: 100,
                             child: index == controller.listSelectedBooking.length - 1 ?
-                            GestureDetector(
-                              onTap: (){
+                            CustomIconButton(
+                              title: "Add".tr,
+                              iconData: Icons.add,
+                              backgroundColor: infoColor,
+                              onPressed: () {
+
                               },
-                              child: const Text("Add", style: TextStyle(color: Colors.red),),
                             ) : const SizedBox(),
                           ),
                         );
