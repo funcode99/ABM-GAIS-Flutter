@@ -251,7 +251,7 @@ class AddBookingMeetingRoomController extends BaseController
     BookingMeetingRoomModel meetingRoomModel = BookingMeetingRoomModel(
         idCompany: selectedCompany.value?.id.toString().toInt(),
         idSite: selectedSite.value?.id.toString().toInt(),
-        floor: floorController.text.toInt() ?? 0,
+        floor: floorController.text == "null" ? 0 :floorController.text.toInt() ?? 0,
         capacity: capacityController.text.toInt() ?? 0,
         title: titleController.text,
         startDate: startDateString,

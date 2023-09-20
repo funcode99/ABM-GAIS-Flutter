@@ -708,6 +708,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                               onSuggestionSelected: (suggestion) {
                                 controller.addFacility(suggestion);
                                 controller.facilityAutocompleteController.text = "";
+                                controller.updateButton();
                               },
                               debounceDuration:
                               const Duration(milliseconds: 1500),
@@ -716,8 +717,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                               keepSuggestionsOnLoading: false,
                               minCharsForSuggestions: 0,
                               validator: (value) {
-                                controller.showFacilityError(
-                                    controller.listSelectedFacility.isEmpty);
+                                controller.showFacilityError(controller.listSelectedFacility.isEmpty);
 
                                 if (controller.listSelectedFacility.isEmpty) {
                                   return "";
