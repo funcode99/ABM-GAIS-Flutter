@@ -336,7 +336,7 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                       child: LayoutBuilder(
                         builder: (context, constraint) {
                           return Container(
-                            margin: EdgeInsets.only(right: 8),
+                            margin: const EdgeInsets.only(right: 8),
                             decoration: BoxDecoration(
                                 color: baseColor, borderRadius: BorderRadius
                                 .circular(14)),
@@ -482,27 +482,29 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                         title: "Room Name",
                       )
                     ],
-                    tasks: controller.listMappedBooking.map((element) =>
-                        TimePlannerTask(
-                          // background color for task
-                          color: controller.getColor(element.codeStatusDoc),
-                          // day: Index of header, hour: Task will be begin at this hour
-                          // minutes: Task will be begin at this minutes
+                    tasks: [
+                      ...controller.listMappedBooking.map((element) {
+                        bool isScheduled = element.isScheduled ?? false;
+                        return TimePlannerTask(
+                          color: isScheduled ? controller.getColor(element.codeStatusDoc) : Colors.transparent,
                           dateTime: TimePlannerDateTime(day: element.position!,
                               hour: element.hour!,
                               minutes: element.minute!),
                           leftSpace: (200 * element.position!.toDouble()),
-                          // Minutes duration of task
                           minutesDuration: element.durationInMinute!,
-                          // Days duration of task (use for multi days task)
                           daysDuration: 1,
                           onTap: () {
-                            Get.to(() => const DetailBookingMeetingRoomScreen(),
-                                arguments: {
-                                  "item": element
-                                })?.then((value) => controller.getHeader());
+                            if(isScheduled){
+                              Get.to(() => const DetailBookingMeetingRoomScreen(),
+                                  arguments: {
+                                    "item": element
+                                  })?.then((value) => controller.getHeader());
+                            }else{
+                              controller.addToSelectedBooking(element);
+                            }
                           },
-                          child: Container(
+                          child: isScheduled ?
+                          Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             width: double.infinity,
                             child: Row(
@@ -565,8 +567,63 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                                       ),
                               ],
                             ),
+                          ) : Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.black12,
+                                  width: 0.5
+                              ),
+                            ),
                           ),
-                        )).toList(),
+                        );
+                      }).toList(),
+                      ...controller.listAvailableBooking.map((element) {
+                        return TimePlannerTask(
+                          color: Colors.transparent,
+                          dateTime: TimePlannerDateTime(day: element.position!,
+                              hour: element.hour!,
+                              minutes: element.minute!),
+                          leftSpace: (200 * element.position!.toDouble()),
+                          minutesDuration: element.durationInMinute!,
+                          daysDuration: 1,
+                          onTap: () {
+                            controller.addToSelectedBooking(element);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.black12,
+                                  width: 0.5
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      ...controller.listSelectedBooking.mapIndexed((index, element) {
+                        return TimePlannerTask(
+                          color: const Color(0xffdefcf1),
+                          dateTime: TimePlannerDateTime(day: element.position!,
+                              hour: element.hour!,
+                              minutes: element.minute!),
+                          leftSpace: (200 * element.position!.toDouble()),
+                          // Minutes duration of task
+                          minutesDuration: element.durationInMinute!,
+                          // Days duration of task (use for multi days task)
+                          daysDuration: 1,
+                          onTap: () {
+                            controller.removeFromSelectedBooking(element);
+                          },
+                          child: Container(
+                            child: index == controller.listSelectedBooking.length - 1 ?
+                            GestureDetector(
+                              onTap: (){
+                              },
+                              child: const Text("Add", style: TextStyle(color: Colors.red),),
+                            ) : const SizedBox(),
+                          ),
+                        );
+                      }).toList(),
+                    ],
                   ),
                 );
               })
