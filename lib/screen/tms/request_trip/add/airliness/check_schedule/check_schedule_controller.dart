@@ -4,6 +4,7 @@ import 'package:gais/data/model/antavaya/get_airport_schedule_model.dart' as sch
 import 'package:gais/data/model/reference/get_city_model.dart';
 import 'package:gais/data/model/reference/get_flight_schedule_model.dart' as flight;
 import 'package:gais/data/model/antavaya/get_airport_model.dart' as city;
+import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airline;
 import 'package:gais/screen/tms/request_trip/add/airliness/reservation/airport_reservation_screen.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -22,6 +23,7 @@ class CheckScheduleController extends BaseController {
   String? airlinessID = Get.arguments['id'];
   bool? isEdit = Get.arguments['isEdit'];
   bool? formEdit = Get.arguments['formEdit'];
+  airline.Data? airlinessModel = Get.arguments['airlinessData'];
 
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
   List listOfDates = [];
@@ -49,6 +51,8 @@ class CheckScheduleController extends BaseController {
     schedules = [scheduleList1, scheduleList2, scheduleList3, scheduleList4];
     update();
     Future.wait([fetchList()]);
+    print('airlinessID : $airlinessID');
+    print('airlinessID : ${airlinessModel?.pnrid}');
   }
 
   @override
@@ -67,7 +71,6 @@ class CheckScheduleController extends BaseController {
   }
 
   Future<void> fetchList() async {
-    isLoading = true;
     print(schedules.length);
     // flightScheduleList = [];
     // scheduleList1 = [];
@@ -76,9 +79,13 @@ class CheckScheduleController extends BaseController {
     // scheduleList4 = [];
 
     schedules.forEachIndexed((i, sc) {
-      fetchSchedule(departureDate.add(Duration(days: i)), "2")
-          .then((value) => schedules[i].addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
-      update();
+      airliness.forEach((e) {
+        fetchSchedule(departureDate.add(Duration(days: i)), e).then((value) {
+          schedules[i].addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []);
+          print(schedules[i]);
+        });
+        update();
+      });
     });
 
     // fetchSchedule(departureDate).then((value) => scheduleList1.addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []));
@@ -93,7 +100,6 @@ class CheckScheduleController extends BaseController {
   }
 
   Future<schedule.GetAirportScheduleModel?> fetchSchedule(DateTime departDate, String airlines) async {
-    isLoading = true;
     try {
       var scheduleData = await antavaya.getAirportSchedule(
         departureModel.code.toString(),
@@ -104,6 +110,7 @@ class CheckScheduleController extends BaseController {
         child.toString(),
         airlines,
       );
+      print("length : ${schedules[1].length}");
       isLoading = false;
       update();
       return scheduleData;
@@ -126,11 +133,12 @@ class CheckScheduleController extends BaseController {
       'codeDocument': codeDocument,
       'formEdit': formEdit,
       'flight': flights,
-      'airlinessID': airlinessID,
+      'id': airlinessID,
       'isEdit': isEdit,
       'adult': adult,
       'child': child,
       'infant': infant,
+      'airlinessData': airlinessModel,
     });
   }
 }

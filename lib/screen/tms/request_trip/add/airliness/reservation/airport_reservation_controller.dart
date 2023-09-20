@@ -1,13 +1,14 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/antavaya/get_airport_schedule_model.dart' as schedule;
+import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airline;
 import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AirportReservationController extends BaseController {
   schedule.Flights flight = Get.arguments['flight'];
@@ -19,6 +20,7 @@ class AirportReservationController extends BaseController {
   String? adult = Get.arguments['adult'];
   String? infant = Get.arguments['infant'];
   String? child = Get.arguments['child'];
+  airline.Data? airlinessModel = Get.arguments['airlinessData'];
 
   final formKey = GlobalKey<FormState>();
   final bookTitle = TextEditingController();
@@ -47,18 +49,54 @@ class AirportReservationController extends BaseController {
   Segments? segments;
   bool isLoading = false;
   String? pnrID;
+  DateTime? birthDate;
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat saveDateFormat = DateFormat("yyyy-MM-dd");
 
   @override
   void onInit() {
     super.onInit();
     flight.printInfo();
+    if(airlinessID!=null){
+      fetchEdit();
+    }
+    print('airlinessID : $airlinessID');
+  }
+
+  Future<void> fetchEdit() async{
+    if (airlinessID != null) {
+      await antavaya.getRsvTicket(airlinessModel?.pnrid).then((value) {
+        var rsv = jsonDecode(value);
+        bookTitle.text = rsv['Contact']['Title'];
+        bookFirstName.text = rsv['Contact']['FirstName'];
+        bookLastName.text = rsv['Contact']['LastName'];
+        bookHomePhone.text = rsv['Contact']['HomePhone'];
+        bookMobilePhone.text = rsv['Contact']['MobilePhone'];
+        bookEmail.text = rsv['Contact']['Email'];
+        passTitle.text = rsv['Passengers'][0]['Title'];
+        passFirstName.text = rsv['Passengers'][0]['FirstName'];
+        passLastName.text = rsv['Passengers'][0]['LastName'];
+        birthDate = DateTime.parse(rsv['Passengers'][0]['BirthDate']);
+        passBirthDate.text = dateFormat.format(birthDate!);
+        passEmail.text = rsv['Passengers'][0]['Email'];
+        passMobilePhone.text = rsv['Passengers'][0]['MobilePhone'];
+        passIDNumber.text = rsv['Passengers'][0]['IdNumber'];
+        passNationality.text = rsv['Passengers'][0]['Nationality'];
+        passPassportNumber.text = rsv['Passengers'][0]['Passport']['Number'];
+        passPassportOrigin.text = rsv['Passengers'][0]['Passport']['OriginCountry'];
+        passPassportExpire.text = rsv['Passengers'][0]['Passport']['Expire'];
+      });
+    }
   }
 
   Future<void> saveData() async {
+    isLoading = true;
+    update();
     getSegment();
   }
 
   Future<void> getSegment() async {
+    isLoading = true;
     try {
       await antavaya
           .getSSR(
@@ -85,7 +123,7 @@ class AirportReservationController extends BaseController {
                 title: passTitle.text,
                 firstName: passFirstName.text,
                 lastName: passLastName.text,
-                birthDate: passBirthDate.text,
+                birthDate: saveDateFormat.format(birthDate!),
                 email: passEmail.text,
                 isSeniorCitizen: isSeniorCitizen,
                 mobilePhone: passMobilePhone.text,
@@ -124,6 +162,7 @@ class AirportReservationController extends BaseController {
       e.printError();
       i.printError();
     }
+    isLoading = false;
     update();
   }
 
@@ -160,6 +199,18 @@ class AirportReservationController extends BaseController {
     } catch (e, i) {
       e.printError();
       i.printError();
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Booking failed',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
 
     update();

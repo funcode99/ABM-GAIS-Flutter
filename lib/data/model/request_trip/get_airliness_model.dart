@@ -73,6 +73,9 @@ class Data {
     String? arrival,
     String? departureTime,
     String? arrivalTime,
+    String? departureDate,
+    String? arrivalDate,
+    String? flightClass,
   }) {
     _id = id;
     _idRequestTrip = idRequestTrip;
@@ -93,7 +96,9 @@ class Data {
     _arrival = arrival;
     _departureTime = departureTime;
     _arrivalTime = arrivalTime;
-
+    _departureDate = departureDate;
+    _arrivalDate = arrivalDate;
+    _flightClass = flightClass;
   }
 
   Data.fromJson(dynamic json) {
@@ -116,6 +121,9 @@ class Data {
     _arrival = json['arrival'];
     _departureTime = json['departure_time'];
     _arrivalTime = json['arrival_time'];
+    _departureDate = json['departure_date'];
+    _arrivalDate = json['arrival_date'];
+    _flightClass = json['flight_class'];
   }
 
   String? _id;
@@ -137,6 +145,9 @@ class Data {
   String? _arrival;
   String? _departureTime;
   String? _arrivalTime;
+  String? _departureDate;
+  String? _arrivalDate;
+  String? _flightClass;
 
   Data copyWith({
     String? id,
@@ -158,6 +169,9 @@ class Data {
     String? arrival,
     String? departureTime,
     String? arrivalTime,
+    String? departureDate,
+    String? arrivalDate,
+    String? flightClass,
   }) =>
       Data(
         id: id ?? _id,
@@ -179,6 +193,9 @@ class Data {
         arrival: arrival ?? _arrival,
         departureTime: departureTime ?? _departureTime,
         arrivalTime: arrivalTime ?? _arrivalTime,
+        departureDate: departureDate ?? _departureDate,
+        arrivalDate: arrivalDate ?? _arrivalDate,
+        flightClass: flightClass ?? _flightClass,
       );
 
   String? get id => _id;
@@ -219,6 +236,12 @@ class Data {
 
   String? get arrivalTime => _arrivalTime;
 
+  String? get departureDate => _departureDate;
+
+  String? get arrivalDate => _arrivalDate;
+
+  String? get flightClass => _flightClass;
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
@@ -240,6 +263,9 @@ class Data {
     map['arrival'] = _arrival;
     map['departure_time'] = _departureTime;
     map['arrival_time'] = _arrivalTime;
+    map['departure_date'] = _departureDate;
+    map['arrival_date'] = _arrivalDate;
+    map['flight_class'] = _flightClass;
     return map;
   }
 }

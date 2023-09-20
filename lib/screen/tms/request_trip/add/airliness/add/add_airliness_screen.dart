@@ -322,6 +322,9 @@ class AddAirlinessScreen extends StatelessWidget {
                                         // 'flightClass': int.parse(controller.flightClass.toString()),
                                         'flightClass': controller.flightClassID,
                                         'formEdit': controller.formEdit,
+                                        'isEdit': controller.isEdit,
+                                        'id': controller.airlinessID,
+                                        'airlinessData' : controller.airlinessModel,
                                       });
                                     }
                                   },

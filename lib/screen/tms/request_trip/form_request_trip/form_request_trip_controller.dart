@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -125,6 +126,7 @@ class FormRequestTripController extends BaseController {
 
   List<guest.Data> guestList = [];
   List<airliness.Data> airlinessList = [];
+  airliness.GetAirlinessModel? airlinessModel;
   List<tv.Data> tvList = [];
   List<ot.Data> otList = [];
   List<acc.Data> accommodationsList = [];
@@ -147,7 +149,13 @@ class FormRequestTripController extends BaseController {
     tlkTotal.text;
     tlkTotalMeals.text;
     isEdit = false;
-    Future.wait([fetchRequestTrip(), fetchList(), fetchApprovalInfo(), checkRole(), fetchAirliness()]);
+    Future.wait([
+      fetchRequestTrip(),
+      fetchList(),
+      fetchApprovalInfo(),
+      checkRole(),
+      fetchAirliness(),
+    ]);
     purposeID.printInfo(info: "purposeID");
   }
 
@@ -259,6 +267,7 @@ class FormRequestTripController extends BaseController {
               'purposeID': purposeID,
               'codeDocument': codeDocument,
               'formEdit': true,
+              'isEdit': false,
             },
           )
         : selectedPurpose == "5" && index == 0
@@ -278,6 +287,7 @@ class FormRequestTripController extends BaseController {
                   'purposeID': purposeID,
                   'codeDocument': codeDocument,
                   'formEdit': true,
+                  'isEdit': false,
                 },
               )?.then((value) {
                 fetchList();
@@ -422,21 +432,29 @@ class FormRequestTripController extends BaseController {
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
       var airlinessData = await repository.getAirlinessBytripList(purposeID);
-      airlinessData.data?.forEach((e) async {
-        print(e.pnrid);
+      airlinessModel = airlinessData;
+      airlinessData.data?.asMap().forEach((i, e) async {
+        print("pnrID: ${e.pnrid}");
         await antavaya.getRsvTicket(e.pnrid).then((rsv) {
-          print("rsv: ${rsv.airline.toString()}");
+          var reservation = jsonDecode(rsv);
+          print("rsv: ${reservation.toString()}");
+          print("rsv: ${reservation['Passengers'][0]['Type'].toString()}");
+
           airlinessList.add(airliness.Data(
             id: e.id,
             idRequestTrip: e.idRequestTrip,
             pnrid: e.pnrid,
-            employeeName: rsv.passengers?.first.firstName,
+            employeeName: reservation['Passengers'][0]['FirstName'],
             createdAt: e.createdAt,
-            departure: rsv.flightDetails?.first.origin,
-            arrival: rsv.flightDetails?.first.destination,
-            departureTime: rsv.flightDetails?.first.departTime,
-            arrivalTime: rsv.flightDetails?.first.arriveTime,
-            flightNo: rsv.flightDetails?.first.flightNumber,
+            departure: reservation['FlightDetails'][0]['Origin'],
+            arrival: reservation['FlightDetails'][0]['Destination'],
+            departureTime: reservation['FlightDetails'][0]['DepartTime'],
+            arrivalTime: reservation['FlightDetails'][0]['ArriveTime'],
+            flightNo: reservation['FlightDetails'][0]['FlightNumber'],
+            ticketPrice: e.ticketPrice,
+            departureDate: reservation['FlightDetails'][0]['DepartDate'],
+            arrivalDate: reservation['FlightDetails'][0]['ArriveDate'],
+            flightClass: reservation['FlightDetails'][0]['Class'],
           ));
           update();
         });
@@ -462,9 +480,7 @@ class FormRequestTripController extends BaseController {
     update();
   }
 
-  Future fetchAirliness() async{
-
-  }
+  Future fetchAirliness() async {}
 
   Future<void> fetchApprovalInfo() async {
     try {
