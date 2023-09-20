@@ -4,6 +4,7 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
+import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/screen/notification/notification_controller.dart';
 import 'package:gais/util/navigation/notification_navigation.dart';
 import 'package:get/get.dart';
@@ -87,6 +88,9 @@ class NotificationScreen extends StatelessWidget {
                                         controller.getNotification();
                                       },
                                       child: Obx(() {
+                                        if(controller.isLoading.value){
+                                          return const CustomIndicator();
+                                        }
                                         return controller.listNotification.isEmpty
                                             ? const DataEmpty()
                                             : ListView(
@@ -144,6 +148,9 @@ class NotificationScreen extends StatelessWidget {
                                       controller.getNotificationApproval();
                                     },
                                     child: Obx(() {
+                                      if(controller.isLoadingApproval.value){
+                                        return const CustomIndicator();
+                                      }
                                       return controller.listNotificationApproval.isEmpty
                                           ? const DataEmpty()
                                           : ListView(

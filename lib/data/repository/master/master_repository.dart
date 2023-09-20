@@ -292,7 +292,7 @@ class MasterRepository{
     }
   }
 
-  Future<Either<BaseError, List<RoomModel>>> getListMeetingRoomBySiteId(int idSite)async{
+  Future<Either<BaseError, List<RoomModel>>> getListMeetingRoomBySiteId(dynamic idSite)async{
     try {
       Dio.Response response = await network.dio.get(
         '/api/master_meeting_room/get_by_site/$idSite',

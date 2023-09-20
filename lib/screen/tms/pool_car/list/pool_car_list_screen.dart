@@ -12,6 +12,7 @@ import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/pool_car/detail/pool_car_detail_screen.dart';
@@ -128,6 +129,9 @@ class PoolCarListScreen extends StatelessWidget {
                     controller.getHeader();
                   },
                   child: Obx(() {
+                    if(controller.isLoading.value){
+                      return const CustomIndicator();
+                    }
                     return controller.listHeader.isEmpty
                         ? const DataEmpty()
                         : ListView(

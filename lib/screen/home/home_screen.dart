@@ -16,40 +16,61 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(
-        init: HomeController(),
-        builder: (controller) {
-          return Scaffold(
-            backgroundColor: baseColor,
-            appBar: AppBar(
-              centerTitle: true,
-              title: Text(HomeController.appTitle.elementAt(controller.selectedIndex), style: appTitle),
-              flexibleSpace: TopBar(),
-            ),
-            body: HomeController.widgetOptions.elementAt(controller.selectedIndex),
-            bottomNavigationBar: BottomNavigationBar(
-              elevation: 10,
-              items: [
-                BottomNavigationBarItem(icon: Icon(controller.selectedIndex != 0 ? IconlyLight.home : IconlyBold.home), label: ""),
-                BottomNavigationBarItem(icon: Icon(controller.selectedIndex != 1 ? IconlyLight.chart : IconlyBold.chart), label: ""),
-                BottomNavigationBarItem(icon: Icon(controller.selectedIndex != 2 ? IconlyLight.notification : IconlyBold.notification), label: ""),
-                BottomNavigationBarItem(icon: Icon(controller.selectedIndex != 3 ? IconlyLight.profile : IconlyBold.profile), label: ""),
-              ],
-              currentIndex: controller.selectedIndex,
-              selectedItemColor: Colors.black,
-              unselectedItemColor: Colors.grey,
-              onTap: (index) {
-                controller.selectedIndex = index;
-                // scrindex != null
-                //     ? Get.offAll(HomeScreen(), arguments: index)
-                //     : scrindex;
-                // Get.off(HomeController.widgetOptions[index]);
-                controller.update();
-                // print("scrindex $scrindex");
-                // print("selected index: ${controller.selectedIndex}");
-              },
-            ),
-          );
-        });
+    int index = 0;
+    if (Get.arguments != null) {
+      index = Get.arguments;
+    } else {
+    }
+
+    final HomeController controller = Get.put(HomeController()
+      ..selectedIndex(index));
+
+    return Scaffold(
+      backgroundColor: baseColor,
+      appBar: AppBar(
+        centerTitle: true,
+        title: Obx(() {
+          return Text(
+              HomeController.appTitle.elementAt(controller.selectedIndex.value),
+              style: appTitle);
+        }),
+        flexibleSpace: const TopBar(),
+      ),
+      body: Obx(() =>
+          HomeController.widgetOptions.elementAt(
+              controller.selectedIndex.value)),
+      bottomNavigationBar: Obx(() {
+        return BottomNavigationBar(
+          elevation: 10,
+          items: [
+            BottomNavigationBarItem(icon: Icon(
+                controller.selectedIndex.value != 0 ? IconlyLight.home : IconlyBold
+                    .home), label: ""),
+            BottomNavigationBarItem(icon: Icon(
+                controller.selectedIndex.value != 1 ? IconlyLight.chart : IconlyBold
+                    .chart), label: ""),
+            BottomNavigationBarItem(icon: Icon(controller.selectedIndex.value != 2
+                ? IconlyLight.notification
+                : IconlyBold.notification), label: ""),
+            BottomNavigationBarItem(icon: Icon(
+                controller.selectedIndex.value != 3 ? IconlyLight.profile : IconlyBold
+                    .profile), label: ""),
+          ],
+          currentIndex: controller.selectedIndex.value,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.grey,
+          onTap: (index) {
+            controller.selectedIndex.value = index;
+            // scrindex != null
+            //     ? Get.offAll(HomeScreen(), arguments: index)
+            //     : scrindex;
+            // Get.off(HomeController.widgetOptions[index]);
+            controller.update();
+            // print("scrindex $scrindex");
+            // print("selected index: ${controller.selectedIndex}");
+          },
+        );
+      }),
+    );
   }
 }

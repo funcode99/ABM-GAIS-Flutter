@@ -31,6 +31,8 @@ class NotificationController extends BaseController with GetTickerProviderStateM
   final tabs = <NotificationTabEnum>[].obs;
   final totalNotification = 0.obs;
   final totalNotificationApproval = 0.obs;
+  final isLoading = true.obs;
+  final isLoadingApproval = true.obs;
 
   @override
   void onInit() {
@@ -66,6 +68,7 @@ class NotificationController extends BaseController with GetTickerProviderStateM
   }
 
   void getNotification({int page = 1}) async {
+    isLoading(true);
     final result = await _repository.getNotification(
         data: {
           "page" : page,
@@ -80,6 +83,8 @@ class NotificationController extends BaseController with GetTickerProviderStateM
           listNotification.clear();
           totalPage(1);
           currentPage(1);
+          isLoading(false);
+
         },
             (r) {
           paginationModel = r;
@@ -88,6 +93,7 @@ class NotificationController extends BaseController with GetTickerProviderStateM
           currentPage(paginationModel?.currentPage);
 
           totalNotification.value = paginationModel!.total!;
+          isLoading(false);
 
           listNotification.value = paginationModel!.data!
               .map((e) => NotificationModel.fromJson(e))
@@ -97,6 +103,7 @@ class NotificationController extends BaseController with GetTickerProviderStateM
   }
 
   void getNotificationApproval({int page = 1}) async {
+    isLoadingApproval(true);
     final result = await _repository.getNotificationApproval(
         data: {
           "page" : page,
@@ -111,12 +118,14 @@ class NotificationController extends BaseController with GetTickerProviderStateM
           listNotification.clear();*/
           totalPageApproval(1);
           currentPageApproval(1);
+          isLoadingApproval(false);
         },
             (r) {
           paginationModelApproval = r;
           int tempTotalPage = (paginationModelApproval!.total!/limit).ceil();
           totalPageApproval(tempTotalPage);
           currentPageApproval(paginationModelApproval?.currentPage);
+          isLoadingApproval(false);
 
           totalNotificationApproval.value = paginationModelApproval!.total!;
 

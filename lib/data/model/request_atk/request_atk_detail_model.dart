@@ -18,6 +18,11 @@ class RequestATKDetailModel extends Equatable {
   dynamic qtyUnsend;
   dynamic qtyDelivered;
   String? remarks;
+  String? remarksDetail;
+  String? remarksHeader;
+  String? notes;
+  String? notesDelivered;
+  String? notesRejected;
   String? createdAt;
   dynamic createdBy;
   String? updatedAt;
@@ -43,6 +48,11 @@ class RequestATKDetailModel extends Equatable {
     this.qtyDelivered,
     this.codeStatusDoc,
     this.remarks,
+    this.remarksDetail,
+    this.remarksHeader,
+    this.notes,
+    this.notesDelivered,
+    this.notesRejected,
     this.createdAt,
     this.createdBy,
     this.updatedAt,
@@ -98,15 +108,33 @@ class RequestATKDetailModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        key,
-        id,
-        idAtkRequest,
-        idItem,
-        qty,
-        remarks,
-        createdAt,
-        createdBy,
-        updatedAt,
-        updatedBy,
+          key,
+          id,
+          idAtkRequest,
+          idItem,
+          idWarehouse,
+          idBrand,
+          codeStatusDoc,
+          idUom,
+          qty,
+          qtyApproved,
+          qtyUnsend,
+          qtyDelivered,
+          remarks,
+          remarksDetail,
+          remarksHeader,
+          notes,
+          notesDelivered,
+          notesRejected,
+          createdAt,
+          createdBy,
+          updatedAt,
+          updatedBy,
+          itemName,
+          codeItem,
+          brandName,
+          uomName,
+          warehouseName,
+          arrayWarehouse,
       ];
 }

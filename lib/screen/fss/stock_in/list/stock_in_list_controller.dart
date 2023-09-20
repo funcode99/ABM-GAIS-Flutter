@@ -54,6 +54,7 @@ class StockInListController extends BaseController with MasterDataMixin{
   final totalPage = 1.obs;
   final currentPage = 1.obs;
   int limit = 10;
+  final isLoading = true.obs;
 
   @override
   void onInit() {
@@ -100,6 +101,8 @@ class StockInListController extends BaseController with MasterDataMixin{
   }
 
   void getHeader({int page = 1}) async {
+    isLoading(true);
+
     String codeRole = await storage.readString(StorageCore.codeRole);
 
     if(codeRole != RoleEnum.administrator.value){
@@ -129,12 +132,16 @@ class StockInListController extends BaseController with MasterDataMixin{
           listHeader.clear();
           totalPage(1);
           currentPage(1);
+          isLoading(false);
+
+
         },
             (r) {
           paginationModel = r;
           int tempTotalPage = (paginationModel!.total!/limit).ceil();
           totalPage(tempTotalPage);
           currentPage(paginationModel?.currentPage);
+          isLoading(false);
 
           listHeader.value = paginationModel!.data!
               .map((e) => StockInATKModel.fromJson(e))

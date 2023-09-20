@@ -8,9 +8,19 @@ import 'package:gais/screen/auth/login/login_controller.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return GetBuilder<LoginController>(
@@ -40,7 +50,7 @@ class LoginScreen extends StatelessWidget {
                                   "Login",
                                   style: titleTextStyle,
                                 ),
-                                SizedBox(height: 25),
+                                const SizedBox(height: 25),
                                 RichText(
                                   text: TextSpan(
                                     text: 'Username ',
@@ -59,7 +69,7 @@ class LoginScreen extends StatelessWidget {
                                     }
                                   },
                                 ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 RichText(
                                   text: TextSpan(
                                     text: 'Password ',
@@ -82,11 +92,11 @@ class LoginScreen extends StatelessWidget {
                                               ? controller.isObscurePasswordLogin = false
                                               : controller.isObscurePasswordLogin = true;
                                           controller.isObscurePasswordLogin != false
-                                              ? controller.showIcon = Icon(
+                                              ? controller.showIcon = const Icon(
                                                   IconlyBold.show,
                                                   color: Colors.black,
                                                 )
-                                              : controller.showIcon = Icon(
+                                              : controller.showIcon = const Icon(
                                                   IconlyBold.hide,
                                                   color: Colors.black,
                                                 );
@@ -102,7 +112,7 @@ class LoginScreen extends StatelessWidget {
                                 Container(
                                   alignment: Alignment.centerRight,
                                   child: TextButton(
-                                    onPressed: () => Get.to(ForgotPasswordScreen()),
+                                    onPressed: () => Get.to(const ForgotPasswordScreen()),
                                     child: Text("Forgot Password?",
                                         style: listTitleTextStyle.copyWith(color: infoColor, decoration: TextDecoration.underline)),
                                   ),
@@ -118,8 +128,13 @@ class LoginScreen extends StatelessWidget {
                                   alignment: Alignment.center,
                                   child: Text("OR", style: listTitleTextStyle),
                                 ),
-                                CustomFilledButton(color: infoColor, title: "Login via Falcon"),
-                                SizedBox(height: 10),
+                                CustomFilledButton(
+                                  color: infoColor, title: "Login via Falcon",
+                                  onPressed: ()async{
+                                    controller.loginMicrosoft();
+                                  },
+                                ),
+                                const SizedBox(height: 10),
                               ],
                             ),
                           ),
@@ -131,7 +146,7 @@ class LoginScreen extends StatelessWidget {
                 controller.isLoading==true
                     ? Container(
                         decoration: BoxDecoration(color: greyColor.withOpacity(0.5)),
-                        child: Center(
+                        child: const Center(
                           child: CircularProgressIndicator.adaptive(),
                         ),
                       )

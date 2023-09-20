@@ -11,7 +11,7 @@ class CustomBackButton<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: onPressed ?? ()=> Get.back(result: result),
-        icon: Icon(
+        icon: const Icon(
           Icons.chevron_left,
           color: Colors.black,
           size: 30,

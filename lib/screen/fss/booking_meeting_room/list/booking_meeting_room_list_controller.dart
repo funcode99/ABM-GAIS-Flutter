@@ -39,6 +39,7 @@ class BookingMeetingRoomListController extends BaseController with MasterDataMix
   int limit = 10;
 
   final isSecretary = false.obs;
+  final isLoading = true.obs;
 
   @override
   void onInit() {
@@ -72,6 +73,7 @@ class BookingMeetingRoomListController extends BaseController with MasterDataMix
   }
 
   void getHeader({int page = 1}) async {
+    isLoading(true);
     final result = await _repository.getPaginationData(
         data: {
           "page" : page,
@@ -91,12 +93,14 @@ class BookingMeetingRoomListController extends BaseController with MasterDataMix
           listHeader.clear();
           totalPage(1);
           currentPage(1);
+          isLoading(false);
         },
             (r) {
           paginationModel = r;
           int tempTotalPage = (paginationModel!.total!/limit).ceil();
           totalPage(tempTotalPage);
           currentPage(paginationModel?.currentPage);
+          isLoading(false);
 
           listHeader.value = paginationModel!.data!
               .map((e) => BookingMeetingRoomModel.fromJson(e))

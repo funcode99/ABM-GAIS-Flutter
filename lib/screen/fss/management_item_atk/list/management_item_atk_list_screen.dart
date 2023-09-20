@@ -13,6 +13,7 @@ import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/management_item_atk/add/add_management_item_atk_screen.dart';
@@ -217,6 +218,9 @@ class _ManagementItemATKListScreenState
                     controller.getHeader();
                   },
                   child: Obx(() {
+                    if(controller.isLoading.value){
+                      return const CustomIndicator();
+                    }
                     return controller.listHeader.isEmpty
                         ? const DataEmpty()
                         : ListView(
@@ -231,7 +235,8 @@ class _ManagementItemATKListScreenState
                                       controller.limit) + (index + 1)}",
                                   subtitle: "${item.codeItem}",
                                   title: item.itemName,
-                                  total: controller.isEmployee.value ?  "${item.stockToBooked ?? "-"}" : "${item.totalStock ?? "-"}",
+                                  isEllipsis: false,
+                                  total: "Real Stock\n${item.totalStock ?? "-"}",
                                   content: Column(
                                     children: [
                                       GestureDetector(
@@ -241,9 +246,9 @@ class _ManagementItemATKListScreenState
                                           });
                                         },
                                         behavior: HitTestBehavior.translucent,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                        child: Wrap(
+                                          spacing: 16,
+                                          runSpacing: 8,
                                           children: [
                                             /*Expanded(
                                                 child: Column(
@@ -265,67 +270,79 @@ class _ManagementItemATKListScreenState
                                                   ],
                                                 ),
                                               ),*/
-                                            Expanded(
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    "ATK Warehouse".tr,
-                                                    textAlign:
-                                                    TextAlign.center,
-                                                    style: listTitleTextStyle,
-                                                  ),
-                                                  Text(
-                                                    item.warehouseCount
-                                                        .toString() ??
-                                                        "-",
-                                                    style: listSubTitleTextStyle
-                                                        .copyWith(
-                                                        overflow:
-                                                        TextOverflow
-                                                            .ellipsis),
-                                                  ),
-                                                ],
-                                              ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "Warehouse".tr,
+                                                  textAlign:
+                                                  TextAlign.center,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                  item.warehouseCount
+                                                      .toString() ??
+                                                      "-",
+                                                  style: listSubTitleTextStyle
+                                                      .copyWith(
+                                                      overflow:
+                                                      TextOverflow
+                                                          .ellipsis),
+                                                ),
+                                              ],
                                             ),
-                                            Expanded(
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    "Alert Quantity".tr,
-                                                    textAlign:
-                                                    TextAlign.center,
-                                                    style: listTitleTextStyle,
-                                                  ),
-                                                  Text(
-                                                    "${item.alertQty}",
-                                                    style: listSubTitleTextStyle
-                                                        .copyWith(
-                                                        overflow:
-                                                        TextOverflow
-                                                            .ellipsis),
-                                                  ),
-                                                ],
-                                              ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "Alert Quantity".tr,
+                                                  textAlign:
+                                                  TextAlign.center,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                  "${item.alertQty}",
+                                                  style: listSubTitleTextStyle
+                                                      .copyWith(
+                                                      overflow:
+                                                      TextOverflow
+                                                          .ellipsis),
+                                                ),
+                                              ],
                                             ),
-                                            Expanded(
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    "UOM".tr,
-                                                    textAlign:
-                                                    TextAlign.center,
-                                                    style: listTitleTextStyle,
-                                                  ),
-                                                  Text(
-                                                    item.uomName ?? "-",
-                                                    style: listSubTitleTextStyle
-                                                        .copyWith(
-                                                        overflow:
-                                                        TextOverflow
-                                                            .ellipsis),
-                                                  ),
-                                                ],
-                                              ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "UOM".tr,
+                                                  textAlign:
+                                                  TextAlign.center,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                  item.uomName ?? "-",
+                                                  style: listSubTitleTextStyle
+                                                      .copyWith(
+                                                      overflow:
+                                                      TextOverflow
+                                                          .ellipsis),
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "Stock Available\nto Request".tr,
+                                                  textAlign:
+                                                  TextAlign.center,
+                                                  style: listTitleTextStyle,
+                                                ),
+                                                Text(
+                                                  "${item.stockToBooked ?? "-"}",
+                                                  style: listSubTitleTextStyle
+                                                      .copyWith(
+                                                      overflow:
+                                                      TextOverflow
+                                                          .ellipsis),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
@@ -334,28 +351,67 @@ class _ManagementItemATKListScreenState
                                         height: 16,
                                       ),
                                       isOpen
-                                          ? Column(
+                                          ? Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 16),
+                                        color : neutralColor,
+                                            child: Column(
                                         children: controller
-                                            .getDetailStockManagementItemATKModel(
-                                            item).mapIndexed((index, element) =>
-                                            Padding(
-                                              padding: const EdgeInsets
-                                                  .symmetric(vertical: 4),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Text("${element
-                                                      .warehouseName}"),
-                                                  Text("${element
-                                                      .currentStock ?? "-"}"),
-                                                  Text("${element
-                                                      .stockToApproveWh ??
-                                                      "-"}"),
-                                                ],
-                                              ),
-                                            )).toList(),
-                                      )
+                                              .getDetailStockManagementItemATKModel(
+                                              item).mapIndexed((index, element) =>
+                                              Padding(
+                                                padding: const EdgeInsets
+                                                    .symmetric(vertical: 4),
+                                                child: Column(
+                                                  children: [
+                                                    Text("${element
+                                                        .warehouseName}",
+                                                      style: titleTextStyle.copyWith(
+                                                        fontSize: 14
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 8,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Column(
+                                                          children: [
+                                                            const Text("Real\nStock",
+                                                            textAlign: TextAlign.center,),
+                                                            Text("${element
+                                                                .currentStock ?? "-"}")
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 8,
+                                                        ),
+                                                        Column(
+                                                          children: [
+                                                            const Text("Booked\nStock",
+                                                            textAlign: TextAlign.center,),
+                                                            Text("${element
+                                                                .bookedStockWh ?? "-"}")
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 8,
+                                                        ),
+                                                        Column(
+                                                          children: [
+                                                            const Text("Stock Available\nto Approve",
+                                                            textAlign: TextAlign.center,),
+                                                            Text("${element
+                                                                .stockToApproveWh ?? "-"}")
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              )).toList(),
+                                      ),
+                                          )
                                           : const SizedBox()
                                     ],
                                   ),

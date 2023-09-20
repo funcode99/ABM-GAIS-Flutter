@@ -9,4 +9,11 @@ class FirebaseUtil{
 
     return token;
   }
+
+  static Future<void> deleteFCMToken()async{
+
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    return messaging.deleteToken();
+  }
 }

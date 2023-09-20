@@ -61,6 +61,7 @@ class AddItemCashAdvanceNonTravelScreen extends StatelessWidget {
                     height: 8,
                   ),
                   CustomTextFormField(
+                      isRequired: true,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         ThousandsSeparatorInputFormatter()

@@ -12,8 +12,7 @@ import 'package:gais/screen/profil/profil_screen.dart';
 import 'package:get/get.dart';
 
 class HomeController extends BaseController {
-  int? currentIndex = Get.arguments;
-  int selectedIndex = 0;
+  final selectedIndex = 0.obs;
 
 
   static const List<Widget> widgetOptions = <Widget>[
@@ -27,16 +26,16 @@ class HomeController extends BaseController {
     "Home",
     "Dashboard",
     "Notification",
-    "Profil"
+    "Profile"
   ];
 
   @override
   void onInit() {
     super.onInit();
-    if (currentIndex != null) selectedIndex = currentIndex ?? 0;
     cekRole();
     update();
   }
+
 
   void cekRole() async{
     print("role : ${await storage.readRole()}");
