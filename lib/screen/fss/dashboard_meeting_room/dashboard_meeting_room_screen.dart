@@ -466,11 +466,11 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                     startHour: 0,
                     endHour: 23,
                     use24HourFormat: true,
-                    setTimeOnAxis: false,
+                    setTimeOnAxis: true,
                     style: TimePlannerStyle(
                       cellHeight: 120,
                       cellWidth: 200,
-                      showScrollBar: true,
+                      showScrollBar: false,
                       interstitialEvenColor: Colors.grey[50],
                       interstitialOddColor: Colors.grey[200],
                     ),
@@ -629,7 +629,14 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                               iconData: Icons.add,
                               backgroundColor: infoColor,
                               onPressed: () {
-
+                                Get.to(() => const AddBookingMeetingRoomScreen(), arguments: {
+                                  "item" : controller.getItem()
+                                })?.then((value){
+                                  if(value){
+                                    controller.getHeader();
+                                    controller.listSelectedBooking.clear();
+                                  }
+                                });
                               },
                             ) : const SizedBox(),
                           ),
@@ -639,14 +646,22 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                   ),
                 );
               })
+          ),
+          SizedBox(
+            height: 0,
           )
         ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
         onPressed: () =>
-            Get.to(() => const AddBookingMeetingRoomScreen())?.then((value) =>
-                controller.getHeader()),
+            Get.to(() => const AddBookingMeetingRoomScreen())?.then(
+                  (value) {
+                    if(value){
+                      controller.getHeader();
+                    }
+                  }
+            ),
         child: const Icon(Icons.add_rounded, size: 45),
       ),
     );

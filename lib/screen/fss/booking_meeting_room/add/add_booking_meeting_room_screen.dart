@@ -38,7 +38,9 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: baseColor,
       appBar: AppBar(
-        leading: const CustomBackButton(),
+        leading: const CustomBackButton(
+          result: false,
+        ),
         backgroundColor: whiteColor,
         title: Text("Booking Meeting Room".tr, style: appTitle),
         centerTitle: true,
@@ -114,6 +116,13 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                     height: 8,
                   ),
                   Obx(() {
+                    if(controller.listSite.length == 1){
+                      return CustomTextFormField(
+                          isRequired: false,
+                          controller: controller.companyController,
+                          suffixIcon: Icon(Icons.keyboard_arrow_down),
+                          label: "Company".tr);
+                    }
                     if (controller.enableSelectSite.value) {
                       return CustomDropDownFormField(
                         items: controller.listSite

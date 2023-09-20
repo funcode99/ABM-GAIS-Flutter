@@ -124,6 +124,7 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
     DateTime.now().copyDateWith(hour: 22, minute: 00, second: 0, millisecond: 0),
     DateTime.now().copyDateWith(hour: 22, minute: 30, second: 0, millisecond: 0),
     DateTime.now().copyDateWith(hour: 23, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 23, minute: 30, second: 0, millisecond: 0),
   ];
 
   final isLoading = true.obs;
@@ -352,7 +353,8 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
           isOnlineMeeting: false,
           isScheduled: false,
           startTime: hourMinuteSecondFormat.format(element),
-          endTime: hourMinuteSecondFormat.format(element.add(const Duration(minutes: 30)))
+          endTime: hourMinuteSecondFormat.format(element.add(const Duration(minutes: 30))),
+          startDate: requestDateFormat.format(selectedDate.value!)
         );
         tempAvailableBookingList.add(newEmptySchedule);
       });
@@ -569,10 +571,10 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
       BookingMeetingRoomModel last = listSelectedBooking[listSelectedBooking.length - 1];
 
       temp.endTime = last.endTime;
+      result = temp;
     }else{
       result = listSelectedBooking[0];
     }
-
     return result;
   }
 }
