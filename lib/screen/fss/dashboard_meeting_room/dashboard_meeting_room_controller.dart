@@ -33,6 +33,7 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
   ];
 
   final DateFormat dayDateFormat = DateFormat("EE");
+  final DateFormat hourMinuteSecondFormat = DateFormat("HH:mm:ss");
   final DateFormat requestDateFormat = DateFormat("yyyy-MM-dd");
 
   late TextEditingController autocompleteController = TextEditingController();
@@ -70,29 +71,60 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
   final listMappedBooking = <BookingMeetingRoomModel>[].obs;
   final listMappedRoom = <String>[].obs;
 
+  final listAvailableBooking = <BookingMeetingRoomModel>[].obs;
+  final listSelectedBooking = <BookingMeetingRoomModel>[].obs;
+
   final listMap = {}.obs;
 
   final List<DateTime> _listHours = [
-    DateTime.now().copyDateWith(hour: 7, minute: 30, second: 0),
-    DateTime.now().copyDateWith(hour: 8, minute: 00, second: 0),
-    DateTime.now().copyDateWith(hour: 8, minute: 30, second: 0),
-    DateTime.now().copyDateWith(hour: 9, minute: 00, second: 0),
-    DateTime.now().copyDateWith(hour: 9, minute: 30, second: 0),
-    DateTime.now().copyDateWith(hour: 10, minute: 00, second: 0),
-    DateTime.now().copyDateWith(hour: 10, minute: 30, second: 0),
-    DateTime.now().copyDateWith(hour: 11, minute: 00, second: 0),
-    DateTime.now().copyDateWith(hour: 11, minute: 30, second: 0),
-    DateTime.now().copyDateWith(hour: 12, minute: 00, second: 0),
-    DateTime.now().copyDateWith(hour: 12, minute: 30, second: 0),
-    DateTime.now().copyDateWith(hour: 13, minute: 00, second: 0),
-    DateTime.now().copyDateWith(hour: 13, minute: 30, second: 0),
-    DateTime.now().copyDateWith(hour: 14, minute: 00, second: 0),
-    DateTime.now().copyDateWith(hour: 14, minute: 30, second: 0),
-    DateTime.now().copyDateWith(hour: 15, minute: 00, second: 0),
-    DateTime.now().copyDateWith(hour: 15, minute: 30, second: 0),
-    DateTime.now().copyDateWith(hour: 16, minute: 00, second: 0),
-    DateTime.now().copyDateWith(hour: 16, minute: 30, second: 0),
-    DateTime.now().copyDateWith(hour: 17, minute: 00, second: 0),
+    DateTime.now().copyDateWith(hour: 0, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 0, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 1, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 1, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 2, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 2, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 3, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 3, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 4, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 4, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 5, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 5, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 6, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 6, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 7, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 7, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 8, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 8, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 9, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 9, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 10, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 10, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 11, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 11, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 12, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 12, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 13, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 13, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 14, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 14, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 15, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 15, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 16, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 16, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 17, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 17, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 18, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 18, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 19, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 19, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 20, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 20, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 21, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 21, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 22, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 22, minute: 30, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 23, minute: 00, second: 0, millisecond: 0),
+    DateTime.now().copyDateWith(hour: 23, minute: 30, second: 0, millisecond: 0),
   ];
 
   final isLoading = true.obs;
@@ -106,6 +138,8 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
 
     selectedSite.listen((p0) {
       getHeader();
+      //clear selected time
+      listSelectedBooking.clear();
     });
 
     /*selectedRoom.listen((p0) {
@@ -114,15 +148,20 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
 
     listMap.listen((p0) {
       setListMappedBooking();
+      setListAvailableBooking();
       setListMappedRoom();
     });
 
     listShowedRoom.listen((p0) {
       populateMapping();
+      //clear selected time
+      listSelectedBooking.clear();
     });
 
     listHeader.listen((p0) {
       populateMapping();
+      //clear selected time
+      listSelectedBooking.clear();
     });
 
     selectedDate.listen((p0) {
@@ -134,6 +173,9 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
           selectedYear.value = p0.year;
         }
       }
+
+      //clear selected time
+      listSelectedBooking.clear();
     });
 
   }
@@ -245,8 +287,12 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
       if(element.id != ""){
         tempMap.putIfAbsent("${element.id}", () => {
           "room_name" : element.nameMeetingRoom,
+          "id_site" : element.idSite,
+          "id_company" : element.idCompany,
+          "id_meeting_room" : element.id,
           "listBooking" : listHeader.where((e) => e.idMeetingRoom == element.id).toList(),
           "listMappedBooking" : [],
+          "listAvailableBooking" : [],
         });
       }
     }
@@ -255,6 +301,11 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
       List<BookingMeetingRoomModel> tempList = List<BookingMeetingRoomModel>.from(value["listBooking"]);
       List<BookingMeetingRoomModel> tempBookingMeetingRoomList = [];
 
+      List<DateTime> listHours = List<DateTime>.from(_listHours);
+      String roomName = value['room_name'];
+      dynamic siteId = value['id_site'];
+      dynamic companyId = value['id_company'];
+      dynamic meetingRoomId = value['id_meeting_room'];
       for (BookingMeetingRoomModel element in tempList) {
         DateTime? startTime = element.startTime?.toDate(originFormat: "HH:mm:ss");
         DateTime? endTime = element.endTime?.toDate(originFormat: "HH:mm:ss");
@@ -281,12 +332,45 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
           element.minute = startMinute;
           element.durationInMinute = duration;
           element.position = position;
+          element.isScheduled = true;
 
           tempBookingMeetingRoomList.add(element);
+
+          //remove from empty schedule
+          DateTime newStartTime = DateTime.now().copyDateWith(hour: startHour, minute: startMinute, second: 0);
+          DateTime newEndTime = DateTime.now().copyDateWith(hour: endHour, minute: endMinute, second: 0);
+
+          listHours.removeWhere((element){
+            return element.isTimeAfter(newStartTime) && element.isTimeBefore(newEndTime, isInclusive: false);
+          });
         }
       }
 
+
+      //prepare data for empty schedule
+      List<BookingMeetingRoomModel> tempAvailableBookingList = [];
+      listHours.forEach((element) {
+        BookingMeetingRoomModel newEmptySchedule = BookingMeetingRoomModel(
+          minute: element.minute,
+          hour: element.hour,
+          durationInMinute: 30,
+          title: roomName,
+          position: position,
+          idSite: siteId,
+          idCompany: companyId,
+          idMeetingRoom: meetingRoomId,
+          isOnlineMeeting: false,
+          isScheduled: false,
+          startTime: hourMinuteSecondFormat.format(element),
+          endTime: hourMinuteSecondFormat.format(element.add(const Duration(minutes: 30))),
+          startDate: requestDateFormat.format(selectedDate.value!)
+        );
+        tempAvailableBookingList.add(newEmptySchedule);
+      });
+
+
       tempMap[key]["listMappedBooking"] = tempBookingMeetingRoomList;
+      tempMap[key]["listAvailableBooking"] = tempAvailableBookingList;
       position++;
 
     });
@@ -301,6 +385,15 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
     });
 
     listMappedBooking.addAll(result);
+  }
+
+  void setListAvailableBooking(){
+    List<BookingMeetingRoomModel> result = [];
+    listAvailableBooking.clear();
+    listMap.forEach((key, value) {
+      result.addAll(List<BookingMeetingRoomModel>.from(value["listAvailableBooking"]));
+    });
+    listAvailableBooking.addAll(result);
   }
 
   void setListMappedRoom(){
@@ -471,4 +564,58 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
     return Future.value(tempFacility);
   }
 
+  void addToSelectedBooking(BookingMeetingRoomModel item){
+    listSelectedBooking.removeWhere((element) => element.idMeetingRoom != item.idMeetingRoom);
+
+    if(listSelectedBooking.isNotEmpty){
+      BookingMeetingRoomModel benchmark = listSelectedBooking.first;
+      DateTime benchmarkStartTime = benchmark.startTime!.toDate(originFormat: "HH:mm:ss")!;
+      DateTime newItemStartTime = item.startTime!.toDate(originFormat: "HH:mm:ss")!;
+
+      //list booking for this room
+      List<BookingMeetingRoomModel> listBooking = listMappedBooking.where((element) => element.idMeetingRoom == item.idMeetingRoom).toList();
+
+      if(benchmarkStartTime.isAfter(newItemStartTime)){
+        //check if there is booked room between the first list and new item
+        listBooking.removeWhere((element) => !(element.startTime!.toDate(originFormat: "HH:mm:ss")!.isAfter(newItemStartTime) && element.startTime!.toDate(originFormat: "HH:mm:ss")!.isBefore(benchmarkStartTime)));
+
+        if(listBooking.isNotEmpty){
+          listSelectedBooking.clear();
+        }
+
+      }else{
+        benchmark = listSelectedBooking.last;
+        benchmarkStartTime = benchmark.startTime!.toDate(originFormat: "HH:mm:ss")!;
+
+        //check if there is booked room between the last list and new item
+        listBooking.removeWhere((element) => !(element.startTime!.toDate(originFormat: "HH:mm:ss")!.isAfter(benchmarkStartTime) && element.startTime!.toDate(originFormat: "HH:mm:ss")!.isBefore(newItemStartTime)));
+
+        if(listBooking.isNotEmpty){
+          listSelectedBooking.clear();
+        }
+      }
+
+    }
+
+    listSelectedBooking.add(item);
+    listSelectedBooking.sort((a,b) => a.startTime!.toDate(originFormat: "HH:mm:ss")!.isAfter(b.startTime!.toDate(originFormat: "HH:mm:ss")!) ? 1 : -1);
+  }
+
+  void removeFromSelectedBooking(BookingMeetingRoomModel item){
+    listSelectedBooking.removeWhere((element) => item == element);
+  }
+
+  BookingMeetingRoomModel getItem(){
+    BookingMeetingRoomModel result = BookingMeetingRoomModel();
+    if(listSelectedBooking.length > 1){
+      BookingMeetingRoomModel temp = listSelectedBooking[0];
+      BookingMeetingRoomModel last = listSelectedBooking[listSelectedBooking.length - 1];
+
+      temp.endTime = last.endTime;
+      result = temp;
+    }else{
+      result = listSelectedBooking[0];
+    }
+    return result;
+  }
 }

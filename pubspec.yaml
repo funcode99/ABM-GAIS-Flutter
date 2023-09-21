@@ -2,7 +2,7 @@ name: gais
 description: general affair information system
 
 publish_to: 'none'
-version: 1.0.115+115
+version: 1.0.117+117
 
 environment:
   sdk: '>=2.18.6 <3.0.0'
@@ -50,6 +50,7 @@ dependencies:
   android_id: ^0.3.3
   url_launcher: ^6.1.12
   aad_oauth: ^0.4.4
+  email_validator: ^2.1.17
   time_planner:
     git:
       url: https://github.com/fajarainul/time_planner.git

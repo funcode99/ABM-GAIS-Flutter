@@ -72,6 +72,7 @@ BookingMeetingRoomModel _$BookingMeetingRoomModelFromJson(
       position: json['position'] as int?,
       minute: json['minute'] as int?,
       durationInMinute: json['duration_in_minute'] as int?,
+      isScheduled: json['is_scheduled'] as bool?,
     )..facilityArray = (json['facility_array'] as List<dynamic>?)
         ?.map((e) => FacilityModel.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -140,4 +141,5 @@ Map<String, dynamic> _$BookingMeetingRoomModelToJson(
       'position': instance.position,
       'hour': instance.hour,
       'minute': instance.minute,
+      'is_scheduled': instance.isScheduled,
     };

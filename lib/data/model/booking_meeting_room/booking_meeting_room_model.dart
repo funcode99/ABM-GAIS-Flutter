@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:gais/data/model/booking_meeting_room/participant_model.dart';
 import 'package:gais/data/model/master/facility/facility_model.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -5,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'booking_meeting_room_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class BookingMeetingRoomModel {
+class BookingMeetingRoomModel extends Equatable{
   int? no;
   int? id;
   dynamic idMeetingRoom;
@@ -66,6 +67,7 @@ class BookingMeetingRoomModel {
   int? position;
   int? hour;
   int? minute;
+  bool? isScheduled;
 
   BookingMeetingRoomModel(
       {
@@ -128,6 +130,7 @@ class BookingMeetingRoomModel {
         this.position,
         this.minute,
         this.durationInMinute,
+        this.isScheduled,
       });
 
   static BookingMeetingRoomModel fromJsonModel(Object? json) =>
@@ -168,4 +171,70 @@ class BookingMeetingRoomModel {
       _$BookingMeetingRoomModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$BookingMeetingRoomModelToJson(this);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+      no,
+      id,
+      idMeetingRoom,
+      noBookingMeeting,
+      title,
+      idCompany,
+      idSite,
+      idEmployee,
+      remarks,
+      notes,
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      floor,
+      capacity,
+      session,
+      codeStatusDoc,
+      link,
+      createdAt,
+      approvedAt,
+      rejectedAt,
+      createdBy,
+      isApproval,
+      updatedAt,
+      updatedBy,
+      deletedAt,
+      participant,
+      participantArray,
+      nameMeetingRoom,
+      employeeName,
+      companyName,
+      companyCode,
+      siteName,
+      siteCode,
+      status,
+      facility,
+      facilityArray,
+      external,
+      isOnlineMeeting,
+      isRecurrence,
+      recurrence,
+      reccurrence,
+      attachment,
+      attachmentPath,
+      untilOcurs,
+      nameApproved,
+      nameRejected,
+      nameStarted,
+      nameEnded,
+      days,
+      durationStart,
+      durationEnd,
+      recurrenceStart,
+      recurrenceEnd,
+      duration,
+      durationInMinute,
+      position,
+      hour,
+      minute,
+      isScheduled,
+  ];
 }

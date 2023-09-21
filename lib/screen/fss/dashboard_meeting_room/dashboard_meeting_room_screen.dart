@@ -5,6 +5,8 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/data/model/master/room/room_model.dart';
 import 'package:gais/reusable/custombackbutton.dart';
+import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -336,7 +338,7 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                       child: LayoutBuilder(
                         builder: (context, constraint) {
                           return Container(
-                            margin: EdgeInsets.only(right: 8),
+                            margin: const EdgeInsets.only(right: 8),
                             decoration: BoxDecoration(
                                 color: baseColor, borderRadius: BorderRadius
                                 .circular(14)),
@@ -464,11 +466,11 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                     startHour: 0,
                     endHour: 23,
                     use24HourFormat: true,
-                    setTimeOnAxis: false,
+                    setTimeOnAxis: true,
                     style: TimePlannerStyle(
                       cellHeight: 120,
                       cellWidth: 200,
-                      showScrollBar: true,
+                      showScrollBar: false,
                       interstitialEvenColor: Colors.grey[50],
                       interstitialOddColor: Colors.grey[200],
                     ),
@@ -482,27 +484,29 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                         title: "Room Name",
                       )
                     ],
-                    tasks: controller.listMappedBooking.map((element) =>
-                        TimePlannerTask(
-                          // background color for task
-                          color: controller.getColor(element.codeStatusDoc),
-                          // day: Index of header, hour: Task will be begin at this hour
-                          // minutes: Task will be begin at this minutes
+                    tasks: [
+                      ...controller.listMappedBooking.map((element) {
+                        bool isScheduled = element.isScheduled ?? false;
+                        return TimePlannerTask(
+                          color: isScheduled ? controller.getColor(element.codeStatusDoc) : Colors.transparent,
                           dateTime: TimePlannerDateTime(day: element.position!,
                               hour: element.hour!,
                               minutes: element.minute!),
                           leftSpace: (200 * element.position!.toDouble()),
-                          // Minutes duration of task
                           minutesDuration: element.durationInMinute!,
-                          // Days duration of task (use for multi days task)
                           daysDuration: 1,
                           onTap: () {
-                            Get.to(() => const DetailBookingMeetingRoomScreen(),
-                                arguments: {
-                                  "item": element
-                                })?.then((value) => controller.getHeader());
+                            if(isScheduled){
+                              Get.to(() => const DetailBookingMeetingRoomScreen(),
+                                  arguments: {
+                                    "item": element
+                                  })?.then((value) => controller.getHeader());
+                            }else{
+                              controller.addToSelectedBooking(element);
+                            }
                           },
-                          child: Container(
+                          child: isScheduled ?
+                          Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             width: double.infinity,
                             child: Row(
@@ -565,19 +569,99 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                                       ),
                               ],
                             ),
+                          ) : Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.black12,
+                                  width: 0.5
+                              ),
+                            ),
                           ),
-                        )).toList(),
+                        );
+                      }).toList(),
+                      ...controller.listAvailableBooking.map((element) {
+                        return TimePlannerTask(
+                          color: Colors.transparent,
+                          dateTime: TimePlannerDateTime(day: element.position!,
+                              hour: element.hour!,
+                              minutes: element.minute!),
+                          leftSpace: (200 * element.position!.toDouble()),
+                          minutesDuration: element.durationInMinute!,
+                          daysDuration: 1,
+                          onTap: () {
+                            controller.addToSelectedBooking(element);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.black12,
+                                  width: 0.5
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      ...controller.listSelectedBooking.mapIndexed((index, element) {
+                        int length = controller.listSelectedBooking.length;
+                        bool isEven = length.isEven;
+                        bool showAddButton = false;
+                        if(isEven){
+
+                        }
+                        return TimePlannerTask(
+                          color: const Color(0xffdefcf1),
+                          dateTime: TimePlannerDateTime(day: element.position!,
+                              hour: element.hour!,
+                              minutes: element.minute!),
+                          leftSpace: (200 * element.position!.toDouble()),
+                          // Minutes duration of task
+                          minutesDuration: element.durationInMinute!,
+                          // Days duration of task (use for multi days task)
+                          daysDuration: 1,
+                          onTap: () {
+                            controller.removeFromSelectedBooking(element);
+                          },
+                          child: Container(
+                            width: 100,
+                            child: index == (controller.listSelectedBooking.length / 2).floor() ?
+                            CustomIconButton(
+                              title: "Add".tr,
+                              iconData: Icons.add,
+                              backgroundColor: infoColor,
+                              onPressed: () {
+                                Get.to(() => const AddBookingMeetingRoomScreen(), arguments: {
+                                  "item" : controller.getItem()
+                                })?.then((value){
+                                  if(value){
+                                    controller.getHeader();
+                                    controller.listSelectedBooking.clear();
+                                  }
+                                });
+                              },
+                            ) : const SizedBox(),
+                          ),
+                        );
+                      }).toList(),
+                    ],
                   ),
                 );
               })
+          ),
+          SizedBox(
+            height: 0,
           )
         ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
         onPressed: () =>
-            Get.to(() => const AddBookingMeetingRoomScreen())?.then((value) =>
-                controller.getHeader()),
+            Get.to(() => const AddBookingMeetingRoomScreen())?.then(
+                  (value) {
+                    if(value){
+                      controller.getHeader();
+                    }
+                  }
+            ),
         child: const Icon(Icons.add_rounded, size: 45),
       ),
     );

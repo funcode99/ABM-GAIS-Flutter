@@ -23,18 +23,24 @@ extension DateExt on DateTime {
     );
   }
 
-  bool isTimeAfter(DateTime other) {
+  bool isTimeAfter(DateTime other, {bool isInclusive = true}) {
     int thisTotalSecond = (hour * 60 * 60) + (minute * 60) + second;
     int otherTotalSecond = (other.hour * 60 * 60) + (other.minute * 60) + other.second;
 
-    return thisTotalSecond >= otherTotalSecond;
+    if(isInclusive){
+      return thisTotalSecond >= otherTotalSecond;
+    }
+    return thisTotalSecond > otherTotalSecond;
   }
 
-  bool isTimeBefore(DateTime other) {
+  bool isTimeBefore(DateTime other, {bool isInclusive = true}) {
     int thisTotalSecond = (hour * 60 * 60) + (minute * 60) + second;
     int otherTotalSecond = (other.hour * 60 * 60) + (other.minute * 60) + other.second;
 
-    return thisTotalSecond <= otherTotalSecond;
+    if(isInclusive){
+      return thisTotalSecond <= otherTotalSecond;
+    }
+    return thisTotalSecond < otherTotalSecond;
   }
 
   bool isSameTime(DateTime other) {
