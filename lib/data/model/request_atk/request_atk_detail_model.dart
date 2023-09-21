@@ -6,7 +6,7 @@ part 'request_atk_detail_model.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class RequestATKDetailModel extends Equatable {
   String? key;
-  int? id;
+  dynamic id;
   dynamic idAtkRequest;
   dynamic idItem;
   int? idWarehouse;

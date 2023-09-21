@@ -87,7 +87,7 @@ class RequestATKRepository
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteData(int id) async {
+  Future<Either<BaseError, bool>> deleteData(dynamic id) async {
     try {
       Dio.Response response = await network.dio.delete(
         '/api/request_atk/delete_data/$id',
@@ -110,7 +110,7 @@ class RequestATKRepository
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteDetail(int id) async {
+  Future<Either<BaseError, bool>> deleteDetail(dynamic id) async {
     try {
       Dio.Response response = await network.dio.delete(
         '/api/request_atk/delete_data_detail/$id',
@@ -129,8 +129,7 @@ class RequestATKRepository
   }
 
   @override
-  Future<Either<BaseError, List<RequestATKDetailModel>>> getDataDetails(
-      int id) async {
+  Future<Either<BaseError, List<RequestATKDetailModel>>> getDataDetails(dynamic id) async {
     try {
       Dio.Response response = await network.dio.get(
         '/api/request_atk/get_by_atk_request_id/$id',
@@ -168,14 +167,14 @@ class RequestATKRepository
   }
 
   @override
-  Future<Either<BaseError, RequestAtkModel>> updateData(model, int id) {
+  Future<Either<BaseError, RequestAtkModel>> updateData(model, dynamic id) {
     // TODO: implement updateData
     throw UnimplementedError();
   }
 
   @override
   Future<Either<BaseError, RequestATKDetailModel>> updateDetail(
-      model, int id) async {
+      model, dynamic id) async {
     final requestATKDetailModel = model as RequestATKDetailModel;
 
     final formData = Dio.FormData.fromMap(requestATKDetailModel.toJson());
@@ -198,7 +197,7 @@ class RequestATKRepository
   }
 
   @override
-  Future<Either<BaseError, RequestAtkModel>> submitData(int id) async {
+  Future<Either<BaseError, RequestAtkModel>> submitData(dynamic id) async {
     try {
       Dio.Response response = await network.dio.post(
         '/api/request_atk/submit/$id',
@@ -217,7 +216,7 @@ class RequestATKRepository
   }
 
   @override
-  Future<Either<BaseError, RequestAtkModel>> detailData(int id) async {
+  Future<Either<BaseError, RequestAtkModel>> detailData(dynamic id) async {
     try {
       Dio.Response response = await network.dio.get(
         '/api/request_atk/get/$id',
@@ -238,7 +237,7 @@ class RequestATKRepository
     }
   }
 
-  Future<Either<BaseError, RequestAtkModel>> detailDataApproval(int id) async {
+  Future<Either<BaseError, RequestAtkModel>> detailDataApproval(dynamic id) async {
     try {
       Dio.Response response = await network.dio.get(
         '/api/approval_request_atk/get_data/$id',
@@ -288,7 +287,7 @@ class RequestATKRepository
   }
 
   @override
-  Future<Either<BaseError, bool>> reject(model, int id) async{
+  Future<Either<BaseError, bool>> reject(model, dynamic id) async{
     try {
       final approvalModel = model as ApprovalModel;
 
@@ -311,7 +310,7 @@ class RequestATKRepository
   }
 
   @override
-  Future<Either<BaseError, bool>> approve(model, int id) async{
+  Future<Either<BaseError, bool>> approve(model, dynamic id) async{
     try {
       final approvalModel = model as ApprovalModel;
 
@@ -385,7 +384,7 @@ class RequestATKRepository
 
   @override
   Future<Either<BaseError, List<WarehouseDetailModel>>> getDetailsApproval(
-      int id) async {
+      dynamic id) async {
     try {
       Dio.Response response = await network.dio.get(
         '/api/request_atk/get_by_atk_request_w_id/$id',
@@ -403,7 +402,7 @@ class RequestATKRepository
   }
 
 
-  Future<Either<BaseError, bool>> complete(model, int id) async{
+  Future<Either<BaseError, bool>> complete(model, dynamic id) async{
     try {
       final approvalModel = model as ApprovalModel;
 

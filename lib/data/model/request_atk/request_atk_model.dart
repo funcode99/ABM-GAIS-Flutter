@@ -5,7 +5,7 @@ part 'request_atk_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class RequestAtkModel {
-  int? id;
+  dynamic id;
   int? idCompany;
   int? idDepartement;
   int? idSite;

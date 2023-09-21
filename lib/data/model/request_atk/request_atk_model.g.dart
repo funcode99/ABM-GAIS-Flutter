@@ -8,7 +8,7 @@ part of 'request_atk_model.dart';
 
 RequestAtkModel _$RequestAtkModelFromJson(Map<String, dynamic> json) =>
     RequestAtkModel(
-      id: json['id'] as int?,
+      id: json['id'],
       idCompany: json['id_company'] as int?,
       idDepartement: json['id_departement'] as int?,
       idSite: json['id_site'] as int?,

@@ -48,7 +48,7 @@ class ManagementItemATKRepository implements BaseRepository<ManagementItemATKMod
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteData(int id) async{
+  Future<Either<BaseError, bool>> deleteData(dynamic id) async{
     try {
       Dio.Response response = await network.dio.delete(
         '/api/management_atk/delete_data/$id',
@@ -66,13 +66,13 @@ class ManagementItemATKRepository implements BaseRepository<ManagementItemATKMod
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteDetail(int id) {
+  Future<Either<BaseError, bool>> deleteDetail(dynamic id) {
     // TODO: implement deleteDetail
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<BaseError, List<bool>>> getDataDetails(int id) {
+  Future<Either<BaseError, List<bool>>> getDataDetails(dynamic id) {
     // TODO: implement getDataDetails
     throw UnimplementedError();
   }
@@ -105,7 +105,7 @@ class ManagementItemATKRepository implements BaseRepository<ManagementItemATKMod
   }
 
   @override
-  Future<Either<BaseError, ManagementItemATKModel>> updateData(model, int id) async{
+  Future<Either<BaseError, ManagementItemATKModel>> updateData(model, dynamic id) async{
     final managementItemATKModel = model as ManagementItemATKModel;
 
     try {
@@ -126,19 +126,19 @@ class ManagementItemATKRepository implements BaseRepository<ManagementItemATKMod
   }
 
   @override
-  Future<Either<BaseError, bool>> updateDetail(model, int id) {
+  Future<Either<BaseError, bool>> updateDetail(model, dynamic id) {
     // TODO: implement updateDetail
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<BaseError, ManagementItemATKModel>> submitData(int id) {
+  Future<Either<BaseError, ManagementItemATKModel>> submitData(dynamic id) {
     // TODO: implement submitData
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<BaseError, ManagementItemATKModel>> detailData(int id) {
+  Future<Either<BaseError, ManagementItemATKModel>> detailData(dynamic id) {
     // TODO: implement detailData
     throw UnimplementedError();
   }

@@ -23,13 +23,13 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteData(int id) {
+  Future<Either<BaseError, bool>> deleteData(dynamic id) {
     // TODO: implement deleteData
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteDetail(int id) {
+  Future<Either<BaseError, bool>> deleteDetail(dynamic id) {
     // TODO: implement deleteDetail
     throw UnimplementedError();
   }
@@ -62,7 +62,7 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
   }
 
   @override
-  Future<Either<BaseError, List<bool>>> getDataDetails(int id) {
+  Future<Either<BaseError, List<bool>>> getDataDetails(dynamic id) {
     // TODO: implement getDataDetails
     throw UnimplementedError();
   }
@@ -113,13 +113,13 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
   }
 
   @override
-  Future<Either<BaseError, PoolCarModel>> updateData(model, int id) {
+  Future<Either<BaseError, PoolCarModel>> updateData(model, dynamic id) {
     // TODO: implement updateData
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<BaseError, bool>> updateDetail(model, int id) {
+  Future<Either<BaseError, bool>> updateDetail(model, dynamic id) {
     // TODO: implement updateDetail
     throw UnimplementedError();
   }

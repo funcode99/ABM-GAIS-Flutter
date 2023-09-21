@@ -57,7 +57,7 @@ class StockInATKRepository
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteData(int id) async {
+  Future<Either<BaseError, bool>> deleteData(dynamic id) async {
     try {
       Dio.Response response = await network.dio.delete(
         '/api/stock_in/delete_data/$id',
@@ -80,7 +80,7 @@ class StockInATKRepository
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteDetail(int id) async{
+  Future<Either<BaseError, bool>> deleteDetail(dynamic id) async{
     try {
       Dio.Response response = await network.dio.delete(
         '/api/stock_in/delete_data_detail/$id',
@@ -99,7 +99,7 @@ class StockInATKRepository
   }
 
   @override
-  Future<Either<BaseError, StockInATKModel>> detailData(int id) async {
+  Future<Either<BaseError, StockInATKModel>> detailData(dynamic id) async {
     try {
       Dio.Response response = await network.dio.get(
         '/api/stock_in/get/$id',
@@ -129,7 +129,7 @@ class StockInATKRepository
 
   @override
   Future<Either<BaseError, List<StockInATKDetailModel>>> getDataDetails(
-      int id) async {
+      dynamic id) async {
     try {
       Dio.Response response = await network.dio.get(
         '/api/stock_in/get_by_stock_in_id/$id',
@@ -167,7 +167,7 @@ class StockInATKRepository
   }
 
   @override
-  Future<Either<BaseError, StockInATKModel>> submitData(int id) async {
+  Future<Either<BaseError, StockInATKModel>> submitData(dynamic id) async {
     try {
       Dio.Response response = await network.dio.post(
         '/api/stock_in/submit/$id',
@@ -186,7 +186,7 @@ class StockInATKRepository
   }
 
   @override
-  Future<Either<BaseError, StockInATKModel>> updateData(model, int id)async {
+  Future<Either<BaseError, StockInATKModel>> updateData(model, dynamic id)async {
     final stockInModel = model as StockInATKModel;
 
     try {
@@ -207,7 +207,7 @@ class StockInATKRepository
   }
 
   @override
-  Future<Either<BaseError, StockInATKDetailModel>> updateDetail(model, int id) async{
+  Future<Either<BaseError, StockInATKDetailModel>> updateDetail(model, dynamic id) async{
     final stockInATKDetailModel = model as StockInATKDetailModel;
 
     try {

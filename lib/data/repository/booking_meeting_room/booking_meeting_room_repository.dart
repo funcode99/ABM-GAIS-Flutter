@@ -22,7 +22,7 @@ class BookingMeetingRoomRepository implements BaseRepository<BookingMeetingRoomM
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteData(int id) async{
+  Future<Either<BaseError, bool>> deleteData(dynamic id) async{
     try {
       Dio.Response response = await network.dio.delete(
         '/api/book_meeting_room/delete_data/$id',
@@ -45,13 +45,13 @@ class BookingMeetingRoomRepository implements BaseRepository<BookingMeetingRoomM
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteDetail(int id) {
+  Future<Either<BaseError, bool>> deleteDetail(dynamic id) {
     // TODO: implement deleteDetail
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<BaseError, BookingMeetingRoomModel>> detailData(int id) async{
+  Future<Either<BaseError, BookingMeetingRoomModel>> detailData(dynamic id) async{
     try {
       Dio.Response response = await network.dio.get(
         '/api/book_meeting_room/get/$id',
@@ -78,7 +78,7 @@ class BookingMeetingRoomRepository implements BaseRepository<BookingMeetingRoomM
   }
 
   @override
-  Future<Either<BaseError, List<bool>>> getDataDetails(int id) {
+  Future<Either<BaseError, List<bool>>> getDataDetails(dynamic id) {
     // TODO: implement getDataDetails
     throw UnimplementedError();
   }
@@ -179,7 +179,7 @@ class BookingMeetingRoomRepository implements BaseRepository<BookingMeetingRoomM
   }
 
   @override
-  Future<Either<BaseError, BookingMeetingRoomModel>> submitData(int id) async{
+  Future<Either<BaseError, BookingMeetingRoomModel>> submitData(dynamic id) async{
     try {
       Dio.Response response = await network.dio.post(
         '/api/book_meeting_room/book/$id',
@@ -197,7 +197,7 @@ class BookingMeetingRoomRepository implements BaseRepository<BookingMeetingRoomM
   }
 
   @override
-  Future<Either<BaseError, BookingMeetingRoomModel>> updateData(model, int id) async{
+  Future<Either<BaseError, BookingMeetingRoomModel>> updateData(model, dynamic id) async{
     final bookingMeetingRoomModel = model as BookingMeetingRoomModel;
 
     try {
@@ -218,7 +218,7 @@ class BookingMeetingRoomRepository implements BaseRepository<BookingMeetingRoomM
   }
 
   @override
-  Future<Either<BaseError, bool>> updateDetail(model, int id) {
+  Future<Either<BaseError, bool>> updateDetail(model, dynamic id) {
     // TODO: implement updateDetail
     throw UnimplementedError();
   }
@@ -243,7 +243,7 @@ class BookingMeetingRoomRepository implements BaseRepository<BookingMeetingRoomM
     }
   }
 
-  Future<Either<BaseError, bool>> startMeeting(int id) async{
+  Future<Either<BaseError, bool>> startMeeting(dynamic id) async{
     try {
       Dio.Response response = await network.dio.post(
         '/api/book_meeting_room/start_meeting/$id',
@@ -260,7 +260,7 @@ class BookingMeetingRoomRepository implements BaseRepository<BookingMeetingRoomM
     }
   }
 
-  Future<Either<BaseError, bool>> endMeeting(int id) async{
+  Future<Either<BaseError, bool>> endMeeting(dynamic id) async{
     try {
       Dio.Response response = await network.dio.post(
         '/api/book_meeting_room/end_meeting/$id',
@@ -278,7 +278,7 @@ class BookingMeetingRoomRepository implements BaseRepository<BookingMeetingRoomM
   }
 
   @override
-  Future<Either<BaseError, bool>> approve(model, int id) async{
+  Future<Either<BaseError, bool>> approve(model, dynamic id) async{
     try {
       final approvalModel = model as ApprovalModel;
 
@@ -308,7 +308,7 @@ class BookingMeetingRoomRepository implements BaseRepository<BookingMeetingRoomM
   }
 
   @override
-  Future<Either<BaseError, List<ApprovalLogModel>>> getApprovalLog(int id) {
+  Future<Either<BaseError, List<ApprovalLogModel>>> getApprovalLog(dynamic id) {
     // TODO: implement getApprovalLog
     throw UnimplementedError();
   }
@@ -332,7 +332,7 @@ class BookingMeetingRoomRepository implements BaseRepository<BookingMeetingRoomM
   }
 
   @override
-  Future<Either<BaseError, bool>> reject(model, int id) async{
+  Future<Either<BaseError, bool>> reject(model, dynamic id) async{
     try {
       final approvalModel = model as ApprovalModel;
 

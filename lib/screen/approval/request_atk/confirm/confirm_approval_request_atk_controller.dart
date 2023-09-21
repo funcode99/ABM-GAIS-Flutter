@@ -273,8 +273,6 @@ class ConfirmApprovalRequestATKController extends BaseController {
       }
 
     });
-
-    print("RESULTTT $result");
     return result;
   }
 }

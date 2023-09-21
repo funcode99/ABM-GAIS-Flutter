@@ -20,19 +20,19 @@ class ApprovalDelegationRepository
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteData(int id) {
+  Future<Either<BaseError, bool>> deleteData(dynamic id) {
     // TODO: implement deleteData
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteDetail(int id) {
+  Future<Either<BaseError, bool>> deleteDetail(dynamic id) {
     // TODO: implement deleteDetail
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<BaseError, ApprovalDelegationModel>> detailData(int id) async{
+  Future<Either<BaseError, ApprovalDelegationModel>> detailData(dynamic id) async{
     try {
       Dio.Response response = await network.dio.get(
         '/api/approval_delegation/get_data/$id',
@@ -59,7 +59,7 @@ class ApprovalDelegationRepository
   }
 
   @override
-  Future<Either<BaseError, List<bool>>> getDataDetails(int id) {
+  Future<Either<BaseError, List<bool>>> getDataDetails(dynamic id) {
     // TODO: implement getDataDetails
     throw UnimplementedError();
   }
@@ -110,13 +110,13 @@ class ApprovalDelegationRepository
   }
 
   @override
-  Future<Either<BaseError, ApprovalDelegationModel>> submitData(int id) {
+  Future<Either<BaseError, ApprovalDelegationModel>> submitData(dynamic id) {
     // TODO: implement submitData
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<BaseError, ApprovalDelegationModel>> updateData(model, int id) async{
+  Future<Either<BaseError, ApprovalDelegationModel>> updateData(model, dynamic id) async{
     final approvalDelegationModel = model as ApprovalDelegationModel;
 
     try {
@@ -137,7 +137,7 @@ class ApprovalDelegationRepository
   }
 
   @override
-  Future<Either<BaseError, bool>> updateDetail(model, int id) {
+  Future<Either<BaseError, bool>> updateDetail(model, dynamic id) {
     // TODO: implement updateDetail
     throw UnimplementedError();
   }
