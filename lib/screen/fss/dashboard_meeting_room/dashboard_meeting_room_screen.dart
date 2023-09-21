@@ -623,7 +623,7 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                           },
                           child: Container(
                             width: 100,
-                            child: index == controller.listSelectedBooking.length - 1 ?
+                            child: index == (controller.listSelectedBooking.length / 2).floor() ?
                             CustomIconButton(
                               title: "Add".tr,
                               iconData: Icons.add,

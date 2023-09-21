@@ -138,6 +138,8 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
 
     selectedSite.listen((p0) {
       getHeader();
+      //clear selected time
+      listSelectedBooking.clear();
     });
 
     /*selectedRoom.listen((p0) {
@@ -152,10 +154,14 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
 
     listShowedRoom.listen((p0) {
       populateMapping();
+      //clear selected time
+      listSelectedBooking.clear();
     });
 
     listHeader.listen((p0) {
       populateMapping();
+      //clear selected time
+      listSelectedBooking.clear();
     });
 
     selectedDate.listen((p0) {
@@ -167,6 +173,9 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
           selectedYear.value = p0.year;
         }
       }
+
+      //clear selected time
+      listSelectedBooking.clear();
     });
 
   }
@@ -556,6 +565,38 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
   }
 
   void addToSelectedBooking(BookingMeetingRoomModel item){
+    listSelectedBooking.removeWhere((element) => element.idMeetingRoom != item.idMeetingRoom);
+
+    if(listSelectedBooking.isNotEmpty){
+      BookingMeetingRoomModel benchmark = listSelectedBooking.first;
+      DateTime benchmarkStartTime = benchmark.startTime!.toDate(originFormat: "HH:mm:ss")!;
+      DateTime newItemStartTime = item.startTime!.toDate(originFormat: "HH:mm:ss")!;
+
+      //list booking for this room
+      List<BookingMeetingRoomModel> listBooking = listMappedBooking.where((element) => element.idMeetingRoom == item.idMeetingRoom).toList();
+
+      if(benchmarkStartTime.isAfter(newItemStartTime)){
+        //check if there is booked room between the first list and new item
+        listBooking.removeWhere((element) => !(element.startTime!.toDate(originFormat: "HH:mm:ss")!.isAfter(newItemStartTime) && element.startTime!.toDate(originFormat: "HH:mm:ss")!.isBefore(benchmarkStartTime)));
+
+        if(listBooking.isNotEmpty){
+          listSelectedBooking.clear();
+        }
+
+      }else{
+        benchmark = listSelectedBooking.last;
+        benchmarkStartTime = benchmark.startTime!.toDate(originFormat: "HH:mm:ss")!;
+
+        //check if there is booked room between the last list and new item
+        listBooking.removeWhere((element) => !(element.startTime!.toDate(originFormat: "HH:mm:ss")!.isAfter(benchmarkStartTime) && element.startTime!.toDate(originFormat: "HH:mm:ss")!.isBefore(newItemStartTime)));
+
+        if(listBooking.isNotEmpty){
+          listSelectedBooking.clear();
+        }
+      }
+
+    }
+
     listSelectedBooking.add(item);
     listSelectedBooking.sort((a,b) => a.startTime!.toDate(originFormat: "HH:mm:ss")!.isAfter(b.startTime!.toDate(originFormat: "HH:mm:ss")!) ? 1 : -1);
   }
