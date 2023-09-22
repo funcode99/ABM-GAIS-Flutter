@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/reusable/avatar/custom_avatar_network.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
@@ -43,27 +44,11 @@ class MyProfileMainScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     Obx(() {
-                      return Container(
-                        width: 180,
-                        height: 180,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0Xfff6de9d)
-                        ),
-                        child: Image.network(
-                          controller.image.value,
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, _, __) {
-                            return Center(
-                                child: Text(
-                                  controller.name.value.getInitials() ?? "",
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 80),));
-                          },
-                        ),
+                      return CustomAvatarNetwork(
+                        size: 180,
+                        name: controller.name.value,
+                        imagePath: controller.image.value,
+                        fontSize: 80,
                       );
                     }),
                     Positioned(
