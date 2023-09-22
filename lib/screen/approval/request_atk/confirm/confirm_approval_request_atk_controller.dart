@@ -270,6 +270,12 @@ class ConfirmApprovalRequestATKController extends BaseController {
 
       if(listSelected.isEmpty){
         result = false;
+      }else{
+        listSelected.forEach((element) {
+          if(element.qtyApproved <= 0){
+            result = false;
+          }
+        });
       }
 
     });
