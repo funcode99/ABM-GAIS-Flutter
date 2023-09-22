@@ -5,7 +5,7 @@ part 'approval_request_atk_model.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class ApprovalRequestATKModel {
   int? no;
-  int? id;
+  dynamic id;
   int? idCompany;
   int? idSite;
   int? idEmployee;

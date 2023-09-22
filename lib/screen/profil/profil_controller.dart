@@ -1,12 +1,14 @@
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/screen/auth/login/login_screen.dart';
 import 'package:gais/util/auth/microsoft_auth_util.dart';
 import 'package:gais/util/firebase/firebase_util.dart';
 import 'package:get/get.dart';
 
 class ProfilController extends BaseController {
-  String? userName;
-  String? userSN;
+  final userName = "".obs;
+  final userSN = "".obs;
+  final image = "".obs;
 
   @override
   void onInit() {
@@ -32,11 +34,14 @@ class ProfilController extends BaseController {
   }
 
   Future<void> fetchList() async {
-    storage.readEmployeeInfo().then((value) {
-      userName = value.first.employeeName;
-      userSN = value.first.snEmployee;
+    String imagePath = await storage.readString(StorageCore.filePath);
+    image.value = imagePath;
 
-      update();
+    storage.readEmployeeInfo().then((value) {
+      userName.value = value.first.employeeName ?? "";
+      userSN.value = value.first.snEmployee ?? "";
+      userSN.value = value.first.snEmployee ?? "";
+
     });
   }
 }

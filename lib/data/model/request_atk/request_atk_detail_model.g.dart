@@ -10,7 +10,7 @@ RequestATKDetailModel _$RequestATKDetailModelFromJson(
         Map<String, dynamic> json) =>
     RequestATKDetailModel(
       key: json['key'] as String?,
-      id: json['id'] as int?,
+      id: json['id'],
       idWarehouse: json['id_warehouse'] as int?,
       idAtkRequest: json['id_atk_request'],
       idItem: json['id_item'],

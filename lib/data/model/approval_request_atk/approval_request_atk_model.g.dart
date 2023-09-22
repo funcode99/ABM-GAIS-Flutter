@@ -10,7 +10,7 @@ ApprovalRequestATKModel _$ApprovalRequestATKModelFromJson(
         Map<String, dynamic> json) =>
     ApprovalRequestATKModel(
       no: json['no'] as int?,
-      id: json['id'] as int?,
+      id: json['id'],
       idCompany: json['id_company'] as int?,
       idSite: json['id_site'] as int?,
       idEmployee: json['id_employee'] as int?,
