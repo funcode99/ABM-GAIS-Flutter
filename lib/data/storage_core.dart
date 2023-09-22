@@ -18,6 +18,7 @@ class StorageCore {
   static const String snEmployee = "sn";
   static const String tlkRate = 'tlkRate';
   static const String isEmployee = 'isEmployee';
+  static const String filePath = 'filePath';
 
   final storage = const FlutterSecureStorage();
 

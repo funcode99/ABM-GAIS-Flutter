@@ -41,4 +41,7 @@ extension StringExt on String{
     return text.contains(".png") || text.contains(".jpg") || text.contains("jpeg");
   }
 
+  String getInitials() => isNotEmpty
+      ? trim().split(RegExp(' +')).map((s) => s[0]).take(2).join()
+      : '';
 }

@@ -3,10 +3,12 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
+import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/profil/myprofile/line_approval/line_approval_screen.dart';
 import 'package:gais/screen/profil/myprofile/my_profile_screen/my_profile_screen.dart';
 import 'package:gais/screen/profil/myprofile/myprofile_main_controller.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
 class MyProfileMainScreen extends StatelessWidget {
@@ -30,63 +32,111 @@ class MyProfileMainScreen extends StatelessWidget {
         centerTitle: true,
         flexibleSpace: const TopBar(),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 150,
-            child: CircleAvatar(
-              child: Image.network(
-                "https://images.unsplash.com/photo-1614283233556-f35b0c801ef1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2lkZSUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D&w=1000&q=80",
-                height: 1000,
-                width: 1000,
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverToBoxAdapter(
+              child: Container(
+                width: double.infinity,
+                height: 200,
+                alignment: Alignment.center,
+                child: Stack(
+                  children: [
+                    Obx(() {
+                      return Container(
+                        width: 180,
+                        height: 180,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0Xfff6de9d)
+                        ),
+                        child: Image.network(
+                          controller.image.value,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, _, __) {
+                            return Center(
+                                child: Text(
+                                  controller.name.value.getInitials() ?? "",
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 80),));
+                          },
+                        ),
+                      );
+                    }),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.black54,
+                        ),
+                        child: IconButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.edit, color: Colors.white, size: 20,)
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 10, left: 16, right: 16),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10)
+            SliverPersistentHeader(
+                pinned: true,
+                delegate: SliverAppBarDelegate(
+                  minHeight: 50,
+                  maxHeight: 100,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Obx(() {
+                      return TabBar(
+                        padding: EdgeInsets.zero,
+                        controller: controller.tabController.value,
+                        labelColor: infoColor,
+                        unselectedLabelColor: greyColor,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        indicatorPadding: const EdgeInsets.symmetric(
+                            horizontal: 16),
+                        tabs: controller.isEmployee.value ? const [
+                          Tab(
+                            text: "My Profile",
+                          ),
+                          Tab(
+                            text: "Line Approval",
+                          ),
+                        ] : const [
+                          Tab(
+                            text: "My Profile",
+                          ),
+                        ],
+                      );
+                    }),
+                  ),
+                )
             ),
-            child: Obx(() {
-              return TabBar(
-                padding: EdgeInsets.zero,
-                controller: controller.tabController.value,
-                labelColor: infoColor,
-                unselectedLabelColor: greyColor,
-                indicatorSize: TabBarIndicatorSize.tab,
-                tabs: controller.isEmployee.value ? const [
-                  Tab(
-                    text: "My Profile",
-                  ),
-                  Tab(
-                    text: "Line Approval",
-                  ),
-                ] : const [
-                  Tab(
-                    text: "My Profile",
-                  ),
-                ],
-              );
-            }),
-          ),
-          const SizedBox(
-            height: 32,
-          ),
-          Expanded(
-              child: Obx(() {
-                return TabBarView(
-                  controller: controller.tabController.value,
-                  children: controller.isEmployee.value ? const [
-                    MyProfileScreen(),
-                    LineApprovalScreen(),
-                  ] : const [
-                    MyProfileScreen(),
-                  ],
-                );
-              })
-          )
-        ],
+          ];
+        },
+        body: Obx(() {
+          return TabBarView(
+            controller: controller.tabController.value,
+            children: controller.isEmployee.value ? const [
+              MyProfileScreen(),
+              LineApprovalScreen(),
+            ] : const [
+              MyProfileScreen(),
+            ],
+          );
+        }),
       ),
       bottomNavigationBar: const BottomBar(menu: 0),
     );

@@ -157,7 +157,9 @@ class Users {
       num? idEmployee, 
       String? employeeName, 
       String? snEmployee, 
-      dynamic roleName, 
+      String? fileName,
+      String? filePath,
+      dynamic roleName,
       dynamic codeRole,}){
     _id = id;
     _name = name;
@@ -173,6 +175,8 @@ class Users {
     _idEmployee = idEmployee;
     _employeeName = employeeName;
     _snEmployee = snEmployee;
+    _filePath = filePath;
+    _fileName = fileName;
     _roleName = roleName;
     _codeRole = codeRole;
 }
@@ -192,6 +196,8 @@ class Users {
     _idEmployee = json['id_employee'];
     _employeeName = json['employee_name'];
     _snEmployee = json['sn_employee'];
+    _fileName = json['file_name'];
+    _filePath = json['file_path'];
     _roleName = json['role_name'];
     _codeRole = json['code_role'];
   }
@@ -209,6 +215,8 @@ class Users {
   num? _idEmployee;
   String? _employeeName;
   String? _snEmployee;
+  String? _fileName;
+  String? _filePath;
   dynamic _roleName;
   dynamic _codeRole;
 Users copyWith({  num? id,
@@ -225,6 +233,8 @@ Users copyWith({  num? id,
   num? idEmployee,
   String? employeeName,
   String? snEmployee,
+  String? fileName,
+  String? filePath,
   dynamic roleName,
   dynamic codeRole,
 }) => Users(  id: id ?? _id,
@@ -241,6 +251,8 @@ Users copyWith({  num? id,
   idEmployee: idEmployee ?? _idEmployee,
   employeeName: employeeName ?? _employeeName,
   snEmployee: snEmployee ?? _snEmployee,
+  fileName: fileName ?? _fileName,
+  filePath: filePath ?? _filePath,
   roleName: roleName ?? _roleName,
   codeRole: codeRole ?? _codeRole,
 );
@@ -258,6 +270,8 @@ Users copyWith({  num? id,
   num? get idEmployee => _idEmployee;
   String? get employeeName => _employeeName;
   String? get snEmployee => _snEmployee;
+  String? get fileName => _fileName;
+  String? get filePath => _filePath;
   dynamic get roleName => _roleName;
   dynamic get codeRole => _codeRole;
 
@@ -277,6 +291,8 @@ Users copyWith({  num? id,
     map['id_employee'] = _idEmployee;
     map['employee_name'] = _employeeName;
     map['sn_employee'] = _snEmployee;
+    map['file_name'] = _fileName;
+    map['file_path'] = _filePath;
     map['role_name'] = _roleName;
     map['code_role'] = _codeRole;
     return map;

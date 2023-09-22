@@ -8,6 +8,9 @@ class MyProfileMainController extends BaseController with GetTickerProviderState
   final tabController = Rxn<TabController>();
   final isEmployee = false.obs;
 
+  final name = "".obs;
+  final image = "".obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -28,16 +31,17 @@ class MyProfileMainController extends BaseController with GetTickerProviderState
 
   void initData()async{
     String isEmployee = await storage.readString(StorageCore.isEmployee);
+    String name = await storage.readString(StorageCore.employeeName);
+    String imagePath = await storage.readString(StorageCore.filePath);
 
     if(isEmployee == "1"){
-      print("HEREEE");
       tabController.value = TabController(length: 2, vsync: this);
     }
-    print("IS EMPLOYEE $isEmployee");
+
+    this.name.value = name;
+    image.value = imagePath;
 
     this.isEmployee.value = isEmployee == "1";
-    update();
-
   }
 
 }

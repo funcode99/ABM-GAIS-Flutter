@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/screen/profil/myprofile/line_approval/line_approval_controller.dart';
 import 'package:get/get.dart';
@@ -17,7 +18,7 @@ class LineApprovalScreen extends StatelessWidget {
       return Container(
         margin: const EdgeInsets.only(top: 10, left: 32, right: 32),
         child: SingleChildScrollView(
-          child: Column(
+          child: controller.listData.isEmpty ? const DataEmpty() : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: controller.listData.mapIndexed((index, element) {
               return Column(
