@@ -14,7 +14,8 @@ class MyProfileMainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MyProfileMainController controller = Get.put(MyProfileMainController());
+    final MyProfileMainController controller = Get.put(
+        MyProfileMainController());
 
     return Scaffold(
       backgroundColor: whiteColor,
@@ -42,43 +43,52 @@ class MyProfileMainScreen extends StatelessWidget {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 10, left: 16,right: 16),
+            margin: const EdgeInsets.only(top: 10, left: 16, right: 16),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10)
             ),
-            child: TabBar(
-              padding: EdgeInsets.zero,
-              controller: controller.tabController,
-              labelColor: infoColor,
-              unselectedLabelColor: greyColor,
-              indicatorSize: TabBarIndicatorSize.tab,
-              tabs: const [
-                Tab(
-                  text: "My Profile",
-                ),
-                Tab(
-                  text: "Line Approval",
-                ),
-              ],
-            ),
+            child: Obx(() {
+              return TabBar(
+                padding: EdgeInsets.zero,
+                controller: controller.tabController.value,
+                labelColor: infoColor,
+                unselectedLabelColor: greyColor,
+                indicatorSize: TabBarIndicatorSize.tab,
+                tabs: controller.isEmployee.value ? const [
+                  Tab(
+                    text: "My Profile",
+                  ),
+                  Tab(
+                    text: "Line Approval",
+                  ),
+                ] : const [
+                  Tab(
+                    text: "My Profile",
+                  ),
+                ],
+              );
+            }),
           ),
-          SizedBox(
+          const SizedBox(
             height: 32,
           ),
           Expanded(
-              child: TabBarView(
-                controller: controller.tabController,
-                children: const [
-                  MyProfileScreen(),
-                  LineApprovalScreen(),
-                ],
-              )
+              child: Obx(() {
+                return TabBarView(
+                  controller: controller.tabController.value,
+                  children: controller.isEmployee.value ? const [
+                    MyProfileScreen(),
+                    LineApprovalScreen(),
+                  ] : const [
+                    MyProfileScreen(),
+                  ],
+                );
+              })
           )
         ],
       ),
       bottomNavigationBar: const BottomBar(menu: 0),
     );
-
   }
 }

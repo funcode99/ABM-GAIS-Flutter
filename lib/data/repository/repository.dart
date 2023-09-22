@@ -326,4 +326,7 @@ abstract class Repository {
   Future<void> logout();
 
   Future<String?> getEmail(String? accessToken);
+
+  Future<EmployeeInfoModel> getProfile();
+
 }

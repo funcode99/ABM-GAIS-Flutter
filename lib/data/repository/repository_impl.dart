@@ -1377,4 +1377,21 @@ class RepositoryImpl implements Repository {
       e.printError();
     }
   }
+
+  @override
+  Future<EmployeeInfoModel> getProfile() async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/my_profile/my_data",
+      );
+      return EmployeeInfoModel.fromJson(response.data);
+    } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+
 }

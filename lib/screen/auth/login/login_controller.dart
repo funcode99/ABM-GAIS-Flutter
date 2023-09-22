@@ -97,6 +97,7 @@ class LoginController extends BaseController {
             storage.writeString(StorageCore.userID, value.users?.idEmployee.toString() ?? "");
             storage.writeString(StorageCore.siteID, value.users?.idSite.toString() ?? "");
             storage.writeString(StorageCore.siteName, value.users?.siteName.toString() ?? "");
+            storage.writeString(StorageCore.isEmployee, value.users?.isEmployee.toString() ?? "");
             saveEmployeeInfo();
 
             //register firebase token

@@ -10,60 +10,61 @@ class ProfilScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ProfilController>(
-        init: ProfilController(),
-        builder: (controller) {
-          controller.update();
-          return Container(
-            margin: const EdgeInsets.only(top: 8, left: 6, right: 6),
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: whiteColor,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-            ),
+    final ProfilController controller = Get.put(
+        ProfilController());
+
+    return Container(
+      margin: const EdgeInsets.only(top: 8, left: 6, right: 6),
+      padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+        color: whiteColor,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+      ),
+      child: Column(
+        children: [
+          Obx(() {
+            return Row(
+              children: [
+                Container(
+                  height: 100,
+                  width: 100,
+                  margin: const EdgeInsets.only(right: 20),
+                  decoration: BoxDecoration(
+                      color: const Color(0xffF6DE9D),
+                      borderRadius: BorderRadius.circular(50)),
+                ),
+                Text("${controller.userName ?? "Name"} \n${controller.userSN ??
+                    "serial number"}", style: appTitle)
+              ],
+            );
+          }),
+          SingleChildScrollView(
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Container(
-                      height: 100,
-                      width: 100,
-                      margin: const EdgeInsets.only(right: 20),
-                      decoration: BoxDecoration(
-                          color: const Color(0xffF6DE9D),
-                          borderRadius: BorderRadius.circular(50)),
-                    ),
-                    Text("${controller.userName ?? "Name"} \n${controller.userSN ?? "serial number"}", style: appTitle)
-                  ],
-                ),
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const Icon(Icons.person, color: blackColor,),
-                        title: Text(
-                          "My Profile",
-                          style: listTitleTextStyle,
-                        ),
-                        onTap: (){
-                          Get.to(()=>const MyProfileMainScreen());
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          "Logout",
-                          style: listTitleTextStyle.copyWith(color: errorColor),
-                        ),
-                        onTap: () => controller.doLogout(),
-                      ),
-
-                    ],
+                ListTile(
+                  leading: const Icon(Icons.person, color: blackColor,),
+                  title: Text(
+                    "My Profile",
+                    style: listTitleTextStyle,
                   ),
+                  onTap: () {
+                    Get.to(() => const MyProfileMainScreen());
+                  },
                 ),
+                ListTile(
+                  title: Text(
+                    "Logout",
+                    style: listTitleTextStyle.copyWith(color: errorColor),
+                  ),
+                  onTap: () => controller.doLogout(),
+                ),
+
               ],
             ),
-          );
-        });
+          ),
+        ],
+      ),
+    );
   }
 }

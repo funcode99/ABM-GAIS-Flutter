@@ -17,6 +17,7 @@ class StorageCore {
   static const String codeRole = "codeRole";
   static const String snEmployee = "sn";
   static const String tlkRate = 'tlkRate';
+  static const String isEmployee = 'isEmployee';
 
   final storage = const FlutterSecureStorage();
 

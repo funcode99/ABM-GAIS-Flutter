@@ -19,6 +19,7 @@ class MyProfileScreen extends StatelessWidget {
             children: [
               CustomTextFormField(
                   readOnly: true,
+                  onTap: (){},
                   controller: controller.nameController,
                   label: "Name".tr),
               const SizedBox(
@@ -26,6 +27,7 @@ class MyProfileScreen extends StatelessWidget {
               ),
               CustomTextFormField(
                   readOnly: true,
+                  onTap: (){},
                   controller: controller.snController,
                   label: "SN".tr),
               const SizedBox(
@@ -33,6 +35,7 @@ class MyProfileScreen extends StatelessWidget {
               ),
               CustomTextFormField(
                   readOnly: true,
+                  onTap: (){},
                   controller: controller.phoneController,
                   label: "Phone Number".tr),
               const SizedBox(
@@ -40,6 +43,7 @@ class MyProfileScreen extends StatelessWidget {
               ),
               CustomTextFormField(
                   readOnly: true,
+                  onTap: (){},
                   controller: controller.dobController,
                   label: "DOB".tr),
               const SizedBox(
@@ -47,6 +51,7 @@ class MyProfileScreen extends StatelessWidget {
               ),
               CustomTextFormField(
                   readOnly: true,
+                  onTap: (){},
                   controller: controller.genderController,
                   label: "Gender".tr),
               const SizedBox(
@@ -54,6 +59,7 @@ class MyProfileScreen extends StatelessWidget {
               ),
               CustomTextFormField(
                   readOnly: true,
+                  onTap: (){},
                   controller: controller.emailController,
                   label: "Email".tr),
               const SizedBox(
@@ -61,6 +67,7 @@ class MyProfileScreen extends StatelessWidget {
               ),
               CustomTextFormField(
                   readOnly: true,
+                  onTap: (){},
                   controller: controller.positionController,
                   label: "Position Title".tr),
               const SizedBox(
@@ -68,6 +75,7 @@ class MyProfileScreen extends StatelessWidget {
               ),
               CustomTextFormField(
                   readOnly: true,
+                  onTap: (){},
                   controller: controller.companyController,
                   label: "Company".tr),
               const SizedBox(
@@ -75,6 +83,7 @@ class MyProfileScreen extends StatelessWidget {
               ),
               CustomTextFormField(
                   readOnly: true,
+                  onTap: (){},
                   controller: controller.locationController,
                   label: "Location".tr),
               const SizedBox(

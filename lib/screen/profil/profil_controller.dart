@@ -5,8 +5,8 @@ import 'package:gais/util/firebase/firebase_util.dart';
 import 'package:get/get.dart';
 
 class ProfilController extends BaseController {
-  String? userName;
-  String? userSN;
+  final userName = "".obs;
+  final userSN = "".obs;
 
   @override
   void onInit() {
@@ -33,10 +33,9 @@ class ProfilController extends BaseController {
 
   Future<void> fetchList() async {
     storage.readEmployeeInfo().then((value) {
-      userName = value.first.employeeName;
-      userSN = value.first.snEmployee;
+      userName.value = value.first.employeeName ?? "";
+      userSN.value = value.first.snEmployee ?? "";
 
-      update();
     });
   }
 }

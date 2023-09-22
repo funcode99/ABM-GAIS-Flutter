@@ -34,6 +34,7 @@ class LineApprovalScreen extends StatelessWidget {
                     height: 8,
                   ),
                   CustomTextFormField(
+                      onTap: (){},
                       readOnly: true,
                       controller: controller.l3Controller,
                       label: "L3".tr),
@@ -41,6 +42,7 @@ class LineApprovalScreen extends StatelessWidget {
                     height: 8,
                   ),
                   CustomTextFormField(
+                      onTap: (){},
                       readOnly: true,
                       controller: controller.l4Controller,
                       label: "L4".tr),
@@ -48,6 +50,7 @@ class LineApprovalScreen extends StatelessWidget {
                     height: 8,
                   ),
                   CustomTextFormField(
+                      onTap: (){},
                       readOnly: true,
                       controller: controller.l5Controller,
                       label: "L5".tr),
@@ -55,6 +58,7 @@ class LineApprovalScreen extends StatelessWidget {
                     height: 8,
                   ),
                   CustomTextFormField(
+                      onTap: (){},
                       readOnly: true,
                       controller: controller.l6Controller,
                       label: "L6".tr),

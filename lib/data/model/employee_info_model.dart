@@ -56,6 +56,7 @@ class Data {
   Data({
     int? id,
     String? employeeName,
+    String? name,
     String? phoneNumber,
     String? snEmployee,
     String? email,
@@ -82,6 +83,7 @@ class Data {
     dynamic positionCode,
     dynamic positionLevel,
     dynamic positionTittle,
+    dynamic positionTitle,
     int? idJobBand,
     String? bandJobName,
     int? idUsers,
@@ -105,6 +107,7 @@ class Data {
   }) {
     _id = id;
     _employeeName = employeeName;
+    _name = name;
     _phoneNumber = phoneNumber;
     _snEmployee = snEmployee;
     _email = email;
@@ -131,6 +134,7 @@ class Data {
     _positionCode = positionCode;
     _positionLevel = positionLevel;
     _positionTittle = positionTittle;
+    _positionTitle = positionTitle;
     _idJobBand = idJobBand;
     _bandJobName = bandJobName;
     _idUsers = idUsers;
@@ -156,6 +160,7 @@ class Data {
   Data.fromJson(dynamic json) {
     _id = json['id'];
     _employeeName = json['employee_name'];
+    _name = json['name'];
     _phoneNumber = json['phone_number'];
     _snEmployee = json['sn_employee'];
     _email = json['email'];
@@ -182,6 +187,7 @@ class Data {
     _positionCode = json['position_code'];
     _positionLevel = json['position_level'];
     _positionTittle = json['position_tittle'];
+    _positionTitle = json['position_title'];
     _idJobBand = json['id_job_band'];
     _bandJobName = json['band_job_name'];
     _idUsers = json['id_users'];
@@ -216,6 +222,7 @@ class Data {
 
   int? _id;
   String? _employeeName;
+  String? _name;
   String? _phoneNumber;
   String? _snEmployee;
   String? _email;
@@ -242,6 +249,7 @@ class Data {
   dynamic _positionCode;
   dynamic _positionLevel;
   dynamic _positionTittle;
+  dynamic _positionTitle;
   int? _idJobBand;
   String? _bandJobName;
   int? _idUsers;
@@ -316,6 +324,7 @@ class Data {
       Data(
         id: id ?? _id,
         employeeName: employeeName ?? _employeeName,
+        name: name ?? _name,
         phoneNumber: phoneNumber ?? _phoneNumber,
         snEmployee: snEmployee ?? _snEmployee,
         email: email ?? _email,
@@ -342,6 +351,7 @@ class Data {
         positionCode: positionCode ?? _positionCode,
         positionLevel: positionLevel ?? _positionLevel,
         positionTittle: positionTittle ?? _positionTittle,
+        positionTitle: positionTitle ?? _positionTitle,
         idJobBand: idJobBand ?? _idJobBand,
         bandJobName: bandJobName ?? _bandJobName,
         idUsers: idUsers ?? _idUsers,
@@ -367,6 +377,8 @@ class Data {
   int? get id => _id;
 
   String? get employeeName => _employeeName;
+
+  String? get name => _name;
 
   String? get phoneNumber => _phoneNumber;
 
@@ -420,6 +432,8 @@ class Data {
 
   dynamic get positionTittle => _positionTittle;
 
+  dynamic get positionTitle => _positionTitle;
+
   int? get idJobBand => _idJobBand;
 
   String? get bandJobName => _bandJobName;
@@ -464,6 +478,7 @@ class Data {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['employee_name'] = _employeeName;
+    map['name'] = _name;
     map['phone_number'] = _phoneNumber;
     map['sn_employee'] = _snEmployee;
     map['email'] = _email;
@@ -490,6 +505,7 @@ class Data {
     map['position_code'] = _positionCode;
     map['position_level'] = _positionLevel;
     map['position_tittle'] = _positionTittle;
+    map['position_title'] = _positionTitle;
     map['id_job_band'] = _idJobBand;
     map['band_job_name'] = _bandJobName;
     map['id_users'] = _idUsers;
