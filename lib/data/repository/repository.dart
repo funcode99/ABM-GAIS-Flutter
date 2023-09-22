@@ -329,4 +329,6 @@ abstract class Repository {
 
   Future<EmployeeInfoModel> getProfile();
 
+  Future<Map<String, dynamic>> getLineApproval();
+
 }

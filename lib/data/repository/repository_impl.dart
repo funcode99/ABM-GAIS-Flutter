@@ -1393,5 +1393,20 @@ class RepositoryImpl implements Repository {
     }
   }
 
+  @override
+  Future<Map<String, dynamic>> getLineApproval() async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/my_profile/get_struktur",
+      );
+      return Map<String, dynamic>.from(response.data);
+    } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
 
 }
