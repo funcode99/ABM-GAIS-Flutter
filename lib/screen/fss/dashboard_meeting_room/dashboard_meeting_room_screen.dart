@@ -505,6 +505,7 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                   SizedBox(
                     width: 100,
                     child: CustomIconButton(
+                      backgroundColor: infoColor,
                       onPressed: () {
                         controller.showFilter(!controller.showFilter.value);
                       },
