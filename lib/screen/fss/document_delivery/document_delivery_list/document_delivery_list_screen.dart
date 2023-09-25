@@ -19,6 +19,7 @@ import 'package:gais/screen/fss/document_delivery/document_delivery_list/documen
 import 'package:gais/screen/fss/document_delivery/form_document_delivery/form_document_delivery_screen.dart';
 import 'package:gais/screen/home/home_screen.dart';
 import 'package:get/get.dart';
+import 'package:gais/util/ext/string_ext.dart';
 
 class DocumentDeliveryListScreen extends StatelessWidget {
   const DocumentDeliveryListScreen({Key? key}) : super(key: key);
@@ -179,7 +180,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                   editAction: () => Get.to(
                                     const FormDocumentDeliveryScreen(),
                                     arguments: {
-                                      'id': controller.ddList[index].id?.toInt(),
+                                      'id': controller.ddList[index].id.toString().toInt(),
                                     },
                                   )?.then((value) {
                                     controller.fetchList(controller.currentPage);

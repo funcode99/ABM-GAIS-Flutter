@@ -10,7 +10,7 @@ BookingMeetingRoomModel _$BookingMeetingRoomModelFromJson(
         Map<String, dynamic> json) =>
     BookingMeetingRoomModel(
       no: json['no'] as int?,
-      id: json['id'] as int?,
+      id: json['id'],
       idMeetingRoom: json['id_meeting_room'],
       noBookingMeeting: json['no_booking_meeting'] as String?,
       title: json['title'] as String?,

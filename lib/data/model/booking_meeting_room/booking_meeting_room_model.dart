@@ -8,7 +8,7 @@ part 'booking_meeting_room_model.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class BookingMeetingRoomModel extends Equatable{
   int? no;
-  int? id;
+  dynamic id;
   dynamic idMeetingRoom;
   String? noBookingMeeting;
   String? title;

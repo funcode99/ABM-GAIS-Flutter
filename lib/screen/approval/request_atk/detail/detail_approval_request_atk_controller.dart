@@ -54,8 +54,8 @@ class DetailApprovalRequestATKController extends BaseController {
     createdByController.text = detailSelectedItem.value.employeeName ?? "-";
     rejectNoteController.text = detailSelectedItem.value.remarks ?? "-";
 
-    companyController.text = selectedItem.value.companyName ?? "-";
-    siteController.text = selectedItem.value.siteName ?? "-";
+    companyController.text = detailSelectedItem.value.companyName ?? "-";
+    siteController.text = detailSelectedItem.value.siteName ?? "-";
 
   }
 
