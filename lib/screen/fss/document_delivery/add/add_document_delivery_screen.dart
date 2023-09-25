@@ -8,7 +8,6 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/document_delivery/add/add_document_delivery_controller.dart';
-import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -69,7 +68,8 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                                       ))
                                   .toList(),
                               onChanged: (value) {
-                                controller.receiverCompanyID = value!.toInt();
+                                controller.receiverCompanyID = value!;
+                                print(value);
                                 controller.fetchLocationList(value);
                                 controller.update();
                               },
@@ -86,8 +86,8 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                                       ))
                                   .toList(),
                               onChanged: (value) {
-                                controller.receiverSiteID = value!.toInt();
-                                controller.fetchReceiverList(value);
+                                controller.receiverSiteID = value;
+                                controller.fetchReceiverList(value.toString());
                                 controller.update();
                               },
                             ),
@@ -104,7 +104,7 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                                   .toList(),
                               onChanged: (value) {
                                 controller.selectedReceiver = value;
-                                controller.receiverID = value!.toInt();
+                                controller.receiverID = value;
                                 print(controller.receiverID);
                                 controller.update();
                               },

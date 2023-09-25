@@ -1,38 +1,43 @@
-class GetEmployeeModel {
-  GetEmployeeModel({
+class GetEmployeeBysiteModel {
+  GetEmployeeBysiteModel({
       bool? success, 
       String? message, 
-      Data? data,}){
+      List<Data>? data,}){
     _success = success;
     _message = message;
     _data = data;
 }
 
-  GetEmployeeModel.fromJson(dynamic json) {
+  GetEmployeeBysiteModel.fromJson(dynamic json) {
     _success = json['success'];
     _message = json['message'];
-    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    if (json['data'] != null) {
+      _data = [];
+      json['data'].forEach((v) {
+        _data?.add(Data.fromJson(v));
+      });
+    }
   }
   bool? _success;
   String? _message;
-  Data? _data;
-GetEmployeeModel copyWith({  bool? success,
+  List<Data>? _data;
+GetEmployeeBysiteModel copyWith({  bool? success,
   String? message,
-  Data? data,
-}) => GetEmployeeModel(  success: success ?? _success,
+  List<Data>? data,
+}) => GetEmployeeBysiteModel(  success: success ?? _success,
   message: message ?? _message,
   data: data ?? _data,
 );
   bool? get success => _success;
   String? get message => _message;
-  Data? get data => _data;
+  List<Data>? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['success'] = _success;
     map['message'] = _message;
     if (_data != null) {
-      map['data'] = _data?.toJson();
+      map['data'] = _data?.map((v) => v.toJson()).toList();
     }
     return map;
   }
@@ -41,178 +46,6 @@ GetEmployeeModel copyWith({  bool? success,
 
 class Data {
   Data({
-      int? currentPage, 
-      List<Data2>? data,
-      String? firstPageUrl, 
-      int? from, 
-      int? lastPage, 
-      String? lastPageUrl, 
-      List<Links>? links, 
-      String? nextPageUrl, 
-      String? path, 
-      String? perPage, 
-      dynamic prevPageUrl, 
-      int? to, 
-      int? total,}){
-    _currentPage = currentPage;
-    _data = data;
-    _firstPageUrl = firstPageUrl;
-    _from = from;
-    _lastPage = lastPage;
-    _lastPageUrl = lastPageUrl;
-    _links = links;
-    _nextPageUrl = nextPageUrl;
-    _path = path;
-    _perPage = perPage;
-    _prevPageUrl = prevPageUrl;
-    _to = to;
-    _total = total;
-}
-
-  Data.fromJson(dynamic json) {
-    _currentPage = json['current_page'];
-    if (json['data'] != null) {
-      _data = [];
-      json['data'].forEach((v) {
-        _data?.add(Data2.fromJson(v));
-      });
-    }
-    _firstPageUrl = json['first_page_url'];
-    _from = json['from'];
-    _lastPage = json['last_page'];
-    _lastPageUrl = json['last_page_url'];
-    if (json['links'] != null) {
-      _links = [];
-      json['links'].forEach((v) {
-        _links?.add(Links.fromJson(v));
-      });
-    }
-    _nextPageUrl = json['next_page_url'];
-    _path = json['path'];
-    _perPage = json['per_page'];
-    _prevPageUrl = json['prev_page_url'];
-    _to = json['to'];
-    _total = json['total'];
-  }
-  int? _currentPage;
-  List<Data2>? _data;
-  String? _firstPageUrl;
-  int? _from;
-  int? _lastPage;
-  String? _lastPageUrl;
-  List<Links>? _links;
-  String? _nextPageUrl;
-  String? _path;
-  String? _perPage;
-  dynamic _prevPageUrl;
-  int? _to;
-  int? _total;
-Data copyWith({  int? currentPage,
-  List<Data2>? data,
-  String? firstPageUrl,
-  int? from,
-  int? lastPage,
-  String? lastPageUrl,
-  List<Links>? links,
-  String? nextPageUrl,
-  String? path,
-  String? perPage,
-  dynamic prevPageUrl,
-  int? to,
-  int? total,
-}) => Data(  currentPage: currentPage ?? _currentPage,
-  data: data ?? _data,
-  firstPageUrl: firstPageUrl ?? _firstPageUrl,
-  from: from ?? _from,
-  lastPage: lastPage ?? _lastPage,
-  lastPageUrl: lastPageUrl ?? _lastPageUrl,
-  links: links ?? _links,
-  nextPageUrl: nextPageUrl ?? _nextPageUrl,
-  path: path ?? _path,
-  perPage: perPage ?? _perPage,
-  prevPageUrl: prevPageUrl ?? _prevPageUrl,
-  to: to ?? _to,
-  total: total ?? _total,
-);
-  int? get currentPage => _currentPage;
-  List<Data2>? get data => _data;
-  String? get firstPageUrl => _firstPageUrl;
-  int? get from => _from;
-  int? get lastPage => _lastPage;
-  String? get lastPageUrl => _lastPageUrl;
-  List<Links>? get links => _links;
-  String? get nextPageUrl => _nextPageUrl;
-  String? get path => _path;
-  String? get perPage => _perPage;
-  dynamic get prevPageUrl => _prevPageUrl;
-  int? get to => _to;
-  int? get total => _total;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['current_page'] = _currentPage;
-    if (_data != null) {
-      map['data'] = _data?.map((v) => v.toJson()).toList();
-    }
-    map['first_page_url'] = _firstPageUrl;
-    map['from'] = _from;
-    map['last_page'] = _lastPage;
-    map['last_page_url'] = _lastPageUrl;
-    if (_links != null) {
-      map['links'] = _links?.map((v) => v.toJson()).toList();
-    }
-    map['next_page_url'] = _nextPageUrl;
-    map['path'] = _path;
-    map['per_page'] = _perPage;
-    map['prev_page_url'] = _prevPageUrl;
-    map['to'] = _to;
-    map['total'] = _total;
-    return map;
-  }
-
-}
-
-class Links {
-  Links({
-      dynamic url, 
-      String? label, 
-      bool? active,}){
-    _url = url;
-    _label = label;
-    _active = active;
-}
-
-  Links.fromJson(dynamic json) {
-    _url = json['url'];
-    _label = json['label'];
-    _active = json['active'];
-  }
-  dynamic _url;
-  String? _label;
-  bool? _active;
-Links copyWith({  dynamic url,
-  String? label,
-  bool? active,
-}) => Links(  url: url ?? _url,
-  label: label ?? _label,
-  active: active ?? _active,
-);
-  dynamic get url => _url;
-  String? get label => _label;
-  bool? get active => _active;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['url'] = _url;
-    map['label'] = _label;
-    map['active'] = _active;
-    return map;
-  }
-
-}
-
-class Data2 {
-  Data2({
       int? no, 
       int? id, 
       String? employeeName, 
@@ -229,19 +62,19 @@ class Data2 {
       int? idSite, 
       dynamic foto, 
       dynamic fotoPath, 
-      dynamic createdAt, 
+      String? createdAt, 
       dynamic createdBy, 
-      dynamic updatedAt, 
+      String? updatedAt, 
       dynamic updatedBy, 
       dynamic deletedAt, 
       String? snAtasan1, 
       String? snAtasan2, 
       dynamic isRegistered, 
       int? idCostCenter, 
-      dynamic isTerminated, 
-      dynamic positionCode, 
-      dynamic positionLevel, 
-      dynamic positionTittle, 
+      int? isTerminated, 
+      String? positionCode, 
+      String? positionLevel, 
+      String? positionTittle, 
       String? idJobBand, 
       dynamic l1, 
       dynamic l2, 
@@ -301,7 +134,7 @@ class Data2 {
     _companyName = companyName;
 }
 
-  Data2.fromJson(dynamic json) {
+  Data.fromJson(dynamic json) {
     _no = json['no'];
     _id = json['id'];
     _employeeName = json['employee_name'];
@@ -362,19 +195,19 @@ class Data2 {
   int? _idSite;
   dynamic _foto;
   dynamic _fotoPath;
-  dynamic _createdAt;
+  String? _createdAt;
   dynamic _createdBy;
-  dynamic _updatedAt;
+  String? _updatedAt;
   dynamic _updatedBy;
   dynamic _deletedAt;
   String? _snAtasan1;
   String? _snAtasan2;
   dynamic _isRegistered;
   int? _idCostCenter;
-  dynamic _isTerminated;
-  dynamic _positionCode;
-  dynamic _positionLevel;
-  dynamic _positionTittle;
+  int? _isTerminated;
+  String? _positionCode;
+  String? _positionLevel;
+  String? _positionTittle;
   String? _idJobBand;
   dynamic _l1;
   dynamic _l2;
@@ -389,7 +222,7 @@ class Data2 {
   String? _costCenterName;
   String? _costCenterCode;
   String? _companyName;
-Data2 copyWith({  int? no,
+Data copyWith({  int? no,
   int? id,
   String? employeeName,
   String? phoneNumber,
@@ -405,19 +238,19 @@ Data2 copyWith({  int? no,
   int? idSite,
   dynamic foto,
   dynamic fotoPath,
-  dynamic createdAt,
+  String? createdAt,
   dynamic createdBy,
-  dynamic updatedAt,
+  String? updatedAt,
   dynamic updatedBy,
   dynamic deletedAt,
   String? snAtasan1,
   String? snAtasan2,
   dynamic isRegistered,
   int? idCostCenter,
-  dynamic isTerminated,
-  dynamic positionCode,
-  dynamic positionLevel,
-  dynamic positionTittle,
+  int? isTerminated,
+  String? positionCode,
+  String? positionLevel,
+  String? positionTittle,
   String? idJobBand,
   dynamic l1,
   dynamic l2,
@@ -432,7 +265,7 @@ Data2 copyWith({  int? no,
   String? costCenterName,
   String? costCenterCode,
   String? companyName,
-}) => Data2(  no: no ?? _no,
+}) => Data(  no: no ?? _no,
   id: id ?? _id,
   employeeName: employeeName ?? _employeeName,
   phoneNumber: phoneNumber ?? _phoneNumber,
@@ -492,19 +325,19 @@ Data2 copyWith({  int? no,
   int? get idSite => _idSite;
   dynamic get foto => _foto;
   dynamic get fotoPath => _fotoPath;
-  dynamic get createdAt => _createdAt;
+  String? get createdAt => _createdAt;
   dynamic get createdBy => _createdBy;
-  dynamic get updatedAt => _updatedAt;
+  String? get updatedAt => _updatedAt;
   dynamic get updatedBy => _updatedBy;
   dynamic get deletedAt => _deletedAt;
   String? get snAtasan1 => _snAtasan1;
   String? get snAtasan2 => _snAtasan2;
   dynamic get isRegistered => _isRegistered;
   int? get idCostCenter => _idCostCenter;
-  dynamic get isTerminated => _isTerminated;
-  dynamic get positionCode => _positionCode;
-  dynamic get positionLevel => _positionLevel;
-  dynamic get positionTittle => _positionTittle;
+  int? get isTerminated => _isTerminated;
+  String? get positionCode => _positionCode;
+  String? get positionLevel => _positionLevel;
+  String? get positionTittle => _positionTittle;
   String? get idJobBand => _idJobBand;
   dynamic get l1 => _l1;
   dynamic get l2 => _l2;

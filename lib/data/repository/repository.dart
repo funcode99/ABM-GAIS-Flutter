@@ -9,6 +9,7 @@ import 'package:gais/data/model/reference/get_coset_center_model.dart';
 import 'package:gais/data/model/reference/get_currency_model.dart';
 import 'package:gais/data/model/reference/get_department_model.dart';
 import 'package:gais/data/model/reference/get_document_code_model.dart';
+import 'package:gais/data/model/reference/get_employee_bysite_model.dart';
 import 'package:gais/data/model/reference/get_employee_model.dart';
 import 'package:gais/data/model/reference/get_flight_class_model.dart';
 import 'package:gais/data/model/reference/get_flight_schedule_model.dart';
@@ -120,7 +121,7 @@ abstract class Repository {
 
   Future<GetEmployeeModel> getEmployeeList();
 
-  Future<GetEmployeeModel> getEmployeeListBySiteID(String id);
+  Future<GetEmployeeBysiteModel> getEmployeeListBySiteID(String id);
 
   Future<GetDepartmentModel> getDepartmentList();
 

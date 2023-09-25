@@ -3,7 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
-import 'package:gais/data/model/reference/get_employee_model.dart' as receiver;
+import 'package:gais/data/model/reference/get_employee_bysite_model.dart' as receiver;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
 import 'package:gais/screen/fss/document_delivery/document_delivery_list/document_delivery_list_screen.dart';
 import 'package:get/get.dart';
@@ -17,19 +17,19 @@ class AddDocumentDeliveryController extends BaseController {
   final attachment = TextEditingController();
   final remarks = TextEditingController();
 
-  int? senderID;
-  int? senderCompanyID;
-  int? senderSiteID;
-  int? receiverID;
-  int? receiverCompanyID;
-  int? receiverSiteID;
+  String? senderID;
+  String? senderCompanyID;
+  String? senderSiteID;
+  String? receiverID;
+  String? receiverCompanyID;
+  String? receiverSiteID;
   String? selectedReceiver;
   File? gettedFile;
   bool loadCompany = false;
   bool loadLocation = false;
   bool loadReceiver = false;
 
-  List<receiver.Data2> receiverList = [];
+  List<receiver.Data> receiverList = [];
   List<comp.Data> companyList = [];
   List<site.Data> locationList = [];
   List<comp.Data> receiverCompanyList = [];
@@ -50,9 +50,9 @@ class AddDocumentDeliveryController extends BaseController {
     try {
       await storage.readEmployeeInfo().then((value) {
         sender.text = value.first.employeeName ?? "";
-        senderID = value.first.id?.toInt();
-        senderCompanyID = value.first.idCompany?.toInt();
-        senderSiteID = value.first.idSite?.toInt();
+        senderID = value.first.id.toString();
+        senderCompanyID = value.first.idCompany.toString();
+        senderSiteID = value.first.idSite.toString();
       });
 
       await repository.getCompanyList().then((value) {
@@ -71,6 +71,7 @@ class AddDocumentDeliveryController extends BaseController {
   Future<void> fetchLocationList(String id) async {
     loadLocation = true;
     locationList = [];
+    update();
     try {
       await repository.getSiteListByCompanyID(id).then((value) {
         locationList.addAll(value.data?.toSet().toList() ?? []);
@@ -87,7 +88,7 @@ class AddDocumentDeliveryController extends BaseController {
       e.printError();
       i.printError();
     }
-    loadCompany = false;
+    loadLocation = false;
     update();
   }
 
@@ -96,7 +97,7 @@ class AddDocumentDeliveryController extends BaseController {
     receiverList = [];
     try {
       await repository.getEmployeeListBySiteID(id).then((value) {
-        receiverList.addAll(value.data?.data?.toSet().toList() ?? []);
+        receiverList.addAll(value.data?.toSet().toList() ?? []);
       });
     } catch (e, i) {
       e.printError();
@@ -110,12 +111,12 @@ class AddDocumentDeliveryController extends BaseController {
     try {
       await documentDelivery
           .save(
-        receiverCompanyID!.toInt(),
-        receiverSiteID!.toInt(),
-        senderID!.toInt(),
-        receiverID!.toInt(),
-        senderCompanyID!.toInt(),
-        senderSiteID!.toInt(),
+        receiverCompanyID!,
+        receiverSiteID!,
+        senderID!,
+        receiverID!,
+        senderCompanyID!,
+        senderSiteID!,
         subjectDocument.text,
         gettedFile,
         remarks.text,
