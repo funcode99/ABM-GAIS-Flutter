@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class NotificationUtil{
+class NavigationUtil{
   static final GlobalKey<NavigatorState> navigationKey = GlobalKey<NavigatorState>();
 
 }

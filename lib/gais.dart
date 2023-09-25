@@ -30,7 +30,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      navigatorKey: NotificationUtil.navigationKey,
+      navigatorKey: NavigationUtil.navigationKey,
       translations: AppTranslation(),
       locale: Get.deviceLocale,
       fallbackLocale: const Locale("en", "US"),
