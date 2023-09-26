@@ -63,7 +63,6 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController {
     result.fold((l) {
       print("ERROR DETAIL HEADER ${l.message}");
     }, (r) async{
-      print("TESTING 2");
       selectedItem(r);
 
       getDataDetail();
@@ -72,7 +71,6 @@ class ApprovalCashAdvanceNonTravelDetailController extends BaseController {
       resultDetail.fold(
             (l) => print("ERROR DETAIL HEADER ${l.message}"),
             (right) {
-              print("TESTING 3");
               detailSelectedItem(right);
               setValue();
               getApprovalLog();
