@@ -292,7 +292,7 @@ class RequestATKRepository
       final approvalModel = model as ApprovalModel;
 
       Dio.Response response = await network.dio.post(
-          '/api/approval_request_atk/reject/$id',
+          '/api/approval_request_atk/rejected/$id',
           data: approvalModel.toJson()
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalRequestATKModel.fromJsonModel);
