@@ -132,7 +132,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                     width: double.infinity,
                     child: Obx(() {
                       return Text(
-                        controller.selectedItem.value.noAtkRequest ?? "-",
+                        controller.detailSelectedItem.value.noAtkRequest ?? "-",
                         style: Theme.of(context).textTheme.bodyText1?.copyWith(
                             fontSize: 14, fontWeight: FontWeight.w400),
                         textAlign: TextAlign.center,

@@ -11,7 +11,7 @@ class MicrosoftAuthUtil{
         tenant: env['tenant'],
         clientId: env['client_id'],
         scope: 'offline_access openid profile User.Read Calendars.ReadWrite OnlineMeetings.ReadWrite',
-        navigatorKey: NotificationUtil.navigationKey,
+        navigatorKey: NavigationUtil.navigationKey,
         webUseRedirect: false,
         loader: const Center(child: CircularProgressIndicator())
     );

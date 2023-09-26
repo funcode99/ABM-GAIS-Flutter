@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/employee_info_model.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:get/get.dart';
 
@@ -10,6 +11,9 @@ class MyProfileMainController extends BaseController with GetTickerProviderState
 
   final name = "".obs;
   final image = "".obs;
+  final isLoading = false.obs;
+
+  EmployeeInfoModel? profile;
 
   @override
   void onInit() {
@@ -42,6 +46,26 @@ class MyProfileMainController extends BaseController with GetTickerProviderState
     image.value = imagePath;
 
     this.isEmployee.value = isEmployee == "1";
+  }
+
+  void changePhoto(String? filepath)async{
+    if(filepath!=null){
+      isLoading.value = true;
+      final result = await repository.changePhotoProfile(filepath);
+      if(result!=null){
+        getDetailProfile();
+      }
+
+      isLoading.value = false;
+    }
+
+  }
+
+  void getDetailProfile()async{
+    profile = await repository.getProfile();
+    if(profile!=null){
+      image.value = profile?.data?[0].filePath ?? "";
+    }
   }
 
 }

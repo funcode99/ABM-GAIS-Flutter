@@ -1409,5 +1409,36 @@ class RepositoryImpl implements Repository {
     }
   }
 
+  @override
+  Future<String?> changePhotoProfile(String? filepath) async{
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+
+    var formData = FormData.fromMap({});
+
+    if (filepath != null) {
+      formData.files.addAll([MapEntry("file", await MultipartFile.fromFile(filepath))]);
+    }
+
+    try {
+      Response response = await network.dio.post(
+        "/api/my_profile/update_data",
+        data: formData
+      );
+      
+      Map<String, dynamic> responseData = Map<String, dynamic>.from(response.data);
+      if(responseData.containsKey("data")){
+        Map<String, dynamic> data = Map<String, dynamic>.from(responseData["data"]);
+        return Future.value(data["file_path"]);
+      }
+
+      return Future.value(null);
+    } on DioError catch (e) {
+      e.printError();
+      print("ERROR UPDATE PROFILE $e");
+      rethrow;
+    }
+  }
+
 
 }

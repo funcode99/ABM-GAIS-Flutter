@@ -10,7 +10,9 @@ import 'package:gais/screen/profil/myprofile/line_approval/line_approval_screen.
 import 'package:gais/screen/profil/myprofile/my_profile_screen/my_profile_screen.dart';
 import 'package:gais/screen/profil/myprofile/myprofile_main_controller.dart';
 import 'package:gais/util/ext/string_ext.dart';
+import 'package:gais/util/image/image_util.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class MyProfileMainScreen extends StatelessWidget {
   const MyProfileMainScreen({Key? key}) : super(key: key);
@@ -63,7 +65,60 @@ class MyProfileMainScreen extends StatelessWidget {
                         ),
                         child: IconButton(
                             padding: EdgeInsets.zero,
-                            onPressed: () {},
+                            onPressed: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => Dialog(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ListTile(
+                                          title: const Text(
+                                            'Choose from gallery',
+                                            style: TextStyle(fontSize: 16, color: Colors.black),
+                                          ),
+                                          leading: const Icon(Icons.image),
+                                          onTap: () async {
+                                            Get.back();
+                                            final imageFile = await ImageUtil().selectImageFromGallery();
+                                            if(imageFile != null){
+                                              CroppedFile? croppedFile = await ImageCropper().cropImage(
+                                                  sourcePath: imageFile.path,
+                                                  cropStyle: CropStyle.circle,
+                                                  aspectRatioPresets: [
+                                                    CropAspectRatioPreset.square,
+                                                  ],
+                                              );
+                                              controller.changePhoto(croppedFile?.path);
+                                            }
+
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text(
+                                            'Choose from camera',
+                                            style: TextStyle(fontSize: 16, color: Colors.black),
+                                          ),
+                                          leading: const Icon(Icons.camera_alt),
+                                          onTap: () async {
+                                            Get.back();
+                                            final imageFile = await ImageUtil().selectImageFromCamera();
+                                            if(imageFile != null){
+                                              CroppedFile? croppedFile = await ImageCropper().cropImage(
+                                                sourcePath: imageFile.path,
+                                                cropStyle: CropStyle.circle,
+                                                aspectRatioPresets: [
+                                                  CropAspectRatioPreset.square,
+                                                ],
+                                              );
+                                              controller.changePhoto(croppedFile?.path);
+                                            }
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                  ));
+                            },
                             icon: const Icon(
                               Icons.edit, color: Colors.white, size: 20,)
                         ),
