@@ -3,13 +3,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
-import 'package:gais/data/model/reference/get_employee_model.dart' as receiver;
+import 'package:gais/data/model/reference/get_employee_bysite_model.dart' as receiver;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class FormDocumentDeliveryController extends BaseController {
-  int? ddID = Get.arguments['id'];
+  String? ddID = Get.arguments['id'];
 
   final formKey = GlobalKey<FormState>();
   final createdDate = TextEditingController();
@@ -23,13 +23,13 @@ class FormDocumentDeliveryController extends BaseController {
   final remarks = TextEditingController();
 
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
-  int? senderID;
+  String? senderID;
   String? receiverSiteID;
-  int? receiverCompanyID;
-  int? receiverID;
-  int? codeStatusDoc;
-  int? senderCompanyID;
-  int? senderSiteID;
+  String? receiverCompanyID;
+  String? receiverID;
+  String? codeStatusDoc;
+  String? senderCompanyID;
+  String? senderSiteID;
   String? selectedReceiver;
   String? receiverName;
   String? noDocument;
@@ -45,7 +45,7 @@ class FormDocumentDeliveryController extends BaseController {
   bool loadLocation = false;
   bool loadReceiver = false;
 
-  List<receiver.Data2> receiverList = [];
+  List<receiver.Data> receiverList = [];
   List<comp.Data> companyList = [];
   List<site.Data> locationList = [];
 
@@ -63,9 +63,9 @@ class FormDocumentDeliveryController extends BaseController {
     try {
       await storage.readEmployeeInfo().then((value) {
         sender.text = value.first.employeeName ?? "";
-        senderID = value.first.id?.toInt();
-        senderCompanyID = value.first.idCompany?.toInt();
-        senderSiteID = value.first.idSite?.toInt();
+        senderID = value.first.id?.toString();
+        senderCompanyID = value.first.idCompany?.toString();
+        senderSiteID = value.first.idSite?.toString();
       });
 
       await repository.getCompanyList().then((value) {
@@ -94,26 +94,26 @@ class FormDocumentDeliveryController extends BaseController {
       await documentDelivery.getByID(ddID!).then((value) {
         DateTime? tempDate;
         noDocument = value.data?.first.noDocumentDelivery;
-        senderID = value.data?.first.idEmployeeSender?.toInt();
+        senderID = value.data?.first.idEmployeeSender?.toString();
         sender.text = value.data?.first.senderName.toString() ?? "";
         selectedReceiver = value.data?.first.idEmployeeReceiver.toString();
-        receiverID = value.data?.first.idEmployeeReceiver?.toInt();
+        receiverID = value.data?.first.idEmployeeReceiver?.toString();
         receiverName = value.data?.first.receiverName.toString();
         location.text = value.data?.first.nameSiteReceiver ?? "";
         receiverSiteID = value.data!.first.idSiteReceiver.toString();
         company.text = value.data?.first.nameCompanyReceiver ?? "";
-        receiverCompanyID = value.data?.first.idCompanyReceiver?.toInt();
+        receiverCompanyID = value.data?.first.idCompanyReceiver?.toString();
         subjectDocument.text = value.data?.first.subject ?? "";
         attachment.text = (value.data?.first.attachment != "{}" ? value.data?.first.attachment :  "no attachment").toString();
         remarks.text = value.data?.first.remarks ?? "";
         tempDate = DateTime.parse(value.data?.first.createdAt ?? "");
         createdDate.text = dateFormat.format(tempDate);
         createdBy.text = value.data?.first.senderName ?? "";
-        codeStatusDoc = value.data?.first.codeStatusDoc?.toInt();
+        codeStatusDoc = value.data?.first.codeStatusDoc?.toString();
         receiverSite = value.data?.first.nameSiteReceiver ?? "";
         receiverCompany = value.data?.first.nameCompanyReceiver ?? "";
-        senderCompanyID = value.data?.first.idCompany?.toInt();
-        senderSiteID = value.data?.first.idSite?.toInt();
+        senderCompanyID = value.data?.first.idCompany?.toString();
+        senderSiteID = value.data?.first.idSite?.toString();
         if (codeStatusDoc == 1) {
           isReceived = true;
         } else if (codeStatusDoc == 2) {
@@ -153,7 +153,7 @@ class FormDocumentDeliveryController extends BaseController {
     receiverList = [];
     try {
       await repository.getEmployeeListBySiteID(id).then((value) {
-        receiverList.addAll(value.data?.data?.toSet().toList() ?? []);
+        receiverList.addAll(value.data?.toSet().toList() ?? []);
       });
     } catch (e, i) {
       e.printError();
@@ -167,17 +167,17 @@ class FormDocumentDeliveryController extends BaseController {
     try {
       await documentDelivery
           .update(
-        ddID!.toInt(),
+        ddID!.toString(),
         receiverCompanyID!,
         receiverSiteID.toString(),
-        senderID!.toInt(),
-        receiverID!.toInt(),
+        senderID!.toString(),
+        receiverID!.toString(),
         senderCompanyID!,
         senderSiteID!,
         subjectDocument.text.toString(),
         gettedFile!,
         remarks.text,
-        codeStatusDoc!.toInt(),
+        codeStatusDoc!.toString(),
       )
           .then((value) {
         // Get.off(DocumentDeliveryListScreen());

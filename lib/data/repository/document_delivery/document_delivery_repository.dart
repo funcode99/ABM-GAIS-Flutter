@@ -15,35 +15,35 @@ abstract class DocumentDeliveryRepository {
     String? codeStatusDoc,
   );
 
-  Future<GetDocumentDeliveryByidModel> getByID(int id);
+  Future<GetDocumentDeliveryByidModel> getByID(String id);
 
   Future<SaveDocumentDeliveryModel> save(
-    int idCompanyReceiver,
-    int idSiteReceiver,
-    int idEmployeeSender,
-    int idEmployeeReceiver,
-    int idCompanySender,
-    int idSiteSender,
+    String idCompanyReceiver,
+    String idSiteReceiver,
+    String idEmployeeSender,
+    String idEmployeeReceiver,
+    String idCompanySender,
+    String idSiteSender,
     String subject,
     File? attachment,
     String remarks,
   );
 
   Future<UpdateDocumentDeliveryModel> update(
-    int id,
-    int idCompanyReceiver,
+    String id,
+    String idCompanyReceiver,
     String idSiteReceiver,
-    int idEmployeeSender,
-    int idEmployeeReceiver,
-    int idCompanySender,
-    int idSiteSender,
+    String idEmployeeSender,
+    String idEmployeeReceiver,
+    String idCompanySender,
+    String idSiteSender,
     String subject,
     File? attachment,
     String remarks,
-    int codeStatusDoc,
+    String codeStatusDoc,
   );
 
   Future delete(String id);
 
-  Future<SubmitDocumentDeliveryModel> submit(int id);
+  Future<SubmitDocumentDeliveryModel> submit(String id);
 }

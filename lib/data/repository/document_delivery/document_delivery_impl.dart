@@ -65,12 +65,12 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
 
   @override
   Future<SaveDocumentDeliveryModel> save(
-    int idCompanyReceiver,
-    int idSiteReceiver,
-    int idEmployeeSender,
-    int idEmployeeReceiver,
-    int idCompanySender,
-    int idSiteSender,
+    String idCompanyReceiver,
+    String idSiteReceiver,
+    String idEmployeeSender,
+    String idEmployeeReceiver,
+    String idCompanySender,
+    String idSiteSender,
     String subject,
     File? attachment,
     String remarks,
@@ -108,7 +108,7 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
   }
 
   @override
-  Future<SubmitDocumentDeliveryModel> submit(int id) async {
+  Future<SubmitDocumentDeliveryModel> submit(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
@@ -123,17 +123,17 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
 
   @override
   Future<UpdateDocumentDeliveryModel> update(
-    int id,
-    int idCompanyReceiver,
+    String id,
+    String idCompanyReceiver,
     String idSiteReceiver,
-    int idEmployeeSender,
-    int idEmployeeReceiver,
-    int idCompanySender,
-    int idSiteSender,
+    String idEmployeeSender,
+    String idEmployeeReceiver,
+    String idCompanySender,
+    String idSiteSender,
     String subject,
     File? attachment,
     String remarks,
-    int codeStatusDoc,
+    String codeStatusDoc,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -170,7 +170,7 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
   }
 
   @override
-  Future<GetDocumentDeliveryByidModel> getByID(int id) async {
+  Future<GetDocumentDeliveryByidModel> getByID(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 

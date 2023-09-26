@@ -9,7 +9,6 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/receptionist/detail/detail_document_delivery_controller.dart';
-import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
 class DetailDocumentDeliveryScreen extends StatelessWidget {
@@ -100,7 +99,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                       ),
                                       onTap: () {
                                         if (controller.isEdit == true) {
-                                          controller.codeStatusDoc = 1;
+                                          controller.codeStatusDoc = "1";
                                           controller.isReceived = true;
                                         }
                                         controller.update();
@@ -132,8 +131,8 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                         ),
                                       ),
                                       onTap: () {
-                                        if (controller.isEdit == true && controller.codeStatusDoc == 1) {
-                                          controller.codeStatusDoc = 2;
+                                        if (controller.isEdit == true && controller.codeStatusDoc == "1") {
+                                          controller.codeStatusDoc = "2";
                                           controller.isDelivering = true;
                                         }
                                         controller.update();
@@ -182,7 +181,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                   fontColor: infoColor,
                                   title: controller.isEdit ? "Cancel" : "Edit",
                                   onPressed: () {
-                                    if (controller.codeStatusDoc != 2) {
+                                    if (controller.codeStatusDoc != "2") {
                                       controller.isEdit = controller.isEdit == false ? true : false;
                                       true
                                           ? controller.fetchEdit()
@@ -243,7 +242,7 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                 readOnly: true,
                               ),
                               const SizedBox(height: 8),
-                              controller.codeStatusDoc == 3
+                              controller.codeStatusDoc == "3"
                                   ? CustomTextFormField(
                                 controller: controller.receivedBy,
                                 label: "Received By",
@@ -314,16 +313,16 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                   isRequired: true,
                                   items: controller.companyList
                                       .map((e) => DropdownMenuItem(
-                                    child: Text(e.companyName.toString()),
                                     value: e.id.toString(),
+                                    child: Text(e.companyName.toString()),
                                   ))
                                       .toList(),
                                   readOnly: true,
                                   selectedItem: controller.receiverCompany,
                                   value: controller.receiverCompanyID.toString(),
                                   onChanged: (value) {
-                                    controller.receiverCompanyID = value!.toInt();
-                                    controller.fetchLocationList(value!);
+                                    controller.receiverCompanyID = value!.toString();
+                                    controller.fetchLocationList(value);
                                     controller.update();
                                   },
                                 ),
@@ -334,16 +333,16 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                   isRequired: true,
                                   items: controller.locationList
                                       .map((e) => DropdownMenuItem(
-                                    child: Text(e.siteName.toString()),
                                     value: e.id.toString(),
+                                    child: Text(e.siteName.toString()),
                                   ))
                                       .toList(),
                                   value: controller.receiverSiteID.toString(),
                                   readOnly: true,
                                   selectedItem: controller.receiverSite,
                                   onChanged: (value) {
-                                    controller.receiverSiteID = value!.toInt();
-                                    controller.fetchReceiverList(value!.toInt());
+                                    controller.receiverSiteID = value!.toString();
+                                    controller.fetchReceiverList(value.toString());
                                     controller.update();
                                   },
                                 ),
@@ -351,16 +350,16 @@ class DetailDocumentDeliveryScreen extends StatelessWidget {
                                 CustomDropDownFormField(
                                   items: controller.receiverList
                                       .map((e) => DropdownMenuItem(
-                                    child: Text(e.employeeName.toString()),
                                     value: e.id.toString(),
                                     onTap: () {
                                       controller.location.text = e.siteName.toString();
                                       controller.company.text = e.companyName.toString();
-                                      controller.receiverSiteID = e.idSite?.toInt();
-                                      controller.receiverCompanyID = e.idCompany?.toInt();
-                                      controller.receiverID = e.id?.toInt();
+                                      controller.receiverSiteID = e.idSite?.toString();
+                                      controller.receiverCompanyID = e.idCompany?.toString();
+                                      controller.receiverID = e.id?.toString();
                                       controller.update();
                                     },
+                                    child: Text(e.employeeName.toString()),
                                   ))
                                       .toList(),
                                   label: "Receiver",

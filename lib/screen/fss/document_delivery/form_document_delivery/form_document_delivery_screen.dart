@@ -9,7 +9,6 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/document_delivery/form_document_delivery/form_document_delivery_controller.dart';
-import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
 class FormDocumentDeliveryScreen extends StatelessWidget {
@@ -100,7 +99,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                       ),
                                       onTap: () {
                                         if (controller.isEdit == true) {
-                                          controller.codeStatusDoc = 1;
+                                          controller.codeStatusDoc = "1";
                                           controller.isReceived = true;
                                         }
                                         controller.update();
@@ -132,8 +131,8 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                         ),
                                       ),
                                       onTap: () {
-                                        if (controller.isEdit == true && controller.codeStatusDoc == 1) {
-                                          controller.codeStatusDoc = 2;
+                                        if (controller.isEdit == true && controller.codeStatusDoc == "1") {
+                                          controller.codeStatusDoc = "2";
                                           controller.isDelivering = true;
                                         }
                                         controller.update();
@@ -182,7 +181,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   fontColor: infoColor,
                                   title: controller.isEdit ? "Cancel" : "Edit",
                                   onPressed: () {
-                                    if (controller.codeStatusDoc != 2) {
+                                    if (controller.codeStatusDoc != "2") {
                                       controller.isEdit = controller.isEdit == false ? true : false;
                                       !controller.isEdit ? controller.fetchEdit() : null;
                                       controller.update();
@@ -241,7 +240,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                 readOnly: true,
                               ),
                               const SizedBox(height: 8),
-                              controller.codeStatusDoc == 3
+                              controller.codeStatusDoc == "3"
                                   ? CustomTextFormField(
                                       controller: controller.receivedBy,
                                       label: "Received By",
@@ -320,7 +319,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   selectedItem: controller.receiverCompany,
                                   value: controller.receiverCompanyID.toString(),
                                   onChanged: (value) {
-                                    controller.receiverCompanyID = value!.toInt();
+                                    controller.receiverCompanyID = value!.toString();
                                     controller.fetchLocationList(value);
                                     controller.update();
                                   },
@@ -354,8 +353,8 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                               controller.location.text = e.siteName.toString();
                                               controller.company.text = e.companyName.toString();
                                               controller.receiverSiteID = e.idSite.toString();
-                                              controller.receiverCompanyID = e.idCompany?.toInt();
-                                              controller.receiverID = e.id?.toInt();
+                                              controller.receiverCompanyID = e.idCompany?.toString();
+                                              controller.receiverID = e.id?.toString();
                                               controller.update();
                                             },
                                             child: Text(e.employeeName.toString()),
