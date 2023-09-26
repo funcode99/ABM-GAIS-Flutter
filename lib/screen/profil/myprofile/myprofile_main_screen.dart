@@ -10,6 +10,7 @@ import 'package:gais/screen/profil/myprofile/line_approval/line_approval_screen.
 import 'package:gais/screen/profil/myprofile/my_profile_screen/my_profile_screen.dart';
 import 'package:gais/screen/profil/myprofile/myprofile_main_controller.dart';
 import 'package:gais/util/ext/string_ext.dart';
+import 'package:gais/util/image/image_util.dart';
 import 'package:get/get.dart';
 
 class MyProfileMainScreen extends StatelessWidget {
@@ -63,7 +64,41 @@ class MyProfileMainScreen extends StatelessWidget {
                         ),
                         child: IconButton(
                             padding: EdgeInsets.zero,
-                            onPressed: () {},
+                            onPressed: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => Dialog(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ListTile(
+                                          title: const Text(
+                                            'Choose from gallery',
+                                            style: TextStyle(fontSize: 16, color: Colors.black),
+                                          ),
+                                          leading: const Icon(Icons.image),
+                                          onTap: () async {
+                                            Get.back();
+                                            final imageFile = await ImageUtil().selectImageFromGallery();
+                                            controller.changePhoto(imageFile?.path);
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text(
+                                            'Choose from camera',
+                                            style: TextStyle(fontSize: 16, color: Colors.black),
+                                          ),
+                                          leading: const Icon(Icons.camera_alt),
+                                          onTap: () async {
+                                            Get.back();
+                                            final imageFile = await ImageUtil().selectImageFromCamera();
+                                            controller.changePhoto(imageFile?.path);
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                  ));
+                            },
                             icon: const Icon(
                               Icons.edit, color: Colors.white, size: 20,)
                         ),

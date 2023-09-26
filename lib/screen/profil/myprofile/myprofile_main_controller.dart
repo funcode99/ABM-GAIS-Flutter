@@ -10,6 +10,7 @@ class MyProfileMainController extends BaseController with GetTickerProviderState
 
   final name = "".obs;
   final image = "".obs;
+  final isLoading = false.obs;
 
   @override
   void onInit() {
@@ -42,6 +43,17 @@ class MyProfileMainController extends BaseController with GetTickerProviderState
     image.value = imagePath;
 
     this.isEmployee.value = isEmployee == "1";
+  }
+
+  void changePhoto(String? filepath)async{
+    isLoading.value = true;
+    final result = await repository.changePhotoProfile(filepath);
+    if(result!=null){
+      image.value = result;
+    }
+
+    isLoading.value = false;
+
   }
 
 }

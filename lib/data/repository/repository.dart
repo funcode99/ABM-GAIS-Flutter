@@ -331,4 +331,6 @@ abstract class Repository {
 
   Future<Map<String, dynamic>> getLineApproval();
 
+  Future<String?> changePhotoProfile(String? filepath);
+
 }
