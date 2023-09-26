@@ -54,6 +54,7 @@ dependencies:
   time_planner:
     git:
       url: https://github.com/fajarainul/time_planner.git
+  image_cropper: ^4.0.1
       #    path: ../time_planner
 
 

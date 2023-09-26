@@ -12,6 +12,7 @@ import 'package:gais/screen/profil/myprofile/myprofile_main_controller.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/image/image_util.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class MyProfileMainScreen extends StatelessWidget {
   const MyProfileMainScreen({Key? key}) : super(key: key);
@@ -80,7 +81,17 @@ class MyProfileMainScreen extends StatelessWidget {
                                           onTap: () async {
                                             Get.back();
                                             final imageFile = await ImageUtil().selectImageFromGallery();
-                                            controller.changePhoto(imageFile?.path);
+                                            if(imageFile != null){
+                                              CroppedFile? croppedFile = await ImageCropper().cropImage(
+                                                  sourcePath: imageFile.path,
+                                                  cropStyle: CropStyle.circle,
+                                                  aspectRatioPresets: [
+                                                    CropAspectRatioPreset.square,
+                                                  ],
+                                              );
+                                              controller.changePhoto(croppedFile?.path);
+                                            }
+
                                           },
                                         ),
                                         ListTile(
@@ -92,7 +103,16 @@ class MyProfileMainScreen extends StatelessWidget {
                                           onTap: () async {
                                             Get.back();
                                             final imageFile = await ImageUtil().selectImageFromCamera();
-                                            controller.changePhoto(imageFile?.path);
+                                            if(imageFile != null){
+                                              CroppedFile? croppedFile = await ImageCropper().cropImage(
+                                                sourcePath: imageFile.path,
+                                                cropStyle: CropStyle.circle,
+                                                aspectRatioPresets: [
+                                                  CropAspectRatioPreset.square,
+                                                ],
+                                              );
+                                              controller.changePhoto(croppedFile?.path);
+                                            }
                                           },
                                         )
                                       ],

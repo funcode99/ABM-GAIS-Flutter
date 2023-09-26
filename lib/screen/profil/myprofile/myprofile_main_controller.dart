@@ -49,13 +49,15 @@ class MyProfileMainController extends BaseController with GetTickerProviderState
   }
 
   void changePhoto(String? filepath)async{
-    isLoading.value = true;
-    final result = await repository.changePhotoProfile(filepath);
-    if(result!=null){
-      getDetailProfile();
-    }
+    if(filepath!=null){
+      isLoading.value = true;
+      final result = await repository.changePhotoProfile(filepath);
+      if(result!=null){
+        getDetailProfile();
+      }
 
-    isLoading.value = false;
+      isLoading.value = false;
+    }
 
   }
 
