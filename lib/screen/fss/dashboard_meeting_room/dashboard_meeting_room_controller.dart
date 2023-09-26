@@ -128,6 +128,7 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
   ];
 
   final isLoading = true.obs;
+  final showFilter = false.obs;
 
   @override
   void onInit() {

@@ -65,7 +65,9 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                     }).toList(),
                     onChanged: (value) {
                       controller.selectedMonth.value = value!.toInt();
-                      controller.generateListOfDates(DateTime(controller.selectedYear.value, controller.selectedMonth.value, 1), firstDateSelected: true);
+                      controller.generateListOfDates(DateTime(controller
+                          .selectedYear.value, controller.selectedMonth.value,
+                          1), firstDateSelected: true);
                     },
                   );
                 }),
@@ -96,7 +98,9 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                     }).toList(),
                     onChanged: (value) {
                       controller.selectedYear.value = value!.toInt();
-                      controller.generateListOfDates(DateTime(controller.selectedYear.value, controller.selectedMonth.value, 1), firstDateSelected: true);
+                      controller.generateListOfDates(DateTime(controller
+                          .selectedYear.value, controller.selectedMonth.value,
+                          1), firstDateSelected: true);
                     },
                   );
                 }),
@@ -110,28 +114,28 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(14),
                     topRight: Radius.circular(14))),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        controller.generatePrevWeek();
-                      },
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(color: infoColor,
-                            borderRadius: BorderRadius.circular(50)),
-                        child: const Icon(
-                            Icons.keyboard_arrow_left, color: whiteColor),
+            child: Obx(() {
+              return Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          controller.generatePrevWeek();
+                        },
+                        child: Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(color: infoColor,
+                              borderRadius: BorderRadius.circular(50)),
+                          child: const Icon(
+                              Icons.keyboard_arrow_left, color: whiteColor),
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Center(
-                        child: Obx(() {
-                          return SingleChildScrollView(
+                      Expanded(
+                        child: Center(
+                          child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: controller.listDate
@@ -157,7 +161,8 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                                                   .circular(
                                                   5)),
                                           child: Text(
-                                            " ${controller.dayDateFormat.format(
+                                            " ${controller.dayDateFormat
+                                                .format(
                                                 e)[0]} ",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
@@ -194,260 +199,325 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                                   ))
                                   .toList(),
                             ),
-                          );
-                        }),
+                          ),
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        controller.generateNextWeek();
-                      },
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(color: infoColor,
-                            borderRadius: BorderRadius.circular(50)),
-                        child: const Icon(Icons.keyboard_arrow_right,
-                            color: whiteColor),
-                      ),
-                    ),
-                  ],
-                ),
-                const Divider(),
-                Wrap(
-                  runSpacing: 10,
-                  spacing: 16,
-                  children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxWidth: Get.width / 2.3
-                      ),
-                      child: LayoutBuilder(
-                        builder: (context, constraint) {
-                          return Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: baseColor, borderRadius: BorderRadius
-                                .circular(14)),
-                            padding: const EdgeInsets.symmetric(horizontal: 9),
-                            child: Obx(() {
-                              if (!controller.enableSelectCompany.value) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 15),
-                                  child: Text(
-                                    "${controller.companyName}",
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                );
-                              }
-                              return DropdownButton(
-                                isExpanded: true,
-                                hint: Text(
-                                  "Company",
-                                  style: listTitleTextStyle,
-                                ),
-                                underline: const SizedBox(),
-                                value: controller.selectedCompany.value != null
-                                    ? controller.selectedCompany.value?.id
-                                    .toString()
-                                    : "",
-                                icon: const Icon(Icons.arrow_drop_down),
-                                borderRadius: BorderRadius.circular(8),
-                                menuMaxHeight: 500,
-                                style: listSubTitleTextStyle.copyWith(
-                                    overflow: TextOverflow.ellipsis,
-                                    color: blackColor),
-                                items: controller.listCompany
-                                    .map((e) =>
-                                    DropdownMenuItem(
-                                      value: e.id.toString(),
-                                      child: Text("${e.companyName}"),
-                                    ))
-                                    .toList(),
-                                onChanged: (item) {
-                                  controller.onChangeSelectedCompany(
-                                      item.toString());
-                                },
-                              );
-                            }),
-                          );
+                      GestureDetector(
+                        onTap: () {
+                          controller.generateNextWeek();
                         },
+                        child: Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(color: infoColor,
+                              borderRadius: BorderRadius.circular(50)),
+                          child: const Icon(Icons.keyboard_arrow_right,
+                              color: whiteColor),
+                        ),
                       ),
-                    ),
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxWidth: Get.width / 2.3
-                      ),
-                      child: LayoutBuilder(
-                        builder: (context, constraint) {
-                          return Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: baseColor, borderRadius: BorderRadius
-                                .circular(14)),
-                            padding: const EdgeInsets.symmetric(horizontal: 9),
-                            child: Obx(() {
-                              if (!controller.enableSelectSite.value) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 15),
-                                  child: Text(
-                                    "${controller.siteName}",
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                );
-                              }
-                              return DropdownButton(
-                                isExpanded: true,
-                                items: controller.listSite
-                                    .map((e) =>
-                                    DropdownMenuItem(
-                                      value: e.id.toString(),
-                                      child: Text("${e.siteName}"),
-                                    ))
-                                    .toList(),
-                                onChanged: (item) {
-                                  controller.onChangeSelectedSite(
-                                      item.toString());
-                                },
-                                value: controller.selectedSite.value != null
-                                    ? controller.selectedSite.value?.id
-                                    .toString()
-                                    : "",
-                                hint: Text(
-                                  "Site",
-                                  style: listTitleTextStyle,
-                                ),
-                                underline: const SizedBox(),
-                                style: listSubTitleTextStyle.copyWith(
-                                    overflow: TextOverflow.ellipsis,
-                                    color: blackColor),
-                                icon: const Icon(Icons.arrow_drop_down),
-                                borderRadius: BorderRadius.circular(8),
-                              );
-                            }),
-                          );
-                        },
-                      ),
-                    ),
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                          minWidth: Get.width / 2.3
-                      ),
-                      child: LayoutBuilder(
-                        builder: (context, constraint) {
-                          return Container(
-                            margin: const EdgeInsets.only(right: 8),
-                            decoration: BoxDecoration(
-                                color: baseColor, borderRadius: BorderRadius
-                                .circular(14)),
-                            padding: const EdgeInsets.symmetric(horizontal: 9),
-                            child: Obx(() {
+                    ],
+                  ),
+                  const Divider(),
+                  AnimatedSwitcher(
+                    reverseDuration: const Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 500),
+                    child: controller.showFilter.value ? Wrap(
+                      runSpacing: 10,
+                      spacing: 16,
+                      children: [
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                              maxWidth: Get.width / 2.3
+                          ),
+                          child: LayoutBuilder(
+                            builder: (context, constraint) {
                               return Container(
                                 width: double.infinity,
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 12, horizontal: 8),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Wrap(
-                                  runSpacing: 8,
-                                  runAlignment: WrapAlignment.center,
-                                  children: [
-                                    ...controller.listSelectedRoom
-                                        .mapIndexed((index, item) => Container(
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(4.0),
-                                        ),
-                                        color: Colors.white,
-                                      ),
-                                      margin: const EdgeInsets.only(
-                                          right: 5.0, left: 5),
+                                    color: baseColor,
+                                    borderRadius: BorderRadius
+                                        .circular(14)),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 9),
+                                child: Obx(() {
+                                  if (!controller.enableSelectCompany
+                                      .value) {
+                                    return Padding(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0, vertical: 4.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          InkWell(
-                                            child: Text(
-                                              item.nameMeetingRoom ?? "",
-                                              style: listSubTitleTextStyle,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 4.0),
-                                          InkWell(
-                                            child: const Icon(
-                                              Icons.cancel,
-                                              size: 14.0,
-                                              color: greyColor,
-                                            ),
-                                            onTap: () {
-                                              controller.deleteMeetingRoom(item.id);
-                                            },
-                                          )
-                                        ],
+                                          vertical: 15),
+                                      child: Text(
+                                        "${controller.companyName}",
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                    ))
+                                    );
+                                  }
+                                  return DropdownButton(
+                                    isExpanded: true,
+                                    hint: Text(
+                                      "Company",
+                                      style: listTitleTextStyle,
+                                    ),
+                                    underline: const SizedBox(),
+                                    value: controller.selectedCompany
+                                        .value != null
+                                        ? controller.selectedCompany.value
+                                        ?.id
+                                        .toString()
+                                        : "",
+                                    icon: const Icon(Icons.arrow_drop_down),
+                                    borderRadius: BorderRadius.circular(8),
+                                    menuMaxHeight: 500,
+                                    style: listSubTitleTextStyle.copyWith(
+                                        overflow: TextOverflow.ellipsis,
+                                        color: blackColor),
+                                    items: controller.listCompany
+                                        .map((e) =>
+                                        DropdownMenuItem(
+                                          value: e.id.toString(),
+                                          child: Text("${e.companyName}"),
+                                        ))
                                         .toList(),
-                                    SizedBox(
-                                      width: 150,
-                                      child: TypeAheadFormField<RoomModel>(
-                                        textFieldConfiguration: TextFieldConfiguration(
-                                          controller: controller.autocompleteController,
-                                          autofocus: false,
-                                          style: Theme.of(context).textTheme.titleMedium,
-                                          decoration: InputDecoration(
-                                            fillColor: Colors.transparent,
-                                              isDense: true,
-                                              hintText: "Meeting Room".tr,
-                                              hintStyle: const TextStyle(
-                                                color: Colors.grey
-                                              ),
-                                              border: InputBorder.none,
-                                              contentPadding: const EdgeInsets.symmetric(
-                                                  horizontal: 4.0, vertical: 4.0),
-                                              errorText: null,
-                                              errorBorder: const OutlineInputBorder(
-                                                borderSide: BorderSide.none,
-                                                gapPadding: 0,
-                                              ),
-                                              errorStyle: const TextStyle(height: 0)),
-                                        ),
-                                        suggestionsCallback: (pattern) async {
-                                          final list = await controller.getRoomByKeyword(pattern);
-                                          return list;
-                                        },
-                                        itemBuilder: (context, suggestion) {
-                                          return ListTile(
-                                            title: Text("${suggestion.nameMeetingRoom}"),
-                                          );
-                                        },
-                                        onSuggestionSelected: (suggestion) {
-                                          controller.addMeetingRoom(suggestion);
-                                          controller.autocompleteController.text = "";
-                                        },
-                                        debounceDuration:
-                                        const Duration(milliseconds: 1500),
-                                        hideOnLoading: true,
-                                        hideSuggestionsOnKeyboardHide: true,
-                                        keepSuggestionsOnLoading: false,
-                                        minCharsForSuggestions: 0,
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                    onChanged: (item) {
+                                      controller.onChangeSelectedCompany(
+                                          item.toString());
+                                    },
+                                  );
+                                }),
                               );
-                            }),
-                          );
-                        },
-                      ),
+                            },
+                          ),
+                        ),
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                              maxWidth: Get.width / 2.3
+                          ),
+                          child: LayoutBuilder(
+                            builder: (context, constraint) {
+                              return Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: baseColor,
+                                    borderRadius: BorderRadius
+                                        .circular(14)),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 9),
+                                child: Obx(() {
+                                  if (!controller.enableSelectSite.value) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 15),
+                                      child: Text(
+                                        "${controller.siteName}",
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    );
+                                  }
+                                  return DropdownButton(
+                                    isExpanded: true,
+                                    items: controller.listSite
+                                        .map((e) =>
+                                        DropdownMenuItem(
+                                          value: e.id.toString(),
+                                          child: Text("${e.siteName}"),
+                                        ))
+                                        .toList(),
+                                    onChanged: (item) {
+                                      controller.onChangeSelectedSite(
+                                          item.toString());
+                                    },
+                                    value: controller.selectedSite.value !=
+                                        null
+                                        ? controller.selectedSite.value?.id
+                                        .toString()
+                                        : "",
+                                    hint: Text(
+                                      "Site",
+                                      style: listTitleTextStyle,
+                                    ),
+                                    underline: const SizedBox(),
+                                    style: listSubTitleTextStyle.copyWith(
+                                        overflow: TextOverflow.ellipsis,
+                                        color: blackColor),
+                                    icon: const Icon(Icons.arrow_drop_down),
+                                    borderRadius: BorderRadius.circular(8),
+                                  );
+                                }),
+                              );
+                            },
+                          ),
+                        ),
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                              minWidth: Get.width / 2.3
+                          ),
+                          child: LayoutBuilder(
+                            builder: (context, constraint) {
+                              return Container(
+                                margin: const EdgeInsets.only(right: 8),
+                                decoration: BoxDecoration(
+                                    color: baseColor,
+                                    borderRadius: BorderRadius
+                                        .circular(14)),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 9),
+                                child: Obx(() {
+                                  return Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          8),
+                                    ),
+                                    child: Wrap(
+                                      runSpacing: 8,
+                                      runAlignment: WrapAlignment.center,
+                                      children: [
+                                        ...controller.listSelectedRoom
+                                            .mapIndexed((index, item) =>
+                                            Container(
+                                              decoration: const BoxDecoration(
+                                                borderRadius: BorderRadius
+                                                    .all(
+                                                  Radius.circular(4.0),
+                                                ),
+                                                color: Colors.white,
+                                              ),
+                                              margin: const EdgeInsets.only(
+                                                  right: 5.0, left: 5),
+                                              padding: const EdgeInsets
+                                                  .symmetric(
+                                                  horizontal: 10.0,
+                                                  vertical: 4.0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize
+                                                    .min,
+                                                children: [
+                                                  InkWell(
+                                                    child: Text(
+                                                      item
+                                                          .nameMeetingRoom ??
+                                                          "",
+                                                      style: listSubTitleTextStyle,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                      width: 4.0),
+                                                  InkWell(
+                                                    child: const Icon(
+                                                      Icons.cancel,
+                                                      size: 14.0,
+                                                      color: greyColor,
+                                                    ),
+                                                    onTap: () {
+                                                      controller
+                                                          .deleteMeetingRoom(
+                                                          item.id);
+                                                    },
+                                                  )
+                                                ],
+                                              ),
+                                            ))
+                                            .toList(),
+                                        SizedBox(
+                                          width: 150,
+                                          child: TypeAheadFormField<
+                                              RoomModel>(
+                                            textFieldConfiguration: TextFieldConfiguration(
+                                              controller: controller
+                                                  .autocompleteController,
+                                              autofocus: false,
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .titleMedium,
+                                              decoration: InputDecoration(
+                                                  fillColor: Colors
+                                                      .transparent,
+                                                  isDense: true,
+                                                  hintText: "Meeting Room"
+                                                      .tr,
+                                                  hintStyle: const TextStyle(
+                                                      color: Colors.grey
+                                                  ),
+                                                  border: InputBorder.none,
+                                                  contentPadding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 4.0,
+                                                      vertical: 4.0),
+                                                  errorText: null,
+                                                  errorBorder: const OutlineInputBorder(
+                                                    borderSide: BorderSide
+                                                        .none,
+                                                    gapPadding: 0,
+                                                  ),
+                                                  errorStyle: const TextStyle(
+                                                      height: 0)),
+                                            ),
+                                            suggestionsCallback: (
+                                                pattern) async {
+                                              final list = await controller
+                                                  .getRoomByKeyword(
+                                                  pattern);
+                                              return list;
+                                            },
+                                            itemBuilder: (context,
+                                                suggestion) {
+                                              return ListTile(
+                                                title: Text("${suggestion
+                                                    .nameMeetingRoom}"),
+                                              );
+                                            },
+                                            onSuggestionSelected: (
+                                                suggestion) {
+                                              controller.addMeetingRoom(
+                                                  suggestion);
+                                              controller
+                                                  .autocompleteController
+                                                  .text = "";
+                                            },
+                                            debounceDuration:
+                                            const Duration(
+                                                milliseconds: 1500),
+                                            hideOnLoading: true,
+                                            hideSuggestionsOnKeyboardHide: true,
+                                            keepSuggestionsOnLoading: false,
+                                            minCharsForSuggestions: 0,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ) : const SizedBox(),
+                    transitionBuilder: (child, animation) {
+                      return SizeTransition(sizeFactor: animation, child: child);
+                    },
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  SizedBox(
+                    width: 100,
+                    child: CustomIconButton(
+                      backgroundColor: infoColor,
+                      onPressed: () {
+                        controller.showFilter(!controller.showFilter.value);
+                      },
+                      title: "Filter",
+                      iconData: controller.showFilter.value ? Icons
+                          .keyboard_double_arrow_up : Icons
+                          .keyboard_double_arrow_down,
                     ),
-                  ],
-                )
-              ],
-            ),
+                  )
+                ],
+              );
+            }),
           ),
           Expanded(
               child: Obx(() {
@@ -488,7 +558,8 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                       ...controller.listMappedBooking.map((element) {
                         bool isScheduled = element.isScheduled ?? false;
                         return TimePlannerTask(
-                          color: isScheduled ? controller.getColor(element.codeStatusDoc) : Colors.transparent,
+                          color: isScheduled ? controller.getColor(
+                              element.codeStatusDoc) : Colors.transparent,
                           dateTime: TimePlannerDateTime(day: element.position!,
                               hour: element.hour!,
                               minutes: element.minute!),
@@ -496,12 +567,13 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                           minutesDuration: element.durationInMinute!,
                           daysDuration: 1,
                           onTap: () {
-                            if(isScheduled){
-                              Get.to(() => const DetailBookingMeetingRoomScreen(),
+                            if (isScheduled) {
+                              Get
+                                  .to(() => const DetailBookingMeetingRoomScreen(),
                                   arguments: {
                                     "item": element
                                   })?.then((value) => controller.getHeader());
-                            }else{
+                            } else {
                               controller.addToSelectedBooking(element);
                             }
                           },
@@ -601,11 +673,12 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                           ),
                         );
                       }).toList(),
-                      ...controller.listSelectedBooking.mapIndexed((index, element) {
+                      ...controller.listSelectedBooking.mapIndexed((index,
+                          element) {
                         int length = controller.listSelectedBooking.length;
                         bool isEven = length.isEven;
                         bool showAddButton = false;
-                        if(isEven){
+                        if (isEven) {
 
                         }
                         return TimePlannerTask(
@@ -623,16 +696,20 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                           },
                           child: Container(
                             width: 100,
-                            child: index == (controller.listSelectedBooking.length / 2).floor() ?
+                            child: index ==
+                                (controller.listSelectedBooking.length / 2)
+                                    .floor() ?
                             CustomIconButton(
                               title: "Add".tr,
                               iconData: Icons.add,
                               backgroundColor: infoColor,
                               onPressed: () {
-                                Get.to(() => const AddBookingMeetingRoomScreen(), arguments: {
-                                  "item" : controller.getItem()
-                                })?.then((value){
-                                  if(value){
+                                Get
+                                    .to(() => const AddBookingMeetingRoomScreen(),
+                                    arguments: {
+                                      "item": controller.getItem()
+                                    })?.then((value) {
+                                  if (value) {
                                     controller.getHeader();
                                     controller.listSelectedBooking.clear();
                                   }
@@ -647,7 +724,7 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
                 );
               })
           ),
-          SizedBox(
+          const SizedBox(
             height: 0,
           )
         ],
@@ -656,11 +733,11 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
         backgroundColor: successColor,
         onPressed: () =>
             Get.to(() => const AddBookingMeetingRoomScreen())?.then(
-                  (value) {
-                    if(value){
-                      controller.getHeader();
-                    }
+                    (value) {
+                  if (value) {
+                    controller.getHeader();
                   }
+                }
             ),
         child: const Icon(Icons.add_rounded, size: 45),
       ),
