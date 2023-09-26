@@ -92,6 +92,8 @@ class Data {
     String? companyName,
     String? companyCode,
     String? companyLogoPath,
+    String? fileName,
+    String? filePath,
     String? costCenterName,
     String? costCenterCode,
     dynamic departementName,
@@ -143,6 +145,8 @@ class Data {
     _companyName = companyName;
     _companyCode = companyCode;
     _companyLogoPath = companyLogoPath;
+    _fileName = fileName;
+    _filePath = filePath;
     _costCenterName = costCenterName;
     _costCenterCode = costCenterCode;
     _departementName = departementName;
@@ -196,6 +200,8 @@ class Data {
     _companyName = json['company_name'];
     _companyCode = json['company_code'];
     _companyLogoPath = json['company_logo_path'];
+    _fileName = json['file_name'];
+    _filePath = json['file_path'];
     _costCenterName = json['cost_center_name'];
     _costCenterCode = json['cost_center_code'];
     _departementName = json['departement_name'];
@@ -258,6 +264,8 @@ class Data {
   String? _companyName;
   String? _companyCode;
   String? _companyLogoPath;
+  String? _fileName;
+  String? _filePath;
   String? _costCenterName;
   String? _costCenterCode;
   dynamic _departementName;
@@ -360,6 +368,8 @@ class Data {
         companyName: companyName ?? _companyName,
         companyCode: companyCode ?? _companyCode,
         companyLogoPath: companyLogoPath ?? _companyLogoPath,
+        fileName: fileName ?? _fileName,
+        filePath: filePath ?? _filePath,
         costCenterName: costCenterName ?? _costCenterName,
         costCenterCode: costCenterCode ?? _costCenterCode,
         departementName: departementName ?? _departementName,
@@ -450,6 +460,10 @@ class Data {
 
   String? get companyLogoPath => _companyLogoPath;
 
+  String? get fileName => _fileName;
+
+  String? get filePath => _filePath;
+
   String? get costCenterName => _costCenterName;
 
   String? get costCenterCode => _costCenterCode;
@@ -514,6 +528,8 @@ class Data {
     map['company_name'] = _companyName;
     map['company_code'] = _companyCode;
     map['company_logo_path'] = _companyLogoPath;
+    map['file_name'] = _fileName;
+    map['file_path'] = _filePath;
     map['cost_center_name'] = _costCenterName;
     map['cost_center_code'] = _costCenterCode;
     map['departement_name'] = _departementName;
