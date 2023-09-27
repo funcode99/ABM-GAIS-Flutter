@@ -5,6 +5,7 @@ import 'package:gais/data/model/cash_advance/item_cash_advance_travel_model.dart
 import 'package:gais/data/model/reference/get_flight_schedule_model.dart';
 import 'package:gais/data/model/reference/get_type_transportation_model.dart';
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart';
+import 'package:gais/data/model/request_trip/get_airliness_bytrip_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart';
@@ -18,7 +19,7 @@ import 'package:gais/data/model/request_trip/get_trainTrip_model.dart';
 import 'package:gais/data/model/request_trip/get_train_trip_bytripid_model.dart';
 import 'package:gais/data/model/request_trip/request_trip_list_model.dart';
 import 'package:gais/data/model/request_trip/save_accommodation_model.dart';
-import 'package:gais/data/model/request_trip/save_airlines_model.dart';
+import 'package:gais/data/model/request_trip/save_airliness_model.dart';
 import 'package:gais/data/model/request_trip/save_other_transportation_model.dart';
 import 'package:gais/data/model/request_trip/save_purpose_of_trip_model.dart';
 import 'package:gais/data/model/request_trip/save_taxi_voucher_model.dart';
@@ -464,13 +465,21 @@ class RequestTripImpl implements RequestTripRepository {
   }
 
   @override
-  Future<SaveAirlinesModel> saveAirlines(
+  Future<SaveAirlinessModel> saveAirlines(
     String idRequestTrip,
     String idVendor,
     String flightNo,
     String codeAirlines,
     String ticketPrice,
     String pnrID,
+    String origin,
+    String destination,
+    String departDate,
+    String adult,
+    String childs,
+    String infant,
+    String travellerName,
+    String flightClass,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -482,6 +491,16 @@ class RequestTripImpl implements RequestTripRepository {
       "code_airlines": codeAirlines,
       "ticket_price": ticketPrice,
       "pnrid": pnrID,
+      "origin": origin,
+      "destination": destination,
+      "depart_date": departDate,
+      "Adult": adult,
+      "Child": childs,
+      "Infant": infant,
+      "return_date": "",
+      "is_round_trip": "",
+      "traveler_name": travellerName,
+      "flight_class": flightClass,
     });
 
     try {
@@ -489,7 +508,8 @@ class RequestTripImpl implements RequestTripRepository {
         "/api/flight_trip/store",
         data: formData,
       );
-      return SaveAirlinesModel.fromJson(response.data);
+      print("save airliness : ${response.data}");
+      return SaveAirlinessModel.fromJson(response.data);
     } on DioError catch (e) {
       print("response error: ${e.response?.data}");
       return e.error;
@@ -499,12 +519,20 @@ class RequestTripImpl implements RequestTripRepository {
   @override
   Future<UpdateAirlinessModel> updateAirlines(
     String id,
-    String idRequestTrip,
-    String idVendor,
-    String flightNo,
-    String codeAirlines,
-    String ticketPrice,
-    String pnrID,
+      String idRequestTrip,
+      String idVendor,
+      String flightNo,
+      String codeAirlines,
+      String ticketPrice,
+      String pnrID,
+      String origin,
+      String destination,
+      String departDate,
+      String adult,
+      String childs,
+      String infant,
+      String travellerName,
+      String flightClass,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -516,6 +544,16 @@ class RequestTripImpl implements RequestTripRepository {
       "code_airlines": codeAirlines,
       "ticket_price": ticketPrice,
       "pnrid": pnrID,
+      "origin": origin,
+      "destination": destination,
+      "depart_date": departDate,
+      "Adult": adult,
+      "Child": childs,
+      "Infant": infant,
+      "return_date": "",
+      "is_round_trip": "",
+      "traveler_name": travellerName,
+      "flight_class": flightClass,
     });
 
     try {
@@ -561,14 +599,14 @@ class RequestTripImpl implements RequestTripRepository {
   }
 
   @override
-  Future<GetAirlinessModel> getAirlinessBytripList(String id) async {
+  Future<GetAirlinessBytripModel> getAirlinessBytripList(String id) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       Response response = await network.dio.get(
         "/api/flight_trip/get_by_travel_id/trip_id/$id",
       );
-      return GetAirlinessModel.fromJson(response.data);
+      return GetAirlinessBytripModel.fromJson(response.data);
     } on DioError catch (e) {
       print("response error: ${e.response?.data}");
       return e.error;

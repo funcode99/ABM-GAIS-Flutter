@@ -350,7 +350,7 @@ class ApprovalFormRequestTripController extends BaseController {
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
       var airlinessData = await requestTrip.getAirlinessBytripList(purposeID);
-      airlinessList.addAll(airlinessData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+      airlinessList.addAll((airlinessData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []) as Iterable<airliness.Data>);
 
       var tvData = await requestTrip.getTaxiVoucherBytripList(purposeID);
       tvList.addAll(tvData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);

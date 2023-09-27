@@ -432,10 +432,10 @@ class FormRequestTripController extends BaseController {
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
       var airlinessData = await requestTrip.getAirlinessBytripList(purposeID);
-      airlinessModel = airlinessData;
+      // airlinessModel = airlinessData;
       airlinessData.data?.asMap().forEach((i, e) async {
         print("pnrID: ${e.pnrid}");
-        await antavaya.getRsvTicket(e.pnrid).then((rsv) {
+        await antavaya.getRsvTicket(e.pnrid!).then((rsv) {
           var reservation = jsonDecode(rsv);
           print("rsv: ${reservation.toString()}");
           print("rsv: ${reservation['Passengers'][0]['Type'].toString()}");
@@ -446,8 +446,8 @@ class FormRequestTripController extends BaseController {
             pnrid: e.pnrid,
             employeeName: reservation['Passengers'][0]['FirstName'],
             createdAt: e.createdAt,
-            departure: reservation['FlightDetails'][0]['Origin'],
-            arrival: reservation['FlightDetails'][0]['Destination'],
+            origin: reservation['FlightDetails'][0]['Origin'],
+            destination: reservation['FlightDetails'][0]['Destination'],
             departureTime: reservation['FlightDetails'][0]['DepartTime'],
             arrivalTime: reservation['FlightDetails'][0]['ArriveTime'],
             flightNo: reservation['FlightDetails'][0]['FlightNumber'],

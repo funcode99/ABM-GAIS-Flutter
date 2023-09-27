@@ -93,21 +93,21 @@ class AirlinessScreen extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text("Departure", style: listTitleTextStyle),
-                                          Text("${e.departure} (${e.departureTime})", style: listSubTitleTextStyle),
+                                          Text("${e.origin} (${e.departureTime})", style: listSubTitleTextStyle),
                                         ],
                                       ),
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text("Arrival", style: listTitleTextStyle),
-                                          Text("${e.arrival} (${e.arrivalTime})", style: listSubTitleTextStyle),
+                                          Text("${e.destination} (${e.arrivalTime})", style: listSubTitleTextStyle),
                                         ],
                                       ),
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text("Price", style: listTitleTextStyle),
-                                          Text(e.ticketPrice!.toInt().toCurrency(), style: listSubTitleTextStyle),
+                                          Text(e.ticketPrice?.toInt().toCurrency() ?? '-', style: listSubTitleTextStyle),
                                         ],
                                       )
                                     ],

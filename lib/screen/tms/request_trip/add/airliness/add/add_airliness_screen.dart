@@ -71,20 +71,43 @@ class AddAirlinessScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomTextFormField(
-                              controller: controller.travellerName,
+                            // CustomTextFormField(
+                            //   controller: controller.travellerName,
+                            //   label: "Traveller",
+                            //   hintText: "name",
+                            //   isRequired: true,
+                            //   readOnly: true,
+                            //   validator: (value) {
+                            //     if (value == null || value.isEmpty) {
+                            //       return "This field is required";
+                            //     }
+                            //     return null;
+                            //   },
+                            // ),
+                            CustomDropDownFormField(
                               label: "Traveller",
-                              hintText: "name",
+                              hintText: controller.isLoading ? "Loading..." : "Traveller",
                               isRequired: true,
-                              readOnly: true,
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
+                                if (value == null || controller.travellerName.text.isEmpty) {
                                   return "This field is required";
                                 }
                                 return null;
                               },
+                              value: controller.travellerName.text.isNotEmpty ? controller.travellerName.text : null,
+                              items: controller.travellerList
+                                  .map((e) => DropdownMenuItem(
+                                        value: e.nameGuest,
+                                        child: Text("${e.nameGuest.toString()} "),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                controller.travellerName.text = value.toString() ?? '';
+                                print(controller.travellerName.text);
+                                controller.update();
+                              },
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 16),
                             CustomTextFormField(
                               controller: controller.departureDate,
                               label: "Departure Date",
@@ -142,6 +165,7 @@ class AddAirlinessScreen extends StatelessWidget {
                                 }
                                 return null;
                               },
+                              value: controller.departureModel!=null ? controller.departureModel : null,
                               items: controller.cityList
                                   .map((e) => DropdownMenuItem(
                                         value: e,
@@ -160,6 +184,7 @@ class AddAirlinessScreen extends StatelessWidget {
                               label: "Arrival",
                               hintText: controller.isLoading ? "Loading..." : "Airport",
                               isRequired: true,
+                              value: controller.arrivalModel!=null ? controller.arrivalModel : null,
                               validator: (value) {
                                 if (value == null || controller.arrival!.isEmpty) {
                                   return "This field is required";
@@ -295,7 +320,7 @@ class AddAirlinessScreen extends StatelessWidget {
                                 ),
                                 CustomFilledButton(
                                   color: infoColor,
-                                  title: "Check",
+                                  title: controller.isBooking==true ? "Check" : "Save",
                                   width: 100,
                                   onPressed: () {
                                     controller.passengerAdult.text.isEmpty ||
@@ -308,24 +333,7 @@ class AddAirlinessScreen extends StatelessWidget {
                                         controller.passengerAdult.text.isNotEmpty &&
                                         controller.passengerInfant.text.isNotEmpty &&
                                         controller.passengerChild.text.isNotEmpty) {
-                                      Get.off(const CheckScheduleScreen(), arguments: {
-                                        'purposeID': controller.purposeID,
-                                        'codeDocument': controller.codeDocument,
-                                        'departure': controller.departure.toString(),
-                                        'arrival': controller.arrival.toString(),
-                                        'departureModel': controller.departureModel,
-                                        'arrivalModel': controller.arrivalModel,
-                                        'departureDate': controller.selectedDate,
-                                        'adult': controller.passengerAdult.text,
-                                        'infant': controller.passengerInfant.text,
-                                        'child': controller.passengerChild.text,
-                                        // 'flightClass': int.parse(controller.flightClass.toString()),
-                                        'flightClass': controller.flightClassID,
-                                        'formEdit': controller.formEdit,
-                                        'isEdit': controller.isEdit,
-                                        'id': controller.airlinessID,
-                                        'airlinessData' : controller.airlinessModel,
-                                      });
+                                      controller.save();
                                     }
                                   },
                                 ),

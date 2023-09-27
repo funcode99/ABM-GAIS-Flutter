@@ -201,7 +201,7 @@ class AddTrainScreen extends StatelessWidget {
                                 CustomFilledButton(
                                   width: 100,
                                   color: infoColor,
-                                  title: "Save",
+                                  title: controller.isBooking == true ? "Check" : "Save",
                                   onPressed: () {
                                     if (controller.formKey.currentState?.validate() == true) controller.save();
                                   },

@@ -1,12 +1,10 @@
 import 'dart:io';
-
 import 'package:gais/data/model/cash_advance/item_cash_advance_travel_model.dart';
 import 'package:gais/data/model/reference/get_flight_schedule_model.dart';
-import 'package:gais/data/model/reference/get_hotel_type_model.dart';
 import 'package:gais/data/model/reference/get_type_transportation_model.dart';
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart';
+import 'package:gais/data/model/request_trip/get_airliness_bytrip_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart';
-import 'package:gais/data/model/request_trip/get_airliness_vendor_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart';
 import 'package:gais/data/model/request_trip/get_detailca_bycashid_model.dart';
@@ -19,7 +17,7 @@ import 'package:gais/data/model/request_trip/get_trainTrip_model.dart';
 import 'package:gais/data/model/request_trip/get_train_trip_bytripid_model.dart';
 import 'package:gais/data/model/request_trip/request_trip_list_model.dart';
 import 'package:gais/data/model/request_trip/save_accommodation_model.dart';
-import 'package:gais/data/model/request_trip/save_airlines_model.dart';
+import 'package:gais/data/model/request_trip/save_airliness_model.dart';
 import 'package:gais/data/model/request_trip/save_other_transportation_model.dart';
 import 'package:gais/data/model/request_trip/save_purpose_of_trip_model.dart';
 import 'package:gais/data/model/request_trip/save_taxi_voucher_model.dart';
@@ -150,28 +148,44 @@ abstract class RequestTripRepository {
 
   Future deleteTaxiVoucher(String id);
 
-  Future<SaveAirlinesModel> saveAirlines(
-    String idRequestTrip,
-    String idVendor,
-    String flightNo,
-    String codeAirlines,
-    String ticketPrice,
-    String pnrID,
+  Future<SaveAirlinessModel> saveAirlines(
+      String idRequestTrip,
+      String idVendor,
+      String flightNo,
+      String codeAirlines,
+      String ticketPrice,
+      String pnrID,
+      String origin,
+      String destination,
+      String departDate,
+      String adult,
+      String childs,
+      String infant,
+      String travellerName,
+      String flightClass,
   );
 
   Future<UpdateAirlinessModel> updateAirlines(
     String id,
-    String idRequestTrip,
-    String idVendor,
-    String flightNo,
-    String codeAirlines,
-    String ticketPrice,
-    String pnrID,
+      String idRequestTrip,
+      String idVendor,
+      String flightNo,
+      String codeAirlines,
+      String ticketPrice,
+      String pnrID,
+      String origin,
+      String destination,
+      String departDate,
+      String adult,
+      String childs,
+      String infant,
+      String travellerName,
+      String flightClass,
   );
 
   Future deleteAirliness(String id);
 
-  Future<GetAirlinessModel> getAirlinessBytripList(String id);
+  Future<GetAirlinessBytripModel> getAirlinessBytripList(String id);
 
   Future<GetAirlinessModel> getAirlinessByid(String id);
 

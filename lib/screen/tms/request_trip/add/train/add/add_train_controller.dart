@@ -14,6 +14,7 @@ class AddTrainController extends BaseController {
   int? codeDocument = Get.arguments['codeDocument'];
   bool? formEdit = Get.arguments['formEdit'];
   String? trainID = Get.arguments['id'];
+  bool? isBooking = Get.arguments['booking'];
 
   final formKey = GlobalKey<FormState>();
   final traveller = TextEditingController();

@@ -57,15 +57,15 @@ class AirportReservationController extends BaseController {
   void onInit() {
     super.onInit();
     flight.printInfo();
-    if(airlinessID!=null){
+    if (airlinessID != null) {
       fetchEdit();
     }
     print('airlinessID : $airlinessID');
   }
 
-  Future<void> fetchEdit() async{
+  Future<void> fetchEdit() async {
     if (airlinessID != null) {
-      await antavaya.getRsvTicket(airlinessModel?.pnrid).then((value) {
+      await antavaya.getRsvTicket(airlinessModel!.pnrid.toString()).then((value) {
         var rsv = jsonDecode(value);
         bookTitle.text = rsv['Contact']['Title'];
         bookFirstName.text = rsv['Contact']['FirstName'];
@@ -228,6 +228,16 @@ class AirportReservationController extends BaseController {
               flight.classObjects?.first.code ?? "",
               flight.fare.toString(),
               pnrID,
+              flight.origin.toString(),
+              flight.destination.toString(),
+              flight.departDate.toString(),
+              '1',
+              '0',
+              '0',
+              "${passFirstName.text} ${passLastName.text} ",
+              flight.classObjects!.isNotEmpty
+                  ? flight.classObjects?.first.category.toString() ?? ''
+                  : flight.connectingFlights?.first.classObjects?.first.category.toString() ?? '',
             )
             .then(
               (value) => formEdit == true
@@ -260,6 +270,16 @@ class AirportReservationController extends BaseController {
               flight.classObjects?.first.code ?? "",
               flight.fare.toString(),
               pnrID,
+              flight.origin.toString(),
+              flight.destination.toString(),
+              flight.departDate.toString(),
+              '1',
+              '0',
+              '0',
+              "${passFirstName.text} ${passLastName.text} ",
+              flight.classObjects!.isNotEmpty
+                  ? flight.classObjects?.first.category.toString() ?? ''
+                  : flight.connectingFlights?.first.classObjects?.first.category.toString() ?? '',
             )
             .then(
               (value) => formEdit == true

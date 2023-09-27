@@ -69,13 +69,16 @@ class Data {
     String? noRequestTrip,
     String? employeeName,
     String? vendor,
-    String? departure,
-    String? arrival,
+    String? origin,
+    String? destination,
     String? departureTime,
     String? arrivalTime,
     String? departureDate,
     String? arrivalDate,
     String? flightClass,
+    dynamic adult,
+    dynamic childs,
+    dynamic infant,
   }) {
     _id = id;
     _idRequestTrip = idRequestTrip;
@@ -92,13 +95,16 @@ class Data {
     _noRequestTrip = noRequestTrip;
     _employeeName = employeeName;
     _vendor = vendor;
-    _departure = departure;
-    _arrival = arrival;
+    _origin = origin;
+    _destination = destination;
     _departureTime = departureTime;
     _arrivalTime = arrivalTime;
     _departureDate = departureDate;
     _arrivalDate = arrivalDate;
     _flightClass = flightClass;
+    _adult = adult;
+    _child = childs;
+    _infant = infant;
   }
 
   Data.fromJson(dynamic json) {
@@ -117,13 +123,16 @@ class Data {
     _noRequestTrip = json['no_request_trip'];
     _employeeName = json['employee_name'];
     _vendor = json['vendor'];
-    _departure = json['departure'];
-    _arrival = json['arrival'];
+    _origin = json['origin'];
+    _destination = json['destination'];
     _departureTime = json['departure_time'];
     _arrivalTime = json['arrival_time'];
-    _departureDate = json['departure_date'];
+    _departureDate = json['depart_date'];
     _arrivalDate = json['arrival_date'];
     _flightClass = json['flight_class'];
+    _adult = json['Adult'];
+    _child = json['Child'];
+    _infant = json['Infant'];
   }
 
   String? _id;
@@ -141,13 +150,16 @@ class Data {
   String? _noRequestTrip;
   String? _employeeName;
   String? _vendor;
-  String? _departure;
-  String? _arrival;
+  String? _origin;
+  String? _destination;
   String? _departureTime;
   String? _arrivalTime;
   String? _departureDate;
   String? _arrivalDate;
   String? _flightClass;
+  dynamic _adult;
+  dynamic _child;
+  dynamic _infant;
 
   Data copyWith({
     String? id,
@@ -165,13 +177,16 @@ class Data {
     String? noRequestTrip,
     String? employeeName,
     String? vendor,
-    String? departure,
-    String? arrival,
+    String? origin,
+    String? destination,
     String? departureTime,
     String? arrivalTime,
     String? departureDate,
     String? arrivalDate,
     String? flightClass,
+    dynamic adult,
+    dynamic childs,
+    dynamic infant,
   }) =>
       Data(
         id: id ?? _id,
@@ -189,13 +204,16 @@ class Data {
         noRequestTrip: noRequestTrip ?? _noRequestTrip,
         employeeName: employeeName ?? _employeeName,
         vendor: vendor ?? _vendor,
-        departure: departure ?? _departure,
-        arrival: arrival ?? _arrival,
+        origin: origin ?? _origin,
+        destination: destination ?? _destination,
         departureTime: departureTime ?? _departureTime,
         arrivalTime: arrivalTime ?? _arrivalTime,
         departureDate: departureDate ?? _departureDate,
         arrivalDate: arrivalDate ?? _arrivalDate,
         flightClass: flightClass ?? _flightClass,
+        adult: adult ?? _adult,
+        childs: childs ?? _child,
+        infant: infant ?? _infant,
       );
 
   String? get id => _id;
@@ -228,9 +246,9 @@ class Data {
 
   String? get vendor => _vendor;
 
-  String? get departure => _departure;
+  String? get origin => _origin;
 
-  String? get arrival => _arrival;
+  String? get destination => _destination;
 
   String? get departureTime => _departureTime;
 
@@ -241,6 +259,12 @@ class Data {
   String? get arrivalDate => _arrivalDate;
 
   String? get flightClass => _flightClass;
+
+  dynamic get adult => _adult;
+
+  dynamic get childs => _child;
+
+  dynamic get infant => _infant;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -259,13 +283,16 @@ class Data {
     map['no_request_trip'] = _noRequestTrip;
     map['employee_name'] = _employeeName;
     map['vendor'] = _vendor;
-    map['departure'] = _departure;
-    map['arrival'] = _arrival;
+    map['origin'] = _origin;
+    map['destination'] = _destination;
     map['departure_time'] = _departureTime;
     map['arrival_time'] = _arrivalTime;
-    map['departure_date'] = _departureDate;
+    map['depart_date'] = _departureDate;
     map['arrival_date'] = _arrivalDate;
     map['flight_class'] = _flightClass;
+    map['Adult'] = _adult;
+    map['Child'] = _child;
+    map['Infant'] = _infant;
     return map;
   }
 }

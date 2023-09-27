@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/data/model/reference/get_status_document_model.dart';
+import 'package:gais/data/model/request_trip/get_airliness_bytrip_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airliness;
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_screen.dart';
@@ -21,8 +22,7 @@ class AirlinessController extends BaseController {
 
   GetStatusDocumentModel? statusModel;
   List<airliness.Data> airlinessList = [];
-  airliness.GetAirlinessModel? airlinessModel;
-
+  GetAirlinessBytripModel? airlinessModel;
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
 
   @override
@@ -46,33 +46,33 @@ class AirlinessController extends BaseController {
     try {
       var airlinessData = await requestTrip.getAirlinessBytripList(purposeID);
       airlinessModel = airlinessData;
+      // airlinessList.addAll(airlinessData.data?.toSet().toList() ?? []);
       airlinessData.data?.asMap().forEach((i, e) async {
-        print("pnrID: ${e.pnrid}");
-        await antavaya.getRsvTicket(e.pnrid).then((rsv) {
-          var reservation = jsonDecode(rsv);
-          print("rsv: ${reservation.toString()}");
-          print("rsv: ${reservation['Passengers'][0]['Type'].toString()}");
-
-          airlinessList.add(airliness.Data(
-            id: e.id,
-            idRequestTrip: e.idRequestTrip,
-            pnrid: e.pnrid,
-            employeeName: reservation['Passengers'][0]['FirstName'],
-            createdAt: e.createdAt,
-            departure: reservation['FlightDetails'][0]['Origin'],
-            arrival: reservation['FlightDetails'][0]['Destination'],
-            departureTime: reservation['FlightDetails'][0]['DepartTime'],
-            arrivalTime: reservation['FlightDetails'][0]['ArriveTime'],
-            flightNo: reservation['FlightDetails'][0]['FlightNumber'],
-            ticketPrice: e.ticketPrice,
-            departureDate: reservation['FlightDetails'][0]['DepartDate'],
-            arrivalDate: reservation['FlightDetails'][0]['ArriveDate'],
-            flightClass: reservation['FlightDetails'][0]['Class'],
-          ));
-          update();
-        });
+        //   print("pnrID: ${e.pnrid}");
+        //   await antavaya.getRsvTicket(e.pnrid).then((rsv) {
+        //     var reservation = jsonDecode(rsv);
+        //     print("rsv: ${reservation.toString()}");
+        //     print("rsv: ${reservation['Passengers'][0]['Type'].toString()}");
+        //
+        airlinessList.add(airliness.Data(
+          id: e.id,
+          idRequestTrip: e.idRequestTrip,
+          pnrid: e.pnrid,
+          employeeName: e.travelerName,
+          createdAt: e.createdAt,
+          origin: e.origin,
+          destination: e.destination,
+          departureTime: "-",
+          arrivalTime: "-",
+          flightNo: "-",
+          ticketPrice: e.ticketPrice,
+          departureDate: e.departDate,
+          arrivalDate: e.returnDate,
+          flightClass: e.flightClass,
+        ));
+        update();
+        //   });
       });
-      // airlinessList.addAll(airliessData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
       await storage.readEmployeeInfo().then((value) => travellerName = value.first.employeeName.toString());
 
