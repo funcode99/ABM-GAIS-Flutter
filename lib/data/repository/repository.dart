@@ -53,16 +53,6 @@ import 'package:gais/data/model/status_document_model.dart';
 abstract class Repository {
   Future<LoginModel> postLogin(String username, String password, {String? accessToken, String? refreshToken, String? email});
 
-  Future<RequestTripListModel> getRequestTripList(
-    int perPage,
-    int page,
-    String? search,
-    String? startDate,
-    String? endDate,
-  );
-
-  Future<GetRequestTripByidModel> getRequestTripByid(String id);
-
   Future<EmployeeInfoModel> getEmployeeInfo();
 
   Future<GetDocumentCodeModel> getDocumentCodeList();
@@ -80,42 +70,6 @@ abstract class Repository {
   Future<GetCurrencyModel> getCurrencyList();
 
   Future<GetTlkJobModel> getTLKJobByIDJob(String job);
-
-  Future<SavePurposeOfTripModel> saveRequestTrip(
-    String employeeID,
-    String noRequestTrip,
-    String codeDocument,
-    String siteID,
-    String notes,
-    String fromCity,
-    String toCity,
-    String departureDate,
-    String arrivalDate,
-    String zonaID,
-    int tlkDay,
-    String tlkTotal,
-    File? file,
-    String daNumber,
-    String costCenterID,
-  );
-
-  Future<UpdatePurposeOfTripModel> updateRequestTrip(
-    String id,
-    String employeeID,
-    String noRequestTrip,
-    String codeDocument,
-    String siteID,
-    String notes,
-    String fromCity,
-    String toCity,
-    String departureDate,
-    String arrivalDate,
-    String zonaID,
-    String tlkDay,
-    String tlkTotal,
-    String daNumber,
-    File? file,
-  );
 
   Future<GetTravellerTypeModel> getTravellerTypeList();
 
@@ -135,192 +89,11 @@ abstract class Repository {
 
   Future<GetStatusDocumentModel> getStatusDocument();
 
-  Future<SaveTravellerGuestModel> saveTravellerGuest(
-    String nameGuest,
-    String idrequesttrip,
-    String idcompany,
-    String company,
-    String idtypetraveller,
-    String nik,
-    String contact,
-    String departement,
-    String hotelfare,
-    String idflightclass,
-    String notes,
-    String gender,
-  );
-
-  Future<UpdateTravellerGuestModel> updateTravellerGuest(
-    String id,
-    String nameGuest,
-    String idrequesttrip,
-    int idcompany,
-    String company,
-    String idtypetraveller,
-    String nik,
-    String contact,
-    String departement,
-    String hotelfare,
-    int idflightclass,
-    String notes,
-    String gender,
-  );
-
-  Future deletePurposeOfTrip(dynamic id);
-
-  Future<GetGuestBytripModel> getGuestBytripList(String id);
-
-  Future<GetGuestByidModel> getGuestByID(String id);
-
-  Future deleteTravellerGuest(String id);
-
-  Future<SaveTaxiVoucherModel> saveTaxiVoucher(
-    String tripID,
-    String amount,
-    String accountName,
-    String departureID,
-    String arrivalID,
-    String remarks,
-    String date,
-    String voucher,
-  );
-
-  Future<UpdateTaxiVoucherModel> updateTaxiVoucher(
-    String id,
-    String tripID,
-    String amount,
-    String accountName,
-    String departureID,
-    String arrivalID,
-    String remarks,
-    String date,
-    String voucher,
-  );
-
-  Future<GetTaxiVoucherModel> getTaxiVoucherBytripList(String id);
-
-  Future<GetTaxiVoucherModel> getTaxiVoucherByid(String id);
-
-  Future deleteTaxiVoucher(String id);
-
   Future<StatusDocumentModel> getStatusDoc();
-
-  Future<SaveAirlinesModel> saveAirlines(
-    String idRequestTrip,
-    String idVendor,
-    String flightNo,
-    String codeAirlines,
-    String ticketPrice,
-    String pnrID,
-  );
-
-  Future<UpdateAirlinessModel> updateAirlines(
-    String id,
-    String idRequestTrip,
-    String idVendor,
-    String flightNo,
-    String codeAirlines,
-    String ticketPrice,
-    String pnrID,
-  );
-
-  Future deleteAirliness(String id);
 
   Future<GetAirlinessVendorModel> getAirlinessVendorList();
 
-  Future<GetAirlinessModel> getAirlinessBytripList(String id);
-
-  Future<GetAirlinessModel> getAirlinessByid(String id);
-
-  Future<GetFlightScheduleModel> getFlightScheduleList();
-
-  Future<SaveOtherTransportationModel> saveOtherTransportation(
-    String idRequestTrip,
-    String typeTransportation,
-    String fromDate,
-    String toDate,
-    String idCity,
-    String qty,
-    String remarks,
-  );
-
-  Future<UpdateOtherTransportModel> updateOtherTransportation(
-    String id,
-    String idRequestTrip,
-    String typeTransportation,
-    String fromDate,
-    String toDate,
-    String idCity,
-    String qty,
-    String remarks,
-  );
-
-  Future<GetOtherTransportModel> getOtherTransportBytripList(String id);
-
-  Future<GetOtherTransportModel> getOtherTransportByid(String id);
-
-  Future<GetTypeTransportationModel> getTypeTransportation();
-
-  Future deleteOtherTransportation(String id);
-
-  Future<SaveAccommodationModel> saveAccommodation(
-    String idRequestTrip,
-    String idTypeAccommodation,
-    String checkInDate,
-    String checkoutDate,
-    String idVendor,
-    String useGL,
-    String idCity,
-    String sharingWithName,
-    String remarks,
-    String price,
-    String codeHotel,
-  );
-
-  Future<UpdateAccommodationModel> updateAccommodation(
-    String id,
-    String idRequestTrip,
-    String idTypeAccommodation,
-    String checkInDate,
-    String checkoutDate,
-    String idVendor,
-    String useGL,
-    String idCity,
-    String sharingWithName,
-    String remarks,
-    String price,
-    String codeHotel,
-  );
-
-  Future<GetAccommodationModel> getAccommodationBytripList(String id);
-
-  Future<GetAccommodationModel> getAccommodationByid(String id);
-
-  Future deleteAccommodation(String id);
-
   Future<GetHotelTypeModel> getHotelTypeList();
-
-  Future<GetCashAdvanceTravelModel> getCashAdvanceTravelList(String id);
-
-  Future<GetCashAdvanceByidModel> getCashAdvanceTravelByid(String id);
-
-  Future<GetDetailcaBycashidModel> getDetailCashAdvanceTravelByid(String id);
-
-  Future<UpdateCashAdvanceTravelModel> updateCashAdvanceTravel(
-    String id,
-    String idEmployee,
-    String idRequestTrip,
-    String idCurrency,
-    String remarks,
-    String grandTotal,
-    String typeCa,
-  );
-
-  Future deleteCashAdvanceTravel(String id);
-
-  Future<ItemCashAdvanceTravelModel> getItemCATravel();
-
-  Future<SubmitRequestTripModel> submitRequestTrip(String id);
 
   Future<void> registerFCM(String token);
 
@@ -333,5 +106,4 @@ abstract class Repository {
   Future<Map<String, dynamic>> getLineApproval();
 
   Future<String?> changePhotoProfile(String? filepath);
-
 }

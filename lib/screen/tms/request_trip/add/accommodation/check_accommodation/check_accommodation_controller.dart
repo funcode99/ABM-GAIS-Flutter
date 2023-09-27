@@ -76,7 +76,7 @@ class CheckAccommodationController extends BaseController {
   ) async {
     if (isEdit == true) {
       try {
-        await repository
+        await requestTrip
             .updateAccommodation(
               id,
               purposeID.toString(),
@@ -114,7 +114,7 @@ class CheckAccommodationController extends BaseController {
       }
     } else {
       try {
-        await repository
+        await requestTrip
             .saveAccommodation(
               purposeID.toString(),
               type,

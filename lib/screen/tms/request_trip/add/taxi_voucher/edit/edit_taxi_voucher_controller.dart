@@ -69,7 +69,7 @@ class EditTaxiVoucherController extends BaseController {
     cityModel = dataCity;
     cityList.addAll(dataCity.data?.toSet().toList() ?? []);
 
-    var rtData = await repository.getRequestTripByid(purposeID);
+    var rtData = await requestTrip.getRequestTripByid(purposeID);
     rtModel = rtData;
     lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
 
@@ -77,7 +77,7 @@ class EditTaxiVoucherController extends BaseController {
   }
 
   Future<void> fetchData() async {
-    await repository.getTaxiVoucherByid(tvID).then((value) {
+    await requestTrip.getTaxiVoucherByid(tvID).then((value) {
       print("other transport: $value");
       taxiVoucherID = value.data?.first.id;
       date.text = value.data?.first.date ?? "";
@@ -92,7 +92,7 @@ class EditTaxiVoucherController extends BaseController {
 
   Future<void> save() async {
     try {
-      await repository
+      await requestTrip
           .updateTaxiVoucher(
         taxiVoucherID!,
         purposeID.toString(),

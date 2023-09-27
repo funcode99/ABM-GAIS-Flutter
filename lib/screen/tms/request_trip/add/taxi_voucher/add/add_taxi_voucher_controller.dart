@@ -64,7 +64,7 @@ class AddTaxiVoucherController extends BaseController {
     cityModel = dataCity;
     cityList.addAll(dataCity.data?.toSet().toList() ?? []);
 
-    var rtData = await repository.getRequestTripByid(purposeID);
+    var rtData = await requestTrip.getRequestTripByid(purposeID);
     rtModel = rtData;
     lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
 
@@ -73,7 +73,7 @@ class AddTaxiVoucherController extends BaseController {
 
   Future<void> save() async {
     try {
-      await repository
+      await requestTrip
           .saveTaxiVoucher(
         purposeID.toString(),
         amount.text.digitOnly(),

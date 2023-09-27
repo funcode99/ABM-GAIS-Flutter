@@ -157,7 +157,7 @@ class PurposeOfTripController extends BaseController {
   Future<void> postPurposeOfTrip() async {
     if (isFilled == false) {
       try {
-        await repository
+        await requestTrip
             .saveRequestTrip(
           requestorID.toString(),
           "1",
@@ -233,7 +233,7 @@ class PurposeOfTripController extends BaseController {
 
   Future<void> updateData() async {
     try {
-      await repository
+      await requestTrip
           .updateRequestTrip(
         purposeID!,
         requestorID.toString(),

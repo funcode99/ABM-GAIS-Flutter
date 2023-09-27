@@ -44,7 +44,7 @@ class AddItemCashAdvanceTravelController extends BaseController {
     itemCA = [];
     isLoading = true;
     try {
-      await repository.getItemCATravel().then((value) {
+      await requestTrip.getItemCATravel().then((value) {
         itemCA.addAll(value.data?.toSet().toList() ?? []);
         print("item CA : ${value.data?.map((e) => e)}");
       });

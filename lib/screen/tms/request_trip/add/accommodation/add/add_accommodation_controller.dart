@@ -83,7 +83,7 @@ class AddAccommodationController extends BaseController {
 
   Future<void> fetchData() async {
     try {
-      await repository.getAccommodationByid(id!).then((value) {
+      await requestTrip.getAccommodationByid(id!).then((value) {
         selectedCity = value.data?.first.idCity.toString();
         checkinDate.text = value.data?.first.checkInDate ?? "";
         checkoutDate.text = value.data?.first.checkOutDate ?? "";
@@ -122,15 +122,15 @@ class AddAccommodationController extends BaseController {
       hotelTypeModel = hotelType;
       hotelTypeList.addAll(hotelType.data?.toSet().toList() ?? []);
 
-      var share = await repository.getGuestBytripList(purposeID);
+      var share = await requestTrip.getGuestBytripList(purposeID);
       shareList.addAll(share.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
       sharingName.text = shareList.first.nameGuest ?? "";
 
-      var rtData = await repository.getRequestTripByid(purposeID);
+      var rtData = await requestTrip.getRequestTripByid(purposeID);
       rtModel = rtData;
       lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
 
-      var guestData = await repository.getGuestBytripList(purposeID);
+      var guestData = await requestTrip.getGuestBytripList(purposeID);
       hasGuest = bool.parse(guestData.success.toString());
       print(guestData.success);
     } catch (e, i) {

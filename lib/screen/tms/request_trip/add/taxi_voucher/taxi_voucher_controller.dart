@@ -25,7 +25,7 @@ class TaxiVoucherController extends BaseController {
   Future<void> getList() async {
     tvList = [];
     try {
-      var tvData = await repository.getTaxiVoucherBytripList(purposeID);
+      var tvData = await requestTrip.getTaxiVoucherBytripList(purposeID);
       tvModel = tvData;
       tvList.addAll(tvData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
     } catch (e) {
@@ -37,7 +37,7 @@ class TaxiVoucherController extends BaseController {
 
   Future<void> delete(String id) async {
     try {
-      await repository.deleteTaxiVoucher(id).then((value) {
+      await requestTrip.deleteTaxiVoucher(id).then((value) {
         print(value);
         getList();
         Get.showSnackbar(
@@ -71,7 +71,7 @@ class TaxiVoucherController extends BaseController {
 
   Future<void> submit() async {
     try {
-      await repository.submitRequestTrip(purposeID).then((value) {
+      await requestTrip.submitRequestTrip(purposeID).then((value) {
         Get.offAll(RequestTripListScreen());
         Get.showSnackbar(GetSnackBar(
           icon: Icon(

@@ -81,7 +81,7 @@ class RequestTripListController extends BaseController {
 
     isLoading = true;
     try {
-      var requestTrip = await repository.getRequestTripList(
+      var requesttrip = await requestTrip.getRequestTripList(
           perPage,
           page,
           searchValue != null
@@ -91,7 +91,7 @@ class RequestTripListController extends BaseController {
                   : purposeValue,
           startDate,
           endDate);
-      rtlModel = requestTrip;
+      rtlModel = requesttrip;
       requestList.addAll(rtlModel?.data?.data?.toSet().toList() ?? []);
       isLoading = false;
       searchNotFound = rtlModel?.data?.data?.isEmpty ?? false;
@@ -126,7 +126,7 @@ class RequestTripListController extends BaseController {
   Future<void> delete(String id) async {
     isLoading = true;
     try {
-      await repository.deletePurposeOfTrip(id).then((value) {
+      await requestTrip.deleteRequestTrip(id).then((value) {
         fetchList(currentPage);
       });
       Get.showSnackbar(GetSnackBar(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/antavaya/get_train_station_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
@@ -9,6 +10,8 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/train/add/add_train_controller.dart';
+import 'package:gais/screen/tms/request_trip/add/train/train_screen.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
 
 class AddTrainScreen extends StatelessWidget {
@@ -22,7 +25,9 @@ class AddTrainScreen extends StatelessWidget {
           return Scaffold(
             appBar: TopBar(
               title: Text("Train", style: appTitle),
-              leading: const CustomBackButton(),
+              leading: CustomBackButton(
+                onPressed: () => controller.back(),
+              ),
             ),
             body: Container(
               alignment: Alignment.topCenter,
@@ -63,19 +68,24 @@ class AddTrainScreen extends StatelessWidget {
                                 }
                                 return null;
                               },
+                              value: controller.traveller.text.isNotEmpty ? controller.traveller.text : null,
                               items: controller.travellerList
                                   .map((e) => DropdownMenuItem(
-                                        value: e,
+                                        value: e.nameGuest,
                                         child: Text("${e.nameGuest.toString()} "),
                                       ))
                                   .toList(),
                               onChanged: (value) {
-                                controller.traveller.text = value?.id.toString() ?? value?.idEmployee.toString() ?? '';
+                                controller.traveller.text = value.toString() ?? '';
+                                print(controller.traveller.text);
                                 controller.update();
                               },
                             ),
                             const SizedBox(height: 16),
                             CustomDropDownFormField(
+                              label: "Origin Station",
+                              hintText: controller.isLoading ? "Loading..." : "Station",
+                              value: controller.originStation,
                               items: controller.stationList
                                   .map((e) => DropdownMenuItem(
                                         value: e,
@@ -89,8 +99,6 @@ class AddTrainScreen extends StatelessWidget {
                                 }
                                 return null;
                               },
-                              label: "Origin Station",
-                              hintText: controller.isLoading ? "Loading..." : "Station",
                               onChanged: (value) {
                                 controller.originStation = value!;
                                 controller.update();
@@ -98,6 +106,9 @@ class AddTrainScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 16),
                             CustomDropDownFormField(
+                              label: "Destination Station",
+                              hintText: controller.isLoading ? "Loading..." : "Station",
+                              value: controller.destinationStation,
                               items: controller.stationList
                                   .map((e) => DropdownMenuItem(
                                         value: e,
@@ -106,19 +117,18 @@ class AddTrainScreen extends StatelessWidget {
                                   .toList(),
                               isRequired: true,
                               validator: (value) {
-                                if (value == null || controller.destinationStation == null) {
+                                if (value == null || controller.originStation == null) {
                                   return "This field is required";
                                 }
                                 return null;
                               },
-                              label: "Destination Station",
-                              hintText: controller.isLoading ? "Loading..." : "Station",
                               onChanged: (value) {
                                 controller.destinationStation = value!;
                                 controller.update();
                               },
                             ),
                             const SizedBox(height: 16),
+
                             CustomTextFormField(
                               controller: controller.departureDate,
                               label: "Departure Date",
@@ -142,40 +152,40 @@ class AddTrainScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 16),
-                            const CustomFormLabel(
-                              label: "Round Trip",
-                              showRequired: true,
-                            ),
-                            Switch(
-                              value: controller.roundTrip,
-                              activeColor: infoColor,
-                              onChanged: (bool value) {
-                                controller.roundTrip = value;
-                                controller.update();
-                              },
-                            ),
-                            CustomTextFormField(
-                              controller: controller.returnDate,
-                              label: "Return Date",
-                              isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
-                              suffixIcon: const Icon(Icons.calendar_month),
-                              readOnly: true,
-                              onTap: () => showDatePicker(
-                                      context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: controller.lastDate)
-                                  .then(
-                                (date) {
-                                  controller.dateReturn = date!;
-                                  controller.returnDate.text = controller.dateFormat.format(date);
-                                  controller.update();
-                                },
-                              ),
-                            ),
+                            // const CustomFormLabel(
+                            //   label: "Round Trip",
+                            //   showRequired: true,
+                            // ),
+                            // Switch(
+                            //   value: controller.roundTrip,
+                            //   activeColor: infoColor,
+                            //   onChanged: (bool value) {
+                            //     controller.roundTrip = value;
+                            //     controller.update();
+                            //   },
+                            // ),
+                            // CustomTextFormField(
+                            //   controller: controller.returnDate,
+                            //   label: "Return Date",
+                            //   isRequired: true,
+                            //   validator: (value) {
+                            //     if (value == null || value.isEmpty) {
+                            //       return "This field is required";
+                            //     }
+                            //     return null;
+                            //   },
+                            //   suffixIcon: const Icon(Icons.calendar_month),
+                            //   readOnly: true,
+                            //   onTap: () => showDatePicker(
+                            //           context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: controller.lastDate)
+                            //       .then(
+                            //     (date) {
+                            //       controller.dateReturn = date!;
+                            //       controller.returnDate.text = controller.dateFormat.format(date);
+                            //       controller.update();
+                            //     },
+                            //   ),
+                            // ),
                             const SizedBox(height: 16),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,8 +203,7 @@ class AddTrainScreen extends StatelessWidget {
                                   color: infoColor,
                                   title: "Save",
                                   onPressed: () {
-                                    // if (controller.formKey.currentState?.validate() == true)
-                                      controller.save();
+                                    if (controller.formKey.currentState?.validate() == true) controller.save();
                                   },
                                 ),
                               ],

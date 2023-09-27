@@ -70,7 +70,7 @@ class AddGuestController extends BaseController {
 
   Future<void> fetchData() async {
     try {
-      await repository.getGuestByID(guestID!).then((value) {
+      await requestTrip.getGuestByID(guestID!).then((value) {
         selectedType = value.data?.first.idTypeTraveller.toString();
         guestName.text = value.data?.first.nameGuest.toString() ?? "";
         guestNIK.text = value.data?.first.nik.toString() ?? "";
@@ -136,7 +136,7 @@ class AddGuestController extends BaseController {
 
   Future<void> saveGuest() async {
     try {
-      await repository
+      await requestTrip
           .saveTravellerGuest(
         guestName.text,
         purposeID.toString(),
@@ -178,7 +178,7 @@ class AddGuestController extends BaseController {
 
   Future<void> updateGuest() async {
     try {
-      await repository
+      await requestTrip
           .updateTravellerGuest(
         guestID!,
         guestName.text,

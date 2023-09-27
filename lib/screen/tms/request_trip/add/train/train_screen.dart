@@ -57,15 +57,15 @@ class TrainScreen extends StatelessWidget {
                                 .mapIndexed(
                                   (i, e) => CustomTripCard(
                                     listNumber: i + 1,
-                                    title: e.accountName.toString(),
-                                    subtitle: e.date,
-                                    status: e.status.toString(),
+                                    title: e.travelerName.toString(),
+                                    subtitle: controller.dateFormat.format(DateTime.parse(e.departDate!)),
+                                    // status: e.status.toString(),
                                     // info: int.parse(e.amount.toString()).toCurrency(),
                                     isEdit: true,
                                     editAction: () => Get.off(const AddTrainScreen(), arguments: {
                                       'purposeID': controller.purposeID,
                                       'codeDocument': controller.codeDocument,
-                                      'isEdit' : true,
+                                      'isEdit': true,
                                       'id': e.id,
                                     })?.then((_) {
                                       controller.getList();
@@ -76,6 +76,7 @@ class TrainScreen extends StatelessWidget {
                                       onDeletePressed: () {
                                         controller.delete(e.id.toString());
                                         Get.back();
+                                        controller.getList();
                                       },
                                     )),
                                     content: Row(
@@ -84,15 +85,15 @@ class TrainScreen extends StatelessWidget {
                                         Column(
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            Text("Departure", style: listTitleTextStyle),
-                                            Text(e.nameDepartureCity.toString(), style: listSubTitleTextStyle),
+                                            Text("Origin", style: listTitleTextStyle),
+                                            Text(e.nameStation.toString(), style: listSubTitleTextStyle),
                                           ],
                                         ),
                                         Column(
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            Text("Arrival", style: listTitleTextStyle),
-                                            Text(e.nameArrivalCity.toString(), style: listSubTitleTextStyle),
+                                            Text("Destination", style: listTitleTextStyle),
+                                            Text(e.nameStationTo.toString(), style: listSubTitleTextStyle),
                                           ],
                                         ),
                                       ],

@@ -24,6 +24,8 @@ import 'package:gais/data/repository/pool_car/pool_car_repository.dart';
 import 'package:gais/data/repository/repository.dart';
 import 'package:gais/data/repository/repository_impl.dart';
 import 'package:gais/data/repository/request_atk/request_atk_repository.dart';
+import 'package:gais/data/repository/request_trip/request_trip_impl.dart';
+import 'package:gais/data/repository/request_trip/request_trip_repository.dart';
 import 'package:gais/data/repository/stock_in/stock_in_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:get/get.dart';
@@ -34,6 +36,7 @@ class GlobalBinding extends Bindings {
     Get.put<NetworkCore>(NetworkCore(), permanent: true);
     Get.put<StorageCore>(StorageCore(), permanent: true);
     Get.put<Repository>(RepositoryImpl(), permanent: true);
+    Get.put<RequestTripRepository>(RequestTripImpl(), permanent: true);
     Get.put<DocumentDeliveryRepository>(DocumentDeliveryImpl(), permanent: true);
     Get.put<ApprovalRequestTripRepository>(ApprovalRequestTripImpl(), permanent: true);
     Get.put<ManagementPoolCarRepository>(ManagementPoolCarImpl(), permanent: true);

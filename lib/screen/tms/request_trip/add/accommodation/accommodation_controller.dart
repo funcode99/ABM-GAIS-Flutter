@@ -24,7 +24,7 @@ class AccommodationController extends BaseController {
   Future<void> fetchList() async {
     accommodationsList = [];
     try {
-      var accommodation = await repository.getAccommodationBytripList(purposeID);
+      var accommodation = await requestTrip.getAccommodationBytripList(purposeID);
       accommodationsModel = accommodation;
       accommodationsList.addAll(accommodation.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
@@ -37,7 +37,7 @@ class AccommodationController extends BaseController {
 
   Future<void> submit() async {
     try {
-      await repository.submitRequestTrip(purposeID).then((value) {
+      await requestTrip.submitRequestTrip(purposeID).then((value) {
         Get.offAll(const FormRequestTripScreen());
         Get.showSnackbar(const GetSnackBar(
           icon: Icon(
@@ -67,7 +67,7 @@ class AccommodationController extends BaseController {
 
   Future<void> delete(String id) async {
     try {
-      await repository.deleteAccommodation(id).then((value) {
+      await requestTrip.deleteAccommodation(id).then((value) {
         fetchList();
         Get.showSnackbar(const GetSnackBar(
           icon: Icon(

@@ -274,7 +274,7 @@ class ApprovalFormRequestTripController extends BaseController {
   }
 
   Future<void> fetchRequestTrip() async {
-    var rtData = await repository.getRequestTripByid(purposeID);
+    var rtData = await requestTrip.getRequestTripByid(purposeID);
     var rtApproval = await approvalRequestTrip.getByID(approvalID);
     // print(rtApproval.data?.first.idApprovalAuth);
     DateTime? tempDate;
@@ -346,22 +346,22 @@ class ApprovalFormRequestTripController extends BaseController {
       var stData = await repository.getSiteList();
       siteList.addAll(stData.data?.toSet().toList() ?? []);
 
-      var guestData = await repository.getGuestBytripList(purposeID);
+      var guestData = await requestTrip.getGuestBytripList(purposeID);
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var airlinessData = await repository.getAirlinessBytripList(purposeID);
+      var airlinessData = await requestTrip.getAirlinessBytripList(purposeID);
       airlinessList.addAll(airlinessData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var tvData = await repository.getTaxiVoucherBytripList(purposeID);
+      var tvData = await requestTrip.getTaxiVoucherBytripList(purposeID);
       tvList.addAll(tvData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var otData = await repository.getOtherTransportBytripList(purposeID);
+      var otData = await requestTrip.getOtherTransportBytripList(purposeID);
       otList.addAll(otData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var accData = await repository.getAccommodationBytripList(purposeID);
+      var accData = await requestTrip.getAccommodationBytripList(purposeID);
       accommodationsList.addAll(accData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var caData = await repository.getCashAdvanceTravelList(purposeID);
+      var caData = await requestTrip.getCashAdvanceTravelList(purposeID);
       caList.addAll(caData.data?.toSet().toList() ?? []);
     } catch (e, i) {
       e.printError();

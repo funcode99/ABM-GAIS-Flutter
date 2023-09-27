@@ -103,7 +103,7 @@ class AddAirlinessController extends BaseController {
     flightModel = dataFlight;
     flightList.addAll(dataFlight.data?.toSet().toList() ?? []);
 
-    var rtData = await repository.getRequestTripByid(purposeID);
+    var rtData = await requestTrip.getRequestTripByid(purposeID);
     rtModel = rtData;
     lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
 

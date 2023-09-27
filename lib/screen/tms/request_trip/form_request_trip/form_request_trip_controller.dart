@@ -340,7 +340,7 @@ class FormRequestTripController extends BaseController {
   }
 
   Future<void> fetchRequestTrip() async {
-    var rtData = await repository.getRequestTripByid(purposeID);
+    var rtData = await requestTrip.getRequestTripByid(purposeID);
     DateTime? tempDate;
     rtModel = rtData;
     rtStatus = rtModel?.data?.first.status ?? "";
@@ -428,10 +428,10 @@ class FormRequestTripController extends BaseController {
       var stData = await repository.getSiteList();
       siteList.addAll(stData.data?.toSet().toList() ?? []);
 
-      var guestData = await repository.getGuestBytripList(purposeID);
+      var guestData = await requestTrip.getGuestBytripList(purposeID);
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var airlinessData = await repository.getAirlinessBytripList(purposeID);
+      var airlinessData = await requestTrip.getAirlinessBytripList(purposeID);
       airlinessModel = airlinessData;
       airlinessData.data?.asMap().forEach((i, e) async {
         print("pnrID: ${e.pnrid}");
@@ -461,13 +461,13 @@ class FormRequestTripController extends BaseController {
       });
       // airlinessList.addAll(airlinessData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var tvData = await repository.getTaxiVoucherBytripList(purposeID);
+      var tvData = await requestTrip.getTaxiVoucherBytripList(purposeID);
       tvList.addAll(tvData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var otData = await repository.getOtherTransportBytripList(purposeID);
+      var otData = await requestTrip.getOtherTransportBytripList(purposeID);
       otList.addAll(otData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var accData = await repository.getAccommodationBytripList(purposeID);
+      var accData = await requestTrip.getAccommodationBytripList(purposeID);
       accommodationsList.addAll(accData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
       // var caData = await repository.getCashAdvanceTravelList(purposeID);
@@ -493,7 +493,7 @@ class FormRequestTripController extends BaseController {
 
   Future<void> deleteGuest(String id) async {
     try {
-      await repository.deleteTravellerGuest(id).then((value) {
+      await requestTrip.deleteTravellerGuest(id).then((value) {
         fetchList();
         Get.showSnackbar(
           const GetSnackBar(
@@ -526,7 +526,7 @@ class FormRequestTripController extends BaseController {
 
   Future<void> deleteAirliness(String id) async {
     try {
-      await repository.deleteAirliness(id).then((value) {
+      await requestTrip.deleteAirliness(id).then((value) {
         fetchList();
         Get.showSnackbar(
           const GetSnackBar(
@@ -559,7 +559,7 @@ class FormRequestTripController extends BaseController {
 
   Future<void> deleteTaxiVoucher(String id) async {
     try {
-      await repository.deleteTaxiVoucher(id).then((value) {
+      await requestTrip.deleteTaxiVoucher(id).then((value) {
         fetchList();
         Get.showSnackbar(
           const GetSnackBar(
@@ -592,7 +592,7 @@ class FormRequestTripController extends BaseController {
 
   Future<void> deleteOtherTransport(String id) async {
     try {
-      await repository.deleteOtherTransportation(id).then((value) {
+      await requestTrip.deleteOtherTransportation(id).then((value) {
         fetchList();
         Get.showSnackbar(
           const GetSnackBar(
@@ -625,7 +625,7 @@ class FormRequestTripController extends BaseController {
 
   Future<void> deleteAccommodation(String id) async {
     try {
-      await repository.deleteAccommodation(id).then((value) {
+      await requestTrip.deleteAccommodation(id).then((value) {
         fetchList();
         Get.showSnackbar(
           const GetSnackBar(
@@ -658,7 +658,7 @@ class FormRequestTripController extends BaseController {
 
   Future<void> deleteCashAdvance(String id) async {
     try {
-      await repository.deleteCashAdvanceTravel(id).then((value) {
+      await requestTrip.deleteCashAdvanceTravel(id).then((value) {
         fetchList();
         Get.showSnackbar(
           const GetSnackBar(
@@ -691,7 +691,7 @@ class FormRequestTripController extends BaseController {
 
   Future<void> submitRequestTrip() async {
     try {
-      await repository.submitRequestTrip(purposeID).then((value) {
+      await requestTrip.submitRequestTrip(purposeID).then((value) {
         fetchRequestTrip();
         fetchList();
         Get.showSnackbar(GetSnackBar(
@@ -724,7 +724,7 @@ class FormRequestTripController extends BaseController {
   Future<void> updateRequestTrip() async {
     // print("getted file: $gettedFile");
     try {
-      await repository
+      await requestTrip
           .updateRequestTrip(
         purposeID,
         requsetorID.toString(),

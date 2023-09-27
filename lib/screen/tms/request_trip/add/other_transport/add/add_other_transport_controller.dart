@@ -61,7 +61,7 @@ class AddOtherTransportController extends BaseController {
         travellerName.text = value.first.employeeName.toString();
       });
 
-      var dataType = await repository.getTypeTransportation();
+      var dataType = await requestTrip.getTypeTransportation();
       typeModel = dataType;
       typeList.addAll(dataType.data?.toSet().toList() ?? []);
 
@@ -69,7 +69,7 @@ class AddOtherTransportController extends BaseController {
       cityModel = dataCity;
       cityList.addAll(dataCity.data?.toSet().toList() ?? []);
 
-      var rtData = await repository.getRequestTripByid(purposeID);
+      var rtData = await requestTrip.getRequestTripByid(purposeID);
       rtModel = rtData;
       lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
     } catch (e) {
@@ -81,7 +81,7 @@ class AddOtherTransportController extends BaseController {
 
   Future<void> save() async {
     try {
-      await repository
+      await requestTrip
           .saveOtherTransportation(
               purposeID.toString(), transportType.toString(), fromDate.text, toDate.text, selectedCity.toString(), quantity.text, remarks.text)
           .then((value) => Get.back());

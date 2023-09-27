@@ -53,7 +53,7 @@ class AddCashAdvanceTravelController extends BaseController {
   Future<void> fetchList() async {
     itemCA = [];
     try {
-      await repository.getItemCATravel().then((value) {
+      await requestTrip.getItemCATravel().then((value) {
         itemCA.addAll(value.data?.toSet().toList() ?? []);
       });
     } catch (e) {
@@ -64,7 +64,7 @@ class AddCashAdvanceTravelController extends BaseController {
   }
 
   Future<void> fetchEditValue() async {
-    await repository.getCashAdvanceTravelByid(idCA!).then((value) {
+    await requestTrip.getCashAdvanceTravelByid(idCA!).then((value) {
       travellerName.text = value.data?.first.employeeName ?? "";
       notes.text = value.data?.first.remarks ?? "";
       selectedCurrency = value.data?.first.idCurrency?.toInt();
@@ -73,7 +73,7 @@ class AddCashAdvanceTravelController extends BaseController {
       codeStatus = value.data?.first.codeStatusDoc?.toInt();
     });
 
-    var detailData = await repository.getDetailCashAdvanceTravelByid(idCA!);
+    var detailData = await requestTrip.getDetailCashAdvanceTravelByid(idCA!);
     detailData.data?.forEach((e) {
       listDetail.add(CashAdvanceDetailModel(
         id: e.id,
@@ -226,7 +226,7 @@ class AddCashAdvanceTravelController extends BaseController {
   void updateData() async {
     String userId = await storage.readString(StorageCore.userID);
     try {
-      await repository.updateCashAdvanceTravel(
+      await requestTrip.updateCashAdvanceTravel(
         idCA!,
         userId,
         purposeID.toString(),

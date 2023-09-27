@@ -25,7 +25,7 @@ class CashAdvanceController extends BaseController {
   void fetchList() async {
     caList = [];
     try {
-      var caData = await repository.getCashAdvanceTravelList(purposeID);
+      var caData = await requestTrip.getCashAdvanceTravelList(purposeID);
       caList.addAll(caData.data?.toSet().toList() ?? []);
     } catch (e) {
       e.printError();
@@ -35,7 +35,7 @@ class CashAdvanceController extends BaseController {
 
   Future<void> submit() async {
     try {
-      await repository.submitRequestTrip(purposeID).then((value) {
+      await requestTrip.submitRequestTrip(purposeID).then((value) {
         formEdit == true
             ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
             : Get.offAll(const RequestTripListScreen());
@@ -66,7 +66,7 @@ class CashAdvanceController extends BaseController {
 
   Future<void> delete(String id) async {
     try {
-      await repository.deleteCashAdvanceTravel(id).then((value) {
+      await requestTrip.deleteCashAdvanceTravel(id).then((value) {
         fetchList();
         Get.showSnackbar(const GetSnackBar(
           icon: Icon(

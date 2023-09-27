@@ -28,7 +28,7 @@ class AddTrainController extends BaseController {
   bool isLoading = false;
 
   DateFormat dateFormat = DateFormat("dd-MM-yyyy");
-  DateFormat saveDateFormat = DateFormat("yyyy/MM/dd");
+  DateFormat saveDateFormat = DateFormat("yyyy-MM-dd");
   DateTime lastDate = DateTime.now().add(const Duration(days: 30));
   DateTime? dateDeparture;
   DateTime? dateReturn;
@@ -48,8 +48,9 @@ class AddTrainController extends BaseController {
     travellerList = [];
     isLoading = true;
     print('purposeID : $purposeID');
+
     try {
-      var rtData = await repository.getRequestTripByid(purposeID);
+      var rtData = await requestTrip.getRequestTripByid(purposeID);
       rtModel = rtData;
       lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
 
@@ -57,7 +58,7 @@ class AddTrainController extends BaseController {
         idEmployee: rtModel?.data?.first.idEmployee,
         nameGuest: rtModel?.data?.first.employeeName,
       ));
-      await repository.getGuestBytripList(purposeID).then((value) => travellerList.addAll(value.data?.toSet().toList() ?? []));
+      await requestTrip.getGuestBytripList(purposeID).then((value) => travellerList.addAll(value.data?.toSet().toList() ?? []));
 
       await antavaya.getTrainStation().then((value) => stationList.addAll(value.data?.toSet().toList() ?? []));
       update();
@@ -65,22 +66,116 @@ class AddTrainController extends BaseController {
       e.printError();
       i.printError();
     }
+    if (trainID != null) {
+      await requestTrip.getTrainTripByID(trainID!).then((value) {
+        traveller.text = value.data?.first.travelerName ?? '';
+        originStation = stationList.where((element) => element.stationName == value.data?.first.nameStation).first;
+        destinationStation = stationList.where((element) => element.stationName == value.data?.first.nameStationTo).first;
+        dateDeparture = DateTime.parse(value.data!.first.departDate.toString());
+        departureDate.text = dateFormat.format(DateTime.parse(value.data!.first.departDate.toString()));
+      });
+    }
     isLoading = false;
     update();
   }
 
   Future<void> save() async {
-    Get.to(TrainScheduleScreen(), arguments: {
-      'purposeID': purposeID,
-      'codeDocument': codeDocument,
-      'origin': originStation,
-      'destination': destinationStation,
-      'formEdit': formEdit,
-      'departDate': dateDeparture,
-      'returnDate': dateReturn,
-      'adult': '1',
-      'child': '0',
-    });
+    if (trainID != null) {
+      updateData();
+    } else {
+      saveData();
+    }
+    // Get.to(TrainScheduleScreen(), arguments: {
+    //   'purposeID': purposeID,
+    //   'codeDocument': codeDocument,
+    //   'origin': originStation,
+    //   'destination': destinationStation,
+    //   'formEdit': formEdit,
+    //   'departDate': dateDeparture,
+    //   'returnDate': dateReturn,
+    //   'adult': '1',
+    //   'child': '0',
+    // });
+  }
+
+  Future<void> saveData() async {
+    try {
+      await requestTrip
+          .saveTrainTrip(
+            purposeID,
+            traveller.text,
+            "",
+            "1",
+            originStation!.stationCode.toString(),
+            originStation!.stationName.toString(),
+            destinationStation!.stationCode.toString(),
+            destinationStation!.stationName.toString(),
+            saveDateFormat.format(dateDeparture!),
+            '1',
+            '1',
+            "",
+          )
+          .then(
+            (value) => formEdit == true
+                ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+                : Get.off(const TrainScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
+          );
+    } catch (e) {
+      e.printError();
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Failed To Save',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> updateData() async {
+    try {
+      await requestTrip
+          .updateTrainTrip(
+            trainID!,
+            purposeID,
+            traveller.text,
+            "",
+            "1",
+            originStation!.stationCode.toString(),
+            originStation!.stationName.toString(),
+            destinationStation!.stationCode.toString(),
+            destinationStation!.stationName.toString(),
+            saveDateFormat.format(dateDeparture!),
+            '1',
+            '1',
+            "",
+          )
+          .then(
+            (value) => formEdit == true
+                ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+                : Get.off(const TrainScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
+          );
+    } catch (e,i) {
+      e.printError();
+      i.printError();
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Failed To Save',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   void back() {

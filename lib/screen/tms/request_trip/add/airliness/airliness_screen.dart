@@ -63,56 +63,56 @@ class AirlinessScreen extends StatelessWidget {
                       Column(
                         children: controller.airlinessList
                             .mapIndexed((i, e) => CustomTripCard(
-                          listNumber: i + 1,
-                          title: e.employeeName.toString(),
-                          subtitle: controller.dateFormat.format(DateTime.parse(e.createdAt.toString())).toString(),
-                          // subtitle: e.pnrid.toString(),
-                          info: e.flightNo,
-                          isEdit: true,
-                          editAction: () {
-                            Get.off(const AddAirlinessScreen(), arguments: {
-                              'id': e.id,
-                              'purposeID': controller.purposeID,
-                              'codeDocument': controller.codeDocument,
-                              'formEdit': controller.formEdit,
-                              'isEdit': true,
-                              'airlinessData' : e,
-                            });
-                          },
-                          isDelete: true,
-                          deleteAction: () => Get.dialog(DeleteConfirmationDialog(
-                            onDeletePressed: () {
-                              controller.delete(e.id.toString());
-                              Get.back();
-                            },
-                          )),
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Departure", style: listTitleTextStyle),
-                                  Text("${e.departure} (${e.departureTime})", style: listSubTitleTextStyle),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Arrival", style: listTitleTextStyle),
-                                  Text("${e.arrival} (${e.arrivalTime})", style: listSubTitleTextStyle),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Price", style: listTitleTextStyle),
-                                  Text(e.ticketPrice!.toInt().toCurrency(), style: listSubTitleTextStyle),
-                                ],
-                              )
-                            ],
-                          ),
-                        ))
+                                  listNumber: i + 1,
+                                  title: e.employeeName.toString(),
+                                  subtitle: controller.dateFormat.format(DateTime.parse(e.createdAt.toString())).toString(),
+                                  // subtitle: e.pnrid.toString(),
+                                  info: e.flightNo,
+                                  isEdit: true,
+                                  editAction: () {
+                                    Get.off(const AddAirlinessScreen(), arguments: {
+                                      'id': e.id,
+                                      'purposeID': controller.purposeID,
+                                      'codeDocument': controller.codeDocument,
+                                      'formEdit': controller.formEdit,
+                                      'isEdit': true,
+                                      'airlinessData': e,
+                                    });
+                                  },
+                                  isDelete: true,
+                                  deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                    onDeletePressed: () {
+                                      controller.delete(e.id.toString());
+                                      Get.back();
+                                    },
+                                  )),
+                                  content: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Departure", style: listTitleTextStyle),
+                                          Text("${e.departure} (${e.departureTime})", style: listSubTitleTextStyle),
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Arrival", style: listTitleTextStyle),
+                                          Text("${e.arrival} (${e.arrivalTime})", style: listSubTitleTextStyle),
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Price", style: listTitleTextStyle),
+                                          Text(e.ticketPrice!.toInt().toCurrency(), style: listSubTitleTextStyle),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ))
                             .toList(),
                       ),
                       SizedBox(height: 20),

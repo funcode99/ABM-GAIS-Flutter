@@ -12,7 +12,6 @@ import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_vouch
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/edit/edit_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_controller.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
-import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 
 class TaxiVoucherScreen extends StatelessWidget {

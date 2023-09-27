@@ -94,7 +94,7 @@ class EditAccommodationController extends BaseController {
 
   Future<void> fetchData() async {
     try {
-      await repository.getAccommodationByid(id).then((value) {
+      await requestTrip.getAccommodationByid(id).then((value) {
         selectedCity = value.data?.first.idCity.toString();
         checkinDate.text = value.data?.first.checkInDate ?? "";
         checkoutDate.text = value.data?.first.checkOutDate ?? "";

@@ -25,7 +25,7 @@ class OtherTransportController extends BaseController {
   Future<void> fetchList() async {
     otList = [];
     try {
-      var otherTransportData = await repository.getOtherTransportBytripList(purposeID);
+      var otherTransportData = await requestTrip.getOtherTransportBytripList(purposeID);
       otModel = otherTransportData;
       otList.addAll(otherTransportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
@@ -37,7 +37,7 @@ class OtherTransportController extends BaseController {
 
   Future<void> delete(String id) async {
     try {
-      await repository.deleteOtherTransportation(id).then((value) => fetchList()).then((value) => Get.showSnackbar(
+      await requestTrip.deleteOtherTransportation(id).then((value) => fetchList()).then((value) => Get.showSnackbar(
             const GetSnackBar(
               icon: Icon(
                 Icons.error,
@@ -68,7 +68,7 @@ class OtherTransportController extends BaseController {
 
   Future<void> submit() async {
     try {
-      await repository.submitRequestTrip(purposeID).then((value) {
+      await requestTrip.submitRequestTrip(purposeID).then((value) {
         Get.offAll(const RequestTripListScreen());
         Get.showSnackbar(const GetSnackBar(
           icon: Icon(

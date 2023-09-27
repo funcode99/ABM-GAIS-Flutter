@@ -219,7 +219,7 @@ class AirportReservationController extends BaseController {
   Future<void> saveAirliness(String pnrID) async {
     if (airlinessID != null) {
       try {
-        await repository
+        await requestTrip
             .updateAirlines(
               airlinessID!,
               purposeID.toString(),
@@ -252,7 +252,7 @@ class AirportReservationController extends BaseController {
       }
     } else {
       try {
-        await repository
+        await requestTrip
             .saveAirlines(
               purposeID.toString(),
               "1",

@@ -52,7 +52,7 @@ class AirlinesController extends BaseController {
   Future<void> getGuestList() async {
     guestList = [];
     try {
-      var guestData = await repository.getGuestBytripList(purposeID);
+      var guestData = await requestTrip.getGuestBytripList(purposeID);
       guestModel = guestData;
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
     } catch (e) {
@@ -63,7 +63,7 @@ class AirlinesController extends BaseController {
 
   Future<void> deleteGuest(String id) async {
     try {
-      await repository.deleteTravellerGuest(id).then((value) {
+      await requestTrip.deleteTravellerGuest(id).then((value) {
         getGuestList();
         Get.showSnackbar(
           const GetSnackBar(

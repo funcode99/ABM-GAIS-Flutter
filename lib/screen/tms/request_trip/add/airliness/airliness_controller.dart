@@ -44,7 +44,7 @@ class AirlinessController extends BaseController {
   Future<void> fetchList() async {
     airlinessList = [];
     try {
-      var airlinessData = await repository.getAirlinessBytripList(purposeID);
+      var airlinessData = await requestTrip.getAirlinessBytripList(purposeID);
       airlinessModel = airlinessData;
       airlinessData.data?.asMap().forEach((i, e) async {
         print("pnrID: ${e.pnrid}");
@@ -88,7 +88,7 @@ class AirlinessController extends BaseController {
   Future<void> delete(String id) async {
     isLoading = true;
     try {
-      await repository.deleteAirliness(id).then((value) {
+      await requestTrip.deleteAirliness(id).then((value) {
         Get.showSnackbar(const GetSnackBar(
           icon: Icon(
             Icons.info,

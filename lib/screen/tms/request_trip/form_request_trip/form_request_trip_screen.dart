@@ -15,7 +15,6 @@ import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/edit/edit_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/airliness/check_schedule/check_schedule_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/edit/edit_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/edit/edit_taxi_voucher_screen.dart';
@@ -521,7 +520,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                               'codeDocument': controller.codeDocument,
                                                               'formEdit': true,
                                                               'isEdit': true,
-                                                              'airlinessData' : e,
+                                                              'airlinessData': e,
                                                             });
                                                           },
                                                           isDelete: controller.isEdit,
