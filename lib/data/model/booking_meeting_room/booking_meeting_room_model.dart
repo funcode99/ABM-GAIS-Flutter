@@ -34,7 +34,7 @@ class BookingMeetingRoomModel extends Equatable{
   String? updatedAt;
   dynamic updatedBy;
   String? deletedAt;
-  List<int>? participant;
+  List<dynamic>? participant;
   List<ParticipantModel>? participantArray;
   String? nameMeetingRoom;
   String? employeeName;
