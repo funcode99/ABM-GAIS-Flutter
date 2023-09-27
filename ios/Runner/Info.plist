@@ -52,5 +52,11 @@
 		</array>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>NSPhotoLibraryUsageDescription</key>
+        <string>Access Photo Library usage for change your profile photo.</string>
+        <key>NSCameraUsageDescription</key>
+        <string>Access Camera usage and photo for change your profile photo</string>
+        <key>NSMicrophoneUsageDescription</key>
+        <string>Access Microphone usage for change your profile photo</string>
 	</dict>
 </plist>

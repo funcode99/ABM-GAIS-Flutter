@@ -176,7 +176,8 @@ class _RejectDialogState
                         Get.back(
                             result: ApprovalModel(
                               isRevision: _selectedRejectEnum == RejectEnum.rejectWithNote,
-                              notes: _noteController.text
+                              notes: _noteController.text,
+                              notesRejected: _noteController.text
                             )
                         );
                       } : null,

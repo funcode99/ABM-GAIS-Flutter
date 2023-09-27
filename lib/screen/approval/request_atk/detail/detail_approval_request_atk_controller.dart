@@ -64,10 +64,19 @@ class DetailApprovalRequestATKController extends BaseController {
 
     result.fold((l) {
       print("ERROR DETAIL HEADER ${l.message}");
-    }, (r) {
-      detailSelectedItem(r);
-      setValue();
-      getApprovalLog();
+    }, (r) async{
+      selectedItem(r);
+
+      getDataDetail();
+
+      final resultDetail = await _repository.detailData(selectedItem.value.id!);
+      resultDetail.fold(
+          (l) => print("ERROR DETAIL HEADER ${l.message}"),
+          (right) {
+            detailSelectedItem(right);
+            setValue();
+            getApprovalLog();
+          });
     });
   }
 

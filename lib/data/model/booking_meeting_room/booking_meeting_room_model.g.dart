@@ -46,9 +46,7 @@ BookingMeetingRoomModel _$BookingMeetingRoomModelFromJson(
       siteName: json['site_name'] as String?,
       siteCode: json['site_code'] as String?,
       status: json['status'] as String?,
-      participant: (json['participant'] as List<dynamic>?)
-          ?.map((e) => e as int)
-          .toList(),
+      participant: json['participant'] as List<dynamic>?,
       facility: json['facility'],
       external: json['external'],
       isOnlineMeeting: json['is_online_meeting'],

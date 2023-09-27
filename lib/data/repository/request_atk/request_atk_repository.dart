@@ -237,14 +237,14 @@ class RequestATKRepository
     }
   }
 
-  Future<Either<BaseError, RequestAtkModel>> detailDataApproval(dynamic id) async {
+  Future<Either<BaseError, ApprovalRequestATKModel>> detailDataApproval(dynamic id) async {
     try {
       Dio.Response response = await network.dio.get(
         '/api/approval_request_atk/get_data/$id',
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(
-          response.data, RequestAtkModel.fromJsonModelList);
-      List<RequestAtkModel> list = apiResponseModel.data;
+          response.data, ApprovalRequestATKModel.fromJsonModelList);
+      List<ApprovalRequestATKModel> list = apiResponseModel.data;
       return right(list.first);
     } on DioError catch (e) {
       print("DioError $e");
@@ -292,7 +292,7 @@ class RequestATKRepository
       final approvalModel = model as ApprovalModel;
 
       Dio.Response response = await network.dio.post(
-          '/api/approval_request_atk/reject/$id',
+          '/api/approval_request_atk/rejected/$id',
           data: approvalModel.toJson()
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalRequestATKModel.fromJsonModel);

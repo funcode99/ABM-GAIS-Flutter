@@ -12,25 +12,29 @@ class ImageUtil{
   File? result;
 
   Future<File?> selectImageFromGallery()async{
-    int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
 
     PermissionStatus status;
+    status = await Permission.photos.status;
 
-    if (androidOS < 13) {
-      status = await Permission.storage.status;
-    } else {
-      status = await Permission.photos.status;
+    if(Platform.isAndroid){
+      int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
+      if (androidOS < 13) {
+        status = await Permission.storage.status;
+      }
     }
 
     if (status.isGranted) {
       return _selectFromGallery();
     } else {
       PermissionStatus request;
-      if (androidOS < 13) {
-        request = await Permission.storage.request();
-      } else {
-        request = await Permission.photos.request();
+      request = await Permission.photos.request();
+      if(Platform.isAndroid){
+        int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
+        if (androidOS < 13) {
+          request = await Permission.storage.request();
+        }
       }
+
       if (request.isGranted) {
         return _selectFromGallery();
       } else {

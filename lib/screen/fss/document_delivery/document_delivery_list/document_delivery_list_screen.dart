@@ -180,7 +180,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                   editAction: () => Get.to(
                                     const FormDocumentDeliveryScreen(),
                                     arguments: {
-                                      'id': controller.ddList[index].id.toString().toInt(),
+                                      'id': controller.ddList[index].id.toString(),
                                     },
                                   )?.then((value) {
                                     controller.fetchList(controller.currentPage);
@@ -200,7 +200,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                       SizedBox(
                                         width: Get.width/3,
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Text("Receiver", style: listTitleTextStyle),
                                             Text(controller.ddList[index].receiverName.toString(), style: listSubTitleTextStyle)
@@ -210,7 +210,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                       SizedBox(
                                         width: Get.width/4,
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Text("Sender", style: listTitleTextStyle),
                                             Text(controller.ddList[index].senderName.toString(), style: listSubTitleTextStyle)
@@ -220,7 +220,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                       SizedBox(
                                         width: Get.width/3.8,
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Text("Location", style: listTitleTextStyle),
                                             Text("${controller.ddList[index].nameSiteSender} - ${controller.ddList[index].nameSiteReceiver.toString()}", style: listSubTitleTextStyle)

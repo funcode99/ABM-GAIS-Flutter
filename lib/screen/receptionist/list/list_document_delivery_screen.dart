@@ -172,35 +172,42 @@ class ListDocumentDeliveryScreen extends StatelessWidget {
                                   editAction: () => Get.to(
                                     const DetailDocumentDeliveryScreen(),
                                     arguments: {
-                                      'id': controller.ddList[index].id?.toInt(),
+                                      'id': controller.ddList[index].id,
                                     },
                                   )?.then((value) {
                                     controller.fetchList();
                                     controller.update();
                                   }),
                                   content: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Receiver", style: listTitleTextStyle),
-                                          Text(controller.ddList[index].receiverName.toString() ?? "", style: listSubTitleTextStyle)
-                                        ],
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text("Receiver", style: listTitleTextStyle),
+                                            Text(controller.ddList[index].receiverName.toString() ?? "",style: listSubTitleTextStyle)
+                                          ],
+                                        ),
                                       ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Sender", style: listTitleTextStyle),
-                                          Text(controller.ddList[index].senderName.toString() ?? "", style: listSubTitleTextStyle)
-                                        ],
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text("Sender", style: listTitleTextStyle),
+                                            Text(controller.ddList[index].senderName.toString() ?? "", style: listSubTitleTextStyle)
+                                          ],
+                                        ),
                                       ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Location", style: listTitleTextStyle),
-                                          Text("${controller.ddList[index].nameSiteSender} - ${controller.ddList[index].nameSiteReceiver.toString() ?? " "}", style: listSubTitleTextStyle)
-                                        ],
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text("Location", style: listTitleTextStyle),
+                                            Text("${controller.ddList[index].nameSiteSender} - ${controller.ddList[index].nameSiteReceiver.toString() ?? " "}", style: listSubTitleTextStyle)
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),

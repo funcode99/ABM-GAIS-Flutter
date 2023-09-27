@@ -406,7 +406,7 @@ class _DetailApprovalRequestATKScreenState extends State<DetailApprovalRequestAT
                                                         style: listTitleTextStyle,
                                                       ),
                                                       Text(
-                                                        "${item.qtyUnsend ?? ""}",
+                                                        "${item.codeStatusDoc! <= 2 ? 0 : item.qtyUnsend ?? ""}",
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .bodyText1

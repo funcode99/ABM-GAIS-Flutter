@@ -175,7 +175,7 @@ class FormDocumentDeliveryController extends BaseController {
         senderCompanyID!,
         senderSiteID!,
         subjectDocument.text.toString(),
-        gettedFile!,
+        gettedFile,
         remarks.text,
         codeStatusDoc!.toString(),
       )

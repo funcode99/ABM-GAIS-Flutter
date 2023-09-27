@@ -6,6 +6,7 @@ part 'approval_model.g.dart';
 class ApprovalModel {
   int? approvedBehalf;
   String? notes;
+  String? notesRejected;
   bool? isRevision;
   List<dynamic>? arrayDetail;
   List<dynamic>? warehouseDetail;
@@ -14,6 +15,7 @@ class ApprovalModel {
   ApprovalModel({
     this.approvedBehalf,
     this.notes,
+    this.notesRejected,
     this.isRevision,
     this.arrayDetail,
     this.path,
