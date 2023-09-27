@@ -7,7 +7,7 @@ import 'package:gais/data/model/reference/get_status_document_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airliness;
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/train/train_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -89,7 +89,7 @@ class AirlinessController extends BaseController {
     isLoading = true;
     try {
       await repository.deleteAirliness(id).then((value) {
-        Get.showSnackbar(GetSnackBar(
+        Get.showSnackbar(const GetSnackBar(
           icon: Icon(
             Icons.info,
             color: Colors.white,
@@ -103,7 +103,7 @@ class AirlinessController extends BaseController {
       isLoading = false;
       fetchList();
     } catch (e) {
-      Get.showSnackbar(GetSnackBar(
+      Get.showSnackbar(const GetSnackBar(
         icon: Icon(
           Icons.error,
           color: Colors.white,
@@ -119,11 +119,11 @@ class AirlinessController extends BaseController {
 
   void next() {
     formEdit == true
-        ? Get.off(FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+        ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
         : codeDocument == 2
-            ? Get.to(OtherTransportScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument})
+            ? Get.to(const OtherTransportScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument})
             : codeDocument == 5
-                ? Get.to(AccommodationScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument})
-                : Get.to(TaxiVoucherScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument});
+                ? Get.to(const AccommodationScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument})
+                : Get.to(const TrainScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument});
   }
 }

@@ -78,6 +78,8 @@ class PurposeOfTripScreen extends StatelessWidget {
                                     ? controller.isAttachment = true
                                     : controller.isAttachment = false;
                                 value == "3" ? controller.isDANumber = true : controller.isDANumber = false;
+                                controller.attachFile = value == "3" ? false : true;
+                                print(controller.attachFile);
                                 controller.update();
                                 // print(controller.selectedPurpose);
                               },
@@ -106,10 +108,12 @@ class PurposeOfTripScreen extends StatelessWidget {
                                 ? CustomTextFormField(
                                     controller: controller.fileName,
                                     label: 'File Attachment',
-                                    isRequired: true,
+                                    isRequired: controller.attachFile,
                                     validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return "This field is required";
+                                      if (controller.isAttachment == true && controller.attachFile == true) {
+                                        if (value == null || value.isEmpty) {
+                                          return "This field is required";
+                                        }
                                       }
                                       // if (controller.fileExtension != "pdf") {
                                       //   return "Files must be pdf";

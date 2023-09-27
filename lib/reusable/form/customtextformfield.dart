@@ -20,7 +20,8 @@ class CustomTextFormField extends StatelessWidget {
       this.suffixIcon,
       this.backgroundColor,
       this.multiLine = false,
-      this.inputType}) {
+      this.inputType,
+      this.prefixIcon}) {
     if (isRequired && !readOnly) {
       validator ??= ValidationBuilder().required().build();
     }
@@ -38,6 +39,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? inputType;
   final GestureTapCallback? onTap;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final Color? backgroundColor;
   final bool multiLine;
 
@@ -51,19 +53,14 @@ class CustomTextFormField extends StatelessWidget {
             text: label,
             style: formlabelTextStyle,
             children: <TextSpan>[
-              TextSpan(
-                  text: isRequired ? "*" : "",
-                  style: TextStyle(color: Colors.red)),
+              TextSpan(text: isRequired ? "*" : "", style: TextStyle(color: Colors.red)),
             ],
           ),
         ),
         SizedBox(
           height: helperText != null ? 16 : 8,
         ),
-        helperText != null ?
-            Text(
-                helperText ?? ""
-            ) : SizedBox(),
+        helperText != null ? Text(helperText ?? "") : SizedBox(),
         SizedBox(
           height: helperText != null ? 16 : 0,
         ),
@@ -87,12 +84,11 @@ class CustomTextFormField extends StatelessWidget {
                   // fontWeight: FontWeight.w600,
                 ),
             decoration: InputDecoration(
-                fillColor:
-                    backgroundColor ?? (onTap != null || !readOnly ? whiteColor : neutralColor),
+                fillColor: backgroundColor ?? (onTap != null || !readOnly ? whiteColor : neutralColor),
                 //jika ontap!=null, maka state "active". jika bukan readyonly, maka state "active". Jika readonly dan ontap == null maka state "inactive"
                 suffixIcon: suffixIcon,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                prefixIcon: prefixIcon,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 hintText: hintText ?? label,
                 hintStyle: hintTextStyle),
           ),

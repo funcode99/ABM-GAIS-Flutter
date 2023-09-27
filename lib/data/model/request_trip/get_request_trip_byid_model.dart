@@ -46,43 +46,43 @@ GetRequestTripByidModel copyWith({  bool? success,
 
 class Data {
   Data({
-      String? id, 
-      num? idEmployee, 
-      String? noRequestTrip, 
-      String? codeDocument, 
-      num? idSite, 
-      String? notes, 
-      String? file, 
-      num? idCityFrom, 
-      num? idCityTo, 
-      String? dateDeparture, 
-      String? dateArrival, 
-      num? idZona, 
-      num? codeStatusDoc, 
-      String? tlkPerDay, 
-      String? totalTlk, 
-      String? createdAt, 
-      String? createdBy, 
-      String? updatedAt, 
-      dynamic updatedBy, 
-      dynamic deletedAt, 
-      dynamic currentLevel, 
-      dynamic isClaim, 
-      num? idCompany, 
-      num? idDepartement, 
-      num? idCostCenter, 
-      String? fileName, 
-      String? numberDa, 
-      String? employeeName, 
-      String? snEmployee, 
-      String? siteName, 
-      String? siteCode, 
-      String? zonaName, 
-      num? code, 
-      String? status, 
-      num? idDocument, 
-      String? documentName, 
-      String? nameCityFrom, 
+      String? id,
+      dynamic idEmployee,
+      String? noRequestTrip,
+      String? codeDocument,
+      num? idSite,
+      String? notes,
+      String? file,
+      num? idCityFrom,
+      num? idCityTo,
+      String? dateDeparture,
+      String? dateArrival,
+      num? idZona,
+      num? codeStatusDoc,
+      String? tlkPerDay,
+      String? totalTlk,
+      String? createdAt,
+      String? createdBy,
+      String? updatedAt,
+      dynamic updatedBy,
+      dynamic deletedAt,
+      dynamic currentLevel,
+      dynamic isClaim,
+      num? idCompany,
+      num? idDepartement,
+      num? idCostCenter,
+      String? fileName,
+      String? numberDa,
+      String? employeeName,
+      String? snEmployee,
+      String? siteName,
+      String? siteCode,
+      String? zonaName,
+      num? code,
+      String? status,
+      num? idDocument,
+      String? documentName,
+      String? nameCityFrom,
       String? nameCityTo,}){
     _id = id;
     _idEmployee = idEmployee;
@@ -165,7 +165,7 @@ class Data {
     _nameCityTo = json['name_city_to'];
   }
   String? _id;
-  num? _idEmployee;
+  dynamic _idEmployee;
   String? _noRequestTrip;
   String? _codeDocument;
   num? _idSite;
@@ -203,7 +203,7 @@ class Data {
   String? _nameCityFrom;
   String? _nameCityTo;
 Data copyWith({  String? id,
-  num? idEmployee,
+  dynamic idEmployee,
   String? noRequestTrip,
   String? codeDocument,
   num? idSite,
@@ -280,7 +280,7 @@ Data copyWith({  String? id,
   nameCityTo: nameCityTo ?? _nameCityTo,
 );
   String? get id => _id;
-  num? get idEmployee => _idEmployee;
+  dynamic get idEmployee => _idEmployee;
   String? get noRequestTrip => _noRequestTrip;
   String? get codeDocument => _codeDocument;
   num? get idSite => _idSite;

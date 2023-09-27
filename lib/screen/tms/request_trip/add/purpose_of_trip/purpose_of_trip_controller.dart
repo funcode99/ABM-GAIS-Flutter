@@ -51,6 +51,7 @@ class PurposeOfTripController extends BaseController {
   bool? isFilled = false;
   bool? isEnabledButton = false;
   bool isAttachment = false;
+  bool attachFile = true;
   bool isLoading = false;
   bool isDANumber = false;
 

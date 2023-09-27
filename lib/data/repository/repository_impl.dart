@@ -602,7 +602,7 @@ class RepositoryImpl implements Repository {
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       Response response = await network.dio.get(
-        "/api/travel_guest/get",
+        "/api/travel_guest/get_by_travel_id/trip_id/$id",
       );
       return GetGuestBytripModel.fromJson(response.data);
     } on DioError catch (e) {

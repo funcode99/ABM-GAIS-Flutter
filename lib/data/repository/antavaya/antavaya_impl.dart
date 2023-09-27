@@ -6,6 +6,7 @@ import 'package:gais/data/model/antavaya/get_city_hotel_model.dart';
 import 'package:gais/data/model/antavaya/get_country_hotel_model.dart';
 import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
+import 'package:gais/data/model/antavaya/get_train_station_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:gais/data/repository/antavaya/antavaya_repository.dart';
 import 'package:get/get.dart' hide Response, FormData, MultipartFile;
@@ -269,6 +270,22 @@ class AntavayaImpl implements AntavayaRepository {
       );
       return GetCountryHotelModel.fromJson(response.data);
     } on DioError catch (e) {
+      return e.error;
+    }
+  }
+
+  @override
+  Future<GetTrainStationModel> getTrainStation() async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/antavaya/train/get_station",
+      );
+      print("station response: ${response.data}");
+      return GetTrainStationModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print("station response error: ${e.response?.data}");
       return e.error;
     }
   }
