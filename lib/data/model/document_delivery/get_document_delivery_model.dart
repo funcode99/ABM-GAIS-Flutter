@@ -265,7 +265,7 @@ Links copyWith({  dynamic url,
 
 class Data2 {
   Data2({
-      num? id, 
+      dynamic id,
       num? idCompany, 
       num? idEmployeeSender, 
       num? idEmployeeReceiver, 
@@ -385,7 +385,7 @@ class Data2 {
   String? _codeSiteReceiver;
   String? _codeDocument;
   String? _status;
-Data2 copyWith({  num? id,
+Data2 copyWith({  dynamic id,
   num? idCompany,
   num? idEmployeeSender,
   num? idEmployeeReceiver,
