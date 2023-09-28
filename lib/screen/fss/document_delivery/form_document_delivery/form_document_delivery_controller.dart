@@ -2,9 +2,12 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/approval_log_model.dart';
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_employee_bysite_model.dart' as receiver;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
+import 'package:gais/util/enum/tab_enum.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -49,6 +52,8 @@ class FormDocumentDeliveryController extends BaseController {
   List<comp.Data> companyList = [];
   List<site.Data> locationList = [];
 
+  TabEnum selectedTab = TabEnum.detail;
+  List<ApprovalLogModel> listLogApproval = [];
 
   @override
   void onInit() {
@@ -124,6 +129,65 @@ class FormDocumentDeliveryController extends BaseController {
           isDelivering = true;
           isDelivered = true;
         }
+
+        List<ApprovalLogModel> result = [];
+        if(value.data?.first.nameCreated != null){
+          result.add(
+              ApprovalLogModel(
+                  codeStatus: codeStatusDoc.toString().toInt(),
+                  notes: null,
+                  date: value.data?.first.createdAt,
+                  text: "Created by : ${value.data?.first.nameCreated}"
+              )
+          );
+        }
+
+        if(value.data?.first.nameReceived != null){
+          result.add(
+              ApprovalLogModel(
+                  codeStatus: codeStatusDoc.toString().toInt(),
+                  notes: null,
+                  date: value.data?.first.receivedAt,
+                  text: "Received by : ${value.data?.first.nameReceived}"
+              )
+          );
+        }
+
+        if(value.data?.first.nameDelivering != null){
+          result.add(
+              ApprovalLogModel(
+                  codeStatus: codeStatusDoc.toString().toInt(),
+                  notes: null,
+                  date: value.data?.first.deliveringAt,
+                  text: "Delivering by : ${value.data?.first.nameDelivering}"
+              )
+          );
+        }
+
+        if(value.data?.first.nameDelivered != null){
+          result.add(
+              ApprovalLogModel(
+                  codeStatus: codeStatusDoc.toString().toInt(),
+                  notes: null,
+                  date: value.data?.first.deliveredAt,
+                  text: "Delivered by : ${value.data?.first.nameDelivered}"
+              )
+          );
+        }
+
+        if(value.data?.first.nameCancelled != null){
+          result.add(
+              ApprovalLogModel(
+                  codeStatus: codeStatusDoc.toString().toInt(),
+                  notes: null,
+                  date: value.data?.first.cancelledAt,
+                  text: "Cancelled by : ${value.data?.first.nameCancelled}"
+              )
+          );
+        }
+
+        listLogApproval.addAll(result);
+
       });
     } catch (e,i) {
       e.printError();

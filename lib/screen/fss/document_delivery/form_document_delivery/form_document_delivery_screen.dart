@@ -6,9 +6,12 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/list/approval_log_list.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/document_delivery/form_document_delivery/form_document_delivery_controller.dart';
+import 'package:gais/util/enum/status_enum.dart';
+import 'package:gais/util/enum/tab_enum.dart';
 import 'package:get/get.dart';
 
 class FormDocumentDeliveryScreen extends StatelessWidget {
@@ -262,23 +265,85 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                       minHeight: 50,
                       maxHeight: 32,
                       child: Container(
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              blurRadius: 7,
+                              spreadRadius: 1,
+                              offset: const Offset(0, 4),
+                            )
+                          ],
                           color: infoColor,
-                          borderRadius: BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(8),
+                              topLeft: Radius.circular(8)),
                         ),
                         child: Row(
                           children: [
-                            Container(
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.only(top: 10, left: 5),
-                              width: 100,
-                              height: 50,
-                              decoration: const BoxDecoration(
-                                color: whiteColor,
-                                borderRadius: BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
-                                gradient: LinearGradient(stops: [0.1, 0], colors: [blackColor, whiteColor]),
+                            GestureDetector(
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: const EdgeInsets.only(top: 10, left: 5),
+                                width: 100,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: controller.selectedTab ==
+                                      TabEnum.detail
+                                      ? whiteColor
+                                      : neutralColor,
+                                  borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(8),
+                                      topLeft: Radius.circular(8)),
+                                  gradient: LinearGradient(stops: const [
+                                    0.1,
+                                    0
+                                  ], colors: [
+                                    controller.selectedTab == TabEnum.detail
+                                        ? blackColor
+                                        : whiteColor,
+                                    Colors.white
+                                  ]),
+                                ),
+                                child: const Text("Detail"),
                               ),
-                              child: const Text("Detail"),
+                              onTap: () {
+                                controller.selectedTab = TabEnum.detail;
+                                controller.update();
+                              },
+                            ),
+                            GestureDetector(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                alignment: Alignment.center,
+                                margin: const EdgeInsets.only(
+                                    top: 10, left: 5),
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: controller.selectedTab ==
+                                      TabEnum.approval
+                                      ? whiteColor
+                                      : neutralColor,
+                                  borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(8),
+                                      topLeft: Radius.circular(8)),
+                                  gradient: LinearGradient(stops: const [
+                                    0.1,
+                                    0
+                                  ], colors: [
+                                    controller.selectedTab ==
+                                        TabEnum.approval
+                                        ? blackColor
+                                        : whiteColor,
+                                    Colors.white
+                                  ]),
+                                ),
+                                child: const Text("Log"),
+                              ),
+                              onTap: () {
+                                controller.selectedTab = TabEnum.approval;
+                                controller.update();
+                              },
                             ),
                           ],
                         ),
@@ -287,9 +352,9 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                   ),
                   SliverList(
                     // SliverToBoxAdapter(
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        return Form(
+                    delegate: SliverChildListDelegate([
+                      if(controller.selectedTab == TabEnum.detail)
+                        Form(
                           key: controller.formKey,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 10),
@@ -311,9 +376,9 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   isRequired: true,
                                   items: controller.companyList
                                       .map((e) => DropdownMenuItem(
-                                            value: e.id.toString(),
-                                            child: Text(e.companyName.toString()),
-                                          ))
+                                    value: e.id.toString(),
+                                    child: Text(e.companyName.toString()),
+                                  ))
                                       .toList(),
                                   readOnly: !controller.isEdit,
                                   selectedItem: controller.receiverCompany,
@@ -331,9 +396,9 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   isRequired: true,
                                   items: controller.locationList
                                       .map((e) => DropdownMenuItem(
-                                            value: e.id.toString(),
-                                            child: Text(e.siteName.toString()),
-                                          ))
+                                    value: e.id.toString(),
+                                    child: Text(e.siteName.toString()),
+                                  ))
                                       .toList(),
                                   value: controller.receiverSiteID.toString(),
                                   readOnly: !controller.isEdit,
@@ -348,17 +413,17 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                 CustomDropDownFormField(
                                   items: controller.receiverList
                                       .map((e) => DropdownMenuItem(
-                                            value: e.id.toString(),
-                                            onTap: () {
-                                              controller.location.text = e.siteName.toString();
-                                              controller.company.text = e.companyName.toString();
-                                              controller.receiverSiteID = e.idSite.toString();
-                                              controller.receiverCompanyID = e.idCompany?.toString();
-                                              controller.receiverID = e.id?.toString();
-                                              controller.update();
-                                            },
-                                            child: Text(e.employeeName.toString()),
-                                          ))
+                                    value: e.id.toString(),
+                                    onTap: () {
+                                      controller.location.text = e.siteName.toString();
+                                      controller.company.text = e.companyName.toString();
+                                      controller.receiverSiteID = e.idSite.toString();
+                                      controller.receiverCompanyID = e.idCompany?.toString();
+                                      controller.receiverID = e.id?.toString();
+                                      controller.update();
+                                    },
+                                    child: Text(e.employeeName.toString()),
+                                  ))
                                       .toList(),
                                   label: "Receiver",
                                   hintText: "Receiver",
@@ -398,10 +463,13 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                        );
-                      },
-                      childCount: 1, // 1000 list items
-                    ),
+                        ),
+                      if(controller.selectedTab == TabEnum.approval)
+                        controller.listLogApproval.isEmpty
+                            ? const SizedBox()
+                            : ApprovalLogList(list: controller.listLogApproval, waitingApprovalValue: 0,)
+
+                    ]),
                   ),
                 ],
               ),
