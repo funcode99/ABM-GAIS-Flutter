@@ -2,13 +2,15 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_employee_bysite_model.dart' as receiver;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
 import 'package:gais/screen/fss/document_delivery/document_delivery_list/document_delivery_list_screen.dart';
+import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 
-class AddDocumentDeliveryController extends BaseController {
+class AddDocumentDeliveryController extends BaseController with MasterDataMixin{
   final formKey = GlobalKey<FormState>();
   final sender = TextEditingController();
   final location = TextEditingController();
@@ -16,6 +18,7 @@ class AddDocumentDeliveryController extends BaseController {
   final subjectDocument = TextEditingController();
   final attachment = TextEditingController();
   final remarks = TextEditingController();
+  late TextEditingController autocompleteController = TextEditingController();
 
   String? senderID;
   String? senderCompanyID;
@@ -30,11 +33,15 @@ class AddDocumentDeliveryController extends BaseController {
   bool loadReceiver = false;
 
   List<receiver.Data> receiverList = [];
+  List<EmployeeModel> employeeList = [];
   List<comp.Data> companyList = [];
   List<site.Data> locationList = [];
   List<comp.Data> receiverCompanyList = [];
 
   // List<site.Data> locationList = [];
+
+  bool showReceiverError = false;
+  EmployeeModel? selectedEmployee;
 
   @override
   void onInit() {
@@ -163,4 +170,29 @@ class AddDocumentDeliveryController extends BaseController {
       // User canceled the picker
     }
   }
+
+  void onChangeSelectedReceiver(String id) async{
+    final selected = employeeList.firstWhere(
+            (item) => item.id.toString() == id.toString(),
+        orElse: () => employeeList.first);
+
+    selectedEmployee = selected;
+    EmployeeModel? detailEmployee = await getEmployeeById(selectedEmployee?.id);
+    if(detailEmployee!=null){
+      company.text = detailEmployee.companyName ?? "";
+      location.text = detailEmployee.siteName ?? "";
+    }
+
+    update();
+  }
+
+  Future<List<EmployeeModel>> getEmployeeByKeyword(String keyword)async{
+
+    employeeList.clear();
+    final employees = await getListEmployeeByKeyword(keyword);
+    employeeList.addAll(employees);
+
+    return employeeList;
+  }
+
 }

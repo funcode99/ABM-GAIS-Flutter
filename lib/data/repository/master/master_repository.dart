@@ -514,6 +514,28 @@ class MasterRepository{
     }
   }
 
+  Future<Either<BaseError, EmployeeModel>> getEmployeeById(dynamic id)async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/employee/get/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, EmployeeModel.fromJsonModelList);
+      return right(apiResponseModel.data[0]);
+
+    } on Dio.DioError catch (e) {
+      print(e);
+
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print(e);
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print(e);
+
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
   Future<Either<BaseError, List<EmployeeModel>>> getListSecretaryByCompanyId(dynamic id)async{
     try {
       Dio.Response response = await network.dio.get(
