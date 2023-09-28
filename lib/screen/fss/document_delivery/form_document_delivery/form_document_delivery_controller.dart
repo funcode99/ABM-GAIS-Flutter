@@ -114,6 +114,7 @@ class FormDocumentDeliveryController extends BaseController {
         tempDate = DateTime.parse(value.data?.first.createdAt ?? "");
         createdDate.text = dateFormat.format(tempDate);
         createdBy.text = value.data?.first.senderName ?? "";
+        receivedBy.text = value.data?.first.receiverName ?? "";
         codeStatusDoc = value.data?.first.codeStatusDoc?.toString();
         receiverSite = value.data?.first.nameSiteReceiver ?? "";
         receiverCompany = value.data?.first.nameCompanyReceiver ?? "";
