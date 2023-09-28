@@ -6,8 +6,8 @@ part 'stock_in_atk_detail_model.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class StockInATKDetailModel extends Equatable {
   String? key;
-  int? id;
-  int? idStockIn;
+  dynamic id;
+  dynamic idStockIn;
   int? idWarehouse;
   int? idItem;
   int? idBrand;
