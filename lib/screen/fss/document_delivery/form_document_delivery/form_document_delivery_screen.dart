@@ -4,12 +4,14 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/customstatuscontainer.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list/approval_log_list.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/document_delivery/form_document_delivery/form_document_delivery_controller.dart';
+import 'package:gais/util/color/color_util.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:get/get.dart';
@@ -48,130 +50,25 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                         color: whiteColor,
                         child: Column(
                           children: [
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(8),
-                                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                                      decoration: const BoxDecoration(
-                                          color: successColor,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8),
-                                            bottomLeft: Radius.circular(24),
-                                            bottomRight: Radius.circular(8),
-                                          )),
-                                      child: const Row(
-                                        children: [
-                                          Text("Created", style: TextStyle(color: whiteColor)),
-                                          Icon(
-                                            Icons.check_circle_outline_sharp,
-                                            color: whiteColor,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8),
-                                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                                        decoration: BoxDecoration(
-                                            color: controller.isReceived ? successColor : whiteColor,
-                                            borderRadius: const BorderRadius.only(
-                                              topLeft: Radius.circular(8),
-                                              topRight: Radius.circular(8),
-                                              bottomLeft: Radius.circular(24),
-                                              bottomRight: Radius.circular(8),
-                                            ),
-                                            border: Border.all(color: controller.isReceived ? Colors.transparent : blackColor)),
-                                        child: Row(
-                                          children: [
-                                            Text("Received", style: TextStyle(color: controller.isReceived ? whiteColor : blackColor)),
-                                            controller.isReceived
-                                                ? const Icon(
-                                                    Icons.check_circle_outline_sharp,
-                                                    color: whiteColor,
-                                                  )
-                                                : Container()
-                                          ],
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        if (controller.isEdit == true) {
-                                          controller.codeStatusDoc = "1";
-                                          controller.isReceived = true;
-                                        }
-                                        controller.update();
-                                      },
-                                    ),
-                                    GestureDetector(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8),
-                                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                                        decoration: BoxDecoration(
-                                            color: controller.isDelivering ? successColor : whiteColor,
-                                            borderRadius: const BorderRadius.only(
-                                              topLeft: Radius.circular(8),
-                                              topRight: Radius.circular(8),
-                                              bottomLeft: Radius.circular(24),
-                                              bottomRight: Radius.circular(8),
-                                            ),
-                                            border: Border.all(color: controller.isDelivering ? Colors.transparent : blackColor)),
-                                        child: Row(
-                                          children: [
-                                            Text("Delivering", style: TextStyle(color: controller.isDelivering ? whiteColor : blackColor)),
-                                            controller.isDelivering
-                                                ? const Icon(
-                                                    Icons.check_circle_outline_sharp,
-                                                    color: whiteColor,
-                                                  )
-                                                : Container()
-                                          ],
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        if (controller.isEdit == true && controller.codeStatusDoc == "1") {
-                                          controller.codeStatusDoc = "2";
-                                          controller.isDelivering = true;
-                                        }
-                                        controller.update();
-                                      },
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.all(8),
-                                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                                      decoration: BoxDecoration(
-                                          color: controller.isDelivered ? successColor : whiteColor,
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8),
-                                            bottomLeft: Radius.circular(24),
-                                            bottomRight: Radius.circular(8),
-                                          ),
-                                          border: Border.all(color: controller.isDelivered ? Colors.transparent : blackColor)),
-                                      child: Row(
-                                        children: [
-                                          Text("Delivered", style: TextStyle(color: controller.isDelivered ? whiteColor : blackColor)),
-                                          controller.isDelivered
-                                              ? const Icon(
-                                                  Icons.check_circle_outline_sharp,
-                                                  color: whiteColor,
-                                                )
-                                              : Container()
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  if(controller.status!=null)
+                                    CustomStatusContainer(
+                                      backgroundColor: ColorUtil.getStatusColorByText("${controller.status}"),
+                                      status: "${controller.status}",
+                                    )
+                                ],
                               ),
                             ),
                             Text(
                               controller.noDocument.toString(),
-                              style: appTitle,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
                               textAlign: TextAlign.center,
                             ),
                             Row(
