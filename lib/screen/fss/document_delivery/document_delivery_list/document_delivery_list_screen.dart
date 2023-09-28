@@ -4,13 +4,16 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
+import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -20,6 +23,7 @@ import 'package:gais/screen/fss/document_delivery/form_document_delivery/form_do
 import 'package:gais/screen/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:gais/util/ext/string_ext.dart';
+import 'package:iconly/iconly.dart';
 
 class DocumentDeliveryListScreen extends StatelessWidget {
   const DocumentDeliveryListScreen({Key? key}) : super(key: key);
@@ -166,73 +170,93 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
-                          return SizedBox(
-                            child: Column(
+                          return CommonListItem(
+                            onTap: (){
+                              Get.to(
+                                const FormDocumentDeliveryScreen(),
+                                arguments: {
+                                  'id': controller.ddList[index].id.toString(),
+                                },
+                              )?.then((value) {
+                                controller.fetchList(controller.currentPage);
+                                controller.update();
+                              });
+                            },
+                            number: "${controller.currentPage > 1 ? (controller.ddModel?.data?.from?.toInt() ?? 0) + index : (index + 1)}",
+                            title: controller.ddList[index].noDocumentDelivery.toString(),
+                            subtitle: controller.dateFormat.format(DateTime.parse(controller.ddList[index].createdAt.toString())).toString(),
+                            content: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CustomTripCard(
-                                  listNumber: controller.currentPage > 1 ? (controller.ddModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
-                                  title: controller.ddList[index].noDocumentDelivery.toString(),
-                                  //code document delivery
-                                  status: controller.ddList[index].status.toString(),
-                                  // status
-                                  subtitle: controller.dateFormat.format(DateTime.parse(controller.ddList[index].createdAt.toString())).toString(),
-                                  isEdit: true,
-                                  editAction: () => Get.to(
-                                    const FormDocumentDeliveryScreen(),
-                                    arguments: {
-                                      'id': controller.ddList[index].id.toString(),
-                                    },
-                                  )?.then((value) {
-                                    controller.fetchList(controller.currentPage);
-                                    controller.update();
-                                  }),
-                                  isDelete: controller.ddList[index].codeStatusDoc == 3 ? false : true,
-                                  deleteAction: () {
-                                    controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
-                                    controller.deleteDocumentDelivery(controller.ddList[index].id.toString());
-
-                                    controller.update();
-                                  },
-                                  content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      SizedBox(
-                                        width: Get.width/3,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Text("Receiver", style: listTitleTextStyle),
-                                            Text(controller.ddList[index].receiverName.toString(), style: listSubTitleTextStyle)
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: Get.width/4,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Text("Sender", style: listTitleTextStyle),
-                                            Text(controller.ddList[index].senderName.toString(), style: listSubTitleTextStyle)
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: Get.width/3.8,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Text("Location", style: listTitleTextStyle),
-                                            Text("${controller.ddList[index].nameSiteSender} - ${controller.ddList[index].nameSiteReceiver.toString()}", style: listSubTitleTextStyle)
-                                          ],
-                                        ),
-                                      ),
+                                      Text("Receiver", style: listTitleTextStyle),
+                                      Text(controller.ddList[index].receiverName.toString(), style: listSubTitleTextStyle)
                                     ],
                                   ),
                                 ),
-                                if (controller.ddList.length == index + 1) const SizedBox(height: 100)
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Sender", style: listTitleTextStyle),
+                                      Text(controller.ddList[index].senderName.toString(), style: listSubTitleTextStyle)
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Location", style: listTitleTextStyle),
+                                      Text("${controller.ddList[index].nameSiteSender} - ${controller.ddList[index].nameSiteReceiver.toString()}", style: listSubTitleTextStyle)
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
+                            action: [
+                              if(controller.ddList[index].codeStatusDoc! < 2)
+                                CustomIconButton(
+                                  title: "Edit".tr,
+                                  iconData: IconlyBold.edit,
+                                  backgroundColor: successColor,
+                                  onPressed: () async {
+                                    Get.to(
+                                      const FormDocumentDeliveryScreen(),
+                                      arguments: {
+                                        'id': controller.ddList[index].id.toString(),
+                                      },
+                                    )?.then((value) {
+                                      controller.fetchList(controller.currentPage);
+                                      controller.update();
+                                    });
+                                  },
+                                ),
+                              const SizedBox(
+                                width: 4,
+                              ),
+                              if(controller.ddList[index].codeStatusDoc == 4)
+                                CustomIconButton(
+                                backgroundColor: redColor,
+                                title: "Delete".tr,
+                                iconData: IconlyBold.delete,
+                                onPressed: () {
+                                  Get.dialog(DeleteConfirmationDialog(
+                                    onDeletePressed: () {
+                                      Get.close(1);
+                                      controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
+                                      controller.deleteDocumentDelivery(controller.ddList[index].id.toString());
+
+                                      controller.update();
+                                    },
+                                  ));
+                                },
+                              )
+                            ],
+                            status: controller.ddList[index].status.toString(),
                           );
                         },
                         childCount: !controller.dataisnull ? controller.ddList.length : 1,
