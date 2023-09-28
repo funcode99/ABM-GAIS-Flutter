@@ -181,6 +181,9 @@ class AddDocumentDeliveryController extends BaseController with MasterDataMixin{
     if(detailEmployee!=null){
       company.text = detailEmployee.companyName ?? "";
       location.text = detailEmployee.siteName ?? "";
+      receiverCompanyID = detailEmployee.idCompany.toString();
+      receiverSiteID = detailEmployee.idSite.toString();
+      receiverID = selected.id.toString();
     }
 
     update();

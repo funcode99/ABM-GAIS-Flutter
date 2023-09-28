@@ -238,7 +238,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                               const SizedBox(
                                 width: 4,
                               ),
-                              if(controller.ddList[index].codeStatusDoc == 4)
+                              if(controller.ddList[index].codeStatusDoc == 4 || controller.ddList[index].codeStatusDoc == 0)
                                 CustomIconButton(
                                 backgroundColor: redColor,
                                 title: "Delete".tr,
