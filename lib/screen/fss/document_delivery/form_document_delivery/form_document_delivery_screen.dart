@@ -4,6 +4,7 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
@@ -45,7 +46,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: SliverAppBarDelegate(
-                      minHeight: 140,
+                      minHeight: controller.codeStatusDoc.toString() == "4" ? 140 : 180,
                       maxHeight: 32,
                       child: Container(
                         color: whiteColor,
@@ -72,47 +73,73 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   ?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
                               textAlign: TextAlign.center,
                             ),
+                            const SizedBox(
+                              height: 16,
+                            ),
                             Row(
-                              mainAxisAlignment: !controller.isEdit ? MainAxisAlignment.center : MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                CustomFilledButton(
-                                  color: whiteColor,
-                                  width: Get.width / 4,
-                                  borderColor: infoColor,
-                                  fontColor: infoColor,
-                                  title: controller.isEdit ? "Cancel" : "Edit",
+                                if(controller.codeStatusDoc.toString() == "0" || controller.codeStatusDoc.toString() == "1")
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      controller.openCancelDialog();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size(75, 30),
+                                        backgroundColor: redColor),
+                                    child: Text("Cancel".tr),
+                                  ),
+                                if(controller.codeStatusDoc.toString() == "0" || controller.codeStatusDoc.toString() == "1")
+                                  OutlinedButton(
                                   onPressed: () {
-                                    if (controller.codeStatusDoc != "2") {
-                                      controller.isEdit = controller.isEdit == false ? true : false;
-                                      !controller.isEdit ? controller.fetchEdit() : null;
-                                      controller.update();
-                                    } else {
-                                      Get.showSnackbar(const GetSnackBar(
-                                        icon: Icon(
-                                          Icons.error,
-                                          color: Colors.white,
-                                        ),
-                                        message: "Unable to edit document",
-                                        isDismissible: true,
-                                        duration: Duration(seconds: 3),
-                                        backgroundColor: Colors.red,
-                                      ));
-                                    }
+                                    controller.isEdit = !controller.isEdit;
+                                    controller.update();
                                   },
+                                  style: OutlinedButton.styleFrom(
+                                    minimumSize: const Size(75, 30),
+                                  ),
+                                  child: controller.isEdit
+                                      ? Text("Cancel".tr)
+                                      : Text("Edit".tr),
                                 ),
-                                controller.isEdit
-                                    ? CustomFilledButton(
-                                        color: successColor,
-                                        width: Get.width / 4,
-                                        title: "Save",
-                                        onPressed: () {
-                                          if (controller.formKey.currentState?.validate() == true) {
-                                            controller.saveDocument();
-                                          }
-                                        },
-                                      )
-                                    : Container(),
+                                if(controller.codeStatusDoc.toString() == "0")
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      controller.receivedDocument();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size(75, 30),
+                                        backgroundColor: successColor),
+                                    child: Text("Received".tr),
+                                  ),
+                                if(controller.codeStatusDoc.toString() == "1")
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      controller.deliveringDocument();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size(75, 30),
+                                        backgroundColor: successColor),
+                                    child: Text("Delivering".tr),
+                                  ),
+                                if(controller.codeStatusDoc.toString() == "2")
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      controller.deliveringDocument();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size(75, 30),
+                                        backgroundColor: successColor),
+                                    child: Text("Delivered".tr),
+                                  )
                               ],
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            const Divider(
+                              height: 20,
+                              color: greyColor,
                             ),
                           ],
                         ),

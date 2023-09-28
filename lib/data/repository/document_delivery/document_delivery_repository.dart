@@ -46,4 +46,7 @@ abstract class DocumentDeliveryRepository {
   Future delete(String id);
 
   Future<SubmitDocumentDeliveryModel> submit(String id);
+
+  Future<bool> cancel(dynamic id, String? notes);
+
 }
