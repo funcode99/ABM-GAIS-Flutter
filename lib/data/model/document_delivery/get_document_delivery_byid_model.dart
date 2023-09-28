@@ -87,7 +87,8 @@ class Data {
       num? idSite, 
       String? subject, 
       String? attachment, 
-      String? remarks, 
+      String? attachmentPath,
+      String? remarks,
       num? codeStatusDoc, 
       String? createdAt, 
       String? createdBy, 
@@ -126,6 +127,7 @@ class Data {
     _idSite = idSite;
     _subject = subject;
     _attachment = attachment;
+    _attachmentPath = attachmentPath;
     _remarks = remarks;
     _codeStatusDoc = codeStatusDoc;
     _createdAt = createdAt;
@@ -168,6 +170,7 @@ class Data {
     _idSite = json['id_site'];
     _subject = json['subject'];
     _attachment = json['attachment'].toString();
+    _attachmentPath = json['attachment_path'].toString();
     _remarks = json['remarks'];
     _codeStatusDoc = json['code_status_doc'];
     _createdAt = json['created_at'];
@@ -208,6 +211,7 @@ class Data {
   num? _idSite;
   String? _subject;
   String? _attachment;
+  String? _attachmentPath;
   String? _remarks;
   num? _codeStatusDoc;
   String? _createdAt;
@@ -247,6 +251,7 @@ Data copyWith({  num? id,
   num? idSite,
   String? subject,
   String? attachment,
+  String? attachmentPath,
   String? remarks,
   num? codeStatusDoc,
   String? createdAt,
@@ -286,6 +291,7 @@ Data copyWith({  num? id,
   idSite: idSite ?? _idSite,
   subject: subject ?? _subject,
   attachment: attachment ?? _attachment,
+  attachmentPath: attachmentPath ?? _attachmentPath,
   remarks: remarks ?? _remarks,
   codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
   createdAt: createdAt ?? _createdAt,
@@ -326,6 +332,7 @@ Data copyWith({  num? id,
   num? get idSite => _idSite;
   String? get subject => _subject;
   String? get attachment => _attachment;
+  String? get attachmentPath => _attachmentPath;
   String? get remarks => _remarks;
   num? get codeStatusDoc => _codeStatusDoc;
   String? get createdAt => _createdAt;
@@ -368,6 +375,7 @@ Data copyWith({  num? id,
     map['id_site'] = _idSite;
     map['subject'] = _subject;
     map['attachment'] = _attachment;
+    map['attachment_path'] = _attachmentPath;
     map['remarks'] = _remarks;
     map['code_status_doc'] = _codeStatusDoc;
     map['created_at'] = _createdAt;

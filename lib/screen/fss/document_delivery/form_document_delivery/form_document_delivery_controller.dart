@@ -39,6 +39,7 @@ class FormDocumentDeliveryController extends BaseController {
   String? receiverCompany;
   String? receiverSite;
   String? status;
+  String? attachmentPath;
   File? gettedFile;
 
   bool isEdit = false;
@@ -118,6 +119,7 @@ class FormDocumentDeliveryController extends BaseController {
         receivedBy.text = value.data?.first.receiverName ?? "";
         codeStatusDoc = value.data?.first.codeStatusDoc?.toString();
         status = value.data?.first.status?.toString();
+        attachmentPath = value.data?.first.attachmentPath?.toString();
         receiverSite = value.data?.first.nameSiteReceiver ?? "";
         receiverCompany = value.data?.first.nameCompanyReceiver ?? "";
         senderCompanyID = value.data?.first.idCompany?.toString();

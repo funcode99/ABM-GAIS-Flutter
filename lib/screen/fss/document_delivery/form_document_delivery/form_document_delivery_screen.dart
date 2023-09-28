@@ -15,6 +15,7 @@ import 'package:gais/util/color/color_util.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FormDocumentDeliveryScreen extends StatelessWidget {
   const FormDocumentDeliveryScreen({Key? key}) : super(key: key);
@@ -266,6 +267,32 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   readOnly: true,
                                 ),
                                 const SizedBox(height: 8),
+                                CustomDropDownFormField(
+                                  items: controller.receiverList
+                                      .map((e) => DropdownMenuItem(
+                                    value: e.id.toString(),
+                                    onTap: () {
+                                      controller.location.text = e.siteName.toString();
+                                      controller.company.text = e.companyName.toString();
+                                      controller.receiverSiteID = e.idSite.toString();
+                                      controller.receiverCompanyID = e.idCompany?.toString();
+                                      controller.receiverID = e.id?.toString();
+                                      controller.update();
+                                    },
+                                    child: Text(e.employeeName.toString()),
+                                  ))
+                                      .toList(),
+                                  label: "Receiver",
+                                  hintText: "Receiver",
+                                  isRequired: true,
+                                  readOnly: true,
+                                  selectedItem: controller.receiverName,
+                                  value: controller.selectedReceiver,
+                                  onChanged: (value) {
+                                    controller.selectedReceiver = value;
+                                    controller.update();
+                                  },
+                                ),
                                 const SizedBox(height: 8),
                                 CustomDropDownFormField(
                                   label: "Receiver Company",
@@ -277,7 +304,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                     child: Text(e.companyName.toString()),
                                   ))
                                       .toList(),
-                                  readOnly: !controller.isEdit,
+                                  readOnly: true,
                                   selectedItem: controller.receiverCompany,
                                   value: controller.receiverCompanyID.toString(),
                                   onChanged: (value) {
@@ -298,7 +325,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   ))
                                       .toList(),
                                   value: controller.receiverSiteID.toString(),
-                                  readOnly: !controller.isEdit,
+                                  readOnly: true,
                                   selectedItem: controller.receiverSite,
                                   onChanged: (value) {
                                     controller.receiverSiteID = value;
@@ -307,41 +334,45 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   },
                                 ),
                                 const SizedBox(height: 8),
-                                CustomDropDownFormField(
-                                  items: controller.receiverList
-                                      .map((e) => DropdownMenuItem(
-                                    value: e.id.toString(),
-                                    onTap: () {
-                                      controller.location.text = e.siteName.toString();
-                                      controller.company.text = e.companyName.toString();
-                                      controller.receiverSiteID = e.idSite.toString();
-                                      controller.receiverCompanyID = e.idCompany?.toString();
-                                      controller.receiverID = e.id?.toString();
-                                      controller.update();
-                                    },
-                                    child: Text(e.employeeName.toString()),
-                                  ))
-                                      .toList(),
-                                  label: "Receiver",
-                                  hintText: "Receiver",
-                                  isRequired: true,
-                                  readOnly: !controller.isEdit,
-                                  selectedItem: controller.receiverName,
-                                  value: controller.selectedReceiver,
-                                  onChanged: (value) {
-                                    controller.selectedReceiver = value;
-                                    controller.update();
-                                  },
-                                ),
-                                const SizedBox(height: 8),
                                 CustomTextFormField(
                                   controller: controller.subjectDocument,
                                   label: "Subject Document",
                                   isRequired: true,
-                                  readOnly: !controller.isEdit,
+                                  readOnly: true,
                                 ),
                                 const SizedBox(height: 8),
-                                CustomTextFormField(
+                                if(!controller.isEdit)
+                                  CustomTextFormField(
+                                  readOnly: true,
+                                  backgroundColor: neutralColor,
+                                  controller: controller.attachment,
+                                  label: "Attachment (Optional)".tr,
+                                  onTap: () async {
+                                    String path = controller.attachmentPath ?? "";
+                                    print("PATHH $path");
+                                    if (path.toString()
+                                        .isImageFileName) {
+                                      Get.dialog(Dialog(
+                                        child: Padding(
+                                          padding: const EdgeInsets
+                                              .symmetric(
+                                              horizontal: 16,
+                                              vertical: 16),
+                                          child: Image.network(
+                                              path.toString()),
+                                        ),
+                                      ));
+                                    } else {
+                                      if (!await launchUrl(Uri.parse(
+                                          path.toString()))) {
+                                        throw Exception(
+                                            'Could not launch ${path.toString()}');
+                                      }
+                                    }
+                                  },
+                                ),
+                                if(controller.isEdit)
+                                  CustomTextFormField(
                                   controller: controller.attachment,
                                   label: "Attachment (Optional)",
                                   suffixIcon: !controller.isEdit ? null : const Icon(Icons.upload),
