@@ -4,12 +4,19 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/customiconbutton.dart';
+import 'package:gais/reusable/customstatuscontainer.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/list/approval_log_list.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/document_delivery/form_document_delivery/form_document_delivery_controller.dart';
+import 'package:gais/util/color/color_util.dart';
+import 'package:gais/util/enum/status_enum.dart';
+import 'package:gais/util/enum/tab_enum.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FormDocumentDeliveryScreen extends StatelessWidget {
   const FormDocumentDeliveryScreen({Key? key}) : super(key: key);
@@ -39,179 +46,110 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: SliverAppBarDelegate(
-                      minHeight: 140,
+                      minHeight: controller.codeStatusDoc.toString() == "4" ? 140 : 180,
                       maxHeight: 32,
                       child: Container(
                         color: whiteColor,
                         child: Column(
                           children: [
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(8),
-                                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                                      decoration: const BoxDecoration(
-                                          color: successColor,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8),
-                                            bottomLeft: Radius.circular(24),
-                                            bottomRight: Radius.circular(8),
-                                          )),
-                                      child: const Row(
-                                        children: [
-                                          Text("Created", style: TextStyle(color: whiteColor)),
-                                          Icon(
-                                            Icons.check_circle_outline_sharp,
-                                            color: whiteColor,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8),
-                                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                                        decoration: BoxDecoration(
-                                            color: controller.isReceived ? successColor : whiteColor,
-                                            borderRadius: const BorderRadius.only(
-                                              topLeft: Radius.circular(8),
-                                              topRight: Radius.circular(8),
-                                              bottomLeft: Radius.circular(24),
-                                              bottomRight: Radius.circular(8),
-                                            ),
-                                            border: Border.all(color: controller.isReceived ? Colors.transparent : blackColor)),
-                                        child: Row(
-                                          children: [
-                                            Text("Received", style: TextStyle(color: controller.isReceived ? whiteColor : blackColor)),
-                                            controller.isReceived
-                                                ? const Icon(
-                                                    Icons.check_circle_outline_sharp,
-                                                    color: whiteColor,
-                                                  )
-                                                : Container()
-                                          ],
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        if (controller.isEdit == true) {
-                                          controller.codeStatusDoc = "1";
-                                          controller.isReceived = true;
-                                        }
-                                        controller.update();
-                                      },
-                                    ),
-                                    GestureDetector(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8),
-                                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                                        decoration: BoxDecoration(
-                                            color: controller.isDelivering ? successColor : whiteColor,
-                                            borderRadius: const BorderRadius.only(
-                                              topLeft: Radius.circular(8),
-                                              topRight: Radius.circular(8),
-                                              bottomLeft: Radius.circular(24),
-                                              bottomRight: Radius.circular(8),
-                                            ),
-                                            border: Border.all(color: controller.isDelivering ? Colors.transparent : blackColor)),
-                                        child: Row(
-                                          children: [
-                                            Text("Delivering", style: TextStyle(color: controller.isDelivering ? whiteColor : blackColor)),
-                                            controller.isDelivering
-                                                ? const Icon(
-                                                    Icons.check_circle_outline_sharp,
-                                                    color: whiteColor,
-                                                  )
-                                                : Container()
-                                          ],
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        if (controller.isEdit == true && controller.codeStatusDoc == "1") {
-                                          controller.codeStatusDoc = "2";
-                                          controller.isDelivering = true;
-                                        }
-                                        controller.update();
-                                      },
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.all(8),
-                                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                                      decoration: BoxDecoration(
-                                          color: controller.isDelivered ? successColor : whiteColor,
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8),
-                                            bottomLeft: Radius.circular(24),
-                                            bottomRight: Radius.circular(8),
-                                          ),
-                                          border: Border.all(color: controller.isDelivered ? Colors.transparent : blackColor)),
-                                      child: Row(
-                                        children: [
-                                          Text("Delivered", style: TextStyle(color: controller.isDelivered ? whiteColor : blackColor)),
-                                          controller.isDelivered
-                                              ? const Icon(
-                                                  Icons.check_circle_outline_sharp,
-                                                  color: whiteColor,
-                                                )
-                                              : Container()
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  if(controller.status!=null)
+                                    CustomStatusContainer(
+                                      backgroundColor: ColorUtil.getStatusColorByText("${controller.status}"),
+                                      status: "${controller.status}",
+                                    )
+                                ],
                               ),
                             ),
                             Text(
                               controller.noDocument.toString(),
-                              style: appTitle,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
                               textAlign: TextAlign.center,
                             ),
+                            const SizedBox(
+                              height: 16,
+                            ),
                             Row(
-                              mainAxisAlignment: !controller.isEdit ? MainAxisAlignment.center : MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                CustomFilledButton(
-                                  color: whiteColor,
-                                  width: Get.width / 4,
-                                  borderColor: infoColor,
-                                  fontColor: infoColor,
-                                  title: controller.isEdit ? "Cancel" : "Edit",
+                                if((controller.codeStatusDoc.toString() == "0" || controller.codeStatusDoc.toString() == "1") && (controller.isSender || controller.isSuperadmin || controller.isReceptionist))
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      controller.openCancelDialog();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size(75, 30),
+                                        backgroundColor: redColor),
+                                    child: Text("Cancel".tr),
+                                  ),
+                                if((controller.codeStatusDoc.toString() == "0" || controller.codeStatusDoc.toString() == "1") && (controller.isSender || controller.isSuperadmin || controller.isReceptionist))
+                                  OutlinedButton(
                                   onPressed: () {
-                                    if (controller.codeStatusDoc != "2") {
-                                      controller.isEdit = controller.isEdit == false ? true : false;
-                                      !controller.isEdit ? controller.fetchEdit() : null;
-                                      controller.update();
-                                    } else {
-                                      Get.showSnackbar(const GetSnackBar(
-                                        icon: Icon(
-                                          Icons.error,
-                                          color: Colors.white,
-                                        ),
-                                        message: "Unable to edit document",
-                                        isDismissible: true,
-                                        duration: Duration(seconds: 3),
-                                        backgroundColor: Colors.red,
-                                      ));
-                                    }
+                                    controller.isEdit = !controller.isEdit;
+                                    controller.update();
                                   },
+                                  style: OutlinedButton.styleFrom(
+                                    minimumSize: const Size(75, 30),
+                                  ),
+                                  child: controller.isEdit
+                                      ? Text("Cancel".tr)
+                                      : Text("Edit".tr),
                                 ),
-                                controller.isEdit
-                                    ? CustomFilledButton(
-                                        color: successColor,
-                                        width: Get.width / 4,
-                                        title: "Save",
-                                        onPressed: () {
-                                          if (controller.formKey.currentState?.validate() == true) {
-                                            controller.saveDocument();
-                                          }
-                                        },
-                                      )
-                                    : Container(),
+                                if(controller.isEdit)
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      controller.saveDocument();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size(75, 30),
+                                        backgroundColor: orangeColor),
+                                    child: Text("Save".tr),
+                                  ),
+                                if((controller.codeStatusDoc.toString() == "0") && (controller.isSender || controller.isSuperadmin || controller.isReceptionist))
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      controller.receivedDocument();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size(75, 30),
+                                        backgroundColor: successColor),
+                                    child: Text("Received".tr),
+                                  ),
+                                if((controller.codeStatusDoc.toString() == "1") && (controller.isSuperadmin || controller.isReceptionist))
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      controller.deliveringDocument();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size(75, 30),
+                                        backgroundColor: successColor),
+                                    child: Text("Delivering".tr),
+                                  ),
+                                if((controller.codeStatusDoc.toString() == "2") && controller.isReceiver)
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      controller.deliveredDocument();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size(75, 30),
+                                        backgroundColor: successColor),
+                                    child: Text("Delivered".tr),
+                                  )
                               ],
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            const Divider(
+                              height: 20,
+                              color: greyColor,
                             ),
                           ],
                         ),
@@ -262,23 +200,85 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                       minHeight: 50,
                       maxHeight: 32,
                       child: Container(
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              blurRadius: 7,
+                              spreadRadius: 1,
+                              offset: const Offset(0, 4),
+                            )
+                          ],
                           color: infoColor,
-                          borderRadius: BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(8),
+                              topLeft: Radius.circular(8)),
                         ),
                         child: Row(
                           children: [
-                            Container(
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.only(top: 10, left: 5),
-                              width: 100,
-                              height: 50,
-                              decoration: const BoxDecoration(
-                                color: whiteColor,
-                                borderRadius: BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
-                                gradient: LinearGradient(stops: [0.1, 0], colors: [blackColor, whiteColor]),
+                            GestureDetector(
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: const EdgeInsets.only(top: 10, left: 5),
+                                width: 100,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: controller.selectedTab ==
+                                      TabEnum.detail
+                                      ? whiteColor
+                                      : neutralColor,
+                                  borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(8),
+                                      topLeft: Radius.circular(8)),
+                                  gradient: LinearGradient(stops: const [
+                                    0.1,
+                                    0
+                                  ], colors: [
+                                    controller.selectedTab == TabEnum.detail
+                                        ? blackColor
+                                        : whiteColor,
+                                    Colors.white
+                                  ]),
+                                ),
+                                child: const Text("Detail"),
                               ),
-                              child: const Text("Detail"),
+                              onTap: () {
+                                controller.selectedTab = TabEnum.detail;
+                                controller.update();
+                              },
+                            ),
+                            GestureDetector(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                alignment: Alignment.center,
+                                margin: const EdgeInsets.only(
+                                    top: 10, left: 5),
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: controller.selectedTab ==
+                                      TabEnum.approval
+                                      ? whiteColor
+                                      : neutralColor,
+                                  borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(8),
+                                      topLeft: Radius.circular(8)),
+                                  gradient: LinearGradient(stops: const [
+                                    0.1,
+                                    0
+                                  ], colors: [
+                                    controller.selectedTab ==
+                                        TabEnum.approval
+                                        ? blackColor
+                                        : whiteColor,
+                                    Colors.white
+                                  ]),
+                                ),
+                                child: const Text("Log"),
+                              ),
+                              onTap: () {
+                                controller.selectedTab = TabEnum.approval;
+                                controller.update();
+                              },
                             ),
                           ],
                         ),
@@ -287,9 +287,9 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                   ),
                   SliverList(
                     // SliverToBoxAdapter(
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        return Form(
+                    delegate: SliverChildListDelegate([
+                      if(controller.selectedTab == TabEnum.detail)
+                        Form(
                           key: controller.formKey,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 10),
@@ -304,6 +304,32 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   readOnly: true,
                                 ),
                                 const SizedBox(height: 8),
+                                CustomDropDownFormField(
+                                  items: controller.receiverList
+                                      .map((e) => DropdownMenuItem(
+                                    value: e.id.toString(),
+                                    onTap: () {
+                                      controller.location.text = e.siteName.toString();
+                                      controller.company.text = e.companyName.toString();
+                                      controller.receiverSiteID = e.idSite.toString();
+                                      controller.receiverCompanyID = e.idCompany?.toString();
+                                      controller.receiverID = e.id?.toString();
+                                      controller.update();
+                                    },
+                                    child: Text(e.employeeName.toString()),
+                                  ))
+                                      .toList(),
+                                  label: "Receiver",
+                                  hintText: "Receiver",
+                                  isRequired: true,
+                                  readOnly: true,
+                                  selectedItem: controller.receiverName,
+                                  value: controller.selectedReceiver,
+                                  onChanged: (value) {
+                                    controller.selectedReceiver = value;
+                                    controller.update();
+                                  },
+                                ),
                                 const SizedBox(height: 8),
                                 CustomDropDownFormField(
                                   label: "Receiver Company",
@@ -311,11 +337,11 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   isRequired: true,
                                   items: controller.companyList
                                       .map((e) => DropdownMenuItem(
-                                            value: e.id.toString(),
-                                            child: Text(e.companyName.toString()),
-                                          ))
+                                    value: e.id.toString(),
+                                    child: Text(e.companyName.toString()),
+                                  ))
                                       .toList(),
-                                  readOnly: !controller.isEdit,
+                                  readOnly: true,
                                   selectedItem: controller.receiverCompany,
                                   value: controller.receiverCompanyID.toString(),
                                   onChanged: (value) {
@@ -331,12 +357,12 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   isRequired: true,
                                   items: controller.locationList
                                       .map((e) => DropdownMenuItem(
-                                            value: e.id.toString(),
-                                            child: Text(e.siteName.toString()),
-                                          ))
+                                    value: e.id.toString(),
+                                    child: Text(e.siteName.toString()),
+                                  ))
                                       .toList(),
                                   value: controller.receiverSiteID.toString(),
-                                  readOnly: !controller.isEdit,
+                                  readOnly: true,
                                   selectedItem: controller.receiverSite,
                                   onChanged: (value) {
                                     controller.receiverSiteID = value;
@@ -345,41 +371,45 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   },
                                 ),
                                 const SizedBox(height: 8),
-                                CustomDropDownFormField(
-                                  items: controller.receiverList
-                                      .map((e) => DropdownMenuItem(
-                                            value: e.id.toString(),
-                                            onTap: () {
-                                              controller.location.text = e.siteName.toString();
-                                              controller.company.text = e.companyName.toString();
-                                              controller.receiverSiteID = e.idSite.toString();
-                                              controller.receiverCompanyID = e.idCompany?.toString();
-                                              controller.receiverID = e.id?.toString();
-                                              controller.update();
-                                            },
-                                            child: Text(e.employeeName.toString()),
-                                          ))
-                                      .toList(),
-                                  label: "Receiver",
-                                  hintText: "Receiver",
-                                  isRequired: true,
-                                  readOnly: !controller.isEdit,
-                                  selectedItem: controller.receiverName,
-                                  value: controller.selectedReceiver,
-                                  onChanged: (value) {
-                                    controller.selectedReceiver = value;
-                                    controller.update();
-                                  },
-                                ),
-                                const SizedBox(height: 8),
                                 CustomTextFormField(
                                   controller: controller.subjectDocument,
                                   label: "Subject Document",
                                   isRequired: true,
-                                  readOnly: !controller.isEdit,
+                                  readOnly: true,
                                 ),
                                 const SizedBox(height: 8),
-                                CustomTextFormField(
+                                if(!controller.isEdit)
+                                  CustomTextFormField(
+                                  readOnly: true,
+                                  backgroundColor: neutralColor,
+                                  controller: controller.attachment,
+                                  label: "Attachment (Optional)".tr,
+                                  onTap: () async {
+                                    String path = controller.attachmentPath ?? "";
+                                    print("PATHH $path");
+                                    if (path.toString()
+                                        .isImageFileName) {
+                                      Get.dialog(Dialog(
+                                        child: Padding(
+                                          padding: const EdgeInsets
+                                              .symmetric(
+                                              horizontal: 16,
+                                              vertical: 16),
+                                          child: Image.network(
+                                              path.toString()),
+                                        ),
+                                      ));
+                                    } else {
+                                      if (!await launchUrl(Uri.parse(
+                                          path.toString()))) {
+                                        throw Exception(
+                                            'Could not launch ${path.toString()}');
+                                      }
+                                    }
+                                  },
+                                ),
+                                if(controller.isEdit)
+                                  CustomTextFormField(
                                   controller: controller.attachment,
                                   label: "Attachment (Optional)",
                                   suffixIcon: !controller.isEdit ? null : const Icon(Icons.upload),
@@ -398,10 +428,13 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                        );
-                      },
-                      childCount: 1, // 1000 list items
-                    ),
+                        ),
+                      if(controller.selectedTab == TabEnum.approval)
+                        controller.listLogApproval.isEmpty
+                            ? const SizedBox()
+                            : ApprovalLogList(list: controller.listLogApproval, waitingApprovalValue: 0,)
+
+                    ]),
                   ),
                 ],
               ),

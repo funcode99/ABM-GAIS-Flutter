@@ -14,12 +14,17 @@ class RequestAtkModel {
   String? noAtkRequest;
   String? remarks;
   String? notes;
+  String? notesDelivered;
+  String? notesRejected;
   dynamic codeStatusDoc;
   String? status;
   String? createdAt;
-  String? createdBy;
   String? updatedAt;
-  String? updatedBy;
+  dynamic createdBy;
+  dynamic updatedBy;
+  dynamic approvedBy;
+  dynamic rejectedBy;
+  dynamic deliveredBy;
   String? employeeName;
   String? warehouseName;
   String? departementName;
@@ -31,8 +36,11 @@ class RequestAtkModel {
   List<RequestATKDetailModel>? arrayDetail;
   String? approvedAt;
   String? deliveredAt;
+  String? rejectedAt;
   String? nameApproved;
   String? nameDelivered;
+  String? nameRejected;
+
 
   RequestAtkModel(
       {
@@ -45,6 +53,8 @@ class RequestAtkModel {
         this.noAtkRequest,
         this.remarks,
         this.notes,
+        this.notesDelivered,
+        this.notesRejected,
         this.codeStatusDoc,
         this.status,
         this.createdAt,
@@ -63,7 +73,12 @@ class RequestAtkModel {
         this.approvedAt,
         this.nameApproved,
         this.nameDelivered,
+        this.nameRejected,
         this.deliveredAt,
+        this.approvedBy,
+        this.rejectedBy,
+        this.deliveredBy,
+        this.rejectedAt,
 });
 
   static RequestAtkModel fromJsonModel(Object? json) =>

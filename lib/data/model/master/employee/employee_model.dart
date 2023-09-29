@@ -21,7 +21,7 @@ class EmployeeModel extends Equatable{
   int? idSite;
   dynamic idJobBand;
   String? foto;
-  String? fotoPath;
+  dynamic fotoPath;
   String? createdAt;
   dynamic createdBy;
   String? updatedAt;

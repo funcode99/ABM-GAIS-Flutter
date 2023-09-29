@@ -2,9 +2,17 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/approval_log_model.dart';
+import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
-import 'package:gais/data/model/reference/get_employee_bysite_model.dart' as receiver;
+import 'package:gais/data/model/reference/get_employee_bysite_model.dart'
+    as receiver;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
+import 'package:gais/data/storage_core.dart';
+import 'package:gais/reusable/dialog/cancel_dialog.dart';
+import 'package:gais/util/enum/role_enum.dart';
+import 'package:gais/util/enum/tab_enum.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -35,6 +43,8 @@ class FormDocumentDeliveryController extends BaseController {
   String? noDocument;
   String? receiverCompany;
   String? receiverSite;
+  String? status;
+  String? attachmentPath;
   File? gettedFile;
 
   bool isEdit = false;
@@ -44,12 +54,20 @@ class FormDocumentDeliveryController extends BaseController {
   bool loadCompany = false;
   bool loadLocation = false;
   bool loadReceiver = false;
+  bool isSuperadmin = false;
+  bool isReceptionist = false;
+
+  bool isSender = false;
+  bool isReceiver = false;
+  String employeeId = "";
 
   List<receiver.Data> receiverList = [];
   List<comp.Data> companyList = [];
   List<site.Data> locationList = [];
 
-
+  TabEnum selectedTab = TabEnum.detail;
+  List<ApprovalLogModel> listLogApproval = [];
+  ApprovalModel? approvalModel;
   @override
   void onInit() {
     super.onInit();
@@ -60,12 +78,18 @@ class FormDocumentDeliveryController extends BaseController {
   Future<void> fetchList() async {
     loadCompany = true;
     companyList = [];
+
+    String codeRole = await storage.readString(StorageCore.codeRole);
+    isSuperadmin = codeRole == RoleEnum.superAdmin.value;
+    isReceptionist = codeRole == RoleEnum.receptionist.value;
+
     try {
       await storage.readEmployeeInfo().then((value) {
         sender.text = value.first.employeeName ?? "";
         senderID = value.first.id?.toString();
         senderCompanyID = value.first.idCompany?.toString();
         senderSiteID = value.first.idSite?.toString();
+        employeeId = value.first.id?.toString() ?? "";
       });
 
       await repository.getCompanyList().then((value) {
@@ -75,7 +99,6 @@ class FormDocumentDeliveryController extends BaseController {
       await repository.getSiteList().then((value) {
         locationList.addAll(value.data?.toSet().toList() ?? []);
       });
-
     } catch (e, i) {
       e.printError();
       i.printError();
@@ -104,12 +127,18 @@ class FormDocumentDeliveryController extends BaseController {
         company.text = value.data?.first.nameCompanyReceiver ?? "";
         receiverCompanyID = value.data?.first.idCompanyReceiver?.toString();
         subjectDocument.text = value.data?.first.subject ?? "";
-        attachment.text = (value.data?.first.attachment != "{}" ? value.data?.first.attachment :  "no attachment").toString();
+        attachment.text = (value.data?.first.attachment != "{}"
+                ? value.data?.first.attachment
+                : "no attachment")
+            .toString();
         remarks.text = value.data?.first.remarks ?? "";
         tempDate = DateTime.parse(value.data?.first.createdAt ?? "");
         createdDate.text = dateFormat.format(tempDate);
         createdBy.text = value.data?.first.senderName ?? "";
+        receivedBy.text = value.data?.first.receiverName ?? "";
         codeStatusDoc = value.data?.first.codeStatusDoc?.toString();
+        status = value.data?.first.status?.toString();
+        attachmentPath = value.data?.first.attachmentPath?.toString();
         receiverSite = value.data?.first.nameSiteReceiver ?? "";
         receiverCompany = value.data?.first.nameCompanyReceiver ?? "";
         senderCompanyID = value.data?.first.idCompany?.toString();
@@ -124,14 +153,59 @@ class FormDocumentDeliveryController extends BaseController {
           isDelivering = true;
           isDelivered = true;
         }
+
+        isSender = employeeId == senderID;
+        isReceiver = employeeId == receiverID;
+
+        List<ApprovalLogModel> result = [];
+        if (value.data?.first.nameCreated != null) {
+          result.add(ApprovalLogModel(
+              codeStatus: codeStatusDoc.toString().toInt(),
+              notes: null,
+              date: value.data?.first.createdAt,
+              text: "Created by : ${value.data?.first.nameCreated}"));
+        }
+
+        if (value.data?.first.nameReceived != null) {
+          result.add(ApprovalLogModel(
+              codeStatus: codeStatusDoc.toString().toInt(),
+              notes: null,
+              date: value.data?.first.receivedAt,
+              text: "Received by : ${value.data?.first.nameReceived}"));
+        }
+
+        if (value.data?.first.nameDelivering != null) {
+          result.add(ApprovalLogModel(
+              codeStatus: codeStatusDoc.toString().toInt(),
+              notes: null,
+              date: value.data?.first.deliveringAt,
+              text: "Delivering by : ${value.data?.first.nameDelivering}"));
+        }
+
+        if (value.data?.first.nameDelivered != null) {
+          result.add(ApprovalLogModel(
+              codeStatus: codeStatusDoc.toString().toInt(),
+              notes: null,
+              date: value.data?.first.deliveredAt,
+              text: "Delivered by : ${value.data?.first.nameDelivered}"));
+        }
+
+        if (value.data?.first.nameCancelled != null) {
+          result.add(ApprovalLogModel(
+              codeStatus: codeStatusDoc.toString().toInt(),
+              notes: null,
+              date: value.data?.first.cancelledAt,
+              text: "Cancelled by : ${value.data?.first.nameCancelled}"));
+        }
+
+        listLogApproval.addAll(result);
       });
-    } catch (e,i) {
+    } catch (e, i) {
       e.printError();
       i.printError();
     }
     fetchReceiverList(receiverSiteID!);
     update();
-
   }
 
   Future<void> fetchLocationList(String id) async {
@@ -215,6 +289,221 @@ class FormDocumentDeliveryController extends BaseController {
     update();
   }
 
+  Future<void> cancelDocument() async {
+    try {
+      await documentDelivery
+          .cancel(
+        ddID!.toString(),
+        approvalModel?.notes
+      )
+          .then((value) {
+            if(value){
+              fetchEdit();
+              Get.showSnackbar(const GetSnackBar(
+                icon: Icon(
+                  Icons.error,
+                  color: Colors.white,
+                ),
+                message: "Cancel Document Success",
+                isDismissible: true,
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.green,
+              ));
+            }else{
+              Get.showSnackbar(
+                const GetSnackBar(
+                  icon: Icon(
+                    Icons.error,
+                    color: Colors.white,
+                  ),
+                  message: 'Cancel Document Failed',
+                  isDismissible: true,
+                  duration: Duration(seconds: 3),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+
+      });
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Cancel Document Failed',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+    update();
+  }
+  Future<void> receivedDocument() async {
+    try {
+      await documentDelivery
+          .received(
+        ddID!.toString()
+      )
+          .then((value) {
+            if(value){
+              fetchEdit();
+              Get.showSnackbar(const GetSnackBar(
+                icon: Icon(
+                  Icons.error,
+                  color: Colors.white,
+                ),
+                message: "Received Document Success",
+                isDismissible: true,
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.green,
+              ));
+            }else{
+              Get.showSnackbar(
+                const GetSnackBar(
+                  icon: Icon(
+                    Icons.error,
+                    color: Colors.white,
+                  ),
+                  message: 'Received Document Failed',
+                  isDismissible: true,
+                  duration: Duration(seconds: 3),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+
+      });
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Received Document Failed',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+    update();
+  }
+  Future<void> deliveringDocument() async {
+    try {
+      await documentDelivery
+          .delivering(
+        ddID!.toString()
+      )
+          .then((value) {
+            if(value){
+              fetchEdit();
+              Get.showSnackbar(const GetSnackBar(
+                icon: Icon(
+                  Icons.error,
+                  color: Colors.white,
+                ),
+                message: "Delivering Document Success",
+                isDismissible: true,
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.green,
+              ));
+            }else{
+              Get.showSnackbar(
+                const GetSnackBar(
+                  icon: Icon(
+                    Icons.error,
+                    color: Colors.white,
+                  ),
+                  message: 'Delivering Document Failed',
+                  isDismissible: true,
+                  duration: Duration(seconds: 3),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+
+      });
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Delivering Document Failed',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+    update();
+  }
+  Future<void> deliveredDocument() async {
+    try {
+      await documentDelivery
+          .delivered(
+        ddID!.toString()
+      )
+          .then((value) {
+            if(value){
+              fetchEdit();
+              Get.showSnackbar(const GetSnackBar(
+                icon: Icon(
+                  Icons.error,
+                  color: Colors.white,
+                ),
+                message: "Delivered Document Success",
+                isDismissible: true,
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.green,
+              ));
+            }else{
+              Get.showSnackbar(
+                const GetSnackBar(
+                  icon: Icon(
+                    Icons.error,
+                    color: Colors.white,
+                  ),
+                  message: 'Delivered Document Failed',
+                  isDismissible: true,
+                  duration: Duration(seconds: 3),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+
+      });
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Delivered Document Failed',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+    update();
+  }
+
+
   getSingleFile() async {
     // Pick an file
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -226,6 +515,15 @@ class FormDocumentDeliveryController extends BaseController {
       update();
     } else {
       // User canceled the picker
+    }
+  }
+
+  openCancelDialog() async {
+    ApprovalModel? result = await Get.dialog(const CancelDialog());
+
+    if (result != null) {
+      approvalModel =result;
+      cancelDocument();
     }
   }
 }

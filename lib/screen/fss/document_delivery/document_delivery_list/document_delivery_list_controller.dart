@@ -3,12 +3,17 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/data/model/document_delivery/get_document_delivery_model.dart' as dd;
 import 'package:gais/data/model/reference/get_status_document_model.dart' as status;
+import 'package:gais/data/storage_core.dart';
+import 'package:gais/util/enum/role_enum.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class DocumentDeliveryListController extends BaseController {
   bool isLoading = false;
+  bool isSuperadmin = false;
+  bool isReceptionist = false;
   int? requestorID;
+  String employeeId = "";
   String? requestorName;
 
   final formKey = GlobalKey<FormState>();
@@ -58,9 +63,14 @@ class DocumentDeliveryListController extends BaseController {
   }
 
   Future<void> fetchData() async {
+    String codeRole = await storage.readString(StorageCore.codeRole);
+    isSuperadmin = codeRole == RoleEnum.superAdmin.value;
+    isReceptionist = codeRole == RoleEnum.receptionist.value;
+
     await storage.readEmployeeInfo().then((value) {
       requestorID = value.first.id?.toInt();
       requestorName = value.first.employeeName;
+      employeeId = value.first.id?.toString() ?? "";
       update();
     });
 
