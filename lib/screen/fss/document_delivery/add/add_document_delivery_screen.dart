@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
@@ -10,6 +12,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/document_delivery/add/add_document_delivery_controller.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
+
 
 class AddDocumentDeliveryScreen extends StatelessWidget {
   const AddDocumentDeliveryScreen({Key? key}) : super(key: key);
@@ -57,57 +60,106 @@ class AddDocumentDeliveryScreen extends StatelessWidget {
                               readOnly: true,
                             ),
                             const SizedBox(height: 8),
-                            CustomDropDownFormField(
+                            RichText(
+                              text: TextSpan(
+                                text: "Receiver".tr,
+                                style: formlabelTextStyle,
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                      text: "*", style: TextStyle(color: Colors.red)),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 8),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: controller.showReceiverError
+                                      ? Colors.redAccent
+                                      : Colors.black,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: TypeAheadFormField<EmployeeModel>(
+                                  textFieldConfiguration: TextFieldConfiguration(
+                                    controller: controller.autocompleteController,
+                                    autofocus: false,
+                                    style: Theme.of(context).textTheme.titleMedium,
+                                    decoration: InputDecoration(
+                                        isDense: true,
+                                        hintText: "Receiver".tr,
+                                        border: InputBorder.none,
+                                        contentPadding: const EdgeInsets.symmetric(
+                                            horizontal: 4.0, vertical: 4.0),
+                                        errorText: null,
+                                        errorBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                          gapPadding: 0,
+                                        ),
+                                        errorStyle: const TextStyle(height: 0)),
+                                  ),
+                                  suggestionsCallback: (pattern) async {
+                                    final list = await controller.getEmployeeByKeyword(pattern);
+                                    return list;
+                                  },
+                                  itemBuilder: (context, suggestion) {
+                                    return ListTile(
+                                      title: Text("${suggestion.employeeName}"),
+                                      subtitle: Text("${suggestion.email}"),
+                                    );
+                                  },
+                                  onSuggestionSelected: (suggestion) {
+                                    controller.onChangeSelectedReceiver(suggestion.id.toString());
+                                    controller.autocompleteController.text = suggestion.employeeName ?? "";
+                                  },
+                                  debounceDuration:
+                                  const Duration(milliseconds: 1500),
+                                  hideOnLoading: true,
+                                  hideSuggestionsOnKeyboardHide: true,
+                                  keepSuggestionsOnLoading: false,
+                                  minCharsForSuggestions: 1,
+                                  validator: (value) {
+                                    controller.showReceiverError = controller.selectedEmployee == null;
+                                    controller.update();
+
+                                    if (controller.selectedEmployee == null) {
+                                      return "";
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ),
+                            if (controller.showReceiverError)
+                            const Padding(
+                              padding: EdgeInsets.only(left: 10, top: 8),
+                              child: Text(
+                                "This field is required",
+                                style:
+                                TextStyle(color: Colors.redAccent, fontSize: 12),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.company,
                               label: "Receiver Company",
-                              hintText: controller.loadCompany ? "Loading..." : "Receiver Company",
-                              isRequired: true,
-                              items: controller.companyList
-                                  .map((e) => DropdownMenuItem(
-                                        value: e.id.toString(),
-                                        child: Text(e.companyName.toString()),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                controller.receiverCompanyID = value!;
-                                print(value);
-                                controller.fetchLocationList(value);
-                                controller.update();
-                              },
+                              isRequired: false,
+                              readOnly: true,
                             ),
                             const SizedBox(height: 8),
-                            CustomDropDownFormField(
+                            CustomTextFormField(
+                              controller: controller.location,
                               label: "Location",
-                              hintText: controller.loadLocation ? "Loading..." : "Location",
-                              isRequired: true,
-                              items: controller.locationList
-                                  .map((e) => DropdownMenuItem(
-                                        value: e.id.toString(),
-                                        child: Text(e.siteName.toString()),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                controller.receiverSiteID = value;
-                                controller.fetchReceiverList(value.toString());
-                                controller.update();
-                              },
-                            ),
-                            const SizedBox(height: 8),
-                            CustomDropDownFormField(
-                              label: "Receiver",
-                              hintText: controller.loadReceiver ? "Loading..." : "Receiver",
-                              isRequired: true,
-                              items: controller.receiverList
-                                  .map((e) => DropdownMenuItem(
-                                        value: e.id.toString(),
-                                        child: Text(e.employeeName.toString()),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                controller.selectedReceiver = value;
-                                controller.receiverID = value;
-                                print(controller.receiverID);
-                                controller.update();
-                              },
+                              isRequired: false,
+                              readOnly: true,
                             ),
                             const SizedBox(height: 8),
                             CustomTextFormField(

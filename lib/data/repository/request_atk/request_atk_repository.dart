@@ -349,21 +349,34 @@ class RequestATKRepository
             result.add(
                 ApprovalLogModel(
                     codeStatus: requestAtkModel.codeStatusDoc,
-                    notes: requestAtkModel.notes,
+                    notes: requestAtkModel.notesDelivered,
                     date: requestAtkModel.deliveredAt,
                     text: "Delivered by : ${requestAtkModel.nameDelivered}"
                 )
             );
           }
 
-          result.add(
-              ApprovalLogModel(
-                  codeStatus: requestAtkModel.codeStatusDoc,
-                  notes: requestAtkModel.notes,
-                  date: requestAtkModel.approvedAt,
-                  text: "Approved by : ${requestAtkModel.nameApproved}"
-              )
-          );
+          if(requestAtkModel.nameRejected != null){
+            result.add(
+                ApprovalLogModel(
+                    codeStatus: requestAtkModel.codeStatusDoc,
+                    notes: requestAtkModel.notesRejected,
+                    date: requestAtkModel.rejectedAt,
+                    text: "Rejected by : ${requestAtkModel.nameRejected}"
+                )
+            );
+          }
+
+          if(requestAtkModel.nameApproved != null){
+            result.add(
+                ApprovalLogModel(
+                    codeStatus: requestAtkModel.codeStatusDoc,
+                    notes: requestAtkModel.notes,
+                    date: requestAtkModel.approvedAt,
+                    text: "Approved by : ${requestAtkModel.nameApproved}"
+                )
+            );
+          }
         }
       }catch(e){
         print("ERROR PARSE LOG $e");

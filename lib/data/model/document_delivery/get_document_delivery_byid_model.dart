@@ -87,7 +87,8 @@ class Data {
       num? idSite, 
       String? subject, 
       String? attachment, 
-      String? remarks, 
+      String? attachmentPath,
+      String? remarks,
       num? codeStatusDoc, 
       String? createdAt, 
       String? createdBy, 
@@ -96,9 +97,19 @@ class Data {
       dynamic deletedAt, 
       String? noDocumentDelivery, 
       num? idCompanyReceiver, 
-      num? idSiteReceiver, 
-      String? senderName, 
-      String? receiverName, 
+      num? idSiteReceiver,
+      String? nameCreated,
+      String? nameUpdated,
+      String? nameReceived,
+      String? nameDelivering,
+      String? nameDelivered,
+      String? nameCancelled,
+      String? receivedAt,
+      String? deliveringAt,
+      String? deliveredAt,
+      String? cancelledAt,
+      String? senderName,
+      String? receiverName,
       String? nameCompanySender, 
       String? codeCompanySender, 
       String? nameSiteSender, 
@@ -116,6 +127,7 @@ class Data {
     _idSite = idSite;
     _subject = subject;
     _attachment = attachment;
+    _attachmentPath = attachmentPath;
     _remarks = remarks;
     _codeStatusDoc = codeStatusDoc;
     _createdAt = createdAt;
@@ -126,6 +138,16 @@ class Data {
     _noDocumentDelivery = noDocumentDelivery;
     _idCompanyReceiver = idCompanyReceiver;
     _idSiteReceiver = idSiteReceiver;
+    _nameCreated = nameCreated;
+    _nameUpdated = nameUpdated;
+    _nameReceived = nameReceived;
+    _nameDelivering = nameDelivering;
+    _nameDelivered = nameDelivered;
+    _nameCancelled = nameCancelled;
+    _receivedAt = receivedAt;
+    _deliveringAt = deliveringAt;
+    _deliveredAt = deliveredAt;
+    _cancelledAt = cancelledAt;
     _senderName = senderName;
     _receiverName = receiverName;
     _nameCompanySender = nameCompanySender;
@@ -148,6 +170,7 @@ class Data {
     _idSite = json['id_site'];
     _subject = json['subject'];
     _attachment = json['attachment'].toString();
+    _attachmentPath = json['attachment_path'].toString();
     _remarks = json['remarks'];
     _codeStatusDoc = json['code_status_doc'];
     _createdAt = json['created_at'];
@@ -158,6 +181,16 @@ class Data {
     _noDocumentDelivery = json['no_document_delivery'];
     _idCompanyReceiver = json['id_company_receiver'];
     _idSiteReceiver = json['id_site_receiver'];
+    _nameCreated = json['name_created'];
+    _nameUpdated = json['name_updated'];
+    _nameReceived = json['name_received'];
+    _nameDelivering = json['name_delivering'];
+    _nameDelivered = json['name_delivered'];
+    _nameCancelled = json['name_cancelled'];
+    _receivedAt = json['received_at'];
+    _deliveringAt = json['delivering_at'];
+    _deliveredAt = json['delivered_at'];
+    _cancelledAt = json['cancelled_at'];
     _senderName = json['sender_name'];
     _receiverName = json['receiver_name'];
     _nameCompanySender = json['name_company_sender'];
@@ -178,6 +211,7 @@ class Data {
   num? _idSite;
   String? _subject;
   String? _attachment;
+  String? _attachmentPath;
   String? _remarks;
   num? _codeStatusDoc;
   String? _createdAt;
@@ -188,6 +222,16 @@ class Data {
   String? _noDocumentDelivery;
   num? _idCompanyReceiver;
   num? _idSiteReceiver;
+  String? _nameCreated;
+  String? _nameUpdated;
+  String? _nameReceived;
+  String? _nameDelivering;
+  String? _nameDelivered;
+  String? _nameCancelled;
+  String? _receivedAt;
+  String? _deliveringAt;
+  String? _deliveredAt;
+  String? _cancelledAt;
   String? _senderName;
   String? _receiverName;
   String? _nameCompanySender;
@@ -207,6 +251,7 @@ Data copyWith({  num? id,
   num? idSite,
   String? subject,
   String? attachment,
+  String? attachmentPath,
   String? remarks,
   num? codeStatusDoc,
   String? createdAt,
@@ -217,6 +262,16 @@ Data copyWith({  num? id,
   String? noDocumentDelivery,
   num? idCompanyReceiver,
   num? idSiteReceiver,
+  String? nameCreated,
+  String? nameUpdated,
+  String? nameReceived,
+  String? nameDelivering,
+  String? nameDelivered,
+  String? nameCancelled,
+  String? receivedAt,
+  String? deliveringAt,
+  String? deliveredAt,
+  String? cancelledAt,
   String? senderName,
   String? receiverName,
   String? nameCompanySender,
@@ -236,6 +291,7 @@ Data copyWith({  num? id,
   idSite: idSite ?? _idSite,
   subject: subject ?? _subject,
   attachment: attachment ?? _attachment,
+  attachmentPath: attachmentPath ?? _attachmentPath,
   remarks: remarks ?? _remarks,
   codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
   createdAt: createdAt ?? _createdAt,
@@ -246,6 +302,16 @@ Data copyWith({  num? id,
   noDocumentDelivery: noDocumentDelivery ?? _noDocumentDelivery,
   idCompanyReceiver: idCompanyReceiver ?? _idCompanyReceiver,
   idSiteReceiver: idSiteReceiver ?? _idSiteReceiver,
+  nameCreated: nameCreated ?? _nameCreated,
+  nameUpdated: nameUpdated ?? _nameUpdated,
+  nameReceived: nameReceived ?? _nameReceived,
+  nameDelivering: nameDelivering ?? _nameDelivering,
+  nameDelivered: nameDelivered ?? _nameDelivered,
+  nameCancelled: nameCancelled ?? _nameCancelled,
+  receivedAt: receivedAt ?? _receivedAt,
+  deliveringAt: deliveringAt ?? _deliveringAt,
+  deliveredAt: deliveredAt ?? _deliveredAt,
+  cancelledAt: cancelledAt ?? _cancelledAt,
   senderName: senderName ?? _senderName,
   receiverName: receiverName ?? _receiverName,
   nameCompanySender: nameCompanySender ?? _nameCompanySender,
@@ -266,6 +332,7 @@ Data copyWith({  num? id,
   num? get idSite => _idSite;
   String? get subject => _subject;
   String? get attachment => _attachment;
+  String? get attachmentPath => _attachmentPath;
   String? get remarks => _remarks;
   num? get codeStatusDoc => _codeStatusDoc;
   String? get createdAt => _createdAt;
@@ -276,6 +343,16 @@ Data copyWith({  num? id,
   String? get noDocumentDelivery => _noDocumentDelivery;
   num? get idCompanyReceiver => _idCompanyReceiver;
   num? get idSiteReceiver => _idSiteReceiver;
+  String? get nameCreated => _nameCreated;
+  String? get nameUpdated => _nameUpdated;
+  String? get nameReceived => _nameReceived;
+  String? get nameDelivering => _nameDelivering;
+  String? get nameDelivered => _nameDelivered;
+  String? get nameCancelled => _nameCancelled;
+  String? get receivedAt => _receivedAt;
+  String? get deliveringAt => _deliveringAt;
+  String? get deliveredAt => _deliveredAt;
+  String? get cancelledAt => _cancelledAt;
   String? get senderName => _senderName;
   String? get receiverName => _receiverName;
   String? get nameCompanySender => _nameCompanySender;
@@ -298,6 +375,7 @@ Data copyWith({  num? id,
     map['id_site'] = _idSite;
     map['subject'] = _subject;
     map['attachment'] = _attachment;
+    map['attachment_path'] = _attachmentPath;
     map['remarks'] = _remarks;
     map['code_status_doc'] = _codeStatusDoc;
     map['created_at'] = _createdAt;
@@ -308,6 +386,16 @@ Data copyWith({  num? id,
     map['no_document_delivery'] = _noDocumentDelivery;
     map['id_company_receiver'] = _idCompanyReceiver;
     map['id_site_receiver'] = _idSiteReceiver;
+    map['name_created'] = _nameCreated;
+    map['name_updated'] = _nameUpdated;
+    map['name_received'] = _nameReceived;
+    map['name_delivering'] = _nameDelivering;
+    map['name_delivered'] = _nameDelivered;
+    map['name_cancelled'] = _nameCancelled;
+    map['received_at'] = _receivedAt;
+    map['delivering_at'] = _deliveringAt;
+    map['delivered_at'] = _deliveredAt;
+    map['cancelled_at'] = _cancelledAt;
     map['sender_name'] = _senderName;
     map['receiver_name'] = _receiverName;
     map['name_company_sender'] = _nameCompanySender;

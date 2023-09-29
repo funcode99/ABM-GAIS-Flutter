@@ -81,7 +81,7 @@ class RequestATKDetailScreen extends StatelessWidget {
                           controller.selectedItem.value.noAtkRequest ?? "",
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1
+                              .bodyLarge
                               ?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
                           textAlign: TextAlign.center,
                         );

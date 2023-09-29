@@ -10,8 +10,8 @@ StockInATKDetailModel _$StockInATKDetailModelFromJson(
         Map<String, dynamic> json) =>
     StockInATKDetailModel(
       key: json['key'] as String?,
-      id: json['id'] as int?,
-      idStockIn: json['id_stock_in'] as int?,
+      id: json['id'],
+      idStockIn: json['id_stock_in'],
       idWarehouse: json['id_warehouse'] as int?,
       idItem: json['id_item'] as int?,
       idBrand: json['id_brand'] as int?,
