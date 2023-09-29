@@ -92,6 +92,9 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                 if(controller.codeStatusDoc.toString() == "0" || controller.codeStatusDoc.toString() == "1")
                                   OutlinedButton(
                                   onPressed: () {
+                                    if(controller.isEdit){
+                                      controller.saveDocument();
+                                    }
                                     controller.isEdit = !controller.isEdit;
                                     controller.update();
                                   },
@@ -99,7 +102,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                     minimumSize: const Size(75, 30),
                                   ),
                                   child: controller.isEdit
-                                      ? Text("Cancel".tr)
+                                      ? Text("Save".tr)
                                       : Text("Edit".tr),
                                 ),
                                 if(controller.codeStatusDoc.toString() == "0")
