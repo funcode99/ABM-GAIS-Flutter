@@ -128,7 +128,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                 if(controller.codeStatusDoc.toString() == "2")
                                   ElevatedButton(
                                     onPressed: () {
-                                      controller.deliveringDocument();
+                                      controller.deliveredDocument();
                                     },
                                     style: ElevatedButton.styleFrom(
                                         minimumSize: const Size(75, 30),

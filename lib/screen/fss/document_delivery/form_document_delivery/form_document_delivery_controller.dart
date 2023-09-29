@@ -432,6 +432,59 @@ class FormDocumentDeliveryController extends BaseController {
     }
     update();
   }
+  Future<void> deliveredDocument() async {
+    try {
+      await documentDelivery
+          .delivered(
+        ddID!.toString()
+      )
+          .then((value) {
+            if(value){
+              fetchEdit();
+              Get.showSnackbar(const GetSnackBar(
+                icon: Icon(
+                  Icons.error,
+                  color: Colors.white,
+                ),
+                message: "Delivered Document Success",
+                isDismissible: true,
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.green,
+              ));
+            }else{
+              Get.showSnackbar(
+                const GetSnackBar(
+                  icon: Icon(
+                    Icons.error,
+                    color: Colors.white,
+                  ),
+                  message: 'Delivered Document Failed',
+                  isDismissible: true,
+                  duration: Duration(seconds: 3),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+
+      });
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Delivered Document Failed',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+    update();
+  }
 
 
   getSingleFile() async {
