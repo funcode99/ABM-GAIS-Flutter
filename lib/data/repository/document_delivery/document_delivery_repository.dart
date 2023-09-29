@@ -51,4 +51,6 @@ abstract class DocumentDeliveryRepository {
 
   Future<bool> received(dynamic id);
 
+  Future<bool> delivering(dynamic id);
+
 }
