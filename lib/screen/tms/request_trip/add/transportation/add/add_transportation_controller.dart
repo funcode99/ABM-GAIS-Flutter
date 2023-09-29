@@ -92,6 +92,9 @@ class AddTransportationController extends BaseController {
     }
     isLoading = false;
     update();
+    if (isEdit == true) {
+      fetchData();
+    }
   }
 
   void save() {
@@ -100,6 +103,38 @@ class AddTransportationController extends BaseController {
     } else {
       saveData();
     }
+  }
+
+  Future<void> fetchData() async {
+    try {
+      if (tvID != null) {
+        await requestTrip.getTaxiVoucherByid(tvID!).then((value) {
+          travellerName.text = value.data?.first.employeeName.toString() ?? '';
+          transportType = '4';
+          dateFrom = DateTime.parse(value.data!.first.date.toString());
+          fromDate.text = dateFormat.format(dateFrom!);
+          departure = value.data?.first.idDepartureCity.toString();
+          arrival = value.data?.first.idArrivalCity.toString();
+          accountName.text = value.data?.first.accountName.toString() ?? '';
+          remarks.text = value.data?.first.remarks.toString() ?? '';
+        });
+      } else {
+        await requestTrip.getOtherTransportByid(otID!).then((value) {
+          travellerName.text = value.data?.first.employeeName.toString() ?? '';
+          transportType = value.data?.first.idTypeTransportation.toString();
+          dateFrom = DateTime.parse(value.data!.first.fromDate.toString());
+          fromDate.text = dateFormat.format(dateFrom!);
+          dateTo = DateTime.parse(value.data!.first.toDate.toString());
+          toDate.text = dateFormat.format(dateTo!);
+          selectedCity = value.data?.first.idCity.toString();
+          quantity.text = value.data?.first.qty.toString() ?? '';
+          remarks.text = value.data?.first.remarks.toString() ?? '';
+        });
+      }
+    } catch (e) {
+      e.printError();
+    }
+    update();
   }
 
   Future<void> saveData() async {
@@ -117,7 +152,7 @@ class AddTransportationController extends BaseController {
               accountName.text,
             )
             .then((value) => Get.back());
-      } else  {
+      } else {
         await requestTrip
             .saveOtherTransportation(
               purposeID.toString(),
@@ -149,7 +184,7 @@ class AddTransportationController extends BaseController {
 
   Future<void> updateData() async {
     try {
-      if (transportType == '4') {
+      if (transportType == '4' && tvID != null) {
         await requestTrip
             .updateTaxiVoucher(
               tvID!,
@@ -163,7 +198,7 @@ class AddTransportationController extends BaseController {
               accountName.text,
             )
             .then((value) => Get.back());
-      } else {
+      } else if (otID != null) {
         await requestTrip
             .updateOtherTransportation(
               otID!,
@@ -176,6 +211,13 @@ class AddTransportationController extends BaseController {
               remarks.text,
             )
             .then((value) => Get.back());
+      } else {
+        if (tvID != null) {
+          await requestTrip.deleteTaxiVoucher(tvID!);
+        } else if (otID != null) {
+          await requestTrip.deleteOtherTransportation(otID!);
+        }
+        saveData();
       }
     } catch (e) {
       e.printError();
@@ -193,4 +235,8 @@ class AddTransportationController extends BaseController {
       );
     }
   }
+
+  Future<void> deleteTV() async {}
+
+  Future<void> deletOT() async {}
 }

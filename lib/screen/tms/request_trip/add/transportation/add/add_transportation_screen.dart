@@ -70,7 +70,7 @@ class AddTransportationScreen extends StatelessWidget {
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
                               label: "Type of Transportation",
-                              hintText: "Type",
+                              hintText: controller.isLoading ? "Loading..." : "Type",
                               isRequired: true,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -78,6 +78,7 @@ class AddTransportationScreen extends StatelessWidget {
                                 }
                                 return null;
                               },
+                              value: controller.transportType != null ? controller.transportType : null,
                               items: controller.typeList
                                   .map((e) => DropdownMenuItem(
                                         value: e.id.toString(),
@@ -124,6 +125,7 @@ class AddTransportationScreen extends StatelessWidget {
                                       }
                                       return null;
                                     },
+                                    value: controller.departure != null ? controller.departure : null,
                                     items: controller.cityList
                                         .map((e) => DropdownMenuItem(
                                               value: e.id.toString(),
@@ -168,6 +170,11 @@ class AddTransportationScreen extends StatelessWidget {
                                 }
                                 return null;
                               },
+                              value: controller.arrival != null
+                                  ? controller.arrival
+                                  : controller.selectedCity != null
+                                      ? controller.selectedCity
+                                      : null,
                               items: controller.cityList
                                   .map((e) => DropdownMenuItem(
                                         value: e.id.toString(),
