@@ -145,26 +145,6 @@ class AddAirlinessController extends BaseController {
   void save() {
     if (airlinessID != null) {
       updateData();
-      if (isBooking == true) {
-        Get.off(const CheckScheduleScreen(), arguments: {
-          'purposeID': purposeID,
-          'codeDocument': codeDocument,
-          'departure': departure.toString(),
-          'arrival': arrival.toString(),
-          'departureModel': departureModel,
-          'arrivalModel': arrivalModel,
-          'departureDate': selectedDate,
-          'adult': passengerAdult.text,
-          'infant': passengerInfant.text,
-          'child': passengerChild.text,
-          // 'flightClass': int.parse(flightClass.toString()),
-          'flightClass': flightClassID,
-          'formEdit': formEdit,
-          'isEdit': isEdit,
-          'id': airlinessID,
-          'airlinessData': airlinessModel,
-        });
-      }
     } else {
       saveData();
     }
@@ -217,27 +197,50 @@ class AddAirlinessController extends BaseController {
     try {
       await requestTrip
           .updateAirlines(
-            airlinessID!,
-            purposeID.toString(),
-            "1",
-            "",
-            travellerflightClass.text,
-            "",
-            "",
-            departureModel!.code.toString(),
-            arrivalModel!.code.toString(),
-            saveFormat.format(selectedDate!),
-            passengerAdult.text,
-            passengerChild.text,
-            passengerInfant.text,
-            travellerName.text,
-            travellerflightClass.text,
-          )
-          .then(
-            (value) => formEdit == true
-                ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
-                : Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
-          );
+        airlinessID!,
+        purposeID.toString(),
+        "1",
+        "",
+        travellerflightClass.text,
+        "",
+        "",
+        departureModel!.code.toString(),
+        arrivalModel!.code.toString(),
+        saveFormat.format(selectedDate!),
+        passengerAdult.text,
+        passengerChild.text,
+        passengerInfant.text,
+        travellerName.text,
+        travellerflightClass.text,
+      )
+          .then((value) {
+        if (formEdit == true) {
+          if (isBooking == true) {
+            Get.off(const CheckScheduleScreen(), arguments: {
+              'purposeID': purposeID,
+              'codeDocument': codeDocument,
+              'departure': departure.toString(),
+              'arrival': arrival.toString(),
+              'departureModel': departureModel,
+              'arrivalModel': arrivalModel,
+              'departureDate': selectedDate,
+              'adult': passengerAdult.text,
+              'infant': passengerInfant.text,
+              'child': passengerChild.text,
+              // 'flightClass': int.parse(flightClass.toString()),
+              'flightClass': flightClassID,
+              'formEdit': formEdit,
+              'isEdit': isEdit,
+              'id': airlinessID,
+              'airlinessData': airlinessModel,
+            });
+          } else {
+            Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument});
+          }
+        } else {
+          Get.off(const AirlinessScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit});
+        }
+      });
     } catch (e) {
       e.printError();
       Get.showSnackbar(

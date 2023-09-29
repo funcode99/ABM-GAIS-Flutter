@@ -7,6 +7,7 @@ import 'package:gais/data/model/antavaya/get_country_hotel_model.dart';
 import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
 import 'package:gais/data/model/antavaya/get_train_station_model.dart';
+import 'package:gais/data/model/antavaya/save_reservation_flight_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:gais/data/repository/antavaya/antavaya_repository.dart';
 import 'package:get/get.dart' hide Response, FormData, MultipartFile;
@@ -64,7 +65,7 @@ class AntavayaImpl implements AntavayaRepository {
   }
 
   @override
-  Future saveFlightReservation(
+  Future<SaveReservationFlightModel> saveFlightReservation(
     String contactTitle,
     String contactFirstName,
     String contactLastName,
@@ -181,7 +182,8 @@ class AntavayaImpl implements AntavayaRepository {
         "/api/antavaya/flight/reservation_flight",
         data: formData,
       );
-      return response.data;
+      print('reservation : ${response.data}');
+      return SaveReservationFlightModel.fromJson(response.data);
     } on DioError catch (e) {
       print('reservation error: ${e.response?.data}');
       return e.error;

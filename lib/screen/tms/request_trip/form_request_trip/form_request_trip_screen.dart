@@ -18,6 +18,7 @@ import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_scr
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/edit/edit_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/edit/edit_taxi_voucher_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/train/add/add_train_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_controller.dart';
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
@@ -188,6 +189,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                         controller.selectedPurpose = value.toString();
                                         controller.isAttachment = value == "1" || value == "2" || value == "3" || value == "5" ? true : false;
                                         value == "3" ? controller.isDAnumber = true : controller.isDAnumber = false;
+                                        print(value);
                                         controller.update();
                                         controller.checkItems();
                                         controller.update();
@@ -523,6 +525,26 @@ class FormRequestTripScreen extends StatelessWidget {
                                                               'airlinessData': e,
                                                             });
                                                           },
+                                                          editButton: controller.rtStatus == "Order Ticket"
+                                                              ? CustomFilledButton(
+                                                                  width: 95,
+                                                                  height: 40,
+                                                                  color: orangeColor,
+                                                                  title: "Order Ticket",
+                                                                  fontSize: 14,
+                                                                  onPressed: () {
+                                                                    Get.off(const AddAirlinessScreen(), arguments: {
+                                                                      'id': e.id,
+                                                                      'purposeID': controller.purposeID,
+                                                                      'codeDocument': controller.codeDocument,
+                                                                      'formEdit': true,
+                                                                      'isEdit': true,
+                                                                      'airlinessData': e,
+                                                                      'booking': true,
+                                                                    });
+                                                                  },
+                                                                )
+                                                              : null,
                                                           isDelete: controller.isEdit,
                                                           deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                             onDeletePressed: () {
@@ -568,53 +590,55 @@ class FormRequestTripScreen extends StatelessWidget {
                                                   ],
                                           )
                                         : Container()
-                                    : controller.items[index]['title'] == "Taxi Voucher"
+                                    : controller.items[index]['title'] == "Train"
                                         ? controller.items[index]['showList']
                                             ? Column(
-                                                children: controller.tvList.isNotEmpty
-                                                    ? controller.tvList
-                                                        .mapIndexed(
-                                                          (i, e) => CustomTripCard(
-                                                            listNumber: i + 1,
-                                                            title: e.employeeName.toString(),
-                                                            subtitle: controller.dateFormat.format(DateTime.parse(e.date!)),
-                                                            status: e.status.toString(),
-                                                            // info: int.parse(e.amount.toString()).toCurrency(),
-                                                            isEdit: controller.isEdit,
-                                                            editAction: () => Get.to(const EditTaxiVoucherScreen(),
-                                                                    arguments: {'purposeID': controller.purposeID, 'id': e.id, 'formEdit': true})
-                                                                ?.then((_) {
-                                                              controller.fetchList();
-                                                              controller.update();
-                                                            }),
-                                                            isDelete: controller.isEdit,
-                                                            deleteAction: () => Get.dialog(DeleteConfirmationDialog(
-                                                              onDeletePressed: () {
-                                                                controller.deleteTaxiVoucher(e.id.toString());
-                                                                Get.back();
-                                                              },
-                                                            )),
-                                                            content: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                              children: [
-                                                                Column(
-                                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                                  children: [
-                                                                    Text("Departure", style: listTitleTextStyle),
-                                                                    Text(e.nameDepartureCity.toString(), style: listSubTitleTextStyle),
-                                                                  ],
-                                                                ),
-                                                                Column(
-                                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                                  children: [
-                                                                    Text("Arrival", style: listTitleTextStyle),
-                                                                    Text(e.nameArrivalCity.toString(), style: listSubTitleTextStyle),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        )
+                                                children: controller.trainList.isNotEmpty
+                                                    ? controller.trainList
+                                                        .mapIndexed((i, e) => CustomTripCard(
+                                                              listNumber: i + 1,
+                                                              title: e.travelerName.toString(),
+                                                              subtitle: controller.dateFormat.format(DateTime.parse(e.departDate!)),
+                                                              // status: e.status.toString(),
+                                                              // info: int.parse(e.amount.toString()).toCurrency(),
+                                                              isEdit: true,
+                                                              editAction: () => Get.off(const AddTrainScreen(), arguments: {
+                                                                'purposeID': controller.purposeID,
+                                                                'codeDocument': controller.codeDocument,
+                                                                'isEdit': true,
+                                                                'id': e.id,
+                                                              })?.then((_) {
+                                                                controller.fetchList();
+                                                                controller.update();
+                                                              }),
+                                                              isDelete: true,
+                                                              deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                                                onDeletePressed: () {
+                                                                  controller.deleteTrain(e.id.toString());
+                                                                  Get.back();
+                                                                  controller.fetchList();
+                                                                },
+                                                              )),
+                                                              content: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                children: [
+                                                                  Column(
+                                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                                    children: [
+                                                                      Text("Origin", style: listTitleTextStyle),
+                                                                      Text(e.nameStation.toString(), style: listSubTitleTextStyle),
+                                                                    ],
+                                                                  ),
+                                                                  Column(
+                                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                                    children: [
+                                                                      Text("Destination", style: listTitleTextStyle),
+                                                                      Text(e.nameStationTo.toString(), style: listSubTitleTextStyle),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ))
                                                         .toList()
                                                     : [
                                                         const Center(
@@ -626,57 +650,47 @@ class FormRequestTripScreen extends StatelessWidget {
                                                       ],
                                               )
                                             : Container()
-                                        : controller.items[index]['title'] == "Other Transportation"
+                                        : controller.items[index]['title'] == "Taxi Voucher"
                                             ? controller.items[index]['showList']
                                                 ? Column(
-                                                    children: controller.otList.isNotEmpty
-                                                        ? controller.otList
+                                                    children: controller.tvList.isNotEmpty
+                                                        ? controller.tvList
                                                             .mapIndexed(
                                                               (i, e) => CustomTripCard(
                                                                 listNumber: i + 1,
                                                                 title: e.employeeName.toString(),
-                                                                subtitle: e.typeTransportation.toString(),
+                                                                subtitle: controller.dateFormat.format(DateTime.parse(e.date!)),
                                                                 status: e.status.toString(),
-                                                                info: e.cityName.toString(),
+                                                                // info: int.parse(e.amount.toString()).toCurrency(),
                                                                 isEdit: controller.isEdit,
-                                                                editAction: () => Get.to(const EditOtherTransportScreen(), arguments: {
-                                                                  'purposeID': controller.purposeID,
-                                                                  'codeDocument': controller.codeDocument,
-                                                                  'otID': e.id,
-                                                                  'formEdit': true,
-                                                                })?.then((result) {
+                                                                editAction: () => Get.to(const EditTaxiVoucherScreen(),
+                                                                        arguments: {'purposeID': controller.purposeID, 'id': e.id, 'formEdit': true})
+                                                                    ?.then((_) {
                                                                   controller.fetchList();
                                                                   controller.update();
                                                                 }),
                                                                 isDelete: controller.isEdit,
                                                                 deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                                   onDeletePressed: () {
-                                                                    controller.deleteOtherTransport(e.id.toString());
+                                                                    controller.deleteTaxiVoucher(e.id.toString());
                                                                     Get.back();
                                                                   },
                                                                 )),
                                                                 content: Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                                   children: [
                                                                     Column(
-                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                      crossAxisAlignment: CrossAxisAlignment.center,
                                                                       children: [
-                                                                        Text("From Date", style: listTitleTextStyle),
-                                                                        Text(e.fromDate.toString(), style: listSubTitleTextStyle),
-                                                                      ],
-                                                                    ),
-                                                                    Column(
-                                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                                      children: [
-                                                                        Text("To Date", style: listTitleTextStyle),
-                                                                        Text(e.toDate.toString(), style: listSubTitleTextStyle),
+                                                                        Text("Departure", style: listTitleTextStyle),
+                                                                        Text(e.nameDepartureCity.toString(), style: listSubTitleTextStyle),
                                                                       ],
                                                                     ),
                                                                     Column(
                                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                                       children: [
-                                                                        Text("Quantity", style: listTitleTextStyle),
-                                                                        Text(e.qty.toString(), style: listSubTitleTextStyle),
+                                                                        Text("Arrival", style: listTitleTextStyle),
+                                                                        Text(e.nameArrivalCity.toString(), style: listSubTitleTextStyle),
                                                                       ],
                                                                     ),
                                                                   ],
@@ -694,22 +708,23 @@ class FormRequestTripScreen extends StatelessWidget {
                                                           ],
                                                   )
                                                 : Container()
-                                            : controller.items[index]['title'] == "Accommodation"
+                                            : controller.items[index]['title'] == "Other Transportation"
                                                 ? controller.items[index]['showList']
                                                     ? Column(
-                                                        children: controller.accommodationsList.isNotEmpty
-                                                            ? controller.accommodationsList
+                                                        children: controller.otList.isNotEmpty
+                                                            ? controller.otList
                                                                 .mapIndexed(
                                                                   (i, e) => CustomTripCard(
                                                                     listNumber: i + 1,
                                                                     title: e.employeeName.toString(),
+                                                                    subtitle: e.typeTransportation.toString(),
                                                                     status: e.status.toString(),
-                                                                    info: e.hotelName,
+                                                                    info: e.cityName.toString(),
                                                                     isEdit: controller.isEdit,
-                                                                    editAction: () => Get.off(const EditAccommodationScreen(), arguments: {
+                                                                    editAction: () => Get.to(const EditOtherTransportScreen(), arguments: {
                                                                       'purposeID': controller.purposeID,
                                                                       'codeDocument': controller.codeDocument,
-                                                                      'id': e.id,
+                                                                      'otID': e.id,
                                                                       'formEdit': true,
                                                                     })?.then((result) {
                                                                       controller.fetchList();
@@ -718,7 +733,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                     isDelete: controller.isEdit,
                                                                     deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                                       onDeletePressed: () {
-                                                                        controller.deleteAccommodation(e.id!.toString());
+                                                                        controller.deleteOtherTransport(e.id.toString());
                                                                         Get.back();
                                                                       },
                                                                     )),
@@ -728,22 +743,22 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                         Column(
                                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                                           children: [
-                                                                            Text("Check In", style: listTitleTextStyle),
-                                                                            Text(e.checkInDate.toString(), style: listSubTitleTextStyle),
+                                                                            Text("From Date", style: listTitleTextStyle),
+                                                                            Text(e.fromDate.toString(), style: listSubTitleTextStyle),
                                                                           ],
                                                                         ),
                                                                         Column(
                                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                                           children: [
-                                                                            Text("Check Out", style: listTitleTextStyle),
-                                                                            Text(e.checkOutDate.toString(), style: listSubTitleTextStyle),
+                                                                            Text("To Date", style: listTitleTextStyle),
+                                                                            Text(e.toDate.toString(), style: listSubTitleTextStyle),
                                                                           ],
                                                                         ),
                                                                         Column(
-                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                          crossAxisAlignment: CrossAxisAlignment.center,
                                                                           children: [
-                                                                            Text("Price", style: listTitleTextStyle),
-                                                                            Text(e.price.toString(), style: listSubTitleTextStyle),
+                                                                            Text("Quantity", style: listTitleTextStyle),
+                                                                            Text(e.qty.toString(), style: listSubTitleTextStyle),
                                                                           ],
                                                                         ),
                                                                       ],
@@ -761,65 +776,62 @@ class FormRequestTripScreen extends StatelessWidget {
                                                               ],
                                                       )
                                                     : Container()
-                                                : controller.items[index]['title'] == "Cash Advance"
+                                                : controller.items[index]['title'] == "Accommodation"
                                                     ? controller.items[index]['showList']
                                                         ? Column(
-                                                            children: controller.caList.isNotEmpty
-                                                                ? controller.caList
-                                                                    .mapIndexed((i, e) => CustomTripCard(
-                                                                          listNumber: i + 1,
-                                                                          title: e.noCa ?? "",
-                                                                          subtitle: controller.dateFormat
-                                                                              .format(DateTime.parse(e.createdAt.toString()))
-                                                                              .toString(),
-                                                                          status: e.status.toString(),
-                                                                          info:
-                                                                              "${e.currencyCode} ${int.parse(e.grandTotal.toString()).toCurrency()}",
-                                                                          isEdit: controller.isEdit,
-                                                                          editAction: () {
-                                                                            Get.to(
-                                                                              () => const AddCashAdvanceTravelScreen(),
-                                                                              arguments: {
-                                                                                "id": e.id,
-                                                                                "formEdit": true,
-                                                                                'purposeID': controller.purposeID,
-                                                                                'codeDocument': controller.codeDocument,
-                                                                              },
-                                                                            )?.then((value) => controller.fetchList());
+                                                            children: controller.accommodationsList.isNotEmpty
+                                                                ? controller.accommodationsList
+                                                                    .mapIndexed(
+                                                                      (i, e) => CustomTripCard(
+                                                                        listNumber: i + 1,
+                                                                        title: e.employeeName.toString(),
+                                                                        status: e.status.toString(),
+                                                                        info: e.hotelName,
+                                                                        isEdit: controller.isEdit,
+                                                                        editAction: () => Get.off(const EditAccommodationScreen(), arguments: {
+                                                                          'purposeID': controller.purposeID,
+                                                                          'codeDocument': controller.codeDocument,
+                                                                          'id': e.id,
+                                                                          'formEdit': true,
+                                                                        })?.then((result) {
+                                                                          controller.fetchList();
+                                                                          controller.update();
+                                                                        }),
+                                                                        isDelete: controller.isEdit,
+                                                                        deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                                                          onDeletePressed: () {
+                                                                            controller.deleteAccommodation(e.id!.toString());
+                                                                            Get.back();
                                                                           },
-                                                                          isDelete: controller.isEdit,
-                                                                          deleteAction: () => Get.dialog(DeleteConfirmationDialog(
-                                                                            onDeletePressed: () {
-                                                                              controller.deleteCashAdvance(e.id);
-                                                                              controller.update();
-                                                                              Get.back();
-                                                                            },
-                                                                          )),
-                                                                          content: Row(
-                                                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                            children: [
-                                                                              Column(
-                                                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                children: [
-                                                                                  Text("Item", style: listTitleTextStyle),
-                                                                                  Text(e.itemCount.toString(), style: listSubTitleTextStyle),
-                                                                                ],
-                                                                              ),
-                                                                              SizedBox(
-                                                                                width: Get.width / 3,
-                                                                                child: Column(
-                                                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                  children: [
-                                                                                    Text("Reference", style: listTitleTextStyle),
-                                                                                    Text(e.noRequestTrip.toString(),
-                                                                                        style: listSubTitleTextStyle.copyWith(
-                                                                                            overflow: TextOverflow.ellipsis)),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ))
+                                                                        )),
+                                                                        content: Row(
+                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Column(
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: [
+                                                                                Text("Check In", style: listTitleTextStyle),
+                                                                                Text(e.checkInDate.toString(), style: listSubTitleTextStyle),
+                                                                              ],
+                                                                            ),
+                                                                            Column(
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: [
+                                                                                Text("Check Out", style: listTitleTextStyle),
+                                                                                Text(e.checkOutDate.toString(), style: listSubTitleTextStyle),
+                                                                              ],
+                                                                            ),
+                                                                            Column(
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: [
+                                                                                Text("Price", style: listTitleTextStyle),
+                                                                                Text(e.price.toString(), style: listSubTitleTextStyle),
+                                                                              ],
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    )
                                                                     .toList()
                                                                 : [
                                                                     const Center(
@@ -831,7 +843,77 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                   ],
                                                           )
                                                         : Container()
-                                                    : Container(),
+                                                    : controller.items[index]['title'] == "Cash Advance"
+                                                        ? controller.items[index]['showList']
+                                                            ? Column(
+                                                                children: controller.caList.isNotEmpty
+                                                                    ? controller.caList
+                                                                        .mapIndexed((i, e) => CustomTripCard(
+                                                                              listNumber: i + 1,
+                                                                              title: e.noCa ?? "",
+                                                                              subtitle: controller.dateFormat
+                                                                                  .format(DateTime.parse(e.createdAt.toString()))
+                                                                                  .toString(),
+                                                                              status: e.status.toString(),
+                                                                              info:
+                                                                                  "${e.currencyCode} ${int.parse(e.grandTotal.toString()).toCurrency()}",
+                                                                              isEdit: controller.isEdit,
+                                                                              editAction: () {
+                                                                                Get.to(
+                                                                                  () => const AddCashAdvanceTravelScreen(),
+                                                                                  arguments: {
+                                                                                    "id": e.id,
+                                                                                    "formEdit": true,
+                                                                                    'purposeID': controller.purposeID,
+                                                                                    'codeDocument': controller.codeDocument,
+                                                                                  },
+                                                                                )?.then((value) => controller.fetchList());
+                                                                              },
+                                                                              isDelete: controller.isEdit,
+                                                                              deleteAction: () => Get.dialog(DeleteConfirmationDialog(
+                                                                                onDeletePressed: () {
+                                                                                  controller.deleteCashAdvance(e.id);
+                                                                                  controller.update();
+                                                                                  Get.back();
+                                                                                },
+                                                                              )),
+                                                                              content: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                                children: [
+                                                                                  Column(
+                                                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                    children: [
+                                                                                      Text("Item", style: listTitleTextStyle),
+                                                                                      Text(e.itemCount.toString(), style: listSubTitleTextStyle),
+                                                                                    ],
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: Get.width / 3,
+                                                                                    child: Column(
+                                                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                      children: [
+                                                                                        Text("Reference", style: listTitleTextStyle),
+                                                                                        Text(e.noRequestTrip.toString(),
+                                                                                            style: listSubTitleTextStyle.copyWith(
+                                                                                                overflow: TextOverflow.ellipsis)),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ))
+                                                                        .toList()
+                                                                    : [
+                                                                        const Center(
+                                                                          child: Padding(
+                                                                            padding: EdgeInsets.all(10),
+                                                                            child: Text("no data yet"),
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                              )
+                                                            : Container()
+                                                        : Container(),
                           ]);
                         }
                         if (controller.isTLK == true) {

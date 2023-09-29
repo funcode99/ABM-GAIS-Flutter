@@ -11,6 +11,8 @@ import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
 import 'package:gais/data/model/reference/get_site_model.dart' as st;
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as acc;
 import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airliness;
+import 'package:gais/data/model/request_trip/get_train_trip_bytripid_model.dart' as train;
+import 'package:gais/data/model/request_trip/get_airliness_bytrip_model.dart';
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart' as ca;
 import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
 import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as ot;
@@ -22,6 +24,7 @@ import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_scr
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/train/add/add_train_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/actualization_trip_screen.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -99,6 +102,12 @@ class FormRequestTripController extends BaseController {
       "showList": false,
     },
     {
+      "title": "Train",
+      "isFilled": false,
+      "screen": const AddTrainScreen(),
+      "showList": false,
+    },
+    {
       "title": "Taxi Voucher",
       "isFilled": false,
       "screen": const AddTaxiVoucherScreen(),
@@ -126,7 +135,9 @@ class FormRequestTripController extends BaseController {
 
   List<guest.Data> guestList = [];
   List<airliness.Data> airlinessList = [];
-  airliness.GetAirlinessModel? airlinessModel;
+  GetAirlinessBytripModel? airlinessModel;
+  List<train.Data> trainList = [];
+  train.GetTrainTripBytripidModel? trainModel;
   List<tv.Data> tvList = [];
   List<ot.Data> otList = [];
   List<acc.Data> accommodationsList = [];
@@ -188,13 +199,17 @@ class FormRequestTripController extends BaseController {
             ? true
             : item['title'] == "Traveller Guest"
                 ? true
-                : false;
+                : item['title'] == "Other Transportation"
+                    ? true
+                    : false;
 
         item['showList'] = item['title'] == "Taxi Voucher"
             ? true
             : item['title'] == "Traveller Guest"
                 ? true
-                : false;
+                : item['title'] == "Other Transportation"
+                    ? true
+                    : false;
       }
     } else if (selectedPurpose == "2") {
       for (var item in items) {
@@ -415,6 +430,7 @@ class FormRequestTripController extends BaseController {
   Future<void> fetchList() async {
     guestList = [];
     airlinessList = [];
+    trainList = [];
     tvList = [];
     otList = [];
     accommodationsList = [];
@@ -432,34 +448,58 @@ class FormRequestTripController extends BaseController {
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
       var airlinessData = await requestTrip.getAirlinessBytripList(purposeID);
-      // airlinessModel = airlinessData;
+      airlinessModel = airlinessData;
+      // airlinessList.addAll(airlinessData.data?.toSet().toList() ?? []);
       airlinessData.data?.asMap().forEach((i, e) async {
-        print("pnrID: ${e.pnrid}");
-        await antavaya.getRsvTicket(e.pnrid!).then((rsv) {
-          var reservation = jsonDecode(rsv);
-          print("rsv: ${reservation.toString()}");
-          print("rsv: ${reservation['Passengers'][0]['Type'].toString()}");
+        if (e.pnrid != null) {
+          print("pnrID: ${e.pnrid}");
+          await antavaya.getRsvTicket(e.pnrid!).then((rsv) {
+            var reservation = jsonDecode(rsv);
+            print("rsv: ${reservation.toString()}");
+            print("rsv: ${reservation['Passengers'][0]['Type'].toString()}");
 
+            airlinessList.add(airliness.Data(
+              id: e.id,
+              idRequestTrip: e.idRequestTrip,
+              pnrid: e.pnrid,
+              employeeName: e.travelerName,
+              createdAt: e.createdAt,
+              origin: e.origin,
+              destination: e.destination,
+              departureTime: reservation['FlightDetails'][0]['DepartTime'],
+              arrivalTime: reservation['FlightDetails'][0]['ArriveTime'],
+              flightNo: reservation['FlightDetails'][0]['FlightNumber'],
+              ticketPrice: e.ticketPrice,
+              departureDate: e.departDate,
+              arrivalDate: e.returnDate,
+              flightClass: e.flightClass,
+            ));
+            update();
+          });
+        } else {
           airlinessList.add(airliness.Data(
             id: e.id,
             idRequestTrip: e.idRequestTrip,
             pnrid: e.pnrid,
-            employeeName: reservation['Passengers'][0]['FirstName'],
+            employeeName: e.travelerName,
             createdAt: e.createdAt,
-            origin: reservation['FlightDetails'][0]['Origin'],
-            destination: reservation['FlightDetails'][0]['Destination'],
-            departureTime: reservation['FlightDetails'][0]['DepartTime'],
-            arrivalTime: reservation['FlightDetails'][0]['ArriveTime'],
-            flightNo: reservation['FlightDetails'][0]['FlightNumber'],
+            origin: e.origin,
+            destination: e.destination,
+            departureTime: '-',
+            arrivalTime: '-',
+            flightNo: '-',
             ticketPrice: e.ticketPrice,
-            departureDate: reservation['FlightDetails'][0]['DepartDate'],
-            arrivalDate: reservation['FlightDetails'][0]['ArriveDate'],
-            flightClass: reservation['FlightDetails'][0]['Class'],
+            departureDate: e.departDate,
+            arrivalDate: e.returnDate,
+            flightClass: e.flightClass,
           ));
           update();
-        });
+        }
       });
-      // airlinessList.addAll(airlinessData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+
+      var trainData = await requestTrip.getTrainTripByTrip(purposeID);
+      trainModel = trainData;
+      trainList.addAll(trainData.data?.toSet().toList() ?? []);
 
       var tvData = await requestTrip.getTaxiVoucherBytripList(purposeID);
       tvList.addAll(tvData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
@@ -527,6 +567,39 @@ class FormRequestTripController extends BaseController {
   Future<void> deleteAirliness(String id) async {
     try {
       await requestTrip.deleteAirliness(id).then((value) {
+        fetchList();
+        Get.showSnackbar(
+          const GetSnackBar(
+            icon: Icon(
+              Icons.error,
+              color: Colors.white,
+            ),
+            message: 'Data Deleted',
+            isDismissible: true,
+            duration: Duration(seconds: 3),
+            backgroundColor: successColor,
+          ),
+        );
+      });
+    } catch (e) {
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Delete Failed',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: errorColor,
+        ),
+      );
+    }
+  }
+
+  Future<void> deleteTrain(String id) async {
+    try {
+      await requestTrip.deleteTrainTrip(id).then((value) {
         fetchList();
         Get.showSnackbar(
           const GetSnackBar(
@@ -729,7 +802,7 @@ class FormRequestTripController extends BaseController {
         purposeID,
         requsetorID.toString(),
         rtNumber.toString(),
-        codeDocument.toString(),
+        selectedPurpose != null ? selectedPurpose.toString() : codeDocument.toString(),
         siteID.toString(),
         notes.text,
         fromCity.toString(),
@@ -743,6 +816,7 @@ class FormRequestTripController extends BaseController {
         gettedFile,
       )
           .then((value) {
+        print(value);
         fetchList();
         fetchRequestTrip();
         isEdit = false;

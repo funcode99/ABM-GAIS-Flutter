@@ -82,7 +82,7 @@ class CheckScheduleController extends BaseController {
       airliness.forEach((e) {
         fetchSchedule(departureDate.add(Duration(days: i)), e).then((value) {
           schedules[i].addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []);
-          print(schedules[i]);
+          // print(schedules[i]);
         });
         update();
       });
@@ -110,7 +110,7 @@ class CheckScheduleController extends BaseController {
         child.toString(),
         airlines,
       );
-      print("length : ${schedules[1].length}");
+      // print("length : ${schedules[1].length}");
       isLoading = false;
       update();
       return scheduleData;

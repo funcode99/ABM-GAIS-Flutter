@@ -170,31 +170,34 @@ class AirportReservationController extends BaseController {
     try {
       await antavaya
           .saveFlightReservation(
-            bookTitle.text,
-            bookFirstName.text,
-            bookLastName.text,
-            bookEmail.text,
-            bookHomePhone.text,
-            bookMobilePhone.text,
-            passenger,
-            Segments(
-              airline: flight.airline.toString(),
-              arriveDate: flight.arriveDate,
-              ariveTime: flight.arriveTime,
-              classCode: flight.classObjects!.isNotEmpty ? flight.classObjects?.first.code : flight.connectingFlights?.first.classObjects?.first.code,
-              classID: flight.classObjects!.isNotEmpty ? flight.classObjects?.first.id : flight.connectingFlights?.first.classObjects?.first.id,
-              departDate: flight.departDate,
-              departTime: flight.departTime,
-              flightId: flight.id,
-              flightNumber: flight.number,
-              origin: flight.origin,
-              destination: flight.destination,
-              num: 0,
-              seq: 0,
-            ),
-            flight.flightType.toString(),
-          )
-          .then((value) => saveAirliness(json.decode(value)['pnrid']));
+        bookTitle.text,
+        bookFirstName.text,
+        bookLastName.text,
+        bookEmail.text,
+        bookHomePhone.text,
+        bookMobilePhone.text,
+        passenger,
+        Segments(
+          airline: flight.airline.toString(),
+          arriveDate: flight.arriveDate,
+          ariveTime: flight.arriveTime,
+          classCode: flight.classObjects!.isNotEmpty ? flight.classObjects?.first.code : flight.connectingFlights?.first.classObjects?.first.code,
+          classID: flight.classObjects!.isNotEmpty ? flight.classObjects?.first.id : flight.connectingFlights?.first.classObjects?.first.id,
+          departDate: flight.departDate,
+          departTime: flight.departTime,
+          flightId: flight.id,
+          flightNumber: flight.number,
+          origin: flight.origin,
+          destination: flight.destination,
+          num: 0,
+          seq: 0,
+        ),
+        flight.flightType.toString(),
+      )
+          .then((value) {
+        print(value.data?.pnrid.toString());
+        saveAirliness(value.data!.pnrid.toString());
+      });
       // .then((pnrID) => saveAirliness(pnrID.s);
     } catch (e, i) {
       e.printError();

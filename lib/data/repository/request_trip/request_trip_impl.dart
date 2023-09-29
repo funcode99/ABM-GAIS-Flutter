@@ -188,6 +188,7 @@ class RequestTripImpl implements RequestTripRepository {
         "/api/request_trip/update_data/$id",
         data: formData,
       );
+      print('update request trip : ${response.data}');
       return UpdatePurposeOfTripModel.fromJson(response.data);
     } on DioError catch (e) {
       print("response error: ${e.response?.data}");
@@ -561,9 +562,10 @@ class RequestTripImpl implements RequestTripRepository {
         "/api/flight_trip/update_data/$id",
         data: formData,
       );
+      print("update airliness : ${response?.data}");
       return UpdateAirlinessModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
+      print("update airliness error: ${e.response?.data}");
       return e.error;
     }
   }

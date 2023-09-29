@@ -21,7 +21,7 @@ abstract class AntavayaRepository {
     String airliness,
   );
 
-  Future saveFlightReservation(
+  Future<SaveReservationFlightModel> saveFlightReservation(
     String contactTitle,
     String contactFirstName,
     String contactLastName,
