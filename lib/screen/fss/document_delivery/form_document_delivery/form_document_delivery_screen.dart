@@ -79,7 +79,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                if(controller.codeStatusDoc.toString() == "0" || controller.codeStatusDoc.toString() == "1")
+                                if((controller.codeStatusDoc.toString() == "0" || controller.codeStatusDoc.toString() == "1") && (controller.isSender || controller.isSuperadmin || controller.isReceptionist))
                                   ElevatedButton(
                                     onPressed: () {
                                       controller.openCancelDialog();
@@ -89,12 +89,9 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                         backgroundColor: redColor),
                                     child: Text("Cancel".tr),
                                   ),
-                                if(controller.codeStatusDoc.toString() == "0" || controller.codeStatusDoc.toString() == "1")
+                                if((controller.codeStatusDoc.toString() == "0" || controller.codeStatusDoc.toString() == "1") && (controller.isSender || controller.isSuperadmin || controller.isReceptionist))
                                   OutlinedButton(
                                   onPressed: () {
-                                    if(controller.isEdit){
-                                      controller.saveDocument();
-                                    }
                                     controller.isEdit = !controller.isEdit;
                                     controller.update();
                                   },
@@ -102,10 +99,20 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                     minimumSize: const Size(75, 30),
                                   ),
                                   child: controller.isEdit
-                                      ? Text("Save".tr)
+                                      ? Text("Cancel".tr)
                                       : Text("Edit".tr),
                                 ),
-                                if(controller.codeStatusDoc.toString() == "0")
+                                if(controller.isEdit)
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      controller.saveDocument();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size(75, 30),
+                                        backgroundColor: orangeColor),
+                                    child: Text("Save".tr),
+                                  ),
+                                if((controller.codeStatusDoc.toString() == "0") && (controller.isSender || controller.isSuperadmin || controller.isReceptionist))
                                   ElevatedButton(
                                     onPressed: () {
                                       controller.receivedDocument();
@@ -115,7 +122,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                         backgroundColor: successColor),
                                     child: Text("Received".tr),
                                   ),
-                                if(controller.codeStatusDoc.toString() == "1")
+                                if((controller.codeStatusDoc.toString() == "1") && (controller.isSuperadmin || controller.isReceptionist))
                                   ElevatedButton(
                                     onPressed: () {
                                       controller.deliveringDocument();
@@ -125,7 +132,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                         backgroundColor: successColor),
                                     child: Text("Delivering".tr),
                                   ),
-                                if(controller.codeStatusDoc.toString() == "2")
+                                if((controller.codeStatusDoc.toString() == "2") && controller.isReceiver)
                                   ElevatedButton(
                                     onPressed: () {
                                       controller.deliveredDocument();

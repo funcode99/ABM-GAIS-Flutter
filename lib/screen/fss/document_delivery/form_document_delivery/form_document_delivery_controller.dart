@@ -8,7 +8,9 @@ import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_employee_bysite_model.dart'
     as receiver;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/dialog/cancel_dialog.dart';
+import 'package:gais/util/enum/role_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -52,6 +54,12 @@ class FormDocumentDeliveryController extends BaseController {
   bool loadCompany = false;
   bool loadLocation = false;
   bool loadReceiver = false;
+  bool isSuperadmin = false;
+  bool isReceptionist = false;
+
+  bool isSender = false;
+  bool isReceiver = false;
+  String employeeId = "";
 
   List<receiver.Data> receiverList = [];
   List<comp.Data> companyList = [];
@@ -70,12 +78,18 @@ class FormDocumentDeliveryController extends BaseController {
   Future<void> fetchList() async {
     loadCompany = true;
     companyList = [];
+
+    String codeRole = await storage.readString(StorageCore.codeRole);
+    isSuperadmin = codeRole == RoleEnum.superAdmin.value;
+    isReceptionist = codeRole == RoleEnum.receptionist.value;
+
     try {
       await storage.readEmployeeInfo().then((value) {
         sender.text = value.first.employeeName ?? "";
         senderID = value.first.id?.toString();
         senderCompanyID = value.first.idCompany?.toString();
         senderSiteID = value.first.idSite?.toString();
+        employeeId = value.first.id?.toString() ?? "";
       });
 
       await repository.getCompanyList().then((value) {
@@ -139,6 +153,9 @@ class FormDocumentDeliveryController extends BaseController {
           isDelivering = true;
           isDelivered = true;
         }
+
+        isSender = employeeId == senderID;
+        isReceiver = employeeId == receiverID;
 
         List<ApprovalLogModel> result = [];
         if (value.data?.first.nameCreated != null) {

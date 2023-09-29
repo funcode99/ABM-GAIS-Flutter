@@ -218,7 +218,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                               ],
                             ),
                             action: [
-                              if(controller.ddList[index].codeStatusDoc! < 2)
+                              if((controller.ddList[index].codeStatusDoc! < 2) && (controller.ddList[index].idEmployeeSender.toString() == controller.employeeId || controller.isReceptionist || controller.isSuperadmin))
                                 CustomIconButton(
                                   title: "Edit".tr,
                                   iconData: IconlyBold.edit,
@@ -238,7 +238,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                               const SizedBox(
                                 width: 4,
                               ),
-                              if(controller.ddList[index].codeStatusDoc == 4 || controller.ddList[index].codeStatusDoc == 0)
+                              if((controller.ddList[index].codeStatusDoc == 4 || controller.ddList[index].codeStatusDoc == 0) && (controller.ddList[index].idEmployeeSender.toString() == controller.employeeId || controller.isReceptionist || controller.isSuperadmin))
                                 CustomIconButton(
                                 backgroundColor: redColor,
                                 title: "Delete".tr,
