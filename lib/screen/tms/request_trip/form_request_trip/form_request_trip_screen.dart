@@ -718,7 +718,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                     isDelete: controller.isEdit,
                                                                     deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                                       onDeletePressed: () {
-                                                                        controller.deleteAccommodation(e.id!.toInt());
+                                                                        controller.deleteAccommodation(e.id!.toString());
                                                                         Get.back();
                                                                       },
                                                                     )),

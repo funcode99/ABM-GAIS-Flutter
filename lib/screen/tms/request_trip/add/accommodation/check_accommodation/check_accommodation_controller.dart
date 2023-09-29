@@ -76,26 +76,26 @@ class CheckAccommodationController extends BaseController {
   ) async {
     if (isEdit == true) {
       try {
-        await requestTrip
-            .updateAccommodation(
-              id,
-              purposeID.toString(),
-              type,
-              checkinDate,
-              checkoutDate,
-              idVendor,
-              useGL,
-              cityID.toString(),
-              sharingName,
-              remarks,
-              price.toString(),
-              codeHotel,
-            )
-            .then((value) => Get.off(const AccommodationScreen(), arguments: {
-                  'purposeID': purposeID,
-                  'codeDocument': codeDocument,
-                  'formEdit': formEdit,
-                }));
+        // await requestTrip
+        //     .updateAccommodation(
+        //       id,
+        //       purposeID.toString(),
+        //       type,
+        //       checkinDate,
+        //       checkoutDate,
+        //       idVendor,
+        //       useGL,
+        //       cityID.toString(),
+        //       sharingName,
+        //       remarks,
+        //       price.toString(),
+        //       codeHotel,
+        //     )
+        //     .then((value) => Get.off(const AccommodationScreen(), arguments: {
+        //           'purposeID': purposeID,
+        //           'codeDocument': codeDocument,
+        //           'formEdit': formEdit,
+        //         }));
       } catch (e, i) {
         e.printError();
         i.printError();
@@ -114,28 +114,29 @@ class CheckAccommodationController extends BaseController {
       }
     } else {
       try {
-        await requestTrip
-            .saveAccommodation(
-              purposeID.toString(),
-              type,
-              checkinDate,
-              checkoutDate,
-              idVendor,
-              useGL,
-              cityID.toString(),
-              sharingName,
-              remarks,
-              price.toString(),
-              codeHotel,
-            )
-            .then((value) => Get.off(
-                  const AccommodationScreen(),
-                  arguments: {
-                    'purposeID': purposeID,
-                    'codeDocument': codeDocument,
-                    'formEdit': formEdit,
-                  },
-                ));
+        // await requestTrip
+        //     .saveAccommodation(
+        //       purposeID.toString(),
+        //       type,
+        //       checkinDate,
+        //       checkoutDate,
+        //       idVendor,
+        //       useGL,
+        //       cityID.toString(),
+        //       sharingName,
+        //       remarks,
+        //       price.toString(),
+        //       codeHotel,
+        //
+        //     )
+        //     .then((value) => Get.off(
+        //           const AccommodationScreen(),
+        //           arguments: {
+        //             'purposeID': purposeID,
+        //             'codeDocument': codeDocument,
+        //             'formEdit': formEdit,
+        //           },
+        //         ));
       } catch (e) {
         Get.showSnackbar(
           const GetSnackBar(

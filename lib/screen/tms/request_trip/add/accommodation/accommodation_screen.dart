@@ -56,8 +56,9 @@ class AccommodationScreen extends StatelessWidget {
                           .mapIndexed(
                             (i, e) => CustomTripCard(
                               listNumber: i + 1,
-                              title: e.employeeName.toString(),
-                              status: e.status.toString(),
+                              title: e.travelerName.toString(),
+                              subtitle: controller.dateFormat.format(DateTime.parse(e.createdAt.toString())),
+                              // status: e.status.toString(),
                               info: e.hotelName,
                               //hotel name
                               isEdit: true,
@@ -75,7 +76,7 @@ class AccommodationScreen extends StatelessWidget {
                               deleteAction: () {
                                 Get.dialog(DeleteConfirmationDialog(
                                   onDeletePressed: () {
-                                    controller.delete(e.id);
+                                    controller.delete(e.id!);
                                     Get.back();
                                   },
                                 ));
@@ -122,7 +123,7 @@ class AccommodationScreen extends StatelessWidget {
                           'codeDocument': controller.codeDocument,
                           'id': "0",
                           'formEdit': controller.formEdit,
-                          'isEdit': false,
+                          'isEdit': true,
                         })?.then((result) {
                           controller.fetchList();
                           controller.update();

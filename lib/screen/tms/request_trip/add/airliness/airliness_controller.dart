@@ -9,6 +9,7 @@ import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airlin
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/train/train_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/transportation/transportation_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -121,7 +122,7 @@ class AirlinessController extends BaseController {
     formEdit == true
         ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
         : codeDocument == 2
-            ? Get.to(const OtherTransportScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument})
+            ? Get.to(const TransportationScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument})
             : codeDocument == 5
                 ? Get.to(const AccommodationScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument})
                 : Get.to(const TrainScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument});

@@ -5,6 +5,7 @@ import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as ac
 import 'package:gais/screen/tms/request_trip/add/cash_advance/cash_advance_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AccommodationController extends BaseController {
   String purposeID = Get.arguments['purposeID'];
@@ -13,6 +14,8 @@ class AccommodationController extends BaseController {
 
   List<acc.Data> accommodationsList = [];
   acc.GetAccommodationModel? accommodationsModel;
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+
 
   @override
   void onInit() {

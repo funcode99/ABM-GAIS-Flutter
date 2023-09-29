@@ -519,20 +519,20 @@ class RequestTripImpl implements RequestTripRepository {
   @override
   Future<UpdateAirlinessModel> updateAirlines(
     String id,
-      String idRequestTrip,
-      String idVendor,
-      String flightNo,
-      String codeAirlines,
-      String ticketPrice,
-      String pnrID,
-      String origin,
-      String destination,
-      String departDate,
-      String adult,
-      String childs,
-      String infant,
-      String travellerName,
-      String flightClass,
+    String idRequestTrip,
+    String idVendor,
+    String flightNo,
+    String codeAirlines,
+    String ticketPrice,
+    String pnrID,
+    String origin,
+    String destination,
+    String departDate,
+    String adult,
+    String childs,
+    String infant,
+    String travellerName,
+    String flightClass,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -795,7 +795,7 @@ class RequestTripImpl implements RequestTripRepository {
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       Response response = await network.dio.get(
-        "/api/accomodation_trip/",
+        "/api/accomodation_trip/get_by_travel_id/trip_id/$id",
       );
       return GetAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
@@ -817,6 +817,16 @@ class RequestTripImpl implements RequestTripRepository {
     String remarks,
     String price,
     String codeHotel,
+    String travellerName,
+    String codeCountry,
+    String nameCountry,
+    String codeCity,
+    String nameCity,
+    String room,
+    String guest,
+    String pnrID,
+    String jenkel,
+    String hotelFare,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -833,6 +843,16 @@ class RequestTripImpl implements RequestTripRepository {
       "remarks": remarks,
       "price": price,
       "code_hotel": codeHotel,
+      "traveler_name": travellerName,
+      "code_country": codeCountry,
+      "name_country": nameCountry,
+      "code_city": codeCity,
+      "name_city": nameCity,
+      "room": room,
+      "guest": guest,
+      "pnrid": pnrID,
+      "jenkel": jenkel,
+      "hotel_fare": hotelFare,
     });
 
     try {
@@ -842,7 +862,7 @@ class RequestTripImpl implements RequestTripRepository {
       );
       return SaveAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
+      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -861,6 +881,16 @@ class RequestTripImpl implements RequestTripRepository {
     String remarks,
     String price,
     String codeHotel,
+    String travellerName,
+    String codeCountry,
+    String nameCountry,
+    String codeCity,
+    String nameCity,
+    String room,
+    String guest,
+    String pnrID,
+    String jenkel,
+    String hotelFare,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -877,6 +907,16 @@ class RequestTripImpl implements RequestTripRepository {
       "remarks": remarks,
       "price": price,
       "code_hotel": codeHotel,
+      "traveler_name": travellerName,
+      "code_country": codeCountry,
+      "name_country": nameCountry,
+      "code_city": codeCity,
+      "name_city": nameCity,
+      "room": room,
+      "guest": guest,
+      "pnrid": pnrID,
+      "jenkel": jenkel,
+      "hotel_fare": hotelFare,
     });
 
     try {

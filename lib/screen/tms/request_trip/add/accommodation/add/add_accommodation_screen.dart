@@ -125,14 +125,14 @@ class AddAccommodationScreen extends StatelessWidget {
                               value: controller.selectedCountry,
                               items: controller.countryList
                                   .map((e) => DropdownMenuItem(
-                                        value: e.isoCountryCode,
+                                        value: e,
                                         child: Text(e.countryName.toString()),
                                       ))
                                   .toList(),
                               onChanged: (value) {
                                 print(value);
-                                // controller.selectedCountry = value!.;
-                                // controller.fetchCity(value.);
+                                controller.selectedCountry = value!;
+                                controller.fetchCity(value.isoCountryCode.toString());
                                 controller.update();
                               },
                             ),
@@ -142,7 +142,7 @@ class AddAccommodationScreen extends StatelessWidget {
                               hintText: controller.isLoading ? "Loading..." : "City",
                               isRequired: true,
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
+                                if (value == null || controller.selectedCity == null) {
                                   return "This field is required";
                                 }
                                 return null;
@@ -150,7 +150,7 @@ class AddAccommodationScreen extends StatelessWidget {
                               value: controller.selectedCity,
                               items: controller.cityList
                                   .map((e) => DropdownMenuItem(
-                                        value: e.cityKey.toString(),
+                                        value: e,
                                         child: Text(e.cityName.toString()),
                                         onTap: () {
                                           controller.cityName = e.cityName;
@@ -181,7 +181,7 @@ class AddAccommodationScreen extends StatelessWidget {
                               onTap: () => showDatePicker(
                                       context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: controller.lastDate)
                                   .then((date) {
-                                controller.selectedDate = date!;
+                                controller.dateCheckin = date!;
                                 controller.checkinDate.text = controller.dateFormat.format(date);
                                 controller.update();
                               }),
@@ -203,7 +203,7 @@ class AddAccommodationScreen extends StatelessWidget {
                               onTap: () => showDatePicker(
                                       context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: controller.lastDate)
                                   .then((date) {
-                                controller.selectedDate = date!;
+                                controller.dateCheckout = date!;
                                 controller.checkoutDate.text = controller.dateFormat.format(date);
                                 controller.update();
                               }),
@@ -300,7 +300,7 @@ class AddAccommodationScreen extends StatelessWidget {
                                 CustomFilledButton(
                                   width: 100,
                                   color: infoColor,
-                                  title: "Check",
+                                  title: controller.isBooking == true ? "Check" : "Save",
                                   onPressed: () {
                                     if (controller.formKey.currentState?.validate() == true) controller.check();
                                   },

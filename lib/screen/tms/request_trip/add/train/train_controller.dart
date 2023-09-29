@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/request_trip/get_train_trip_bytripid_model.dart' as train;
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/transportation/transportation_screen.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -69,7 +70,7 @@ class TrainController extends BaseController {
     if (formEdit == true) {
       Get.back();
     } else {
-      Get.to(const TaxiVoucherScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument});
+      Get.to(const TransportationScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument});
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:gais/const/color.dart';
 import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/taxi_voucher_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/transportation/transportation_screen.dart';
 import 'package:get/get.dart';
 
 class AirlinesController extends BaseController {
@@ -43,7 +44,7 @@ class AirlinesController extends BaseController {
     });
 
     await storage.readEmployeeFlight().then((value) => travellerFlight = value.first.flightClass.toString());
-    if(codeDocument!=5){
+    if (codeDocument != 5) {
       showAddGuest = true;
     }
     update();
@@ -99,7 +100,7 @@ class AirlinesController extends BaseController {
         ? Get.back()
         : codeDocument == 4
             ? Get.to(
-                const TaxiVoucherScreen(),
+                const TransportationScreen(),
                 arguments: {'purposeID': purposeID, 'codeDocument': codeDocument},
               )?.then((result) {
                 result.printInfo(info: "result");

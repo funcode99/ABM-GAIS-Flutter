@@ -1,7 +1,3 @@
-/// success : true
-/// message : "Success Create Menu"
-/// data : {"id_request_trip":"2","id_type_accomodation":"1","check_in_date":"01-01-2023","check_out_date":"02-02-2023","id_vendor":"1","use_gl":"1","id_city":"1","sharing_w_name":"1","remarks":"1","price":1000000,"code_hotel":"1","created_at":"2023-05-16T01:02:35.000000Z","created_by":1,"code_status_doc":"0","updated_at":"2023-05-16T01:02:35.000000Z","id":2}
-
 class SaveAccommodationModel {
   SaveAccommodationModel({
       bool? success, 
@@ -43,23 +39,6 @@ SaveAccommodationModel copyWith({  bool? success,
 
 }
 
-/// id_request_trip : "2"
-/// id_type_accomodation : "1"
-/// check_in_date : "01-01-2023"
-/// check_out_date : "02-02-2023"
-/// id_vendor : "1"
-/// use_gl : "1"
-/// id_city : "1"
-/// sharing_w_name : "1"
-/// remarks : "1"
-/// price : 1000000
-/// code_hotel : "1"
-/// created_at : "2023-05-16T01:02:35.000000Z"
-/// created_by : 1
-/// code_status_doc : "0"
-/// updated_at : "2023-05-16T01:02:35.000000Z"
-/// id : 2
-
 class Data {
   Data({
       String? idRequestTrip, 
@@ -71,13 +50,23 @@ class Data {
       String? idCity, 
       String? sharingWName, 
       String? remarks, 
-      num? price, 
+      int? price, 
       String? codeHotel, 
+      String? travelerName, 
+      String? codeCountry, 
+      String? nameCountry, 
+      String? codeCity, 
+      String? nameCity, 
+      String? room, 
+      String? guest, 
+      String? pnrid, 
+      String? jenkel, 
+      String? hotelFare, 
       String? createdAt, 
-      num? createdBy, 
-      String? codeStatus, 
-      String? updatedAt, 
-      num? id,}){
+      int? createdBy, 
+      String? codeStatusDoc, 
+      String? id, 
+      String? updatedAt,}){
     _idRequestTrip = idRequestTrip;
     _idTypeAccomodation = idTypeAccomodation;
     _checkInDate = checkInDate;
@@ -89,11 +78,21 @@ class Data {
     _remarks = remarks;
     _price = price;
     _codeHotel = codeHotel;
+    _travelerName = travelerName;
+    _codeCountry = codeCountry;
+    _nameCountry = nameCountry;
+    _codeCity = codeCity;
+    _nameCity = nameCity;
+    _room = room;
+    _guest = guest;
+    _pnrid = pnrid;
+    _jenkel = jenkel;
+    _hotelFare = hotelFare;
     _createdAt = createdAt;
     _createdBy = createdBy;
-    _codeStatus = codeStatus;
-    _updatedAt = updatedAt;
+    _codeStatusDoc = codeStatusDoc;
     _id = id;
+    _updatedAt = updatedAt;
 }
 
   Data.fromJson(dynamic json) {
@@ -108,11 +107,21 @@ class Data {
     _remarks = json['remarks'];
     _price = json['price'];
     _codeHotel = json['code_hotel'];
+    _travelerName = json['traveler_name'];
+    _codeCountry = json['code_country'];
+    _nameCountry = json['name_country'];
+    _codeCity = json['code_city'];
+    _nameCity = json['name_city'];
+    _room = json['room'];
+    _guest = json['guest'];
+    _pnrid = json['pnrid'];
+    _jenkel = json['jenkel'];
+    _hotelFare = json['hotel_fare'];
     _createdAt = json['created_at'];
     _createdBy = json['created_by'];
-    _codeStatus = json['code_status_doc'];
-    _updatedAt = json['updated_at'];
+    _codeStatusDoc = json['code_status_doc'];
     _id = json['id'];
+    _updatedAt = json['updated_at'];
   }
   String? _idRequestTrip;
   String? _idTypeAccomodation;
@@ -123,13 +132,23 @@ class Data {
   String? _idCity;
   String? _sharingWName;
   String? _remarks;
-  num? _price;
+  int? _price;
   String? _codeHotel;
+  String? _travelerName;
+  String? _codeCountry;
+  String? _nameCountry;
+  String? _codeCity;
+  String? _nameCity;
+  String? _room;
+  String? _guest;
+  String? _pnrid;
+  String? _jenkel;
+  String? _hotelFare;
   String? _createdAt;
-  num? _createdBy;
-  String? _codeStatus;
+  int? _createdBy;
+  String? _codeStatusDoc;
+  String? _id;
   String? _updatedAt;
-  dynamic _id;
 Data copyWith({  String? idRequestTrip,
   String? idTypeAccomodation,
   String? checkInDate,
@@ -139,13 +158,23 @@ Data copyWith({  String? idRequestTrip,
   String? idCity,
   String? sharingWName,
   String? remarks,
-  num? price,
+  int? price,
   String? codeHotel,
+  String? travelerName,
+  String? codeCountry,
+  String? nameCountry,
+  String? codeCity,
+  String? nameCity,
+  String? room,
+  String? guest,
+  String? pnrid,
+  String? jenkel,
+  String? hotelFare,
   String? createdAt,
-  num? createdBy,
-  String? codeStatus,
+  int? createdBy,
+  String? codeStatusDoc,
+  String? id,
   String? updatedAt,
-  num? id,
 }) => Data(  idRequestTrip: idRequestTrip ?? _idRequestTrip,
   idTypeAccomodation: idTypeAccomodation ?? _idTypeAccomodation,
   checkInDate: checkInDate ?? _checkInDate,
@@ -157,11 +186,21 @@ Data copyWith({  String? idRequestTrip,
   remarks: remarks ?? _remarks,
   price: price ?? _price,
   codeHotel: codeHotel ?? _codeHotel,
+  travelerName: travelerName ?? _travelerName,
+  codeCountry: codeCountry ?? _codeCountry,
+  nameCountry: nameCountry ?? _nameCountry,
+  codeCity: codeCity ?? _codeCity,
+  nameCity: nameCity ?? _nameCity,
+  room: room ?? _room,
+  guest: guest ?? _guest,
+  pnrid: pnrid ?? _pnrid,
+  jenkel: jenkel ?? _jenkel,
+  hotelFare: hotelFare ?? _hotelFare,
   createdAt: createdAt ?? _createdAt,
   createdBy: createdBy ?? _createdBy,
-  codeStatus: codeStatus ?? _codeStatus,
-  updatedAt: updatedAt ?? _updatedAt,
+  codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
   id: id ?? _id,
+  updatedAt: updatedAt ?? _updatedAt,
 );
   String? get idRequestTrip => _idRequestTrip;
   String? get idTypeAccomodation => _idTypeAccomodation;
@@ -172,13 +211,23 @@ Data copyWith({  String? idRequestTrip,
   String? get idCity => _idCity;
   String? get sharingWName => _sharingWName;
   String? get remarks => _remarks;
-  num? get price => _price;
+  int? get price => _price;
   String? get codeHotel => _codeHotel;
+  String? get travelerName => _travelerName;
+  String? get codeCountry => _codeCountry;
+  String? get nameCountry => _nameCountry;
+  String? get codeCity => _codeCity;
+  String? get nameCity => _nameCity;
+  String? get room => _room;
+  String? get guest => _guest;
+  String? get pnrid => _pnrid;
+  String? get jenkel => _jenkel;
+  String? get hotelFare => _hotelFare;
   String? get createdAt => _createdAt;
-  num? get createdBy => _createdBy;
-  String? get codeStatus => _codeStatus;
+  int? get createdBy => _createdBy;
+  String? get codeStatusDoc => _codeStatusDoc;
+  String? get id => _id;
   String? get updatedAt => _updatedAt;
-  dynamic get id => _id;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -193,11 +242,21 @@ Data copyWith({  String? idRequestTrip,
     map['remarks'] = _remarks;
     map['price'] = _price;
     map['code_hotel'] = _codeHotel;
+    map['traveler_name'] = _travelerName;
+    map['code_country'] = _codeCountry;
+    map['name_country'] = _nameCountry;
+    map['code_city'] = _codeCity;
+    map['name_city'] = _nameCity;
+    map['room'] = _room;
+    map['guest'] = _guest;
+    map['pnrid'] = _pnrid;
+    map['jenkel'] = _jenkel;
+    map['hotel_fare'] = _hotelFare;
     map['created_at'] = _createdAt;
     map['created_by'] = _createdBy;
-    map['code_status_doc'] = _codeStatus;
-    map['updated_at'] = _updatedAt;
+    map['code_status_doc'] = _codeStatusDoc;
     map['id'] = _id;
+    map['updated_at'] = _updatedAt;
     return map;
   }
 
