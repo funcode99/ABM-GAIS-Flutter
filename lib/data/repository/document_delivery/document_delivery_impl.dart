@@ -201,4 +201,19 @@ class DocumentDeliveryImpl implements DocumentDeliveryRepository {
       return e.error;
     }
   }
+
+  @override
+  Future<bool> received(dynamic id) async{
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.post(
+        "/api/document_delivery/received/$id",
+      );
+      Map<String, dynamic> result = Map<String, dynamic>.from(response.data);
+      return result["success"] ?? false;
+    } on DioError catch (e) {
+      return e.error;
+    }
+  }
 }

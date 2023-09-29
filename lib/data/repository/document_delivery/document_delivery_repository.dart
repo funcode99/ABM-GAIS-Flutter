@@ -49,4 +49,6 @@ abstract class DocumentDeliveryRepository {
 
   Future<bool> cancel(dynamic id, String? notes);
 
+  Future<bool> received(dynamic id);
+
 }
