@@ -98,16 +98,17 @@ class AddRequestATKController extends BaseController with MasterDataMixin {
 
     final result = await _repository.saveData(requestAtkModel);
     result.fold((l) {
+      isLoadingHitApi(false);
+      update();
       Get.showSnackbar(
           CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
     }, (requestAtkModel) {
-
+      isLoadingHitApi(false);
+      update();
       //update list
       Get.off(() => const RequestATKDetailScreen(),
           arguments: {"item": requestAtkModel});
     });
-    isLoadingHitApi(false);
-    update();
   }
 
   void onChangeSelectedSite(String id) {
