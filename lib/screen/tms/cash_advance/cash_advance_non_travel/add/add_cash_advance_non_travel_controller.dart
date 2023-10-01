@@ -127,16 +127,17 @@ class AddCashAdvanceNonTravelController extends BaseController
     final result =
         await _cashAdvanceTravelNonRepository.saveData(cashAdvanceModel);
     result.fold((l) {
-      isLoadingHitApi(false);
-      update();
       Get.showSnackbar(
           CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
     }, (cashAdvanceModel) {
-      isLoadingHitApi(false);
-      update();
       //update list
       Get.off(() => const EditCashAdvanceNonTravelScreen(),
           arguments: {"item": cashAdvanceModel});
+    });
+
+    result.every((r){
+      isLoadingHitApi(false);
+      return false;
     });
   }
 
