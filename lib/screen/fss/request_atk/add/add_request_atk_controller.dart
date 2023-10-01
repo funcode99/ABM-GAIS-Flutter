@@ -13,7 +13,7 @@ import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class AddRequestATKController extends BaseController with MasterDataMixin{
+class AddRequestATKController extends BaseController with MasterDataMixin {
   final TextEditingController companyController = TextEditingController();
   final TextEditingController siteController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -47,18 +47,15 @@ class AddRequestATKController extends BaseController with MasterDataMixin{
     companyController.text = companyName;
     siteController.text = siteName;
 
-    if(codeRole == RoleEnum.superAdmin.value){
+    if (codeRole == RoleEnum.superAdmin.value) {
       enableSelectSite(true);
 
       final sites = await getListSite();
       listSite.addAll(sites);
 
       onChangeSelectedSite(siteId);
-    }else{
-      selectedSite.value= SiteModel(
-          id: siteId.toInt(),
-          siteName: siteName
-      );
+    } else {
+      selectedSite.value = SiteModel(id: siteId.toInt(), siteName: siteName);
     }
   }
 
@@ -68,9 +65,9 @@ class AddRequestATKController extends BaseController with MasterDataMixin{
     update();
   }
 
-  void editItem(RequestATKDetailModel item){
-    int index = listDetail.indexWhere((element){
-      if(item.id != null){
+  void editItem(RequestATKDetailModel item) {
+    int index = listDetail.indexWhere((element) {
+      if (item.id != null) {
         return element.id == item.id;
       }
       return element.key == item.key;
@@ -85,11 +82,12 @@ class AddRequestATKController extends BaseController with MasterDataMixin{
   }
 
   void saveData() async {
+    isLoadingHitApi(true);
+
     String userId = await storage.readString(StorageCore.userID);
     String companyId = await storage.readString(StorageCore.companyID);
     // String departmentId = await storage.readString(StorageCore.departmentID);
     String siteId = await storage.readString(StorageCore.siteID);
-    int warehouseId = 0; //dummies TODO this should inside the item
     RequestAtkModel requestAtkModel = RequestAtkModel(
         // idEmployee: userId.toInt(),
         idCompany: companyId.toInt(),
@@ -99,20 +97,23 @@ class AddRequestATKController extends BaseController with MasterDataMixin{
         arrayDetail: listDetail);
 
     final result = await _repository.saveData(requestAtkModel);
-    result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-        (requestAtkModel) {
+    result.fold((l) {
+      Get.showSnackbar(
+          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+    }, (requestAtkModel) {
+
       //update list
       Get.off(() => const RequestATKDetailScreen(),
           arguments: {"item": requestAtkModel});
     });
+    isLoadingHitApi(false);
+    update();
   }
 
   void onChangeSelectedSite(String id) {
-    if(listSite.isNotEmpty){
+    if (listSite.isNotEmpty) {
       final selected = listSite.firstWhere(
-              (item) => item.id.toString() == id.toString(),
+          (item) => item.id.toString() == id.toString(),
           orElse: () => listSite.first);
       selectedSite(selected);
 
