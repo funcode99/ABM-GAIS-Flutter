@@ -79,7 +79,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                if((controller.codeStatusDoc.toString() == "0" || controller.codeStatusDoc.toString() == "1") && (controller.isSender || controller.isSuperadmin || controller.isReceptionist))
+                                if(controller.showButtonCancel)
                                   ElevatedButton(
                                     onPressed: () {
                                       controller.openCancelDialog();
@@ -89,7 +89,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                         backgroundColor: redColor),
                                     child: Text("Cancel".tr),
                                   ),
-                                if((controller.codeStatusDoc.toString() == "0" || controller.codeStatusDoc.toString() == "1") && (controller.isSender || controller.isSuperadmin || controller.isReceptionist))
+                                if(controller.showButtonEdit)
                                   OutlinedButton(
                                   onPressed: () {
                                     controller.isEdit = !controller.isEdit;
@@ -112,7 +112,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                         backgroundColor: orangeColor),
                                     child: Text("Save".tr),
                                   ),
-                                if((controller.codeStatusDoc.toString() == "0") && (controller.isSender || controller.isSuperadmin || controller.isReceptionist))
+                                if(controller.showButtonReceived)
                                   ElevatedButton(
                                     onPressed: () {
                                       controller.receivedDocument();
@@ -122,7 +122,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                         backgroundColor: successColor),
                                     child: Text("Received".tr),
                                   ),
-                                if((controller.codeStatusDoc.toString() == "1") && (controller.isSuperadmin || controller.isReceptionist))
+                                if(controller.showButtonDelivering)
                                   ElevatedButton(
                                     onPressed: () {
                                       controller.deliveringDocument();
@@ -132,7 +132,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                         backgroundColor: successColor),
                                     child: Text("Delivering".tr),
                                   ),
-                                if((controller.codeStatusDoc.toString() == "2") && controller.isReceiver)
+                                if(controller.showButtonDelivered)
                                   ElevatedButton(
                                     onPressed: () {
                                       controller.deliveredDocument();
@@ -386,7 +386,6 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   label: "Attachment (Optional)".tr,
                                   onTap: () async {
                                     String path = controller.attachmentPath ?? "";
-                                    print("PATHH $path");
                                     if (path.toString()
                                         .isImageFileName) {
                                       Get.dialog(Dialog(

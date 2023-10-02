@@ -31,10 +31,12 @@ class FormDocumentDeliveryController extends BaseController {
   final remarks = TextEditingController();
 
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  String? userSiteID;
+  String? userCompanyID;
   String? senderID;
+  String? receiverID;
   String? receiverSiteID;
   String? receiverCompanyID;
-  String? receiverID;
   String? codeStatusDoc;
   String? senderCompanyID;
   String? senderSiteID;
@@ -57,8 +59,12 @@ class FormDocumentDeliveryController extends BaseController {
   bool isSuperadmin = false;
   bool isReceptionist = false;
 
-  bool isSender = false;
-  bool isReceiver = false;
+  bool showButtonCancel = false;
+  bool showButtonEdit = false;
+  bool showButtonReceived = false;
+  bool showButtonDelivering = false;
+  bool showButtonDelivered = false;
+
   String employeeId = "";
 
   List<receiver.Data> receiverList = [];
@@ -85,11 +91,10 @@ class FormDocumentDeliveryController extends BaseController {
 
     try {
       await storage.readEmployeeInfo().then((value) {
-        sender.text = value.first.employeeName ?? "";
-        senderID = value.first.id?.toString();
-        senderCompanyID = value.first.idCompany?.toString();
-        senderSiteID = value.first.idSite?.toString();
+        userCompanyID = value.first.idCompany?.toString();
+        userSiteID = value.first.idSite?.toString();
         employeeId = value.first.id?.toString() ?? "";
+
       });
 
       await repository.getCompanyList().then((value) {
@@ -113,29 +118,37 @@ class FormDocumentDeliveryController extends BaseController {
     isDelivering = false;
     isDelivered = false;
 
+    showButtonCancel = false;
+    showButtonEdit = false;
+    showButtonReceived = false;
+    showButtonDelivering = false;
+    showButtonDelivered = false;
+
     try {
       await documentDelivery.getByID(ddID!).then((value) {
         DateTime? tempDate;
-        noDocument = value.data?.first.noDocumentDelivery;
-        senderID = value.data?.first.idEmployeeSender?.toString();
-        sender.text = value.data?.first.senderName.toString() ?? "";
-        selectedReceiver = value.data?.first.idEmployeeReceiver.toString();
-        receiverID = value.data?.first.idEmployeeReceiver?.toString();
-        receiverName = value.data?.first.receiverName.toString();
+        sender.text = value.data?.first.senderName.toString() ?? ""; //set sender field
         location.text = value.data?.first.nameSiteReceiver ?? "";
-        receiverSiteID = value.data!.first.idSiteReceiver.toString();
         company.text = value.data?.first.nameCompanyReceiver ?? "";
-        receiverCompanyID = value.data?.first.idCompanyReceiver?.toString();
         subjectDocument.text = value.data?.first.subject ?? "";
         attachment.text = (value.data?.first.attachment != "{}"
-                ? value.data?.first.attachment
-                : "no attachment")
+            ? value.data?.first.attachment
+            : "no attachment")
             .toString();
         remarks.text = value.data?.first.remarks ?? "";
         tempDate = DateTime.parse(value.data?.first.createdAt ?? "");
         createdDate.text = dateFormat.format(tempDate);
         createdBy.text = value.data?.first.senderName ?? "";
         receivedBy.text = value.data?.first.receiverName ?? "";
+
+
+        noDocument = value.data?.first.noDocumentDelivery;
+        senderID = value.data?.first.idEmployeeSender?.toString();
+        selectedReceiver = value.data?.first.idEmployeeReceiver.toString();
+        receiverID = value.data?.first.idEmployeeReceiver?.toString();
+        receiverName = value.data?.first.receiverName.toString();
+        receiverSiteID = value.data!.first.idSiteReceiver.toString();
+        receiverCompanyID = value.data?.first.idCompanyReceiver?.toString();
         codeStatusDoc = value.data?.first.codeStatusDoc?.toString();
         status = value.data?.first.status?.toString();
         attachmentPath = value.data?.first.attachmentPath?.toString();
@@ -154,8 +167,39 @@ class FormDocumentDeliveryController extends BaseController {
           isDelivered = true;
         }
 
-        isSender = employeeId == senderID;
-        isReceiver = employeeId == receiverID;
+
+        //set button visibility
+        if(codeStatusDoc.toString() == "0"){
+          if(senderID == employeeId){
+            showButtonCancel = true;
+            showButtonEdit = true;
+            showButtonReceived = true;
+          }
+          if((isSuperadmin || isReceptionist) && userSiteID.toString() == senderSiteID.toString()){
+            showButtonCancel = true;
+            showButtonEdit = true;
+            showButtonReceived = true;
+          }
+        }
+
+        if(codeStatusDoc.toString() == "1"){
+          if((isSuperadmin || isReceptionist) && userSiteID.toString() == senderSiteID.toString()){
+            showButtonCancel = true;
+            showButtonEdit = true;
+            showButtonDelivering = true;
+          }
+        }
+
+        if(codeStatusDoc.toString() == "2"){
+          if(receiverID == employeeId){
+            showButtonDelivered = true;
+          }
+          if((isSuperadmin || isReceptionist) && userSiteID.toString() == receiverSiteID.toString()){
+            showButtonDelivered = true;
+          }
+        }
+
+
         listLogApproval.clear();
 
         List<ApprovalLogModel> result = [];
