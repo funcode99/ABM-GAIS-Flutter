@@ -218,41 +218,20 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                               ],
                             ),
                             action: [
-                              if((controller.ddList[index].codeStatusDoc! < 2) && (controller.ddList[index].idEmployeeSender.toString() == controller.employeeId || controller.isReceptionist || controller.isSuperadmin))
-                                CustomIconButton(
-                                  title: "Edit".tr,
-                                  iconData: IconlyBold.edit,
-                                  backgroundColor: successColor,
-                                  onPressed: () async {
-                                    Get.to(
-                                      const FormDocumentDeliveryScreen(),
-                                      arguments: {
-                                        'id': controller.ddList[index].id.toString(),
-                                      },
-                                    )?.then((value) {
-                                      controller.fetchList(controller.currentPage);
-                                      controller.update();
-                                    });
-                                  },
-                                ),
-                              const SizedBox(
-                                width: 4,
-                              ),
-                              if((controller.ddList[index].codeStatusDoc == 4 || controller.ddList[index].codeStatusDoc == 0) && (controller.ddList[index].idEmployeeSender.toString() == controller.employeeId || controller.isReceptionist || controller.isSuperadmin))
-                                CustomIconButton(
-                                backgroundColor: redColor,
-                                title: "Delete".tr,
-                                iconData: IconlyBold.delete,
-                                onPressed: () {
-                                  Get.dialog(DeleteConfirmationDialog(
-                                    onDeletePressed: () {
-                                      Get.close(1);
-                                      controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
-                                      controller.deleteDocumentDelivery(controller.ddList[index].id.toString());
-
-                                      controller.update();
+                              CustomIconButton(
+                                title: "View".tr,
+                                iconData: IconlyBold.show,
+                                backgroundColor: successColor,
+                                onPressed: () async {
+                                  Get.to(
+                                    const FormDocumentDeliveryScreen(),
+                                    arguments: {
+                                      'id': controller.ddList[index].id.toString(),
                                     },
-                                  ));
+                                  )?.then((value) {
+                                    controller.fetchList(controller.currentPage);
+                                    controller.update();
+                                  });
                                 },
                               )
                             ],
