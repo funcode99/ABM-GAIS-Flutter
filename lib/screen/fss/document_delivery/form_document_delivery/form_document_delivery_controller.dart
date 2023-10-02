@@ -156,6 +156,7 @@ class FormDocumentDeliveryController extends BaseController {
 
         isSender = employeeId == senderID;
         isReceiver = employeeId == receiverID;
+        listLogApproval.clear();
 
         List<ApprovalLogModel> result = [];
         if (value.data?.first.nameCreated != null) {
