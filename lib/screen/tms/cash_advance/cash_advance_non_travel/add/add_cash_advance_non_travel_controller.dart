@@ -124,8 +124,8 @@ class AddCashAdvanceNonTravelController extends BaseController
       grandTotal: totalController.text.digitOnly(),
     );
 
-    final result =
-        await _cashAdvanceTravelNonRepository.saveData(cashAdvanceModel);
+    final result = await _cashAdvanceTravelNonRepository.saveData(cashAdvanceModel);
+
     result.fold((l) {
       Get.showSnackbar(
           CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
@@ -135,10 +135,6 @@ class AddCashAdvanceNonTravelController extends BaseController
           arguments: {"item": cashAdvanceModel});
     });
 
-    result.every((r){
-      isLoadingHitApi(false);
-      return false;
-    });
   }
 
   void onChangeSelectedCurrency(String id) {

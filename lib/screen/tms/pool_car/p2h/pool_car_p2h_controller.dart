@@ -93,6 +93,8 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
   }
 
   void saveData() async {
+    isLoadingHitApi(true);
+
     List<SubmitCheckDataModel> data = [];
     for(CheckItemModel checkItemModel in listCheckItem){
       if(checkItemModel.fillable != null && checkItemModel.fillable == 1){
@@ -130,6 +132,10 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
       (cashAdvanceModel) {
           Get.back(result: true);
       });
+    result.every((r){
+      isLoadingHitApi(false);
+      return false;
+    });
   }
 
   void updateChecklistValue(int index, int newValue) {
