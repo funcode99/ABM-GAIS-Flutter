@@ -46,7 +46,7 @@ class RequesterInfoScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(50)),
                       child: const Icon(IconlyBold.info_square, color: whiteColor),
                     ),
-                    Text("Requester Info", style: appTitle),
+                    Text("Requestor Info", style: appTitle),
                     SizedBox(height: 20),
                     Form(
                       key: controller.formKey,
