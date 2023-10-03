@@ -339,7 +339,8 @@ class MenuScreen extends StatelessWidget {
                                   ),
                                   onTap: () => Get.to(const SubmenuScreen(), arguments: true),
                                 ),
-                                GestureDetector(
+                                if(!controller.isAdministrator)
+                                  GestureDetector(
                                   onTap: () {
                                     Get.to(const ApprovalRequestATKListScreen());
                                   },
@@ -444,7 +445,7 @@ class MenuScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  if (controller.approvalAuth)
+                                  if (controller.approvalAuth && !controller.isAdministrator)
                                     GestureDetector(
                                       onTap: () {
                                         Get.to(const StockInListScreen());
@@ -477,7 +478,7 @@ class MenuScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-              controller.receptionis || controller.approvalAuth
+              /*controller.receptionis || controller.approvalAuth
                   ? Card(
                       elevation: 5,
                       margin: const EdgeInsets.all(10),
@@ -526,8 +527,8 @@ class MenuScreen extends StatelessWidget {
                         ),
                       ),
                     )
-                  : Container(),
-              !controller.approvalAuth
+                  : Container(),*/
+              !controller.approvalAuth || controller.isAdministrator
                   ? Container()
                   : Card(
                       elevation: 5,
