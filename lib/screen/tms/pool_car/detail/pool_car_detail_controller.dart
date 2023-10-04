@@ -89,6 +89,8 @@ class PoolCarDetailController extends BaseController {
   }
 
   /*void submitHeader() async {
+      isLoadingHitApi(true);
+
     final result = await _repository.submitData(selectedItem.value.id!);
     result.fold(
         (l) => Get.showSnackbar(
@@ -96,9 +98,14 @@ class PoolCarDetailController extends BaseController {
         (cashAdvanceModel) {
       Get.back(result: true);
     });
+    result.every((r){
+      isLoadingHitApi(false);
+      return false;
+    });
   }*/
 
   void changeCar(CarModel newCar)async{
+    isLoadingHitApi(true);
     final result = await _repository.changeCar(selectedItem.value.id, newCar);
     result.fold(
             (l) => Get.showSnackbar(
@@ -106,5 +113,9 @@ class PoolCarDetailController extends BaseController {
             (bool result) {
               detailHeader();
         });
+    result.every((r){
+      isLoadingHitApi(false);
+      return false;
+    });
   }
 }

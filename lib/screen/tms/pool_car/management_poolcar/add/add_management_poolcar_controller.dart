@@ -158,6 +158,8 @@ class AddManagementPoolCarController extends BaseController {
   }
 
   Future<void> saveData() async {
+    isLoadingHitApi(true);
+
     try {
       await managementPoolCar
           .save(
@@ -208,6 +210,8 @@ class AddManagementPoolCarController extends BaseController {
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
       ));
+    }finally{
+      isLoadingHitApi(false);
     }
   }
 

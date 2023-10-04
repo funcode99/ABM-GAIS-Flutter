@@ -111,6 +111,8 @@ class EditCashAdvanceNonTravelController extends BaseController
   }
 
   void updateHeader({bool hideButtonAfterEdit = false}) async {
+    isLoadingHitApi(true);
+
     String userId = await storage.readString(StorageCore.userID);
     CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
       codeStatusDoc: selectedItem.value.codeStatusDoc,
@@ -135,14 +137,22 @@ class EditCashAdvanceNonTravelController extends BaseController
     final result =
         await _repository.updateData(cashAdvanceModel, cashAdvanceModel.id!);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (cashAdvanceModel) {
+
       detailHeader();
       getDataDetail();
       if (hideButtonAfterEdit) {
         onEdit(false);
       }
+    });
+
+    result.every((r){
+      isLoadingHitApi(false);
+      return false;
     });
   }
 
@@ -168,6 +178,8 @@ class EditCashAdvanceNonTravelController extends BaseController
   }
 
   void submitHeader() async {
+    isLoadingHitApi(true);
+
     final result = await _repository.submitData(selectedItem.value.id!);
     result.fold(
         (l) => Get.showSnackbar(
@@ -175,9 +187,16 @@ class EditCashAdvanceNonTravelController extends BaseController
         (cashAdvanceModel) {
       detailHeader();
     });
+
+    result.every((r){
+      isLoadingHitApi(false);
+      return false;
+    });
   }
 
   void deleteDetail(CashAdvanceDetailModel item) async {
+    isLoadingHitApi(true);
+
     final result = await _repository.deleteDetail(item.id!);
     result.fold(
         (l) => Get.showSnackbar(
@@ -192,9 +211,16 @@ class EditCashAdvanceNonTravelController extends BaseController
       totalController.text = _getTotal();
       updateHeader();
     });
+
+    result.every((r){
+      isLoadingHitApi(false);
+      return false;
+    });
   }
 
   void addDetail(CashAdvanceDetailModel item) async {
+    isLoadingHitApi(true);
+
     item.idCa = selectedItem.value.id;
     final result = await _repository.addDetail(item);
     result.fold(
@@ -206,9 +232,16 @@ class EditCashAdvanceNonTravelController extends BaseController
       totalController.text = _getTotal();
       updateHeader();
     });
+
+    result.every((r){
+      isLoadingHitApi(false);
+      return false;
+    });
   }
 
   void updateDetail(CashAdvanceDetailModel item) async {
+    isLoadingHitApi(true);
+
     item.idCa = selectedItem.value.id;
     final result = await _repository.updateDetail(item, item.id!);
     result.fold(
@@ -220,6 +253,11 @@ class EditCashAdvanceNonTravelController extends BaseController
 
       totalController.text = _getTotal();
       updateHeader();
+    });
+
+    result.every((r){
+      isLoadingHitApi(false);
+      return false;
     });
   }
 
