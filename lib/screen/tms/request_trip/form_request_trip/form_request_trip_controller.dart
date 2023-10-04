@@ -18,6 +18,7 @@ import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as gue
 import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as ot;
 import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart' as tv;
+import 'package:gais/data/model/request_trip/get_transportation_model.dart' as transport;
 import 'package:gais/reusable/pdf_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
@@ -107,6 +108,12 @@ class FormRequestTripController extends BaseController {
       "screen": const AddTrainScreen(),
       "showList": false,
     },
+    {
+      "title": "Transportation",
+      "isFilled": false,
+      "screen": const AddTrainScreen(),
+      "showList": false,
+    },
     /*{
       "title": "Taxi Voucher",
       "isFilled": false,
@@ -138,6 +145,7 @@ class FormRequestTripController extends BaseController {
   GetAirlinessBytripModel? airlinessModel;
   List<train.Data> trainList = [];
   train.GetTrainTripBytripidModel? trainModel;
+  List<transport.Data> transportList = [];
   List<tv.Data> tvList = [];
   List<ot.Data> otList = [];
   List<acc.Data> accommodationsList = [];
@@ -201,7 +209,9 @@ class FormRequestTripController extends BaseController {
                 ? true
                 : item['title'] == "Other Transportation"
                     ? true
-                    : false;
+                    : item['title'] == "Transportation"
+                        ? true
+                        : false;
 
         item['showList'] = item['title'] == "Taxi Voucher"
             ? true
@@ -209,7 +219,9 @@ class FormRequestTripController extends BaseController {
                 ? true
                 : item['title'] == "Other Transportation"
                     ? true
-                    : false;
+                    : item['title'] == "Transportation"
+                        ? true
+                        : false;
       }
     } else if (selectedPurpose == "2") {
       for (var item in items) {
@@ -237,7 +249,9 @@ class FormRequestTripController extends BaseController {
                 ? true
                 : item['title'] == "Other Transportation"
                     ? true
-                    : false;
+                    : item['title'] == "Transportation"
+                        ? true
+                        : false;
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
@@ -245,7 +259,9 @@ class FormRequestTripController extends BaseController {
                 ? true
                 : item['title'] == "Other Transportation"
                     ? true
-                    : false;
+                    : item['title'] == "Transportation"
+                        ? true
+                        : false;
       }
     } else if (selectedPurpose == "5") {
       for (var item in items) {
@@ -255,7 +271,9 @@ class FormRequestTripController extends BaseController {
                 ? true
                 : item['title'] == "Other Transportation"
                     ? true
-                    : false;
+                    : item['title'] == "Transportation"
+                        ? true
+                        : false;
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
@@ -263,7 +281,9 @@ class FormRequestTripController extends BaseController {
                 ? true
                 : item['title'] == "Other Transportation"
                     ? true
-                    : false;
+                    : item['title'] == "Transportation"
+                        ? true
+                        : false;
       }
     } else {
       items.where((e) => e['isFilled'] == false).forEach((item) {
@@ -431,6 +451,7 @@ class FormRequestTripController extends BaseController {
     guestList = [];
     airlinessList = [];
     trainList = [];
+    transportList = [];
     tvList = [];
     otList = [];
     accommodationsList = [];
@@ -510,8 +531,11 @@ class FormRequestTripController extends BaseController {
       var accData = await requestTrip.getAccommodationBytripList(purposeID);
       accommodationsList.addAll(accData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      // var caData = await repository.getCashAdvanceTravelList(purposeID);
-      // caList.addAll(caData.data?.toSet().toList() ?? []);
+      var caData = await requestTrip.getCashAdvanceTravelList(purposeID);
+      caList.addAll(caData.data?.toSet().toList() ?? []);
+
+      var transportData = await requestTrip.getTransportationBytrip(purposeID);
+      transportList.addAll(transportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
     } catch (e, i) {
       e.printError();
       i.printError();
@@ -633,6 +657,39 @@ class FormRequestTripController extends BaseController {
   Future<void> deleteTaxiVoucher(String id) async {
     try {
       await requestTrip.deleteTaxiVoucher(id).then((value) {
+        fetchList();
+        Get.showSnackbar(
+          const GetSnackBar(
+            icon: Icon(
+              Icons.error,
+              color: Colors.white,
+            ),
+            message: 'Data Deleted',
+            isDismissible: true,
+            duration: Duration(seconds: 3),
+            backgroundColor: successColor,
+          ),
+        );
+      });
+    } catch (e) {
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Delete Failed',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: errorColor,
+        ),
+      );
+    }
+  }
+
+  Future<void> deleteTransport(String id) async {
+    try {
+      await requestTrip.deleteOtherTransportation(id).then((value) {
         fetchList();
         Get.showSnackbar(
           const GetSnackBar(

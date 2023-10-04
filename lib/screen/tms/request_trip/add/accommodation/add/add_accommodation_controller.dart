@@ -9,6 +9,7 @@ import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as gue
 import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/check_accommodation/check_accommodation_screen.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -212,14 +213,16 @@ class AddAccommodationController extends BaseController {
             travellerGender.text == "Male" ? 'L' : 'P',
             hotelFare.text.digitOnly(),
           )
-          .then((value) => Get.off(
-                const AccommodationScreen(),
-                arguments: {
-                  'purposeID': purposeID,
-                  'codeDocument': codeDocument,
-                  'formEdit': formEdit,
-                },
-              ));
+          .then((value) => formEdit == true
+              ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+              : Get.off(
+                  const AccommodationScreen(),
+                  arguments: {
+                    'purposeID': purposeID,
+                    'codeDocument': codeDocument,
+                    'formEdit': formEdit,
+                  },
+                ));
     } catch (e, i) {
       e.printError();
       i.printError();
@@ -265,11 +268,13 @@ class AddAccommodationController extends BaseController {
             travellerGender.text == "Male" ? 'L' : 'P',
             hotelFare.text.digitOnly(),
           )
-          .then((value) => Get.off(const AccommodationScreen(), arguments: {
-                'purposeID': purposeID,
-                'codeDocument': codeDocument,
-                'formEdit': formEdit,
-              }));
+          .then((value) => formEdit == true
+              ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+              : Get.off(const AccommodationScreen(), arguments: {
+                  'purposeID': purposeID,
+                  'codeDocument': codeDocument,
+                  'formEdit': formEdit,
+                }));
     } catch (e, i) {
       e.printError();
       i.printError();
