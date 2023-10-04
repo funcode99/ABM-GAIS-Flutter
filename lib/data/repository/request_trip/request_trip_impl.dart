@@ -17,6 +17,7 @@ import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart';
 import 'package:gais/data/model/request_trip/get_trainTrip_model.dart';
 import 'package:gais/data/model/request_trip/get_train_trip_bytripid_model.dart';
+import 'package:gais/data/model/request_trip/get_transportation_model.dart';
 import 'package:gais/data/model/request_trip/request_trip_list_model.dart';
 import 'package:gais/data/model/request_trip/save_accommodation_model.dart';
 import 'package:gais/data/model/request_trip/save_airliness_model.dart';
@@ -24,6 +25,7 @@ import 'package:gais/data/model/request_trip/save_other_transportation_model.dar
 import 'package:gais/data/model/request_trip/save_purpose_of_trip_model.dart';
 import 'package:gais/data/model/request_trip/save_taxi_voucher_model.dart';
 import 'package:gais/data/model/request_trip/save_train_trip_model.dart';
+import 'package:gais/data/model/request_trip/save_transportation_model.dart';
 import 'package:gais/data/model/request_trip/save_traveller_guest_model.dart';
 import 'package:gais/data/model/request_trip/submit_request_trip_model.dart';
 import 'package:gais/data/model/request_trip/update_accommodation_model.dart';
@@ -33,6 +35,7 @@ import 'package:gais/data/model/request_trip/update_other_transport_model.dart';
 import 'package:gais/data/model/request_trip/update_purpose_of_trip_model.dart';
 import 'package:gais/data/model/request_trip/update_taxi_voucher_model.dart';
 import 'package:gais/data/model/request_trip/update_train_trip_model.dart';
+import 'package:gais/data/model/request_trip/update_transportation_model.dart';
 import 'package:gais/data/model/request_trip/update_traveller_guest_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:gais/data/repository/request_trip/request_trip_repository.dart';
@@ -1191,6 +1194,148 @@ class RequestTripImpl implements RequestTripRepository {
     } on DioError catch (e) {
       // print("response save error: ${SavePurposeOfTripModel.fromJson(e.response?.data).message}");
       return UpdateTrainTripModel.fromJson(e.response?.data);
+    }
+  }
+
+  @override
+  Future deleteTransportation(String id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.delete(
+        "/api/transportation/delete_data/$id",
+      );
+      return response.data;
+    } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+  @override
+  Future<GetTransportationModel> getTransportationByID(String id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/transportation/get_data/$id",
+      );
+      return GetTransportationModel.fromJson(response.data);
+    } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+  @override
+  Future<GetTransportationModel> getTransportationBytrip(String id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/transportation/get_data/",
+      );
+      return GetTransportationModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print("response error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+  @override
+  Future<SaveTransportationModel> saveTransportation(
+    String idRequestTrip,
+    String amount,
+    String accountName,
+    String remarks,
+    String idDepartureCity,
+    String idArrivalCity,
+    String idTypeTransportation,
+    String fromDate,
+    String toDate,
+    String idCity,
+    String qty,
+    String idCompany,
+    String idSite,
+  ) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+
+    var formData = FormData.fromMap({
+      "id_request_trip": idRequestTrip,
+      "amount": amount,
+      "account_name": accountName,
+      "remarks": remarks,
+      "id_departure_city": idDepartureCity,
+      "id_arrival_city": idArrivalCity,
+      "date": fromDate,
+      "id_type_transportation": idTypeTransportation,
+      "from_date": fromDate,
+      "to_date": toDate,
+      "id_city": idCity,
+      "qty": qty,
+      "id_company": idCompany,
+      "id_site": idSite,
+    });
+
+    try {
+      Response response = await network.dio.post(
+        "/api/transportation/store",
+        data: formData,
+      );
+      return SaveTransportationModel.fromJson(response.data);
+    } on DioError catch (e) {
+      // print("response save error: ${SavePurposeOfTripModel.fromJson(e.response?.data).message}");
+      return SaveTransportationModel.fromJson(e.response?.data);
+    }
+  }
+
+  @override
+  Future<UpdateTransportationModel> updateTransportation(
+    String id,
+    String idRequestTrip,
+    String amount,
+    String accountName,
+    String remarks,
+    String idDepartureCity,
+    String idArrivalCity,
+    String idTypeTransportation,
+    String fromDate,
+    String toDate,
+    String idCity,
+    String qty,
+    String idCompany,
+    String idSite,
+  ) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+
+    var formData = FormData.fromMap({
+      "id_request_trip": idRequestTrip,
+      "amount": amount,
+      "account_name": accountName,
+      "remarks": remarks,
+      "id_departure_city": idDepartureCity,
+      "id_arrival_city": idArrivalCity,
+      "date": fromDate,
+      "id_type_transportation": idTypeTransportation,
+      "from_date": fromDate,
+      "to_date": toDate,
+      "id_city": idCity,
+      "qty": qty,
+      "id_company": idCompany,
+      "id_site": idSite,
+    });
+
+    try {
+      Response response = await network.dio.post(
+        "/api/transportation/update_data/$id",
+        data: formData,
+      );
+      return UpdateTransportationModel.fromJson(response.data);
+    } on DioError catch (e) {
+      // print("response save error: ${SavePurposeOfTripModel.fromJson(e.response?.data).message}");
+      return UpdateTransportationModel.fromJson(e.response?.data);
     }
   }
 }

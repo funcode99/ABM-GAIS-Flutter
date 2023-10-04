@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/image_constant.dart';
@@ -10,6 +11,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/transportation/add/add_transportation_controller.dart';
+import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
 import 'package:get/get.dart';
 
 class AddTransportationScreen extends StatelessWidget {
@@ -22,7 +24,7 @@ class AddTransportationScreen extends StatelessWidget {
         builder: (controller) {
           return Scaffold(
             appBar: TopBar(
-              title: Text("Other Transportation", style: appTitle),
+              title: Text("Transportation", style: appTitle),
               leading: const CustomBackButton(),
             ),
             body: Container(
@@ -94,7 +96,7 @@ class AddTransportationScreen extends StatelessWidget {
                             const SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.fromDate,
-                              label: controller.transportType == '4' ? "Date" : "From Date",
+                              label: controller.transportType == '4' || controller.transportType == '3' ? "Date" : "From Date",
                               hintText: "Date",
                               isRequired: true,
                               validator: (value) {
@@ -114,9 +116,9 @@ class AddTransportationScreen extends StatelessWidget {
                               }),
                             ),
                             const SizedBox(height: 8),
-                            controller.transportType == '4'
+                            controller.transportType == '4' || controller.transportType == '3'
                                 ? CustomDropDownFormField(
-                                    label: "Departure City",
+                                    label: "From",
                                     hintText: controller.isLoading ? "Loading..." : "City",
                                     isRequired: true,
                                     validator: (value) {
@@ -161,7 +163,7 @@ class AddTransportationScreen extends StatelessWidget {
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
                               // ignore: unrelated_type_equality_checks
-                              label: controller.transportType == '4' ? "Arrival" : "City",
+                              label: controller.transportType == '4' || controller.transportType == '3' ? "To" : "City",
                               hintText: controller.isLoading ? "Loading..." : "City",
                               isRequired: true,
                               validator: (value) {
@@ -188,6 +190,26 @@ class AddTransportationScreen extends StatelessWidget {
                               },
                             ),
                             const SizedBox(height: 8),
+                            controller.transportType == '4' || controller.transportType == '3'
+                                ? CustomTextFormField(
+                                    controller: controller.quantity,
+                                    label: "Amount",
+                                    hintText: "Amount",
+                                    isRequired: true,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      ThousandsSeparatorInputFormatter(),
+                                    ],
+                                    inputType: TextInputType.number,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "This field is required";
+                                      }
+                                      return null;
+                                    },
+                                  )
+                                : const SizedBox(),
+                            const SizedBox(height: 8),
                             controller.transportType == '4'
                                 ? CustomTextFormField(
                                     controller: controller.accountName,
@@ -201,20 +223,61 @@ class AddTransportationScreen extends StatelessWidget {
                                       return null;
                                     },
                                   )
-                                : CustomTextFormField(
-                                    controller: controller.quantity,
-                                    label: "Quantity",
-                                    hintText: "Quantity",
-                                    isRequired: true,
-                                    inputType: TextInputType.number,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return "This field is required";
-                                      }
-                                      return null;
-                                    },
-                                  ),
+                                : controller.transportType != '3'
+                                    ? CustomTextFormField(
+                                        controller: controller.quantity,
+                                        label: "Quantity",
+                                        hintText: "Quantity",
+                                        isRequired: true,
+                                        inputType: TextInputType.number,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return "This field is required";
+                                          }
+                                          return null;
+                                        },
+                                      )
+                                    : const SizedBox(),
                             const SizedBox(height: 8),
+                            controller.transportType == '1' || controller.transportType == '2'
+                                ? Column(
+                                    children: [
+                                      CustomDropDownFormField(
+                                        items: controller.companyList
+                                            .map((e) => DropdownMenuItem(
+                                                  value: e.id.toString(),
+                                                  child: Text(e.companyName.toString()),
+                                                ))
+                                            .toList(),
+                                        label: "Company",
+                                        hintText: controller.isLoading ? "Loading..." : "Company",
+                                        isRequired: true,
+                                        onChanged: (value) {
+                                          controller.companyID.text = value!;
+                                          controller.fetchSiteList(value!);
+                                          controller.update();
+                                        },
+                                      ),
+                                      SizedBox(height: 8),
+                                      CustomDropDownFormField(
+                                        items: controller.siteList
+                                            .map((e) => DropdownMenuItem(
+                                                  value: e.id.toString(),
+                                                  child: Text(e.siteName.toString()),
+                                                ))
+                                            .toList(),
+                                        label: "Site",
+                                        hintText: controller.isLoading || controller.loadLocation ? "Loading..." : "Site",
+                                        isRequired: true,
+                                        onChanged: (value) {
+                                          controller.siteID.text = value!;
+                                          controller.update();
+                                        },
+                                      ),
+                                      SizedBox(height: 8),
+                                    ],
+                                  )
+                                : const SizedBox(),
                             CustomTextFormField(
                               controller: controller.remarks,
                               label: "Remarks",

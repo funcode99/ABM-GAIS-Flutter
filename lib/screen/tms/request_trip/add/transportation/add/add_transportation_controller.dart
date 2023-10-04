@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/data/model/reference/get_type_transportation_model.dart' as type;
+import 'package:gais/data/model/reference/get_company_model.dart' as comp;
+import 'package:gais/data/model/reference/get_site_model.dart' as site;
 import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -23,6 +26,8 @@ class AddTransportationController extends BaseController {
   final date = TextEditingController();
   final amount = TextEditingController();
   final accountName = TextEditingController();
+  final companyID = TextEditingController();
+  final siteID = TextEditingController();
 
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   DateFormat saveFormat = DateFormat("yyyy-MM-dd");
@@ -36,12 +41,15 @@ class AddTransportationController extends BaseController {
   String? departure;
   String? arrival;
   bool isLoading = false;
+  bool loadLocation = false;
 
   GetRequestTripByidModel? rtModel;
   type.GetTypeTransportationModel? typeModel;
   List<type.Data> typeList = [];
   city.GetCityModel? cityModel;
   List<city.Data> cityList = [];
+  List<comp.Data> companyList = [];
+  List<site.Data> siteList = [];
 
   @override
   void onInit() {
@@ -69,6 +77,8 @@ class AddTransportationController extends BaseController {
     isLoading = true;
     cityList = [];
     typeList = [];
+    companyList = [];
+    siteList = [];
     try {
       await storage.readEmployeeInfo().then((value) {
         print(value.isNotEmpty);
@@ -87,6 +97,14 @@ class AddTransportationController extends BaseController {
       var rtData = await requestTrip.getRequestTripByid(purposeID);
       rtModel = rtData;
       lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
+
+      await repository.getCompanyList().then((value) {
+        companyList.addAll(value.data?.toSet().toList() ?? []);
+      });
+
+      await repository.getSiteList().then((value) {
+        siteList.addAll(value.data?.toSet().toList() ?? []);
+      });
     } catch (e) {
       e.printError();
     }
@@ -95,6 +113,22 @@ class AddTransportationController extends BaseController {
     if (isEdit == true) {
       fetchData();
     }
+  }
+
+  Future<void> fetchSiteList(String id) async {
+    loadLocation = true;
+    siteList = [];
+    update();
+    try {
+      await repository.getSiteListByCompanyID(id).then((value) {
+        siteList.addAll(value.data?.toSet().toList() ?? []);
+      });
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+    }
+    loadLocation = false;
+    update();
   }
 
   void save() {
@@ -139,34 +173,52 @@ class AddTransportationController extends BaseController {
 
   Future<void> saveData() async {
     try {
-      if (transportType == '4') {
-        await requestTrip
-            .saveTaxiVoucher(
-              purposeID,
-              amount.text,
-              accountName.text,
-              departure!,
-              arrival!,
-              remarks.text,
-              saveFormat.format(dateFrom!),
-              accountName.text,
-            )
-            .then((value) => Get.back());
-      } else {
-        await requestTrip
-            .saveOtherTransportation(
-              purposeID.toString(),
-              transportType.toString(),
-              fromDate.text,
-              toDate.text,
-              selectedCity.toString(),
-              quantity.text,
-              remarks.text,
-            )
-            .then((value) => Get.back());
-      }
-    } catch (e) {
+      await requestTrip
+          .saveTransportation(
+            purposeID,
+            amount.text.digitOnly(),
+            accountName.text,
+            remarks.text,
+            departure.toString(),
+            arrival.toString(),
+            transportType.toString(),
+            saveFormat.format(dateFrom ?? DateTime.now()),
+            saveFormat.format(dateTo ?? DateTime.now()),
+            selectedCity.toString(),
+            quantity.text,
+            companyID.text,
+            siteID.text,
+          )
+          .then((value) => Get.back());
+      // if (transportType == '4') {
+      //   await requestTrip
+      //       .saveTaxiVoucher(
+      //         purposeID,
+      //         amount.text,
+      //         accountName.text,
+      //         departure!,
+      //         arrival!,
+      //         remarks.text,
+      //         saveFormat.format(dateFrom!),
+      //         accountName.text,
+      //       )
+      //       .then((value) => Get.back());
+      // } else {
+      //   await requestTrip
+      //       .saveOtherTransportation(
+      //         purposeID.toString(),
+      //         transportType.toString(),
+      //         fromDate.text,
+      //         toDate.text,
+      //         selectedCity.toString(),
+      //         quantity.text,
+      //         remarks.text,
+      //       )
+      //       .then((value) => Get.back());
+      // }
+    } catch (e, i) {
       e.printError();
+      i.printError();
       Get.showSnackbar(
         const GetSnackBar(
           icon: Icon(

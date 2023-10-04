@@ -55,7 +55,7 @@ class TransportationScreen extends StatelessWidget {
                       Text("Transportation", style: appTitle),
                       const SizedBox(height: 14),
                       Column(
-                        children: controller.otList
+                        children: controller.transportList
                             .mapIndexed(
                               (i, e) => CustomTripCard(
                                 listNumber: i + 1,
