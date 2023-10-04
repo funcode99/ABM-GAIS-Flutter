@@ -4,6 +4,7 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/purpose_of_trip/purpose_of_trip_screen.dart';
@@ -46,7 +47,7 @@ class RequesterInfoScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(50)),
                       child: const Icon(IconlyBold.info_square, color: whiteColor),
                     ),
-                    Text("Requester Info", style: appTitle),
+                    Text("Requestor Info", style: appTitle),
                     SizedBox(height: 20),
                     Form(
                       key: controller.formKey,
@@ -55,7 +56,24 @@ class RequesterInfoScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomTextFormField(
+                            controller.enableSelectRequestor ?
+                            CustomDropDownFormField(
+                              items: controller.employeeList
+                                  .map((e) => DropdownMenuItem(
+                                value: e.id.toString(),
+                                child: Text(e.employeeName.toString()),
+                              ))
+                                  .toList(),
+                              label: "Requestor",
+                              hintText: controller.isLoading ? "Loading" : "Employee",
+                              value: controller.selectedEmployee?.id.toString() ?? "",
+                              isRequired: true,
+                              onChanged: (value) {
+                                controller.onChangeRequestor(value);
+                                controller.update();
+                              },
+                            )
+                            : CustomTextFormField(
                               controller: controller.requester,
                               label: "Requestor",
                               isRequired: true,

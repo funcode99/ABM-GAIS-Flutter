@@ -146,7 +146,8 @@ class Users {
       num? id, 
       String? name, 
       num? isEmployee, 
-      num? idCompany, 
+      num? isCrewing,
+      num? idCompany,
       num? idSite, 
       num? idRole, 
       num? idApprovalAuth, 
@@ -164,6 +165,7 @@ class Users {
     _id = id;
     _name = name;
     _isEmployee = isEmployee;
+    _isCrewing = isCrewing;
     _idCompany = idCompany;
     _idSite = idSite;
     _idRole = idRole;
@@ -185,6 +187,7 @@ class Users {
     _id = json['id'];
     _name = json['name'];
     _isEmployee = json['is_employee'];
+    _isCrewing = json['is_crewing'];
     _idCompany = json['id_company'];
     _idSite = json['id_site'];
     _idRole = json['id_role'];
@@ -204,6 +207,7 @@ class Users {
   dynamic _id;
   String? _name;
   num? _isEmployee;
+  num? _isCrewing;
   num? _idCompany;
   num? _idSite;
   num? _idRole;
@@ -222,6 +226,7 @@ class Users {
 Users copyWith({  num? id,
   String? name,
   num? isEmployee,
+  num? isCrewing,
   num? idCompany,
   num? idSite,
   num? idRole,
@@ -240,6 +245,7 @@ Users copyWith({  num? id,
 }) => Users(  id: id ?? _id,
   name: name ?? _name,
   isEmployee: isEmployee ?? _isEmployee,
+  isCrewing: isCrewing ?? _isCrewing,
   idCompany: idCompany ?? _idCompany,
   idSite: idSite ?? _idSite,
   idRole: idRole ?? _idRole,
@@ -259,6 +265,7 @@ Users copyWith({  num? id,
   dynamic get id => _id;
   String? get name => _name;
   num? get isEmployee => _isEmployee;
+  num? get isCrewing => _isCrewing;
   num? get idCompany => _idCompany;
   num? get idSite => _idSite;
   num? get idRole => _idRole;
@@ -280,6 +287,7 @@ Users copyWith({  num? id,
     map['id'] = _id;
     map['name'] = _name;
     map['is_employee'] = _isEmployee;
+    map['is_crewing'] = _isCrewing;
     map['id_company'] = _idCompany;
     map['id_site'] = _idSite;
     map['id_role'] = _idRole;
