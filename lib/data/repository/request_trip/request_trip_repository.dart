@@ -15,6 +15,7 @@ import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart';
 import 'package:gais/data/model/request_trip/get_trainTrip_model.dart';
 import 'package:gais/data/model/request_trip/get_train_trip_bytripid_model.dart';
+import 'package:gais/data/model/request_trip/get_transportation_model.dart';
 import 'package:gais/data/model/request_trip/request_trip_list_model.dart';
 import 'package:gais/data/model/request_trip/save_accommodation_model.dart';
 import 'package:gais/data/model/request_trip/save_airliness_model.dart';
@@ -31,7 +32,9 @@ import 'package:gais/data/model/request_trip/update_other_transport_model.dart';
 import 'package:gais/data/model/request_trip/update_purpose_of_trip_model.dart';
 import 'package:gais/data/model/request_trip/update_taxi_voucher_model.dart';
 import 'package:gais/data/model/request_trip/update_train_trip_model.dart';
+import 'package:gais/data/model/request_trip/update_transportation_model.dart';
 import 'package:gais/data/model/request_trip/update_traveller_guest_model.dart';
+import 'package:gais/data/model/request_trip/save_transportation_model.dart';
 
 abstract class RequestTripRepository {
   Future<RequestTripListModel> getRequestTripList(
@@ -333,4 +336,43 @@ abstract class RequestTripRepository {
   Future<GetTrainTripBytripidModel> getTrainTripByTrip(String id);
 
   Future<GetTrainTripModel> getTrainTripByID(String id);
+
+  Future<SaveTransportationModel> saveTransportation(
+    String idRequestTrip,
+    String amount,
+    String accountName,
+    String remarks,
+    String idDepartureCity,
+    String idArrivalCity,
+    String idTypeTransportation,
+    String fromDate,
+    String toDate,
+    String idCity,
+    String qty,
+    String idCompany,
+    String idSite,
+  );
+
+  Future<UpdateTransportationModel> updateTransportation(
+    String id,
+    String idRequestTrip,
+    String amount,
+    String accountName,
+    String remarks,
+    String idDepartureCity,
+    String idArrivalCity,
+    String idTypeTransportation,
+    String fromDate,
+    String toDate,
+    String idCity,
+    String qty,
+    String idCompany,
+    String idSite,
+  );
+
+  Future<GetTransportationModel> getTransportationBytrip(String id);
+
+  Future<GetTransportationModel> getTransportationByID(String id);
+
+  Future deleteTransportation(String id);
 }

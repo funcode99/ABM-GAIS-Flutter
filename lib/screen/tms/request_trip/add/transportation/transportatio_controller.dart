@@ -3,6 +3,7 @@ import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart' as tv;
 import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as ot;
+import 'package:gais/data/model/request_trip/get_transportation_model.dart' as transport;
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
@@ -13,9 +14,11 @@ class TransportationController extends BaseController {
   bool? formEdit = Get.arguments['formEdit'];
 
   tv.GetTaxiVoucherModel? tvModel;
+  ot.GetOtherTransportModel? otModel;
+  transport.GetTransportationModel? transportModel;
   List<tv.Data> tvList = [];
   List<ot.Data> otList = [];
-  ot.GetOtherTransportModel? otModel;
+  List<transport.Data> transportList = [];
 
   @override
   void onInit() {
@@ -28,16 +31,21 @@ class TransportationController extends BaseController {
   Future<void> getList() async {
     tvList = [];
     otList = [];
+    transportList = [];
     try {
-      var tvData = await requestTrip.getTaxiVoucherBytripList(purposeID);
-      tvModel = tvData;
-      tvList.addAll(tvData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
-
-      var otherTransportData = await requestTrip.getOtherTransportBytripList(purposeID);
-      otModel = otherTransportData;
-      otList.addAll(otherTransportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
-    } catch (e) {
+      // var tvData = await requestTrip.getTaxiVoucherBytripList(purposeID);
+      // tvModel = tvData;
+      // tvList.addAll(tvData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+      //
+      // var otherTransportData = await requestTrip.getOtherTransportBytripList(purposeID);
+      // otModel = otherTransportData;
+      // otList.addAll(otherTransportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+      var transportData = await requestTrip.getTransportationBytrip(purposeID);
+      transportModel = transportData;
+      transportList.addAll(transportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+    } catch (e, i) {
       e.printError();
+      i.printError();
     }
     update();
   }
