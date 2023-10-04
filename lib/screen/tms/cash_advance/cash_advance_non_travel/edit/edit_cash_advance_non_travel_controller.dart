@@ -134,15 +134,15 @@ class EditCashAdvanceNonTravelController extends BaseController
       grandTotal: totalController.text.digitOnly(),
     );
 
-    final result =
-        await _repository.updateData(cashAdvanceModel, cashAdvanceModel.id!);
+    final result = await _repository.updateData(cashAdvanceModel, cashAdvanceModel.id!);
     result.fold(
         (l) {
+          isLoadingHitApi(false);
           Get.showSnackbar(
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
         },
         (cashAdvanceModel) {
-
+          isLoadingHitApi(false);
       detailHeader();
       getDataDetail();
       if (hideButtonAfterEdit) {
@@ -150,10 +150,6 @@ class EditCashAdvanceNonTravelController extends BaseController
       }
     });
 
-    result.every((r){
-      isLoadingHitApi(false);
-      return false;
-    });
   }
 
   void detailHeader() async {
@@ -182,16 +178,17 @@ class EditCashAdvanceNonTravelController extends BaseController
 
     final result = await _repository.submitData(selectedItem.value.id!);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (cashAdvanceModel) {
-      detailHeader();
+          isLoadingHitApi(false);
+
+          detailHeader();
     });
 
-    result.every((r){
-      isLoadingHitApi(false);
-      return false;
-    });
   }
 
   void deleteDetail(CashAdvanceDetailModel item) async {
@@ -199,10 +196,14 @@ class EditCashAdvanceNonTravelController extends BaseController
 
     final result = await _repository.deleteDetail(item.id!);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (cashAdvanceModel) {
-      Get.showSnackbar(CustomGetSnackBar(
+          isLoadingHitApi(false);
+          Get.showSnackbar(CustomGetSnackBar(
         message: "Success Delete Data".tr,
       ));
       //update state
@@ -212,10 +213,6 @@ class EditCashAdvanceNonTravelController extends BaseController
       updateHeader();
     });
 
-    result.every((r){
-      isLoadingHitApi(false);
-      return false;
-    });
   }
 
   void addDetail(CashAdvanceDetailModel item) async {
@@ -224,19 +221,19 @@ class EditCashAdvanceNonTravelController extends BaseController
     item.idCa = selectedItem.value.id;
     final result = await _repository.addDetail(item);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (cashAdvanceDetailModel) {
+      isLoadingHitApi(false);
       listDetail.add(cashAdvanceDetailModel);
 
       totalController.text = _getTotal();
       updateHeader();
     });
 
-    result.every((r){
-      isLoadingHitApi(false);
-      return false;
-    });
   }
 
   void updateDetail(CashAdvanceDetailModel item) async {
@@ -245,19 +242,18 @@ class EditCashAdvanceNonTravelController extends BaseController
     item.idCa = selectedItem.value.id;
     final result = await _repository.updateDetail(item, item.id!);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (cashAdvanceDetailModel) {
+      isLoadingHitApi(false);
       int index = listDetail.indexWhere((element) => element.id == item.id);
       listDetail[index] = item;
 
       totalController.text = _getTotal();
       updateHeader();
-    });
-
-    result.every((r){
-      isLoadingHitApi(false);
-      return false;
     });
   }
 

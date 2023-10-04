@@ -185,6 +185,7 @@ class AddManagementPoolCarController extends BaseController {
         stickerExpiredDate != null ? dateFormatForSubmit.format(stickerExpiredDate!) : null,
     )
           .then((value) {
+        isLoadingHitApi(false);
         Get.off(const ManagementPoolCarListScreen());
         Get.showSnackbar(const GetSnackBar(
           icon: Icon(
@@ -198,6 +199,7 @@ class AddManagementPoolCarController extends BaseController {
         ));
       });
     } catch (e, i) {
+      isLoadingHitApi(false);
       e.printError();
       i.printError();
       Get.showSnackbar(const GetSnackBar(
@@ -210,8 +212,6 @@ class AddManagementPoolCarController extends BaseController {
         duration: Duration(seconds: 3),
         backgroundColor: Colors.red,
       ));
-    }finally{
-      isLoadingHitApi(false);
     }
   }
 

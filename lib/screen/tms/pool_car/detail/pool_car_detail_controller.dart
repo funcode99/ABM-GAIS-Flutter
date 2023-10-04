@@ -28,6 +28,7 @@ class PoolCarDetailController extends BaseController {
   final showSubmitButton = false.obs;
 
   final idSite = Rxn<int>();
+
   @override
   void onInit() {
     super.onInit();
@@ -47,7 +48,8 @@ class PoolCarDetailController extends BaseController {
     String siteID = await storage.readString(StorageCore.siteID);
 
     showP2H.value = codeRole == RoleEnum.driver.value ||
-        selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value || selectedItem.value.codeStatusDoc == PoolCarEnum.done.value;
+        selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value ||
+        selectedItem.value.codeStatusDoc == PoolCarEnum.done.value;
 
     showP2HEnd.value =
         selectedItem.value.codeStatusDoc == PoolCarEnum.done.value;
@@ -60,15 +62,19 @@ class PoolCarDetailController extends BaseController {
     setValue();
   }
 
-  void setValue() async{
-    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss") ??
+  void setValue() async {
+    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(
+            originFormat: "yyyy-MM-dd HH:mm:ss",
+            targetFormat: "dd/MM/yyyy HH:mm:ss") ??
         "-";
     requestorController.text = selectedItem.value.requestorName ?? "-";
     referenceController.text = selectedItem.value.noRequestTrip ?? "-";
 
     String codeRole = await storage.readString(StorageCore.codeRole);
 
-    showChangeCar.value = selectedItem.value.isChanged == 1 && selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value && codeRole == RoleEnum.superAdmin.value;
+    showChangeCar.value = selectedItem.value.isChanged == 1 &&
+        selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value &&
+        codeRole == RoleEnum.superAdmin.value;
   }
 
   void detailHeader() async {
@@ -84,7 +90,7 @@ class PoolCarDetailController extends BaseController {
     });
   }
 
-  submitHeader(){
+  submitHeader() {
     showP2HEnd.value = true;
   }
 
@@ -93,29 +99,28 @@ class PoolCarDetailController extends BaseController {
 
     final result = await _repository.submitData(selectedItem.value.id!);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (cashAdvanceModel) {
-      Get.back(result: true);
+          isLoadingHitApi(false);
+          Get.back(result: true);
     });
-    result.every((r){
-      isLoadingHitApi(false);
-      return false;
-    });
+
   }*/
 
-  void changeCar(CarModel newCar)async{
+  void changeCar(CarModel newCar) async {
     isLoadingHitApi(true);
     final result = await _repository.changeCar(selectedItem.value.id, newCar);
-    result.fold(
-            (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-            (bool result) {
-              detailHeader();
-        });
-    result.every((r){
+    result.fold((l) {
       isLoadingHitApi(false);
-      return false;
+      Get.showSnackbar(
+          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+    }, (bool result) {
+      isLoadingHitApi(false);
+      detailHeader();
     });
   }
 }

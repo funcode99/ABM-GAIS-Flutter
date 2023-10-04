@@ -123,19 +123,19 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
 
     final result = await _repository.submitCheck(submitCheckModel, queryParam);
     result.fold(
-      (l) => Get.showSnackbar(
+      (l) {
+        isLoadingHitApi(false);
+        Get.showSnackbar(
                 CustomGetSnackBar(
                     message: l.message,
                     backgroundColor: Colors.red
                 )
-              ),
+              );
+      },
       (cashAdvanceModel) {
-          Get.back(result: true);
+        isLoadingHitApi(false);
+        Get.back(result: true);
       });
-    result.every((r){
-      isLoadingHitApi(false);
-      return false;
-    });
   }
 
   void updateChecklistValue(int index, int newValue) {

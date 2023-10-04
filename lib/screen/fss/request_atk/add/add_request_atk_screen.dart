@@ -265,7 +265,7 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                               child: Text("Cancel".tr),
                             ),
                             ElevatedButton(
-                              onPressed: _isButtonEnabled && controller.listDetail.isNotEmpty && !controller.isLoadingHitApi.value
+                              onPressed: _isButtonEnabled && controller.listDetail.isNotEmpty
                                   ? () {
                                       controller.saveData();
                                     }
