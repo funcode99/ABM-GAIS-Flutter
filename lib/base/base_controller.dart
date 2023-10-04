@@ -9,6 +9,7 @@ import 'package:gais/data/repository/request_trip/request_trip_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/dialog/fail_dialog.dart';
 import 'package:gais/reusable/dialog/success_dialog.dart';
+import 'package:gais/screen/tms/request_trip/add/add_request_trip_variable.dart';
 import 'package:get/get.dart';
 
 abstract class BaseController extends GetxController {
@@ -21,6 +22,8 @@ abstract class BaseController extends GetxController {
   final actualizationTrip = Get.find<ActualizationTripRepository>();
   final antavaya = Get.find<AntavayaRepository>();
   final storage = Get.find<StorageCore>();
+
+  final requestTripVariable = Get.find<AddRequestTripVariable>();
 
 
   Future<void> showApprovalSuccessDialog(String message){

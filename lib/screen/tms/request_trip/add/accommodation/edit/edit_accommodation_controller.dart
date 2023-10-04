@@ -62,7 +62,7 @@ class EditAccommodationController extends BaseController {
     cityList = [];
     hotelTypeList = [];
     try {
-      await storage.readEmployeeInfo().then((value) {
+      /*await storage.readEmployeeInfo().then((value) {
         print(value.isNotEmpty);
         travellerID = int.parse(value.first.id.toString());
         travellerName.text = value.first.employeeName.toString();
@@ -70,7 +70,12 @@ class EditAccommodationController extends BaseController {
         travellerGender.text =
             value.first.jenkel.toString() == "L" ? "Male" : "Female";
         jobBandID = int.parse(value.first.idJobBand.toString());
-      });
+      });*/
+      travellerID = requestTripVariable.requestTripRequestorID;
+      travellerName.text = requestTripVariable.requestTripRequestorName ?? "";
+      travellerGender.text = requestTripVariable.requestTripRequestorGender.toString() == "L" ? "Male" : "Female";;
+      hotelFare.text= requestTripVariable.requestTripRequestorHotelFare.toString();
+      jobBandID = requestTripVariable.requestTripRequestorJobBandID;
 
       var hotel = await repository.getJobBandList();
       hotelFare.text =

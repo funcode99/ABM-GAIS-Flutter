@@ -28,6 +28,7 @@ import 'package:gais/data/repository/request_trip/request_trip_impl.dart';
 import 'package:gais/data/repository/request_trip/request_trip_repository.dart';
 import 'package:gais/data/repository/stock_in/stock_in_repository.dart';
 import 'package:gais/data/storage_core.dart';
+import 'package:gais/screen/tms/request_trip/add/add_request_trip_variable.dart';
 import 'package:get/get.dart';
 
 class GlobalBinding extends Bindings {
@@ -58,6 +59,8 @@ class GlobalBinding extends Bindings {
     Get.put(MasterRepository(), permanent: true);
 
     Get.put(DashboardMeetingRoomRepository(), permanent: true);
+
+    Get.put(AddRequestTripVariable(), permanent: false);
 
   }
 }

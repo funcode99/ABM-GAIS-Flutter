@@ -15,8 +15,16 @@ class RequesterInfoController extends BaseController with MasterDataMixin{
   final location = TextEditingController();
   final phone = TextEditingController();
 
+  String? requestorName;
+  String? requestorGender;
   int? requestorID;
+  int? requestorJobBandID;
+  int? requestorFlightID;
+  String? requestorSN;
+  String? requestorHotel;
+  String? requestorFlight;
   int? siteID;
+
   int? requestID;
 
   bool isLoading = false;
@@ -35,6 +43,10 @@ class RequesterInfoController extends BaseController with MasterDataMixin{
     Future.wait([
       getRequesterInfo(),
     ]);
+
+    requestTripVariable.requestTripRequestorID = null;
+    requestTripVariable.requestTripRequestorName = null;
+    requestTripVariable.requestTripRequestorSiteID = null;
   }
 
   @override
@@ -54,16 +66,30 @@ class RequesterInfoController extends BaseController with MasterDataMixin{
       enableSelectRequestor = true;
       fetchList();
     }else{
-      requestorID = await storage.readID();
       await storage.readEmployeeInfo().then((value) {
         print(value.isNotEmpty);
-        // requestorID = int.parse(value.first.id.toString());
         requester.text = value.first.employeeName.toString();
         phone.text = value.first.phoneNumber.toString();
         sn.text = value.first.snEmployee.toString();
-        siteID = int.parse(value.first.idSite.toString());
         location.text = value.first.siteName.toString();
+
+        siteID = int.parse(value.first.idSite.toString());
+        requestorID = int.parse(value.first.id.toString());
+        requestorName = value.first.employeeName.toString();
+        requestorGender = value.first.jenkel.toString();
+        requestorJobBandID = int.parse(value.first.idJobBand.toString());
+        requestorSN = value.first.snEmployee;
+        requestorHotel = value.first.hotelFare;
+
       });
+
+      await storage.readEmployeeFlight().then(
+              (value) {
+                 requestorFlight = value.first.flightClass.toString();
+                 requestorFlightID = value.first.idFlightClass;
+              })
+      ;
+
     }
 
 
@@ -98,11 +124,42 @@ class RequesterInfoController extends BaseController with MasterDataMixin{
       sn.text = selectedEmployee?.snEmployee ?? "";
       location.text = selectedEmployee?.siteName ?? "";
       phone.text = selectedEmployee?.phoneNumber ?? "";
-      requestorID = selectedEmployee?.id;
+
       siteID = selectedEmployee?.idSite;
+      requestorID = selectedEmployee?.id;
+      requestorName = selectedEmployee?.employeeName;
+      requestorGender = selectedEmployee?.jenkel;
+      requestorJobBandID = int.parse(selectedEmployee?.idJobBand.toString() ?? "0");
+      requestorSN = selectedEmployee?.snEmployee;
+      requestorHotel = selectedEmployee?.hotelFare;
+
+      requestorFlight = ""; //TODO : FIX THIS!!!! update the value from selected
+      requestorFlightID = 63; //TODO : FIX THIS!!!! update the value from selected
     }
 
     update();
+  }
+
+  void onClickNext(){
+    requestTripVariable.requestTripRequestorID = requestorID;
+    requestTripVariable.requestTripRequestorName = requestorName;
+    requestTripVariable.requestTripRequestorSiteID = siteID;
+    requestTripVariable.requestTripRequestorGender = requestorGender;
+    requestTripVariable.requestTripRequestorHotelFare = requestorHotel;
+    requestTripVariable.requestTripRequestorSN = requestorSN;
+    requestTripVariable.requestTripRequestorJobBandID = requestorJobBandID;
+    requestTripVariable.requestTripRequestorFlight = requestorFlight;
+    requestTripVariable.requestTripRequestorFlightID = requestorFlightID;
+
+    // print("requestTripVariable.requestTripRequestorID ${requestTripVariable.requestTripRequestorID}");
+    // print("requestTripVariable.requestTripRequestorName ${requestTripVariable.requestTripRequestorName}");
+    // print("requestTripVariable.requestTripRequestorSiteID ${requestTripVariable.requestTripRequestorSiteID}");
+    // print("requestTripVariable.requestTripRequestorGender ${requestTripVariable.requestTripRequestorGender}");
+    // print("requestTripVariable.requestTripRequestorHotel ${requestTripVariable.requestTripRequestorHotelFare}");
+    // print("requestTripVariable.requestTripRequestorSN ${requestTripVariable.requestTripRequestorSN}");
+    // print("requestTripVariable.requestTripRequestorJobBandID ${requestTripVariable.requestTripRequestorJobBandID}");
+    // print("requestTripVariable.requestTripRequestorFlightID ${requestTripVariable.requestTripRequestorFlightID}");
+    // print("requestTripVariable.requestTripRequestorFlight ${requestTripVariable.requestTripRequestorFlight}");
   }
 
 }

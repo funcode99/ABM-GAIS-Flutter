@@ -114,7 +114,7 @@ class AddGuestController extends BaseController {
 
       await repository.getFlightClassList().then((value) => flightList.addAll(value.data?.toSet().toList() ?? []));
 
-      storage.readEmployeeInfo().then((value) {
+      /*storage.readEmployeeInfo().then((value) {
         jobBandID = int.parse(value.first.idJobBand.toString());
         // flightEntitlement.text = value.first.flightClass.toString();
         travellerID = int.tryParse(value.first.id.toString());
@@ -125,7 +125,14 @@ class AddGuestController extends BaseController {
       storage.readEmployeeFlight().then((value) {
         flightEntitlement.text = value.first.flightClass.toString();
         idFlight = value.first.idFlightClass;
-      });
+      });*/
+
+      travellerID = requestTripVariable.requestTripRequestorID;
+      jobBandID = requestTripVariable.requestTripRequestorJobBandID;
+      idFlight = requestTripVariable.requestTripRequestorFlightID;
+      flightEntitlement.text = requestTripVariable.requestTripRequestorFlight.toString();
+      hotelFare.text = requestTripVariable.requestTripRequestorHotelFare.toString();
+
     } catch (e, i) {
       e.printError();
       i.printError();

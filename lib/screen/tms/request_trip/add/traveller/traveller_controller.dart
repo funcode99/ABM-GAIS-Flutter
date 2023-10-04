@@ -33,7 +33,7 @@ class AirlinesController extends BaseController {
   }
 
   Future<void> getTravellerInfo() async {
-    await storage.readEmployeeInfo().then((value) {
+    /*await storage.readEmployeeInfo().then((value) {
       travellerID = int.parse(value.first.id.toString());
       travellerName = value.first.employeeName;
       travellerSN = value.first.snEmployee;
@@ -41,9 +41,18 @@ class AirlinesController extends BaseController {
       travellerHotel = value.first.hotelFare;
       jobBandID = int.parse(value.first.idJobBand.toString());
       // travellerFlight = value.first.flightClass;
-    });
+    });*/
 
-    await storage.readEmployeeFlight().then((value) => travellerFlight = value.first.flightClass.toString());
+    // await storage.readEmployeeFlight().then((value) => travellerFlight = value.first.flightClass.toString());
+
+    travellerID = requestTripVariable.requestTripRequestorID;
+    travellerName = requestTripVariable.requestTripRequestorName;
+    travellerGender = requestTripVariable.requestTripRequestorGender;
+    travellerHotel = requestTripVariable.requestTripRequestorHotelFare;
+    travellerSN = requestTripVariable.requestTripRequestorSN;
+    jobBandID = requestTripVariable.requestTripRequestorJobBandID;
+    travellerFlight = requestTripVariable.requestTripRequestorFlight;
+
     if (codeDocument != 5) {
       showAddGuest = true;
     }

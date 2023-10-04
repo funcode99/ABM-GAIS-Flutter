@@ -9,6 +9,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_controller.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
 import 'package:get/get.dart';
 
@@ -173,8 +174,12 @@ class AddGuestScreen extends StatelessWidget {
                                   .toList(),
                               label: "Flight Entitlement",
                               hintText: controller.isLoading ? "Loading..." : "Flight Entitlement",
-                              value: controller.idFlight.toString(),
+                              value: controller.idFlight?.toString(),
                               isRequired: true,
+                              onChanged: (val){
+                                controller.idFlight = val?.toInt();
+                                controller.update();
+                              },
                             ),
                             // CustomTextFormField(
                             //   controller: controller.flightEntitlement,

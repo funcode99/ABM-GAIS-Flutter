@@ -116,13 +116,17 @@ class RequesterInfoScreen extends StatelessWidget {
                                   width: 100,
                                   color: infoColor,
                                   title: "Next",
-                                  onPressed: () => Get.to(
-                                    const PurposeOfTripScreen(),
-                                    arguments: {
-                                      "requestorID": controller.requestorID,
-                                      "siteID": controller.siteID
-                                    },
-                                  ),
+                                  onPressed: () {
+                                    controller.onClickNext();
+                                    Get.to(
+                                      const PurposeOfTripScreen(),
+                                      arguments: {
+                                        "requestorID": controller.requestorID,
+                                        "siteID": controller.siteID,
+                                        "requestorName" : controller.requestorName
+                                      },
+                                    );
+                                  },
                                 ),
                               ],
                             ),
