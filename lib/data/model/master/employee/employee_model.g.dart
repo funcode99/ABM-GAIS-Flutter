@@ -40,6 +40,7 @@ EmployeeModel _$EmployeeModelFromJson(Map<String, dynamic> json) =>
       companyName: json['company_name'] as String?,
       mealsRate: json['meals_rate'] as String?,
       hotelFare: json['hotel_fare'] as String?,
+      flightClass: json['flight_class'],
     );
 
 Map<String, dynamic> _$EmployeeModelToJson(EmployeeModel instance) =>
@@ -76,4 +77,5 @@ Map<String, dynamic> _$EmployeeModelToJson(EmployeeModel instance) =>
       'company_name': instance.companyName,
       'hotel_fare': instance.hotelFare,
       'meals_rate': instance.mealsRate,
+      'flight_class': instance.flightClass,
     };

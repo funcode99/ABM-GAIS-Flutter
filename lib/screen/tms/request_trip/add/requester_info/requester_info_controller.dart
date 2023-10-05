@@ -133,8 +133,12 @@ class RequesterInfoController extends BaseController with MasterDataMixin{
       requestorSN = selectedEmployee?.snEmployee;
       requestorHotel = selectedEmployee?.hotelFare;
 
-      requestorFlight = ""; //TODO : FIX THIS!!!! update the value from selected
-      requestorFlightID = 63; //TODO : FIX THIS!!!! update the value from selected
+      List<Map<String, dynamic>> tempList = List<Map<String, dynamic>>.from(selectedEmployee?.flightClass);
+      if(tempList.isNotEmpty){
+        Map<String, dynamic> flightClass = tempList.first;
+        requestorFlightID = flightClass["id_flight_class"] ?? 0;
+        requestorFlight = flightClass["flight_class"] ?? "";
+      }
     }
 
     update();
