@@ -1233,7 +1233,7 @@ class RequestTripImpl implements RequestTripRepository {
     network.dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       Response response = await network.dio.get(
-        "/api/transportation/get_data/",
+        "/api/transportation/get_by_trip_id/$id",
       );
       return GetTransportationModel.fromJson(response.data);
     } on DioError catch (e) {
@@ -1283,9 +1283,10 @@ class RequestTripImpl implements RequestTripRepository {
         "/api/transportation/store",
         data: formData,
       );
+      print("save transport: ${response.data}");
       return SaveTransportationModel.fromJson(response.data);
     } on DioError catch (e) {
-      // print("response save error: ${SavePurposeOfTripModel.fromJson(e.response?.data).message}");
+      print("response save error: ${e.response?.data}");
       return SaveTransportationModel.fromJson(e.response?.data);
     }
   }

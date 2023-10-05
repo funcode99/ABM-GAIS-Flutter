@@ -7,6 +7,7 @@ import 'package:gais/data/model/request_trip/get_transportation_model.dart' as t
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class TransportationController extends BaseController {
   String purposeID = Get.arguments['purposeID'];
@@ -19,6 +20,7 @@ class TransportationController extends BaseController {
   List<tv.Data> tvList = [];
   List<ot.Data> otList = [];
   List<transport.Data> transportList = [];
+  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
 
   @override
   void onInit() {
@@ -36,10 +38,11 @@ class TransportationController extends BaseController {
       // var tvData = await requestTrip.getTaxiVoucherBytripList(purposeID);
       // tvModel = tvData;
       // tvList.addAll(tvData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
-      //
+
       // var otherTransportData = await requestTrip.getOtherTransportBytripList(purposeID);
       // otModel = otherTransportData;
       // otList.addAll(otherTransportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+
       var transportData = await requestTrip.getTransportationBytrip(purposeID);
       transportModel = transportData;
       transportList.addAll(transportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
@@ -48,6 +51,39 @@ class TransportationController extends BaseController {
       i.printError();
     }
     update();
+  }
+
+  Future<void> deleteTransport(String id) async {
+    try {
+      await requestTrip.deleteTransportation(id).then((value) {
+        getList();
+        Get.showSnackbar(
+          const GetSnackBar(
+            icon: Icon(
+              Icons.error,
+              color: Colors.white,
+            ),
+            message: 'Data Deleted',
+            isDismissible: true,
+            duration: Duration(seconds: 3),
+            backgroundColor: successColor,
+          ),
+        );
+      });
+    } catch (e) {
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Failed To Save',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   Future<void> deleteOT(String id) async {
