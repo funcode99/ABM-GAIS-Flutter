@@ -91,7 +91,9 @@ class AddCashAdvanceTravelController extends BaseController {
 
   Future<void> fetchData() async {
     try {
-      await storage.readEmployeeInfo().then((value) => travellerName.text = value.first.employeeName.toString());
+      // await storage.readEmployeeInfo().then((value) => travellerName.text = value.first.employeeName.toString());
+      travellerName.text = requestTripVariable.requestTripRequestorName.toString();
+
 
       await repository.getCurrencyList().then((value) => currencyList.addAll(value.data?.toSet().toList() ?? []));
     } catch (e) {
