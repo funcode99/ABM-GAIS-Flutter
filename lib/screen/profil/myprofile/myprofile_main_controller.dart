@@ -11,7 +11,6 @@ class MyProfileMainController extends BaseController with GetTickerProviderState
 
   final name = "".obs;
   final image = "".obs;
-  final isLoading = false.obs;
 
   EmployeeInfoModel? profile;
 
@@ -50,13 +49,12 @@ class MyProfileMainController extends BaseController with GetTickerProviderState
 
   void changePhoto(String? filepath)async{
     if(filepath!=null){
-      isLoading.value = true;
+      isLoadingHitApi(true);
       final result = await repository.changePhotoProfile(filepath);
       if(result!=null){
         getDetailProfile();
       }
-
-      isLoading.value = false;
+      isLoadingHitApi(false);
     }
 
   }

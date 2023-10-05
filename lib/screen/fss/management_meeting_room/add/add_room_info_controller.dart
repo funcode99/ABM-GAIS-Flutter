@@ -150,6 +150,7 @@ class AddRoomInfoController extends BaseController with MasterDataMixin{
     String siteId = await storage.readString(StorageCore.siteID);
 
     try {
+      isLoadingHitApi(true);
       await managementMeetingRoom
           .save(
         companyId,
@@ -164,6 +165,7 @@ class AddRoomInfoController extends BaseController with MasterDataMixin{
         listSelectedFacility.map((e) => e.id).toList(),
       )
           .then((value) {
+        isLoadingHitApi(false);
         Get.back();
         Get.showSnackbar(const GetSnackBar(
           icon: Icon(
@@ -177,6 +179,7 @@ class AddRoomInfoController extends BaseController with MasterDataMixin{
         ));
       });
     } catch (e) {
+      isLoadingHitApi(false);
       e.printError();
     }
     update();
@@ -187,6 +190,7 @@ class AddRoomInfoController extends BaseController with MasterDataMixin{
     String siteId = await storage.readString(StorageCore.siteID);
 
     try {
+      isLoadingHitApi(true);
       await managementMeetingRoom
           .update(
         id,
@@ -202,6 +206,7 @@ class AddRoomInfoController extends BaseController with MasterDataMixin{
         listSelectedFacility.map((e) => e.id).toList(),
       )
           .then((value) {
+        isLoadingHitApi(false);
         Get.back();
         Get.showSnackbar(const GetSnackBar(
           icon: Icon(
@@ -215,6 +220,7 @@ class AddRoomInfoController extends BaseController with MasterDataMixin{
         ));
       });
     } catch (e) {
+      isLoadingHitApi(false);
       e.printError();
     }
     update();

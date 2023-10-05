@@ -384,7 +384,9 @@ class ApprovalFormRequestTripController extends BaseController {
       // print('result : ${result.approvedBehalf}');
       // print('approveID: $approvalID');
       try {
+        isLoadingHitApi(true);
         await approvalRequestTrip.approve(approvalID, result).then((value) {
+          isLoadingHitApi(false);
           // Get.back(result: true);
           Get.dialog(SuccessDialog(
             message: "The request was successfully approved!",
@@ -395,6 +397,7 @@ class ApprovalFormRequestTripController extends BaseController {
           fetchRequestTrip();
         });
       } catch (e, i) {
+        isLoadingHitApi(false);
         e.printError();
         i.printError();
         Get.dialog(FailDialog(
@@ -415,7 +418,9 @@ class ApprovalFormRequestTripController extends BaseController {
       approvalModel(result);
       // print('result : ${result.notes}');
       try {
+        isLoadingHitApi(true);
         await approvalRequestTrip.reject(approvalID, result).then((value) {
+          isLoadingHitApi(false);
           Get.dialog(SuccessDialog(
             message: "The request was successfully rejected!",
             onClosePressed: () {
@@ -425,6 +430,7 @@ class ApprovalFormRequestTripController extends BaseController {
           fetchRequestTrip();
         });
       } catch (e, i) {
+        isLoadingHitApi(false);
         e.printError();
         i.printError();
         Get.dialog(SuccessDialog(

@@ -62,12 +62,17 @@ class DetailStockInController extends BaseController {
   }
 
   void submitHeader() async {
+    isLoadingHitApi(true);
     final result = await _repository.submitData(selectedItem.value.id!);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (cashAdvanceModel) {
-      detailHeader();
+          isLoadingHitApi(false);
+          detailHeader();
     });
   }
 
@@ -117,21 +122,31 @@ class DetailStockInController extends BaseController {
 
   void addDetail(StockInATKDetailModel item) async {
     item.idStockIn = selectedItem.value.id;
+    isLoadingHitApi(true);
     final result = await _repository.addDetail(item);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (detailModel) {
-      getDetailData();
+          isLoadingHitApi(false);
+          getDetailData();
     });
   }
 
   void deleteDetail(StockInATKDetailModel item) async {
     if (item.id != null) {
+      isLoadingHitApi(true);
       final result = await _repository.deleteDetail(item.id!);
       result.fold(
-          (l) => Get.showSnackbar(CustomGetSnackBar(
-              message: l.message, backgroundColor: Colors.red)), (model) {
+          (l) {
+            isLoadingHitApi(false);
+            Get.showSnackbar(CustomGetSnackBar(
+              message: l.message, backgroundColor: Colors.red));
+          }, (model) {
+        isLoadingHitApi(false);
         Get.showSnackbar(CustomGetSnackBar(
           message: "Success Delete Data".tr,
         ));
@@ -149,12 +164,17 @@ class DetailStockInController extends BaseController {
 
   void updateDetail(StockInATKDetailModel item) async {
     item.idStockIn = selectedItem.value.id;
+    isLoadingHitApi(true);
     final result = await _repository.updateDetail(item, item.id!);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (model) {
-      getDetailData();
+          isLoadingHitApi(false);
+          getDetailData();
     });
   }
 
@@ -196,12 +216,16 @@ class DetailStockInController extends BaseController {
     );
 
 
+    isLoadingHitApi(true);
     final result = await _repository.updateData(stockInATKModel, selectedItem.value.id);
     result.fold(
-            (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (l) {
+              isLoadingHitApi(false);
+              Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+            },
             (requestAtkModel) {
-
+              isLoadingHitApi(false);
             onEdit(false);
             initData();
             detailHeader();
