@@ -263,6 +263,7 @@ class AddAccommodationController extends BaseController {
                 'country': selectedCountry,
                 'checkinDate': checkinDate.text,
                 'checkoutDate': checkoutDate.text,
+                'data': value,
               },
             );
           } else {

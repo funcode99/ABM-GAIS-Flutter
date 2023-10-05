@@ -934,7 +934,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                                                   children: [
                                                                                     Text("Price", style: listTitleTextStyle),
-                                                                                    Text(e.price.toString(), style: listSubTitleTextStyle),
+                                                                                    Text(e.price!.toInt().toCurrency().toString(),
+                                                                                        style: listSubTitleTextStyle),
                                                                                   ],
                                                                                 ),
                                                                               ],

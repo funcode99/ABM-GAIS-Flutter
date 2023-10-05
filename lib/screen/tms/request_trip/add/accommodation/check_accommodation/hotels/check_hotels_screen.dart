@@ -216,13 +216,11 @@ class CheckHotelsScreen extends StatelessWidget {
                                                                                 ),
                                                                               ),
                                                                               onTap: () {
-                                                                                // controller.selectHotel(
-                                                                                // e.id.toString(),
-                                                                                // 899990,
-                                                                                // e.id.toString(),
-                                                                                // e.idTypeHotel.toString(),
-                                                                                // );
-                                                                                controller.update();
+                                                                                controller.bookButton(
+                                                                                  room.totalPrice.toString(),
+                                                                                  e.hotelKey.toString(),
+                                                                                  room.roomKey.toString(),
+                                                                                );
                                                                               },
                                                                             ),
                                                                           ],
