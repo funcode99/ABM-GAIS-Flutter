@@ -280,6 +280,7 @@ class AddBookingMeetingRoomController extends BaseController
   }
 
   void saveData() async {
+    isLoadingHitApi(true);
     String startDateString = startDate.value.toString().toDateFormat(targetFormat: "yyyy-MM-dd", originFormat: "yyyy-MM-dd HH:mm:ss");
     String endDateString = endDate.value != null ? endDate.value.toString().toDateFormat(targetFormat: "yyyy-MM-dd", originFormat: "yyyy-MM-dd HH:mm:ss") : startDateString;
     String startTimeString = startTime.value.toString().toDateFormat(targetFormat: "HH:mm:ss", originFormat: "yyyy-MM-dd HH:mm:ss");
@@ -317,10 +318,14 @@ class AddBookingMeetingRoomController extends BaseController
     final result = await _repository.saveData(meetingRoomModel);
 
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (meetingRoomModel) {
-      /*Get.off(() => const DetailBookingMeetingRoomScreen(),
+          isLoadingHitApi(false);
+          /*Get.off(() => const DetailBookingMeetingRoomScreen(),
           arguments: {"item": meetingRoomModel});*/
           Get.back(result: true);
 

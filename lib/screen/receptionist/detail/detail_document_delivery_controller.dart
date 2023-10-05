@@ -163,6 +163,7 @@ class DetailDocumentDeliveryController extends BaseController {
   }
 
   Future<void> saveDocument() async {
+    isLoadingHitApi(true);
     try {
       await documentDelivery
           .update(
@@ -179,6 +180,7 @@ class DetailDocumentDeliveryController extends BaseController {
         codeStatusDoc!.toString(),
       )
           .then((value) {
+        isLoadingHitApi(false);
         // Get.off(DocumentDeliveryListScreen());
         print(value.message);
         isEdit = false;
@@ -196,6 +198,7 @@ class DetailDocumentDeliveryController extends BaseController {
         ));
       });
     } catch (e, i) {
+      isLoadingHitApi(false);
       e.printError();
       i.printError();
       Get.showSnackbar(
