@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
@@ -5,6 +6,7 @@ import 'package:gais/data/model/reference/get_type_transportation_model.dart' as
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
 import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
+import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +16,7 @@ class AddTransportationController extends BaseController {
   int? codeDocument = Get.arguments['codeDocument'];
   String? tvID = Get.arguments['tvID'];
   String? otID = Get.arguments['otID'];
+  String? transportID = Get.arguments['id'];
   bool? isEdit = Get.arguments['isEdit'];
   bool? formEdit = Get.arguments['formEdit'];
 
@@ -143,32 +146,50 @@ class AddTransportationController extends BaseController {
 
   Future<void> fetchData() async {
     try {
-      if (tvID != null) {
-        await requestTrip.getTaxiVoucherByid(tvID!).then((value) {
-          travellerName.text = value.data?.first.employeeName.toString() ?? '';
-          transportType = '4';
-          dateFrom = DateTime.parse(value.data!.first.date.toString());
-          fromDate.text = dateFormat.format(dateFrom!);
-          departure = value.data?.first.idDepartureCity.toString();
-          arrival = value.data?.first.idArrivalCity.toString();
-          accountName.text = value.data?.first.accountName.toString() ?? '';
-          remarks.text = value.data?.first.remarks.toString() ?? '';
-        });
-      } else {
-        await requestTrip.getOtherTransportByid(otID!).then((value) {
-          travellerName.text = value.data?.first.employeeName.toString() ?? '';
-          transportType = value.data?.first.idTypeTransportation.toString();
-          dateFrom = DateTime.parse(value.data!.first.fromDate.toString());
-          fromDate.text = dateFormat.format(dateFrom!);
-          dateTo = DateTime.parse(value.data!.first.toDate.toString());
-          toDate.text = dateFormat.format(dateTo!);
-          selectedCity = value.data?.first.idCity.toString();
-          quantity.text = value.data?.first.qty.toString() ?? '';
-          remarks.text = value.data?.first.remarks.toString() ?? '';
-        });
-      }
-    } catch (e) {
+      await requestTrip.getTransportationByID(transportID!).then((value) {
+        travellerName.text = value.data?.first.employeeName ?? '';
+        transportType = value.data?.first.idTypeTransportation.toString();
+        dateFrom = DateTime.parse(value.data!.first.fromDate.toString());
+        fromDate.text = dateFormat.format(dateFrom!);
+        dateTo = DateTime.parse(value.data!.first.toDate.toString());
+        toDate.text = dateFormat.format(dateTo!);
+        departure = value.data?.first.idDepartureCity.toString();
+        arrival = value.data?.first.idArrivalCity.toString();
+        selectedCity = value.data?.first.idCity.toString();
+        quantity.text = value.data?.first.qty.toString() ?? '';
+        amount.text = value.data?.first.amount?.toInt().toCurrency().toString() ?? '';
+        accountName.text = value.data?.first.accountName.toString() ?? '';
+        remarks.text = value.data?.first.remarks ?? '';
+        companyID.text = value.data?.first.idCompany.toString() ?? '';
+        siteID.text = value.data?.first.idSite.toString() ?? '';
+      });
+      // if (tvID != null) {
+      //   await requestTrip.getTaxiVoucherByid(tvID!).then((value) {
+      //     travellerName.text = value.data?.first.employeeName.toString() ?? '';
+      //     transportType = '4';
+      //     dateFrom = DateTime.parse(value.data!.first.date.toString());
+      //     fromDate.text = dateFormat.format(dateFrom!);
+      //     departure = value.data?.first.idDepartureCity.toString();
+      //     arrival = value.data?.first.idArrivalCity.toString();
+      //     accountName.text = value.data?.first.accountName.toString() ?? '';
+      //     remarks.text = value.data?.first.remarks.toString() ?? '';
+      //   });
+      // } else {
+      //   await requestTrip.getOtherTransportByid(otID!).then((value) {
+      //     travellerName.text = value.data?.first.employeeName.toString() ?? '';
+      //     transportType = value.data?.first.idTypeTransportation.toString();
+      //     dateFrom = DateTime.parse(value.data!.first.fromDate.toString());
+      //     fromDate.text = dateFormat.format(dateFrom!);
+      //     dateTo = DateTime.parse(value.data!.first.toDate.toString());
+      //     toDate.text = dateFormat.format(dateTo!);
+      //     selectedCity = value.data?.first.idCity.toString();
+      //     quantity.text = value.data?.first.qty.toString() ?? '';
+      //     remarks.text = value.data?.first.remarks.toString() ?? '';
+      //   });
+      // }
+    } catch (e, i) {
       e.printError();
+      i.printError();
     }
     update();
   }
@@ -181,12 +202,12 @@ class AddTransportationController extends BaseController {
             amount.text.digitOnly(),
             accountName.text,
             remarks.text,
-            departure.toString(),
-            arrival.toString(),
+            departure ?? selectedCity ?? '0',
+            arrival ?? selectedCity ?? '0',
             transportType.toString(),
             saveFormat.format(dateFrom ?? DateTime.now()),
             saveFormat.format(dateTo ?? DateTime.now()),
-            selectedCity.toString(),
+            selectedCity ?? '0',
             quantity.text,
             companyID.text,
             siteID.text,
@@ -238,43 +259,62 @@ class AddTransportationController extends BaseController {
 
   Future<void> updateData() async {
     try {
-      if (transportType == '4' && tvID != null) {
-        await requestTrip
-            .updateTaxiVoucher(
-              tvID!,
-              purposeID,
-              amount.text,
-              accountName.text,
-              departure!,
-              arrival!,
-              remarks.text,
-              saveFormat.format(dateFrom!),
-              accountName.text,
-            )
-            .then((value) => Get.back());
-      } else if (otID != null) {
-        await requestTrip
-            .updateOtherTransportation(
-              otID!,
-              purposeID.toString(),
-              transportType.toString(),
-              fromDate.text,
-              toDate.text,
-              selectedCity.toString(),
-              quantity.text,
-              remarks.text,
-            )
-            .then((value) => Get.back());
-      } else {
-        if (tvID != null) {
-          await requestTrip.deleteTaxiVoucher(tvID!);
-        } else if (otID != null) {
-          await requestTrip.deleteOtherTransportation(otID!);
-        }
-        saveData();
-      }
-    } catch (e) {
+      await requestTrip
+          .updateTransportation(
+            transportID!,
+            purposeID,
+            amount.text.digitOnly(),
+            accountName.text,
+            remarks.text,
+            departure ?? selectedCity ?? '0',
+            arrival ?? selectedCity ?? '0',
+            transportType.toString(),
+            saveFormat.format(dateFrom ?? DateTime.now()),
+            saveFormat.format(dateTo ?? DateTime.now()),
+            selectedCity ?? '0',
+            quantity.text,
+            companyID.text,
+            siteID.text,
+          )
+          .then((value) => Get.back());
+      // if (transportType == '4' && tvID != null) {
+      //   await requestTrip
+      //       .updateTaxiVoucher(
+      //         tvID!,
+      //         purposeID,
+      //         amount.text,
+      //         accountName.text,
+      //         departure!,
+      //         arrival!,
+      //         remarks.text,
+      //         saveFormat.format(dateFrom!),
+      //         accountName.text,
+      //       )
+      //       .then((value) => Get.back());
+      // } else if (otID != null) {
+      //   await requestTrip
+      //       .updateOtherTransportation(
+      //         otID!,
+      //         purposeID.toString(),
+      //         transportType.toString(),
+      //         fromDate.text,
+      //         toDate.text,
+      //         selectedCity.toString(),
+      //         quantity.text,
+      //         remarks.text,
+      //       )
+      //       .then((value) => Get.back());
+      // } else {
+      //   if (tvID != null) {
+      //     await requestTrip.deleteTaxiVoucher(tvID!);
+      //   } else if (otID != null) {
+      //     await requestTrip.deleteOtherTransportation(otID!);
+      //   }
+      //   saveData();
+      // }
+    } catch (e, i) {
       e.printError();
+      i.printError();
       Get.showSnackbar(
         const GetSnackBar(
           icon: Icon(

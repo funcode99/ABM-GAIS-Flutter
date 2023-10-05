@@ -136,6 +136,7 @@ class AddTransportationScreen extends StatelessWidget {
                                         .toList(),
                                     onChanged: (value) {
                                       controller.departure = value;
+                                      print(controller.departure);
                                       controller.update();
                                     },
                                   )
@@ -192,7 +193,7 @@ class AddTransportationScreen extends StatelessWidget {
                             const SizedBox(height: 8),
                             controller.transportType == '4' || controller.transportType == '3'
                                 ? CustomTextFormField(
-                                    controller: controller.quantity,
+                                    controller: controller.amount,
                                     label: "Amount",
                                     hintText: "Amount",
                                     isRequired: true,
@@ -250,10 +251,12 @@ class AddTransportationScreen extends StatelessWidget {
                                                 ))
                                             .toList(),
                                         label: "Company",
+                                        value: controller.companyID.text.isNotEmpty ? controller.companyID.text : null,
                                         hintText: controller.isLoading ? "Loading..." : "Company",
                                         isRequired: true,
                                         onChanged: (value) {
                                           controller.companyID.text = value!;
+                                          print(value);
                                           controller.fetchSiteList(value!);
                                           controller.update();
                                         },
@@ -267,10 +270,12 @@ class AddTransportationScreen extends StatelessWidget {
                                                 ))
                                             .toList(),
                                         label: "Site",
+                                        value: controller.siteID.text.isNotEmpty ? controller.siteID.text : null,
                                         hintText: controller.isLoading || controller.loadLocation ? "Loading..." : "Site",
                                         isRequired: true,
                                         onChanged: (value) {
                                           controller.siteID.text = value!;
+                                          print(value);
                                           controller.update();
                                         },
                                       ),

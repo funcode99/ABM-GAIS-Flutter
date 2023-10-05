@@ -27,6 +27,7 @@ import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advan
 import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/train/add/add_train_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/transportation/add/add_transportation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/actualization_trip_screen.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -112,7 +113,7 @@ class FormRequestTripController extends BaseController {
     {
       "title": "Transportation",
       "isFilled": false,
-      "screen": const AddTrainScreen(),
+      "screen": const AddTransportationScreen(),
       "showList": false,
     },
     /*{
@@ -539,8 +540,8 @@ class FormRequestTripController extends BaseController {
       var caData = await requestTrip.getCashAdvanceTravelList(purposeID);
       caList.addAll(caData.data?.toSet().toList() ?? []);
 
-      // var transportData = await requestTrip.getTransportationBytrip(purposeID);
-      // transportList.addAll(transportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+      var transportData = await requestTrip.getTransportationBytrip(purposeID);
+      transportList.addAll(transportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
     } catch (e, i) {
       e.printError();
       i.printError();
@@ -694,7 +695,7 @@ class FormRequestTripController extends BaseController {
 
   Future<void> deleteTransport(String id) async {
     try {
-      await requestTrip.deleteOtherTransportation(id).then((value) {
+      await requestTrip.deleteTransportation(id).then((value) {
         fetchList();
         Get.showSnackbar(
           const GetSnackBar(

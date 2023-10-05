@@ -1,30 +1,39 @@
 class UpdateTransportationModel {
   UpdateTransportationModel({
-      bool? success, 
-      String? message, 
-      Data? data,}){
+    bool? success,
+    String? message,
+    Data? data,
+  }) {
     _success = success;
     _message = message;
     _data = data;
-}
+  }
 
   UpdateTransportationModel.fromJson(dynamic json) {
     _success = json['success'];
     _message = json['message'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
+
   bool? _success;
   String? _message;
   Data? _data;
-UpdateTransportationModel copyWith({  bool? success,
-  String? message,
-  Data? data,
-}) => UpdateTransportationModel(  success: success ?? _success,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+
+  UpdateTransportationModel copyWith({
+    bool? success,
+    String? message,
+    Data? data,
+  }) =>
+      UpdateTransportationModel(
+        success: success ?? _success,
+        message: message ?? _message,
+        data: data ?? _data,
+      );
+
   bool? get success => _success;
+
   String? get message => _message;
+
   Data? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -36,31 +45,31 @@ UpdateTransportationModel copyWith({  bool? success,
     }
     return map;
   }
-
 }
 
 class Data {
   Data({
-      String? id, 
-      String? idRequestTrip, 
-      String? idTypeTransportation, 
-      String? fromDate, 
-      String? toDate, 
-      String? idCity, 
-      String? qty, 
-      String? remarks, 
-      int? idCompany, 
-      int? idSite, 
-      String? date, 
-      String? idDepartureCity, 
-      String? idArrivalCity, 
-      String? amount, 
-      String? accountName, 
-      String? codeStatusDoc, 
-      int? createdBy, 
-      int? updatedBy, 
-      String? createdAt, 
-      String? updatedAt,}){
+    String? id,
+    String? idRequestTrip,
+    String? idTypeTransportation,
+    String? fromDate,
+    String? toDate,
+    String? idCity,
+    String? qty,
+    String? remarks,
+    String? idCompany,
+    String? idSite,
+    String? date,
+    String? idDepartureCity,
+    String? idArrivalCity,
+    String? amount,
+    String? accountName,
+    String? codeStatusDoc,
+    int? createdBy,
+    int? updatedBy,
+    String? createdAt,
+    String? updatedAt,
+  }) {
     _id = id;
     _idRequestTrip = idRequestTrip;
     _idTypeTransportation = idTypeTransportation;
@@ -81,7 +90,7 @@ class Data {
     _updatedBy = updatedBy;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _id = json['id'];
@@ -105,6 +114,7 @@ class Data {
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
   }
+
   String? _id;
   String? _idRequestTrip;
   String? _idTypeTransportation;
@@ -113,8 +123,8 @@ class Data {
   String? _idCity;
   String? _qty;
   String? _remarks;
-  int? _idCompany;
-  int? _idSite;
+  String? _idCompany;
+  String? _idSite;
   String? _date;
   String? _idDepartureCity;
   String? _idArrivalCity;
@@ -125,66 +135,90 @@ class Data {
   int? _updatedBy;
   String? _createdAt;
   String? _updatedAt;
-Data copyWith({  String? id,
-  String? idRequestTrip,
-  String? idTypeTransportation,
-  String? fromDate,
-  String? toDate,
-  String? idCity,
-  String? qty,
-  String? remarks,
-  int? idCompany,
-  int? idSite,
-  String? date,
-  String? idDepartureCity,
-  String? idArrivalCity,
-  String? amount,
-  String? accountName,
-  String? codeStatusDoc,
-  int? createdBy,
-  int? updatedBy,
-  String? createdAt,
-  String? updatedAt,
-}) => Data(  id: id ?? _id,
-  idRequestTrip: idRequestTrip ?? _idRequestTrip,
-  idTypeTransportation: idTypeTransportation ?? _idTypeTransportation,
-  fromDate: fromDate ?? _fromDate,
-  toDate: toDate ?? _toDate,
-  idCity: idCity ?? _idCity,
-  qty: qty ?? _qty,
-  remarks: remarks ?? _remarks,
-  idCompany: idCompany ?? _idCompany,
-  idSite: idSite ?? _idSite,
-  date: date ?? _date,
-  idDepartureCity: idDepartureCity ?? _idDepartureCity,
-  idArrivalCity: idArrivalCity ?? _idArrivalCity,
-  amount: amount ?? _amount,
-  accountName: accountName ?? _accountName,
-  codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
-  createdBy: createdBy ?? _createdBy,
-  updatedBy: updatedBy ?? _updatedBy,
-  createdAt: createdAt ?? _createdAt,
-  updatedAt: updatedAt ?? _updatedAt,
-);
+
+  Data copyWith({
+    String? id,
+    String? idRequestTrip,
+    String? idTypeTransportation,
+    String? fromDate,
+    String? toDate,
+    String? idCity,
+    String? qty,
+    String? remarks,
+    String? idCompany,
+    String? idSite,
+    String? date,
+    String? idDepartureCity,
+    String? idArrivalCity,
+    String? amount,
+    String? accountName,
+    String? codeStatusDoc,
+    int? createdBy,
+    int? updatedBy,
+    String? createdAt,
+    String? updatedAt,
+  }) =>
+      Data(
+        id: id ?? _id,
+        idRequestTrip: idRequestTrip ?? _idRequestTrip,
+        idTypeTransportation: idTypeTransportation ?? _idTypeTransportation,
+        fromDate: fromDate ?? _fromDate,
+        toDate: toDate ?? _toDate,
+        idCity: idCity ?? _idCity,
+        qty: qty ?? _qty,
+        remarks: remarks ?? _remarks,
+        idCompany: idCompany ?? _idCompany,
+        idSite: idSite ?? _idSite,
+        date: date ?? _date,
+        idDepartureCity: idDepartureCity ?? _idDepartureCity,
+        idArrivalCity: idArrivalCity ?? _idArrivalCity,
+        amount: amount ?? _amount,
+        accountName: accountName ?? _accountName,
+        codeStatusDoc: codeStatusDoc ?? _codeStatusDoc,
+        createdBy: createdBy ?? _createdBy,
+        updatedBy: updatedBy ?? _updatedBy,
+        createdAt: createdAt ?? _createdAt,
+        updatedAt: updatedAt ?? _updatedAt,
+      );
+
   String? get id => _id;
+
   String? get idRequestTrip => _idRequestTrip;
+
   String? get idTypeTransportation => _idTypeTransportation;
+
   String? get fromDate => _fromDate;
+
   String? get toDate => _toDate;
+
   String? get idCity => _idCity;
+
   String? get qty => _qty;
+
   String? get remarks => _remarks;
-  int? get idCompany => _idCompany;
-  int? get idSite => _idSite;
+
+  String? get idCompany => _idCompany;
+
+  String? get idSite => _idSite;
+
   String? get date => _date;
+
   String? get idDepartureCity => _idDepartureCity;
+
   String? get idArrivalCity => _idArrivalCity;
+
   String? get amount => _amount;
+
   String? get accountName => _accountName;
+
   String? get codeStatusDoc => _codeStatusDoc;
+
   int? get createdBy => _createdBy;
+
   int? get updatedBy => _updatedBy;
+
   String? get createdAt => _createdAt;
+
   String? get updatedAt => _updatedAt;
 
   Map<String, dynamic> toJson() {
@@ -211,5 +245,4 @@ Data copyWith({  String? id,
     map['updated_at'] = _updatedAt;
     return map;
   }
-
 }

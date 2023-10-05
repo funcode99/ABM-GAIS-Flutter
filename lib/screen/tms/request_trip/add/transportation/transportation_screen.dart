@@ -67,7 +67,7 @@ class TransportationScreen extends StatelessWidget {
                                 editAction: () => Get.to(const AddTransportationScreen(), arguments: {
                                   'purposeID': controller.purposeID,
                                   'codeDocument': controller.codeDocument,
-                                  'otID': e.id,
+                                  'id': e.id,
                                   'isEdit': true,
                                 })?.then((result) {
                                   controller.getList();
@@ -76,7 +76,7 @@ class TransportationScreen extends StatelessWidget {
                                 isDelete: true,
                                 deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                   onDeletePressed: () {
-                                    controller.deleteOT(e.id.toString());
+                                    controller.deleteTransport(e.id.toString());
                                     Get.back();
                                   },
                                 )),
@@ -87,14 +87,14 @@ class TransportationScreen extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text("From Date", style: listTitleTextStyle),
-                                        Text(e.fromDate.toString(), style: listSubTitleTextStyle),
+                                        Text(controller.dateFormat.format(DateTime.parse(e.fromDate.toString())), style: listSubTitleTextStyle),
                                       ],
                                     ),
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text("To Date", style: listTitleTextStyle),
-                                        Text(e.toDate.toString(), style: listSubTitleTextStyle),
+                                        Text(controller.dateFormat.format(DateTime.parse(e.toDate.toString())), style: listSubTitleTextStyle),
                                       ],
                                     ),
                                     Column(
@@ -109,56 +109,6 @@ class TransportationScreen extends StatelessWidget {
                               ),
                             )
                             .toList(),
-                      ),
-                      Column(
-                        children: controller.tvList.isNotEmpty
-                            ? controller.tvList
-                                .mapIndexed(
-                                  (i, e) => CustomTripCard(
-                                    listNumber: controller.otList.length + (i + 1),
-                                    title: e.employeeName.toString(),
-                                    subtitle: 'Blue Bird',
-                                    status: e.status.toString(),
-                                    // info: int.parse(e.amount.toString()).toCurrency(),
-                                    isEdit: true,
-                                    editAction: () => Get.to(const AddTransportationScreen(), arguments: {
-                                      'purposeID': controller.purposeID,
-                                      'tvID': e.id,
-                                      'isEdit': true,
-                                    })?.then((_) {
-                                      controller.getList();
-                                      controller.update();
-                                    }),
-                                    isDelete: true,
-                                    deleteAction: () => Get.dialog(DeleteConfirmationDialog(
-                                      onDeletePressed: () {
-                                        controller.deleteTV(e.id.toString());
-                                        Get.back();
-                                      },
-                                    )),
-                                    content: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Text("Departure", style: listTitleTextStyle),
-                                            Text(e.nameDepartureCity.toString(), style: listSubTitleTextStyle),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Text("Arrival", style: listTitleTextStyle),
-                                            Text(e.nameArrivalCity.toString(), style: listSubTitleTextStyle),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                                .toList()
-                            : [Container()],
                       ),
                       const SizedBox(height: 20),
                       Padding(

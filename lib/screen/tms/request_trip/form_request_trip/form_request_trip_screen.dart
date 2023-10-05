@@ -812,7 +812,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                         editAction: () => Get.to(const AddTransportationScreen(), arguments: {
                                                                           'purposeID': controller.purposeID,
                                                                           'codeDocument': controller.codeDocument,
-                                                                          'otID': e.id,
+                                                                          'id': e.id,
+                                                                          'isEdit': true,
                                                                           'formEdit': true,
                                                                         })?.then((result) {
                                                                           controller.fetchList();
@@ -832,14 +833,19 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                                               children: [
                                                                                 Text("From Date", style: listTitleTextStyle),
-                                                                                Text(e.fromDate.toString(), style: listSubTitleTextStyle),
+                                                                                Text(
+                                                                                    controller.dateFormat
+                                                                                        .format(DateTime.parse(e.fromDate.toString())),
+                                                                                    style: listSubTitleTextStyle),
                                                                               ],
                                                                             ),
                                                                             Column(
                                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                                               children: [
                                                                                 Text("To Date", style: listTitleTextStyle),
-                                                                                Text(e.toDate.toString(), style: listSubTitleTextStyle),
+                                                                                Text(
+                                                                                    controller.dateFormat.format(DateTime.parse(e.toDate.toString())),
+                                                                                    style: listSubTitleTextStyle),
                                                                               ],
                                                                             ),
                                                                             Column(
