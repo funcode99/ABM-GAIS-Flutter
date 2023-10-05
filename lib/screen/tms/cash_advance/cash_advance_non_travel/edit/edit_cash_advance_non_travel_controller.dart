@@ -111,6 +111,8 @@ class EditCashAdvanceNonTravelController extends BaseController
   }
 
   void updateHeader({bool hideButtonAfterEdit = false}) async {
+    isLoadingHitApi(true);
+
     String userId = await storage.readString(StorageCore.userID);
     CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
       codeStatusDoc: selectedItem.value.codeStatusDoc,
@@ -132,18 +134,22 @@ class EditCashAdvanceNonTravelController extends BaseController
       grandTotal: totalController.text.digitOnly(),
     );
 
-    final result =
-        await _repository.updateData(cashAdvanceModel, cashAdvanceModel.id!);
+    final result = await _repository.updateData(cashAdvanceModel, cashAdvanceModel.id!);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (cashAdvanceModel) {
+          isLoadingHitApi(false);
       detailHeader();
       getDataDetail();
       if (hideButtonAfterEdit) {
         onEdit(false);
       }
     });
+
   }
 
   void detailHeader() async {
@@ -168,22 +174,36 @@ class EditCashAdvanceNonTravelController extends BaseController
   }
 
   void submitHeader() async {
+    isLoadingHitApi(true);
+
     final result = await _repository.submitData(selectedItem.value.id!);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (cashAdvanceModel) {
-      detailHeader();
+          isLoadingHitApi(false);
+
+          detailHeader();
     });
+
   }
 
   void deleteDetail(CashAdvanceDetailModel item) async {
+    isLoadingHitApi(true);
+
     final result = await _repository.deleteDetail(item.id!);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (cashAdvanceModel) {
-      Get.showSnackbar(CustomGetSnackBar(
+          isLoadingHitApi(false);
+          Get.showSnackbar(CustomGetSnackBar(
         message: "Success Delete Data".tr,
       ));
       //update state
@@ -192,29 +212,43 @@ class EditCashAdvanceNonTravelController extends BaseController
       totalController.text = _getTotal();
       updateHeader();
     });
+
   }
 
   void addDetail(CashAdvanceDetailModel item) async {
+    isLoadingHitApi(true);
+
     item.idCa = selectedItem.value.id;
     final result = await _repository.addDetail(item);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (cashAdvanceDetailModel) {
+      isLoadingHitApi(false);
       listDetail.add(cashAdvanceDetailModel);
 
       totalController.text = _getTotal();
       updateHeader();
     });
+
   }
 
   void updateDetail(CashAdvanceDetailModel item) async {
+    isLoadingHitApi(true);
+
     item.idCa = selectedItem.value.id;
     final result = await _repository.updateDetail(item, item.id!);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (cashAdvanceDetailModel) {
+      isLoadingHitApi(false);
       int index = listDetail.indexWhere((element) => element.id == item.id);
       listDetail[index] = item;
 

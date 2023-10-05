@@ -173,7 +173,6 @@ class FormDocumentDeliveryController extends BaseController {
           if(senderID == employeeId){
             showButtonCancel = true;
             showButtonEdit = true;
-            showButtonReceived = true;
           }
           if((isSuperadmin || isReceptionist) && userSiteID.toString() == senderSiteID.toString()){
             showButtonCancel = true;

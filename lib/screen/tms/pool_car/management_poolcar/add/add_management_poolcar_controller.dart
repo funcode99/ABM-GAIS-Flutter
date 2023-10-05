@@ -158,6 +158,8 @@ class AddManagementPoolCarController extends BaseController {
   }
 
   Future<void> saveData() async {
+    isLoadingHitApi(true);
+
     try {
       await managementPoolCar
           .save(
@@ -183,6 +185,7 @@ class AddManagementPoolCarController extends BaseController {
         stickerExpiredDate != null ? dateFormatForSubmit.format(stickerExpiredDate!) : null,
     )
           .then((value) {
+        isLoadingHitApi(false);
         Get.off(const ManagementPoolCarListScreen());
         Get.showSnackbar(const GetSnackBar(
           icon: Icon(
@@ -196,6 +199,7 @@ class AddManagementPoolCarController extends BaseController {
         ));
       });
     } catch (e, i) {
+      isLoadingHitApi(false);
       e.printError();
       i.printError();
       Get.showSnackbar(const GetSnackBar(

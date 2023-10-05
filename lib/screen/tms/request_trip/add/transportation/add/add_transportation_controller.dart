@@ -80,11 +80,13 @@ class AddTransportationController extends BaseController {
     companyList = [];
     siteList = [];
     try {
-      await storage.readEmployeeInfo().then((value) {
+      /*await storage.readEmployeeInfo().then((value) {
         print(value.isNotEmpty);
         travellerID = int.parse(value.first.id.toString());
         travellerName.text = value.first.employeeName.toString();
-      });
+      });*/
+      travellerID = requestTripVariable.requestTripRequestorID;
+      travellerName.text = requestTripVariable.requestTripRequestorName ?? "";
 
       var dataType = await requestTrip.getTypeTransportation();
       typeModel = dataType;

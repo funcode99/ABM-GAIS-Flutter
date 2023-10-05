@@ -107,11 +107,12 @@ class PurposeOfTripController extends BaseController {
     purposeList = [];
     costCenterList = [];
     isLoading = true;
-    requestorID = await storage.readID();
+    requestorID = requestTripVariable.requestTripRequestorID;
+    siteID = requestTripVariable.requestTripRequestorSiteID;
     requestorID.printInfo(info: "requestorID");
     await storage.readEmployeeInfo().then((value) {
       // requsetorID = value.first.id?.toInt();
-      siteID = value.first.idSite?.toInt();
+      // siteID = value.first.idSite?.toInt();
       jobID = value.first.idJobBand.toString();
     });
 

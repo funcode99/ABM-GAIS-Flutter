@@ -15,7 +15,8 @@ import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class AddCashAdvanceNonTravelController extends BaseController with MasterDataMixin{
+class AddCashAdvanceNonTravelController extends BaseController
+    with MasterDataMixin {
   final TextEditingController dateController = TextEditingController();
   final TextEditingController eventController = TextEditingController();
   final TextEditingController totalController = TextEditingController();
@@ -46,23 +47,21 @@ class AddCashAdvanceNonTravelController extends BaseController with MasterDataMi
     initData();
   }
 
-  void initData()async{
+  void initData() async {
     String costCenterID = await storage.readString(StorageCore.costCenterID);
 
     final costCenters = await getListCostCenter();
     listCostCenter(costCenters);
-    if(costCenterID.isNotEmpty){
+    if (costCenterID.isNotEmpty) {
       onChangeSelectedCostCenter(costCenterID);
-    }else{
+    } else {
       onChangeSelectedCostCenter("${listCostCenter.first.id}");
     }
-
 
     final currencies = await getListCurrency();
     listCurrency(currencies);
     selectedCurrency(listCurrency.first);
   }
-
 
   void addItem(CashAdvanceDetailModel item) {
     listDetail.add(item);
@@ -71,9 +70,9 @@ class AddCashAdvanceNonTravelController extends BaseController with MasterDataMi
     update();
   }
 
-  void editItem(CashAdvanceDetailModel item){
-    int index = listDetail.indexWhere((element){
-      if(item.id != null){
+  void editItem(CashAdvanceDetailModel item) {
+    int index = listDetail.indexWhere((element) {
+      if (item.id != null) {
         return element.id == item.id;
       }
       return element.key == item.key;
@@ -100,6 +99,8 @@ class AddCashAdvanceNonTravelController extends BaseController with MasterDataMi
   }
 
   void saveData() async {
+    isLoadingHitApi(true);
+
     String userId = await storage.readString(StorageCore.userID);
     CashAdvanceModel cashAdvanceModel = CashAdvanceModel(
       idEmployee: userId.toInt(),
@@ -111,20 +112,31 @@ class AddCashAdvanceNonTravelController extends BaseController with MasterDataMi
       costCenterCode: selectedCostCenter.value.costCenterCode,
       date: dateController.text
           .toDateFormat(targetFormat: "yyyy-MM-dd", originFormat: "dd/MM/yyyy"),
-      arrayDetail: listDetail.mapIndexed((index, item) => CashAdvanceDetailModel(nominal: item.nominal, remarks: item.remarks, itemName: item.itemName, idCostCenter: selectedCostCenter.value.id, costCenterName: selectedCostCenter.value.costCenterName, costCenterCode: selectedCostCenter.value.costCenterCode)).toList(),
+      arrayDetail: listDetail
+          .mapIndexed((index, item) => CashAdvanceDetailModel(
+              nominal: item.nominal,
+              remarks: item.remarks,
+              itemName: item.itemName,
+              idCostCenter: selectedCostCenter.value.id,
+              costCenterName: selectedCostCenter.value.costCenterName,
+              costCenterCode: selectedCostCenter.value.costCenterCode))
+          .toList(),
       grandTotal: totalController.text.digitOnly(),
     );
 
-    final result =
-        await _cashAdvanceTravelNonRepository.saveData(cashAdvanceModel);
-    result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-        (cashAdvanceModel) {
-          //update list
+    final result = await _cashAdvanceTravelNonRepository.saveData(cashAdvanceModel);
+
+    result.fold((l) {
+      isLoadingHitApi(false);
+      Get.showSnackbar(
+          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+    }, (cashAdvanceModel) {
+      isLoadingHitApi(false);
+      //update list
       Get.off(() => const EditCashAdvanceNonTravelScreen(),
           arguments: {"item": cashAdvanceModel});
     });
+
   }
 
   void onChangeSelectedCurrency(String id) {
@@ -136,5 +148,4 @@ class AddCashAdvanceNonTravelController extends BaseController with MasterDataMi
     final selected = listCostCenter.firstWhere((item) => item.id == id.toInt());
     selectedCostCenter(selected);
   }
-
 }

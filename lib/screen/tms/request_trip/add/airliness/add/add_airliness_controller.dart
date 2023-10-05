@@ -99,20 +99,30 @@ class AddAirlinessController extends BaseController {
       //   selectedDate = DateTime.parse(rsv['FlightDetails'][0]['DepartDate']);
       // });
     } else {
-      await storage.readEmployeeInfo().then((value) {
-        travellerID = int.parse(value.first.id.toString());
-        travellerName.text = value.first.employeeName.toString();
-        // flightClassID = value.first.idFlightClass?.toInt();
-        // travellerflightClass.text = value.first.flightClass ?? "";
-        travellerList.add(guest.Data(
-          idEmployee: value.first.id.toString(),
-          nameGuest: value.first.employeeName.toString(),
-        ));
-      });
-      await storage.readEmployeeFlight().then((value) {
-        travellerflightClass.text = value.first.flightClass.toString();
-        flightClassID = value.first.idFlightClass.toInt();
-      });
+      // await storage.readEmployeeInfo().then((value) {
+      //   travellerID = int.parse(value.first.id.toString());
+      //   travellerName.text = value.first.employeeName.toString();
+      //   // flightClassID = value.first.idFlightClass?.toInt();
+      //   // travellerflightClass.text = value.first.flightClass ?? "";
+      //   travellerList.add(guest.Data(
+      //     idEmployee: value.first.id.toString(),
+      //     nameGuest: value.first.employeeName.toString(),
+      //   ));
+      // });
+      // await storage.readEmployeeFlight().then((value) {
+      //   travellerflightClass.text = value.first.flightClass.toString();
+      //   flightClassID = value.first.idFlightClass.toInt();
+      // });
+
+      travellerID = requestTripVariable.requestTripRequestorID;
+      flightClassID = requestTripVariable.requestTripRequestorFlightID;
+      travellerName.text = requestTripVariable.requestTripRequestorName ?? "";
+      travellerflightClass.text = requestTripVariable.requestTripRequestorFlight ?? "";
+
+      travellerList.add(guest.Data(
+        idEmployee: travellerID,
+        nameGuest: requestTripVariable.requestTripRequestorName ?? "",
+      ));
     }
 
     update();

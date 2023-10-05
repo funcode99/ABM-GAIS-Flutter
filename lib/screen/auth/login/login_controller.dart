@@ -67,6 +67,8 @@ class LoginController extends BaseController {
 
   }
   Future<void> doLogin({bool loginMicrosoft = false, String? accessToken, String? refreshToken, String? email}) async {
+    isLoadingHitApi(true);
+
     String username = usernameLoginController.text;
     String password = passwordLoginController.text;
 
@@ -81,6 +83,8 @@ class LoginController extends BaseController {
       await repository
           .postLogin(username, password, refreshToken: refreshToken, accessToken: accessToken, email: email)
           .then((value) {
+            isLoadingHitApi(false);
+
             storage.saveToken(value.token?.data?.accessToken ?? "token null");
             storage.saveId(value.users?.id.toString() ?? "");
             storage.saveRole(
@@ -106,7 +110,8 @@ class LoginController extends BaseController {
             registerFCMToken();
           })
           .then(
-            (_) => Get.showSnackbar(
+            (_) {
+              Get.showSnackbar(
               const GetSnackBar(
                 message: 'Welcome',
                 isDismissible: true,
@@ -117,12 +122,14 @@ class LoginController extends BaseController {
                 snackStyle: SnackStyle.FLOATING,
                 animationDuration: Duration(milliseconds: 500),
               ),
-            ),
+            );
+            },
           )
           .then((value) => Get.offAll(() => const HomeScreen()));
       isLoading = false;
       update();
     } catch (e, i) {
+      isLoadingHitApi(false);
       isLoading = false;
       update();
       e.printError();
@@ -199,15 +206,19 @@ class LoginController extends BaseController {
   }
 
   Future<void> loginMicrosoft()async{
+    isLoadingHitApi(true);
+
     final oauth = MicrosoftAuthUtil().getConfig();
 
     final result = await oauth.login(refreshIfAvailable: true);
     result.fold(
       (l){
+        isLoadingHitApi(false);
         Get.showSnackbar(CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
         print("ERROR $l");
       },
       (oauthToken.Token r) async{
+        isLoadingHitApi(false);
         print('Logged in successfully');
         final accessToken = r.accessToken;
         final refreshToken = r.refreshToken;
