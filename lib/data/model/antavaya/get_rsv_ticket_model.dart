@@ -2,28 +2,28 @@ import 'package:gais/data/model/antavaya/get_ssr_model.dart';
 
 class GetRsvTicketModel {
   GetRsvTicketModel({
-      String? id, 
-      int? airline, 
-      dynamic bookingCode, 
-      dynamic timeLimit, 
-      String? created, 
-      dynamic reserved, 
-      dynamic ticketed, 
-      String? status, 
-      dynamic bosInvoiceNo, 
-      List<Segments>? segments, 
-      Contact? contact, 
-      List<Passengers>? passengers, 
-      List<Payments>? payments, 
-      List<FlightDetails>? flightDetails, 
-      dynamic discountInfo, 
-      dynamic paymentTransactionInfo, 
-      dynamic sqlDiscountInfo, 
-      dynamic sqlPaymentInfo, 
-      dynamic histories, 
-      dynamic remarks, 
-      String? markupSource, 
-      String? errorMessage,}){
+    String? id,
+    int? airline,
+    dynamic bookingCode,
+    dynamic timeLimit,
+    String? created,
+    dynamic reserved,
+    dynamic ticketed,
+    String? status,
+    dynamic bosInvoiceNo,
+    List<Segments>? segments,
+    Contact? contact,
+    List<Passengers>? passengers,
+    List<Payments>? payments,
+    List<FlightDetails>? flightDetails,
+    dynamic discountInfo,
+    dynamic paymentTransactionInfo,
+    dynamic sqlDiscountInfo,
+    dynamic sqlPaymentInfo,
+    dynamic histories,
+    dynamic remarks,
+    String? markupSource,
+    String? errorMessage,}){
     _id = id;
     _airline = airline;
     _bookingCode = bookingCode;
@@ -46,7 +46,7 @@ class GetRsvTicketModel {
     _remarks = remarks;
     _markupSource = markupSource;
     _errorMessage = errorMessage;
-}
+  }
 
   GetRsvTicketModel.fromJson(dynamic json) {
     _id = json['Id'];
@@ -114,51 +114,51 @@ class GetRsvTicketModel {
   dynamic _remarks;
   String? _markupSource;
   String? _errorMessage;
-GetRsvTicketModel copyWith({  String? id,
-  int? airline,
-  dynamic bookingCode,
-  dynamic timeLimit,
-  String? created,
-  dynamic reserved,
-  dynamic ticketed,
-  String? status,
-  dynamic bosInvoiceNo,
-  List<Segments>? segments,
-  Contact? contact,
-  List<Passengers>? passengers,
-  List<Payments>? payments,
-  List<FlightDetails>? flightDetails,
-  dynamic discountInfo,
-  dynamic paymentTransactionInfo,
-  dynamic sqlDiscountInfo,
-  dynamic sqlPaymentInfo,
-  dynamic histories,
-  dynamic remarks,
-  String? markupSource,
-  String? errorMessage,
-}) => GetRsvTicketModel(  id: id ?? _id,
-  airline: airline ?? _airline,
-  bookingCode: bookingCode ?? _bookingCode,
-  timeLimit: timeLimit ?? _timeLimit,
-  created: created ?? _created,
-  reserved: reserved ?? _reserved,
-  ticketed: ticketed ?? _ticketed,
-  status: status ?? _status,
-  bosInvoiceNo: bosInvoiceNo ?? _bosInvoiceNo,
-  segments: segments ?? _segments,
-  contact: contact ?? _contact,
-  passengers: passengers ?? _passengers,
-  payments: payments ?? _payments,
-  flightDetails: flightDetails ?? _flightDetails,
-  discountInfo: discountInfo ?? _discountInfo,
-  paymentTransactionInfo: paymentTransactionInfo ?? _paymentTransactionInfo,
-  sqlDiscountInfo: sqlDiscountInfo ?? _sqlDiscountInfo,
-  sqlPaymentInfo: sqlPaymentInfo ?? _sqlPaymentInfo,
-  histories: histories ?? _histories,
-  remarks: remarks ?? _remarks,
-  markupSource: markupSource ?? _markupSource,
-  errorMessage: errorMessage ?? _errorMessage,
-);
+  GetRsvTicketModel copyWith({  String? id,
+    int? airline,
+    dynamic bookingCode,
+    dynamic timeLimit,
+    String? created,
+    dynamic reserved,
+    dynamic ticketed,
+    String? status,
+    dynamic bosInvoiceNo,
+    List<Segments>? segments,
+    Contact? contact,
+    List<Passengers>? passengers,
+    List<Payments>? payments,
+    List<FlightDetails>? flightDetails,
+    dynamic discountInfo,
+    dynamic paymentTransactionInfo,
+    dynamic sqlDiscountInfo,
+    dynamic sqlPaymentInfo,
+    dynamic histories,
+    dynamic remarks,
+    String? markupSource,
+    String? errorMessage,
+  }) => GetRsvTicketModel(  id: id ?? _id,
+    airline: airline ?? _airline,
+    bookingCode: bookingCode ?? _bookingCode,
+    timeLimit: timeLimit ?? _timeLimit,
+    created: created ?? _created,
+    reserved: reserved ?? _reserved,
+    ticketed: ticketed ?? _ticketed,
+    status: status ?? _status,
+    bosInvoiceNo: bosInvoiceNo ?? _bosInvoiceNo,
+    segments: segments ?? _segments,
+    contact: contact ?? _contact,
+    passengers: passengers ?? _passengers,
+    payments: payments ?? _payments,
+    flightDetails: flightDetails ?? _flightDetails,
+    discountInfo: discountInfo ?? _discountInfo,
+    paymentTransactionInfo: paymentTransactionInfo ?? _paymentTransactionInfo,
+    sqlDiscountInfo: sqlDiscountInfo ?? _sqlDiscountInfo,
+    sqlPaymentInfo: sqlPaymentInfo ?? _sqlPaymentInfo,
+    histories: histories ?? _histories,
+    remarks: remarks ?? _remarks,
+    markupSource: markupSource ?? _markupSource,
+    errorMessage: errorMessage ?? _errorMessage,
+  );
   String? get id => _id;
   int? get airline => _airline;
   dynamic get bookingCode => _bookingCode;
@@ -223,24 +223,24 @@ GetRsvTicketModel copyWith({  String? id,
 
 class FlightDetails {
   FlightDetails({
-      int? airline, 
-      String? flightNumber, 
-      dynamic operatingFlightNumber, 
-      dynamic operatingAirline, 
-      String? carrierCode, 
-      String? origin, 
-      String? destination, 
-      String? departDate, 
-      String? departTime, 
-      String? arriveDate, 
-      String? arriveTime, 
-      String? duration, 
-      int? num, 
-      int? seq, 
-      String? classflight,
-      String? category, 
-      String? airlineImageUrl, 
-      dynamic operatingAirlineImageUrl,}){
+    int? airline,
+    String? flightNumber,
+    dynamic operatingFlightNumber,
+    dynamic operatingAirline,
+    String? carrierCode,
+    String? origin,
+    String? destination,
+    String? departDate,
+    String? departTime,
+    String? arriveDate,
+    String? arriveTime,
+    String? duration,
+    int? num,
+    int? seq,
+    String? classflight,
+    String? category,
+    String? airlineImageUrl,
+    dynamic operatingAirlineImageUrl,}){
     _airline = airline;
     _flightNumber = flightNumber;
     _operatingFlightNumber = operatingFlightNumber;
@@ -259,7 +259,7 @@ class FlightDetails {
     _category = category;
     _airlineImageUrl = airlineImageUrl;
     _operatingAirlineImageUrl = operatingAirlineImageUrl;
-}
+  }
 
   FlightDetails.fromJson(dynamic json) {
     _airline = json['Airline'];
@@ -299,43 +299,43 @@ class FlightDetails {
   String? _category;
   String? _airlineImageUrl;
   dynamic _operatingAirlineImageUrl;
-FlightDetails copyWith({  int? airline,
-  String? flightNumber,
-  dynamic operatingFlightNumber,
-  dynamic operatingAirline,
-  String? carrierCode,
-  String? origin,
-  String? destination,
-  String? departDate,
-  String? departTime,
-  String? arriveDate,
-  String? arriveTime,
-  String? duration,
-  int? num,
-  int? seq,
-  String? classflight,
-  String? category,
-  String? airlineImageUrl,
-  dynamic operatingAirlineImageUrl,
-}) => FlightDetails(  airline: airline ?? _airline,
-  flightNumber: flightNumber ?? _flightNumber,
-  operatingFlightNumber: operatingFlightNumber ?? _operatingFlightNumber,
-  operatingAirline: operatingAirline ?? _operatingAirline,
-  carrierCode: carrierCode ?? _carrierCode,
-  origin: origin ?? _origin,
-  destination: destination ?? _destination,
-  departDate: departDate ?? _departDate,
-  departTime: departTime ?? _departTime,
-  arriveDate: arriveDate ?? _arriveDate,
-  arriveTime: arriveTime ?? _arriveTime,
-  duration: duration ?? _duration,
-  num: num ?? _num,
-  seq: seq ?? _seq,
-  classflight: classflight ?? _class,
-  category: category ?? _category,
-  airlineImageUrl: airlineImageUrl ?? _airlineImageUrl,
-  operatingAirlineImageUrl: operatingAirlineImageUrl ?? _operatingAirlineImageUrl,
-);
+  FlightDetails copyWith({  int? airline,
+    String? flightNumber,
+    dynamic operatingFlightNumber,
+    dynamic operatingAirline,
+    String? carrierCode,
+    String? origin,
+    String? destination,
+    String? departDate,
+    String? departTime,
+    String? arriveDate,
+    String? arriveTime,
+    String? duration,
+    int? num,
+    int? seq,
+    String? classflight,
+    String? category,
+    String? airlineImageUrl,
+    dynamic operatingAirlineImageUrl,
+  }) => FlightDetails(  airline: airline ?? _airline,
+    flightNumber: flightNumber ?? _flightNumber,
+    operatingFlightNumber: operatingFlightNumber ?? _operatingFlightNumber,
+    operatingAirline: operatingAirline ?? _operatingAirline,
+    carrierCode: carrierCode ?? _carrierCode,
+    origin: origin ?? _origin,
+    destination: destination ?? _destination,
+    departDate: departDate ?? _departDate,
+    departTime: departTime ?? _departTime,
+    arriveDate: arriveDate ?? _arriveDate,
+    arriveTime: arriveTime ?? _arriveTime,
+    duration: duration ?? _duration,
+    num: num ?? _num,
+    seq: seq ?? _seq,
+    classflight: classflight ?? _class,
+    category: category ?? _category,
+    airlineImageUrl: airlineImageUrl ?? _airlineImageUrl,
+    operatingAirlineImageUrl: operatingAirlineImageUrl ?? _operatingAirlineImageUrl,
+  );
   int? get airline => _airline;
   String? get flightNumber => _flightNumber;
   dynamic get operatingFlightNumber => _operatingFlightNumber;
@@ -382,19 +382,19 @@ FlightDetails copyWith({  int? airline,
 
 class Payments {
   Payments({
-      String? code, 
-      String? title, 
-      double? amount, 
-      String? currency, 
-      double? foreignAmount, 
-      String? foreignCurrency,}){
+    String? code,
+    String? title,
+    double? amount,
+    String? currency,
+    double? foreignAmount,
+    String? foreignCurrency,}){
     _code = code;
     _title = title;
     _amount = amount;
     _currency = currency;
     _foreignAmount = foreignAmount;
     _foreignCurrency = foreignCurrency;
-}
+  }
 
   Payments.fromJson(dynamic json) {
     _code = json['Code'];
@@ -410,19 +410,19 @@ class Payments {
   String? _currency;
   double? _foreignAmount;
   String? _foreignCurrency;
-Payments copyWith({  String? code,
-  String? title,
-  double? amount,
-  String? currency,
-  double? foreignAmount,
-  String? foreignCurrency,
-}) => Payments(  code: code ?? _code,
-  title: title ?? _title,
-  amount: amount ?? _amount,
-  currency: currency ?? _currency,
-  foreignAmount: foreignAmount ?? _foreignAmount,
-  foreignCurrency: foreignCurrency ?? _foreignCurrency,
-);
+  Payments copyWith({  String? code,
+    String? title,
+    double? amount,
+    String? currency,
+    double? foreignAmount,
+    String? foreignCurrency,
+  }) => Payments(  code: code ?? _code,
+    title: title ?? _title,
+    amount: amount ?? _amount,
+    currency: currency ?? _currency,
+    foreignAmount: foreignAmount ?? _foreignAmount,
+    foreignCurrency: foreignCurrency ?? _foreignCurrency,
+  );
   String? get code => _code;
   String? get title => _title;
   double? get amount => _amount;
@@ -919,17 +919,17 @@ class Properties {
 
 class Passport {
   Passport({
-      String? number, 
-      String? originCountry, 
-      String? firstName, 
-      String? lastName, 
-      dynamic expire,}){
+    String? number,
+    String? originCountry,
+    String? firstName,
+    String? lastName,
+    dynamic expire,}){
     _number = number;
     _originCountry = originCountry;
     _firstName = firstName;
     _lastName = lastName;
     _expire = expire;
-}
+  }
 
   Passport.fromJson(dynamic json) {
     _number = json['Number'];
@@ -943,17 +943,17 @@ class Passport {
   String? _firstName;
   String? _lastName;
   dynamic _expire;
-Passport copyWith({  String? number,
-  String? originCountry,
-  String? firstName,
-  String? lastName,
-  dynamic expire,
-}) => Passport(  number: number ?? _number,
-  originCountry: originCountry ?? _originCountry,
-  firstName: firstName ?? _firstName,
-  lastName: lastName ?? _lastName,
-  expire: expire ?? _expire,
-);
+  Passport copyWith({  String? number,
+    String? originCountry,
+    String? firstName,
+    String? lastName,
+    dynamic expire,
+  }) => Passport(  number: number ?? _number,
+    originCountry: originCountry ?? _originCountry,
+    firstName: firstName ?? _firstName,
+    lastName: lastName ?? _lastName,
+    expire: expire ?? _expire,
+  );
   String? get number => _number;
   String? get originCountry => _originCountry;
   String? get firstName => _firstName;
@@ -974,19 +974,19 @@ Passport copyWith({  String? number,
 
 class Contact {
   Contact({
-      String? title, 
-      String? firstName, 
-      String? lastName, 
-      String? email, 
-      String? mobilePhone, 
-      String? homePhone,}){
+    String? title,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? mobilePhone,
+    String? homePhone,}){
     _title = title;
     _firstName = firstName;
     _lastName = lastName;
     _email = email;
     _mobilePhone = mobilePhone;
     _homePhone = homePhone;
-}
+  }
 
   Contact.fromJson(dynamic json) {
     _title = json['Title'];
@@ -1002,19 +1002,19 @@ class Contact {
   String? _email;
   String? _mobilePhone;
   String? _homePhone;
-Contact copyWith({  String? title,
-  String? firstName,
-  String? lastName,
-  String? email,
-  String? mobilePhone,
-  String? homePhone,
-}) => Contact(  title: title ?? _title,
-  firstName: firstName ?? _firstName,
-  lastName: lastName ?? _lastName,
-  email: email ?? _email,
-  mobilePhone: mobilePhone ?? _mobilePhone,
-  homePhone: homePhone ?? _homePhone,
-);
+  Contact copyWith({  String? title,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? mobilePhone,
+    String? homePhone,
+  }) => Contact(  title: title ?? _title,
+    firstName: firstName ?? _firstName,
+    lastName: lastName ?? _lastName,
+    email: email ?? _email,
+    mobilePhone: mobilePhone ?? _mobilePhone,
+    homePhone: homePhone ?? _homePhone,
+  );
   String? get title => _title;
   String? get firstName => _firstName;
   String? get lastName => _lastName;

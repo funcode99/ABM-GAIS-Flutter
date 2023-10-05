@@ -9,6 +9,7 @@ import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as gue
 import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/check_accommodation/check_accommodation_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/accommodation/check_accommodation/hotels/check_hotels_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -139,16 +140,16 @@ class AddAccommodationController extends BaseController {
 
       var share = await requestTrip.getGuestBytripList(purposeID);
       shareList.addAll(share.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
-      sharingName.text = shareList.first.nameGuest ?? "";
+      if (shareList.isNotEmpty) {
+        sharingName.text = shareList.first.nameGuest ?? "";
+        var guestData = await requestTrip.getGuestBytripList(purposeID);
+        print("has guest ${guestData.success.toString()}");
+        hasGuest = guestData.success.toString() == 'true' ? true : false;
+      }
 
       var rtData = await requestTrip.getRequestTripByid(purposeID);
       rtModel = rtData;
       lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
-
-      var guestData = await requestTrip.getGuestBytripList(purposeID);
-      print("has guest ${guestData.success.toString()}");
-      hasGuest = guestData.success.toString() == 'true' ? true : false;
-      print(guestData.success);
     } catch (e, i) {
       e.printError();
       i.printError();
@@ -165,27 +166,6 @@ class AddAccommodationController extends BaseController {
   Future<void> check() async {
     if (isEdit == true) {
       updateData();
-      if (isBooking == true) {
-        Get.off(
-          const CheckAccommodationScreen(),
-          arguments: {
-            'purposeID': purposeID,
-            'codeDocument': codeDocument,
-            'city': selectedCity,
-            'city_name': cityName,
-            'country': selectedCountry,
-            'checkIn': checkinDate.text,
-            'checkOut': checkoutDate.text,
-            'accommodationType': int.parse(accommodationType.toString()),
-            'useGL': createGL == true ? "1" : "0",
-            'sharingName': sharingName.text,
-            'remarks': remarks.text,
-            'formEdit': formEdit,
-            'isEdit': isEdit,
-            'id': id,
-          },
-        );
-      }
     } else {
       saveData();
     }
@@ -251,36 +231,58 @@ class AddAccommodationController extends BaseController {
     try {
       await requestTrip
           .updateAccommodation(
-            id!,
-            purposeID.toString(),
-            accommodationType.toString(),
-            saveFormat.format(dateCheckin!).toString(),
-            saveFormat.format(dateCheckout!).toString(),
-            '1',
-            createGL ? '1' : '0',
-            '',
-            isSharing ? sharingName.text : '',
-            remarks.text,
-            '',
-            '',
-            travellerName.text,
-            selectedCountry!.isoCountryCode.toString(),
-            selectedCountry!.countryName.toString(),
-            selectedCity!.cityKey.toString(),
-            selectedCity!.cityName.toString(),
-            '',
-            isSharing ? '2' : '1',
-            '',
-            travellerGender.text == "Male" ? 'L' : 'P',
-            hotelFare.text.digitOnly(),
-          )
-          .then((value) => formEdit == true
-              ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
-              : Get.off(const AccommodationScreen(), arguments: {
-                  'purposeID': purposeID,
-                  'codeDocument': codeDocument,
-                  'formEdit': formEdit,
-                }));
+        id!,
+        purposeID.toString(),
+        accommodationType.toString(),
+        saveFormat.format(dateCheckin!).toString(),
+        saveFormat.format(dateCheckout!).toString(),
+        '1',
+        createGL ? '1' : '0',
+        '',
+        isSharing ? sharingName.text : '',
+        remarks.text,
+        '',
+        '',
+        travellerName.text,
+        selectedCountry!.isoCountryCode.toString(),
+        selectedCountry!.countryName.toString(),
+        selectedCity!.cityKey.toString(),
+        selectedCity!.cityName.toString(),
+        '',
+        isSharing ? '2' : '1',
+        '',
+        travellerGender.text == "Male" ? 'L' : 'P',
+        hotelFare.text.digitOnly(),
+      )
+          .then((value) {
+        if (formEdit == true) {
+          if (isBooking == true) {
+            Get.to(
+              const CheckHotelsScreen(),
+              arguments: {
+                'purposeID': purposeID,
+                'codeDocument': codeDocument,
+                'formEdit': formEdit,
+                'isEdit': isEdit,
+                'id': id,
+                'city': selectedCity,
+                'country': selectedCountry,
+                'checkinDate': checkinDate.text,
+                'checkoutDate': checkoutDate.text,
+                'data': value,
+              },
+            );
+          } else {
+            Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument});
+          }
+        } else {
+          Get.off(const AccommodationScreen(), arguments: {
+            'purposeID': purposeID,
+            'codeDocument': codeDocument,
+            'formEdit': formEdit,
+          });
+        }
+      });
     } catch (e, i) {
       e.printError();
       i.printError();

@@ -13,6 +13,7 @@ import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/edit/edit_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
@@ -243,11 +244,13 @@ class FormRequestTripScreen extends StatelessWidget {
                                             const CustomFormLabel(label: "Attachment", showRequired: true),
                                             // Text("file format : ${controller.fileFormat}"),
                                             GestureDetector(
-                                              onTap: () => controller.viewFile(),
+                                              onTap: () => controller.attachment.text != "no attachment" ? controller.viewFile() : null,
                                               child: Container(
                                                   width: Get.width,
+                                                  height: 50,
+                                                  alignment: Alignment.centerLeft,
                                                   margin: const EdgeInsets.only(top: 10),
-                                                  padding: const EdgeInsets.all(10),
+                                                  padding: const EdgeInsets.all(15),
                                                   decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(10),
                                                       border: Border.all(color: blackColor),
@@ -600,17 +603,35 @@ class FormRequestTripScreen extends StatelessWidget {
                                                               subtitle: controller.dateFormat.format(DateTime.parse(e.departDate!)),
                                                               // status: e.status.toString(),
                                                               // info: int.parse(e.amount.toString()).toCurrency(),
-                                                              isEdit: true,
+                                                              isEdit: controller.isEdit,
                                                               editAction: () => Get.off(const AddTrainScreen(), arguments: {
                                                                 'purposeID': controller.purposeID,
                                                                 'codeDocument': controller.codeDocument,
                                                                 'isEdit': true,
                                                                 'id': e.id,
+                                                                'formEdit': true,
                                                               })?.then((_) {
                                                                 controller.fetchList();
                                                                 controller.update();
                                                               }),
-                                                              isDelete: true,
+                                                              editButton: CustomFilledButton(
+                                                                width: 95,
+                                                                height: 40,
+                                                                color: orangeColor,
+                                                                title: "Order Ticket",
+                                                                fontSize: 14,
+                                                                onPressed: () {
+                                                                  Get.off(const AddTrainScreen(), arguments: {
+                                                                    'id': e.id,
+                                                                    'purposeID': controller.purposeID,
+                                                                    'codeDocument': controller.codeDocument,
+                                                                    'formEdit': true,
+                                                                    'isEdit': true,
+                                                                    'booking': true,
+                                                                  });
+                                                                },
+                                                              ),
+                                                              isDelete: controller.isEdit,
                                                               deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                                 onDeletePressed: () {
                                                                   controller.deleteTrain(e.id.toString());
@@ -855,15 +876,36 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                             // status: e.status.toString(),
                                                                             info: e.hotelName,
                                                                             isEdit: controller.isEdit,
-                                                                            editAction: () => Get.off(const EditAccommodationScreen(), arguments: {
+                                                                            editAction: () => Get.off(const AddAccommodationScreen(), arguments: {
                                                                               'purposeID': controller.purposeID,
                                                                               'codeDocument': controller.codeDocument,
                                                                               'id': e.id,
                                                                               'formEdit': true,
+                                                                              'isEdit': true,
                                                                             })?.then((result) {
                                                                               controller.fetchList();
                                                                               controller.update();
                                                                             }),
+                                                                            editButton: CustomFilledButton(
+                                                                              width: 95,
+                                                                              height: 40,
+                                                                              color: orangeColor,
+                                                                              title: "Book Hotel",
+                                                                              fontSize: 14,
+                                                                              onPressed: () {
+                                                                                Get.off(const AddAccommodationScreen(), arguments: {
+                                                                                  'purposeID': controller.purposeID,
+                                                                                  'codeDocument': controller.codeDocument,
+                                                                                  'id': e.id,
+                                                                                  'formEdit': true,
+                                                                                  'isEdit': true,
+                                                                                  'booking': true,
+                                                                                })?.then((result) {
+                                                                                  controller.fetchList();
+                                                                                  controller.update();
+                                                                                });
+                                                                              },
+                                                                            ),
                                                                             isDelete: controller.isEdit,
                                                                             deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                                               onDeletePressed: () {
@@ -892,7 +934,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                                                   children: [
                                                                                     Text("Price", style: listTitleTextStyle),
-                                                                                    Text(e.price.toString(), style: listSubTitleTextStyle),
+                                                                                    Text(e.price!.toInt().toCurrency().toString(),
+                                                                                        style: listSubTitleTextStyle),
                                                                                   ],
                                                                                 ),
                                                                               ],

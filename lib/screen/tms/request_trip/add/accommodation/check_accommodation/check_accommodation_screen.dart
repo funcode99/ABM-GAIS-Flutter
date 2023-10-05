@@ -96,7 +96,7 @@ class CheckAccommodationScreen extends StatelessWidget {
                                                   children: [
                                                     Text(e.hotelName.toString(), style: listTitleTextStyle),
                                                     RatingBarIndicator(
-                                                      rating: e.rating?.toDouble() ?? 0,
+                                                      // rating: e.rating?.toDouble() ?? 0,
                                                       itemBuilder: (context, index) => Icon(
                                                         Icons.star,
                                                         color: Colors.amber,
@@ -194,12 +194,12 @@ class CheckAccommodationScreen extends StatelessWidget {
                                                               ),
                                                             ),
                                                             onTap: () {
-                                                              controller.selectHotel(
-                                                                e.id.toString(),
-                                                                899990,
-                                                                e.id.toString(),
-                                                                e.idTypeHotel.toString(),
-                                                              );
+                                                              // controller.selectHotel(
+                                                                // e.id.toString(),
+                                                                // 899990,
+                                                                // e.id.toString(),
+                                                                // e.idTypeHotel.toString(),
+                                                              // );
                                                               controller.update();
                                                             },
                                                           ),

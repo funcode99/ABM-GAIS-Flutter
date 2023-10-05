@@ -4,6 +4,7 @@ import 'package:gais/data/model/antavaya/get_airport_model.dart';
 import 'package:gais/data/model/antavaya/get_airport_schedule_model.dart';
 import 'package:gais/data/model/antavaya/get_city_hotel_model.dart';
 import 'package:gais/data/model/antavaya/get_country_hotel_model.dart';
+import 'package:gais/data/model/antavaya/get_hotels_model.dart';
 import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
 import 'package:gais/data/model/antavaya/get_train_station_model.dart';
@@ -288,6 +289,39 @@ class AntavayaImpl implements AntavayaRepository {
       return GetTrainStationModel.fromJson(response.data);
     } on DioError catch (e) {
       print("station response error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+  @override
+  Future<GetHotelsModel> getHotel(
+    String idCountry,
+    String idCity,
+    String checkinDate,
+    String checkoutDate,
+    String room,
+    String guest,
+  ) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+
+    var formData = FormData.fromMap({
+      "id_country": idCountry,
+      "id_city": idCity,
+      "check_in": checkinDate,
+      "check_out": checkoutDate,
+      "room": room,
+      "guest": guest,
+    });
+    try {
+      Response response = await network.dio.post(
+        "/api/antavaya/hotel/get_hotel",
+        data: formData,
+      );
+      print("hotels response: ${response.data}");
+      return GetHotelsModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print("hotels error: ${e.response?.data}");
       return e.error;
     }
   }

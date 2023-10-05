@@ -931,7 +931,7 @@ class RequestTripImpl implements RequestTripRepository {
       );
       return UpdateAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
+      print("update accommmodation: ${e.response?.data}");
       return e.error;
     }
   }
