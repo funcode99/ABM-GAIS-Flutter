@@ -92,7 +92,46 @@ class AirportReservationController extends BaseController {
   Future<void> saveData() async {
     isLoading = true;
     update();
-    getSegment();
+    // getSegment();
+    saveReservation(Passengers(
+      title: passTitle.text,
+      firstName: passFirstName.text,
+      lastName: passLastName.text,
+      birthDate: saveDateFormat.format(birthDate!),
+      email: passEmail.text,
+      isSeniorCitizen: isSeniorCitizen,
+      mobilePhone: passMobilePhone.text,
+      index: 1,
+      type: '1',
+      nationality: 'ID',
+      idNumber: passIDNumber.text,
+      passport: Passport(
+        number: passPassportNumber.text,
+        firstName: passFirstName.text,
+        lastName: passLastName.text,
+        originCountry: passPassportOrigin.text,
+        expire: passPassportExpire.text,
+      ),
+      emergencyName: passEmergencyFullName.text,
+      emergencyPhone: passEmergencyPhone.text,
+      emergencyEmail: passEmergencyEmail.text,
+      ssrs: [
+        Ssrs(
+          // ssrCode: value.data?.rsFlightSsrs?.first.ssrs?.first.ssrCode ?? '0CW-1',
+          ssrCode: '0CW-1',
+          originCode: flight.origin,
+          destinationCode: flight.destination,
+          ssrFare: flight.fare!.toInt(),
+          // ccy: value.data?.rsFlightSsrs?.first.ssrs?.first.ccy ?? 'IDR',
+          ccy: 'IDR',
+          // ssrName: value.data?.rsFlightSsrs?.first.ssrs?.first.ssrName,
+          ssrName: 'Baggage',
+          // ssrType: value.data?.rsFlightSsrs?.first.ssrs?.first.ssrType,
+          ssrType: 1,
+          flightNumber: flight.number,
+        ),
+      ],
+    ));
   }
 
   Future<void> getSegment() async {
@@ -167,6 +206,7 @@ class AirportReservationController extends BaseController {
   }
 
   Future<void> saveReservation(Passengers passenger) async {
+    isLoading = true;
     try {
       await antavaya
           .saveFlightReservation(
@@ -215,7 +255,7 @@ class AirportReservationController extends BaseController {
         ),
       );
     }
-
+    isLoading = false;
     update();
   }
 

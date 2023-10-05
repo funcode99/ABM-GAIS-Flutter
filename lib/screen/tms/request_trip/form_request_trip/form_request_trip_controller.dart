@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/data/model/antavaya/get_reservation_ticket_model.dart';
 import 'package:gais/data/model/approval_request_trip/approval_info_model.dart' as ai;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
 import 'package:gais/data/model/reference/get_site_model.dart' as st;
@@ -475,10 +476,11 @@ class FormRequestTripController extends BaseController {
         if (e.pnrid != null) {
           print("pnrID: ${e.pnrid}");
           await antavaya.getRsvTicket(e.pnrid!).then((rsv) {
-            var reservation = jsonDecode(rsv);
-            print("rsv: ${reservation.toString()}");
-            print("rsv: ${reservation['Passengers'][0]['Type'].toString()}");
-
+            GetReservationTicketModel.fromJson(rsv).data?.passengers?.first.type.printInfo();
+            var reservation = GetReservationTicketModel.fromJson(rsv).data;
+            // print("rsv: ${reservation.toString()}");
+            // print("rsv: ${reservation['Passengers'][0]['Type'].toString()}");
+            //
             airlinessList.add(airliness.Data(
               id: e.id,
               idRequestTrip: e.idRequestTrip,
@@ -487,9 +489,12 @@ class FormRequestTripController extends BaseController {
               createdAt: e.createdAt,
               origin: e.origin,
               destination: e.destination,
-              departureTime: reservation['FlightDetails'][0]['DepartTime'],
-              arrivalTime: reservation['FlightDetails'][0]['ArriveTime'],
-              flightNo: reservation['FlightDetails'][0]['FlightNumber'],
+              // departureTime: reservation['FlightDetails'][0]['DepartTime'],
+              // arrivalTime: reservation['FlightDetails'][0]['ArriveTime'],
+              // flightNo: reservation['FlightDetails'][0]['FlightNumber'],
+              departureTime: reservation?.flightDetails?.first.departDate,
+              arrivalTime: reservation?.flightDetails?.first.arriveTime,
+              flightNo: reservation?.flightDetails?.first.flightNumber,
               ticketPrice: e.ticketPrice,
               departureDate: e.departDate,
               arrivalDate: e.returnDate,
@@ -534,8 +539,8 @@ class FormRequestTripController extends BaseController {
       var caData = await requestTrip.getCashAdvanceTravelList(purposeID);
       caList.addAll(caData.data?.toSet().toList() ?? []);
 
-      var transportData = await requestTrip.getTransportationBytrip(purposeID);
-      transportList.addAll(transportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+      // var transportData = await requestTrip.getTransportationBytrip(purposeID);
+      // transportList.addAll(transportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
     } catch (e, i) {
       e.printError();
       i.printError();

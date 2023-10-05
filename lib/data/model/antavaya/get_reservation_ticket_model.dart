@@ -1,27 +1,77 @@
 class GetReservationTicketModel {
   GetReservationTicketModel({
-      String? id, 
-      dynamic airline, 
-      String? bookingCode, 
-      String? timeLimit, 
-      String? created, 
-      String? reserved, 
-      String? ticketed, 
-      String? status, 
-      String? bosInvoiceNo, 
-      List<RSVSegments>? segments, 
-      Contact? contact, 
-      List<RSVPassengers>? passengers, 
-      List<Payments>? payments, 
-      List<FlightDetails>? flightDetails, 
-      String? discountInfo, 
-      String? paymentTransactionInfo, 
-      String? sqlDiscountInfo, 
-      String? sqlPaymentInfo, 
-      String? histories, 
-      String? remarks, 
-      String? markupSource, 
-      String? errorMessage,}){
+    bool? success,
+    String? message,
+    Data? data,
+  }) {
+    _success = success;
+    _message = message;
+    _data = data;
+  }
+
+  GetReservationTicketModel.fromJson(dynamic json) {
+    _success = json['success'];
+    _message = json['message'];
+    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
+  }
+
+  bool? _success;
+  String? _message;
+  Data? _data;
+
+  GetReservationTicketModel copyWith({
+    bool? success,
+    String? message,
+    Data? data,
+  }) =>
+      GetReservationTicketModel(
+        success: success ?? _success,
+        message: message ?? _message,
+        data: data ?? _data,
+      );
+
+  bool? get success => _success;
+
+  String? get message => _message;
+
+  Data? get data => _data;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['success'] = _success;
+    map['message'] = _message;
+    if (_data != null) {
+      map['data'] = _data?.toJson();
+    }
+    return map;
+  }
+}
+
+class Data {
+  Data({
+    String? id,
+    int? airline,
+    String? bookingCode,
+    String? timeLimit,
+    String? created,
+    String? reserved,
+    String? ticketed,
+    String? status,
+    String? bosInvoiceNo,
+    List<Segments>? segments,
+    Contact? contact,
+    List<Passengers>? passengers,
+    List<Payments>? payments,
+    List<FlightDetails>? flightDetails,
+    dynamic discountInfo,
+    dynamic paymentTransactionInfo,
+    dynamic sqlDiscountInfo,
+    dynamic sqlPaymentInfo,
+    dynamic histories,
+    dynamic remarks,
+    String? markupSource,
+    String? errorMessage,
+  }) {
     _id = id;
     _airline = airline;
     _bookingCode = bookingCode;
@@ -44,9 +94,9 @@ class GetReservationTicketModel {
     _remarks = remarks;
     _markupSource = markupSource;
     _errorMessage = errorMessage;
-}
+  }
 
-  GetReservationTicketModel.fromJson(dynamic json) {
+  Data.fromJson(dynamic json) {
     _id = json['Id'];
     _airline = json['Airline'];
     _bookingCode = json['BookingCode'];
@@ -59,14 +109,14 @@ class GetReservationTicketModel {
     if (json['Segments'] != null) {
       _segments = [];
       json['Segments'].forEach((v) {
-        _segments?.add(RSVSegments.fromJson(v));
+        _segments?.add(Segments.fromJson(v));
       });
     }
     _contact = json['Contact'] != null ? Contact.fromJson(json['Contact']) : null;
     if (json['Passengers'] != null) {
       _passengers = [];
       json['Passengers'].forEach((v) {
-        _passengers?.add(RSVPassengers.fromJson(v));
+        _passengers?.add(Passengers.fromJson(v));
       });
     }
     if (json['Payments'] != null) {
@@ -90,8 +140,9 @@ class GetReservationTicketModel {
     _markupSource = json['MarkupSource'];
     _errorMessage = json['ErrorMessage'];
   }
+
   String? _id;
-  dynamic _airline;
+  int? _airline;
   String? _bookingCode;
   String? _timeLimit;
   String? _created;
@@ -99,85 +150,111 @@ class GetReservationTicketModel {
   String? _ticketed;
   String? _status;
   String? _bosInvoiceNo;
-  List<RSVSegments>? _segments;
+  List<Segments>? _segments;
   Contact? _contact;
-  List<RSVPassengers>? _passengers;
+  List<Passengers>? _passengers;
   List<Payments>? _payments;
   List<FlightDetails>? _flightDetails;
-  String? _discountInfo;
-  String? _paymentTransactionInfo;
-  String? _sqlDiscountInfo;
-  String? _sqlPaymentInfo;
-  String? _histories;
-  String? _remarks;
+  dynamic _discountInfo;
+  dynamic _paymentTransactionInfo;
+  dynamic _sqlDiscountInfo;
+  dynamic _sqlPaymentInfo;
+  dynamic _histories;
+  dynamic _remarks;
   String? _markupSource;
   String? _errorMessage;
-GetReservationTicketModel copyWith({  String? id,
-  dynamic airline,
-  String? bookingCode,
-  String? timeLimit,
-  String? created,
-  String? reserved,
-  String? ticketed,
-  String? status,
-  String? bosInvoiceNo,
-  List<RSVSegments>? segments,
-  Contact? contact,
-  List<RSVPassengers>? passengers,
-  List<Payments>? payments,
-  List<FlightDetails>? flightDetails,
-  String? discountInfo,
-  String? paymentTransactionInfo,
-  String? sqlDiscountInfo,
-  String? sqlPaymentInfo,
-  String? histories,
-  String? remarks,
-  String? markupSource,
-  String? errorMessage,
-}) => GetReservationTicketModel(  id: id ?? _id,
-  airline: airline ?? _airline,
-  bookingCode: bookingCode ?? _bookingCode,
-  timeLimit: timeLimit ?? _timeLimit,
-  created: created ?? _created,
-  reserved: reserved ?? _reserved,
-  ticketed: ticketed ?? _ticketed,
-  status: status ?? _status,
-  bosInvoiceNo: bosInvoiceNo ?? _bosInvoiceNo,
-  segments: segments ?? _segments,
-  contact: contact ?? _contact,
-  passengers: passengers ?? _passengers,
-  payments: payments ?? _payments,
-  flightDetails: flightDetails ?? _flightDetails,
-  discountInfo: discountInfo ?? _discountInfo,
-  paymentTransactionInfo: paymentTransactionInfo ?? _paymentTransactionInfo,
-  sqlDiscountInfo: sqlDiscountInfo ?? _sqlDiscountInfo,
-  sqlPaymentInfo: sqlPaymentInfo ?? _sqlPaymentInfo,
-  histories: histories ?? _histories,
-  remarks: remarks ?? _remarks,
-  markupSource: markupSource ?? _markupSource,
-  errorMessage: errorMessage ?? _errorMessage,
-);
+
+  Data copyWith({
+    String? id,
+    int? airline,
+    String? bookingCode,
+    String? timeLimit,
+    String? created,
+    String? reserved,
+    String? ticketed,
+    String? status,
+    String? bosInvoiceNo,
+    List<Segments>? segments,
+    Contact? contact,
+    List<Passengers>? passengers,
+    List<Payments>? payments,
+    List<FlightDetails>? flightDetails,
+    dynamic discountInfo,
+    dynamic paymentTransactionInfo,
+    dynamic sqlDiscountInfo,
+    dynamic sqlPaymentInfo,
+    dynamic histories,
+    dynamic remarks,
+    String? markupSource,
+    String? errorMessage,
+  }) =>
+      Data(
+        id: id ?? _id,
+        airline: airline ?? _airline,
+        bookingCode: bookingCode ?? _bookingCode,
+        timeLimit: timeLimit ?? _timeLimit,
+        created: created ?? _created,
+        reserved: reserved ?? _reserved,
+        ticketed: ticketed ?? _ticketed,
+        status: status ?? _status,
+        bosInvoiceNo: bosInvoiceNo ?? _bosInvoiceNo,
+        segments: segments ?? _segments,
+        contact: contact ?? _contact,
+        passengers: passengers ?? _passengers,
+        payments: payments ?? _payments,
+        flightDetails: flightDetails ?? _flightDetails,
+        discountInfo: discountInfo ?? _discountInfo,
+        paymentTransactionInfo: paymentTransactionInfo ?? _paymentTransactionInfo,
+        sqlDiscountInfo: sqlDiscountInfo ?? _sqlDiscountInfo,
+        sqlPaymentInfo: sqlPaymentInfo ?? _sqlPaymentInfo,
+        histories: histories ?? _histories,
+        remarks: remarks ?? _remarks,
+        markupSource: markupSource ?? _markupSource,
+        errorMessage: errorMessage ?? _errorMessage,
+      );
+
   String? get id => _id;
-  dynamic get airline => _airline;
+
+  int? get airline => _airline;
+
   String? get bookingCode => _bookingCode;
+
   String? get timeLimit => _timeLimit;
+
   String? get created => _created;
+
   String? get reserved => _reserved;
+
   String? get ticketed => _ticketed;
+
   String? get status => _status;
+
   String? get bosInvoiceNo => _bosInvoiceNo;
-  List<RSVSegments>? get segments => _segments;
+
+  List<Segments>? get segments => _segments;
+
   Contact? get contact => _contact;
-  List<RSVPassengers>? get passengers => _passengers;
+
+  List<Passengers>? get passengers => _passengers;
+
   List<Payments>? get payments => _payments;
+
   List<FlightDetails>? get flightDetails => _flightDetails;
-  String? get discountInfo => _discountInfo;
-  String? get paymentTransactionInfo => _paymentTransactionInfo;
-  String? get sqlDiscountInfo => _sqlDiscountInfo;
-  String? get sqlPaymentInfo => _sqlPaymentInfo;
-  String? get histories => _histories;
-  String? get remarks => _remarks;
+
+  dynamic get discountInfo => _discountInfo;
+
+  dynamic get paymentTransactionInfo => _paymentTransactionInfo;
+
+  dynamic get sqlDiscountInfo => _sqlDiscountInfo;
+
+  dynamic get sqlPaymentInfo => _sqlPaymentInfo;
+
+  dynamic get histories => _histories;
+
+  dynamic get remarks => _remarks;
+
   String? get markupSource => _markupSource;
+
   String? get errorMessage => _errorMessage;
 
   Map<String, dynamic> toJson() {
@@ -216,29 +293,29 @@ GetReservationTicketModel copyWith({  String? id,
     map['ErrorMessage'] = _errorMessage;
     return map;
   }
-
 }
 
 class FlightDetails {
   FlightDetails({
-      dynamic airline, 
-      String? flightNumber, 
-      String? operatingFlightNumber, 
-      String? operatingAirline, 
-      String? carrierCode, 
-      String? origin, 
-      String? destination, 
-      String? departDate, 
-      String? departTime, 
-      String? arriveDate, 
-      String? arriveTime, 
-      String? duration, 
-      dynamic num, 
-      dynamic seq, 
-      String? rsvclass, 
-      String? category, 
-      String? airlineImageUrl, 
-      String? operatingAirlineImageUrl,}){
+    int? airline,
+    String? flightNumber,
+    dynamic operatingFlightNumber,
+    dynamic operatingAirline,
+    String? carrierCode,
+    String? origin,
+    String? destination,
+    String? departDate,
+    String? departTime,
+    String? arriveDate,
+    String? arriveTime,
+    String? duration,
+    int? num,
+    int? seq,
+    String? classflight,
+    String? category,
+    String? airlineImageUrl,
+    dynamic operatingAirlineImageUrl,
+  }) {
     _airline = airline;
     _flightNumber = flightNumber;
     _operatingFlightNumber = operatingFlightNumber;
@@ -253,11 +330,11 @@ class FlightDetails {
     _duration = duration;
     _num = num;
     _seq = seq;
-    _class = rsvclass;
+    _class = classflight;
     _category = category;
     _airlineImageUrl = airlineImageUrl;
     _operatingAirlineImageUrl = operatingAirlineImageUrl;
-}
+  }
 
   FlightDetails.fromJson(dynamic json) {
     _airline = json['Airline'];
@@ -279,10 +356,11 @@ class FlightDetails {
     _airlineImageUrl = json['AirlineImageUrl'];
     _operatingAirlineImageUrl = json['OperatingAirlineImageUrl'];
   }
-  dynamic _airline;
+
+  int? _airline;
   String? _flightNumber;
-  String? _operatingFlightNumber;
-  String? _operatingAirline;
+  dynamic _operatingFlightNumber;
+  dynamic _operatingAirline;
   String? _carrierCode;
   String? _origin;
   String? _destination;
@@ -291,67 +369,89 @@ class FlightDetails {
   String? _arriveDate;
   String? _arriveTime;
   String? _duration;
-  dynamic _num;
-  dynamic _seq;
+  int? _num;
+  int? _seq;
   String? _class;
   String? _category;
   String? _airlineImageUrl;
-  String? _operatingAirlineImageUrl;
-FlightDetails copyWith({  dynamic airline,
-  String? flightNumber,
-  String? operatingFlightNumber,
-  String? operatingAirline,
-  String? carrierCode,
-  String? origin,
-  String? destination,
-  String? departDate,
-  String? departTime,
-  String? arriveDate,
-  String? arriveTime,
-  String? duration,
-  dynamic num,
-  dynamic seq,
-  String? rsvclass,
-  String? category,
-  String? airlineImageUrl,
-  String? operatingAirlineImageUrl,
-}) => FlightDetails(  airline: airline ?? _airline,
-  flightNumber: flightNumber ?? _flightNumber,
-  operatingFlightNumber: operatingFlightNumber ?? _operatingFlightNumber,
-  operatingAirline: operatingAirline ?? _operatingAirline,
-  carrierCode: carrierCode ?? _carrierCode,
-  origin: origin ?? _origin,
-  destination: destination ?? _destination,
-  departDate: departDate ?? _departDate,
-  departTime: departTime ?? _departTime,
-  arriveDate: arriveDate ?? _arriveDate,
-  arriveTime: arriveTime ?? _arriveTime,
-  duration: duration ?? _duration,
-  num: num ?? _num,
-  seq: seq ?? _seq,
-  rsvclass: rsvclass ?? _class,
-  category: category ?? _category,
-  airlineImageUrl: airlineImageUrl ?? _airlineImageUrl,
-  operatingAirlineImageUrl: operatingAirlineImageUrl ?? _operatingAirlineImageUrl,
-);
-  dynamic get airline => _airline;
+  dynamic _operatingAirlineImageUrl;
+
+  FlightDetails copyWith({
+    int? airline,
+    String? flightNumber,
+    dynamic operatingFlightNumber,
+    dynamic operatingAirline,
+    String? carrierCode,
+    String? origin,
+    String? destination,
+    String? departDate,
+    String? departTime,
+    String? arriveDate,
+    String? arriveTime,
+    String? duration,
+    int? num,
+    int? seq,
+    String? classflight,
+    String? category,
+    String? airlineImageUrl,
+    dynamic operatingAirlineImageUrl,
+  }) =>
+      FlightDetails(
+        airline: airline ?? _airline,
+        flightNumber: flightNumber ?? _flightNumber,
+        operatingFlightNumber: operatingFlightNumber ?? _operatingFlightNumber,
+        operatingAirline: operatingAirline ?? _operatingAirline,
+        carrierCode: carrierCode ?? _carrierCode,
+        origin: origin ?? _origin,
+        destination: destination ?? _destination,
+        departDate: departDate ?? _departDate,
+        departTime: departTime ?? _departTime,
+        arriveDate: arriveDate ?? _arriveDate,
+        arriveTime: arriveTime ?? _arriveTime,
+        duration: duration ?? _duration,
+        num: num ?? _num,
+        seq: seq ?? _seq,
+        classflight: classflight ?? _class,
+        category: category ?? _category,
+        airlineImageUrl: airlineImageUrl ?? _airlineImageUrl,
+        operatingAirlineImageUrl: operatingAirlineImageUrl ?? _operatingAirlineImageUrl,
+      );
+
+  int? get airline => _airline;
+
   String? get flightNumber => _flightNumber;
-  String? get operatingFlightNumber => _operatingFlightNumber;
-  String? get operatingAirline => _operatingAirline;
+
+  dynamic get operatingFlightNumber => _operatingFlightNumber;
+
+  dynamic get operatingAirline => _operatingAirline;
+
   String? get carrierCode => _carrierCode;
+
   String? get origin => _origin;
+
   String? get destination => _destination;
+
   String? get departDate => _departDate;
+
   String? get departTime => _departTime;
+
   String? get arriveDate => _arriveDate;
+
   String? get arriveTime => _arriveTime;
+
   String? get duration => _duration;
-  dynamic get num => _num;
-  dynamic get seq => _seq;
-  String? get rsvclass => _class;
+
+  int? get num => _num;
+
+  int? get seq => _seq;
+
+  String? get classflight => _class;
+
   String? get category => _category;
+
   String? get airlineImageUrl => _airlineImageUrl;
-  String? get operatingAirlineImageUrl => _operatingAirlineImageUrl;
+
+  dynamic get operatingAirlineImageUrl => _operatingAirlineImageUrl;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -375,24 +475,24 @@ FlightDetails copyWith({  dynamic airline,
     map['OperatingAirlineImageUrl'] = _operatingAirlineImageUrl;
     return map;
   }
-
 }
 
 class Payments {
   Payments({
-      String? code, 
-      String? title, 
-      double? amount, 
-      String? currency, 
-      double? foreignAmount, 
-      String? foreignCurrency,}){
+    String? code,
+    String? title,
+    int? amount,
+    String? currency,
+    int? foreignAmount,
+    String? foreignCurrency,
+  }) {
     _code = code;
     _title = title;
     _amount = amount;
     _currency = currency;
     _foreignAmount = foreignAmount;
     _foreignCurrency = foreignCurrency;
-}
+  }
 
   Payments.fromJson(dynamic json) {
     _code = json['Code'];
@@ -402,30 +502,41 @@ class Payments {
     _foreignAmount = json['ForeignAmount'];
     _foreignCurrency = json['ForeignCurrency'];
   }
+
   String? _code;
   String? _title;
-  double? _amount;
+  int? _amount;
   String? _currency;
-  double? _foreignAmount;
+  int? _foreignAmount;
   String? _foreignCurrency;
-Payments copyWith({  String? code,
-  String? title,
-  double? amount,
-  String? currency,
-  double? foreignAmount,
-  String? foreignCurrency,
-}) => Payments(  code: code ?? _code,
-  title: title ?? _title,
-  amount: amount ?? _amount,
-  currency: currency ?? _currency,
-  foreignAmount: foreignAmount ?? _foreignAmount,
-  foreignCurrency: foreignCurrency ?? _foreignCurrency,
-);
+
+  Payments copyWith({
+    String? code,
+    String? title,
+    int? amount,
+    String? currency,
+    int? foreignAmount,
+    String? foreignCurrency,
+  }) =>
+      Payments(
+        code: code ?? _code,
+        title: title ?? _title,
+        amount: amount ?? _amount,
+        currency: currency ?? _currency,
+        foreignAmount: foreignAmount ?? _foreignAmount,
+        foreignCurrency: foreignCurrency ?? _foreignCurrency,
+      );
+
   String? get code => _code;
+
   String? get title => _title;
-  double? get amount => _amount;
+
+  int? get amount => _amount;
+
   String? get currency => _currency;
-  double? get foreignAmount => _foreignAmount;
+
+  int? get foreignAmount => _foreignAmount;
+
   String? get foreignCurrency => _foreignCurrency;
 
   Map<String, dynamic> toJson() {
@@ -438,30 +549,30 @@ Payments copyWith({  String? code,
     map['ForeignCurrency'] = _foreignCurrency;
     return map;
   }
-
 }
 
-class RSVPassengers {
-  RSVPassengers({
-      dynamic index, 
-      String? type, 
-      String? title, 
-      String? firstName, 
-      String? lastName, 
-      String? email, 
-      String? birthDate, 
-      String? gender, 
-      String? homePhone, 
-      String? mobilePhone, 
-      String? otherPhone, 
-      String? nationality, 
-      String? idNumber, 
-      Passport? passport, 
-      String? ticketNumber, 
-      List<RSVSsrs>? ssrs, 
-      String? seats, 
-      dynamic frequentFlyer, 
-      String? segmentBaggages,}){
+class Passengers {
+  Passengers({
+    int? index,
+    String? type,
+    String? title,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? birthDate,
+    String? gender,
+    String? homePhone,
+    String? mobilePhone,
+    dynamic otherPhone,
+    String? nationality,
+    String? idNumber,
+    Passport? passport,
+    String? ticketNumber,
+    List<dynamic>? ssrs,
+    List<dynamic>? seats,
+    dynamic frequentFlyer,
+    List<dynamic>? segmentBaggages,
+  }) {
     _index = index;
     _type = type;
     _title = title;
@@ -481,9 +592,9 @@ class RSVPassengers {
     _seats = seats;
     _frequentFlyer = frequentFlyer;
     _segmentBaggages = segmentBaggages;
-}
+  }
 
-  RSVPassengers.fromJson(dynamic json) {
+  Passengers.fromJson(dynamic json) {
     _index = json['Index'];
     _type = json['Type'];
     _title = json['Title'];
@@ -501,15 +612,26 @@ class RSVPassengers {
     _ticketNumber = json['TicketNumber'];
     if (json['Ssrs'] != null) {
       _ssrs = [];
-      json['Ssrs'].forEach((v) {
-        _ssrs?.add(RSVSsrs.fromJson(v));
-      });
+      // json['Ssrs'].forEach((v) {
+      //   _ssrs?.add(Dynamic.fromJson(v));
+      // });
     }
-    _seats = json['Seats'];
+    if (json['Seats'] != null) {
+      _seats = [];
+      // json['Seats'].forEach((v) {
+      //   _seats?.add(Dynamic.fromJson(v));
+      // });
+    }
     _frequentFlyer = json['FrequentFlyer'];
-    _segmentBaggages = json['SegmentBaggages'];
+    if (json['SegmentBaggages'] != null) {
+      _segmentBaggages = [];
+      // json['SegmentBaggages'].forEach((v) {
+      //   _segmentBaggages?.add(Dynamic.fromJson(v));
+      // });
+    }
   }
-  dynamic _index;
+
+  int? _index;
   String? _type;
   String? _title;
   String? _firstName;
@@ -519,73 +641,96 @@ class RSVPassengers {
   String? _gender;
   String? _homePhone;
   String? _mobilePhone;
-  String? _otherPhone;
+  dynamic _otherPhone;
   String? _nationality;
   String? _idNumber;
   Passport? _passport;
   String? _ticketNumber;
-  List<RSVSsrs>? _ssrs;
-  String? _seats;
+  List<dynamic>? _ssrs;
+  List<dynamic>? _seats;
   dynamic _frequentFlyer;
-  String? _segmentBaggages;
-RSVPassengers copyWith({  dynamic index,
-  String? type,
-  String? title,
-  String? firstName,
-  String? lastName,
-  String? email,
-  String? birthDate,
-  String? gender,
-  String? homePhone,
-  String? mobilePhone,
-  String? otherPhone,
-  String? nationality,
-  String? idNumber,
-  Passport? passport,
-  String? ticketNumber,
-  List<RSVSsrs>? ssrs,
-  String? seats,
-  dynamic frequentFlyer,
-  String? segmentBaggages,
-}) => RSVPassengers(  index: index ?? _index,
-  type: type ?? _type,
-  title: title ?? _title,
-  firstName: firstName ?? _firstName,
-  lastName: lastName ?? _lastName,
-  email: email ?? _email,
-  birthDate: birthDate ?? _birthDate,
-  gender: gender ?? _gender,
-  homePhone: homePhone ?? _homePhone,
-  mobilePhone: mobilePhone ?? _mobilePhone,
-  otherPhone: otherPhone ?? _otherPhone,
-  nationality: nationality ?? _nationality,
-  idNumber: idNumber ?? _idNumber,
-  passport: passport ?? _passport,
-  ticketNumber: ticketNumber ?? _ticketNumber,
-  ssrs: ssrs ?? _ssrs,
-  seats: seats ?? _seats,
-  frequentFlyer: frequentFlyer ?? _frequentFlyer,
-  segmentBaggages: segmentBaggages ?? _segmentBaggages,
-);
-  dynamic get index => _index;
+  List<dynamic>? _segmentBaggages;
+
+  Passengers copyWith({
+    int? index,
+    String? type,
+    String? title,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? birthDate,
+    String? gender,
+    String? homePhone,
+    String? mobilePhone,
+    dynamic otherPhone,
+    String? nationality,
+    String? idNumber,
+    Passport? passport,
+    String? ticketNumber,
+    List<dynamic>? ssrs,
+    List<dynamic>? seats,
+    dynamic frequentFlyer,
+    List<dynamic>? segmentBaggages,
+  }) =>
+      Passengers(
+        index: index ?? _index,
+        type: type ?? _type,
+        title: title ?? _title,
+        firstName: firstName ?? _firstName,
+        lastName: lastName ?? _lastName,
+        email: email ?? _email,
+        birthDate: birthDate ?? _birthDate,
+        gender: gender ?? _gender,
+        homePhone: homePhone ?? _homePhone,
+        mobilePhone: mobilePhone ?? _mobilePhone,
+        otherPhone: otherPhone ?? _otherPhone,
+        nationality: nationality ?? _nationality,
+        idNumber: idNumber ?? _idNumber,
+        passport: passport ?? _passport,
+        ticketNumber: ticketNumber ?? _ticketNumber,
+        ssrs: ssrs ?? _ssrs,
+        seats: seats ?? _seats,
+        frequentFlyer: frequentFlyer ?? _frequentFlyer,
+        segmentBaggages: segmentBaggages ?? _segmentBaggages,
+      );
+
+  int? get index => _index;
+
   String? get type => _type;
+
   String? get title => _title;
+
   String? get firstName => _firstName;
+
   String? get lastName => _lastName;
+
   String? get email => _email;
+
   String? get birthDate => _birthDate;
+
   String? get gender => _gender;
+
   String? get homePhone => _homePhone;
+
   String? get mobilePhone => _mobilePhone;
-  String? get otherPhone => _otherPhone;
+
+  dynamic get otherPhone => _otherPhone;
+
   String? get nationality => _nationality;
+
   String? get idNumber => _idNumber;
+
   Passport? get passport => _passport;
+
   String? get ticketNumber => _ticketNumber;
-  List<RSVSsrs>? get ssrs => _ssrs;
-  String? get seats => _seats;
+
+  List<dynamic>? get ssrs => _ssrs;
+
+  List<dynamic>? get seats => _seats;
+
   dynamic get frequentFlyer => _frequentFlyer;
-  String? get segmentBaggages => _segmentBaggages;
+
+  List<dynamic>? get segmentBaggages => _segmentBaggages;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -609,154 +754,31 @@ RSVPassengers copyWith({  dynamic index,
     if (_ssrs != null) {
       map['Ssrs'] = _ssrs?.map((v) => v.toJson()).toList();
     }
-    map['Seats'] = _seats;
+    if (_seats != null) {
+      map['Seats'] = _seats?.map((v) => v.toJson()).toList();
+    }
     map['FrequentFlyer'] = _frequentFlyer;
-    map['SegmentBaggages'] = _segmentBaggages;
+    if (_segmentBaggages != null) {
+      map['SegmentBaggages'] = _segmentBaggages?.map((v) => v.toJson()).toList();
+    }
     return map;
   }
-
-}
-
-class RSVSsrs {
-  RSVSsrs({
-      String? ssrCode, 
-      String? originCode, 
-      String? destinationCode, 
-      double? ssrFare, 
-      String? ccy, 
-      String? ssrName, 
-      dynamic ssrType, 
-      String? flightNumber, 
-      dynamic paxType, 
-      dynamic quantity, 
-      dynamic image, 
-      dynamic shortDesc, 
-      dynamic longDesc, 
-      double? tax,}){
-    _ssrCode = ssrCode;
-    _originCode = originCode;
-    _destinationCode = destinationCode;
-    _ssrFare = ssrFare;
-    _ccy = ccy;
-    _ssrName = ssrName;
-    _ssrType = ssrType;
-    _flightNumber = flightNumber;
-    _paxType = paxType;
-    _quantity = quantity;
-    _image = image;
-    _shortDesc = shortDesc;
-    _longDesc = longDesc;
-    _tax = tax;
-}
-
-  RSVSsrs.fromJson(dynamic json) {
-    _ssrCode = json['SsrCode'];
-    _originCode = json['OriginCode'];
-    _destinationCode = json['DestinationCode'];
-    _ssrFare = json['SsrFare'];
-    _ccy = json['Ccy'];
-    _ssrName = json['SsrName'];
-    _ssrType = json['SsrType'];
-    _flightNumber = json['FlightNumber'];
-    _paxType = json['PaxType'];
-    _quantity = json['Quantity'];
-    _image = json['Image'];
-    _shortDesc = json['ShortDesc'];
-    _longDesc = json['LongDesc'];
-    _tax = json['Tax'];
-  }
-  String? _ssrCode;
-  String? _originCode;
-  String? _destinationCode;
-  double? _ssrFare;
-  String? _ccy;
-  String? _ssrName;
-  dynamic _ssrType;
-  String? _flightNumber;
-  dynamic _paxType;
-  dynamic _quantity;
-  dynamic _image;
-  dynamic _shortDesc;
-  dynamic _longDesc;
-  double? _tax;
-RSVSsrs copyWith({  String? ssrCode,
-  String? originCode,
-  String? destinationCode,
-  double? ssrFare,
-  String? ccy,
-  String? ssrName,
-  dynamic ssrType,
-  String? flightNumber,
-  dynamic paxType,
-  dynamic quantity,
-  dynamic image,
-  dynamic shortDesc,
-  dynamic longDesc,
-  double? tax,
-}) => RSVSsrs(  ssrCode: ssrCode ?? _ssrCode,
-  originCode: originCode ?? _originCode,
-  destinationCode: destinationCode ?? _destinationCode,
-  ssrFare: ssrFare ?? _ssrFare,
-  ccy: ccy ?? _ccy,
-  ssrName: ssrName ?? _ssrName,
-  ssrType: ssrType ?? _ssrType,
-  flightNumber: flightNumber ?? _flightNumber,
-  paxType: paxType ?? _paxType,
-  quantity: quantity ?? _quantity,
-  image: image ?? _image,
-  shortDesc: shortDesc ?? _shortDesc,
-  longDesc: longDesc ?? _longDesc,
-  tax: tax ?? _tax,
-);
-  String? get ssrCode => _ssrCode;
-  String? get originCode => _originCode;
-  String? get destinationCode => _destinationCode;
-  double? get ssrFare => _ssrFare;
-  String? get ccy => _ccy;
-  String? get ssrName => _ssrName;
-  dynamic get ssrType => _ssrType;
-  String? get flightNumber => _flightNumber;
-  dynamic get paxType => _paxType;
-  dynamic get quantity => _quantity;
-  dynamic get image => _image;
-  dynamic get shortDesc => _shortDesc;
-  dynamic get longDesc => _longDesc;
-  double? get tax => _tax;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['SsrCode'] = _ssrCode;
-    map['OriginCode'] = _originCode;
-    map['DestinationCode'] = _destinationCode;
-    map['SsrFare'] = _ssrFare;
-    map['Ccy'] = _ccy;
-    map['SsrName'] = _ssrName;
-    map['SsrType'] = _ssrType;
-    map['FlightNumber'] = _flightNumber;
-    map['PaxType'] = _paxType;
-    map['Quantity'] = _quantity;
-    map['Image'] = _image;
-    map['ShortDesc'] = _shortDesc;
-    map['LongDesc'] = _longDesc;
-    map['Tax'] = _tax;
-    return map;
-  }
-
 }
 
 class Passport {
   Passport({
-      String? number, 
-      String? originCountry, 
-      String? firstName, 
-      String? lastName, 
-      String? expire,}){
+    dynamic number,
+    dynamic originCountry,
+    dynamic firstName,
+    dynamic lastName,
+    dynamic expire,
+  }) {
     _number = number;
     _originCountry = originCountry;
     _firstName = firstName;
     _lastName = lastName;
     _expire = expire;
-}
+  }
 
   Passport.fromJson(dynamic json) {
     _number = json['Number'];
@@ -765,27 +787,37 @@ class Passport {
     _lastName = json['LastName'];
     _expire = json['Expire'];
   }
-  String? _number;
-  String? _originCountry;
-  String? _firstName;
-  String? _lastName;
-  String? _expire;
-Passport copyWith({  String? number,
-  String? originCountry,
-  String? firstName,
-  String? lastName,
-  String? expire,
-}) => Passport(  number: number ?? _number,
-  originCountry: originCountry ?? _originCountry,
-  firstName: firstName ?? _firstName,
-  lastName: lastName ?? _lastName,
-  expire: expire ?? _expire,
-);
-  String? get number => _number;
-  String? get originCountry => _originCountry;
-  String? get firstName => _firstName;
-  String? get lastName => _lastName;
-  String? get expire => _expire;
+
+  dynamic _number;
+  dynamic _originCountry;
+  dynamic _firstName;
+  dynamic _lastName;
+  dynamic _expire;
+
+  Passport copyWith({
+    dynamic number,
+    dynamic originCountry,
+    dynamic firstName,
+    dynamic lastName,
+    dynamic expire,
+  }) =>
+      Passport(
+        number: number ?? _number,
+        originCountry: originCountry ?? _originCountry,
+        firstName: firstName ?? _firstName,
+        lastName: lastName ?? _lastName,
+        expire: expire ?? _expire,
+      );
+
+  dynamic get number => _number;
+
+  dynamic get originCountry => _originCountry;
+
+  dynamic get firstName => _firstName;
+
+  dynamic get lastName => _lastName;
+
+  dynamic get expire => _expire;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -796,24 +828,24 @@ Passport copyWith({  String? number,
     map['Expire'] = _expire;
     return map;
   }
-
 }
 
 class Contact {
   Contact({
-      String? title, 
-      String? firstName, 
-      String? lastName, 
-      String? email, 
-      String? mobilePhone, 
-      String? homePhone,}){
+    String? title,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? mobilePhone,
+    String? homePhone,
+  }) {
     _title = title;
     _firstName = firstName;
     _lastName = lastName;
     _email = email;
     _mobilePhone = mobilePhone;
     _homePhone = homePhone;
-}
+  }
 
   Contact.fromJson(dynamic json) {
     _title = json['Title'];
@@ -823,30 +855,41 @@ class Contact {
     _mobilePhone = json['MobilePhone'];
     _homePhone = json['HomePhone'];
   }
+
   String? _title;
   String? _firstName;
   String? _lastName;
   String? _email;
   String? _mobilePhone;
   String? _homePhone;
-Contact copyWith({  String? title,
-  String? firstName,
-  String? lastName,
-  String? email,
-  String? mobilePhone,
-  String? homePhone,
-}) => Contact(  title: title ?? _title,
-  firstName: firstName ?? _firstName,
-  lastName: lastName ?? _lastName,
-  email: email ?? _email,
-  mobilePhone: mobilePhone ?? _mobilePhone,
-  homePhone: homePhone ?? _homePhone,
-);
+
+  Contact copyWith({
+    String? title,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? mobilePhone,
+    String? homePhone,
+  }) =>
+      Contact(
+        title: title ?? _title,
+        firstName: firstName ?? _firstName,
+        lastName: lastName ?? _lastName,
+        email: email ?? _email,
+        mobilePhone: mobilePhone ?? _mobilePhone,
+        homePhone: homePhone ?? _homePhone,
+      );
+
   String? get title => _title;
+
   String? get firstName => _firstName;
+
   String? get lastName => _lastName;
+
   String? get email => _email;
+
   String? get mobilePhone => _mobilePhone;
+
   String? get homePhone => _homePhone;
 
   Map<String, dynamic> toJson() {
@@ -859,19 +902,19 @@ Contact copyWith({  String? title,
     map['HomePhone'] = _homePhone;
     return map;
   }
-
 }
 
-class RSVSegments {
-  RSVSegments({
-      String? airlineName, 
-      String? origin, 
-      String? destination, 
-      String? originAirport, 
-      String? destinationAirport, 
-      String? airlineBookingCode, 
-      dynamic num, 
-      dynamic seq,}){
+class Segments {
+  Segments({
+    String? airlineName,
+    String? origin,
+    String? destination,
+    String? originAirport,
+    String? destinationAirport,
+    String? airlineBookingCode,
+    int? num,
+    int? seq,
+  }) {
     _airlineName = airlineName;
     _origin = origin;
     _destination = destination;
@@ -880,9 +923,9 @@ class RSVSegments {
     _airlineBookingCode = airlineBookingCode;
     _num = num;
     _seq = seq;
-}
+  }
 
-  RSVSegments.fromJson(dynamic json) {
+  Segments.fromJson(dynamic json) {
     _airlineName = json['AirlineName'];
     _origin = json['Origin'];
     _destination = json['Destination'];
@@ -892,39 +935,52 @@ class RSVSegments {
     _num = json['Num'];
     _seq = json['Seq'];
   }
+
   String? _airlineName;
   String? _origin;
   String? _destination;
   String? _originAirport;
   String? _destinationAirport;
   String? _airlineBookingCode;
-  dynamic _num;
-  dynamic _seq;
-RSVSegments copyWith({  String? airlineName,
-  String? origin,
-  String? destination,
-  String? originAirport,
-  String? destinationAirport,
-  String? airlineBookingCode,
-  dynamic num,
-  dynamic seq,
-}) => RSVSegments(  airlineName: airlineName ?? _airlineName,
-  origin: origin ?? _origin,
-  destination: destination ?? _destination,
-  originAirport: originAirport ?? _originAirport,
-  destinationAirport: destinationAirport ?? _destinationAirport,
-  airlineBookingCode: airlineBookingCode ?? _airlineBookingCode,
-  num: num ?? _num,
-  seq: seq ?? _seq,
-);
+  int? _num;
+  int? _seq;
+
+  Segments copyWith({
+    String? airlineName,
+    String? origin,
+    String? destination,
+    String? originAirport,
+    String? destinationAirport,
+    String? airlineBookingCode,
+    int? num,
+    int? seq,
+  }) =>
+      Segments(
+        airlineName: airlineName ?? _airlineName,
+        origin: origin ?? _origin,
+        destination: destination ?? _destination,
+        originAirport: originAirport ?? _originAirport,
+        destinationAirport: destinationAirport ?? _destinationAirport,
+        airlineBookingCode: airlineBookingCode ?? _airlineBookingCode,
+        num: num ?? _num,
+        seq: seq ?? _seq,
+      );
+
   String? get airlineName => _airlineName;
+
   String? get origin => _origin;
+
   String? get destination => _destination;
+
   String? get originAirport => _originAirport;
+
   String? get destinationAirport => _destinationAirport;
+
   String? get airlineBookingCode => _airlineBookingCode;
-  dynamic get num => _num;
-  dynamic get seq => _seq;
+
+  int? get num => _num;
+
+  int? get seq => _seq;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -938,5 +994,4 @@ RSVSegments copyWith({  String? airlineName,
     map['Seq'] = _seq;
     return map;
   }
-
 }
