@@ -283,6 +283,7 @@ class DetailBookingMeetingRoomController extends BaseController
     }
 
     //set approval log
+    listLogApproval.clear();
     if (selectedItem.value.approvedAt != null &&
         selectedItem.value.nameApproved != null) {
       listLogApproval.add(ApprovalLogModel(
