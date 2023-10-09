@@ -110,12 +110,17 @@ class AddManagementItemATKController extends BaseController
       remarks: remarksController.text,
     );
 
+    isLoadingHitApi(true);
     final result = await _repository.saveData(managementItemATKModel);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (cashAdvanceModel) {
-      //update list
+          isLoadingHitApi(false);
+          //update list
       Get.back(result: true);
     });
   }

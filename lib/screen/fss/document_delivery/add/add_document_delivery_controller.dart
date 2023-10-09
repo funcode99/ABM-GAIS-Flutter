@@ -115,6 +115,7 @@ class AddDocumentDeliveryController extends BaseController with MasterDataMixin{
   }
 
   Future<void> saveDocument() async {
+    isLoadingHitApi(true);
     try {
       await documentDelivery
           .save(
@@ -129,6 +130,7 @@ class AddDocumentDeliveryController extends BaseController with MasterDataMixin{
         remarks.text,
       )
           .then((value) {
+        isLoadingHitApi(false);
         Get.off(const DocumentDeliveryListScreen());
         Get.showSnackbar(const GetSnackBar(
           icon: Icon(
@@ -142,6 +144,7 @@ class AddDocumentDeliveryController extends BaseController with MasterDataMixin{
         ));
       });
     } catch (e, i) {
+      isLoadingHitApi(false);
       e.printError();
       i.printError();
       Get.showSnackbar(const GetSnackBar(

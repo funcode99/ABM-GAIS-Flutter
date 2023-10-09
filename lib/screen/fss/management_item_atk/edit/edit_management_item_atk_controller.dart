@@ -121,12 +121,17 @@ class EditManagementItemATKController extends BaseController with MasterDataMixi
       remarks: remarksController.text,
     );
 
+    isLoadingHitApi(true);
     final result = await _repository.updateData(managementItemATKModel, managementItemATK.value.id!);
     result.fold(
-            (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (l) {
+              isLoadingHitApi(false);
+              Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+            },
             (cashAdvanceModel) {
-          //update list
+              isLoadingHitApi(false);
+              //update list
           Get.back(result: true);
         });
   }

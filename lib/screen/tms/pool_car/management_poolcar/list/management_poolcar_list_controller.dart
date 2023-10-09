@@ -93,7 +93,9 @@ class ManagementPoolCarListController extends BaseController {
   Future<void> deleteData(int id) async {
     isLoading = true;
     try {
+      isLoadingHitApi(true);
       await managementPoolCar.delete(id).then((value) {
+        isLoadingHitApi(false);
         Get.showSnackbar(GetSnackBar(
           icon: Icon(
             Icons.info,
@@ -107,6 +109,7 @@ class ManagementPoolCarListController extends BaseController {
         fetchList(currentPage);
       });
     } catch (e) {
+      isLoadingHitApi(false);
       Get.showSnackbar(GetSnackBar(
         icon: Icon(
           Icons.error,

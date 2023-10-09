@@ -125,12 +125,16 @@ class AddStockInATKController extends BaseController {
 
 
 
+    isLoadingHitApi(true);
     final result = await _repository.saveData(stockInATKModel);
     result.fold(
-            (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (l) {
+              isLoadingHitApi(false);
+              Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+            },
             (requestAtkModel) {
-
+              isLoadingHitApi(false);
           Get.off(() => const DetailStockInScreen(),
               arguments: {"item": requestAtkModel});
         });

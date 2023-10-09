@@ -282,6 +282,7 @@ class FormDocumentDeliveryController extends BaseController {
   }
 
   Future<void> saveDocument() async {
+    isLoadingHitApi(true);
     try {
       await documentDelivery
           .update(
@@ -298,6 +299,7 @@ class FormDocumentDeliveryController extends BaseController {
         codeStatusDoc!.toString(),
       )
           .then((value) {
+        isLoadingHitApi(false);
         // Get.off(DocumentDeliveryListScreen());
         print(value.message);
         isEdit = false;
@@ -315,6 +317,7 @@ class FormDocumentDeliveryController extends BaseController {
         ));
       });
     } catch (e, i) {
+      isLoadingHitApi(false);
       e.printError();
       i.printError();
       Get.showSnackbar(
@@ -334,6 +337,7 @@ class FormDocumentDeliveryController extends BaseController {
   }
 
   Future<void> cancelDocument() async {
+    isLoadingHitApi(true);
     try {
       await documentDelivery
           .cancel(
@@ -341,7 +345,8 @@ class FormDocumentDeliveryController extends BaseController {
         approvalModel?.notes
       )
           .then((value) {
-            if(value){
+        isLoadingHitApi(false);
+        if(value){
               fetchEdit();
               Get.showSnackbar(const GetSnackBar(
                 icon: Icon(
@@ -370,6 +375,7 @@ class FormDocumentDeliveryController extends BaseController {
 
       });
     } catch (e, i) {
+      isLoadingHitApi(false);
       e.printError();
       i.printError();
       Get.showSnackbar(
@@ -388,13 +394,15 @@ class FormDocumentDeliveryController extends BaseController {
     update();
   }
   Future<void> receivedDocument() async {
+    isLoadingHitApi(true);
     try {
       await documentDelivery
           .received(
         ddID!.toString()
       )
           .then((value) {
-            if(value){
+        isLoadingHitApi(false);
+        if(value){
               fetchEdit();
               Get.showSnackbar(const GetSnackBar(
                 icon: Icon(
@@ -423,6 +431,7 @@ class FormDocumentDeliveryController extends BaseController {
 
       });
     } catch (e, i) {
+      isLoadingHitApi(false);
       e.printError();
       i.printError();
       Get.showSnackbar(
@@ -441,13 +450,15 @@ class FormDocumentDeliveryController extends BaseController {
     update();
   }
   Future<void> deliveringDocument() async {
+    isLoadingHitApi(true);
     try {
       await documentDelivery
           .delivering(
         ddID!.toString()
       )
           .then((value) {
-            if(value){
+        isLoadingHitApi(false);
+        if(value){
               fetchEdit();
               Get.showSnackbar(const GetSnackBar(
                 icon: Icon(
@@ -476,6 +487,7 @@ class FormDocumentDeliveryController extends BaseController {
 
       });
     } catch (e, i) {
+      isLoadingHitApi(false);
       e.printError();
       i.printError();
       Get.showSnackbar(
@@ -494,13 +506,15 @@ class FormDocumentDeliveryController extends BaseController {
     update();
   }
   Future<void> deliveredDocument() async {
+    isLoadingHitApi(true);
     try {
       await documentDelivery
           .delivered(
         ddID!.toString()
       )
           .then((value) {
-            if(value){
+        isLoadingHitApi(false);
+        if(value){
               fetchEdit();
               Get.showSnackbar(const GetSnackBar(
                 icon: Icon(
@@ -529,6 +543,7 @@ class FormDocumentDeliveryController extends BaseController {
 
       });
     } catch (e, i) {
+      isLoadingHitApi(false);
       e.printError();
       i.printError();
       Get.showSnackbar(

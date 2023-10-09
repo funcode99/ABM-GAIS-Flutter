@@ -93,8 +93,6 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
   }
 
   void saveData() async {
-    isLoadingHitApi(true);
-
     List<SubmitCheckDataModel> data = [];
     for(CheckItemModel checkItemModel in listCheckItem){
       if(checkItemModel.fillable != null && checkItemModel.fillable == 1){
@@ -121,6 +119,7 @@ class PoolCarP2HController extends BaseController with MasterDataMixin {
       "status" : status
     };
 
+    isLoadingHitApi(true);
     final result = await _repository.submitCheck(submitCheckModel, queryParam);
     result.fold(
       (l) {

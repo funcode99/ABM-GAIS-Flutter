@@ -67,12 +67,17 @@ class RequestATKDetailController extends BaseController {
   }
 
   void submitHeader() async {
+    isLoadingHitApi(true);
     final result = await _repository.submitData(selectedItem.value.id!);
     result.fold(
-            (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (l) {
+              isLoadingHitApi(false);
+              Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+            },
             (cashAdvanceModel) {
-          detailHeader();
+              isLoadingHitApi(false);
+              detailHeader();
         });
   }
 
@@ -96,22 +101,32 @@ class RequestATKDetailController extends BaseController {
   }
 
   void addDetail(RequestATKDetailModel item) async {
+    isLoadingHitApi(true);
     item.idAtkRequest = selectedItem.value.id;
     final result = await _repository.addDetail(item);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (detailModel) {
-        getDetailData();
+          isLoadingHitApi(false);
+          getDetailData();
     });
   }
 
   void deleteDetail(RequestATKDetailModel item) async {
     if (item.id != null) {
+      isLoadingHitApi(true);
       final result = await _repository.deleteDetail(item.id!);
       result.fold(
-          (l) => Get.showSnackbar(CustomGetSnackBar(
-              message: l.message, backgroundColor: Colors.red)), (model) {
+          (l) {
+            isLoadingHitApi(false);
+            Get.showSnackbar(CustomGetSnackBar(
+              message: l.message, backgroundColor: Colors.red));
+          }, (model) {
+        isLoadingHitApi(false);
         Get.showSnackbar(CustomGetSnackBar(
           message: "Success Delete Data".tr,
         ));
@@ -128,12 +143,17 @@ class RequestATKDetailController extends BaseController {
   }
 
   void updateDetail(RequestATKDetailModel item) async {
+    isLoadingHitApi(true);
     item.idAtkRequest = selectedItem.value.id;
     final result = await _repository.updateDetail(item, item.id!);
     result.fold(
-        (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
         (model) {
+          isLoadingHitApi(false);
           getDetailData();
     });
   }

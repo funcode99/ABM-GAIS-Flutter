@@ -89,11 +89,16 @@ class DetailApprovalRequestATKController extends BaseController {
   }
 
   void reject() async {
+    isLoadingHitApi(true);
     final result =
         await _repository.reject(approvalModel.value, selectedItem.value.id!);
     result.fold(
-        (l) => showApprovalFailDialog("Request failed to be approved!".tr)
-            .then((value) => Get.back(result: true)), (r) {
+        (l) {
+          isLoadingHitApi(false);
+          showApprovalFailDialog("Request failed to be approved!".tr)
+            .then((value) => Get.back(result: true));
+        }, (r) {
+      isLoadingHitApi(false);
       if (r) {
         showApprovalSuccessDialog("The request was successfully rejected!".tr)
             .then((value) => Get.back(result: true));
@@ -105,11 +110,16 @@ class DetailApprovalRequestATKController extends BaseController {
   }
 
   void approve() async {
+    isLoadingHitApi(true);
     final result =
         await _repository.approve(approvalModel.value, selectedItem.value.id!);
     result.fold(
-        (l) => showApprovalFailDialog("Request failed to be approved!".tr)
-            .then((value) => Get.back(result: true)), (r) {
+        (l) {
+          isLoadingHitApi(false);
+          showApprovalFailDialog("Request failed to be approved!".tr)
+            .then((value) => Get.back(result: true));
+        }, (r) {
+      isLoadingHitApi(false);
       if (r) {
         showApprovalSuccessDialog("The request was successfully approved!".tr)
             .then((value) => Get.back(result: true));
@@ -121,11 +131,17 @@ class DetailApprovalRequestATKController extends BaseController {
   }
 
   void complete() async {
+    isLoadingHitApi(true);
     final result =
         await _repository.complete(approvalModel.value, selectedItem.value.id!);
     result.fold(
-        (l) => showApprovalFailDialog("Request failed to be delivered!".tr)
-            .then((value) => Get.back(result: true)), (r) {
+        (l) {
+          isLoadingHitApi(false);
+
+          showApprovalFailDialog("Request failed to be delivered!".tr)
+            .then((value) => Get.back(result: true));
+        }, (r) {
+      isLoadingHitApi(false);
       if (r) {
         showApprovalSuccessDialog("The request was successfully delivered!".tr)
             .then((value) => Get.back(result: true));
