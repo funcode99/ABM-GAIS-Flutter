@@ -73,3 +73,15 @@ enum BookingMeetingRoomEnum {
 
   final int value;
 }
+
+enum ActualizationTripEnum {
+  draft(0),
+  waitingApprocal(1),
+  revision(3),
+  reject(4),
+  done(4);
+
+  const ActualizationTripEnum(this.value);
+
+  final int value;
+}
