@@ -6,18 +6,25 @@ import 'package:get/get.dart';
 class ManagementMeetingRoomController extends BaseController {
   final formKey = GlobalKey<FormState>();
 
-  String filterCapacity = "-1";
-  String filterStatus = "-1";
+  final capacityController = TextEditingController();
+
+  String filterCapacityTemp = "";
+  String filterCapacity = "";
+  String filterStatus = "";
+  String filterStatusTemp = "";
   String? searchValue;
   int currentPage = 1;
   int perPage = 10;
   int totalPage = 1;
 
   bool isLoading = false;
-  bool dataisnull = false;
 
   List capacityList = [];
-  List statusList = [];
+  List<String> statusList = [
+    "",
+    "Available",
+    "Unavailable"
+  ];
   List<mr.Data2> meetingRoomList = [];
   mr.GetManagementMeetingRoomModel? meetingRoomModel;
 
@@ -28,11 +35,34 @@ class ManagementMeetingRoomController extends BaseController {
   }
 
   void resetFilter() {
-    formKey.currentState?.reset();
-    filterStatus = "-1";
-    update();
+    filterStatusTemp = "";
+    filterCapacityTemp = "";
+    capacityController.text = filterCapacityTemp;
 
-    print(filterStatus);
+    update();
+  }
+
+  void applyFilter(){
+    filterCapacity = capacityController.text;
+    filterStatus = filterStatusTemp;
+
+    update();
+    fetchList(1);
+  }
+
+  void openFilter(){
+    filterStatusTemp = filterStatus;
+    filterCapacityTemp = filterCapacity;
+
+    capacityController.text = filterCapacityTemp;
+
+    update();
+  }
+
+  void applySearch(String search){
+    searchValue = search;
+    update();
+    fetchList(1);
   }
 
   Future<void> fetchList(int page) async {
@@ -44,8 +74,8 @@ class ManagementMeetingRoomController extends BaseController {
         perPage,
         page,
         searchValue,
-        filterStatus!= "-1" ? filterStatus : null,
-        filterCapacity!= "-1" ? filterCapacity : null,
+        filterStatus,
+        filterCapacity,
       )
           .then((value) {
         meetingRoomList.clear();

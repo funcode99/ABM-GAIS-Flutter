@@ -1622,6 +1622,22 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                             controller.remarksController,
                                         label: "Remarks".tr);
                                   }),
+                                  Obx(() {
+                                    return SizedBox(
+                                      height: controller.selectedItem.value.codeStatusDoc == BookingMeetingRoomEnum.cancelled.value ? 8 : 0,
+                                    );
+                                  }),
+                                  Obx(() {
+                                    if(controller.selectedItem.value.codeStatusDoc == BookingMeetingRoomEnum.cancelled.value){
+                                      return CustomTextFormField(
+                                          readOnly: true,
+                                          multiLine: true,
+                                          controller:
+                                          controller.cancelledNotesController,
+                                          label: "Cancelled Notes".tr);
+                                    }
+                                    return SizedBox();
+                                  }),
                                   const SizedBox(
                                     height: 32,
                                   ),

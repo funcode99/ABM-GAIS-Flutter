@@ -43,6 +43,7 @@ class DetailBookingMeetingRoomController extends BaseController
   final TextEditingController participantController = TextEditingController();
   final TextEditingController linkController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
+  final TextEditingController cancelledNotesController = TextEditingController();
   final TextEditingController siteController = TextEditingController();
   final TextEditingController companyController = TextEditingController();
   final TextEditingController externalParticipantController =
@@ -199,8 +200,8 @@ class DetailBookingMeetingRoomController extends BaseController
         "${startTime.value?.toStringWithFormat()} ${endTime.value != null ? "-" : ""} ${endTime.value?.toStringWithFormat() ?? ""}";
 
     linkController.text = selectedItem.value.link ?? "";
-    remarksController.text =
-        selectedItem.value.remarks ?? selectedItem.value.notes ?? "";
+    remarksController.text = selectedItem.value.remarks ?? "";
+    cancelledNotesController.text = selectedItem.value.notes ?? "";
     meetingRoomController.text = selectedItem.value.nameMeetingRoom ?? "";
     floorController.text = "${selectedItem.value.floor ?? ""}";
     capacityController.text = "${selectedItem.value.capacity ?? ""}";
@@ -282,6 +283,7 @@ class DetailBookingMeetingRoomController extends BaseController
     }
 
     //set approval log
+    listLogApproval.clear();
     if (selectedItem.value.approvedAt != null &&
         selectedItem.value.nameApproved != null) {
       listLogApproval.add(ApprovalLogModel(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
@@ -9,6 +10,8 @@ import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
+import 'package:gais/reusable/form/customtextformfield.dart';
+import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -25,12 +28,14 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
         init: ManagementMeetingRoomController(),
         builder: (controller) {
           return Scaffold(
+            backgroundColor: baseColor,
             appBar: TopBar(
-              title: Text("Management\nMeeting Room", style: appTitle, textAlign: TextAlign.center),
-              leading: CustomBackButton(),
+              title: Text("Management\nMeeting Room", style: appTitle,
+                  textAlign: TextAlign.center),
+              leading: const CustomBackButton(),
             ),
             body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: RefreshIndicator(
                 onRefresh: () async {
                   controller.fetchList(1);
@@ -41,7 +46,9 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                     SliverPersistentHeader(
                       pinned: true,
                       delegate: SliverAppBarDelegate(
-                        minHeight: controller.dataisnull || controller.isLoading ? Get.height : 180,
+                        minHeight: controller.meetingRoomList.isEmpty || controller.isLoading
+                            ? Get.height
+                            : 180,
                         // minHeight: 180,
                         maxHeight: 32,
                         child: Container(
@@ -51,77 +58,76 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                               CustomSearchBar(
                                 onSubmit: (value) {
                                   controller.searchValue = value;
-                                  controller.filterStatus = "-1";
                                   controller.fetchList(1);
                                 },
+                                onClearFilter: () {
+                                  controller.applySearch("");
+                                },
                                 onPressedFilter: () {
+                                  controller.openFilter();
                                   Get.bottomSheet(
-                                    StatefulBuilder(
-                                      builder: (context, setState) {
-                                        return FilterBottomSheet(
-                                          onApplyFilter: () {
-                                            controller.fetchList(1);
-                                            controller.update();
-                                            Get.back();
-                                          },
-                                          onResetFilter: () {
-                                            setState(() {
-                                              controller.resetFilter();
-                                            });
-                                          },
+                                    FilterBottomSheet(
+                                      onApplyFilter: () {
+                                        controller.applyFilter();
+                                        Get.back();
+                                      },
+                                      onResetFilter: () {
+                                        controller.resetFilter();
+                                      },
+                                      children: [
+                                        Text("Filter", style: appTitle.copyWith(
+                                            fontSize: 25)),
+                                        const SizedBox(height: 10),
+                                        Column(
                                           children: [
-                                            Text("Filter", style: appTitle.copyWith(fontSize: 25)),
-                                            const SizedBox(height: 10),
-                                            Form(
-                                              key: controller.formKey,
-                                              child: Column(
-                                                children: [
-                                                  CustomDropDownFormField(
-                                                    label: "Capacity",
-                                                    hintText: "Capacity",
-                                                    value: controller.filterCapacity,
-                                                    items: controller.capacityList
-                                                        .map((e) => DropdownMenuItem(
-                                                              value: e.code.toString(),
-                                                              child: Text(e.status.toString()),
-                                                            ))
-                                                        .toSet()
-                                                        .toList(),
-                                                    onChanged: (value) {
-                                                      controller.searchValue = null;
-                                                      controller.filterCapacity = value.toString();
-                                                      controller.update();
-                                                    },
-                                                  ),
-                                                  const SizedBox(height: 8),
-                                                  CustomDropDownFormField(
+                                            CustomTextFormField(
+                                              controller: controller
+                                                  .capacityController,
+                                              label: "Capacity",
+                                              readOnly: false,
+                                              onChanged: (value) {
+                                                controller.filterCapacity =
+                                                    value.toString();
+                                                controller.update();
+                                              },
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter.digitsOnly,
+                                              ],
+                                              inputType: TextInputType.number,
+                                            ),
+                                            const SizedBox(height: 8),
+                                            GetBuilder<ManagementMeetingRoomController>(
+                                                builder: (controller2) {
+                                                  return CustomDropDownFormField(
                                                     label: "Status",
                                                     hintText: "Status",
-                                                    value: controller.filterStatus,
-                                                    items: controller.statusList
-                                                        .map((e) => DropdownMenuItem(
-                                                              value: e.code.toString(),
-                                                              child: Text(e.status.toString()),
-                                                            ))
+                                                    value: controller2
+                                                        .filterStatusTemp,
+                                                    items: controller2.statusList
+                                                        .map((e) =>
+                                                        DropdownMenuItem(
+                                                          value: e,
+                                                          child: Text(e.isEmpty
+                                                              ? "Status"
+                                                              : e),
+                                                        ))
                                                         .toSet()
                                                         .toList(),
                                                     onChanged: (value) {
-                                                      controller.searchValue = null;
-                                                      controller.filterStatus = value.toString();
-                                                      controller.update();
+                                                      controller2.filterStatusTemp = value.toString();
+                                                      controller2.update();
                                                     },
-                                                  ),
-                                                  const SizedBox(height: 8),
-                                                ],
-                                              ),
-                                            ),
+                                                  );
+                                                }),
+                                            const SizedBox(height: 8),
                                           ],
-                                        );
-                                      },
+                                        ),
+                                      ],
                                     ),
                                   );
                                 },
                               ),
+                              controller.meetingRoomList.isEmpty ? SizedBox() :
                               CustomPagination(
                                 colorSub: whiteColor,
                                 colorPrimary: infoColor,
@@ -134,11 +140,13 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                                 // pageTotal: 5,
                                 pageInit: controller.currentPage,
                               ),
-                              controller.isLoading
-                                  ? Container(height: Get.height / 2, child: const Center(child: CircularProgressIndicator()))
-                                  : controller.dataisnull
-                                      ? SizedBox(height: Get.height / 2, child: const DataEmpty())
-                                      : Container()
+                              Expanded(
+                                child: controller.isLoading
+                                    ? const CustomIndicator()
+                                    : controller.meetingRoomList.isEmpty
+                                    ? const DataEmpty()
+                                    : Container()
+                              )
                             ],
                           ),
                         ),
@@ -146,25 +154,37 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                     ),
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
+                            (BuildContext context, int index) {
                           return SizedBox(
                             child: Column(
                               children: [
                                 CustomTripCard(
                                   listNumber:
-                                      controller.currentPage > 1 ? (controller.meetingRoomModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
+                                  controller.currentPage > 1 ? (controller
+                                      .meetingRoomModel?.data?.from?.toInt() ??
+                                      0) + index : (index + 1),
                                   // listNumber: (index + 1),
-                                  title: controller.meetingRoomList[index].nameMeetingRoom.toString(),
-                                  status: controller.meetingRoomList[index].availableStatus,
-                                  subtitle: controller.meetingRoomList[index].codeMeetingRoom,
+                                  title: controller.meetingRoomList[index]
+                                      .nameMeetingRoom.toString(),
+                                  status: controller.meetingRoomList[index]
+                                      .availableStatus,
+                                  subtitle: controller.meetingRoomList[index]
+                                      .codeMeetingRoom,
                                   isEdit: true,
-                                  editAction: () => Get.to(
-                                    const AddRoomInfoScreen(),
-                                    arguments: {'id': controller.meetingRoomList[index].id?.toInt(), 'isEdit': true},
-                                  )?.then((value) {
-                                    controller.fetchList(controller.currentPage);
-                                    controller.update();
-                                  }),
+                                  editAction: () =>
+                                      Get.to(
+                                        const AddRoomInfoScreen(),
+                                        arguments: {
+                                          'id': controller
+                                              .meetingRoomList[index].id
+                                              ?.toInt(),
+                                          'isEdit': true
+                                        },
+                                      )?.then((value) {
+                                        controller.fetchList(
+                                            controller.currentPage);
+                                        controller.update();
+                                      }),
                                   isDelete: true,
                                   deleteAction: () {
                                     // controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
@@ -172,34 +192,51 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                                     controller.update();
                                   },
                                   content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceEvenly,
                                     children: [
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .center,
                                         children: [
-                                          Text("Capacity", style: listTitleTextStyle),
-                                          Text(controller.meetingRoomList[index].capacity.toString(), style: listSubTitleTextStyle)
+                                          Text("Capacity",
+                                              style: listTitleTextStyle),
+                                          Text(controller.meetingRoomList[index]
+                                              .capacity.toString(),
+                                              style: listSubTitleTextStyle)
                                         ],
                                       ),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .center,
                                         children: [
-                                          Text("Floor", style: listTitleTextStyle),
-                                          Text(controller.meetingRoomList[index].floor.toString(), style: listSubTitleTextStyle)
+                                          Text("Floor",
+                                              style: listTitleTextStyle),
+                                          Text(controller.meetingRoomList[index]
+                                              .floor.toString(),
+                                              style: listSubTitleTextStyle)
                                         ],
                                       ),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .center,
                                         children: [
-                                          Text("Company", style: listTitleTextStyle),
-                                          Text(controller.meetingRoomList[index].companyName.toString(), style: listSubTitleTextStyle)
+                                          Text("Company",
+                                              style: listTitleTextStyle),
+                                          Text(controller.meetingRoomList[index]
+                                              .companyName.toString(),
+                                              style: listSubTitleTextStyle)
                                         ],
                                       ),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .center,
                                         children: [
-                                          Text("Site", style: listTitleTextStyle),
-                                          Text(controller.meetingRoomList[index].siteName.toString(), style: listSubTitleTextStyle)
+                                          Text("Site",
+                                              style: listTitleTextStyle),
+                                          Text(controller.meetingRoomList[index]
+                                              .siteName.toString(),
+                                              style: listSubTitleTextStyle)
                                         ],
                                       ),
                                     ],
@@ -219,14 +256,16 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
               ),
             ),
             floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.add_rounded, size: 45),
+              child: const Icon(Icons.add_rounded, size: 45),
               backgroundColor: successColor,
-              onPressed: () => Get.to(AddRoomInfoScreen(), arguments: {'isEdit': false})?.then((value) {
-                controller.fetchList(1);
-                controller.update();
-              }),
+              onPressed: () =>
+                  Get.to(const AddRoomInfoScreen(), arguments: {'isEdit': false})
+                      ?.then((value) {
+                    controller.fetchList(1);
+                    controller.update();
+                  }),
             ),
-            bottomNavigationBar: BottomBar(menu: 0),
+            bottomNavigationBar: const BottomBar(menu: 0),
           );
         });
   }
