@@ -7,8 +7,9 @@ import 'package:gais/data/model/antavaya/get_country_hotel_model.dart';
 import 'package:gais/data/model/antavaya/get_hotels_model.dart';
 import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
+import 'package:gais/data/model/antavaya/get_train_schedule_model.dart';
 import 'package:gais/data/model/antavaya/get_train_station_model.dart';
-import 'package:gais/data/model/antavaya/save_reservation_flight_model.dart';
+import 'package:gais/data/model/antavaya/save_reservation_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:gais/data/repository/antavaya/antavaya_repository.dart';
 import 'package:get/get.dart' hide Response, FormData, MultipartFile;
@@ -32,15 +33,13 @@ class AntavayaImpl implements AntavayaRepository {
   }
 
   @override
-  Future<GetAirportScheduleModel> getAirportSchedule(
-    String origin,
-    String destination,
-    String departDate,
-    String adult,
-    String infant,
-    String child,
-    String airliness,
-  ) async {
+  Future<GetAirportScheduleModel> getAirportSchedule(String origin,
+      String destination,
+      String departDate,
+      String adult,
+      String infant,
+      String child,
+      String airliness,) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -66,17 +65,15 @@ class AntavayaImpl implements AntavayaRepository {
   }
 
   @override
-  Future<SaveReservationFlightModel> saveFlightReservation(
-    String contactTitle,
-    String contactFirstName,
-    String contactLastName,
-    String contactEmail,
-    String contactHomePhone,
-    String contactMobilePhone,
-    Passengers passengers,
-    Segments segments,
-    String flightType,
-  ) async {
+  Future<SaveReservationModel> saveFlightReservation(String contactTitle,
+      String contactFirstName,
+      String contactLastName,
+      String contactEmail,
+      String contactHomePhone,
+      String contactMobilePhone,
+      Passengers passengers,
+      Segments segments,
+      String flightType,) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -184,7 +181,7 @@ class AntavayaImpl implements AntavayaRepository {
         data: formData,
       );
       print('reservation : ${response.data}');
-      return SaveReservationFlightModel.fromJson(response.data);
+      return SaveReservationModel.fromJson(response.data);
     } on DioError catch (e) {
       print('reservation error: ${e.response?.data}');
       return e.error;
@@ -294,14 +291,12 @@ class AntavayaImpl implements AntavayaRepository {
   }
 
   @override
-  Future<GetHotelsModel> getHotel(
-    String idCountry,
-    String idCity,
-    String checkinDate,
-    String checkoutDate,
-    String room,
-    String guest,
-  ) async {
+  Future<GetHotelsModel> getHotel(String idCountry,
+      String idCity,
+      String checkinDate,
+      String checkoutDate,
+      String room,
+      String guest,) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -322,6 +317,36 @@ class AntavayaImpl implements AntavayaRepository {
       return GetHotelsModel.fromJson(response.data);
     } on DioError catch (e) {
       print("hotels error: ${e.response?.data}");
+      return e.error;
+    }
+  }
+
+  @override
+  Future<GetTrainScheduleModel> getTrainSchedule(String origin,
+      String destination,
+      String departDate,
+      String adult,
+      String child,) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+
+    var formData = FormData.fromMap({
+      "Origin": origin,
+      "Destination": destination,
+      "DepartDate": departDate,
+      "Adult": adult,
+      "Child": child,
+    });
+
+    try {
+      Response response = await network.dio.post(
+        "/api/antavaya/train/get_train_ticket",
+        data: formData,
+      );
+      print(response.data);
+      return GetTrainScheduleModel.fromJson(response.data);
+    } on DioError catch (e) {
+      // print('get train schedule error: ${e.response?.data}');
       return e.error;
     }
   }

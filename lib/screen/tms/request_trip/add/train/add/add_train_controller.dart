@@ -15,6 +15,7 @@ class AddTrainController extends BaseController {
   bool? formEdit = Get.arguments['formEdit'];
   String? trainID = Get.arguments['id'];
   bool? isBooking = Get.arguments['booking'];
+  bool? isEdit = Get.arguments['isEdit'];
 
   final formKey = GlobalKey<FormState>();
   final traveller = TextEditingController();
@@ -142,26 +143,45 @@ class AddTrainController extends BaseController {
     try {
       await requestTrip
           .updateTrainTrip(
-            trainID!,
-            purposeID,
-            traveller.text,
-            "",
-            "1",
-            originStation!.stationCode.toString(),
-            originStation!.stationName.toString(),
-            destinationStation!.stationCode.toString(),
-            destinationStation!.stationName.toString(),
-            saveDateFormat.format(dateDeparture!),
-            '1',
-            '1',
-            "",
-          )
-          .then(
-            (value) => formEdit == true
-                ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
-                : Get.off(const TrainScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
-          );
-    } catch (e,i) {
+        trainID!,
+        purposeID,
+        traveller.text,
+        "",
+        "1",
+        originStation!.stationCode.toString(),
+        originStation!.stationName.toString(),
+        destinationStation!.stationCode.toString(),
+        destinationStation!.stationName.toString(),
+        saveDateFormat.format(dateDeparture!),
+        '1',
+        '1',
+        "",
+      )
+          .then((value) {
+        if (formEdit == true) {
+          if (isBooking == true) {
+            Get.off(const TrainScheduleScreen(), arguments: {
+              'purposeID': purposeID,
+              'codeDocument': codeDocument,
+              'origin': originStation,
+              'destination': destinationStation,
+              'departDate': dateDeparture,
+              'returnDate': dateReturn,
+              'adult': "1",
+              'child': "0",
+              'formEdit': formEdit,
+              'isEdit': isEdit,
+              'id': trainID,
+              'trainData': value,
+            });
+          } else {
+            Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument});
+          }
+        } else {
+          Get.off(const TrainScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit});
+        }
+      });
+    } catch (e, i) {
       e.printError();
       i.printError();
       Get.showSnackbar(

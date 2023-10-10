@@ -437,9 +437,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                       )
                                                       .toList(),
                                                 ),
-                                                SizedBox(
-                                                  height: 100,
-                                                )
+                                                SizedBox(height: 100)
                                               ],
                                             ),
                                           ),

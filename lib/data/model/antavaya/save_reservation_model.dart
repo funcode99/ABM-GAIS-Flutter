@@ -1,5 +1,5 @@
-class SaveReservationFlightModel {
-  SaveReservationFlightModel({
+class SaveReservationModel {
+  SaveReservationModel({
       bool? success, 
       String? message, 
       Data? data,}){
@@ -8,7 +8,7 @@ class SaveReservationFlightModel {
     _data = data;
 }
 
-  SaveReservationFlightModel.fromJson(dynamic json) {
+  SaveReservationModel.fromJson(dynamic json) {
     _success = json['success'];
     _message = json['message'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
@@ -16,10 +16,10 @@ class SaveReservationFlightModel {
   bool? _success;
   String? _message;
   Data? _data;
-SaveReservationFlightModel copyWith({  bool? success,
+SaveReservationModel copyWith({  bool? success,
   String? message,
   Data? data,
-}) => SaveReservationFlightModel(  success: success ?? _success,
+}) => SaveReservationModel(  success: success ?? _success,
   message: message ?? _message,
   data: data ?? _data,
 );

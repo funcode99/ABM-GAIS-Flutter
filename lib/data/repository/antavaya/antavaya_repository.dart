@@ -5,8 +5,9 @@ import 'package:gais/data/model/antavaya/get_country_hotel_model.dart';
 import 'package:gais/data/model/antavaya/get_hotels_model.dart';
 import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
+import 'package:gais/data/model/antavaya/get_train_schedule_model.dart';
 import 'package:gais/data/model/antavaya/get_train_station_model.dart';
-import 'package:gais/data/model/antavaya/save_reservation_flight_model.dart';
+import 'package:gais/data/model/antavaya/save_reservation_model.dart';
 
 abstract class AntavayaRepository {
   Future<GetAirportModel> getairport();
@@ -21,7 +22,7 @@ abstract class AntavayaRepository {
     String airliness,
   );
 
-  Future<SaveReservationFlightModel> saveFlightReservation(
+  Future<SaveReservationModel> saveFlightReservation(
     String contactTitle,
     String contactFirstName,
     String contactLastName,
@@ -55,5 +56,13 @@ abstract class AntavayaRepository {
     String CheckoutDate,
     String room,
     String guest,
+  );
+
+  Future<GetTrainScheduleModel> getTrainSchedule(
+    String origin,
+    String destination,
+    String departDate,
+    String adult,
+    String child,
   );
 }

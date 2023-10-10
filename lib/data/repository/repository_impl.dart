@@ -92,7 +92,7 @@ class RepositoryImpl implements Repository {
       );
       return GetDocumentCodeModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
+      print("docCode error: ${e.response?.data}");
       return e.error;
     }
   }
