@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:gais/data/model/antavaya/contact_model.dart';
 import 'package:gais/data/model/antavaya/get_airport_model.dart';
 import 'package:gais/data/model/antavaya/get_airport_schedule_model.dart';
 import 'package:gais/data/model/antavaya/get_city_hotel_model.dart';
@@ -9,6 +10,7 @@ import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
 import 'package:gais/data/model/antavaya/get_train_schedule_model.dart';
 import 'package:gais/data/model/antavaya/get_train_station_model.dart';
+import 'package:gais/data/model/antavaya/passengers_model.dart';
 import 'package:gais/data/model/antavaya/save_reservation_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:gais/data/repository/antavaya/antavaya_repository.dart';
@@ -33,13 +35,15 @@ class AntavayaImpl implements AntavayaRepository {
   }
 
   @override
-  Future<GetAirportScheduleModel> getAirportSchedule(String origin,
-      String destination,
-      String departDate,
-      String adult,
-      String infant,
-      String child,
-      String airliness,) async {
+  Future<GetAirportScheduleModel> getAirportSchedule(
+    String origin,
+    String destination,
+    String departDate,
+    String adult,
+    String infant,
+    String child,
+    String airliness,
+  ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -65,15 +69,17 @@ class AntavayaImpl implements AntavayaRepository {
   }
 
   @override
-  Future<SaveReservationModel> saveFlightReservation(String contactTitle,
-      String contactFirstName,
-      String contactLastName,
-      String contactEmail,
-      String contactHomePhone,
-      String contactMobilePhone,
-      Passengers passengers,
-      Segments segments,
-      String flightType,) async {
+  Future<SaveReservationModel> saveFlightReservation(
+    String contactTitle,
+    String contactFirstName,
+    String contactLastName,
+    String contactEmail,
+    String contactHomePhone,
+    String contactMobilePhone,
+    PassengersModel passengers,
+    Segments segments,
+    String flightType,
+  ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -291,12 +297,14 @@ class AntavayaImpl implements AntavayaRepository {
   }
 
   @override
-  Future<GetHotelsModel> getHotel(String idCountry,
-      String idCity,
-      String checkinDate,
-      String checkoutDate,
-      String room,
-      String guest,) async {
+  Future<GetHotelsModel> getHotel(
+    String idCountry,
+    String idCity,
+    String checkinDate,
+    String checkoutDate,
+    String room,
+    String guest,
+  ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -322,11 +330,13 @@ class AntavayaImpl implements AntavayaRepository {
   }
 
   @override
-  Future<GetTrainScheduleModel> getTrainSchedule(String origin,
-      String destination,
-      String departDate,
-      String adult,
-      String child,) async {
+  Future<GetTrainScheduleModel> getTrainSchedule(
+    String origin,
+    String destination,
+    String departDate,
+    String adult,
+    String child,
+  ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -347,6 +357,66 @@ class AntavayaImpl implements AntavayaRepository {
       return GetTrainScheduleModel.fromJson(response.data);
     } on DioError catch (e) {
       // print('get train schedule error: ${e.response?.data}');
+      return e.error;
+    }
+  }
+
+  @override
+  Future<SaveReservationModel> saveTrainReservation(
+    ContactModel contacts,
+    PassengersModel passengers,
+    Journeys train,
+    String identityType,
+  ) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+
+    var formData = FormData.fromMap({
+      "Contact[Title]": contacts.title,
+      "Contact[FirstName]": contacts.firstName,
+      "Contact[LastName]": contacts.lastName,
+      "Contact[MobilePhone]": contacts.mobilePhone,
+      "Contact[HomePhone]": contacts.homePhone,
+      "Contact[WorkPhone]": contacts.workPhone,
+      "Contact[OtherPhone]": contacts.otherPhone,
+      "Contact[Email]": contacts.email,
+      "Contact[Address]": contacts.address,
+      "Contact[City]": contacts.city,
+      "Contact[ProvinceState]": contacts.provinceState,
+      "Contact[PostalCode]": contacts.postalCode,
+      "Passengers[0][FirstName]": passengers.firstName,
+      "Passengers[0][LastName]": passengers.lastName,
+      "Passengers[0][Title]": passengers.title,
+      "Passengers[0][MobilePhone]": passengers.mobilePhone,
+      "Passengers[0][IdentityType]": identityType,
+      "Passengers[0][IdentityNumber]": passengers.idNumber,
+      "Passengers[0][PassportExpire]": passengers.passport?.expire,
+      "Passengers[0][PassportOrigin]": passengers.passport?.originCountry,
+      "Passengers[0][BirthDate]": passengers.birthDate,
+      "Passengers[0][PaxType]": train.segments?.first.paxFares?.first.paxType,
+      "Passengers[0][Sequence]": train.sequence,
+      "Journey[Segments][0][ClassKey]": train.segments?.first.classKey,
+      "Journey[Segments][0][CarrierNumber]": train.carrierNumber,
+      "Journey[Segments][0][Origin]": train.origin,
+      "Journey[Segments][0][Destination]": train.destination,
+      "Journey[Segments][0][DepartureDate]": train.departureDate,
+      "Journey[Segments][0][DepartureTime]": train.departureTime,
+      "Journey[Segments][0][ArrivalDate]": train.arrivalDate,
+      "Journey[Segments][0][ArrivalTime]": train.arrivalTime,
+      "Journey[Segments][0][JourneyCode]": train.journeyCode,
+      "Journey[Segments][0][SubClass]": train.segments?.first.subClass,
+      "Journey[Segments][0][Class]": train.segments?.first.classTrain,
+      "Journey[Segments][0][Provider]": train.provider,
+    });
+    try {
+      Response response = await network.dio.post(
+        "/api/antavaya/train/rsv_train",
+        data: formData,
+      );
+      print('reservation : ${response.data}');
+      return SaveReservationModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print('reservation error: ${e.response?.data}');
       return e.error;
     }
   }

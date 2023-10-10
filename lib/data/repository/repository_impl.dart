@@ -19,6 +19,7 @@ import 'package:gais/data/model/reference/get_site_model.dart';
 import 'package:gais/data/model/reference/get_status_document_model.dart';
 import 'package:gais/data/model/reference/get_tlk_job_model.dart';
 import 'package:gais/data/model/reference/get_traveller_type_model.dart';
+import 'package:gais/data/model/reference/get_user_ga_model.dart';
 import 'package:gais/data/model/reference/get_zona_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_vendor_model.dart';
 import 'package:gais/data/model/status_document_model.dart';
@@ -461,6 +462,21 @@ class RepositoryImpl implements Repository {
       e.printError();
       print("ERROR UPDATE PROFILE $e");
       rethrow;
+    }
+  }
+
+  @override
+  Future<GetUserGaModel> getUserGA() async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      Response response = await network.dio.get(
+        "/api/users/get/get_ga",
+      );
+      return GetUserGaModel.fromJson(response.data);
+    } on DioError catch (e) {
+      //print("response error: ${e.response?.data}");
+      return e.error;
     }
   }
 }

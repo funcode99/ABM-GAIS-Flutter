@@ -149,7 +149,7 @@ class _TrainScheduleScreenState extends State<TrainScheduleScreen> with TickerPr
                                                               children: trains.segments!
                                                                   .map(
                                                                     (segments) => GestureDetector(
-                                                                      onTap: () => controller.selectTrain(),
+                                                                      onTap: () => controller.selectTrain(trains, segments),
                                                                       child: Card(
                                                                         elevation: 3,
                                                                         child: Padding(

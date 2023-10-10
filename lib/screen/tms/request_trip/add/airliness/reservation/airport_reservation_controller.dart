@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/antavaya/get_airport_schedule_model.dart' as schedule;
+import 'package:gais/data/model/antavaya/passengers_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airline;
 import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
@@ -45,7 +46,7 @@ class AirportReservationController extends BaseController {
   final passEmergencyEmail = TextEditingController();
   final passEmergencyPhone = TextEditingController();
 
-  Passengers? passengers;
+  PassengersModel? passengers;
   Segments? segments;
   bool isLoading = false;
   String? pnrID;
@@ -93,7 +94,7 @@ class AirportReservationController extends BaseController {
     isLoading = true;
     update();
     // getSegment();
-    saveReservation(Passengers(
+    saveReservation(PassengersModel(
       title: passTitle.text,
       firstName: passFirstName.text,
       lastName: passLastName.text,
@@ -158,7 +159,7 @@ class AirportReservationController extends BaseController {
               seq: 1,
             ),
           )
-          .then((value) => saveReservation(Passengers(
+          .then((value) => saveReservation(PassengersModel(
                 title: passTitle.text,
                 firstName: passFirstName.text,
                 lastName: passLastName.text,
@@ -205,7 +206,7 @@ class AirportReservationController extends BaseController {
     update();
   }
 
-  Future<void> saveReservation(Passengers passenger) async {
+  Future<void> saveReservation(PassengersModel passenger) async {
     isLoading = true;
     try {
       await antavaya

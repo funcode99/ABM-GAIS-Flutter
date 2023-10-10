@@ -85,9 +85,16 @@ class TrainScheduleController extends BaseController {
     return nextDate.difference(initialDate).inDays;
   }
 
-  void selectTrain() {
+  void selectTrain(schedule.Journeys train, TrainSegments trainSegments) {
     Get.to(TrainReservationScreen(), arguments: {
       'purposeID': purposeID,
+      'codeDocument': codeDocument,
+      'formEdit': formEdit,
+      'isEdit': isEdit,
+      'trainData': train.copyWith(segments: [trainSegments]),
+      'id': trainID,
+      'adult': adult,
+      'child': child,
     });
   }
 }
