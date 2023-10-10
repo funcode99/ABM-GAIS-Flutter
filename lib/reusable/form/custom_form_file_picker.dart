@@ -45,56 +45,69 @@ class _CustomFormFilePickerState extends State<CustomFormFilePicker> {
   }
 
   _checkPermission()async{
-    int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
-    if(androidOS < 13){
-      var status = await Permission.storage.status;
-      if (status.isGranted) {
+    PermissionStatus status;
+    status = await Permission.storage.status;
+
+    if(Platform.isAndroid){
+      int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
+      if (androidOS < 13) {
+        status = await Permission.storage.status;
+      }
+    }
+
+    if (status.isGranted) {
+      _selectFile();
+    }else{
+      PermissionStatus request;
+      request = await Permission.storage.request();
+
+      if(Platform.isAndroid){
+        int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
+        if (androidOS < 13) {
+          request = await Permission.storage.request();
+        }
+      }
+
+      if(request.isGranted){
         _selectFile();
       }else{
-        var request = await Permission.storage.request();
-        if(request.isGranted){
-          _selectFile();
-        }else{
-          if(request.isPermanentlyDenied){
-            showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) => AlertDialog(
-                  title: const Text("Permission error!"),
-                  content: const Text(
-                    "Permission Read External Storage dibutuhkan untuk memilih file.",
-                    style: TextStyle(
-                        color: Colors.black
-                    ),
+        if(request.isPermanentlyDenied){
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => AlertDialog(
+                title: const Text("Permission error!"),
+                content: const Text(
+                  "Permission Read External Storage dibutuhkan untuk memilih file.",
+                  style: TextStyle(
+                      color: Colors.black
                   ),
-                  actions: [
-                    TextButton(
-                      child: const Text("Batal"),
-                      onPressed:  () {
-                        Navigator.of(context).pop();
-                        if(mounted){
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Pilih file gagal karena permission tidak dipenuhi")));
-                        }
-                      },
-                    ),
-                    TextButton(
-                      child: const Text("Buka Pengaturan"),
-                      onPressed:  (){
-                        openAppSettings();
-                      },
-                    ),
-                  ],
-                )
-            );
-          }else{
-            if(mounted){
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Pilih file gagal karena permission tidak dipenuhi")));
-            }
+                ),
+                actions: [
+                  TextButton(
+                    child: const Text("Batal"),
+                    onPressed:  () {
+                      Navigator.of(context).pop();
+                      if(mounted){
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Pilih file gagal karena permission tidak dipenuhi")));
+                      }
+                    },
+                  ),
+                  TextButton(
+                    child: const Text("Buka Pengaturan"),
+                    onPressed:  (){
+                      openAppSettings();
+                    },
+                  ),
+                ],
+              )
+          );
+        }else{
+          if(mounted){
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Pilih file gagal karena permission tidak dipenuhi")));
           }
         }
       }
-    }else{
-      _selectFile();
     }
   }
 
