@@ -9,6 +9,7 @@ import 'package:gais/data/model/antavaya/get_hotels_model.dart';
 import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
 import 'package:gais/data/model/antavaya/get_train_schedule_model.dart';
+import 'package:gais/data/model/antavaya/get_train_seats_model.dart';
 import 'package:gais/data/model/antavaya/get_train_station_model.dart';
 import 'package:gais/data/model/antavaya/passengers_model.dart';
 import 'package:gais/data/model/antavaya/save_reservation_model.dart';
@@ -417,6 +418,42 @@ class AntavayaImpl implements AntavayaRepository {
       return SaveReservationModel.fromJson(response.data);
     } on DioError catch (e) {
       print('reservation error: ${e.response?.data}');
+      return e.error;
+    }
+  }
+
+  @override
+  Future<GetTrainSeatsModel> getTrainSeats(
+    String origin,
+    String destination,
+    String departureDate,
+    String carrierNumber,
+    String subClass,
+    String provider,
+    String fareBasisCode,
+  ) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+
+    var formData = FormData.fromMap({
+      "Origin": origin,
+      "Destination": destination,
+      "DepartureDate": departureDate,
+      "CarrierNumber": carrierNumber,
+      "SubClass": subClass,
+      "Provider": provider,
+      "FareBasisCode": fareBasisCode,
+    });
+
+    try {
+      Response response = await network.dio.post(
+        "/api/antavaya/train/seat_map_train",
+        data: formData,
+      );
+      print(response.data);
+      return GetTrainSeatsModel.fromJson(response.data);
+    } on DioError catch (e) {
+      // print('get train schedule error: ${e.response?.data}');
       return e.error;
     }
   }

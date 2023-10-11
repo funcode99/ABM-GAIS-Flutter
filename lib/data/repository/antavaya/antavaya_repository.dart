@@ -7,6 +7,7 @@ import 'package:gais/data/model/antavaya/get_hotels_model.dart';
 import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
 import 'package:gais/data/model/antavaya/get_train_schedule_model.dart';
+import 'package:gais/data/model/antavaya/get_train_seats_model.dart';
 import 'package:gais/data/model/antavaya/get_train_station_model.dart';
 import 'package:gais/data/model/antavaya/passengers_model.dart';
 import 'package:gais/data/model/antavaya/save_reservation_model.dart';
@@ -73,5 +74,15 @@ abstract class AntavayaRepository {
     PassengersModel passengers,
     Journeys train,
     String identityType,
+  );
+
+  Future<GetTrainSeatsModel> getTrainSeats(
+    String origin,
+    String destination,
+    String departureDate,
+    String carrierNumber,
+    String subClass,
+    String provider,
+    String fareBasisCode,
   );
 }

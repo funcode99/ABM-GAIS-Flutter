@@ -170,40 +170,32 @@ class FormRequestTripScreen extends StatelessWidget {
                                 readOnly: true,
                               ),
                               const SizedBox(height: 8),
-                              controller.isEdit
-                                  ? CustomDropDownFormField(
-                                      label: 'Purpose of Trip',
-                                      isRequired: true,
-                                      value: controller.selectedPurpose,
-                                      hintText: "pick document type",
-                                      items: controller.purposeList
-                                          .map((e) => DropdownMenuItem(
-                                                value: e.id.toString(),
-                                                // value: e.codeDocument.toString(),
-                                                child: Text(e.documentName.toString()),
-                                                onTap: () {
-                                                  controller.codeDocument = e.id?.toInt();
-                                                  controller.update();
-                                                },
-                                              ))
-                                          .toList(),
-                                      onChanged: (value) {
-                                        controller.selectedPurpose = value.toString();
-                                        controller.isAttachment = value == "1" || value == "2" || value == "3" || value == "5" ? true : false;
-                                        value == "3" ? controller.isDAnumber = true : controller.isDAnumber = false;
-                                        print(value);
-                                        controller.update();
-                                        controller.checkItems();
-                                        controller.update();
-                                        // print(controller.selectedPurpose);
-                                      },
-                                    )
-                                  : CustomTextFormField(
-                                      controller: controller.purpose,
-                                      label: "Purpose Of Trip",
-                                      isRequired: true,
-                                      readOnly: true,
-                                    ),
+                              CustomDropDownFormField(
+                                label: 'Purpose of Trip',
+                                isRequired: true,
+                                readOnly: !controller.isEdit,
+                                selectedItem: controller.purpose.text,
+                                value: controller.selectedPurpose,
+                                hintText: "pick document type",
+                                items: controller.purposeList
+                                    .map((e) => DropdownMenuItem(
+                                          value: e.id.toString(),
+                                          // value: e.codeDocument.toString(),
+                                          child: Text(e.documentName.toString()),
+                                          onTap: () {
+                                            controller.codeDocument = e.id?.toInt();
+                                            controller.update();
+                                          },
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  controller.selectedPurpose = value.toString();
+                                  controller.isAttachment = value == "1" || value == "2" || value == "3" || value == "5" ? true : false;
+                                  value == "3" ? controller.isDAnumber = true : controller.isDAnumber = false;
+                                  print("selected item : ${controller.selectedPurpose}");
+                                  controller.checkItems();
+                                },
+                              ),
                               const SizedBox(height: 8),
                               controller.selectedPurpose == "1"
                                   ? Container(

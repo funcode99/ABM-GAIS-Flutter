@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
@@ -12,6 +13,7 @@ import 'package:gais/screen/tms/request_trip/add/train/reservation/train_reserva
 import 'package:gais/screen/tms/request_trip/add/train/train_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -265,6 +267,12 @@ class TrainReservationScreen extends StatelessWidget {
                                 controller: controller.passIDNumber,
                                 label: "ID Number",
                                 isRequired: true,
+                                validator: (value) {
+                                  if (value!.isEmpty || value.length < 16) {
+                                    return 'Number must be 16 digits';
+                                  }
+                                  return null;
+                                },
                                 prefixIcon: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 10),
                                   margin: const EdgeInsets.only(right: 10),
@@ -325,16 +333,38 @@ class TrainReservationScreen extends StatelessWidget {
                                 isRequired: true,
                               ),
                               const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.seatWagonNo,
+                              // CustomTextFormField(
+                              //   controller: controller.seatWagonNo,
+                              //   label: "Wagon No",
+                              //   isRequired: true,
+                              // ),
+                              CustomDropDownFormField(
+                                items: controller.wagonList
+                                    .mapIndexed((i, e) => DropdownMenuItem(
+                                          value: i.toString(),
+                                          child: Text(e.coachName.toString()),
+                                        ))
+                                    .toList(),
                                 label: "Wagon No",
+                                hintText: controller.isLoading ? "Loading..." : "Wagon No",
                                 isRequired: true,
+                                onChanged: (value) {
+                                  controller.fetchSeatsRows(value!.toInt());
+                                },
                               ),
                               const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.seatNumber,
+                              // CustomTextFormField(
+                              //   controller: controller.seatNumber,
+                              //   label: "Seat Number",
+                              //   isRequired: true,
+                              // ),
+                              CustomDropDownFormField(
+                                items: controller.seatsList
+                                    .map((e) => DropdownMenuItem(
+                                          child: Text(e.seatNumber.toString()),
+                                        ))
+                                    .toList(),
                                 label: "Seat Number",
-                                isRequired: true,
                               ),
                               const SizedBox(height: 8),
                               Row(
