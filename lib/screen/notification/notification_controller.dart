@@ -37,7 +37,7 @@ class NotificationController extends BaseController with GetTickerProviderStateM
   @override
   void onInit() {
     super.onInit();
-    tabController = TabController(length: tabs.length, vsync: this);
+    tabController = TabController(length: 0, vsync: this);
     getNotification();
     getNotificationApproval();
   }
@@ -57,7 +57,7 @@ class NotificationController extends BaseController with GetTickerProviderStateM
   void initData()async{
     String roleId = await storage.readString(StorageCore.roleID);
 
-    isApproval.value = roleId == "1" || roleId == "2" || roleId == "3" ? true : false;
+    isApproval.value = roleId == "1" || roleId == "2" || roleId == "3" || roleId == "91" || roleId == "93" ? true : false;
 
     tabs.add(NotificationTabEnum.notification);
     if(isApproval.value){

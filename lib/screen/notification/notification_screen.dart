@@ -65,6 +65,9 @@ class NotificationScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 Obx(() {
+                                  if(controller.listNotification.isEmpty){
+                                    return const SizedBox();
+                                  }
                                   return CustomPagination(
                                     colorSub: whiteColor,
                                     colorPrimary: infoColor,
@@ -125,6 +128,9 @@ class NotificationScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Obx(() {
+                                if(controller.listNotificationApproval.isEmpty){
+                                  return const SizedBox();
+                                }
                                 return CustomPagination(
                                   colorSub: whiteColor,
                                   colorPrimary: infoColor,

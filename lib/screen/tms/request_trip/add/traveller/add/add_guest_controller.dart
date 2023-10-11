@@ -72,6 +72,7 @@ class AddGuestController extends BaseController {
     try {
       await requestTrip.getGuestByID(guestID!).then((value) {
         selectedType = value.data?.first.idTypeTraveller.toString();
+        print("selected type : ${selectedType}");
         guestName.text = value.data?.first.nameGuest.toString() ?? "";
         guestNIK.text = value.data?.first.nik.toString() ?? "";
         guestContact.text = value.data?.first.contactNo.toString() ?? "";

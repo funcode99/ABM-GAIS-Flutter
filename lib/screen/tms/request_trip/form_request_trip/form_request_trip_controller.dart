@@ -293,6 +293,7 @@ class FormRequestTripController extends BaseController {
         item['showList'] = true;
       });
     }
+    print("selected purpose: $selectedPurpose");
     update();
   }
 
@@ -408,7 +409,7 @@ class FormRequestTripController extends BaseController {
       }
       update();
     }
-    selectedPurpose = codeDocument.toString();
+    // selectedPurpose = codeDocument.toString();
     // print("selected purpose : $selectedPurpose");
     // print("file : $fileURL");
     // print("pdfPath : $pdfPath");
@@ -882,6 +883,7 @@ class FormRequestTripController extends BaseController {
         print(value);
         fetchList();
         fetchRequestTrip();
+        checkItems();
         isEdit = false;
         Get.showSnackbar(
           const GetSnackBar(
@@ -912,6 +914,7 @@ class FormRequestTripController extends BaseController {
         ),
       );
     }
+    update();
   }
 
   Future<void> checkActual() async {
