@@ -502,7 +502,7 @@ class DetailBookingMeetingRoomController extends BaseController
   }
 
   openCancelDialog() async {
-    ApprovalModel? result = await Get.dialog(const CancelDialog());
+    ApprovalModel? result = await Get.dialog(CancelDialog(title: "Booking Meeting".tr,));
 
     if (result != null) {
       approvalModel(result);

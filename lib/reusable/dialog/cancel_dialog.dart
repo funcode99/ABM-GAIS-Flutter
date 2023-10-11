@@ -8,7 +8,8 @@ import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
 class CancelDialog extends StatefulWidget {
-  const CancelDialog({super.key});
+  const CancelDialog({super.key, required this.title});
+  final String title;
 
   @override
   State<CancelDialog> createState() =>
@@ -53,7 +54,7 @@ class _CancelDialogState extends State<CancelDialog> {
                 children: [
                   Expanded(
                     child: Text(
-                      "Cancel Booking Meeting".tr,
+                      "Cancel ${widget.title}",
                       style: Theme.of(context)
                           .textTheme
                           .subtitle1
@@ -89,8 +90,8 @@ class _CancelDialogState extends State<CancelDialog> {
                         fontWeight: FontWeight.w500
                       )
                     ),
-                    const TextSpan(
-                      text: "this booking?",
+                    TextSpan(
+                      text: "this ${widget.title}?",
                     ),
                   ]
                 )

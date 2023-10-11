@@ -578,7 +578,7 @@ class FormDocumentDeliveryController extends BaseController {
   }
 
   openCancelDialog() async {
-    ApprovalModel? result = await Get.dialog(const CancelDialog());
+    ApprovalModel? result = await Get.dialog(CancelDialog(title: "Document Delivery".tr,));
 
     if (result != null) {
       approvalModel =result;
