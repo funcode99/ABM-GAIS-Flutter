@@ -12,6 +12,7 @@ import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
 import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
+import 'package:gais/data/model/request_trip/request_trip_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:get/get.dart';
 
@@ -123,6 +124,25 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
   @override
   Future<Either<BaseError, PaginationModel>> getPaginationDataApprovalHistory({Map<String, dynamic>? data}) async{
     throw UnimplementedError();
+  }
+
+  Future<Either<BaseError, List<RequestTripModel>>> getRequestTrip() async{
+    try {
+      Dio.Response response = await network.dio.get(
+          '/api/actual_trip/get_request_trip',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, RequestTripModel.fromJsonModelList);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
 }

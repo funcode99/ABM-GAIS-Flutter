@@ -16,6 +16,7 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/actualization_trip/add/select_request_trip_screen.dart';
 import 'package:gais/screen/tms/actualization_trip/list/actualization_trip_list_controller.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -261,9 +262,8 @@ class _ActualizationTripListScreenState
       floatingActionButton: FloatingActionButton(
         backgroundColor: successColor,
         onPressed: () async {
-          /*
-          Get.to(() => const AddRequestATKScreen())
-              ?.then((value) => controller.getHeader());*/
+          Get.to(() => const SelectRequestTripScreen())
+              ?.then((value) => controller.getHeader());
         },
         child: const Icon(Icons.add_rounded, size: 45),
       ),
