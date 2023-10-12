@@ -11,9 +11,11 @@ import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/actualization_trip/actualization_trip_item.dart';
 import 'package:gais/screen/tms/actualization_trip/add/form_activitiy_actualization_trip_screen.dart';
 import 'package:gais/screen/tms/actualization_trip/add/form_actualization_trip_controller.dart';
 import 'package:gais/screen/tms/actualization_trip/add/form_trip_info_actualization_trip_screen.dart';
+import 'package:gais/screen/tms/actualization_trip/detail/actualization_trip_detail_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/add/activities_detail/act_activities_detail_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/add/trip_info/act_trip_info_screen.dart';
 import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
@@ -266,7 +268,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                         return ElevatedButton(
                           onPressed: controller.enableButton.value
                               ? () {
-
+                            Get.off(()=>const ActualizationTripDetailScreen());
                           }
                               : null,
                           style: ElevatedButton.styleFrom(
@@ -288,61 +290,4 @@ class FormActualizationTripScreen extends StatelessWidget {
       bottomNavigationBar: const BottomBar(menu: 0),
     );
   }
-}
-
-class ActualizationTripItem extends StatelessWidget {
-  final String? number;
-  final String? title;
-  final Widget? content;
-  final List<Widget> action;
-
-  const ActualizationTripItem(
-      {super.key, this.title, this.content, required this.action, this.number});
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ConstrainedBox(
-          constraints: const BoxConstraints(
-            minHeight: 50,
-            minWidth: 50,
-          ),
-          child: CustomAlertContainer(
-            backgroundColor: infoColor,
-            content: Text("No\n${number}",
-                style: listTitleTextStyle.copyWith(color: whiteColor),
-                textAlign: TextAlign.center),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              title != null
-                  ? Text(
-                  title ?? "", style: listTitleTextStyle.copyWith(fontSize: 12))
-                  :
-              const SizedBox(height: 6,),
-              content ?? const SizedBox(),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: action,
-              )
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
 }
