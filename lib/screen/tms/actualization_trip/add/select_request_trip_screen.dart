@@ -10,6 +10,7 @@ import 'package:gais/reusable/list/approval_log_list.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/actualization_trip/add/form_actualization_trip_screen.dart';
 import 'package:gais/screen/tms/actualization_trip/add/select_request_trip_controller.dart';
 import 'package:gais/util/color/color_util.dart';
 import 'package:gais/util/enum/status_enum.dart';
@@ -160,7 +161,7 @@ class SelectRequestTripScreen extends StatelessWidget {
                         onPressed: controller.listIDSelectedRequestTrip.isEmpty
                             ? null
                             : () {
-                          print("LIST ${controller.listIDSelectedRequestTrip}");
+                          Get.to(()=> const FormActualizationTripScreen());
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: infoColor),
