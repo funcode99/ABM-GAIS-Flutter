@@ -12,6 +12,7 @@ import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/actualization_trip/add/form_actualization_trip_controller.dart';
+import 'package:gais/screen/tms/actualization_trip/add/form_trip_info_actualization_trip_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/add/activities_detail/act_activities_detail_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/add/trip_info/act_trip_info_screen.dart';
 import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
@@ -81,7 +82,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                           ));
                         },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                       CustomIconButton(
@@ -143,7 +144,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-
+                        Get.to(()=>const FormTripInfoActualizationTripScreen());
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: infoColor),
@@ -192,7 +193,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                           ));
                         },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                       CustomIconButton(
@@ -207,7 +208,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                     ],
                     title: "23/04/2023",
                     number: "1",
-                    content: Text(
+                    content: const Text(
                         "Travel from Jakarta to Surabaya"
                     ),
 
@@ -337,7 +338,7 @@ class ActualizationTripItem extends StatelessWidget {
                   :
               const SizedBox(height: 6,),
               content ?? const SizedBox(),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Row(
