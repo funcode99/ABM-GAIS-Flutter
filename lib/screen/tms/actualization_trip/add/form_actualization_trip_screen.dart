@@ -11,6 +11,7 @@ import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/actualization_trip/add/form_activitiy_actualization_trip_screen.dart';
 import 'package:gais/screen/tms/actualization_trip/add/form_actualization_trip_controller.dart';
 import 'package:gais/screen/tms/actualization_trip/add/form_trip_info_actualization_trip_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/add/activities_detail/act_activities_detail_screen.dart';
@@ -77,9 +78,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                         iconData: IconlyBold.edit,
                         backgroundColor: successColor,
                         onPressed: () {
-                          Get.dialog(DeleteConfirmationDialog(
-                            onDeletePressed: () {},
-                          ));
+
                         },
                       ),
                       const SizedBox(
@@ -89,9 +88,6 @@ class FormActualizationTripScreen extends StatelessWidget {
                         iconData: IconlyBold.delete,
                         backgroundColor: redColor,
                         onPressed: () {
-                          Get.dialog(DeleteConfirmationDialog(
-                            onDeletePressed: () {},
-                          ));
                         },
                       )
                     ],
@@ -188,9 +184,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                         iconData: IconlyBold.edit,
                         backgroundColor: successColor,
                         onPressed: () {
-                          Get.dialog(DeleteConfirmationDialog(
-                            onDeletePressed: () {},
-                          ));
+
                         },
                       ),
                       const SizedBox(
@@ -200,9 +194,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                         iconData: IconlyBold.delete,
                         backgroundColor: redColor,
                         onPressed: () {
-                          Get.dialog(DeleteConfirmationDialog(
-                            onDeletePressed: () {},
-                          ));
+
                         },
                       )
                     ],
@@ -222,7 +214,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-
+                        Get.to(()=>const FormActivityActualizationTripScreen());
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: infoColor),
