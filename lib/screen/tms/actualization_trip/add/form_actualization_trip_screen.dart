@@ -1,6 +1,9 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/customalertcontainer.dart';
@@ -27,8 +30,15 @@ class FormActualizationTripScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic>? ids;
+    if (Get.arguments != null) {
+      ids = Get.arguments["ids"];
+    }
+
+
     final FormActualizationTripController controller =
-    Get.put(FormActualizationTripController());
+    Get.put(FormActualizationTripController())
+      ..listIdRequestTrip(ids);
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -73,65 +83,88 @@ class FormActualizationTripScreen extends StatelessWidget {
                     height: 16,
                   ),
 
-
-                  ActualizationTripItem(
-                    action: [
-                      CustomIconButton(
-                        iconData: IconlyBold.edit,
-                        backgroundColor: successColor,
-                        onPressed: () {
-
-                        },
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      CustomIconButton(
-                        iconData: IconlyBold.delete,
-                        backgroundColor: redColor,
-                        onPressed: () {
-                        },
-                      )
-                    ],
-                    title: "23/04/2023 - 25/04/2023, Jakarta -> Surabaya",
-                    number: "1",
-                    content: Container(
-                      margin: const EdgeInsets.only(top: 8),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: infoColor,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                  Obx(
+                          () =>
+                          Column(
                             children: [
-                              Text(
-                                "26/04/2023 -> 26/04/2023",
-                                style: TextStyle(
-                                    fontSize: 12
-                                ),
-                              ),
-                              Text(
-                                "SGU -> GMR",
-                                style: TextStyle(
-                                    fontSize: 12
-                                ),
-                              )
+                              ...controller.listTripInfo.mapIndexed((index,
+                                  item) {
+                                return ActualizationTripItem(
+                                  action: [
+                                    CustomIconButton(
+                                      iconData: IconlyBold.edit,
+                                      backgroundColor: successColor,
+                                      onPressed: () {
+
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: item.deletable ? 4 : 0,
+                                    ),
+                                    if(item.deletable)
+                                      CustomIconButton(
+                                        iconData: IconlyBold.delete,
+                                        backgroundColor: redColor,
+                                        onPressed: () {},
+                                      )
+                                  ],
+                                  title: "${item
+                                      .textDate}, Jakarta -> Surabaya",
+                                  number: "${index + 1}",
+                                  content: Container(
+                                    margin: const EdgeInsets.only(top: 8),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start,
+                                      children: [
+                                        Container(
+                                          height: 50,
+                                          width: 50,
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: infoColor,
+                                          ),
+                                          child: item.type != null &&
+                                              item.type!.isNotEmpty
+                                              ?
+                                          SvgPicture.asset(
+                                              item.type?.toLowerCase() ==
+                                                  "train"
+                                                  ? ImageConstant.train
+                                                  : ImageConstant.airplane)
+                                              : SizedBox(),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .start,
+                                          children: [
+                                            Text(
+                                              "${item.textDate}",
+                                              style: const TextStyle(
+                                                  fontSize: 12
+                                              ),
+                                            ),
+                                            Text(
+                                              "${item.origin} -> ${item
+                                                  .destination}",
+                                              style: const TextStyle(
+                                                  fontSize: 12
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+
+                                );
+                              }),
                             ],
                           )
-                        ],
-                      ),
-                    ),
-
                   ),
 
                   const SizedBox(
@@ -142,7 +175,8 @@ class FormActualizationTripScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-                        Get.to(()=>const FormTripInfoActualizationTripScreen());
+                        Get
+                            .to(() => const FormTripInfoActualizationTripScreen());
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: infoColor),
@@ -180,33 +214,40 @@ class FormActualizationTripScreen extends StatelessWidget {
                   const SizedBox(
                     height: 16,
                   ),
-                  ActualizationTripItem(
-                    action: [
-                      CustomIconButton(
-                        iconData: IconlyBold.edit,
-                        backgroundColor: successColor,
-                        onPressed: () {
+                  Obx(() {
+                    return Column(
+                      children: [
+                        ...controller.listActivity.mapIndexed((index, item){
+                          return ActualizationTripItem(
+                            action: [
+                              CustomIconButton(
+                                iconData: IconlyBold.edit,
+                                backgroundColor: successColor,
+                                onPressed: () {
 
-                        },
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      CustomIconButton(
-                        iconData: IconlyBold.delete,
-                        backgroundColor: redColor,
-                        onPressed: () {
+                                },
+                              ),
+                              SizedBox(
+                                width: item.deletable ? 4 : 0,
+                              ),
+                              if(item.deletable)
+                                CustomIconButton(
+                                  iconData: IconlyBold.delete,
+                                  backgroundColor: redColor,
+                                  onPressed: () {},
+                                )
+                            ],
+                            title: "${item.actDate}",
+                            number: "${index + 1}",
+                            content: Text(
+                                "${item.activities}"
+                            ),
 
-                        },
-                      )
-                    ],
-                    title: "23/04/2023",
-                    number: "1",
-                    content: const Text(
-                        "Travel from Jakarta to Surabaya"
-                    ),
-
-                  ),
+                          );
+                        })
+                      ],
+                    );
+                  }),
 
                   const SizedBox(
                     height: 16,
@@ -216,7 +257,8 @@ class FormActualizationTripScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-                        Get.to(()=>const FormActivityActualizationTripScreen());
+                        Get
+                            .to(() => const FormActivityActualizationTripScreen());
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: infoColor),
@@ -268,7 +310,8 @@ class FormActualizationTripScreen extends StatelessWidget {
                         return ElevatedButton(
                           onPressed: controller.enableButton.value
                               ? () {
-                            Get.off(()=>const ActualizationTripDetailScreen());
+                            Get
+                                .off(() => const ActualizationTripDetailScreen());
                           }
                               : null,
                           style: ElevatedButton.styleFrom(

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 extension DateExt on DateTime {
@@ -98,5 +99,22 @@ extension DateExt on DateTime {
     return result;
   }
 
+  List<DateTime> getDaysInBetween(DateTime otherDate) {
+    DateTime startDate = this;
+    DateTime endDate = otherDate;
+    if(isAfter(otherDate)){
+      startDate = otherDate;
+      endDate = this;
+    }
+
+    startDate = DateUtils.dateOnly(startDate);
+    endDate = DateUtils.dateOnly(endDate);
+
+    List<DateTime> days = [];
+    for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+      days.add(startDate.add(Duration(days: i)));
+    }
+    return days;
+  }
 
 }

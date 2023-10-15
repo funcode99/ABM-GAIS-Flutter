@@ -5,18 +5,16 @@ import 'package:gais/base/approval_base_repository.dart';
 import 'package:gais/base/base_error.dart';
 import 'package:gais/base/base_repository.dart';
 import 'package:gais/data/model/actualization_trip/actualization_trip_model.dart';
+import 'package:gais/data/model/actualization_trip/trip_info_model.dart';
 import 'package:gais/data/model/api_response_model.dart';
 import 'package:gais/data/model/approval_cash_advance/approval_cash_advance_model.dart';
 import 'package:gais/data/model/approval_log_model.dart';
-import 'package:gais/data/model/approval_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/model/request_trip/request_trip_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:get/get.dart';
 
-class NewActualizationTripRepository implements BaseRepository<ActualizationTripModel, CashAdvanceDetailModel>, ApprovalBaseRepository<ApprovalCashAdvanceModel>{
+class NewActualizationTripRepository implements BaseRepository<ActualizationTripModel, bool>, ApprovalBaseRepository<ApprovalCashAdvanceModel>{
   final network = Get.find<NetworkCore>();
 
   @override
@@ -25,7 +23,7 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
   }
 
   @override
-  Future<Either<BaseError, List<CashAdvanceDetailModel>>> getDataDetails(dynamic id) async{
+  Future<Either<BaseError, List<bool>>> getDataDetails(dynamic id) async{
     throw UnimplementedError();
   }
 
@@ -48,7 +46,7 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
   }
 
   @override
-  Future<Either<BaseError, CashAdvanceDetailModel>> addDetail(model) {
+  Future<Either<BaseError, bool>> addDetail(model) {
     // TODO: implement addDetail
     throw UnimplementedError();
   }
@@ -60,7 +58,7 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
   }
 
   @override
-  Future<Either<BaseError, CashAdvanceDetailModel>> updateDetail(model, dynamic id) {
+  Future<Either<BaseError, bool>> updateDetail(model, dynamic id) {
     // TODO: implement updateDetail
     throw UnimplementedError();
   }
@@ -132,6 +130,29 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
           '/api/actual_trip/get_request_trip',
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, RequestTripModel.fromJsonModelList);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  Future<Either<BaseError, List<TripInfoModel>>> getTripInfo({List<dynamic>? ids}) async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/actual_trip/get_data_trip',
+        queryParameters: {
+          "id_request_trip[]" : ids
+        }
+      );
+
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, TripInfoModel.fromJsonModelList);
       return right(apiResponseModel.data);
     } on DioError catch (e) {
       print("DioError $e");

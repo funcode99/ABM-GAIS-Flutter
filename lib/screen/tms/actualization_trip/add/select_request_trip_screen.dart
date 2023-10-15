@@ -161,7 +161,11 @@ class SelectRequestTripScreen extends StatelessWidget {
                         onPressed: controller.listIDSelectedRequestTrip.isEmpty
                             ? null
                             : () {
-                          Get.to(()=> const FormActualizationTripScreen());
+                          Get.to(()=> const FormActualizationTripScreen(),
+                            arguments: {
+                              "ids" : controller.listIDSelectedRequestTrip
+                            }
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: infoColor),
