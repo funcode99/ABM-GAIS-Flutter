@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/actualization_trip/activity_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
-import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
-import 'package:gais/screen/tms/actualization_trip/add/form_activitiy_actualization_trip_controller.dart';
+import 'package:gais/screen/tms/actualization_trip/add/form_activity_actualization_trip_controller.dart';
 import 'package:get/get.dart';
 
 class FormActivityActualizationTripScreen extends StatelessWidget {
@@ -14,8 +14,14 @@ class FormActivityActualizationTripScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FormActivityActualizationTripController controller =
-    Get.put(FormActivityActualizationTripController());
+    ActivityModel? activityModel;
+    if (Get.arguments != null) {
+      activityModel = Get.arguments["activity"];
+    }
+
+    final FormActivityActualizationTripController controller = Get.put(
+        FormActivityActualizationTripController())
+      ..activityModel(activityModel);
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -56,13 +62,14 @@ class FormActivityActualizationTripScreen extends StatelessWidget {
                   onTap: () =>
                       showDatePicker(
                           context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
+                          initialDate: controller.activityDate.value ?? DateTime.now(),
+                          firstDate: DateTime.now().subtract(
+                              const Duration(days: 365)),
                           lastDate: DateTime.now().add(
-                              const Duration(days: 30)))
+                              const Duration(days: 365)))
                           .then((date) {
-                        controller.dateController.text =
-                            controller.dateFormat.format(date!);
+                            controller.activityDate.value = date;
+                          controller.dateController.text = controller.dateFormat.format(date!);
                       }),
                 ),
                 const SizedBox(height: 10),
@@ -91,7 +98,8 @@ class FormActivityActualizationTripScreen extends StatelessWidget {
                       return ElevatedButton(
                         onPressed: controller.enableButton.value
                             ? () {
-
+                           ActivityModel? result = controller.saveButton();
+                           Get.back(result: result);
                         }
                             : null,
                         style: ElevatedButton.styleFrom(

@@ -2,16 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/actualization_trip/activity_model.dart';
 import 'package:gais/data/model/actualization_trip/trip_info_model.dart';
-import 'package:gais/data/model/approval_log_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
-import 'package:gais/data/model/request_trip/request_trip_model.dart';
 import 'package:gais/data/repository/actualization_trip/new_actualization_trip_repository.dart';
-import 'package:gais/data/repository/cash_advance/cash_advance_travel_repository.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
-import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/date_ext.dart';
-import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
@@ -29,6 +22,7 @@ with MasterDataMixin {
   final listActivity = <ActivityModel>[].obs;
   final listIdRequestTrip = <dynamic>[].obs;
 
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat saveFormat = DateFormat("yyyy-MM-dd");
 
 
@@ -80,16 +74,72 @@ with MasterDataMixin {
     }
 
     for (var item in tempDates) {
-      listActivity.add(
-        ActivityModel(
+      final activityModel = ActivityModel(
           actDate: saveFormat.format(item),
           deletable: false,
           activities: "",
-          idAct: item.microsecondsSinceEpoch
-        )
+          key: "${item.microsecondsSinceEpoch}-${DateTime.now().millisecondsSinceEpoch}"
+      );
+
+      listActivity.add(
+        activityModel
       );
     }
 
+  }
+
+  void addActivity(ActivityModel result){
+    //check if there is duplicate date
+    bool idDuplicateFound = false;
+    for (var element in listActivity) {
+      if(element.actDate == result.actDate){
+        idDuplicateFound = true;
+        break;
+      }
+    }
+
+    if(idDuplicateFound){
+      Get.showSnackbar(CustomGetSnackBar(message: "Date already exists", backgroundColor: Colors.red));
+    }else{
+      listActivity.add(result);
+    }
+  }
+
+  void updateActivity(ActivityModel result){
+    //check if there is duplicate date
+    bool idDuplicateFound = false;
+    for (var element in listActivity) {
+      if(element.key != result.key){
+        if(element.actDate == result.actDate){
+          idDuplicateFound = true;
+          break;
+        }
+      }
+    }
+
+    if(idDuplicateFound){
+      Get.showSnackbar(CustomGetSnackBar(message: "Date already exists", backgroundColor: Colors.red));
+    }else{
+      final index = listActivity.indexWhere((element) => element.key.toString() == result.key.toString());
+      listActivity[index] = result;
+    }
+  }
+
+  void deleteActivity(ActivityModel activityModel){
+    listActivity.removeWhere((element) => element.key.toString() == activityModel.key.toString());
+  }
+
+  bool isActivitiesValid(){
+    bool isValid = true;
+
+    for (var element in listActivity) {
+      if(element.activities == null || element.activities!.isEmpty){
+        isValid = false;
+        break;
+      }
+    }
+
+    return isValid;
   }
 
   void updateButton() {

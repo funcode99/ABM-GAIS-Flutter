@@ -5,6 +5,8 @@ part 'activity_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class ActivityModel {
+  String? key;
+  dynamic id;
   dynamic idAct;
   String? activities;
   String? actDate;
@@ -12,7 +14,9 @@ class ActivityModel {
 
   ActivityModel(
       {
+        this.key,
         this.idAct,
+        this.id,
         this.actDate,
         this.activities,
         this.deletable = false,
@@ -56,4 +60,21 @@ class ActivityModel {
       _$ActivityModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$ActivityModelToJson(this);
+
+  ActivityModel copyWith({
+    String? key,
+    String? activities,
+    String? actDate,
+    bool? deletable,
+  }) {
+    return ActivityModel(
+      key: key ?? this.key,
+      actDate: actDate ?? this.actDate,
+      activities: activities ?? this.activities,
+      deletable: deletable ?? this.deletable,
+      idAct: idAct,
+      id: id
+    );
+  }
+
 }

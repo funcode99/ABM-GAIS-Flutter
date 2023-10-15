@@ -1,27 +1,22 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/actualization_trip/activity_model.dart';
 import 'package:gais/reusable/bottombar.dart';
-import 'package:gais/reusable/customalertcontainer.dart';
 import 'package:gais/reusable/custombackbutton.dart';
-import 'package:gais/reusable/customfilledbutton.dart';
-import 'package:gais/reusable/customformlabel.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/actualization_trip/actualization_trip_item.dart';
-import 'package:gais/screen/tms/actualization_trip/add/form_activitiy_actualization_trip_screen.dart';
+import 'package:gais/screen/tms/actualization_trip/add/form_activity_actualization_trip_screen.dart';
 import 'package:gais/screen/tms/actualization_trip/add/form_actualization_trip_controller.dart';
 import 'package:gais/screen/tms/actualization_trip/add/form_trip_info_actualization_trip_screen.dart';
 import 'package:gais/screen/tms/actualization_trip/detail/actualization_trip_detail_screen.dart';
-import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/add/activities_detail/act_activities_detail_screen.dart';
-import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/add/trip_info/act_trip_info_screen.dart';
-import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -133,7 +128,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                                                   "train"
                                                   ? ImageConstant.train
                                                   : ImageConstant.airplane)
-                                              : SizedBox(),
+                                              : const SizedBox(),
                                         ),
                                         const SizedBox(
                                           width: 4,
@@ -223,8 +218,14 @@ class FormActualizationTripScreen extends StatelessWidget {
                               CustomIconButton(
                                 iconData: IconlyBold.edit,
                                 backgroundColor: successColor,
-                                onPressed: () {
+                                onPressed: () async {
+                                  ActivityModel? result = await Get.to(() => const FormActivityActualizationTripScreen(), arguments: {
+                                    "activity" : item
+                                  });
 
+                                  if(result!=null){
+                                    controller.updateActivity(result);
+                                  }
                                 },
                               ),
                               SizedBox(
@@ -234,14 +235,29 @@ class FormActualizationTripScreen extends StatelessWidget {
                                 CustomIconButton(
                                   iconData: IconlyBold.delete,
                                   backgroundColor: redColor,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.dialog(DeleteConfirmationDialog(
+                                      onDeletePressed: () {
+                                        Get.close(1);
+                                        controller.deleteActivity(item);
+                                      },
+                                    ));
+                                  },
                                 )
                             ],
-                            title: "${item.actDate}",
+                            title: "${item.actDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
                             number: "${index + 1}",
-                            content: Text(
-                                "${item.activities}"
-                            ),
+                            content: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: item.activities == null || item.activities!.isEmpty ?
+                              const Text(
+                                "Activity details are required",
+                                style: TextStyle(color: Colors.redAccent, fontSize: 12, fontStyle: FontStyle.italic),
+
+                              ) : Text(
+                                  "${item.activities}"
+                              ),
+                            )
 
                           );
                         })
@@ -253,13 +269,32 @@ class FormActualizationTripScreen extends StatelessWidget {
                     height: 16,
                   ),
 
+                  /*Obx(() {
+                    if (!controller.isActivitiesValid()) {
+                      return const Padding(
+                        padding: EdgeInsets.only(left: 10, top: 8),
+                        child: Text(
+                          "Activity details are required",
+                          style: TextStyle(color: Colors.redAccent, fontSize: 12),
+                        ),
+                      );
+                    }
+                    return const SizedBox();
+                  }),*/
+
+                  const SizedBox(
+                    height: 16,
+                  ),
+
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () async {
-                        Get
-                            .to(() => const FormActivityActualizationTripScreen());
-                      },
+                        onPressed: () async {
+                          ActivityModel? result = await Get.to(() => const FormActivityActualizationTripScreen());
+                          if(result!=null){
+                            controller.addActivity(result);
+                          }
+                        },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: infoColor),
                       child: RichText(
@@ -308,7 +343,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                       ),
                       Obx(() {
                         return ElevatedButton(
-                          onPressed: controller.enableButton.value
+                          onPressed: controller.enableButton.value && controller.isActivitiesValid() && controller.listTripInfo.isNotEmpty && controller.listActivity.isNotEmpty
                               ? () {
                             Get
                                 .off(() => const ActualizationTripDetailScreen());

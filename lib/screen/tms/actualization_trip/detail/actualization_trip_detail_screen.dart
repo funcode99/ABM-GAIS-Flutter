@@ -17,7 +17,7 @@ import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/add/add_item_request_atk_screen.dart';
 import 'package:gais/screen/fss/request_atk/add/item_request_atk/detail/detail_item_request_atk_screen.dart';
 import 'package:gais/screen/tms/actualization_trip/actualization_trip_item.dart';
-import 'package:gais/screen/tms/actualization_trip/add/form_activitiy_actualization_trip_screen.dart';
+import 'package:gais/screen/tms/actualization_trip/add/form_activity_actualization_trip_screen.dart';
 import 'package:gais/screen/tms/actualization_trip/add/form_trip_info_actualization_trip_screen.dart';
 import 'package:gais/screen/tms/actualization_trip/detail/actualization_trip_detail_controller.dart';
 import 'package:gais/util/color/color_util.dart';
