@@ -40,7 +40,7 @@ with MasterDataMixin {
     final tripInfoResult = await _repository.getTripInfo(ids: listIdRequestTrip);
     tripInfoResult.fold(
         (l) => null, 
-        (r) => listTripInfo.addAll(r)
+        (r) => listTripInfo.addAll(r.map((e) => e.copyWith(key: "${e.hashCode}")))
     );
 
     //initiate activities
@@ -88,6 +88,73 @@ with MasterDataMixin {
 
   }
 
+  String getTitleTripInfo(TripInfoModel tripInfoModel){
+    String result = "";
+    if(tripInfoModel.dateDeparture != null){
+      String departureDate = tripInfoModel.dateDeparture?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
+      result += departureDate;
+      if(tripInfoModel.dateArrival != null){
+        String arrivalDate = tripInfoModel.dateArrival?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
+        result += "-$arrivalDate";
+      }
+    }else if(tripInfoModel.dateDepartTransportation != null){
+      String departureDate = tripInfoModel.dateDepartTransportation?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
+      result += departureDate;
+      if(tripInfoModel.dateReturnTransportation != null){
+        String arrivalDate = tripInfoModel.dateReturnTransportation?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
+        result += "-$arrivalDate";
+      }
+    }
+
+    if(tripInfoModel.nameCityFrom!=null && tripInfoModel.nameCityFrom!.isNotEmpty){
+      if(result.isNotEmpty){
+        result += ", ${tripInfoModel.nameCityFrom}";
+      }else{
+        result += "${tripInfoModel.nameCityFrom}";
+      }
+      if(tripInfoModel.nameCityTo!=null && tripInfoModel.nameCityTo!.isNotEmpty){
+        result += "-${tripInfoModel.nameCityTo}";
+      }
+    }else if(tripInfoModel.origin!=null && tripInfoModel.origin!.isNotEmpty){
+      if(result.isNotEmpty){
+        result += ", ${tripInfoModel.origin}";
+      }else{
+        result += "${tripInfoModel.origin}";
+      }
+      if(tripInfoModel.destination!=null && tripInfoModel.destination!.isNotEmpty){
+        result += "-${tripInfoModel.destination}";
+      }
+    }
+
+    return result;
+  }
+
+  String getTitleTransportation(TripInfoModel tripInfoModel){
+    String result = "";
+    if(tripInfoModel.dateDepartTransportation != null){
+      String departureDate = tripInfoModel.dateDepartTransportation?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
+      result += departureDate;
+      if(tripInfoModel.dateReturnTransportation != null){
+        String arrivalDate = tripInfoModel.dateReturnTransportation?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
+        result += "-$arrivalDate";
+      }
+    }
+    return result;
+  }
+
+  void addTripInfo(TripInfoModel result){
+    listTripInfo.add(result);
+  }
+
+  void updateTripInfo(TripInfoModel result){
+    final index = listTripInfo.indexWhere((element) => element.key.toString() == result.key.toString());
+    listTripInfo[index] = result;
+  }
+
+  void deleteTripInfo(TripInfoModel tripInfoModel){
+    listTripInfo.removeWhere((element) => element.key.toString() == tripInfoModel.key.toString());
+  }
+
   void addActivity(ActivityModel result){
     //check if there is duplicate date
     bool idDuplicateFound = false;
@@ -103,6 +170,8 @@ with MasterDataMixin {
     }else{
       listActivity.add(result);
     }
+
+    listActivity.sort((a, b) => a.actDate!.compareTo(b.actDate!));
   }
 
   void updateActivity(ActivityModel result){
@@ -123,10 +192,15 @@ with MasterDataMixin {
       final index = listActivity.indexWhere((element) => element.key.toString() == result.key.toString());
       listActivity[index] = result;
     }
+
+    listActivity.sort((a, b) => a.actDate!.compareTo(b.actDate!));
+
   }
 
   void deleteActivity(ActivityModel activityModel){
     listActivity.removeWhere((element) => element.key.toString() == activityModel.key.toString());
+
+    listActivity.sort((a, b) => a.actDate!.compareTo(b.actDate!));
   }
 
   bool isActivitiesValid(){

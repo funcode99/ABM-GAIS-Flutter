@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/actualization_trip/trip_info_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
@@ -15,8 +16,13 @@ class FormTripInfoActualizationTripScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TripInfoModel? tripInfoModel;
+    if (Get.arguments != null) {
+      tripInfoModel = Get.arguments["trip_info"];
+    }
+
     final FormTripInfoActualizationTripController controller =
-    Get.put(FormTripInfoActualizationTripController());
+    Get.put(FormTripInfoActualizationTripController())..tripInfoModel(tripInfoModel);
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -43,7 +49,7 @@ class FormTripInfoActualizationTripScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomTextFormField(
-                  controller: controller.departureDate,
+                  controller: controller.departureDateController,
                   label: "Departure Date",
                   isRequired: true,
                   validator: (value) {
@@ -57,18 +63,18 @@ class FormTripInfoActualizationTripScreen extends StatelessWidget {
                   onTap: () =>
                       showDatePicker(
                           context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime.now().add(
-                              const Duration(days: 30)))
+                          initialDate: controller.departureDate.value ?? DateTime.now(),
+                          firstDate: DateTime.now().subtract(const Duration(days: 365)),
+                          lastDate: DateTime.now().add(const Duration(days: 365)))
                           .then((date) {
-                        controller.departureDate.text =
-                            controller.dateFormat.format(date!);
+                            if(date!=null){
+                              controller.onChangeDepartureDate(date);
+                            }
                       }),
                 ),
                 const SizedBox(height: 10),
                 CustomTextFormField(
-                  controller: controller.arrivalDate,
+                  controller: controller.arrivalDateController,
                   label: "Arrival Date",
                   isRequired: true,
                   validator: (value) {
@@ -82,13 +88,15 @@ class FormTripInfoActualizationTripScreen extends StatelessWidget {
                   onTap: () =>
                       showDatePicker(
                           context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime.now().add(
-                              const Duration(days: 30)))
+                          initialDate: controller.arrivalDate.value ?? controller.departureDate.value ?? DateTime.now(),
+                          firstDate: controller.departureDate.value ?? DateTime.now().subtract(const Duration(days: 365)),
+                          lastDate: DateTime.now().add(const Duration(days: 365)))
                           .then((date) {
-                        controller.arrivalDate.text =
-                            controller.dateFormat.format(date!);
+                            if(date!=null){
+                              controller.arrivalDate(date);
+                              controller.arrivalDateController.text =
+                                  controller.dateFormat.format(date!);
+                            }
                       }),
                 ),
                 const SizedBox(height: 10),
@@ -148,7 +156,8 @@ class FormTripInfoActualizationTripScreen extends StatelessWidget {
                       return ElevatedButton(
                         onPressed: controller.enableButton.value
                             ? () {
-
+                          TripInfoModel? result = controller.saveButton();
+                          Get.back(result: result);
                         }
                             : null,
                         style: ElevatedButton.styleFrom(

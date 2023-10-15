@@ -8,6 +8,8 @@ part of 'trip_info_model.dart';
 
 TripInfoModel _$TripInfoModelFromJson(Map<String, dynamic> json) =>
     TripInfoModel(
+      id: json['id'],
+      key: json['key'] as String?,
       origin: json['origin'] as String?,
       destination: json['destination'] as String?,
       dateDepartTransportation: json['date_depart_transportation'] as String?,
@@ -19,6 +21,8 @@ TripInfoModel _$TripInfoModelFromJson(Map<String, dynamic> json) =>
       idCityTo: json['id_city_to'],
       idZona: json['id_zona'],
       tlkRate: json['tlk_rate'],
+      nameCityFrom: json['name_city_from'] as String?,
+      nameCityTo: json['name_city_to'] as String?,
       dateDeparture: json['date_departure'] as String?,
       dateArrival: json['date_arrival'] as String?,
       type: json['type'] as String?,
@@ -27,6 +31,8 @@ TripInfoModel _$TripInfoModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$TripInfoModelToJson(TripInfoModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
+      'key': instance.key,
       'origin': instance.origin,
       'destination': instance.destination,
       'date_depart_transportation': instance.dateDepartTransportation,
@@ -38,6 +44,8 @@ Map<String, dynamic> _$TripInfoModelToJson(TripInfoModel instance) =>
       'id_city_to': instance.idCityTo,
       'id_zona': instance.idZona,
       'tlk_rate': instance.tlkRate,
+      'name_city_from': instance.nameCityFrom,
+      'name_city_to': instance.nameCityTo,
       'date_departure': instance.dateDeparture,
       'date_arrival': instance.dateArrival,
       'type': instance.type,

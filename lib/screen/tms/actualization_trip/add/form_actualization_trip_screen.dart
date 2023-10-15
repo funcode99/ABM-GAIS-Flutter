@@ -5,6 +5,7 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/data/model/actualization_trip/activity_model.dart';
+import 'package:gais/data/model/actualization_trip/trip_info_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
@@ -84,78 +85,97 @@ class FormActualizationTripScreen extends StatelessWidget {
                             children: [
                               ...controller.listTripInfo.mapIndexed((index,
                                   item) {
-                                return ActualizationTripItem(
-                                  action: [
-                                    CustomIconButton(
-                                      iconData: IconlyBold.edit,
-                                      backgroundColor: successColor,
-                                      onPressed: () {
-
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: item.deletable ? 4 : 0,
-                                    ),
-                                    if(item.deletable)
-                                      CustomIconButton(
-                                        iconData: IconlyBold.delete,
-                                        backgroundColor: redColor,
-                                        onPressed: () {},
-                                      )
-                                  ],
-                                  title: "${item
-                                      .textDate}, Jakarta -> Surabaya",
-                                  number: "${index + 1}",
-                                  content: Container(
-                                    margin: const EdgeInsets.only(top: 8),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
-                                      children: [
-                                        Container(
-                                          height: 50,
-                                          width: 50,
-                                          padding: const EdgeInsets.all(10),
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: infoColor,
-                                          ),
-                                          child: item.type != null &&
-                                              item.type!.isNotEmpty
-                                              ?
-                                          SvgPicture.asset(
-                                              item.type?.toLowerCase() ==
-                                                  "train"
-                                                  ? ImageConstant.train
-                                                  : ImageConstant.airplane)
-                                              : const SizedBox(),
-                                        ),
-                                        const SizedBox(
-                                          width: 4,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .start,
-                                          children: [
-                                            Text(
-                                              "${item.textDate}",
-                                              style: const TextStyle(
-                                                  fontSize: 12
-                                              ),
-                                            ),
-                                            Text(
-                                              "${item.origin} -> ${item
-                                                  .destination}",
-                                              style: const TextStyle(
-                                                  fontSize: 12
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
+                                return ConstrainedBox(
+                                  constraints: const BoxConstraints(
+                                    minHeight: 70,
                                   ),
+                                  child: ActualizationTripItem(
+                                    action: [
+                                      CustomIconButton(
+                                        iconData: IconlyBold.edit,
+                                        backgroundColor: successColor,
+                                        onPressed: () async {
+                                          TripInfoModel? result = await Get.to(() => const FormTripInfoActualizationTripScreen(), arguments: {
+                                            "trip_info" : item
+                                          });
 
+                                          if(result!=null){
+                                            controller.updateTripInfo(result);
+                                          }
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: item.deletable ? 4 : 0,
+                                      ),
+                                      if(item.deletable)
+                                        CustomIconButton(
+                                          iconData: IconlyBold.delete,
+                                          backgroundColor: redColor,
+                                          onPressed: () {
+                                            Get.dialog(DeleteConfirmationDialog(
+                                              onDeletePressed: () {
+                                                Get.close(1);
+                                                controller.deleteTripInfo(item);
+                                              },
+                                            ));
+                                          },
+                                        )
+                                    ],
+
+                                    title: controller.getTitleTripInfo(item),
+                                    number: "${index + 1}",
+                                    content: item.type == null ? const SizedBox() :
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 8),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
+                                        children: [
+                                          Container(
+                                            height: 50,
+                                            width: 50,
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: infoColor,
+                                            ),
+                                            child: item.type != null &&
+                                                item.type!.isNotEmpty
+                                                ?
+                                            SvgPicture.asset(
+                                                item.type?.toLowerCase() ==
+                                                    "train"
+                                                    ? ImageConstant.train
+                                                    : ImageConstant.airplane)
+                                                : const SizedBox(),
+                                          ),
+                                          const SizedBox(
+                                            width: 4,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment
+                                                .start,
+                                            children: [
+                                              Text(
+                                                controller.getTitleTransportation(item),
+                                                style: const TextStyle(
+                                                    fontSize: 12
+                                                ),
+                                              ),
+                                              Text(
+                                                "${item.origin} -> ${item
+                                                    .destination}",
+                                                style: const TextStyle(
+                                                    fontSize: 12
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+
+                                  ),
                                 );
                               }),
                             ],
@@ -170,8 +190,10 @@ class FormActualizationTripScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
-                        Get
-                            .to(() => const FormTripInfoActualizationTripScreen());
+                        TripInfoModel? result = await Get.to(() => const FormTripInfoActualizationTripScreen());
+                        if(result!=null){
+                          controller.addTripInfo(result);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: infoColor),

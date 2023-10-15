@@ -5,6 +5,8 @@ part 'trip_info_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class TripInfoModel {
+  dynamic id;
+  String? key;
   String? origin;
   String? destination;
   String? dateDepartTransportation;
@@ -16,6 +18,8 @@ class TripInfoModel {
   dynamic idCityTo;
   dynamic idZona;
   dynamic tlkRate;
+  String? nameCityFrom;
+  String? nameCityTo;
   String? dateDeparture;
   String? dateArrival;
   String? type;
@@ -23,6 +27,8 @@ class TripInfoModel {
 
   TripInfoModel(
       {
+        this.id,
+        this.key,
         this.origin,
         this.destination,
         this.dateDepartTransportation,
@@ -34,6 +40,8 @@ class TripInfoModel {
         this.idCityTo,
         this.idZona,
         this.tlkRate,
+        this.nameCityFrom,
+        this.nameCityTo,
         this.dateDeparture,
         this.dateArrival,
         this.type,
@@ -78,4 +86,47 @@ class TripInfoModel {
       _$TripInfoModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$TripInfoModelToJson(this);
+
+  TripInfoModel copyWith({
+    String? key,
+    String? origin,
+    String? destination,
+    String? dateDepartTransportation,
+    String? dateReturnTransportation,
+    dynamic sorting,
+    String? textDate,
+    String? noRequestTrip,
+    dynamic idCityFrom,
+    dynamic idCityTo,
+    dynamic idZona,
+    dynamic tlkRate,
+    String? nameCityFrom,
+    String? nameCityTo,
+    String? dateDeparture,
+    String? dateArrival,
+    String? type,
+    bool? deletable,
+  }) {
+    return TripInfoModel(
+        key : key ?? this.key,
+        origin : origin ?? this.origin,
+        destination : destination ?? this.destination,
+        dateDepartTransportation : dateDepartTransportation ?? this.dateDepartTransportation,
+        dateReturnTransportation : dateReturnTransportation ?? this.dateReturnTransportation,
+        sorting : sorting ?? this.sorting,
+        textDate : textDate ?? this.textDate,
+        noRequestTrip : noRequestTrip ?? this.noRequestTrip,
+        idCityFrom : idCityFrom ?? this.idCityFrom,
+        idCityTo : idCityTo ?? this.idCityTo,
+        idZona : idZona ?? this.idZona,
+        tlkRate : tlkRate ?? this.tlkRate,
+        dateDeparture : dateDeparture ?? this.dateDeparture,
+        dateArrival : dateArrival ?? this.dateArrival,
+        type : type ?? this.type,
+        deletable : deletable ?? this.deletable,
+        nameCityFrom : nameCityFrom ?? this.nameCityFrom,
+        nameCityTo : nameCityTo ?? this.nameCityTo,
+        id: id
+    );
+  }
 }
