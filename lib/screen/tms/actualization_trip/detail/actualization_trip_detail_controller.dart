@@ -50,7 +50,6 @@ class ActualizationTripDetailController extends BaseController {
     getTripInfo();
     getActivity();
 
-    getDetailData();
     setValue();
   }
 
@@ -111,76 +110,12 @@ class ActualizationTripDetailController extends BaseController {
     });
   }
 
-  void getDetailData() async {
-    /*final result = await _repository.getDataDetails(selectedItem.value.id!);
-    result.fold(
-            (l) => Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
-            (r) {
-          listDetail.value = r;
-          listDetail.refresh();
-        });*/
-  }
-
   void updateEnableButton() {
     enableButton(formKey.currentState!.validate());
   }
 
   void updateOnEdit() {
     onEdit(!onEdit.value);
-  }
-
-  void addDetail(RequestATKDetailModel item) async {
-    isLoadingHitApi(true);
-    item.idAtkRequest = selectedItem.value.id;
-    final result = await _repository.addDetail(item);
-    result.fold((l) {
-      isLoadingHitApi(false);
-      Get.showSnackbar(
-          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
-    }, (detailModel) {
-      isLoadingHitApi(false);
-      getDetailData();
-    });
-  }
-
-  void deleteDetail(RequestATKDetailModel item) async {
-    if (item.id != null) {
-      isLoadingHitApi(true);
-      final result = await _repository.deleteDetail(item.id!);
-      result.fold((l) {
-        isLoadingHitApi(false);
-        Get.showSnackbar(
-            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
-      }, (model) {
-        isLoadingHitApi(false);
-        Get.showSnackbar(CustomGetSnackBar(
-          message: "Success Delete Data".tr,
-        ));
-        //update state
-        getDetailData();
-      });
-    } else {
-      Get.showSnackbar(CustomGetSnackBar(
-        message: "Success Delete Data".tr,
-      ));
-
-      listDetail.remove(item);
-    }
-  }
-
-  void updateDetail(RequestATKDetailModel item) async {
-    isLoadingHitApi(true);
-    item.idAtkRequest = selectedItem.value.id;
-    final result = await _repository.updateDetail(item, item.id!);
-    result.fold((l) {
-      isLoadingHitApi(false);
-      Get.showSnackbar(
-          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
-    }, (model) {
-      isLoadingHitApi(false);
-      getDetailData();
-    });
   }
 
   String getTitleTripInfo(TripInfoModel tripInfoModel) {
