@@ -54,9 +54,12 @@ class ActualizationTripDetailController extends BaseController {
     setValue();
   }
 
-  void setValue(){
+  void setValue() {
     createdByController.text = selectedItem.value.employeeName ?? "-";
-    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss") ?? "-";
+    createdDateController.text = selectedItem.value.createdAt?.toDateFormat(
+            originFormat: "yyyy-MM-dd HH:mm:ss",
+            targetFormat: "dd/MM/yyyy HH:mm:ss") ??
+        "-";
 
     purposeController.text = selectedItem.value.purpose ?? "";
     notesController.text = selectedItem.value.notes ?? "";
@@ -77,20 +80,19 @@ class ActualizationTripDetailController extends BaseController {
   void submitHeader() async {
     isLoadingHitApi(true);
     final result = await _repository.submitData(selectedItem.value.id!);
-    result.fold(
-            (l) {
-          isLoadingHitApi(false);
-          Get.showSnackbar(
-              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
-        },
-            (cashAdvanceModel) {
-          isLoadingHitApi(false);
-          detailHeader();
-        });
+    result.fold((l) {
+      isLoadingHitApi(false);
+      Get.showSnackbar(
+          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+    }, (cashAdvanceModel) {
+      isLoadingHitApi(false);
+      detailHeader();
+    });
   }
 
-  void getTripInfo() async{
-    final result = await _tripRepository.getTripInfoByActualizationId(selectedItem.value.id);
+  void getTripInfo() async {
+    final result = await _tripRepository
+        .getTripInfoByActualizationId(selectedItem.value.id);
 
     result.fold((l) => null, (r) {
       listTripInfo.value = r;
@@ -98,11 +100,13 @@ class ActualizationTripDetailController extends BaseController {
     });
   }
 
-  void getActivity() async{
-    final result = await _activityRepository.getActivityByActualizationId(selectedItem.value.id);
+  void getActivity() async {
+    final result = await _activityRepository
+        .getActivityByActualizationId(selectedItem.value.id);
 
     result.fold((l) => null, (r) {
       listActivity.value = r;
+      listActivity.sort((a, b) => a.actDate!.compareTo(b.actDate!));
       listActivity.refresh();
     });
   }
@@ -130,28 +134,25 @@ class ActualizationTripDetailController extends BaseController {
     isLoadingHitApi(true);
     item.idAtkRequest = selectedItem.value.id;
     final result = await _repository.addDetail(item);
-    result.fold(
-            (l) {
-          isLoadingHitApi(false);
-          Get.showSnackbar(
-              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
-        },
-            (detailModel) {
-          isLoadingHitApi(false);
-          getDetailData();
-        });
+    result.fold((l) {
+      isLoadingHitApi(false);
+      Get.showSnackbar(
+          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+    }, (detailModel) {
+      isLoadingHitApi(false);
+      getDetailData();
+    });
   }
 
   void deleteDetail(RequestATKDetailModel item) async {
     if (item.id != null) {
       isLoadingHitApi(true);
       final result = await _repository.deleteDetail(item.id!);
-      result.fold(
-              (l) {
-            isLoadingHitApi(false);
-            Get.showSnackbar(CustomGetSnackBar(
-                message: l.message, backgroundColor: Colors.red));
-          }, (model) {
+      result.fold((l) {
+        isLoadingHitApi(false);
+        Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+      }, (model) {
         isLoadingHitApi(false);
         Get.showSnackbar(CustomGetSnackBar(
           message: "Success Delete Data".tr,
@@ -172,52 +173,64 @@ class ActualizationTripDetailController extends BaseController {
     isLoadingHitApi(true);
     item.idAtkRequest = selectedItem.value.id;
     final result = await _repository.updateDetail(item, item.id!);
-    result.fold(
-            (l) {
-          isLoadingHitApi(false);
-          Get.showSnackbar(
-              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
-        },
-            (model) {
-          isLoadingHitApi(false);
-          getDetailData();
-        });
+    result.fold((l) {
+      isLoadingHitApi(false);
+      Get.showSnackbar(
+          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+    }, (model) {
+      isLoadingHitApi(false);
+      getDetailData();
+    });
   }
 
-  String getTitleTripInfo(TripInfoModel tripInfoModel){
+  String getTitleTripInfo(TripInfoModel tripInfoModel) {
     String result = "";
-    if(tripInfoModel.dateDeparture != null){
-      String departureDate = tripInfoModel.dateDeparture?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
+    if (tripInfoModel.dateDeparture != null) {
+      String departureDate = tripInfoModel.dateDeparture?.toDateFormat(
+              originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+          "";
       result += departureDate;
-      if(tripInfoModel.dateArrival != null){
-        String arrivalDate = tripInfoModel.dateArrival?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
+      if (tripInfoModel.dateArrival != null) {
+        String arrivalDate = tripInfoModel.dateArrival?.toDateFormat(
+                originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+            "";
         result += "-$arrivalDate";
       }
-    }else if(tripInfoModel.dateDepartTransportation != null){
-      String departureDate = tripInfoModel.dateDepartTransportation?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
+    } else if (tripInfoModel.dateDepartTransportation != null) {
+      String departureDate = tripInfoModel.dateDepartTransportation
+              ?.toDateFormat(
+                  originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+          "";
       result += departureDate;
-      if(tripInfoModel.dateReturnTransportation != null){
-        String arrivalDate = tripInfoModel.dateReturnTransportation?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
+      if (tripInfoModel.dateReturnTransportation != null) {
+        String arrivalDate = tripInfoModel.dateReturnTransportation
+                ?.toDateFormat(
+                    originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+            "";
         result += "-$arrivalDate";
       }
     }
 
-    if(tripInfoModel.nameCityFrom!=null && tripInfoModel.nameCityFrom!.isNotEmpty){
-      if(result.isNotEmpty){
+    if (tripInfoModel.nameCityFrom != null &&
+        tripInfoModel.nameCityFrom!.isNotEmpty) {
+      if (result.isNotEmpty) {
         result += ", ${tripInfoModel.nameCityFrom}";
-      }else{
+      } else {
         result += "${tripInfoModel.nameCityFrom}";
       }
-      if(tripInfoModel.nameCityTo!=null && tripInfoModel.nameCityTo!.isNotEmpty){
+      if (tripInfoModel.nameCityTo != null &&
+          tripInfoModel.nameCityTo!.isNotEmpty) {
         result += "-${tripInfoModel.nameCityTo}";
       }
-    }else if(tripInfoModel.origin!=null && tripInfoModel.origin!.isNotEmpty){
-      if(result.isNotEmpty){
+    } else if (tripInfoModel.origin != null &&
+        tripInfoModel.origin!.isNotEmpty) {
+      if (result.isNotEmpty) {
         result += ", ${tripInfoModel.origin}";
-      }else{
+      } else {
         result += "${tripInfoModel.origin}";
       }
-      if(tripInfoModel.destination!=null && tripInfoModel.destination!.isNotEmpty){
+      if (tripInfoModel.destination != null &&
+          tripInfoModel.destination!.isNotEmpty) {
         result += "-${tripInfoModel.destination}";
       }
     }
@@ -225,93 +238,110 @@ class ActualizationTripDetailController extends BaseController {
     return result;
   }
 
-  String getTitleTransportation(TripInfoModel tripInfoModel){
+  String getTitleTransportation(TripInfoModel tripInfoModel) {
     String result = "";
-    if(tripInfoModel.dateDepartTransportation != null){
-      String departureDate = tripInfoModel.dateDepartTransportation?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
+    if (tripInfoModel.dateDepartTransportation != null) {
+      String departureDate = tripInfoModel.dateDepartTransportation
+              ?.toDateFormat(
+                  originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+          "";
       result += departureDate;
-      if(tripInfoModel.dateReturnTransportation != null){
-        String arrivalDate = tripInfoModel.dateReturnTransportation?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
+      if (tripInfoModel.dateReturnTransportation != null) {
+        String arrivalDate = tripInfoModel.dateReturnTransportation
+                ?.toDateFormat(
+                    originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+            "";
         result += "-$arrivalDate";
       }
     }
     return result;
   }
 
-  void addTripInfo(TripInfoModel result){
+  void addTripInfo(TripInfoModel result) {
     listTripInfo.add(result);
   }
 
-  void updateTripInfo(TripInfoModel tripInfoModel)async{
+  void updateTripInfo(TripInfoModel tripInfoModel) async {
     isLoadingHitApi(true);
 
-    final result = await _tripRepository.updateData(tripInfoModel, tripInfoModel.id);
-    result.fold(
-            (l) {
-          isLoadingHitApi(false);
-          Get.showSnackbar(
-              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
-        },
-            (model) {
-          isLoadingHitApi(false);
-          //update list
-          getTripInfo();
-        });
+    final result =
+        await _tripRepository.updateData(tripInfoModel, tripInfoModel.id);
+    result.fold((l) {
+      isLoadingHitApi(false);
+      Get.showSnackbar(
+          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+    }, (model) {
+      isLoadingHitApi(false);
+      //update list
+      getTripInfo();
+    });
   }
 
-  void deleteTripInfo(TripInfoModel tripInfoModel){
-    listTripInfo.removeWhere((element) => element.key.toString() == tripInfoModel.key.toString());
+  void deleteTripInfo(TripInfoModel tripInfoModel) {
+    listTripInfo.removeWhere(
+        (element) => element.key.toString() == tripInfoModel.key.toString());
   }
 
-  void addActivity(ActivityModel result){
+  void addActivity(ActivityModel result) {
     //check if there is duplicate date
     bool idDuplicateFound = false;
     for (var element in listActivity) {
-      if(element.actDate == result.actDate){
+      if (element.actDate == result.actDate) {
         idDuplicateFound = true;
         break;
       }
     }
 
-    if(idDuplicateFound){
-      Get.showSnackbar(CustomGetSnackBar(message: "Date already exists", backgroundColor: Colors.red));
-    }else{
+    if (idDuplicateFound) {
+      Get.showSnackbar(CustomGetSnackBar(
+          message: "Date already exists", backgroundColor: Colors.red));
+    } else {
       listActivity.add(result);
     }
 
     listActivity.sort((a, b) => a.actDate!.compareTo(b.actDate!));
   }
 
-  void updateActivity(ActivityModel result){
+  void updateActivity(ActivityModel activityModel) async {
     //check if there is duplicate date
     bool idDuplicateFound = false;
     for (var element in listActivity) {
-      if(element.key != result.key){
-        if(element.actDate == result.actDate){
+      if (element.id != activityModel.id) {
+        if (element.actDate!.contains(activityModel.actDate!)) {
           idDuplicateFound = true;
           break;
         }
       }
     }
 
-    if(idDuplicateFound){
-      Get.showSnackbar(CustomGetSnackBar(message: "Date already exists", backgroundColor: Colors.red));
-    }else{
-      final index = listActivity.indexWhere((element) => element.key.toString() == result.key.toString());
-      listActivity[index] = result;
+    if (idDuplicateFound) {
+      Get.showSnackbar(CustomGetSnackBar(
+          message: "Date already exists", backgroundColor: Colors.red));
+    } else {
+      isLoadingHitApi(true);
+
+      final result =
+          await _activityRepository.updateData(activityModel, activityModel.id);
+      result.fold((l) {
+        isLoadingHitApi(false);
+        Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+      }, (model) {
+        isLoadingHitApi(false);
+        //update list
+        getActivity();
+      });
     }
-
-    listActivity.sort((a, b) => a.actDate!.compareTo(b.actDate!));
-
   }
 
-  void deleteActivity(ActivityModel activityModel){
-    listActivity.removeWhere((element) => element.key.toString() == activityModel.key.toString());
+  void deleteActivity(ActivityModel activityModel) {
+    listActivity.removeWhere(
+        (element) => element.key.toString() == activityModel.key.toString());
 
     listActivity.sort((a, b) => a.actDate!.compareTo(b.actDate!));
   }
 
-  void getApprovalLog()async{
+  void getApprovalLog() async {
     final result = await _repository.getApprovalLog(selectedItem.value.id);
 
     result.fold((l) => null, (r) {
