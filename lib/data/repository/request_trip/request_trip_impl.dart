@@ -802,10 +802,11 @@ class RequestTripImpl implements RequestTripRepository {
       Response response = await network.dio.get(
         "/api/accomodation_trip/get_by_travel_id/trip_id/$id",
       );
+      print("accommodation response : ${response.data}");
       return GetAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
-      return e.error;
+      print("accommodation response error: ${e.response?.data}");
+      return e.response?.data;
     }
   }
 

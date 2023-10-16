@@ -567,7 +567,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Text("Price", style: listTitleTextStyle),
-                                                                  Text(e.ticketPrice!.toInt().toCurrency(), style: listSubTitleTextStyle),
+                                                                  Text(e.ticketPrice?.toInt().toCurrency().toString() ?? '-', style: listSubTitleTextStyle),
                                                                 ],
                                                               )
                                                             ],
@@ -798,7 +798,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                         listNumber: i + 1,
                                                                         title: e.employeeName.toString(),
                                                                         subtitle: e.typeTransportation.toString(),
-                                                                        status: e.status.toString(),
+                                                                        // status: e.status.toString(),
                                                                         info: e.cityName.toString(),
                                                                         isEdit: controller.isEdit,
                                                                         editAction: () => Get.to(const AddTransportationScreen(), arguments: {
@@ -962,7 +962,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                                   subtitle: controller.dateFormat
                                                                                       .format(DateTime.parse(e.createdAt.toString()))
                                                                                       .toString(),
-                                                                                  status: e.status.toString(),
+                                                                                  // status: e.status.toString(),
                                                                                   info:
                                                                                       "${e.currencyCode} ${int.parse(e.grandTotal.toString()).toCurrency()}",
                                                                                   isEdit: controller.isEdit,

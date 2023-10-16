@@ -535,14 +535,14 @@ class FormRequestTripController extends BaseController {
       var otData = await requestTrip.getOtherTransportBytripList(purposeID);
       otList.addAll(otData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var accData = await requestTrip.getAccommodationBytripList(purposeID);
-      accommodationsList.addAll(accData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
-
       var caData = await requestTrip.getCashAdvanceTravelList(purposeID);
       caList.addAll(caData.data?.toSet().toList() ?? []);
 
       var transportData = await requestTrip.getTransportationBytrip(purposeID);
       transportList.addAll(transportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+
+      var accData = await requestTrip.getAccommodationBytripList(purposeID);
+      accommodationsList.addAll(accData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
     } catch (e, i) {
       e.printError();
       i.printError();
