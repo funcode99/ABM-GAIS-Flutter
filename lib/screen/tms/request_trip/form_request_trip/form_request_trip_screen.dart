@@ -510,7 +510,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                           subtitle: controller.dateFormat.format(DateTime.parse(e.createdAt.toString())).toString(),
                                                           // subtitle: e.pnrid.toString(),
                                                           info: e.flightNo,
-                                                          isEdit: controller.isEdit,
+                                                          isEdit: controller.rtStatus == 'Order Ticket' ? true : controller.isEdit,
                                                           editAction: () {
                                                             Get.off(const AddAirlinessScreen(), arguments: {
                                                               'id': e.id,
@@ -521,24 +521,26 @@ class FormRequestTripScreen extends StatelessWidget {
                                                               'airlinessData': e,
                                                             });
                                                           },
-                                                          editButton: CustomFilledButton(
-                                                            width: 95,
-                                                            height: 40,
-                                                            color: orangeColor,
-                                                            title: "Order Ticket",
-                                                            fontSize: 14,
-                                                            onPressed: () {
-                                                              Get.off(const AddAirlinessScreen(), arguments: {
-                                                                'id': e.id,
-                                                                'purposeID': controller.purposeID,
-                                                                'codeDocument': controller.codeDocument,
-                                                                'formEdit': true,
-                                                                'isEdit': true,
-                                                                'airlinessData': e,
-                                                                'booking': true,
-                                                              });
-                                                            },
-                                                          ),
+                                                          editButton: controller.rtStatus == 'Order Ticket'
+                                                              ? CustomFilledButton(
+                                                                  width: 95,
+                                                                  height: 40,
+                                                                  color: orangeColor,
+                                                                  title: "Order Ticket",
+                                                                  fontSize: 14,
+                                                                  onPressed: () {
+                                                                    Get.off(const AddAirlinessScreen(), arguments: {
+                                                                      'id': e.id,
+                                                                      'purposeID': controller.purposeID,
+                                                                      'codeDocument': controller.codeDocument,
+                                                                      'formEdit': true,
+                                                                      'isEdit': true,
+                                                                      'airlinessData': e,
+                                                                      'booking': true,
+                                                                    });
+                                                                  },
+                                                                )
+                                                              : null,
                                                           isDelete: controller.isEdit,
                                                           deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                             onDeletePressed: () {
@@ -567,7 +569,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Text("Price", style: listTitleTextStyle),
-                                                                  Text(e.ticketPrice?.toInt().toCurrency().toString() ?? '-', style: listSubTitleTextStyle),
+                                                                  Text(e.ticketPrice?.toInt().toCurrency().toString() ?? '-',
+                                                                      style: listSubTitleTextStyle),
                                                                 ],
                                                               )
                                                             ],
@@ -595,7 +598,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                               subtitle: controller.dateFormat.format(DateTime.parse(e.departDate!)),
                                                               // status: e.status.toString(),
                                                               // info: int.parse(e.amount.toString()).toCurrency(),
-                                                              isEdit: controller.isEdit,
+                                                              isEdit: controller.rtStatus == 'Order Ticket' ? true : controller.isEdit,
                                                               editAction: () => Get.off(const AddTrainScreen(), arguments: {
                                                                 'purposeID': controller.purposeID,
                                                                 'codeDocument': controller.codeDocument,
@@ -606,23 +609,25 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 controller.fetchList();
                                                                 controller.update();
                                                               }),
-                                                              editButton: CustomFilledButton(
-                                                                width: 95,
-                                                                height: 40,
-                                                                color: orangeColor,
-                                                                title: "Order Ticket",
-                                                                fontSize: 14,
-                                                                onPressed: () {
-                                                                  Get.off(const AddTrainScreen(), arguments: {
-                                                                    'id': e.id,
-                                                                    'purposeID': controller.purposeID,
-                                                                    'codeDocument': controller.codeDocument,
-                                                                    'formEdit': true,
-                                                                    'isEdit': true,
-                                                                    'booking': true,
-                                                                  });
-                                                                },
-                                                              ),
+                                                              editButton: controller.rtStatus == 'Order Ticket'
+                                                                  ? CustomFilledButton(
+                                                                      width: 95,
+                                                                      height: 40,
+                                                                      color: orangeColor,
+                                                                      title: "Order Ticket",
+                                                                      fontSize: 14,
+                                                                      onPressed: () {
+                                                                        Get.off(const AddTrainScreen(), arguments: {
+                                                                          'id': e.id,
+                                                                          'purposeID': controller.purposeID,
+                                                                          'codeDocument': controller.codeDocument,
+                                                                          'formEdit': true,
+                                                                          'isEdit': true,
+                                                                          'booking': true,
+                                                                        });
+                                                                      },
+                                                                    )
+                                                                  : null,
                                                               isDelete: controller.isEdit,
                                                               deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                                 onDeletePressed: () {
@@ -873,7 +878,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                             title: e.travelerName.toString(),
                                                                             // status: e.status.toString(),
                                                                             info: e.hotelName,
-                                                                            isEdit: controller.isEdit,
+                                                                            isEdit: controller.rtStatus == 'Order Ticket' ? true : controller.isEdit,
                                                                             editAction: () => Get.off(const AddAccommodationScreen(), arguments: {
                                                                               'purposeID': controller.purposeID,
                                                                               'codeDocument': controller.codeDocument,
@@ -884,26 +889,28 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                               controller.fetchList();
                                                                               controller.update();
                                                                             }),
-                                                                            editButton: CustomFilledButton(
-                                                                              width: 95,
-                                                                              height: 40,
-                                                                              color: orangeColor,
-                                                                              title: "Book Hotel",
-                                                                              fontSize: 14,
-                                                                              onPressed: () {
-                                                                                Get.off(const AddAccommodationScreen(), arguments: {
-                                                                                  'purposeID': controller.purposeID,
-                                                                                  'codeDocument': controller.codeDocument,
-                                                                                  'id': e.id,
-                                                                                  'formEdit': true,
-                                                                                  'isEdit': true,
-                                                                                  'booking': true,
-                                                                                })?.then((result) {
-                                                                                  controller.fetchList();
-                                                                                  controller.update();
-                                                                                });
-                                                                              },
-                                                                            ),
+                                                                            editButton: controller.rtStatus == 'Order Ticket'
+                                                                                ? CustomFilledButton(
+                                                                                    width: 95,
+                                                                                    height: 40,
+                                                                                    color: orangeColor,
+                                                                                    title: "Book Hotel",
+                                                                                    fontSize: 14,
+                                                                                    onPressed: () {
+                                                                                      Get.off(const AddAccommodationScreen(), arguments: {
+                                                                                        'purposeID': controller.purposeID,
+                                                                                        'codeDocument': controller.codeDocument,
+                                                                                        'id': e.id,
+                                                                                        'formEdit': true,
+                                                                                        'isEdit': true,
+                                                                                        'booking': true,
+                                                                                      })?.then((result) {
+                                                                                        controller.fetchList();
+                                                                                        controller.update();
+                                                                                      });
+                                                                                    },
+                                                                                  )
+                                                                                : null,
                                                                             isDelete: controller.isEdit,
                                                                             deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                                               onDeletePressed: () {

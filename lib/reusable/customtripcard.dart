@@ -144,7 +144,7 @@ class CustomTripCard extends StatelessWidget {
                           : const SizedBox(),
                       const SizedBox(width: 5),
                       isEdit!
-                          ? deleteButton ??
+                          ? deleteButton ?? editButton ??
                               CustomFilledButton(
                                 width: 80,
                                 height: 40,
