@@ -38,9 +38,26 @@ class ActivityRepository  implements BaseRepository<ActivityModel, bool>{
   }
 
   @override
-  Future<Either<BaseError, bool>> deleteData(id) {
-    // TODO: implement deleteData
-    throw UnimplementedError();
+  Future<Either<BaseError, bool>> deleteData(id) async{
+    try {
+      Dio.Response response = await network.dio.delete(
+        '/api/actual_trip/delete_activities/$id',
+      );
+      if (response.data == "") {
+        return right(true);
+      }
+
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(
+          response.data, ActivityModel.fromJsonModel);
+      return right(apiResponseModel.success!);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e) {
+      return left(BaseError(message: e.message));
+    } catch (e) {
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override

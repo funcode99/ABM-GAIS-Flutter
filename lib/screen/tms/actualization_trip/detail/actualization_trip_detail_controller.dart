@@ -345,11 +345,19 @@ class ActualizationTripDetailController extends BaseController {
     }
   }
 
-  void deleteActivity(ActivityModel activityModel) {
-    listActivity.removeWhere(
-        (element) => element.key.toString() == activityModel.key.toString());
+  void deleteActivity(ActivityModel activityModel) async{
+    isLoadingHitApi(true);
 
-    listActivity.sort((a, b) => a.actDate!.compareTo(b.actDate!));
+    final result = await _activityRepository.deleteData(activityModel.id);
+    result.fold((l) {
+      isLoadingHitApi(false);
+      Get.showSnackbar(
+          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+    }, (model) {
+      isLoadingHitApi(false);
+      //update list
+      getActivity();
+    });
   }
 
   void getApprovalLog() async {
