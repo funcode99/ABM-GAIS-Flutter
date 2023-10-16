@@ -23,12 +23,14 @@ class ActualizationTripModel {
   String? createdAt;
   String? updatedAt;
   int? currentLevel;
-  int? idEmployee;
+  dynamic idEmployee;
   String? employeeName;
   String? creator;
-  String? noRequestTrip;
+  List<dynamic>? noRequestTrip;
   String? status;
   String? daysOfTrip;
+  dynamic arrayTrip;
+  dynamic arrayActivities;
 
   ActualizationTripModel(
       {
@@ -56,6 +58,8 @@ class ActualizationTripModel {
         this.noRequestTrip,
         this.status,
         this.daysOfTrip,
+        this.arrayActivities,
+        this.arrayTrip,
       });
 
   static ActualizationTripModel fromJsonModel(Object? json) =>

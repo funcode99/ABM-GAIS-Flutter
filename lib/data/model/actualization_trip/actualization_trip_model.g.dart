@@ -27,12 +27,14 @@ ActualizationTripModel _$ActualizationTripModelFromJson(
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
       currentLevel: json['current_level'] as int?,
-      idEmployee: json['id_employee'] as int?,
+      idEmployee: json['id_employee'],
       employeeName: json['employee_name'] as String?,
       creator: json['creator'] as String?,
-      noRequestTrip: json['no_request_trip'] as String?,
+      noRequestTrip: json['no_request_trip'] as List<dynamic>?,
       status: json['status'] as String?,
       daysOfTrip: json['days_of_trip'] as String?,
+      arrayActivities: json['array_activities'],
+      arrayTrip: json['array_trip'],
     );
 
 Map<String, dynamic> _$ActualizationTripModelToJson(
@@ -62,4 +64,6 @@ Map<String, dynamic> _$ActualizationTripModelToJson(
       'no_request_trip': instance.noRequestTrip,
       'status': instance.status,
       'days_of_trip': instance.daysOfTrip,
+      'array_trip': instance.arrayTrip,
+      'array_activities': instance.arrayActivities,
     };
