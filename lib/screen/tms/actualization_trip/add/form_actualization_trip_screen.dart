@@ -250,22 +250,22 @@ class FormActualizationTripScreen extends StatelessWidget {
                                   }
                                 },
                               ),
-                              SizedBox(
-                                width: item.deletable ? 4 : 0,
+                              const SizedBox(
+                                width: 4,
                               ),
-                              if(item.deletable)
-                                CustomIconButton(
-                                  iconData: IconlyBold.delete,
-                                  backgroundColor: redColor,
-                                  onPressed: () {
-                                    Get.dialog(DeleteConfirmationDialog(
-                                      onDeletePressed: () {
-                                        Get.close(1);
-                                        controller.deleteActivity(item);
-                                      },
-                                    ));
-                                  },
-                                )
+                              CustomIconButton(
+                                iconData: IconlyBold.delete,
+                                backgroundColor: redColor,
+                                onPressed: () {
+                                  Get.dialog(DeleteConfirmationDialog(
+                                    onDeletePressed: () {
+                                      Get.close(1);
+                                      controller.deleteActivity(item);
+                                    },
+                                  ));
+                                },
+                              )
+
                             ],
                             title: "${item.actDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
                             number: "${index + 1}",
@@ -367,8 +367,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                         return ElevatedButton(
                           onPressed: controller.enableButton.value && controller.isActivitiesValid() && controller.listTripInfo.isNotEmpty && controller.listActivity.isNotEmpty
                               ? () {
-                            Get
-                                .off(() => const ActualizationTripDetailScreen());
+                            controller.saveData();
                           }
                               : null,
                           style: ElevatedButton.styleFrom(

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/actualization_trip/activity_model.dart';
+import 'package:gais/data/model/actualization_trip/actualization_trip_model.dart';
+import 'package:gais/data/model/actualization_trip/actualization_trip_model.dart';
 import 'package:gais/data/model/actualization_trip/trip_info_model.dart';
 import 'package:gais/data/repository/actualization_trip/new_actualization_trip_repository.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
+import 'package:gais/screen/tms/actualization_trip/detail/actualization_trip_detail_screen.dart';
 import 'package:gais/util/ext/date_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/mixin/master_data_mixin.dart';
@@ -39,7 +43,7 @@ with MasterDataMixin {
     listTripInfo.clear();
     final tripInfoResult = await _repository.getTripInfo(ids: listIdRequestTrip);
     tripInfoResult.fold(
-        (l) => null, 
+        (l) => null,
         (r) => listTripInfo.addAll(r.map((e) => e.copyWith(key: "${e.hashCode}")))
     );
 
@@ -214,6 +218,34 @@ with MasterDataMixin {
     }
 
     return isValid;
+  }
+
+  void saveData() async {
+    isLoadingHitApi(true);
+
+    ActualizationTripModel model = ActualizationTripModel(
+        idRequestTrip: listIdRequestTrip,
+        arrayTrip: listTripInfo,
+        arrayActivities: listActivity,
+        purpose: purposeController.text,
+        notes: notesController.text,
+        idEmployee: await storage.readString(StorageCore.userID)
+    );
+
+
+    final result = await _repository.saveData(model);
+
+    result.fold(
+        (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
+        (model) {
+              isLoadingHitApi(false);
+              Get.off(() => const ActualizationTripDetailScreen(),
+              arguments: {"item": model});
+        });
   }
 
   void updateButton() {

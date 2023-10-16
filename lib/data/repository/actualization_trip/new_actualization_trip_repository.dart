@@ -28,9 +28,35 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
   }
 
   @override
-  Future<Either<BaseError, ActualizationTripModel>> saveData(data) {
-    // TODO: implement saveData
-    throw UnimplementedError();
+  Future<Either<BaseError, ActualizationTripModel>> saveData(data) async{
+    final actualizationTrip = data as ActualizationTripModel;
+
+    final formData = Dio.FormData.fromMap(actualizationTrip.toJson());
+
+    if(actualizationTrip.idRequestTrip != null && actualizationTrip.idRequestTrip.toString().isNotEmpty){
+      List<String> ids = List<String>.from(actualizationTrip.idRequestTrip);
+      for(String item in ids){
+        formData.fields.add(
+            MapEntry("id_request_trip[]", item)
+        );
+      }
+    }
+
+    try {
+      Dio.Response response = await network.dio.post(
+          '/api/actual_trip/store',
+          data: formData
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ActualizationTripModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
@@ -151,6 +177,10 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
           "id_request_trip[]" : ids
         }
       );
+
+      if(response.statusCode == 400){
+        return right([]);
+      }
 
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, TripInfoModel.fromJsonModelList);
       return right(apiResponseModel.data);
