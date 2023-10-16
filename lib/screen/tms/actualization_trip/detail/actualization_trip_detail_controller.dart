@@ -282,11 +282,11 @@ class ActualizationTripDetailController extends BaseController {
         (element) => element.key.toString() == tripInfoModel.key.toString());
   }
 
-  void addActivity(ActivityModel result) {
+  void addActivity(ActivityModel activityModel) async{
     //check if there is duplicate date
     bool idDuplicateFound = false;
     for (var element in listActivity) {
-      if (element.actDate == result.actDate) {
+      if (element.actDate!.contains(activityModel.actDate!)) {
         idDuplicateFound = true;
         break;
       }
@@ -296,10 +296,21 @@ class ActualizationTripDetailController extends BaseController {
       Get.showSnackbar(CustomGetSnackBar(
           message: "Date already exists", backgroundColor: Colors.red));
     } else {
-      listActivity.add(result);
-    }
+      isLoadingHitApi(true);
 
-    listActivity.sort((a, b) => a.actDate!.compareTo(b.actDate!));
+      activityModel.idAct = selectedItem.value.id;
+
+      final result = await _activityRepository.saveData(activityModel);
+      result.fold((l) {
+        isLoadingHitApi(false);
+        Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+      }, (model) {
+        isLoadingHitApi(false);
+        //update list
+        getActivity();
+      });
+    }
   }
 
   void updateActivity(ActivityModel activityModel) async {
