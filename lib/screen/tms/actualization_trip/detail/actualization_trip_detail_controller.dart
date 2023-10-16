@@ -131,19 +131,6 @@ class ActualizationTripDetailController extends BaseController {
             "";
         result += "-$arrivalDate";
       }
-    } else if (tripInfoModel.dateDepartTransportation != null) {
-      String departureDate = tripInfoModel.dateDepartTransportation
-              ?.toDateFormat(
-                  originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
-          "";
-      result += departureDate;
-      if (tripInfoModel.dateReturnTransportation != null) {
-        String arrivalDate = tripInfoModel.dateReturnTransportation
-                ?.toDateFormat(
-                    originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
-            "";
-        result += "-$arrivalDate";
-      }
     }
 
     if (tripInfoModel.nameCityFrom != null &&
@@ -157,18 +144,7 @@ class ActualizationTripDetailController extends BaseController {
           tripInfoModel.nameCityTo!.isNotEmpty) {
         result += "-${tripInfoModel.nameCityTo}";
       }
-    } else if (tripInfoModel.origin != null &&
-        tripInfoModel.origin!.isNotEmpty) {
-      if (result.isNotEmpty) {
-        result += ", ${tripInfoModel.origin}";
-      } else {
-        result += "${tripInfoModel.origin}";
-      }
-      if (tripInfoModel.destination != null &&
-          tripInfoModel.destination!.isNotEmpty) {
-        result += "-${tripInfoModel.destination}";
-      }
-    }
+    } 
 
     return result;
   }

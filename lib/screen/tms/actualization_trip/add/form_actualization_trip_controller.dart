@@ -101,13 +101,6 @@ with MasterDataMixin {
         String arrivalDate = tripInfoModel.dateArrival?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
         result += "-$arrivalDate";
       }
-    }else if(tripInfoModel.dateDepartTransportation != null){
-      String departureDate = tripInfoModel.dateDepartTransportation?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
-      result += departureDate;
-      if(tripInfoModel.dateReturnTransportation != null){
-        String arrivalDate = tripInfoModel.dateReturnTransportation?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ?? "";
-        result += "-$arrivalDate";
-      }
     }
 
     if(tripInfoModel.nameCityFrom!=null && tripInfoModel.nameCityFrom!.isNotEmpty){
@@ -118,15 +111,6 @@ with MasterDataMixin {
       }
       if(tripInfoModel.nameCityTo!=null && tripInfoModel.nameCityTo!.isNotEmpty){
         result += "-${tripInfoModel.nameCityTo}";
-      }
-    }else if(tripInfoModel.origin!=null && tripInfoModel.origin!.isNotEmpty){
-      if(result.isNotEmpty){
-        result += ", ${tripInfoModel.origin}";
-      }else{
-        result += "${tripInfoModel.origin}";
-      }
-      if(tripInfoModel.destination!=null && tripInfoModel.destination!.isNotEmpty){
-        result += "-${tripInfoModel.destination}";
       }
     }
 
@@ -205,6 +189,19 @@ with MasterDataMixin {
     listActivity.removeWhere((element) => element.key.toString() == activityModel.key.toString());
 
     listActivity.sort((a, b) => a.actDate!.compareTo(b.actDate!));
+  }
+
+  bool isTripInfoValid(){
+    bool isValid = true;
+
+    for (var element in listTripInfo) {
+      if(element.dateDeparture == null || element.dateDeparture!.isEmpty){
+        isValid = false;
+        break;
+      }
+    }
+
+    return isValid;
   }
 
   bool isActivitiesValid(){

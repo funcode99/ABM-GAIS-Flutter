@@ -125,54 +125,62 @@ class FormActualizationTripScreen extends StatelessWidget {
                                     title: controller.getTitleTripInfo(item),
                                     number: "${index + 1}",
                                     content: item.type == null ? const SizedBox() :
-                                    Container(
-                                      margin: const EdgeInsets.only(top: 8),
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment
-                                            .start,
-                                        children: [
-                                          Container(
-                                            height: 50,
-                                            width: 50,
-                                            padding: const EdgeInsets.all(10),
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: infoColor,
-                                            ),
-                                            child: item.type != null &&
-                                                item.type!.isNotEmpty
-                                                ?
-                                            SvgPicture.asset(
-                                                item.type?.toLowerCase() ==
-                                                    "train"
-                                                    ? ImageConstant.train
-                                                    : ImageConstant.airplane)
-                                                : const SizedBox(),
-                                          ),
-                                          const SizedBox(
-                                            width: 4,
-                                          ),
-                                          Column(
+                                    Column(
+                                      children: [
+                                        controller.getTitleTripInfo(item).isEmpty ? const Text(
+                                          "Trip info details are required",
+                                          style: TextStyle(color: Colors.redAccent, fontSize: 12, fontStyle: FontStyle.italic),
+                                        ) : const SizedBox(),
+                                        Container(
+                                          margin: const EdgeInsets.only(top: 8),
+                                          child: Row(
                                             crossAxisAlignment: CrossAxisAlignment
                                                 .start,
                                             children: [
-                                              Text(
-                                                controller.getTitleTransportation(item),
-                                                style: const TextStyle(
-                                                    fontSize: 12
+                                              Container(
+                                                height: 50,
+                                                width: 50,
+                                                padding: const EdgeInsets.all(10),
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: infoColor,
                                                 ),
+                                                child: item.type != null &&
+                                                    item.type!.isNotEmpty
+                                                    ?
+                                                SvgPicture.asset(
+                                                    item.type?.toLowerCase() ==
+                                                        "train"
+                                                        ? ImageConstant.train
+                                                        : ImageConstant.airplane)
+                                                    : const SizedBox(),
                                               ),
-                                              Text(
-                                                "${item.origin} -> ${item
-                                                    .destination}",
-                                                style: const TextStyle(
-                                                    fontSize: 12
-                                                ),
+                                              const SizedBox(
+                                                width: 4,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment
+                                                    .start,
+                                                children: [
+                                                  Text(
+                                                    controller.getTitleTransportation(item),
+                                                    style: const TextStyle(
+                                                        fontSize: 12
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "${item.origin} -> ${item
+                                                        .destination}",
+                                                    style: const TextStyle(
+                                                        fontSize: 12
+                                                    ),
+                                                  )
+                                                ],
                                               )
                                             ],
-                                          )
-                                        ],
-                                      ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
 
                                   ),
@@ -365,7 +373,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                       ),
                       Obx(() {
                         return ElevatedButton(
-                          onPressed: controller.enableButton.value && controller.isActivitiesValid() && controller.listTripInfo.isNotEmpty && controller.listActivity.isNotEmpty
+                          onPressed: controller.enableButton.value && controller.isTripInfoValid() && controller.isActivitiesValid() && controller.listTripInfo.isNotEmpty && controller.listActivity.isNotEmpty
                               ? () {
                             controller.saveData();
                           }
