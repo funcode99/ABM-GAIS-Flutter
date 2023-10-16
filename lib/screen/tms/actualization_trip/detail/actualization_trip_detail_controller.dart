@@ -242,9 +242,21 @@ class ActualizationTripDetailController extends BaseController {
     listTripInfo.add(result);
   }
 
-  void updateTripInfo(TripInfoModel result){
-    final index = listTripInfo.indexWhere((element) => element.key.toString() == result.key.toString());
-    listTripInfo[index] = result;
+  void updateTripInfo(TripInfoModel tripInfoModel)async{
+    isLoadingHitApi(true);
+
+    final result = await _tripRepository.updateData(tripInfoModel, tripInfoModel.id);
+    result.fold(
+            (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
+            (model) {
+          isLoadingHitApi(false);
+          //update list
+          getTripInfo();
+        });
   }
 
   void deleteTripInfo(TripInfoModel tripInfoModel){
