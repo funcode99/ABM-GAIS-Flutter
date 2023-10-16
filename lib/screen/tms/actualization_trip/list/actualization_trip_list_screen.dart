@@ -17,6 +17,7 @@ import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/actualization_trip/add/select_request_trip_screen.dart';
+import 'package:gais/screen/tms/actualization_trip/detail/actualization_trip_detail_screen.dart';
 import 'package:gais/screen/tms/actualization_trip/list/actualization_trip_list_controller.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -265,13 +266,13 @@ class _ActualizationTripListScreenState
                                         iconData: item.codeStatusDoc == ActualizationTripEnum.reject ? IconlyBold.edit : IconlyBold.show,
                                         backgroundColor: successColor,
                                         onPressed: () async {
-                                          /*Get.to(
-                                              () =>
-                                          const RequestATKDetailScreen(),
-                                          arguments: {
-                                            "item": item
-                                          })?.then((value) =>
-                                          controller.getHeader());*/
+                                          Get.to(
+                                            () => const ActualizationTripDetailScreen(), arguments: {
+                                              "item": item
+                                             }
+                                         )?.then((value) =>
+                                            controller.getHeader()
+                                          );
                                         },
                                       ),
                                     ],

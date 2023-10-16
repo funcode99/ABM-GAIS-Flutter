@@ -1,7 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/actualization_trip/activity_model.dart';
 import 'package:gais/data/model/actualization_trip/actualization_trip_model.dart';
 import 'package:gais/data/model/request_atk/request_atk_model.dart';
 import 'package:gais/reusable/bottombar.dart';
@@ -23,8 +26,11 @@ import 'package:gais/screen/tms/actualization_trip/detail/actualization_trip_det
 import 'package:gais/util/color/color_util.dart';
 import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
+
+import '../../../../data/model/actualization_trip/trip_info_model.dart';
 
 class ActualizationTripDetailScreen extends StatelessWidget {
   const ActualizationTripDetailScreen({Key? key}) : super(key: key);
@@ -37,7 +43,8 @@ class ActualizationTripDetailScreen extends StatelessWidget {
     }
 
     final ActualizationTripDetailController controller =
-    Get.put(ActualizationTripDetailController())..selectedItem(selectedItem);
+    Get.put(ActualizationTripDetailController())
+      ..selectedItem(selectedItem);
 
     return Scaffold(
       backgroundColor: baseColor,
@@ -67,11 +74,12 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Obx(() {
-                            if(controller.selectedItem.value.status==null){
+                            if (controller.selectedItem.value.status == null) {
                               return const SizedBox();
                             }
                             return CustomStatusContainer(
-                              backgroundColor: ColorUtil.getStatusColorByText("${controller.selectedItem.value.status}"),
+                              backgroundColor: ColorUtil.getStatusColorByText(
+                                  "${controller.selectedItem.value.status}"),
                               status: "${controller.selectedItem.value.status}",
                             );
                           })
@@ -83,16 +91,20 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                       child: Obx(() {
                         return Text(
                           controller.selectedItem.value.noAct ?? "",
-                          style: Theme.of(context)
+                          style: Theme
+                              .of(context)
                               .textTheme
                               .bodyLarge
-                              ?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
+                              ?.copyWith(
+                              fontSize: 14, fontWeight: FontWeight.w400),
                           textAlign: TextAlign.center,
                         );
                       }),
                     ),
                     Obx(() {
-                      if (controller.selectedItem.value.codeStatusDoc.toString() == "0") {
+                      if (controller.selectedItem.value.codeStatusDoc
+                          .toString() == ActualizationTripEnum.revision.value
+                          .toString()) {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -144,8 +156,8 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                       color: greyColor,
                     ),
                     Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32, vertical: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -165,10 +177,51 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                           const SizedBox(
                             height: 8,
                           ),
-                          CustomTextFormField(
-                              readOnly: true,
-                              controller: controller.referenceController,
-                              label: "Reference".tr),
+                          Text("Reference".tr, style: formlabelTextStyle),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Obx(() {
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 16),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  border: Border.all(width: 1),
+                                  color: neutralColor,
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              child:
+                              controller.selectedItem.value.noRequestTrip !=
+                                  null
+                                  ? Column(
+                                children: controller
+                                    .selectedItem.value.noRequestTrip!
+                                    .map((e) =>
+                                    Text("e",
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            ?.copyWith(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          // fontWeight: FontWeight.w600,
+                                        )))
+                                    .toList(),
+                              )
+                                  : Text("-",
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      ?.copyWith(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    // fontWeight: FontWeight.w600,
+                                  )),
+                            );
+                          }),
                           const SizedBox(
                             height: 64,
                           ),
@@ -218,7 +271,8 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                                     0.1,
                                     0
                                   ], colors: [
-                                    controller.selectedTab.value == TabEnum.detail
+                                    controller.selectedTab.value ==
+                                        TabEnum.detail
                                         ? blackColor
                                         : whiteColor,
                                     Colors.white
@@ -231,45 +285,41 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                               controller.selectedTab(TabEnum.detail);
                             },
                           ),
-
                           Obx(() {
-                            if(controller.selectedItem.value.codeStatusDoc != RequestATKEnum.draft.value){
-                              return GestureDetector(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.only(
-                                      top: 10, left: 5),
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    color: controller.selectedTab.value ==
+                            return GestureDetector(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16),
+                                alignment: Alignment.center,
+                                margin:
+                                const EdgeInsets.only(top: 10, left: 5),
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: controller.selectedTab.value ==
+                                      TabEnum.approval
+                                      ? whiteColor
+                                      : neutralColor,
+                                  borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(8),
+                                      topLeft: Radius.circular(8)),
+                                  gradient: LinearGradient(stops: const [
+                                    0.1,
+                                    0
+                                  ], colors: [
+                                    controller.selectedTab.value ==
                                         TabEnum.approval
-                                        ? whiteColor
-                                        : neutralColor,
-                                    borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(8),
-                                        topLeft: Radius.circular(8)),
-                                    gradient: LinearGradient(stops: const [
-                                      0.1,
-                                      0
-                                    ], colors: [
-                                      controller.selectedTab.value ==
-                                          TabEnum.approval
-                                          ? blackColor
-                                          : whiteColor,
-                                      Colors.white
-                                    ]),
-                                  ),
-                                  child: const Text("Approval Info"),
+                                        ? blackColor
+                                        : whiteColor,
+                                    Colors.white
+                                  ]),
                                 ),
-                                onTap: () {
-                                  controller.selectedTab(TabEnum.approval);
-                                },
-                              );
-                            }
-                            return const SizedBox();
+                                child: const Text("Approval Info"),
+                              ),
+                              onTap: () {
+                                controller.selectedTab(TabEnum.approval);
+                              },
+                            );
                           }),
-
                         ],
                       ),
                     ),
@@ -280,17 +330,21 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                     Obx(() {
                       if (controller.selectedTab.value == TabEnum.detail) {
                         return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(
                                 height: 8,
                               ),
-                              CustomTextFormField(
-                                  isRequired: true,
-                                  controller: controller.purposeController,
-                                  label: "Purpose".tr),
+                              Obx(() {
+                                return CustomTextFormField(
+                                    isRequired: true,
+                                    readOnly: !controller.onEdit.value,
+                                    controller: controller.purposeController,
+                                    label: "Purpose".tr);
+                              }),
                               const SizedBox(
                                 height: 16,
                               ),
@@ -301,77 +355,125 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 16,
                               ),
-
-
-                              ActualizationTripItem(
-                                action: [
-                                  CustomIconButton(
-                                    iconData: IconlyBold.edit,
-                                    backgroundColor: successColor,
-                                    onPressed: () {
-
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  CustomIconButton(
-                                    iconData: IconlyBold.delete,
-                                    backgroundColor: redColor,
-                                    onPressed: () {
-                                    },
-                                  )
-                                ],
-                                title: "23/04/2023 - 25/04/2023, Jakarta -> Surabaya",
-                                number: "1",
-                                content: Container(
-                                  margin: const EdgeInsets.only(top: 8),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 50,
-                                        width: 50,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: infoColor,
+                              Obx(() {
+                                return Column(
+                                  children: [
+                                    ...controller.listTripInfo.mapIndexed((
+                                        index,
+                                        item) {
+                                      return ConstrainedBox(
+                                        constraints: const BoxConstraints(
+                                          minHeight: 70,
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        width: 4,
-                                      ),
-                                      const Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "26/04/2023 -> 26/04/2023",
-                                            style: TextStyle(
-                                                fontSize: 12
+                                        child: ActualizationTripItem(
+                                          action: controller.onEdit.value ? [
+                                            CustomIconButton(
+                                              iconData: IconlyBold.edit,
+                                              backgroundColor: successColor,
+                                              onPressed: () async {
+                                                TripInfoModel? result = await Get
+                                                    .to(() => const FormTripInfoActualizationTripScreen(),
+                                                    arguments: {
+                                                      "trip_info": item
+                                                    });
+
+                                                if (result != null) {
+                                                  controller.updateTripInfo(result);
+                                                }
+                                              },
+                                            ),
+                                            SizedBox(
+                                              width: item.deletable ? 4 : 0,
+                                            ),
+                                            if(item.deletable)
+                                              CustomIconButton(
+                                                iconData: IconlyBold.delete,
+                                                backgroundColor: redColor,
+                                                onPressed: () {
+                                                  Get.dialog(
+                                                      DeleteConfirmationDialog(
+                                                        onDeletePressed: () {
+                                                          Get.close(1);
+                                                          controller.deleteTripInfo(item);
+                                                        },
+                                                      ));
+                                                },
+                                              )
+                                          ] : [],
+
+                                          title: controller.getTitleTripInfo(item),
+                                          number: "${index + 1}",
+                                          content: item.type == null
+                                              ? const SizedBox()
+                                              :
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 8),
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment
+                                                  .start,
+                                              children: [
+                                                Container(
+                                                  height: 50,
+                                                  width: 50,
+                                                  padding: const EdgeInsets.all(
+                                                      10),
+                                                  decoration: const BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: infoColor,
+                                                  ),
+                                                  child: item.type != null &&
+                                                      item.type!.isNotEmpty
+                                                      ?
+                                                  SvgPicture.asset(
+                                                      item.type
+                                                          ?.toLowerCase() ==
+                                                          "train"
+                                                          ? ImageConstant.train
+                                                          : ImageConstant
+                                                          .airplane)
+                                                      : const SizedBox(),
+                                                ),
+                                                const SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment
+                                                      .start,
+                                                  children: [
+                                                    Text(
+                                                      controller.getTitleTransportation(item),
+                                                      style: const TextStyle(
+                                                          fontSize: 12
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "${item.origin} -> ${item.destination}",
+                                                      style: const TextStyle(
+                                                          fontSize: 12
+                                                      ),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
                                             ),
                                           ),
-                                          Text(
-                                            "SGU -> GMR",
-                                            style: TextStyle(
-                                                fontSize: 12
-                                            ),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
 
-                              ),
-
+                                        ),
+                                      );
+                                    }),
+                                  ],
+                                );
+                              }),
                               const SizedBox(
                                 height: 16,
                               ),
-
-                              SizedBox(
+                              /*SizedBox(
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    Get.to(()=>const FormTripInfoActualizationTripScreen());
+                                    Get.to(() =>
+                                    const FormTripInfoActualizationTripScreen());
                                   },
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: infoColor),
@@ -391,8 +493,7 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                                         ]),
                                   ),
                                 ),
-                              ),
-
+                              ),*/
                               const SizedBox(
                                 height: 16,
                               ),
@@ -401,83 +502,116 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                                   text: 'Activities ',
                                   style: formlabelTextStyle,
                                   children: const <TextSpan>[
-                                    TextSpan(text: '*', style: TextStyle(color: Colors
-                                        .red)),
+                                    TextSpan(
+                                        text: '*',
+                                        style: TextStyle(color: Colors.red)),
                                   ],
                                 ),
                               ),
                               const SizedBox(
                                 height: 16,
                               ),
-                              ActualizationTripItem(
-                                action: [
-                                  CustomIconButton(
-                                    iconData: IconlyBold.edit,
-                                    backgroundColor: successColor,
-                                    onPressed: () {
+                              Obx(() {
+                                return Column(
+                                  children: [
+                                    ...controller.listActivity.mapIndexed((index, item){
+                                      return ActualizationTripItem(
+                                          action: controller.onEdit.value ? [
+                                            CustomIconButton(
+                                              iconData: IconlyBold.edit,
+                                              backgroundColor: successColor,
+                                              onPressed: () async {
+                                                ActivityModel? result = await Get.to(() => const FormActivityActualizationTripScreen(), arguments: {
+                                                  "activity" : item
+                                                });
 
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  CustomIconButton(
-                                    iconData: IconlyBold.delete,
-                                    backgroundColor: redColor,
-                                    onPressed: () {
+                                                if(result!=null){
+                                                  controller.updateActivity(result);
+                                                }
+                                              },
+                                            ),
+                                            const SizedBox(
+                                              width: 4,
+                                            ),
+                                            CustomIconButton(
+                                              iconData: IconlyBold.delete,
+                                              backgroundColor: redColor,
+                                              onPressed: () {
+                                                Get.dialog(DeleteConfirmationDialog(
+                                                  onDeletePressed: () {
+                                                    Get.close(1);
+                                                    controller.deleteActivity(item);
+                                                  },
+                                                ));
+                                              },
+                                            )
+                                          ] : [],
+                                          title: "${item.actDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
+                                          number: "${index + 1}",
+                                          content: Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 2),
+                                            child: item.activities == null || item.activities!.isEmpty ?
+                                            const Text(
+                                              "Activity details are required",
+                                              style: TextStyle(color: Colors.redAccent, fontSize: 12, fontStyle: FontStyle.italic),
 
-                                    },
-                                  )
-                                ],
-                                title: "23/04/2023",
-                                number: "1",
-                                content: const Text(
-                                    "Travel from Jakarta to Surabaya"
-                                ),
+                                            ) : Text(
+                                                "${item.activities}"
+                                            ),
+                                          )
 
-                              ),
-
+                                      );
+                                    })
+                                  ],
+                                );
+                              }),
                               const SizedBox(
                                 height: 16,
                               ),
-
-                              SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    Get.to(()=>const FormActivityActualizationTripScreen());
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: infoColor),
-                                  child: RichText(
-                                    text: TextSpan(
-                                        style: Theme
-                                            .of(context)
-                                            .textTheme
-                                            .bodyLarge
-                                            ?.copyWith(
-                                            fontSize: 16,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700),
-                                        children: [
-                                          const TextSpan(text: "+ "),
-                                          TextSpan(text: "Add Activities".tr)
-                                        ]),
-                                  ),
-                                ),
-                              ),
-
+                              Obx(() {
+                                if (controller.onEdit.value) {
+                                  return SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        Get.to(() =>
+                                        const FormActivityActualizationTripScreen());
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: infoColor),
+                                      child: RichText(
+                                        text: TextSpan(
+                                            style: Theme
+                                                .of(context)
+                                                .textTheme
+                                                .bodyLarge
+                                                ?.copyWith(
+                                                fontSize: 16,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w700),
+                                            children: [
+                                              const TextSpan(text: "+ "),
+                                              TextSpan(
+                                                  text: "Add Activities".tr)
+                                            ]),
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return const SizedBox();
+                              }),
                               const SizedBox(
                                 height: 16,
                               ),
-                              CustomTextFormField(
-                                multiLine: true,
-                                controller: controller.notesController,
-                                label: "Notes".tr,
-                                isRequired: true,
-                              ),
-
-
+                              Obx(() {
+                                return CustomTextFormField(
+                                  multiLine: true,
+                                  readOnly: !controller.onEdit.value,
+                                  controller: controller.notesController,
+                                  label: "Notes".tr,
+                                  isRequired: true,
+                                );
+                              }),
                               const SizedBox(
                                 height: 16,
                               ),
@@ -491,7 +625,11 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                           child: Obx(() {
                             return controller.listLogApproval.isEmpty
                                 ? const SizedBox()
-                                : ApprovalLogList(list: controller.listLogApproval, waitingApprovalValue: RequestTripEnum.waitingApproval.value,);
+                                : ApprovalLogList(
+                              list: controller.listLogApproval,
+                              waitingApprovalValue: ActualizationTripEnum
+                                  .waitingApproval.value,
+                            );
                           }),
                         );
                       } else {

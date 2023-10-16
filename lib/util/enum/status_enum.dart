@@ -76,10 +76,10 @@ enum BookingMeetingRoomEnum {
 
 enum ActualizationTripEnum {
   draft(0),
-  waitingApprocal(1),
+  waitingApproval(1),
   revision(3),
   reject(4),
-  done(4);
+  done(10);
 
   const ActualizationTripEnum(this.value);
 
