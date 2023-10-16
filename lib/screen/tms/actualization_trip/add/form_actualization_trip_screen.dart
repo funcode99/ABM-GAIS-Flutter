@@ -186,7 +186,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                     height: 16,
                   ),
 
-                  SizedBox(
+                  /*SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
@@ -213,7 +213,7 @@ class FormActualizationTripScreen extends StatelessWidget {
                             ]),
                       ),
                     ),
-                  ),
+                  ),*/
 
                   const SizedBox(
                     height: 16,

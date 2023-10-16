@@ -32,7 +32,7 @@ ActualizationTripModel _$ActualizationTripModelFromJson(
       creator: json['creator'] as String?,
       noRequestTrip: json['no_request_trip'] as List<dynamic>?,
       status: json['status'] as String?,
-      daysOfTrip: json['days_of_trip'] as String?,
+      daysOfTrip: json['days_of_trip'],
       arrayActivities: json['array_activities'],
       arrayTrip: json['array_trip'],
     );

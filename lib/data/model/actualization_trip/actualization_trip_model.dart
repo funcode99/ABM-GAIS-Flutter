@@ -28,7 +28,7 @@ class ActualizationTripModel {
   String? creator;
   List<dynamic>? noRequestTrip;
   String? status;
-  String? daysOfTrip;
+  dynamic daysOfTrip;
   dynamic arrayTrip;
   dynamic arrayActivities;
 

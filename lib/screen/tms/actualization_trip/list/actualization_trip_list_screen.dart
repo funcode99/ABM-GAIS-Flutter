@@ -172,86 +172,113 @@ class _ActualizationTripListScreenState
                     ? const DataEmpty()
                     : ListView(
                         children: [
-                          ...controller.listHeader.mapIndexed((index, item) =>
-                              CommonListItem(
-                                number:
+                          ...controller.listHeader.mapIndexed((index, item) {
+                            bool isOpen = false;
+                            return StatefulBuilder(
+                                builder: (context, setState){
+                                  return CommonListItem(
+                                    number:
                                     "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
-                                title: "${item.noAct}",
-                                subtitle:
+                                    title: "${item.noAct}",
+                                    subtitle:
                                     "${item.createdAt?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss")}",
-                                content: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 8),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Flexible(
-                                        flex: 1,
+                                    content: GestureDetector(
+                                      behavior: HitTestBehavior.translucent,
+                                      onTap: () {
+                                        setState(() {
+                                          isOpen = !isOpen;
+                                        });
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 8),
                                         child: Column(
                                           children: [
-                                            Text(
-                                              "Request Trip".tr,
-                                              style: listTitleTextStyle,
+                                            Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Flexible(
+                                                  flex: 1,
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        "Created By".tr,
+                                                        style: listTitleTextStyle,
+                                                      ),
+                                                      Text(
+                                                        "${item.employeeName}",
+                                                        style: listSubTitleTextStyle,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Flexible(
+                                                  flex: 1,
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        "Days of Trip".tr,
+                                                        style: listTitleTextStyle,
+                                                      ),
+                                                      Text(
+                                                        "${item.daysOfTrip ?? "-"}",
+                                                        style: listSubTitleTextStyle,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            Text(
-                                              "${item.noRequestTrip}",
-                                              style: listSubTitleTextStyle,
-                                            ),
+                                            isOpen
+                                                ? Container(
+                                              width: double.infinity,
+                                              margin: EdgeInsets.only(top: 16),
+                                              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                                              color : neutralColor,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text("Request Trip"),
+                                                  ...item.noRequestTrip!.map((element) =>
+                                                      Padding(
+                                                        padding: const EdgeInsets
+                                                            .symmetric(vertical: 4),
+                                                        child: Text("${element}",
+                                                          style: titleTextStyle.copyWith(
+                                                              fontSize: 14
+                                                          ),
+                                                        ),
+                                                      )).toList()
+                                                ],
+                                              ),
+                                            )
+                                                : const SizedBox()
                                           ],
                                         ),
                                       ),
-                                      Flexible(
-                                        flex: 1,
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Created By".tr,
-                                              style: listTitleTextStyle,
-                                            ),
-                                            Text(
-                                              "${item.employeeName}",
-                                              style: listSubTitleTextStyle,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Flexible(
-                                        flex: 1,
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Days of Trip".tr,
-                                              style: listTitleTextStyle,
-                                            ),
-                                            Text(
-                                              "${item.daysOfTrip}",
-                                              style: listSubTitleTextStyle,
-                                            ),
-                                          ],
-                                        ),
+                                    ),
+                                    action: [
+                                      CustomIconButton(
+                                        title: item.codeStatusDoc == ActualizationTripEnum.reject ? "Edit".tr : "View".tr,
+                                        iconData: item.codeStatusDoc == ActualizationTripEnum.reject ? IconlyBold.edit : IconlyBold.show,
+                                        backgroundColor: successColor,
+                                        onPressed: () async {
+                                          /*Get.to(
+                                              () =>
+                                          const RequestATKDetailScreen(),
+                                          arguments: {
+                                            "item": item
+                                          })?.then((value) =>
+                                          controller.getHeader());*/
+                                        },
                                       ),
                                     ],
-                                  ),
-                                ),
-                                action: [
-                                  CustomIconButton(
-                                    title: item.codeStatusDoc == ActualizationTripEnum.reject ? "Edit".tr : "View".tr,
-                                    iconData: item.codeStatusDoc == ActualizationTripEnum.reject ? IconlyBold.edit : IconlyBold.show,
-                                    backgroundColor: successColor,
-                                    onPressed: () async {
-                                      /*Get.to(
-                                            () =>
-                                        const RequestATKDetailScreen(),
-                                        arguments: {
-                                          "item": item
-                                        })?.then((value) =>
-                                        controller.getHeader());*/
-                                    },
-                                  ),
-                                ],
-                                status: item.status,
-                              ))
+                                    status: item.status,
+                                  );
+                                },
+                              );
+                          })
                         ],
                       );
               }),
