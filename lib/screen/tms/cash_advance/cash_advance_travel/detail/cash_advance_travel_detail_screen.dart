@@ -207,7 +207,7 @@ class _CashAdvanceTravelDetailScreenState
                         ),
 
                         Obx(() {
-                          if(controller.selectedItem.value.codeStatusDoc != RequestTripEnum.draft.value){
+                          if(controller.selectedItem.value.codeStatusDoc != CashAdvanceTravelEnum.draft.value){
                             return GestureDetector(
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 16),
