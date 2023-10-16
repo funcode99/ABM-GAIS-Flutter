@@ -240,16 +240,17 @@ class _ActualizationTripListScreenState
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text("Request Trip"),
-                                                  ...item.noRequestTrip!.map((element) =>
-                                                      Padding(
-                                                        padding: const EdgeInsets
-                                                            .symmetric(vertical: 4),
-                                                        child: Text("${element}",
-                                                          style: titleTextStyle.copyWith(
-                                                              fontSize: 14
+                                                  if(item.noRequestTrip != null)
+                                                    ...item.noRequestTrip!.map((element) =>
+                                                        Padding(
+                                                          padding: const EdgeInsets
+                                                              .symmetric(vertical: 4),
+                                                          child: Text("${element}",
+                                                            style: titleTextStyle.copyWith(
+                                                                fontSize: 14
+                                                            ),
                                                           ),
-                                                        ),
-                                                      )).toList()
+                                                        )).toList()
                                                 ],
                                               ),
                                             )
