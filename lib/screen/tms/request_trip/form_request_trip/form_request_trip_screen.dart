@@ -99,23 +99,17 @@ class FormRequestTripScreen extends StatelessWidget {
                                 //         },
                                 //       )
                                 //     : Container(),
-                                controller.rtStatus == "Draft" || controller.rtStatus == "Revision" || controller.rtStatus == "Confirmed"
+                                controller.rtStatus == "Draft" || controller.rtStatus == "Revision"
                                     ? CustomFilledButton(
-                                        color: controller.rtStatus == "Confirmed" ? orangeColor : Colors.transparent,
-                                        title: controller.rtStatus == "Confirmed"
-                                            ? "Actualizations"
-                                            : controller.isEdit
+                                        color: Colors.transparent,
+                                        title: controller.isEdit
                                                 ? "Cancel"
                                                 : "Edit",
                                         borderColor: controller.rtStatus == "Confirmed" ? Colors.transparent : infoColor,
                                         fontColor: controller.rtStatus == "Confirmed" ? whiteColor : infoColor,
                                         width: controller.rtStatus == "Confirmed" ? Get.width / 3 : Get.width / 4,
                                         onPressed: () {
-                                          if (controller.rtStatus == "Confirmed") {
-                                            controller.checkActual();
-                                          } else {
-                                            controller.isEdit = controller.isEdit == false ? true : false;
-                                          }
+                                          controller.isEdit = controller.isEdit == false ? true : false;
                                           controller.update();
                                         },
                                       )

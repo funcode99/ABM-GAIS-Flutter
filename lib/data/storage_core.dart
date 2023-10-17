@@ -20,6 +20,8 @@ class StorageCore {
   static const String isEmployee = 'isEmployee';
   static const String isCrewing = 'isCrewing';
   static const String filePath = 'filePath';
+  static const String jobBandName = 'jobBand';
+  static const String jobBandID = 'jobBandID';
 
   final storage = const FlutterSecureStorage();
 
@@ -56,9 +58,9 @@ class StorageCore {
     String site,
     String siteCode,
     String idJobBand,
+    String bandJobName,
     String? foto,
     String? fotoPath,
-    String bandJobName,
     String idFlightClass,
     String flightClass,
     String hotelFare,
