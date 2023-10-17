@@ -112,19 +112,19 @@ class AddAccommodationController extends BaseController {
   Future<void> fetchList() async {
     isLoading = true;
     try {
-      /*await storage.readEmployeeInfo().then((value) {
+      await storage.readEmployeeInfo().then((value) {
         travellerID = int.parse(value.first.id.toString());
         travellerName.text = value.first.employeeName.toString();
         hotelFare.text = value.first.hotelFare.toString();
         travellerGender.text = value.first.jenkel.toString() == "L" ? "Male" : "Female";
         jobBandID = int.parse(value.first.idJobBand.toString());
-      });*/
+      });
 
-      travellerID = requestTripVariable.requestTripRequestorID;
-      travellerName.text = requestTripVariable.requestTripRequestorName.toString();
-      travellerGender.text = requestTripVariable.requestTripRequestorGender.toString() == "L" ? "Male" : "Female";;
-      hotelFare.text = requestTripVariable.requestTripRequestorHotelFare.toString();
-      jobBandID = requestTripVariable.requestTripRequestorJobBandID;
+      // travellerID = requestTripVariable.requestTripRequestorID;
+      // travellerName.text = requestTripVariable.requestTripRequestorName.toString();
+      // travellerGender.text = requestTripVariable.requestTripRequestorGender.toString() == "L" ? "Male" : "Female";;
+      // hotelFare.text = requestTripVariable.requestTripRequestorHotelFare.toString();
+      // jobBandID = requestTripVariable.requestTripRequestorJobBandID;
 
       // var dataCity = await repository.getCityList();
       // cityModel = dataCity;

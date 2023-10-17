@@ -84,7 +84,7 @@ class RequestTripListScreen extends StatelessWidget {
                                           controller.endDate = null;
                                         });
                                         controller.update();
-                                        print(controller.purposeValue);
+                                        // print(controller.purposeValue);
                                       },
                                       children: [
                                         Text("Filter", style: appTitle.copyWith(fontSize: 25)),
@@ -180,21 +180,36 @@ class RequestTripListScreen extends StatelessWidget {
                                 CustomTripCard(
                                   listNumber: controller.currentPage > 1 ? (controller.rtlModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
                                   title: controller.requestList[index].noRequestTrip.toString(),
+                                  // title: controller.requestList[index].id.toString(),
                                   status: controller.requestList[index].status,
                                   subtitle:
                                       controller.dateFormat.format(DateTime.parse(controller.requestList[index].createdAt.toString())).toString(),
                                   info: controller.requestList[index].documentName,
                                   isEdit: true,
-                                  editAction: () => Get.to(
-                                    const FormRequestTripScreen(),
-                                    arguments: {
-                                      'id': controller.requestList[index].id,
-                                      'codeDocument': controller.requestList[index].idDocument,
-                                    },
-                                  )?.then((value) {
-                                    controller.fetchList(controller.currentPage);
-                                    controller.update();
-                                  }),
+                                  editAction: () {
+                                    Get.to(
+                                      const FormRequestTripScreen(),
+                                      arguments: {
+                                        'id': controller.requestList[index].id,
+                                        'codeDocument': controller.requestList[index].idDocument,
+                                      },
+                                    )?.then((value) {
+                                      controller.fetchList(controller.currentPage);
+                                      controller.update();
+                                    });
+                                    // print("id: ${controller.requestList[index].id}");
+                                    // Get.showSnackbar(GetSnackBar(
+                                    //   icon: Icon(
+                                    //     Icons.error,
+                                    //     color: Colors.white,
+                                    //   ),
+                                    //   message: controller.requestList[index].id,
+                                    //   isDismissible: true,
+                                    //   duration: Duration(seconds: 3),
+                                    //   backgroundColor: Colors.red,
+                                    // ));
+                                  },
+
                                   isDelete: true,
                                   deleteAction: () {
                                     Get.dialog(DeleteConfirmationDialog(
@@ -205,6 +220,16 @@ class RequestTripListScreen extends StatelessWidget {
                                         Get.back();
                                       },
                                     ));
+                                    // Get.showSnackbar(GetSnackBar(
+                                    //   icon: Icon(
+                                    //     Icons.error,
+                                    //     color: Colors.white,
+                                    //   ),
+                                    //   message: controller.requestList[index].id,
+                                    //   isDismissible: true,
+                                    //   duration: Duration(seconds: 3),
+                                    //   backgroundColor: Colors.red,
+                                    // ));
                                   },
                                   content: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
