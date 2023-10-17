@@ -63,12 +63,18 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
 
   @override
   Future<Either<BaseError, ActualizationTripModel>> updateData(model, id) async{
-    final activityModel = model as ActualizationTripModel;
+    final actTripModel = model as ActualizationTripModel;
+
+    Map<String, dynamic> data = {
+      "purpose": actTripModel.purpose,
+      "notes": actTripModel.notes,
+      "total_tlk": actTripModel.totalTlk,
+    };
 
     try {
       Dio.Response response = await network.dio
           .post('/api/actual_trip/update_data/$id',
-          data: activityModel.toJson());
+          data: data);
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(
           response.data, ActualizationTripModel.fromJsonModel);
       return right(apiResponseModel.data);
