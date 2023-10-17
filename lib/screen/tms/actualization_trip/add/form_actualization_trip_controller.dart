@@ -4,6 +4,7 @@ import 'package:gais/data/model/actualization_trip/activity_model.dart';
 import 'package:gais/data/model/actualization_trip/actualization_trip_model.dart';
 import 'package:gais/data/model/actualization_trip/actualization_trip_model.dart';
 import 'package:gais/data/model/actualization_trip/trip_info_model.dart';
+import 'package:gais/data/model/master/zone/zone_model.dart';
 import 'package:gais/data/repository/actualization_trip/new_actualization_trip_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
@@ -26,12 +27,12 @@ with MasterDataMixin {
   final listActivity = <ActivityModel>[].obs;
   final listIdRequestTrip = <dynamic>[].obs;
 
-  final totalTLK = 0.obs;
   final tlkRate = 0.obs;
 
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat saveFormat = DateFormat("yyyy-MM-dd");
 
+  final selectedItem = ActualizationTripModel().obs;
 
   final NewActualizationTripRepository _repository = Get.find();
 
@@ -96,6 +97,25 @@ with MasterDataMixin {
 
   }
 
+  int getTotalTLK(){
+    int result = 0;
+    for (var element in listTripInfo) {
+      DateTime? departureDate = element.dateDeparture?.toDate(originFormat: "yyyy-MM-dd");
+      DateTime? arrivalDate = element.dateArrival?.toDate(originFormat: "yyyy-MM-dd");
+
+      int totalDays = 0;
+      if(departureDate != null && arrivalDate != null){
+        totalDays = arrivalDate.difference(departureDate).inDays;
+        totalDays += 1;
+      }
+
+      result += (totalDays * element.tlkRate).toInt();
+
+    }
+
+    return result;
+  }
+
   void getTLKRate() async{
     String jobBandName = await storage.readString(StorageCore.jobBandName);
     String jobBandID = await storage.readString(StorageCore.jobBandID);
@@ -156,9 +176,18 @@ with MasterDataMixin {
     listTripInfo.add(result);
   }
 
-  void updateTripInfo(TripInfoModel result){
-    final index = listTripInfo.indexWhere((element) => element.key.toString() == result.key.toString());
-    listTripInfo[index] = result;
+  void updateTripInfo(TripInfoModel result)async{
+    //get zone by city
+    ZoneModel? zone = await getZoneByCityId(result.idCityTo);
+    if(zone == null){
+      Get.showSnackbar(CustomGetSnackBar(message: "Zone not found for this city", backgroundColor: Colors.red));
+    }else{
+      result.idZona = zone.idZona;
+      result.tlkRate = tlkRate.value;
+
+      final index = listTripInfo.indexWhere((element) => element.key.toString() == result.key.toString());
+      listTripInfo[index] = result;
+    }
   }
 
   void deleteTripInfo(TripInfoModel tripInfoModel){
@@ -243,14 +272,14 @@ with MasterDataMixin {
     isLoadingHitApi(true);
 
     ActualizationTripModel model = ActualizationTripModel(
-        idRequestTrip: listIdRequestTrip,
+        idRequestTrip: listIdRequestTrip.map((element) => element.toString()).toList(),
         arrayTrip: listTripInfo,
         arrayActivities: listActivity,
         purpose: purposeController.text,
         notes: notesController.text,
-        idEmployee: await storage.readString(StorageCore.userID)
+        idEmployee: await storage.readString(StorageCore.userID),
+        totalTlk: getTotalTLK()
     );
-
 
     final result = await _repository.saveData(model);
 
@@ -261,10 +290,24 @@ with MasterDataMixin {
               CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
         },
         (model) {
-              isLoadingHitApi(false);
-              Get.off(() => const ActualizationTripDetailScreen(),
-              arguments: {"item": model});
+          isLoadingHitApi(false);
+          selectedItem(model);
+          submitHeader();
         });
+  }
+
+  void submitHeader() async {
+    isLoadingHitApi(true);
+    final result = await _repository.submitData(selectedItem.value.id!);
+    result.fold((l) {
+      isLoadingHitApi(false);
+      Get.showSnackbar(
+          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+    }, (cashAdvanceModel) {
+      isLoadingHitApi(false);
+      Get.off(() => const ActualizationTripDetailScreen(),
+          arguments: {"item": selectedItem.value});
+    });
   }
 
   void updateButton() {

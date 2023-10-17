@@ -195,10 +195,11 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                               controller.selectedItem.value.noRequestTrip !=
                                   null
                                   ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: controller
                                     .selectedItem.value.noRequestTrip!
                                     .map((e) =>
-                                    Text("e",
+                                    Text("$e",
                                         style: Theme
                                             .of(context)
                                             .textTheme
@@ -574,8 +575,10 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                                     width: double.infinity,
                                     child: ElevatedButton(
                                       onPressed: () async {
-                                        Get.to(() =>
-                                        const FormActivityActualizationTripScreen());
+                                        ActivityModel? result = await Get.to(() => const FormActivityActualizationTripScreen());
+                                        if(result!=null){
+                                          controller.addActivity(result);
+                                        }
                                       },
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: infoColor),

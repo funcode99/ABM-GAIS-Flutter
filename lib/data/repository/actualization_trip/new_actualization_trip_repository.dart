@@ -33,7 +33,7 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
 
     final formData = Dio.FormData.fromMap(actualizationTrip.toJson());
 
-    if(actualizationTrip.idRequestTrip != null && actualizationTrip.idRequestTrip.toString().isNotEmpty){
+    /*if(actualizationTrip.idRequestTrip != null && actualizationTrip.idRequestTrip.toString().isNotEmpty){
       List<String> ids = List<String>.from(actualizationTrip.idRequestTrip);
       for(String item in ids){
         formData.fields.add(
@@ -42,10 +42,12 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
       }
     }
 
+    print(formData.fields);*/
+
     try {
       Dio.Response response = await network.dio.post(
           '/api/actual_trip/store',
-          data: formData
+          data: actualizationTrip.toJson()
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ActualizationTripModel.fromJsonModel);
       return right(apiResponseModel.data);
