@@ -26,6 +26,9 @@ with MasterDataMixin {
   final listActivity = <ActivityModel>[].obs;
   final listIdRequestTrip = <dynamic>[].obs;
 
+  final totalTLK = 0.obs;
+  final tlkRate = 0.obs;
+
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat saveFormat = DateFormat("yyyy-MM-dd");
 
@@ -37,6 +40,7 @@ with MasterDataMixin {
     super.onInit();
 
     initData();
+    getTLKRate();
   }
 
   initData()async{
@@ -89,6 +93,24 @@ with MasterDataMixin {
         activityModel
       );
     }
+
+  }
+
+  void getTLKRate() async{
+    String jobBandName = await storage.readString(StorageCore.jobBandName);
+    String jobBandID = await storage.readString(StorageCore.jobBandID);
+    final result = await _repository.getTLKRate({
+      "band_job_name" : jobBandName,
+      "id_job_band" : jobBandID
+    });
+
+    result.fold(
+          (l) => Get.showSnackbar(
+              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+          (r) {
+            return tlkRate(r);
+          }
+    );
 
   }
 

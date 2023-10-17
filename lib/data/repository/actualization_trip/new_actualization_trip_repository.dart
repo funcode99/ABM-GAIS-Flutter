@@ -11,6 +11,7 @@ import 'package:gais/data/model/approval_log_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/model/request_trip/request_trip_model.dart';
 import 'package:gais/data/network_core.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
 class NewActualizationTripRepository implements BaseRepository<ActualizationTripModel, bool>, ApprovalBaseRepository<bool>{
@@ -226,6 +227,35 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
 
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, TripInfoModel.fromJsonModelList);
       return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  Future<Either<BaseError, int>> getTLKRate(dynamic data) async{
+    try {
+      Dio.Response response = await network.dio.get(
+        '/api/zona_job/get_tlk_rate',
+        queryParameters: data
+      );
+
+      Map<String, dynamic> resp = Map<String, dynamic>.from(response.data);
+      if(!resp.containsKey("data")){
+        return right(0);
+      }
+
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, TripInfoModel.fromJsonModel);
+      TripInfoModel tripInfoModel = apiResponseModel.data;
+      int tlkRate = tripInfoModel.tlkRate.toString().toInt();
+      return right(tlkRate);
+
     } on DioError catch (e) {
       print("DioError $e");
       return left(BaseError(message: e.response!.data['message'] ?? e.message));
