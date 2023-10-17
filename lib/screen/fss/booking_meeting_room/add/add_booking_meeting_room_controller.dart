@@ -126,6 +126,13 @@ class AddBookingMeetingRoomController extends BaseController
     listRoom.add(RoomModel(id: "", nameMeetingRoom: "Meeting Room"));
     final rooms = await getListRoomBySite(idSite.toInt());
     listRoom.addAll(rooms);
+    if(rooms!=null){
+      if(itemFromDashboard.value!=null){
+        onChangeSelectedRoom("${itemFromDashboard.value?.idMeetingRoom}");
+      }else{
+        onChangeSelectedRoom("");
+      }
+    }
 
     if(codeRole == RoleEnum.administrator.value){
       enableSelectCompany(true);
