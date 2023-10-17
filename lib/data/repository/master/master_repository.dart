@@ -20,6 +20,7 @@ import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
 import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
+import 'package:gais/data/model/master/zone/zone_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/network_core.dart';
 import 'package:get/get.dart';
@@ -685,6 +686,29 @@ class MasterRepository{
       );
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CityModel.fromJsonModelList);
       return right(apiResponseModel.data);
+
+    } on Dio.DioError catch (e) {
+      print(e);
+
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print(e);
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print(e);
+
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  Future<Either<BaseError, ZoneModel>> getZoneByCityId(dynamic id)async{
+    try {
+      Dio.Response response = await network.dio.get(
+          '/api/zona/get_by_city/$id',
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ZoneModel.fromJsonModelList);
+      List<ZoneModel> list = apiResponseModel.data;
+      return right(list.first);
 
     } on Dio.DioError catch (e) {
       print(e);

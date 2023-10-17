@@ -14,6 +14,7 @@ import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
 import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
+import 'package:gais/data/model/master/zone/zone_model.dart';
 import 'package:gais/data/repository/master/master_repository.dart';
 import 'package:get/get.dart';
 
@@ -164,6 +165,11 @@ mixin MasterDataMixin{
   Future<List<CityModel>> getListCity()async{
     final result = await _repository.getListCity();
     return result.fold((l) => [], (list) => list);
+  }
+
+  Future<ZoneModel?> getZoneByCityId(dynamic cityId)async{
+    final result = await _repository.getZoneByCityId(cityId);
+    return result.fold((l) => null, (zone) => zone);
   }
 
 }
