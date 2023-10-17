@@ -124,8 +124,9 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                             ),
                             controller.onEdit.value
                                 ? ElevatedButton(
-                              onPressed: controller.enableButton.value
+                              onPressed: controller.enableButton.value && controller.isTripInfoValid() && controller.isActivitiesValid() && controller.listTripInfo.isNotEmpty && controller.listActivity.isNotEmpty
                                   ? () {
+                                controller.updateHeader();
                                 controller.onEdit(false);
                               }
                                   : null,

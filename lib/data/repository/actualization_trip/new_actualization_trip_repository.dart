@@ -62,9 +62,24 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
   }
 
   @override
-  Future<Either<BaseError, ActualizationTripModel>> updateData(data, id) {
-    // TODO: implement updateData
-    throw UnimplementedError();
+  Future<Either<BaseError, ActualizationTripModel>> updateData(model, id) async{
+    final activityModel = model as ActualizationTripModel;
+
+    try {
+      Dio.Response response = await network.dio
+          .post('/api/actual_trip/update_data/$id',
+          data: activityModel.toJson());
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(
+          response.data, ActualizationTripModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e) {
+      return left(BaseError(message: e.message));
+    } catch (e) {
+      print("Error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override

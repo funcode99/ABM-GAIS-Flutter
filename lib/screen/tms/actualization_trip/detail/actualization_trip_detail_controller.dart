@@ -4,18 +4,21 @@ import 'package:gais/data/model/actualization_trip/activity_model.dart';
 import 'package:gais/data/model/actualization_trip/actualization_trip_model.dart';
 import 'package:gais/data/model/actualization_trip/trip_info_model.dart';
 import 'package:gais/data/model/approval_log_model.dart';
+import 'package:gais/data/model/master/zone/zone_model.dart';
 import 'package:gais/data/model/request_atk/request_atk_detail_model.dart';
 import 'package:gais/data/model/request_atk/request_atk_model.dart';
 import 'package:gais/data/repository/actualization_trip/activity_repository.dart';
 import 'package:gais/data/repository/actualization_trip/new_actualization_trip_repository.dart';
 import 'package:gais/data/repository/actualization_trip/trip_info_repository.dart';
 import 'package:gais/data/repository/request_atk/request_atk_repository.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
+import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 
-class ActualizationTripDetailController extends BaseController {
+class ActualizationTripDetailController extends BaseController with MasterDataMixin{
   final TextEditingController createdDateController = TextEditingController();
   final TextEditingController createdByController = TextEditingController();
   final TextEditingController purposeController = TextEditingController();
@@ -36,6 +39,8 @@ class ActualizationTripDetailController extends BaseController {
   final TripInfoRepository _tripRepository = Get.find();
   final ActivityRepository _activityRepository = Get.find();
 
+  final tlkRate = 0.obs;
+
   final selectedTab = Rx<TabEnum>(TabEnum.detail);
   final listLogApproval = <ApprovalLogModel>[].obs;
 
@@ -43,6 +48,7 @@ class ActualizationTripDetailController extends BaseController {
   void onReady() {
     super.onReady();
     initData();
+    getTLKRate();
   }
 
   void initData() {
@@ -64,6 +70,24 @@ class ActualizationTripDetailController extends BaseController {
     notesController.text = selectedItem.value.notes ?? "";
   }
 
+  void getTLKRate() async{
+    String jobBandName = await storage.readString(StorageCore.jobBandName);
+    String jobBandID = await storage.readString(StorageCore.jobBandID);
+    final result = await _repository.getTLKRate({
+      "band_job_name" : jobBandName,
+      "id_job_band" : jobBandID
+    });
+
+    result.fold(
+            (l) => Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red)),
+            (r) {
+          return tlkRate(r);
+        }
+    );
+
+  }
+
   void detailHeader() async {
     final result = await _repository.detailData(selectedItem.value.id!);
 
@@ -74,6 +98,32 @@ class ActualizationTripDetailController extends BaseController {
       setValue();
       getApprovalLog();
     });
+  }
+
+  void updateHeader() async {
+    isLoadingHitApi(true);
+
+    ActualizationTripModel model = selectedItem.value.copyWith(
+        arrayTrip: listTripInfo,
+        arrayActivities: listActivity,
+        purpose: purposeController.text,
+        notes: notesController.text,
+        idEmployee: await storage.readString(StorageCore.userID),
+        totalTlk: getTotalTLK()
+    );
+
+    final result = await _repository.updateData(model, selectedItem.value.id);
+
+    result.fold(
+            (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
+            (model) {
+          isLoadingHitApi(false);
+          detailHeader();
+        });
   }
 
   void submitHeader() async {
@@ -87,6 +137,25 @@ class ActualizationTripDetailController extends BaseController {
       isLoadingHitApi(false);
       detailHeader();
     });
+  }
+
+  int getTotalTLK(){
+    int result = 0;
+    for (var element in listTripInfo) {
+      DateTime? departureDate = element.dateDeparture?.toDate(originFormat: "yyyy-MM-dd");
+      DateTime? arrivalDate = element.dateArrival?.toDate(originFormat: "yyyy-MM-dd");
+
+      int totalDays = 0;
+      if(departureDate != null && arrivalDate != null){
+        totalDays = arrivalDate.difference(departureDate).inDays;
+        totalDays += 1;
+      }
+
+      result += (totalDays * element.tlkRate).toInt();
+
+    }
+
+    return result;
   }
 
   void getTripInfo() async {
@@ -144,7 +213,7 @@ class ActualizationTripDetailController extends BaseController {
           tripInfoModel.nameCityTo!.isNotEmpty) {
         result += "-${tripInfoModel.nameCityTo}";
       }
-    } 
+    }
 
     return result;
   }
@@ -175,17 +244,26 @@ class ActualizationTripDetailController extends BaseController {
   void updateTripInfo(TripInfoModel tripInfoModel) async {
     isLoadingHitApi(true);
 
-    final result =
-        await _tripRepository.updateData(tripInfoModel, tripInfoModel.id);
-    result.fold((l) {
+    ZoneModel? zone = await getZoneByCityId(tripInfoModel.idCityTo);
+    if(zone == null){
       isLoadingHitApi(false);
-      Get.showSnackbar(
-          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
-    }, (model) {
-      isLoadingHitApi(false);
-      //update list
-      getTripInfo();
-    });
+      Get.showSnackbar(CustomGetSnackBar(message: "Zone not found for this city", backgroundColor: Colors.red));
+    }else{
+      tripInfoModel.idZona = zone.idZona;
+      tripInfoModel.tlkRate = tlkRate.value;
+      final result = await _tripRepository.updateData(tripInfoModel, tripInfoModel.id);
+      result.fold((l) {
+        isLoadingHitApi(false);
+        Get.showSnackbar(
+            CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+      }, (model) {
+        isLoadingHitApi(false);
+        //updateHeader
+        updateHeader();
+        //update list
+        getTripInfo();
+      });
+    }
   }
 
   void deleteTripInfo(TripInfoModel tripInfoModel) {
@@ -278,5 +356,31 @@ class ActualizationTripDetailController extends BaseController {
       listLogApproval.value = r;
       listLogApproval.refresh();
     });
+  }
+
+  bool isTripInfoValid(){
+    bool isValid = true;
+
+    for (var element in listTripInfo) {
+      if(element.dateDeparture == null || element.dateDeparture!.isEmpty){
+        isValid = false;
+        break;
+      }
+    }
+
+    return isValid;
+  }
+
+  bool isActivitiesValid(){
+    bool isValid = true;
+
+    for (var element in listActivity) {
+      if(element.activities == null || element.activities!.isEmpty){
+        isValid = false;
+        break;
+      }
+    }
+
+    return isValid;
   }
 }
