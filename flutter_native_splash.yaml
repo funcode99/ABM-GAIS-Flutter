@@ -11,7 +11,7 @@ flutter_native_splash:
   # splash screen to a png image.  This is useful for gradients. The image will be stretch to the
   # size of the app. Only one parameter can be used, color and background_image cannot both be set.
 #  color: "#FFFFFF"
-#  background_image: "assets/img/background.png"
+#  background_image: "assets/img/background_new.png"
 
   # Optional parameters are listed below.  To enable a parameter, uncomment the line by removing
   # the leading # character.
@@ -50,7 +50,7 @@ flutter_native_splash:
   # 640 pixels in diameter.
   # App icon without an icon background: This should be 1152×1152 pixels, and fit within a circle
   # 768 pixels in diameter.
-    image: "assets/img/background.png"
+    image: "assets/img/background_new.png"
 
   # Splash screen background color.
     color: "#FFFFFF"
@@ -82,18 +82,18 @@ flutter_native_splash:
   color_dark_ios: "#ffffff"
   color_web: "#ffffff"
   color_dark_web: "#ffffff"
-  image_android: assets/img/background.png
-  image_dark_android: assets/img/background.png
-  image_ios: assets/img/background.png
-  image_dark_ios: assets/img/background.png
-  image_web: assets/img/background.png
-  image_dark_web: assets/img/background.png
-  background_image_android: "assets/img/background.png"
-  background_image_dark_android: "assets/img/background.png"
-#  background_image_ios: "assets/img/background.png"
-#  background_image_dark_ios: "assets/img/background.png"
-  background_image_web: "assets/img/background.png"
-  background_image_dark_web: "assets/img/background.png"
+  image_android: assets/img/background_new.png
+  image_dark_android: assets/img/background_new.png
+  image_ios: assets/img/background_new.png
+  image_dark_ios: assets/img/background_new.png
+  image_web: assets/img/background_new.png
+  image_dark_web: assets/img/background_new.png
+  background_image_android: "assets/img/background_new.png"
+  background_image_dark_android: "assets/img/background_new.png"
+#  background_image_ios: "assets/img/background_new.png"
+#  background_image_dark_ios: "assets/img/background_new.png"
+  background_image_web: "assets/img/background_new.png"
+  background_image_dark_web: "assets/img/background_new.png"
   #branding_android: assets/brand-android.png
   #branding_dark_android: assets/dart_dark-android.png
   #branding_ios: assets/brand-ios.gif
