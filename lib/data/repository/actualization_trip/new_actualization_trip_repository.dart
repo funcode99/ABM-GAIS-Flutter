@@ -7,6 +7,7 @@ import 'package:gais/base/base_repository.dart';
 import 'package:gais/data/model/actualization_trip/actualization_trip_model.dart';
 import 'package:gais/data/model/actualization_trip/trip_info_model.dart';
 import 'package:gais/data/model/api_response_model.dart';
+import 'package:gais/data/model/approval/approval_actualization_trip_model.dart';
 import 'package:gais/data/model/approval_log_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/model/request_trip/request_trip_model.dart';
@@ -14,7 +15,7 @@ import 'package:gais/data/network_core.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 
-class NewActualizationTripRepository implements BaseRepository<ActualizationTripModel, bool>, ApprovalBaseRepository<bool>{
+class NewActualizationTripRepository implements BaseRepository<ActualizationTripModel, bool>, ApprovalBaseRepository<ApprovalActualizationTripModel>{
   final network = Get.find<NetworkCore>();
 
   @override
@@ -172,13 +173,29 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
   }
 
   @override
-  Future<Either<BaseError, List<bool>>> getDataApproval({Map<String, dynamic>? data}) async{
+  Future<Either<BaseError, List<ApprovalActualizationTripModel>>> getDataApproval({Map<String, dynamic>? data}) async{
     throw UnimplementedError();
   }
 
   @override
   Future<Either<BaseError, PaginationModel>> getPaginationDataApproval({Map<String, dynamic>? data}) async{
-    throw UnimplementedError();
+    try {
+      Dio.Response response = await network.dio.get(
+          '/api/approval_actual/get_data',
+          queryParameters: data
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
@@ -213,7 +230,23 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
 
   @override
   Future<Either<BaseError, PaginationModel>> getPaginationDataApprovalHistory({Map<String, dynamic>? data}) async{
-    throw UnimplementedError();
+    try {
+      Dio.Response response = await network.dio.get(
+          '/api/approval_actual/history',
+          queryParameters: data
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   Future<Either<BaseError, List<RequestTripModel>>> getRequestTrip() async{
