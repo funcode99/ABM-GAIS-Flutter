@@ -25,6 +25,9 @@ extension StringExt on String{
       DateTime dateTime = DateFormat(originFormat).parse(this);
 
       return dateTime;
+    }on FormatException catch(e){
+      print("ERROR toDateFormat $e");
+      rethrow;
     }catch(e){
       print("ERROR toDateFormat $e");
       return null;

@@ -2,6 +2,7 @@ import 'package:gais/data/model/management_item_atk/management_item_atk_model.da
 import 'package:gais/data/model/master/brand/brand_model.dart';
 import 'package:gais/data/model/master/car/car_model.dart';
 import 'package:gais/data/model/master/check_item/check_item_model.dart';
+import 'package:gais/data/model/master/city/city_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
@@ -13,6 +14,7 @@ import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/master/uom/uom_model.dart';
 import 'package:gais/data/model/master/warehouse/warehouse_model.dart';
+import 'package:gais/data/model/master/zone/zone_model.dart';
 import 'package:gais/data/repository/master/master_repository.dart';
 import 'package:get/get.dart';
 
@@ -158,6 +160,16 @@ mixin MasterDataMixin{
   Future<List<FacilityModel>> getListFacility({String? keyword})async{
     final result = await _repository.getListFacility(keyword: keyword);
     return result.fold((l) => [], (list) => list);
+  }
+
+  Future<List<CityModel>> getListCity()async{
+    final result = await _repository.getListCity();
+    return result.fold((l) => [], (list) => list);
+  }
+
+  Future<ZoneModel?> getZoneByCityId(dynamic cityId)async{
+    final result = await _repository.getZoneByCityId(cityId);
+    return result.fold((l) => null, (zone) => zone);
   }
 
 }
