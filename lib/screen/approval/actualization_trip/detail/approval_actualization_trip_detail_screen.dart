@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/actualization_trip/trip_info_model.dart';
 import 'package:gais/data/model/approval/approval_actualization_trip_model.dart';
 import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/reusable/bottombar.dart';
@@ -18,7 +19,9 @@ import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/approval/actualization_trip/detail/approval_actualization_trip_detail_controller.dart';
+import 'package:gais/screen/approval/actualization_trip/edit/form_approval_actualization_trip_screen.dart';
 import 'package:gais/screen/tms/actualization_trip/actualization_trip_item.dart';
+import 'package:gais/screen/tms/actualization_trip/add/form_trip_info_actualization_trip_screen.dart';
 import 'package:gais/util/color/color_util.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/util/enum/status_enum.dart';
@@ -419,16 +422,16 @@ class _ApprovalActualizationTripDetailScreenState
                                           CustomIconButton(
                                             iconData: IconlyBold.edit,
                                             backgroundColor: successColor,
-                                            onPressed: () async {/*
+                                            onPressed: () async {
                                               TripInfoModel? result = await Get
-                                                  .to(() => const FormTripInfoActualizationTripScreen(),
+                                                  .to(() => const FormApprovalActualizationTripScreen(),
                                                   arguments: {
                                                     "trip_info": item
                                                   });
 
                                               if (result != null) {
                                                 controller.updateTripInfo(result);
-                                              }*/
+                                              }
                                             },
                                           ),
                                           SizedBox(

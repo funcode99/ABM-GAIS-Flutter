@@ -9,6 +9,8 @@ import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/repository/actualization_trip/activity_repository.dart';
 import 'package:gais/data/repository/actualization_trip/new_actualization_trip_repository.dart';
 import 'package:gais/data/repository/actualization_trip/trip_info_repository.dart';
+import 'package:gais/data/storage_core.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -60,7 +62,7 @@ class ApprovalActualizationTripDetailController extends BaseController {
     totalTLKController.text = detailSelectedItem.value.totalTlk?.toCurrency() ?? "-";
   }
 
-  void getTripInfo() async {
+  Future<void> getTripInfo() async {
     final result = await _tripRepository.getTripInfoByActualizationId(selectedItem.value.idDocument);
 
     result.fold((l) => null, (r) {
@@ -209,4 +211,69 @@ class ApprovalActualizationTripDetailController extends BaseController {
       listLogApproval.refresh();
     });
   }
+
+  void updateHeader() async {
+    isLoadingHitApi(true);
+    ActualizationTripModel model = detailSelectedItem.value.copyWith(
+        arrayTrip: listTripInfo,
+        arrayActivities: listActivity,
+        purpose: purposeController.text,
+        notes: notesController.text,
+        idEmployee: await storage.readString(StorageCore.userID),
+        totalTlk: getTotalTLK()
+    );
+
+    final result = await _repository.updateData(model, selectedItem.value.idDocument);
+
+    result.fold(
+            (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
+            (model) {
+          isLoadingHitApi(false);
+          detailHeader();
+        });
+  }
+
+  void updateTripInfo(TripInfoModel tripInfoModel) async {
+    isLoadingHitApi(true);
+
+    final result = await _tripRepository.updateData(tripInfoModel, tripInfoModel.id);
+    result.fold((l) {
+      isLoadingHitApi(false);
+      Get.showSnackbar(
+          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+    }, (model) {
+      isLoadingHitApi(false);
+      //update list
+      getTripInfo().then((value) {
+        //updateHeader
+        updateHeader();
+      });
+
+    });
+  }
+
+  int getTotalTLK(){
+    int result = 0;
+    for (var element in listTripInfo) {
+      DateTime? departureDate = element.dateDeparture?.toDate(originFormat: "yyyy-MM-dd");
+      DateTime? arrivalDate = element.dateArrival?.toDate(originFormat: "yyyy-MM-dd");
+
+      int totalDays = 0;
+      if(departureDate != null && arrivalDate != null){
+        totalDays = arrivalDate.difference(departureDate).inDays;
+        totalDays += 1;
+      }
+
+      result += (totalDays * element.tlkRate).toInt();
+
+    }
+
+    return result;
+  }
+
+
 }

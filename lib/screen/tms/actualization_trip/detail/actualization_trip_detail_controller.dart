@@ -154,7 +154,7 @@ class ActualizationTripDetailController extends BaseController with MasterDataMi
     return result;
   }
 
-  void getTripInfo() async {
+  Future<void> getTripInfo() async {
     final result = await _tripRepository
         .getTripInfoByActualizationId(selectedItem.value.id);
 
@@ -254,10 +254,11 @@ class ActualizationTripDetailController extends BaseController with MasterDataMi
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
       }, (model) {
         isLoadingHitApi(false);
-        //updateHeader
-        updateHeader();
         //update list
-        getTripInfo();
+        getTripInfo().then((value) {
+          //updateHeader
+          updateHeader();
+        });
       });
     }
   }
