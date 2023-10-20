@@ -104,23 +104,42 @@ class TrainReservationController extends BaseController {
     try {
       await antavaya
           .saveTrainReservation(
-            bookingContact!,
-            PassengersModel(
-              title: passTitle.text,
-              firstName: passFirstName.text,
-              lastName: passLastName.text,
-              idNumber: passIDNumber.text,
-              passport: Passport(originCountry: passPassportOrigin.text, expire: passPassportExpire.text),
-              mobilePhone: passMobilePhone.text,
-            ),
-            trainModel!,
-            selectedPassID,
-          )
-          .then(
-            (value) => formEdit == true
-                ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
-                : Get.off(const TrainScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
+        bookingContact!,
+        PassengersModel(
+          title: passTitle.text,
+          firstName: passFirstName.text,
+          lastName: passLastName.text,
+          idNumber: passIDNumber.text,
+          passport: Passport(originCountry: passPassportOrigin.text, expire: passPassportExpire.text),
+          mobilePhone: passMobilePhone.text,
+        ),
+        trainModel!,
+        selectedPassID,
+      )
+          .then((value) async {
+        print("res : ${jsonEncode(value)}");
+        await requestTrip.getTrainTripByID(trainID!).then((trainData) async {
+          await requestTrip.updateTrainTrip(
+            trainID!,
+            purposeID,
+            "${passFirstName.text} ${passLastName.text} ",
+            value.data?.pnrid.toString() ?? '',
+            "1",
+            trainData.data?.first.codeStation ?? '',
+            trainData.data?.first.nameStation ?? '',
+            trainData.data?.first.codeStationTo ?? '',
+            trainData.data?.first.nameStationTo ?? '',
+            trainModel!.departureDate.toString(),
+            adult.toString(),
+            child.toString(),
+            trainModel!.trainName.toString(),
           );
+        });
+      }).then(
+        (value) => formEdit == true
+            ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
+            : Get.off(const TrainScreen(), arguments: {'purposeID': purposeID, 'codeDocument': codeDocument, 'formEdit': formEdit}),
+      );
     } catch (e) {
       e.printError();
       Get.showSnackbar(
