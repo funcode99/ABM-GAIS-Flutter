@@ -296,9 +296,9 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                                 showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
-                                    firstDate: DateTime.now(),
+                                    firstDate: DateTime.now().subtract(const Duration(days: 365 * 6)),
                                     lastDate: DateTime.now()
-                                        .add(const Duration(days: 365)))
+                                        .add(const Duration(days: 365 * 6)))
                                     .then((date) {
                                   if (date != null) {
                                     controller.vehicleRegistrationDate = date;
