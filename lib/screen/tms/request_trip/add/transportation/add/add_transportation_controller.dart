@@ -102,6 +102,9 @@ class AddTransportationController extends BaseController {
       var rtData = await requestTrip.getRequestTripByid(purposeID);
       rtModel = rtData;
       lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
+      if(lastDate.isBefore(DateTime.now())){
+        lastDate = DateTime.now().add(Duration(days: 30));
+      }
 
       await repository.getCompanyList().then((value) {
         companyList.addAll(value.data?.toSet().toList() ?? []);

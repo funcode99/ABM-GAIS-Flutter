@@ -150,6 +150,9 @@ class AddAccommodationController extends BaseController {
       var rtData = await requestTrip.getRequestTripByid(purposeID);
       rtModel = rtData;
       lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
+      if(lastDate.isBefore(DateTime.now())){
+        lastDate = DateTime.now().add(Duration(days: 30));
+      }
     } catch (e, i) {
       e.printError();
       i.printError();

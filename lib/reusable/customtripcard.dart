@@ -78,12 +78,11 @@ class CustomTripCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: Get.width /2.2,
+                            width: Get.width / 2.2,
                             child: Text(
                               title,
                               style: listTitleTextStyle.copyWith(),
                               textAlign: TextAlign.start,
-
                             ),
                           ),
                           Text(
@@ -98,7 +97,7 @@ class CustomTripCard extends StatelessWidget {
                   status != null
                       ? Container(
                           alignment: Alignment.center,
-                          width: Get.width/5,
+                          width: Get.width / 5,
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           decoration: BoxDecoration(color: ColorUtil.getStatusColorByText(status!), borderRadius: BorderRadius.circular(5)),
                           child: Text(
@@ -121,7 +120,7 @@ class CustomTripCard extends StatelessWidget {
                 children: [
                   info != null
                       ? Container(
-                          width: Get.width/4,
+                          width: Get.width / 4,
                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                           decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(4)),
                           child:
@@ -144,7 +143,8 @@ class CustomTripCard extends StatelessWidget {
                           : const SizedBox(),
                       const SizedBox(width: 5),
                       isEdit!
-                          ? deleteButton ?? editButton ??
+                          ? deleteButton ??
+                              editButton ??
                               CustomFilledButton(
                                 width: 80,
                                 height: 40,

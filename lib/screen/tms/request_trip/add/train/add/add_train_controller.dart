@@ -55,6 +55,9 @@ class AddTrainController extends BaseController {
       var rtData = await requestTrip.getRequestTripByid(purposeID);
       rtModel = rtData;
       lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
+      if(lastDate.isBefore(DateTime.now())){
+        lastDate = DateTime.now().add(Duration(days: 30));
+      }
 
       travellerList.add(guest.Data(
         idEmployee: rtModel?.data?.first.idEmployee,

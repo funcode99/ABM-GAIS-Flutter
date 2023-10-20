@@ -477,6 +477,7 @@ class FormRequestTripController extends BaseController {
       airlinessData.data?.asMap().forEach((i, e) async {
         if (e.pnrid != null) {
           print("pnrID: ${e.pnrid}");
+          print(e.ticketPrice);
           await antavaya.getRsvTicket(e.pnrid!).then((rsv) {
             GetReservationTicketModel.fromJson(rsv).data?.passengers?.first.type.printInfo();
             var reservation = GetReservationTicketModel.fromJson(rsv).data;
@@ -497,7 +498,7 @@ class FormRequestTripController extends BaseController {
               departureTime: reservation?.flightDetails?.first.departDate,
               arrivalTime: reservation?.flightDetails?.first.arriveTime,
               flightNo: reservation?.flightDetails?.first.flightNumber,
-              ticketPrice: e.ticketPrice,
+              ticketPrice: reservation?.payments?.last.amount.toString(),
               departureDate: e.departDate,
               arrivalDate: e.returnDate,
               flightClass: e.flightClass,
@@ -880,7 +881,7 @@ class FormRequestTripController extends BaseController {
         gettedFile,
       )
           .then((value) {
-        print(value);
+        // print(value);
         fetchList();
         fetchRequestTrip();
         checkItems();
@@ -920,7 +921,7 @@ class FormRequestTripController extends BaseController {
   Future<void> checkActual() async {
     try {
       await actualizationTrip.getActualBytripID(purposeID).then((value) async {
-        print("actual : ${value.data?.isNotEmpty}");
+        // print("actual : ${value.data?.isNotEmpty}");
         if (value.data!.isEmpty) {
           await actualizationTrip
               .saveActualizationTrip(

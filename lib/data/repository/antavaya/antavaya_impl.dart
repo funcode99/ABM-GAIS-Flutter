@@ -71,26 +71,27 @@ class AntavayaImpl implements AntavayaRepository {
 
   @override
   Future<SaveReservationModel> saveFlightReservation(
-    String contactTitle,
-    String contactFirstName,
-    String contactLastName,
-    String contactEmail,
-    String contactHomePhone,
-    String contactMobilePhone,
+    // String contactTitle,
+    // String contactFirstName,
+    // String contactLastName,
+    // String contactEmail,
+    // String contactHomePhone,
+    // String contactMobilePhone,
+    ContactModel contacts,
     PassengersModel passengers,
     Segments segments,
     String flightType,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
-
+    print(contacts.email);
     var formData = FormData.fromMap({
-      "Contact[Email]": contactEmail,
-      "Contact[Title]": contactTitle,
-      "Contact[FirstName]": contactFirstName,
-      "Contact[LastName]": contactLastName,
-      "Contact[HomePhone]": contactHomePhone,
-      "Contact[MobilePhone]": contactMobilePhone,
+      "Contact[Email]": contacts.email,
+      "Contact[Title]": contacts.title,
+      "Contact[FirstName]": contacts.firstName,
+      "Contact[LastName]": contacts.lastName,
+      "Contact[HomePhone]": contacts.homePhone,
+      "Contact[MobilePhone]": contacts.mobilePhone,
       "CallbackUri": "https://webhook.site/4119b406-f2e3-40f4-bcc6-8b2a4473e21a",
       "FlightType": flightType,
       "Passengers[0][Index]": passengers.index,

@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/antavaya/contact_model.dart';
 import 'package:gais/data/model/antavaya/get_airport_schedule_model.dart' as schedule;
 import 'package:gais/data/model/antavaya/passengers_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airline;
+import 'package:gais/data/model/reference/get_user_ga_model.dart' as contact;
 import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
@@ -53,15 +55,33 @@ class AirportReservationController extends BaseController {
   DateTime? birthDate;
   DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy-MM-dd");
+  ContactModel? bookingContact;
+  List<contact.Data> gaList = [];
+
+
 
   @override
   void onInit() {
     super.onInit();
     flight.printInfo();
+    Future.wait([fetchList()]);
     if (airlinessID != null) {
       fetchEdit();
     }
     print('airlinessID : $airlinessID');
+  }
+
+  Future<void> fetchList() async{
+    isLoading = true;
+    gaList = [];
+    try{
+      await repository.getUserGA().then((value) => gaList.addAll(value.data?.toSet().toList() ?? []));
+
+    }catch(e){
+      e.printError();
+    }
+    isLoading = false;
+    update();
   }
 
   Future<void> fetchEdit() async {
@@ -208,15 +228,17 @@ class AirportReservationController extends BaseController {
 
   Future<void> saveReservation(PassengersModel passenger) async {
     isLoading = true;
+    print(bookingContact?.mobilePhone);
     try {
       await antavaya
           .saveFlightReservation(
-        bookTitle.text,
-        bookFirstName.text,
-        bookLastName.text,
-        bookEmail.text,
-        bookHomePhone.text,
-        bookMobilePhone.text,
+        // bookTitle.text,
+        // bookFirstName.text,
+        // bookLastName.text,
+        // bookEmail.text,
+        // bookHomePhone.text,
+        // bookMobilePhone.text,
+        bookingContact!,
         passenger,
         Segments(
           airline: flight.airline.toString(),
@@ -263,6 +285,7 @@ class AirportReservationController extends BaseController {
   Future<void> saveAirliness(String pnrID) async {
     if (airlinessID != null) {
       try {
+        // print(flight.fare);
         await requestTrip
             .updateAirlines(
               airlinessID!,

@@ -26,12 +26,13 @@ abstract class AntavayaRepository {
   );
 
   Future<SaveReservationModel> saveFlightReservation(
-    String contactTitle,
-    String contactFirstName,
-    String contactLastName,
-    String contactEmail,
-    String contactHomePhone,
-    String contactMobilePhone,
+    // String contactTitle,
+    // String contactFirstName,
+    // String contactLastName,
+    // String contactEmail,
+    // String contactHomePhone,
+    // String contactMobilePhone,
+    ContactModel contacts,
     PassengersModel passengers,
     Segments segments,
     String flightType,
