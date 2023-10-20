@@ -7,6 +7,7 @@ import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
@@ -167,7 +168,14 @@ class ManagementPoolCarListScreen extends StatelessWidget {
                                     controller.update();
                                   }),
                                   isDelete: true,
-                                  deleteAction: () => controller.deleteData(controller.carList[index].id!.toInt()),
+                                  deleteAction: (){
+                                    Get.dialog(DeleteConfirmationDialog(
+                                      onDeletePressed: () {
+                                        Get.close(1);
+                                        controller.deleteData(controller.carList[index].id!.toInt());
+                                      },
+                                    ));
+                                  },
                                   content: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     crossAxisAlignment: CrossAxisAlignment.start,
