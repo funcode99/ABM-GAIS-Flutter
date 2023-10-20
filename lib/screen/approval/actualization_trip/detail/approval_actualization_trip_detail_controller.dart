@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
-import 'package:gais/data/model/approval_cash_advance/approval_cash_advance_model.dart';
+import 'package:gais/data/model/actualization_trip/activity_model.dart';
+import 'package:gais/data/model/actualization_trip/actualization_trip_model.dart';
+import 'package:gais/data/model/actualization_trip/trip_info_model.dart';
+import 'package:gais/data/model/approval/approval_actualization_trip_model.dart';
 import 'package:gais/data/model/approval_log_model.dart';
 import 'package:gais/data/model/approval_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_detail_model.dart';
-import 'package:gais/data/model/cash_advance/cash_advance_model.dart';
-import 'package:gais/data/repository/cash_advance/cash_advance_travel_repository.dart';
+import 'package:gais/data/repository/actualization_trip/activity_repository.dart';
+import 'package:gais/data/repository/actualization_trip/new_actualization_trip_repository.dart';
+import 'package:gais/data/repository/actualization_trip/trip_info_repository.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
@@ -14,31 +17,36 @@ import 'package:get/get.dart';
 class ApprovalActualizationTripDetailController extends BaseController {
   final TextEditingController createdDateController = TextEditingController();
   final TextEditingController requestorController = TextEditingController();
-  final TextEditingController referenceController = TextEditingController();
-  final TextEditingController itemController = TextEditingController();
-  final TextEditingController frequencyController = TextEditingController();
-  final TextEditingController currencyController = TextEditingController();
-  final TextEditingController amountController = TextEditingController();
-  final TextEditingController totalController = TextEditingController();
-  final TextEditingController remarksController = TextEditingController();
+  final TextEditingController purposeController = TextEditingController();
+  final TextEditingController notesController = TextEditingController();
+  final TextEditingController totalTLKController = TextEditingController();
 
-  final selectedItem = ApprovalCashAdvanceModel().obs;
-  final detailSelectedItem = CashAdvanceModel().obs;
+  final onEdit = false.obs;
+
+  final selectedItem = ApprovalActualizationTripModel().obs;
+  final detailSelectedItem = ActualizationTripModel().obs;
 
   final approvalModel = Rxn<ApprovalModel>();
   final selectedTab = Rx<TabEnum>(TabEnum.detail);
 
-  final listDetail = <CashAdvanceDetailModel>[].obs;
-
   final listLogApproval = <ApprovalLogModel>[].obs;
+  final listTripInfo = <TripInfoModel>[].obs;
+  final listActivity = <ActivityModel>[].obs;
 
-  final CashAdvanceTravelRepository _repository = Get.find();
+  final NewActualizationTripRepository _repository = Get.find();
+  final TripInfoRepository _tripRepository = Get.find();
+  final ActivityRepository _activityRepository = Get.find();
 
   @override
   void onReady() {
     super.onReady();
+    initData();
+  }
+
+  void initData() {
     detailHeader();
-    getDataDetail();
+    getTripInfo();
+    getActivity();
   }
 
   void setValue() {
@@ -46,15 +54,100 @@ class ApprovalActualizationTripDetailController extends BaseController {
             ?.toDateFormat(originFormat: "yyyy-MM-dd HH:mm:ss", targetFormat: "dd/MM/yyyy HH:mm:ss") ??
         "-";
     requestorController.text = detailSelectedItem.value.employeeName ?? "-";
-    referenceController.text = detailSelectedItem.value.noRequestTrip ?? "-";
-    totalController.text =
-        "${detailSelectedItem.value.currencyCode ?? ""} ${detailSelectedItem.value.grandTotal?.toInt().toCurrency()}";
-    currencyController.text = "${detailSelectedItem.value.currencyName ?? "-"}";
-    remarksController.text = detailSelectedItem.value.remarks ?? "-";
+
+    purposeController.text = detailSelectedItem.value.purpose ?? "-";
+    notesController.text = detailSelectedItem.value.notes ?? "-";
+    totalTLKController.text = detailSelectedItem.value.totalTlk?.toCurrency() ?? "-";
+  }
+
+  void getTripInfo() async {
+    final result = await _tripRepository.getTripInfoByActualizationId(selectedItem.value.idDocument);
+
+    result.fold((l) => null, (r) {
+      listTripInfo.value = r;
+      listTripInfo.refresh();
+    });
+  }
+
+  void getActivity() async {
+    final result = await _activityRepository
+        .getActivityByActualizationId(selectedItem.value.idDocument);
+
+    result.fold((l) => null, (r) {
+      listActivity.value = r;
+      listActivity.sort((a, b) => a.actDate!.compareTo(b.actDate!));
+      listActivity.refresh();
+    });
+  }
+
+  String getTitleTripInfo(TripInfoModel tripInfoModel) {
+    String result = "";
+    if (tripInfoModel.dateDeparture != null) {
+      String departureDate = tripInfoModel.dateDeparture?.toDateFormat(
+          originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+          "";
+      result += departureDate;
+      if (tripInfoModel.dateArrival != null) {
+        String arrivalDate = tripInfoModel.dateArrival?.toDateFormat(
+            originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+            "";
+        result += "-$arrivalDate";
+      }
+    }
+
+    if (tripInfoModel.nameCityFrom != null &&
+        tripInfoModel.nameCityFrom!.isNotEmpty) {
+      if (result.isNotEmpty) {
+        result += ", ${tripInfoModel.nameCityFrom}";
+      } else {
+        result += "${tripInfoModel.nameCityFrom}";
+      }
+      if (tripInfoModel.nameCityTo != null &&
+          tripInfoModel.nameCityTo!.isNotEmpty) {
+        result += "-${tripInfoModel.nameCityTo}";
+      }
+    }
+
+    return result;
+  }
+
+  String getTitleTransportation(TripInfoModel tripInfoModel) {
+    String result = "";
+    if (tripInfoModel.dateDepartTransportation != null) {
+      String departureDate = tripInfoModel.dateDepartTransportation
+          ?.toDateFormat(
+          originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+          "";
+      result += departureDate;
+      if (tripInfoModel.dateReturnTransportation != null) {
+        String arrivalDate = tripInfoModel.dateReturnTransportation
+            ?.toDateFormat(
+            originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy") ??
+            "";
+        result += "-$arrivalDate";
+      }
+    }
+    return result;
+  }
+
+  int getSubTotalTLK(TripInfoModel tripInfoModel) {
+    int result = 0;
+    DateTime? departureDate = tripInfoModel.dateDeparture?.toDate(originFormat: "yyyy-MM-dd");
+    DateTime? arrivalDate = tripInfoModel.dateArrival?.toDate(originFormat: "yyyy-MM-dd");
+
+    int totalDays = 0;
+    if(departureDate != null && arrivalDate != null){
+      totalDays = arrivalDate.difference(departureDate).inDays;
+      totalDays += 1;
+    }
+
+    result = (totalDays * tripInfoModel.tlkRate).toInt();
+
+    return result;
   }
 
   void detailHeader() async {
-    final result = await _repository.detailData(selectedItem.value.idCa!);
+    final result = await _repository.detailData(selectedItem.value.idDocument!);
 
     result.fold((l) {
       print("ERROR DETAIL HEADER ${l.message}");
@@ -62,14 +155,6 @@ class ApprovalActualizationTripDetailController extends BaseController {
       detailSelectedItem(r);
       setValue();
       getApprovalLog();
-    });
-  }
-
-  void getDataDetail() async {
-    final result = await _repository.getDataDetails(selectedItem.value.idCa!);
-    result.fold((l) => null, (r) {
-      listDetail.value = r;
-      listDetail.refresh();
     });
   }
 
@@ -117,8 +202,7 @@ class ApprovalActualizationTripDetailController extends BaseController {
   }
 
   void getApprovalLog() async {
-    final result = await _repository
-        .getApprovalLog(detailSelectedItem.value.idRequestTrip!);
+    final result = await _repository.getApprovalLog(selectedItem.value.idDocument!);
 
     result.fold((l) => null, (r) {
       listLogApproval.value = r;

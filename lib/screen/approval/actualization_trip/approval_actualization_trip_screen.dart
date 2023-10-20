@@ -25,7 +25,7 @@ class ApprovalActualizationTripScreen extends StatelessWidget {
           },
         ),
         backgroundColor: whiteColor,
-        title: Text("Approval Actualization Trips".tr, style: appTitle),
+        title: Text("Approval Actualization Trip".tr, style: appTitle),
         centerTitle: true,
         flexibleSpace: const TopBar(),
       ),

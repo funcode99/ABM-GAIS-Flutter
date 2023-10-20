@@ -1,8 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
-import 'package:gais/data/model/approval_cash_advance/approval_cash_advance_model.dart';
+import 'package:gais/data/model/approval/approval_actualization_trip_model.dart';
 import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
@@ -15,7 +17,8 @@ import 'package:gais/reusable/list/approval_log_list.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
-import 'package:gais/screen/approval/cash_advance_travel/detail/approval_cash_advance_travel_detail_controller.dart';
+import 'package:gais/screen/approval/actualization_trip/detail/approval_actualization_trip_detail_controller.dart';
+import 'package:gais/screen/tms/actualization_trip/actualization_trip_item.dart';
 import 'package:gais/util/color/color_util.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/util/enum/status_enum.dart';
@@ -23,6 +26,7 @@ import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
+import 'package:iconly/iconly.dart';
 
 class ApprovalActualizationTripDetailScreen extends StatefulWidget {
   const ApprovalActualizationTripDetailScreen(
@@ -39,7 +43,7 @@ class ApprovalActualizationTripDetailScreen extends StatefulWidget {
 class _ApprovalActualizationTripDetailScreenState
     extends State<ApprovalActualizationTripDetailScreen> {
   _openApproveDialog() async {
-    ApprovalCashAdvanceTravelDetailController controller = Get.find();
+    ApprovalActualizationTripDetailController controller = Get.find();
     ApprovalModel? result = await Get.dialog(ApprovalConfirmationDialog(
       idEmployee: controller.selectedItem.value.idEmployee,
       idSite: controller.selectedItem.value.idSite,
@@ -54,7 +58,7 @@ class _ApprovalActualizationTripDetailScreenState
   }
 
   _openRejectDialog() async {
-    ApprovalCashAdvanceTravelDetailController controller = Get.find();
+    ApprovalActualizationTripDetailController controller = Get.find();
     ApprovalModel? result = await Get.dialog(const RejectDialog());
     if (result != null) {
       controller.approvalModel(result);
@@ -76,13 +80,13 @@ class _ApprovalActualizationTripDetailScreenState
 
   @override
   Widget build(BuildContext context) {
-    ApprovalCashAdvanceModel? selectedItem;
+    ApprovalActualizationTripModel? selectedItem;
     if (Get.arguments != null) {
       selectedItem = Get.arguments["item"];
     }
 
-    final ApprovalCashAdvanceTravelDetailController controller =
-        Get.put(ApprovalCashAdvanceTravelDetailController())
+    final ApprovalActualizationTripDetailController controller =
+        Get.put(ApprovalActualizationTripDetailController())
           ..selectedItem(selectedItem);
 
     return Scaffold(
@@ -90,7 +94,7 @@ class _ApprovalActualizationTripDetailScreenState
       appBar: AppBar(
         leading: const CustomBackButton(),
         backgroundColor: whiteColor,
-        title: Text("approval_cash_advance_travel".tr, style: appTitle),
+        title: Text("Approval Actualization Trip".tr, style: appTitle),
         centerTitle: true,
         flexibleSpace: const TopBar(),
       ),
@@ -122,7 +126,7 @@ class _ApprovalActualizationTripDetailScreenState
                     width: double.infinity,
                     child: Obx(() {
                       return Text(
-                        controller.selectedItem.value.noCa ?? "-",
+                        controller.selectedItem.value.noAct ?? "-",
                         style: Theme.of(context).textTheme.bodyText1?.copyWith(
                             fontSize: 14, fontWeight: FontWeight.w400),
                         textAlign: TextAlign.center,
@@ -137,7 +141,29 @@ class _ApprovalActualizationTripDetailScreenState
                         RequestTripEnum.waitingApproval.value) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: controller.onEdit.value ? [
+                          OutlinedButton(
+                            onPressed: () {
+                              controller.onEdit(false);
+                            },
+                            style: OutlinedButton.styleFrom(
+                              minimumSize: const Size(75, 30),
+                            ),
+                            child: Text("Cancel".tr),
+                          ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              controller.onEdit(false);
+                            },
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(75, 30),
+                                backgroundColor: successColor),
+                            child: Text("Save".tr),
+                          )
+                        ]:[
                           CustomIconButton(
                             title: "Approve".tr,
                             iconData: Icons.check,
@@ -156,7 +182,19 @@ class _ApprovalActualizationTripDetailScreenState
                             onPressed: () {
                               _openRejectDialog();
                             },
-                          )
+                          ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          CustomIconButton(
+                            title: "Edit".tr,
+                            iconData: Icons.edit,
+                            backgroundColor: orangeColor,
+                            onPressed: () {
+                              controller.onEdit(true);
+                            },
+                          ),
+
                         ],
                       );
                     }
@@ -189,26 +227,52 @@ class _ApprovalActualizationTripDetailScreenState
                         const SizedBox(
                           height: 8,
                         ),
-                        CustomTextFormField(
-                            readOnly: true,
-                            isRequired: false,
-                            controller: controller.referenceController,
-                            label: "Reference".tr),
+                        Text("Reference".tr, style: formlabelTextStyle),
                         const SizedBox(
                           height: 8,
                         ),
-                        CustomTextFormField(
-                            readOnly: true,
-                            isRequired: false,
-                            controller: controller.currencyController,
-                            label: "Currency".tr),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        CustomTextFormField(
-                            readOnly: true,
-                            controller: controller.totalController,
-                            label: "Total".tr),
+                        Obx(() {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                border: Border.all(width: 1),
+                                color: neutralColor,
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            child:
+                            controller.detailSelectedItem.value.noRequestTrip !=
+                                null
+                                ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: controller
+                                  .detailSelectedItem.value.noRequestTrip!
+                                  .map((e) =>
+                                  Text("$e",
+                                      style: Theme
+                                          .of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.copyWith(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        // fontWeight: FontWeight.w600,
+                                      )))
+                                  .toList(),
+                            )
+                                : Text("-",
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.copyWith(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  // fontWeight: FontWeight.w600,
+                                )),
+                          );
+                        }),
                         const SizedBox(
                           height: 8,
                         ),
@@ -317,118 +381,199 @@ class _ApprovalActualizationTripDetailScreenState
                   Obx(() {
                     if (controller.selectedTab.value == TabEnum.detail) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Obx(() {
-                          return controller.listDetail.isEmpty
-                              ? const SizedBox()
-                              : ListView(
-                                  shrinkWrap: true,
-                                  physics: const ScrollPhysics(),
-                                  children: [
-                                    ...controller.listDetail.mapIndexed((index,
-                                            item) =>
-                                        CommonListItem(
-                                          number: "${index + 1}",
-                                          subtitle: controller.selectedItem
-                                                  .value.employeeName ??
-                                              "-",
-                                          total:
-                                              "${controller.selectedItem.value.currencyCode ?? ""} ${item.total?.toInt().toCurrency()}",
-                                          content: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8, vertical: 8),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Expanded(
-                                                  child: Column(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            CustomTextFormField(
+                                isRequired: false,
+                                readOnly: true,
+                                controller: controller.purposeController,
+                                label: "Purpose".tr),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Text(
+                              "Trip Info",
+                              style: formlabelTextStyle,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Obx(() {
+                              return Column(
+                                children: [
+                                  ...controller.listTripInfo.mapIndexed((
+                                      index,
+                                      item) {
+                                    return ConstrainedBox(
+                                      constraints: const BoxConstraints(
+                                        minHeight: 70,
+                                      ),
+                                      child: ActualizationTripItem(
+                                        action: controller.onEdit.value ? [
+                                          CustomIconButton(
+                                            iconData: IconlyBold.edit,
+                                            backgroundColor: successColor,
+                                            onPressed: () async {/*
+                                              TripInfoModel? result = await Get
+                                                  .to(() => const FormTripInfoActualizationTripScreen(),
+                                                  arguments: {
+                                                    "trip_info": item
+                                                  });
+
+                                              if (result != null) {
+                                                controller.updateTripInfo(result);
+                                              }*/
+                                            },
+                                          ),
+                                          SizedBox(
+                                            width: item.deletable ? 4 : 0,
+                                          ),
+                                        ] : [],
+
+                                        title: controller.getTitleTripInfo(item),
+                                        number: "${index + 1}",
+                                        content: item.type == null
+                                            ? const SizedBox()
+                                            :
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              top: 8),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment
+                                                    .start,
+                                                children: [
+                                                  Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    padding: const EdgeInsets.all(
+                                                        10),
+                                                    decoration: const BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: infoColor,
+                                                    ),
+                                                    child: item.type != null &&
+                                                        item.type!.isNotEmpty
+                                                        ?
+                                                    SvgPicture.asset(
+                                                        item.type
+                                                            ?.toLowerCase() ==
+                                                            "train"
+                                                            ? ImageConstant.train
+                                                            : ImageConstant
+                                                            .airplane)
+                                                        : const SizedBox(),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 4,
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment
+                                                        .start,
                                                     children: [
                                                       Text(
-                                                        "Item".tr,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyText1
-                                                            ?.copyWith(
-                                                                fontSize: 14,
-                                                                color:
-                                                                    Colors.black,
-                                                                height: 1.5),
+                                                        controller.getTitleTransportation(item),
+                                                        style: const TextStyle(
+                                                            fontSize: 12
+                                                        ),
                                                       ),
                                                       Text(
-                                                        item.itemName ?? item.namaItem ?? "-",
-                                                        textAlign: TextAlign.center,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyText1
-                                                            ?.copyWith(
-                                                                fontSize: 14,
-                                                                color: greyColor,
-                                                                height: 1.5),
-                                                      ),
+                                                        "${item.origin} -> ${item.destination}",
+                                                        style: const TextStyle(
+                                                            fontSize: 12
+                                                        ),
+                                                      )
                                                     ],
-                                                  ),
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "Frequency".tr,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          ?.copyWith(
-                                                              fontSize: 14,
-                                                              color:
-                                                                  Colors.black,
-                                                              height: 1.5),
-                                                    ),
-                                                    Text(
-                                                      "${item.frequency}",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          ?.copyWith(
-                                                              fontSize: 14,
-                                                              color: greyColor,
-                                                              height: 1.5),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      "Nominal".tr,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          ?.copyWith(
-                                                              fontSize: 14,
-                                                              color:
-                                                                  Colors.black,
-                                                              height: 1.5),
-                                                    ),
-                                                    Text(
-                                                      "${controller.selectedItem.value.currencyCode ?? ""} ${item.nominal?.toInt().toCurrency()}",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1
-                                                          ?.copyWith(
-                                                              fontSize: 14,
-                                                              color: greyColor,
-                                                              height: 1.5),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
+                                                  )
+                                                ],
+                                              ),
+                                              Text("TLK/Day : ${item.tlkRate.toString().toInt().toCurrency() ?? "-"}"),
+                                              Text("Total : ${controller.getSubTotalTLK(item).toCurrency()}"),
+                                            ],
                                           ),
-                                          action: const [],
-                                        ))
-                                  ],
-                                );
-                        }),
+                                        ),
+
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              );
+                            }),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                text: 'Activities ',
+                                style: formlabelTextStyle,
+                                children: const <TextSpan>[
+
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Obx(() {
+                              return Column(
+                                children: [
+                                  ...controller.listActivity.mapIndexed((index, item){
+                                    return ActualizationTripItem(
+                                        action: [],
+                                        title: "${item.actDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
+                                        number: "${index + 1}",
+                                        content: Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 2),
+                                          child: item.activities == null || item.activities!.isEmpty ?
+                                          const Text(
+                                            "Activity details are required",
+                                            style: TextStyle(color: Colors.redAccent, fontSize: 12, fontStyle: FontStyle.italic),
+
+                                          ) : Text(
+                                              "${item.activities}"
+                                          ),
+                                        )
+
+                                    );
+                                  })
+                                ],
+                              );
+                            }),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            CustomTextFormField(
+                              readOnly: true,
+                              controller: controller.totalTLKController,
+                              label: "Total TPLK".tr,
+                              isRequired: false,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            CustomTextFormField(
+                              multiLine: true,
+                              readOnly: true,
+                              controller: controller.notesController,
+                              label: "Notes".tr,
+                              isRequired: false,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                          ],
+                        ),
                       );
                     } else if (controller.selectedTab.value ==
                         TabEnum.approval) {
