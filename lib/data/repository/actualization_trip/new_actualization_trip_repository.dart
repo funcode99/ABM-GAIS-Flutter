@@ -9,6 +9,7 @@ import 'package:gais/data/model/actualization_trip/trip_info_model.dart';
 import 'package:gais/data/model/api_response_model.dart';
 import 'package:gais/data/model/approval/approval_actualization_trip_model.dart';
 import 'package:gais/data/model/approval_log_model.dart';
+import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/model/request_trip/request_trip_model.dart';
 import 'package:gais/data/network_core.dart';
@@ -200,12 +201,55 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
 
   @override
   Future<Either<BaseError, bool>> reject(model, dynamic id) async{
-    throw UnimplementedError();
+    try {
+      final approvalModel = model as ApprovalModel;
+
+      Dio.Response response = await network.dio.post(
+          '/api/approval_actual/reject/$id',
+          data: approvalModel.toJson()
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalActualizationTripModel.fromJsonModel);
+      return right(apiResponseModel.success ?? false);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
   Future<Either<BaseError, bool>> approve(model, dynamic id) async{
-    throw UnimplementedError();
+    try {
+      final approvalModel = model as ApprovalModel;
+
+      final formData = Dio.FormData.fromMap(approvalModel.toJson());
+      if(approvalModel.approvedBehalf != null){
+        if(approvalModel.path!=null){
+          formData.files.add(MapEntry("file", await Dio.MultipartFile.fromFile(approvalModel.path!)));
+        }
+      }
+
+      Dio.Response response = await network.dio.post(
+          '/api/approval_actual/approve/$id',
+          data: formData
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, ApprovalActualizationTripModel.fromJsonModel);
+      return right(apiResponseModel.success ?? false);
+    } on DioError catch (e) {
+      print("DioError $e");
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print("FormatException $e");
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print("catch error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
