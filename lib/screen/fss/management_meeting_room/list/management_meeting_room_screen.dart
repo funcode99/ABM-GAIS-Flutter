@@ -8,6 +8,7 @@ import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
+import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
@@ -187,9 +188,14 @@ class ManagementMeetingRoomScreen extends StatelessWidget {
                                       }),
                                   isDelete: true,
                                   deleteAction: () {
-                                    // controller.isLoading == true ? LoadingDialog().show(context) : LoadingDialog().close(context);
-                                    // controller.deleteDocumentDelivery(int.parse(controller.ddList[index].id.toString()));
-                                    controller.update();
+                                    Get.dialog(DeleteConfirmationDialog(
+                                      onDeletePressed: () {
+                                        Get.close(1);
+                                        controller.deleteData(
+                                            controller.meetingRoomList[index].id!
+                                                .toInt());
+                                      },
+                                    ));
                                   },
                                   content: Row(
                                     mainAxisAlignment: MainAxisAlignment

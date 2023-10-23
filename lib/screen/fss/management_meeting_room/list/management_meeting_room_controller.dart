@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/const/color.dart';
 import 'package:gais/data/model/management_meeting_room/get_management_meeting_room_model.dart' as mr;
 import 'package:get/get.dart';
 
@@ -94,4 +95,40 @@ class ManagementMeetingRoomController extends BaseController {
     isLoading = false;
     update();
   }
+
+  Future<void> deleteData(int id) async {
+    isLoading = true;
+    try {
+      isLoadingHitApi(true);
+      await managementMeetingRoom.delete(id).then((value) {
+        isLoadingHitApi(false);
+        Get.showSnackbar(GetSnackBar(
+          icon: Icon(
+            Icons.info,
+            color: Colors.white,
+          ),
+          message: "Data Deleted",
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: greenColor,
+        ));
+        fetchList(currentPage);
+      });
+    } catch (e) {
+      isLoadingHitApi(false);
+      Get.showSnackbar(GetSnackBar(
+        icon: Icon(
+          Icons.error,
+          color: Colors.white,
+        ),
+        message: "Delete Failed",
+        isDismissible: true,
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.red,
+      ));
+    }
+    isLoading = false;
+    update();
+  }
+
 }

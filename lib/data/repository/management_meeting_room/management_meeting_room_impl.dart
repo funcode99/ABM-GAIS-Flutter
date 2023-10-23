@@ -184,4 +184,19 @@ class ManagementMeetingRoomImpl implements ManagementMeetingRoomRepository {
     }
   }
 
+
+  @override
+  Future delete(int id) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+
+    try {
+      Response response = await network.dio.delete(
+        "/api/master_meeting_room/delete_data/$id",
+      );
+      return response.data;
+    } on DioError catch (e) {
+      return e.error;
+    }
+  }
 }
