@@ -1,32 +1,91 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
+import 'package:gais/data/model/master/company/company_model.dart';
+import 'package:gais/data/model/master/site/site_model.dart';
 import 'package:gais/data/model/pool_car/management_poolcar/get_car_list_model.dart' as car;
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
+import 'package:gais/util/enum/role_enum.dart';
+import 'package:gais/util/ext/string_ext.dart';
+import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 
-class ManagementPoolCarListController extends BaseController {
+import '../../../../../data/storage_core.dart';
+
+class ManagementPoolCarListController extends BaseController with MasterDataMixin {
   final formKey = GlobalKey<FormState>();
+
+
+  List<CompanyModel> listCompany = [];
+  CompanyModel? selectedCompany;
+  CompanyModel? selectedCompanyTemp;
+
+  List<SiteModel> listSite = [];
+  SiteModel? selectedSite;
+  SiteModel? selectedSiteTemp;
+
+  final companyTextEditingController = TextEditingController();
+  final siteTextEditingController = TextEditingController();
+
   final keyword = "".obs;
+
+  bool enableSelectCompany = false;
 
   bool dataisnull = false;
   bool isLoading = false;
   String? searchValue;
   String? filterValue;
-  int selectedCompany = 0;
-  int selectedSite = 0;
   int currentPage = 1;
 
   car.GetCarListModel? carModel;
   List<car.Data2> carList = [];
-  List<comp.Data> companyList = [];
-  List<site.Data> siteList = [];
 
   @override
   void onInit() {
     super.onInit();
-    Future.wait([fetchList(1), fetchFilter()]);
+    Future.wait([fetchList(1)]);
+    initData();
+  }
+
+  void initData()async{
+    String codeRole = await storage.readString(StorageCore.codeRole);
+
+    if(codeRole == RoleEnum.administrator.value){
+      enableSelectCompany = true;
+    }
+
+    listCompany.clear();
+    listSite.clear();
+
+    listCompany.add(CompanyModel(id: "", companyName: "Company"));
+    listSite.add(SiteModel(id: "", siteName: "Site"));
+
+    try {
+      getListCompany().then((value) => listCompany.addAll(value)).then((value) {
+        if(enableSelectCompany){
+          selectedCompany = listCompany.first;
+        }
+      });
+
+    } catch (e) {
+      e.printError();
+    }
+
+    if(!enableSelectCompany){
+      String idCompany = await storage.readString(StorageCore.companyID);
+      String companyName = await storage.readString(StorageCore.companyName);
+
+      selectedCompany = CompanyModel(
+          id: idCompany,
+      );
+      companyTextEditingController.text = companyName;
+    }
+
+    getListSiteByCompanyId(selectedCompany?.id).then((value) => listSite.addAll(value));
+
+    update();
+
   }
 
   void clearSearch(String search) {
@@ -34,33 +93,6 @@ class ManagementPoolCarListController extends BaseController {
     currentPage = 1;
     searchValue = null;
     fetchList(1);
-    update();
-  }
-
-  void resetFilter() {
-    formKey.currentState?.reset();
-    selectedCompany = 0;
-    selectedSite = 0;
-    update();
-  }
-
-  Future<void> fetchFilter() async {
-    companyList = [];
-    siteList = [];
-
-    try {
-      await repository.getCompanyList().then((value) {
-        companyList.add(comp.Data(id: 0, companyName: "All"));
-        companyList.addAll(value.data?.toSet().toList() ?? []);
-      });
-
-      await repository.getSiteList().then((value) {
-        siteList.add(site.Data(id: 0, companyName: "All"));
-        siteList.addAll(value.data?.toSet().toList() ?? []);
-      });
-    } catch (e) {
-      e.printError();
-    }
     update();
   }
 
@@ -74,8 +106,8 @@ class ManagementPoolCarListController extends BaseController {
         10,
         page,
         searchValue,
-        selectedCompany == 0 ? null : selectedCompany,
-        selectedSite == 0 ? null : selectedSite,
+        selectedCompany!.id.toString().isNotEmpty ? selectedCompany?.id.toString().toInt() : null,
+        selectedSite!.id.toString().isNotEmpty ? selectedSite?.id.toString().toInt() : null,
       )
           .then((value) {
         carList.addAll(value.data?.data?.toSet().toList() ?? []);
@@ -124,4 +156,59 @@ class ManagementPoolCarListController extends BaseController {
     isLoading = false;
     update();
   }
+
+  void applySearch(String search){
+    keyword(search);
+    fetchList(1);
+  }
+
+  void openFilter(){
+    selectedCompanyTemp = selectedCompany;
+    selectedSiteTemp = selectedSite;
+    print("LIST SITE ${listSite.length}");
+    print("selectedSiteTemp ${selectedSiteTemp?.toJson()}");
+  }
+
+  void applyFilter(){
+    selectedCompany = selectedCompanyTemp;
+    selectedSite = selectedSiteTemp;
+
+    fetchList(1);
+  }
+
+  void resetFilter()async{
+    if(enableSelectCompany){
+      onChangeSelectedCompany("");
+    }else{
+      String idCompany = await storage.readString(StorageCore.companyID);
+      onChangeSelectedCompany(idCompany);
+    }
+  }
+
+
+  void onChangeSelectedCompany(String id) {
+    final selected = listCompany.firstWhere(
+            (item) => item.id.toString() == id.toString(),
+        orElse: () => listCompany.first);
+    selectedCompanyTemp = selected;
+
+    listSite.removeWhere((element) => element.id!="");
+
+    getListSiteByCompanyId(selectedCompanyTemp?.id).then((value){
+      listSite.addAll(value);
+      update();
+      onChangeSelectedSite("");
+    });
+
+  }
+
+  void onChangeSelectedSite(String id) {
+    final selected = listSite.firstWhere(
+            (item) => item.id.toString() == id.toString(),
+        orElse: () => listSite.first);
+    selectedSiteTemp = selected;
+    print("selectedSiteTempxx ${selectedSiteTemp?.toJson()}");
+    update();
+  }
+
 }

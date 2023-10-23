@@ -272,7 +272,7 @@ class MasterRepository{
     }
   }
 
-  Future<Either<BaseError, List<SiteModel>>> getListSiteByCompanyId(int idCompany)async{
+  Future<Either<BaseError, List<SiteModel>>> getListSiteByCompanyId(dynamic idCompany)async{
     try {
       Dio.Response response = await network.dio.get(
         '/api/site/get_by_company/$idCompany',
