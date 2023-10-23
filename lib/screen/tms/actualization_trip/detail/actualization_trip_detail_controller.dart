@@ -5,12 +5,9 @@ import 'package:gais/data/model/actualization_trip/actualization_trip_model.dart
 import 'package:gais/data/model/actualization_trip/trip_info_model.dart';
 import 'package:gais/data/model/approval_log_model.dart';
 import 'package:gais/data/model/master/zone/zone_model.dart';
-import 'package:gais/data/model/request_atk/request_atk_detail_model.dart';
-import 'package:gais/data/model/request_atk/request_atk_model.dart';
 import 'package:gais/data/repository/actualization_trip/activity_repository.dart';
 import 'package:gais/data/repository/actualization_trip/new_actualization_trip_repository.dart';
 import 'package:gais/data/repository/actualization_trip/trip_info_repository.dart';
-import 'package:gais/data/repository/request_atk/request_atk_repository.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/enum/tab_enum.dart';
@@ -31,7 +28,6 @@ class ActualizationTripDetailController extends BaseController with MasterDataMi
 
   final selectedItem = ActualizationTripModel().obs;
 
-  final listDetail = <RequestATKDetailModel>[].obs;
   final listTripInfo = <TripInfoModel>[].obs;
   final listActivity = <ActivityModel>[].obs;
 
@@ -158,7 +154,7 @@ class ActualizationTripDetailController extends BaseController with MasterDataMi
     return result;
   }
 
-  void getTripInfo() async {
+  Future<void> getTripInfo() async {
     final result = await _tripRepository
         .getTripInfoByActualizationId(selectedItem.value.id);
 
@@ -258,10 +254,11 @@ class ActualizationTripDetailController extends BaseController with MasterDataMi
             CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
       }, (model) {
         isLoadingHitApi(false);
-        //updateHeader
-        updateHeader();
         //update list
-        getTripInfo();
+        getTripInfo().then((value) {
+          //updateHeader
+          updateHeader();
+        });
       });
     }
   }

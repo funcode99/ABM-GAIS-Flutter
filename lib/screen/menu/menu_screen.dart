@@ -3,6 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/screen/approval/actualization_trip/approval_actualization_trip_screen.dart';
+import 'package:gais/screen/approval/actualization_trip/list/approval_actualization_trip_list_screen.dart';
+import 'package:gais/screen/approval/cash_advance_travel/list/approval_cash_advance_travel_list_screen.dart';
 import 'package:gais/screen/approval/request_atk/list/approval_request_atk_list_screen.dart';
 import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_list_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/list/booking_meeting_room_list_screen.dart';
@@ -397,6 +400,42 @@ class MenuScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),*/
+                                if(controller.isSuperAdmin || controller.isPayroll)
+                                  GestureDetector(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: infoColor,
+                                            borderRadius: BorderRadius.circular(50),
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                          margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                          height: 50,
+                                          width: 50,
+                                          alignment: Alignment.center,
+                                          child: Stack(
+                                            children: [
+                                              SvgPicture.asset(
+                                                ImageConstant.airplane,
+                                                height: 30, width: 30,
+                                              ),
+                                              const Positioned(
+                                                right: 0,
+                                                top: 0,
+                                                child: Icon(Icons.attach_money, size: 10, color: Colors.white,),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Text("Actualization\nTrip", style: menuSubTitleTextStyle, textAlign: TextAlign.center),
+                                      ],
+                                    ),
+                                    onTap: (){
+                                      Get.to(() => const ApprovalActualizationTripScreen());
+                                    },
+                                  ),
                               ],
                             ),
                           ],
