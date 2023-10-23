@@ -44,7 +44,11 @@ class ManagementPoolCarListController extends BaseController with MasterDataMixi
   @override
   void onInit() {
     super.onInit();
-    Future.wait([fetchList(1)]);
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
     initData();
   }
 
@@ -86,6 +90,7 @@ class ManagementPoolCarListController extends BaseController with MasterDataMixi
 
     update();
 
+    fetchList(1);
   }
 
   void clearSearch(String search) {
@@ -106,8 +111,8 @@ class ManagementPoolCarListController extends BaseController with MasterDataMixi
         10,
         page,
         searchValue,
-        selectedCompany!.id.toString().isNotEmpty ? selectedCompany?.id.toString().toInt() : null,
-        selectedSite!.id.toString().isNotEmpty ? selectedSite?.id.toString().toInt() : null,
+        selectedCompany?.id.toString() != "" ? selectedCompany?.id.toString().toInt() : null,
+        selectedSite?.id.toString() != "" ? selectedSite?.id.toString().toInt() : null,
       )
           .then((value) {
         carList.addAll(value.data?.data?.toSet().toList() ?? []);

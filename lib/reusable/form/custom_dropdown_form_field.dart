@@ -81,10 +81,11 @@ class CustomDropDownFormField<T> extends StatelessWidget {
     if (items != null) {
       if (items!.isNotEmpty) {
         if (value != null) {
-          DropdownMenuItem? item = items?.firstWhere((DropdownMenuItem item) => item.value == value) as DropdownMenuItem;
+          DropdownMenuItem? item = items?.firstWhere((DropdownMenuItem item) => item.value == value, orElse: () => items!.first) as DropdownMenuItem;
           Text textView = item.child as Text;
 
           return textView.data ?? hintText ?? label;
+
         }
       }
     }
