@@ -12,6 +12,7 @@ import 'package:gais/data/model/master/city/city_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
+import 'package:gais/data/model/master/driver/driver_model.dart';
 import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/model/master/facility/facility_model.dart';
 import 'package:gais/data/model/master/meeting_room/meeting_room_model.dart';
@@ -582,7 +583,7 @@ class MasterRepository{
     }
   }
 
-  Future<Either<BaseError, List<CarModel>>> getListCar({String? keyword, int? idSite})async{
+  Future<Either<BaseError, List<CarModel>>> getListCar({String? keyword, dynamic idSite})async{
     try {
       Dio.Response response = await network.dio.get(
         '/api/car/get',
@@ -599,6 +600,33 @@ class MasterRepository{
           .toList();*/
 
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, CarModel.fromJsonModelList);
+      return right(apiResponseModel.data);
+
+    } on Dio.DioError catch (e) {
+      print(e);
+
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e){
+      print(e);
+      return left(BaseError(message: e.message));
+    }catch (e){
+      print(e);
+
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
+  Future<Either<BaseError, List<DriverModel>>> getListDriver({dynamic idCompany, dynamic idSite})async{
+    try {
+      Dio.Response response = await network.dio.get(
+          '/api/car/get_driver',
+          queryParameters: {
+            "id_company" : idCompany,
+            "id_site" : idSite
+          }
+      );
+
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, DriverModel.fromJsonModelList);
       return right(apiResponseModel.data);
 
     } on Dio.DioError catch (e) {
