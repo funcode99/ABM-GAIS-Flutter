@@ -268,7 +268,7 @@ class TrainReservationScreen extends StatelessWidget {
                                 label: "ID Number",
                                 isRequired: true,
                                 validator: (value) {
-                                  if (value!.isEmpty || value.length < 16) {
+                                  if (value!.isEmpty || value.length < 16 || value.length > 16) {
                                     return 'Number must be 16 digits';
                                   }
                                   return null;

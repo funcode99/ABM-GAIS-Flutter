@@ -65,7 +65,7 @@ class AddGuestScreen extends StatelessWidget {
                               label: "Type of Traveller",
                               hintText: controller.isLoading ? "loading..." : "Type",
                               isRequired: true,
-                              value: controller.selectedType!.isNotEmpty && controller.selectedType != "0" ? controller.selectedType : null,
+                              value: controller.selectedType == null || controller.selectedType == "0" ? null : controller.selectedType,
                               onChanged: (value) {
                                 controller.selectedType = value;
                                 controller.update();

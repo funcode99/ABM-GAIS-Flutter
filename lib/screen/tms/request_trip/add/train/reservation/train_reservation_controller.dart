@@ -122,7 +122,8 @@ class TrainReservationController extends BaseController {
           await requestTrip.updateTrainTrip(
             trainID!,
             purposeID,
-            "${passFirstName.text} ${passLastName.text} ",
+            trainData.data?.first.travelerName ?? '',
+            // 'GA - Budi',
             value.data?.pnrid.toString() ?? '',
             "1",
             trainData.data?.first.codeStation ?? '',

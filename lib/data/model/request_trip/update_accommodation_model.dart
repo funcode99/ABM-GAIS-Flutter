@@ -41,6 +41,372 @@ UpdateAccommodationModel copyWith({  bool? success,
 
 class Data {
   Data({
+      Header? header, 
+      Contact? contact, 
+      List<Guest>? guest, 
+      List<Beds>? beds,}){
+    _header = header;
+    _contact = contact;
+    _guest = guest;
+    _beds = beds;
+}
+
+  Data.fromJson(dynamic json) {
+    _header = json['header'] != null ? Header.fromJson(json['header']) : null;
+    _contact = json['Contact'] != null ? Contact.fromJson(json['Contact']) : null;
+    if (json['Guest'] != null) {
+      _guest = [];
+      json['Guest'].forEach((v) {
+        _guest?.add(Guest.fromJson(v));
+      });
+    }
+    if (json['Beds'] != null) {
+      _beds = [];
+      json['Beds'].forEach((v) {
+        _beds?.add(Beds.fromJson(v));
+      });
+    }
+  }
+  Header? _header;
+  Contact? _contact;
+  List<Guest>? _guest;
+  List<Beds>? _beds;
+Data copyWith({  Header? header,
+  Contact? contact,
+  List<Guest>? guest,
+  List<Beds>? beds,
+}) => Data(  header: header ?? _header,
+  contact: contact ?? _contact,
+  guest: guest ?? _guest,
+  beds: beds ?? _beds,
+);
+  Header? get header => _header;
+  Contact? get contact => _contact;
+  List<Guest>? get guest => _guest;
+  List<Beds>? get beds => _beds;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    if (_header != null) {
+      map['header'] = _header?.toJson();
+    }
+    if (_contact != null) {
+      map['Contact'] = _contact?.toJson();
+    }
+    if (_guest != null) {
+      map['Guest'] = _guest?.map((v) => v.toJson()).toList();
+    }
+    if (_beds != null) {
+      map['Beds'] = _beds?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+
+}
+
+class Beds {
+  Beds({
+      String? index, 
+      String? countAdult, 
+      String? requestChildBed, 
+      String? type, 
+      String? id, 
+      String? idAccomodation, 
+      String? updatedAt, 
+      String? createdAt,}){
+    _index = index;
+    _countAdult = countAdult;
+    _requestChildBed = requestChildBed;
+    _type = type;
+    _id = id;
+    _idAccomodation = idAccomodation;
+    _updatedAt = updatedAt;
+    _createdAt = createdAt;
+}
+
+  Beds.fromJson(dynamic json) {
+    _index = json['Index'];
+    _countAdult = json['CountAdult'];
+    _requestChildBed = json['RequestChildBed'];
+    _type = json['Type'];
+    _id = json['id'];
+    _idAccomodation = json['id_accomodation'];
+    _updatedAt = json['updated_at'];
+    _createdAt = json['created_at'];
+  }
+  String? _index;
+  String? _countAdult;
+  String? _requestChildBed;
+  String? _type;
+  String? _id;
+  String? _idAccomodation;
+  String? _updatedAt;
+  String? _createdAt;
+Beds copyWith({  String? index,
+  String? countAdult,
+  String? requestChildBed,
+  String? type,
+  String? id,
+  String? idAccomodation,
+  String? updatedAt,
+  String? createdAt,
+}) => Beds(  index: index ?? _index,
+  countAdult: countAdult ?? _countAdult,
+  requestChildBed: requestChildBed ?? _requestChildBed,
+  type: type ?? _type,
+  id: id ?? _id,
+  idAccomodation: idAccomodation ?? _idAccomodation,
+  updatedAt: updatedAt ?? _updatedAt,
+  createdAt: createdAt ?? _createdAt,
+);
+  String? get index => _index;
+  String? get countAdult => _countAdult;
+  String? get requestChildBed => _requestChildBed;
+  String? get type => _type;
+  String? get id => _id;
+  String? get idAccomodation => _idAccomodation;
+  String? get updatedAt => _updatedAt;
+  String? get createdAt => _createdAt;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['Index'] = _index;
+    map['CountAdult'] = _countAdult;
+    map['RequestChildBed'] = _requestChildBed;
+    map['Type'] = _type;
+    map['id'] = _id;
+    map['id_accomodation'] = _idAccomodation;
+    map['updated_at'] = _updatedAt;
+    map['created_at'] = _createdAt;
+    return map;
+  }
+
+}
+
+class Guest {
+  Guest({
+      String? index, 
+      String? title, 
+      String? firstName, 
+      String? lastName, 
+      String? mobilePhone, 
+      String? email, 
+      String? age, 
+      String? type, 
+      String? assignedRoom, 
+      String? orderInRoom, 
+      String? id, 
+      String? idAccomodation, 
+      String? updatedAt, 
+      String? createdAt,}){
+    _index = index;
+    _title = title;
+    _firstName = firstName;
+    _lastName = lastName;
+    _mobilePhone = mobilePhone;
+    _email = email;
+    _age = age;
+    _type = type;
+    _assignedRoom = assignedRoom;
+    _orderInRoom = orderInRoom;
+    _id = id;
+    _idAccomodation = idAccomodation;
+    _updatedAt = updatedAt;
+    _createdAt = createdAt;
+}
+
+  Guest.fromJson(dynamic json) {
+    _index = json['Index'];
+    _title = json['Title'];
+    _firstName = json['FirstName'];
+    _lastName = json['LastName'];
+    _mobilePhone = json['MobilePhone'];
+    _email = json['Email'];
+    _age = json['Age'];
+    _type = json['Type'];
+    _assignedRoom = json['AssignedRoom'];
+    _orderInRoom = json['OrderInRoom'];
+    _id = json['id'];
+    _idAccomodation = json['id_accomodation'];
+    _updatedAt = json['updated_at'];
+    _createdAt = json['created_at'];
+  }
+  String? _index;
+  String? _title;
+  String? _firstName;
+  String? _lastName;
+  String? _mobilePhone;
+  String? _email;
+  String? _age;
+  String? _type;
+  String? _assignedRoom;
+  String? _orderInRoom;
+  String? _id;
+  String? _idAccomodation;
+  String? _updatedAt;
+  String? _createdAt;
+Guest copyWith({  String? index,
+  String? title,
+  String? firstName,
+  String? lastName,
+  String? mobilePhone,
+  String? email,
+  String? age,
+  String? type,
+  String? assignedRoom,
+  String? orderInRoom,
+  String? id,
+  String? idAccomodation,
+  String? updatedAt,
+  String? createdAt,
+}) => Guest(  index: index ?? _index,
+  title: title ?? _title,
+  firstName: firstName ?? _firstName,
+  lastName: lastName ?? _lastName,
+  mobilePhone: mobilePhone ?? _mobilePhone,
+  email: email ?? _email,
+  age: age ?? _age,
+  type: type ?? _type,
+  assignedRoom: assignedRoom ?? _assignedRoom,
+  orderInRoom: orderInRoom ?? _orderInRoom,
+  id: id ?? _id,
+  idAccomodation: idAccomodation ?? _idAccomodation,
+  updatedAt: updatedAt ?? _updatedAt,
+  createdAt: createdAt ?? _createdAt,
+);
+  String? get index => _index;
+  String? get title => _title;
+  String? get firstName => _firstName;
+  String? get lastName => _lastName;
+  String? get mobilePhone => _mobilePhone;
+  String? get email => _email;
+  String? get age => _age;
+  String? get type => _type;
+  String? get assignedRoom => _assignedRoom;
+  String? get orderInRoom => _orderInRoom;
+  String? get id => _id;
+  String? get idAccomodation => _idAccomodation;
+  String? get updatedAt => _updatedAt;
+  String? get createdAt => _createdAt;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['Index'] = _index;
+    map['Title'] = _title;
+    map['FirstName'] = _firstName;
+    map['LastName'] = _lastName;
+    map['MobilePhone'] = _mobilePhone;
+    map['Email'] = _email;
+    map['Age'] = _age;
+    map['Type'] = _type;
+    map['AssignedRoom'] = _assignedRoom;
+    map['OrderInRoom'] = _orderInRoom;
+    map['id'] = _id;
+    map['id_accomodation'] = _idAccomodation;
+    map['updated_at'] = _updatedAt;
+    map['created_at'] = _createdAt;
+    return map;
+  }
+
+}
+
+class Contact {
+  Contact({
+      String? title, 
+      String? firstName, 
+      String? lastName, 
+      String? mobilePhone, 
+      String? email, 
+      String? remark, 
+      String? id, 
+      String? idAccomodation, 
+      String? updatedAt, 
+      String? createdAt,}){
+    _title = title;
+    _firstName = firstName;
+    _lastName = lastName;
+    _mobilePhone = mobilePhone;
+    _email = email;
+    _remark = remark;
+    _id = id;
+    _idAccomodation = idAccomodation;
+    _updatedAt = updatedAt;
+    _createdAt = createdAt;
+}
+
+  Contact.fromJson(dynamic json) {
+    _title = json['Title'];
+    _firstName = json['FirstName'];
+    _lastName = json['LastName'];
+    _mobilePhone = json['MobilePhone'];
+    _email = json['Email'];
+    _remark = json['Remark'];
+    _id = json['id'];
+    _idAccomodation = json['id_accomodation'];
+    _updatedAt = json['updated_at'];
+    _createdAt = json['created_at'];
+  }
+  String? _title;
+  String? _firstName;
+  String? _lastName;
+  String? _mobilePhone;
+  String? _email;
+  String? _remark;
+  String? _id;
+  String? _idAccomodation;
+  String? _updatedAt;
+  String? _createdAt;
+Contact copyWith({  String? title,
+  String? firstName,
+  String? lastName,
+  String? mobilePhone,
+  String? email,
+  String? remark,
+  String? id,
+  String? idAccomodation,
+  String? updatedAt,
+  String? createdAt,
+}) => Contact(  title: title ?? _title,
+  firstName: firstName ?? _firstName,
+  lastName: lastName ?? _lastName,
+  mobilePhone: mobilePhone ?? _mobilePhone,
+  email: email ?? _email,
+  remark: remark ?? _remark,
+  id: id ?? _id,
+  idAccomodation: idAccomodation ?? _idAccomodation,
+  updatedAt: updatedAt ?? _updatedAt,
+  createdAt: createdAt ?? _createdAt,
+);
+  String? get title => _title;
+  String? get firstName => _firstName;
+  String? get lastName => _lastName;
+  String? get mobilePhone => _mobilePhone;
+  String? get email => _email;
+  String? get remark => _remark;
+  String? get id => _id;
+  String? get idAccomodation => _idAccomodation;
+  String? get updatedAt => _updatedAt;
+  String? get createdAt => _createdAt;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['Title'] = _title;
+    map['FirstName'] = _firstName;
+    map['LastName'] = _lastName;
+    map['MobilePhone'] = _mobilePhone;
+    map['Email'] = _email;
+    map['Remark'] = _remark;
+    map['id'] = _id;
+    map['id_accomodation'] = _idAccomodation;
+    map['updated_at'] = _updatedAt;
+    map['created_at'] = _createdAt;
+    return map;
+  }
+
+}
+
+class Header {
+  Header({
       String? id, 
       String? idRequestTrip, 
       String? idTypeAccomodation, 
@@ -67,7 +433,16 @@ class Data {
       String? guest, 
       String? pnrid, 
       String? jenkel, 
-      String? hotelFare,}){
+      String? hotelFare, 
+      String? correlationId, 
+      String? hotelKey, 
+      String? roomKey, 
+      dynamic confirmationId, 
+      dynamic hotelName, 
+      dynamic address, 
+      dynamic roomName, 
+      dynamic countGuest, 
+      dynamic totalPrice,}){
     _id = id;
     _idRequestTrip = idRequestTrip;
     _idTypeAccomodation = idTypeAccomodation;
@@ -95,9 +470,18 @@ class Data {
     _pnrid = pnrid;
     _jenkel = jenkel;
     _hotelFare = hotelFare;
+    _correlationId = correlationId;
+    _hotelKey = hotelKey;
+    _roomKey = roomKey;
+    _confirmationId = confirmationId;
+    _hotelName = hotelName;
+    _address = address;
+    _roomName = roomName;
+    _countGuest = countGuest;
+    _totalPrice = totalPrice;
 }
 
-  Data.fromJson(dynamic json) {
+  Header.fromJson(dynamic json) {
     _id = json['id'];
     _idRequestTrip = json['id_request_trip'];
     _idTypeAccomodation = json['id_type_accomodation'];
@@ -125,6 +509,15 @@ class Data {
     _pnrid = json['pnrid'];
     _jenkel = json['jenkel'];
     _hotelFare = json['hotel_fare'];
+    _correlationId = json['CorrelationId'];
+    _hotelKey = json['HotelKey'];
+    _roomKey = json['RoomKey'];
+    _confirmationId = json['ConfirmationId'];
+    _hotelName = json['HotelName'];
+    _address = json['Address'];
+    _roomName = json['RoomName'];
+    _countGuest = json['CountGuest'];
+    _totalPrice = json['TotalPrice'];
   }
   String? _id;
   String? _idRequestTrip;
@@ -153,7 +546,16 @@ class Data {
   String? _pnrid;
   String? _jenkel;
   String? _hotelFare;
-Data copyWith({  String? id,
+  String? _correlationId;
+  String? _hotelKey;
+  String? _roomKey;
+  dynamic _confirmationId;
+  dynamic _hotelName;
+  dynamic _address;
+  dynamic _roomName;
+  dynamic _countGuest;
+  dynamic _totalPrice;
+Header copyWith({  String? id,
   String? idRequestTrip,
   String? idTypeAccomodation,
   String? checkInDate,
@@ -180,7 +582,16 @@ Data copyWith({  String? id,
   String? pnrid,
   String? jenkel,
   String? hotelFare,
-}) => Data(  id: id ?? _id,
+  String? correlationId,
+  String? hotelKey,
+  String? roomKey,
+  dynamic confirmationId,
+  dynamic hotelName,
+  dynamic address,
+  dynamic roomName,
+  dynamic countGuest,
+  dynamic totalPrice,
+}) => Header(  id: id ?? _id,
   idRequestTrip: idRequestTrip ?? _idRequestTrip,
   idTypeAccomodation: idTypeAccomodation ?? _idTypeAccomodation,
   checkInDate: checkInDate ?? _checkInDate,
@@ -207,6 +618,15 @@ Data copyWith({  String? id,
   pnrid: pnrid ?? _pnrid,
   jenkel: jenkel ?? _jenkel,
   hotelFare: hotelFare ?? _hotelFare,
+  correlationId: correlationId ?? _correlationId,
+  hotelKey: hotelKey ?? _hotelKey,
+  roomKey: roomKey ?? _roomKey,
+  confirmationId: confirmationId ?? _confirmationId,
+  hotelName: hotelName ?? _hotelName,
+  address: address ?? _address,
+  roomName: roomName ?? _roomName,
+  countGuest: countGuest ?? _countGuest,
+  totalPrice: totalPrice ?? _totalPrice,
 );
   String? get id => _id;
   String? get idRequestTrip => _idRequestTrip;
@@ -235,6 +655,15 @@ Data copyWith({  String? id,
   String? get pnrid => _pnrid;
   String? get jenkel => _jenkel;
   String? get hotelFare => _hotelFare;
+  String? get correlationId => _correlationId;
+  String? get hotelKey => _hotelKey;
+  String? get roomKey => _roomKey;
+  dynamic get confirmationId => _confirmationId;
+  dynamic get hotelName => _hotelName;
+  dynamic get address => _address;
+  dynamic get roomName => _roomName;
+  dynamic get countGuest => _countGuest;
+  dynamic get totalPrice => _totalPrice;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -265,6 +694,15 @@ Data copyWith({  String? id,
     map['pnrid'] = _pnrid;
     map['jenkel'] = _jenkel;
     map['hotel_fare'] = _hotelFare;
+    map['CorrelationId'] = _correlationId;
+    map['HotelKey'] = _hotelKey;
+    map['RoomKey'] = _roomKey;
+    map['ConfirmationId'] = _confirmationId;
+    map['HotelName'] = _hotelName;
+    map['Address'] = _address;
+    map['RoomName'] = _roomName;
+    map['CountGuest'] = _countGuest;
+    map['TotalPrice'] = _totalPrice;
     return map;
   }
 

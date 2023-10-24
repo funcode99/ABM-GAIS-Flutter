@@ -107,43 +107,45 @@ class PurposeOfTripController extends BaseController {
     purposeList = [];
     costCenterList = [];
     isLoading = true;
-    requestorID = requestTripVariable.requestTripRequestorID;
-    siteID = requestTripVariable.requestTripRequestorSiteID;
-    requestorID.printInfo(info: "requestorID");
-    await storage.readEmployeeInfo().then((value) {
-      // requsetorID = value.first.id?.toInt();
-      // siteID = value.first.idSite?.toInt();
-      jobID = value.first.idJobBand.toString();
-    });
+    try {
+      requestorID = requestTripVariable.requestTripRequestorID;
+      siteID = requestTripVariable.requestTripRequestorSiteID;
+      requestorID.printInfo(info: "requestorID");
+      await storage.readEmployeeInfo().then((value) {
+        // requsetorID = value.first.id?.toInt();
+        // siteID = value.first.idSite?.toInt();
+        jobID = value.first.idJobBand.toString();
+      });
 
-    var dataCity = await repository.getCityList();
-    cityModel = dataCity;
-    // cityList.add(city.Data(id: 0, cityName: "City"));
-    cityList.addAll(dataCity.data?.toSet().toList() ?? []);
-    // fromCity = "0";
-    // toCity = "0";
+      var dataCity = await repository.getCityList();
+      cityModel = dataCity;
+      // cityList.add(city.Data(id: 0, cityName: "City"));
+      cityList.addAll(dataCity.data?.toSet().toList() ?? []);
+      // fromCity = "0";
+      // toCity = "0";
 
-    var dataPurpose = await repository.getDocumentCodeList();
-    purposeModel = dataPurpose;
-    // purposeList.add(purpose.Data(id: 0, documentName: "Purpose of Trip"));
-    purposeList.addAll(dataPurpose.data?.toSet().toList() ?? []);
-    // selectedPurpose = "0";
+      var dataPurpose = await repository.getDocumentCodeList();
+      purposeModel = dataPurpose;
+      // purposeList.add(purpose.Data(id: 0, documentName: "Purpose of Trip"));
+      purposeList.addAll(dataPurpose.data?.toSet().toList() ?? []);
+      // selectedPurpose = "0";
 
-    var dataSite = await repository.getSiteList();
-    siteModel = dataSite;
-    siteList.addAll(dataSite.data?.toSet().toList() ?? []);
+      var dataSite = await repository.getSiteList();
+      siteModel = dataSite;
+      siteList.addAll(dataSite.data?.toSet().toList() ?? []);
 
-    // await repository.getTLKJobByIDJob(jobID!).then((value) {
-    //   tlkDay.text = int.parse(value.data?.first.tlkRate ?? "0").toCurrency();
-    // });
+      // await repository.getTLKJobByIDJob(jobID!).then((value) {
+      //   tlkDay.text = int.parse(value.data?.first.tlkRate ?? "0").toCurrency();
+      // });
+      await repository.getCostCenterList().then((value) => costCenterList.addAll(value.data?.toSet().toList() ?? []));
+      costCenterID = await storage.readString(StorageCore.costCenterID);
 
-    await storage.readString(StorageCore.tlkRate).then((value) => tlkDay.text = int.parse(value).toCurrency());
-
-    await repository.getCostCenterList().then((value) => costCenterList.addAll(value.data?.toSet().toList() ?? []));
+      await storage.readString(StorageCore.tlkRate).then((value) => tlkDay.text = int.parse(value).toCurrency().toString());
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+    }
     isLoading = false;
-
-    costCenterID = await storage.readString(StorageCore.costCenterID);
-
     update();
   }
 

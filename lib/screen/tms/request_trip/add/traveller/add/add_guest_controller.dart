@@ -47,6 +47,7 @@ class AddGuestController extends BaseController {
     flightEntitlement.text;
     guestCompany.text;
     guestDepartment.text;
+    print("selected type : ${selectedType}");
 
     fetchList();
     if (guestID != null) {
