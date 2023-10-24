@@ -114,9 +114,29 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
   }
 
   @override
-  Future<Either<BaseError, PoolCarModel>> updateData(model, dynamic id) {
-    // TODO: implement updateData
-    throw UnimplementedError();
+  Future<Either<BaseError, PoolCarModel>> updateData(model, dynamic id) async{
+    final poolCarModel = model as PoolCarModel;
+
+    Map<String, dynamic> data = {
+      "id_car": poolCarModel.idCar,
+      "id_drivers": poolCarModel.idDrivers
+    };
+
+    try {
+      Dio.Response response = await network.dio
+          .post('/api/pool_car/update_data/$id',
+          data: data);
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(
+          response.data, PoolCarModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on Dio.DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e) {
+      return left(BaseError(message: e.message));
+    } catch (e) {
+      print("Error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override

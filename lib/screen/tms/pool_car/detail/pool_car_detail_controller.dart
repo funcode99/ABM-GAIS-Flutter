@@ -19,6 +19,7 @@ class PoolCarDetailController extends BaseController {
   final TextEditingController referenceController = TextEditingController();
 
   final selectedItem = PoolCarModel().obs;
+  final assignedCar = Rxn<PoolCarModel>();
 
   final selectedTab = Rx<TabEnum>(TabEnum.detail);
 
@@ -118,6 +119,23 @@ class PoolCarDetailController extends BaseController {
     });
 
   }*/
+
+  void updateHeader() async {
+    isLoadingHitApi(true);
+
+    final result = await _repository.updateData(assignedCar.value, selectedItem.value.id);
+
+    result.fold(
+            (l) {
+          isLoadingHitApi(false);
+          Get.showSnackbar(
+              CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+        },
+            (model) {
+          isLoadingHitApi(false);
+          detailHeader();
+        });
+  }
 
   void changeCar(CarModel newCar) async {
     isLoadingHitApi(true);
