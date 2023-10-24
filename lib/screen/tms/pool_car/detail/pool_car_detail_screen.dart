@@ -12,6 +12,7 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/pool_car/assign/pool_car_assign_screen.dart';
 import 'package:gais/screen/tms/pool_car/detail/pool_car_detail_controller.dart';
 import 'package:gais/screen/tms/pool_car/p2h/pool_car_p2h_screen.dart';
 import 'package:gais/util/color/color_util.dart';
@@ -90,10 +91,10 @@ class _PoolCarDetailScreenState
                     height: 16,
                   ),
                   Obx(() {
-                    if (controller.showSubmitButton.value) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (controller.showSubmitButton.value)
                           ElevatedButton(
                             onPressed: () {
                               Get.to(()=>const PoolCarP2HScreen(), arguments: {
@@ -106,11 +107,37 @@ class _PoolCarDetailScreenState
                                 backgroundColor: orangeColor),
                             child: Text("Done".tr),
                           ),
-                        ],
-                      );
-                    }
-
-                    return const SizedBox();
+                        if (controller.showAssignButton.value)
+                          ElevatedButton(
+                            onPressed: () async{
+                              PoolCarModel? result = await Get.to(()=>const PoolCarAssignScreen(), arguments: {
+                                "item" : controller.selectedItem.value
+                              });
+                              if(result!=null){
+                                controller.assignedCar(result);
+                                controller.updateHeader();
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(75, 30),
+                                backgroundColor: orangeColor),
+                            child: Text("Assign".tr),
+                          ),
+                        SizedBox(
+                          width: controller.showAssignButton.value ? 8 : 0,
+                        ),
+                        if (controller.showAssignButton.value)
+                          ElevatedButton(
+                            onPressed: () {
+                              controller.openCancelDialog();
+                            },
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(75, 30),
+                                backgroundColor: redColor),
+                            child: Text("Cancel".tr),
+                          ),
+                      ],
+                    );
                   }),
                   const Divider(
                     height: 20,

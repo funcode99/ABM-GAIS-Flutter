@@ -6,6 +6,7 @@ import 'package:gais/data/model/master/city/city_model.dart';
 import 'package:gais/data/model/master/company/company_model.dart';
 import 'package:gais/data/model/master/cost_center/cost_center_model.dart';
 import 'package:gais/data/model/master/currency/currency_model.dart';
+import 'package:gais/data/model/master/driver/driver_model.dart';
 import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/model/master/facility/facility_model.dart';
 import 'package:gais/data/model/master/meeting_room/meeting_room_model.dart';
@@ -152,8 +153,13 @@ mixin MasterDataMixin{
     return result.fold((l) => [], (list) => list);
   }
 
-  Future<List<CarModel>> getListCar({String? keyword, int? idSite})async{
+  Future<List<CarModel>> getListCar({String? keyword, dynamic idSite})async{
     final result = await _repository.getListCar(keyword: keyword, idSite: idSite);
+    return result.fold((l) => [], (list) => list);
+  }
+
+  Future<List<DriverModel>> getListDriver({dynamic idCompany, dynamic idSite})async{
+    final result = await _repository.getListDriver(idCompany: idCompany, idSite: idSite);
     return result.fold((l) => [], (list) => list);
   }
 

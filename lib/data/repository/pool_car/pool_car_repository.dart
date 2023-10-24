@@ -3,6 +3,7 @@ import 'package:dio/dio.dart' as Dio;
 import 'package:gais/base/base_error.dart';
 import 'package:gais/base/base_repository.dart';
 import 'package:gais/data/model/api_response_model.dart';
+import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/master/car/car_model.dart';
 import 'package:gais/data/model/master/car/car_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
@@ -113,9 +114,29 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
   }
 
   @override
-  Future<Either<BaseError, PoolCarModel>> updateData(model, dynamic id) {
-    // TODO: implement updateData
-    throw UnimplementedError();
+  Future<Either<BaseError, PoolCarModel>> updateData(model, dynamic id) async{
+    final poolCarModel = model as PoolCarModel;
+
+    Map<String, dynamic> data = {
+      "id_car": poolCarModel.idCar,
+      "id_drivers": poolCarModel.idDrivers
+    };
+
+    try {
+      Dio.Response response = await network.dio
+          .post('/api/pool_car/update_data/$id',
+          data: data);
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(
+          response.data, PoolCarModel.fromJsonModel);
+      return right(apiResponseModel.data);
+    } on Dio.DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    } on FormatException catch (e) {
+      return left(BaseError(message: e.message));
+    } catch (e) {
+      print("Error $e");
+      return left(BaseError(message: "General error occurred"));
+    }
   }
 
   @override
@@ -209,6 +230,27 @@ class PoolCarRepository implements BaseRepository<PoolCarModel, bool>{
       return left(BaseError(message: "General error occurred"));
     }
   }
+
+  Future<Either<BaseError, bool>> cancelData(model, dynamic id) async{
+    try {
+      final approvalModel = model as ApprovalModel;
+
+      Dio.Response response = await network.dio.post(
+          '/api/pool_car/cancel/$id',
+          data: approvalModel.toJson()
+      );
+      ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PoolCarModel.fromJsonModel);
+      return right(apiResponseModel.success ?? false);
+    } on Dio.DioError catch (e) {
+      return left(BaseError(message: e.response!.data['message'] ?? e.message));
+    }on FormatException catch (e){
+      return left(BaseError(message: e.message));
+    } catch (e){
+      print("E $e");
+      return left(BaseError(message: "General error occurred"));
+    }
+  }
+
 
 
 }
