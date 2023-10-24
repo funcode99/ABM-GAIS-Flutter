@@ -4,7 +4,9 @@ import 'package:gais/data/model/pool_car/management_poolcar/get_car_type_model.d
 import 'package:gais/data/model/pool_car/management_poolcar/get_driver_model.dart' as driver;
 import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/data/model/reference/get_site_model.dart' as site;
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/screen/tms/pool_car/management_poolcar/list/management_poolcar_list_screen.dart';
+import 'package:gais/util/enum/role_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -31,6 +33,8 @@ class AddManagementPoolCarController extends BaseController {
   final kirRegistrationDateController = TextEditingController();
   final stickerExpiredDateController = TextEditingController();
 
+  final companyTextEditingController = TextEditingController();
+
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat dateFormatForSubmit = DateFormat("yyyy-MM-dd");
 
@@ -40,6 +44,7 @@ class AddManagementPoolCarController extends BaseController {
   bool isLoading = false;
   bool isLoadSite = false;
   bool isEdit = false;
+  bool enableSelectCompany = false;
 
   List<comp.Data> companyList = [];
   List<site.Data> siteList = [];
@@ -75,7 +80,31 @@ class AddManagementPoolCarController extends BaseController {
       isEdit = Get.arguments['isEdit'];
     }
     if (isEdit == true) fetchEdit();
+
+    initData();
   }
+
+  void initData()async{
+    String codeRole = await storage.readString(StorageCore.codeRole);
+
+    if(codeRole == RoleEnum.administrator.value){
+      enableSelectCompany = true;
+    }
+
+    if(!enableSelectCompany){
+      String idCompany = await storage.readString(StorageCore.companyID);
+      String companyName = await storage.readString(StorageCore.companyName);
+
+      companyID = idCompany;
+      companyTextEditingController.text = companyName;
+
+      fetchSiteList(companyID!.toInt());
+    }
+
+    update();
+
+  }
+
 
   Future<void> fetchEdit() async {
     try {
@@ -109,6 +138,9 @@ class AddManagementPoolCarController extends BaseController {
         plateExpiredDate = value.data?.first.plateDate?.toDate(originFormat: "yyyy-MM-dd HH:mm:ss");
         kirRegistrationDate = value.data?.first.kirDate?.toDate(originFormat: "yyyy-MM-dd HH:mm:ss");
         stickerExpiredDate = value.data?.first.stickersDate?.toDate(originFormat: "yyyy-MM-dd HH:mm:ss");
+
+        fetchSiteList(selectedCompany.text.toInt());
+
         update();
       });
     } catch (e) {
@@ -127,7 +159,9 @@ class AddManagementPoolCarController extends BaseController {
     try {
       await repository.getCompanyList().then((value) => companyList.addAll(value.data?.toSet().toList() ?? []));
 
-      await repository.getSiteList().then((value) => siteList.addAll(value.data?.toSet().toList() ?? []));
+      if(isEdit){
+        await repository.getSiteList().then((value) => siteList.addAll(value.data?.toSet().toList() ?? []));
+      }
 
       await managementPoolCar.getCarTypeList().then((value) {
         carTypeList.addAll(value.data?.toSet().toList() ?? []);
