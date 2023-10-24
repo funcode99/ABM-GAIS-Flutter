@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/antavaya/get_country_hotel_model.dart' as country;
@@ -70,6 +72,7 @@ class AddAccommodationController extends BaseController {
     remarks.text;
     isSharing = false;
     createGL = false;
+    print("isEdit : $isEdit $id ");
     Future.wait([fetchList()]);
   }
 
@@ -86,6 +89,7 @@ class AddAccommodationController extends BaseController {
   }
 
   Future<void> fetchData() async {
+    print('accommodationID  :$id');
     try {
       await requestTrip.getAccommodationByid(id!).then((value) {
         // print(cityList.where((e) => e.cityName == value.data?.first.cityName.toString()).first.cityName);
@@ -96,6 +100,12 @@ class AddAccommodationController extends BaseController {
         checkoutDate.text = value.data?.first.checkOutDate ?? "";
         dateCheckin = DateTime.parse(value.data!.first.checkInDate.toString());
         dateCheckout = DateTime.parse(value.data!.first.checkOutDate.toString());
+        if (dateCheckin!.isBefore(DateTime.now())) {
+          dateCheckin = DateTime.now();
+          dateCheckout = DateTime.now().add(Duration(days: 1));
+          checkinDate.text = dateFormat.format(dateCheckin!);
+          checkoutDate.text = dateFormat.format(dateCheckout!);
+        }
         accommodationType = value.data?.first.idTypeAccomodation.toString();
         remarks.text = value.data?.first.remarks ?? "";
         sharingName.text = value.data?.first.sharingWName ?? "";
@@ -150,7 +160,7 @@ class AddAccommodationController extends BaseController {
       var rtData = await requestTrip.getRequestTripByid(purposeID);
       rtModel = rtData;
       lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
-      if(lastDate.isBefore(DateTime.now())){
+      if (lastDate.isBefore(DateTime.now())) {
         lastDate = DateTime.now().add(Duration(days: 30));
       }
     } catch (e, i) {
@@ -258,23 +268,47 @@ class AddAccommodationController extends BaseController {
         hotelFare.text.digitOnly(),
       )
           .then((value) {
+        // print(jsonEncode(value));
         if (formEdit == true) {
           if (isBooking == true) {
-            Get.to(
-              const CheckHotelsScreen(),
-              arguments: {
-                'purposeID': purposeID,
-                'codeDocument': codeDocument,
-                'formEdit': formEdit,
-                'isEdit': isEdit,
-                'id': id,
-                'city': selectedCity,
-                'country': selectedCountry,
-                'checkinDate': checkinDate.text,
-                'checkoutDate': checkoutDate.text,
-                'data': value,
-              },
-            );
+            if (accommodationType == '1') {
+              Get.to(
+                const CheckHotelsScreen(),
+                arguments: {
+                  'purposeID': purposeID,
+                  'codeDocument': codeDocument,
+                  'formEdit': formEdit,
+                  'isEdit': isEdit,
+                  'id': id,
+                  'city': selectedCity,
+                  'country': selectedCountry,
+                  'checkinDate': checkinDate.text,
+                  'checkoutDate': checkoutDate.text,
+                  'data': value,
+                  'accommodationType': accommodationType,
+                },
+              );
+            } else {
+              Get.to(
+                const CheckAccommodationScreen(),
+                arguments: {
+                  'purposeID': purposeID,
+                  'codeDocument': codeDocument,
+                  'formEdit': formEdit,
+                  'isEdit': isEdit,
+                  'id': id,
+                  'city': selectedCity,
+                  'country': selectedCountry,
+                  'checkinDate': checkinDate.text,
+                  'checkoutDate': checkoutDate.text,
+                  'data': value,
+                  'accommodationType': accommodationType,
+                  'useGL': createGL ? '1' : '0',
+                  'sharingName': isSharing ? sharingName.text : '',
+                  'remarks': remarks.text,
+                },
+              );
+            }
           } else {
             Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument});
           }

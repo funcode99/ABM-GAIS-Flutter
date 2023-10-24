@@ -789,7 +789,7 @@ class RequestTripImpl implements RequestTripRepository {
       );
       return GetAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
+      print("response error: ${e.response?.data}");
       return e.error;
     }
   }

@@ -68,6 +68,8 @@ class AddTrainScreen extends StatelessWidget {
                                 }
                                 return null;
                               },
+                              readOnly: controller.isEdit == true ? true : false,
+                              selectedItem: controller.traveller.text,
                               value: controller.traveller.text.isNotEmpty ? controller.traveller.text : null,
                               items: controller.travellerList
                                   .map((e) => DropdownMenuItem(

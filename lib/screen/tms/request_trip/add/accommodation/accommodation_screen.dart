@@ -121,9 +121,9 @@ class AccommodationScreen extends StatelessWidget {
                         onPressed: () => Get.off(const AddAccommodationScreen(), arguments: {
                           'purposeID': controller.purposeID,
                           'codeDocument': controller.codeDocument,
-                          'id': "0",
+                          'id': null,
                           'formEdit': controller.formEdit,
-                          'isEdit': true,
+                          'isEdit': false,
                         })?.then((result) {
                           controller.fetchList();
                           controller.update();
