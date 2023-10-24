@@ -90,10 +90,10 @@ class _PoolCarDetailScreenState
                     height: 16,
                   ),
                   Obx(() {
-                    if (controller.showSubmitButton.value) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (controller.showSubmitButton.value)
                           ElevatedButton(
                             onPressed: () {
                               Get.to(()=>const PoolCarP2HScreen(), arguments: {
@@ -106,11 +106,31 @@ class _PoolCarDetailScreenState
                                 backgroundColor: orangeColor),
                             child: Text("Done".tr),
                           ),
-                        ],
-                      );
-                    }
-
-                    return const SizedBox();
+                        if (controller.showAssignButton.value)
+                          ElevatedButton(
+                            onPressed: () {
+                              controller.openCancelDialog();
+                            },
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(75, 30),
+                                backgroundColor: orangeColor),
+                            child: Text("Assign".tr),
+                          ),
+                        SizedBox(
+                          width: controller.showAssignButton.value ? 8 : 0,
+                        ),
+                        if (controller.showAssignButton.value)
+                          ElevatedButton(
+                            onPressed: () {
+                              controller.openCancelDialog();
+                            },
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(75, 30),
+                                backgroundColor: redColor),
+                            child: Text("Cancel".tr),
+                          ),
+                      ],
+                    );
                   }),
                   const Divider(
                     height: 20,

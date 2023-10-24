@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/master/car/car_model.dart';
 import 'package:gais/data/model/pool_car/pool_car_model.dart';
 import 'package:gais/data/repository/pool_car/pool_car_repository.dart';
 import 'package:gais/data/storage_core.dart';
+import 'package:gais/reusable/dialog/cancel_dialog.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/enum/role_enum.dart';
 import 'package:gais/util/enum/status_enum.dart';
@@ -26,8 +28,11 @@ class PoolCarDetailController extends BaseController {
   final showP2HEnd = false.obs;
   final showChangeCar = false.obs;
   final showSubmitButton = false.obs;
+  final showAssignButton = false.obs;
 
   final idSite = Rxn<int>();
+
+  final approvalModel = Rxn<ApprovalModel>();
 
   @override
   void onInit() {
@@ -56,6 +61,9 @@ class PoolCarDetailController extends BaseController {
 
     showSubmitButton.value = codeRole == RoleEnum.driver.value &&
         selectedItem.value.codeStatusDoc == PoolCarEnum.ready.value;
+
+    showAssignButton.value = codeRole == RoleEnum.superAdmin.value &&
+        selectedItem.value.codeStatusDoc == PoolCarEnum.waitingCarAndDriver.value;
 
     idSite.value = siteID.toInt();
 
@@ -123,4 +131,27 @@ class PoolCarDetailController extends BaseController {
       detailHeader();
     });
   }
+
+  void cancelHeader() async {
+    isLoadingHitApi(true);
+    final result = await _repository.cancelData(approvalModel.value, selectedItem.value.id!);
+    result.fold((l) {
+      isLoadingHitApi(false);
+      Get.showSnackbar(
+          CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
+    }, (result) {
+      isLoadingHitApi(false);
+      detailHeader();
+    });
+  }
+
+  openCancelDialog() async {
+    ApprovalModel? result = await Get.dialog(CancelDialog(title: "Pool Car Request".tr,));
+
+    if (result != null) {
+      approvalModel(result);
+      cancelHeader();
+    }
+  }
+
 }
