@@ -17,6 +17,7 @@ class PoolCarDetailController extends BaseController {
   final TextEditingController createdDateController = TextEditingController();
   final TextEditingController requestorController = TextEditingController();
   final TextEditingController referenceController = TextEditingController();
+  final TextEditingController noteController = TextEditingController();
 
   final selectedItem = PoolCarModel().obs;
   final assignedCar = Rxn<PoolCarModel>();
@@ -78,6 +79,7 @@ class PoolCarDetailController extends BaseController {
         "-";
     requestorController.text = selectedItem.value.requestorName ?? "-";
     referenceController.text = selectedItem.value.noRequestTrip ?? "-";
+    noteController.text = selectedItem.value.note ?? "-";
 
     String codeRole = await storage.readString(StorageCore.codeRole);
 
