@@ -56,7 +56,8 @@ enum PoolCarEnum {
   waitingCarAndDriver(0),
   driverCheck(1),
   ready(2),
-  done(3);
+  done(3),
+  cancelled(4);
 
   const PoolCarEnum(this.value);
 
