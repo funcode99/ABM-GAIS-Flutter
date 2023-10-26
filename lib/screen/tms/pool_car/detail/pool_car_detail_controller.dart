@@ -79,7 +79,7 @@ class PoolCarDetailController extends BaseController {
         "-";
     requestorController.text = selectedItem.value.requestorName ?? "-";
     referenceController.text = selectedItem.value.noRequestTrip ?? "-";
-    noteController.text = selectedItem.value.note ?? "-";
+    noteController.text = selectedItem.value.remarks ?? "-";
 
     String codeRole = await storage.readString(StorageCore.codeRole);
 
