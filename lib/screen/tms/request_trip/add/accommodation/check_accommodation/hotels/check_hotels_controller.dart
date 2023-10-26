@@ -93,6 +93,13 @@ class CheckHotelsController extends BaseController {
         '',
         accommodationData.data!.header!.jenkel.toString(),
         accommodationData.data!.header!.hotelFare.toString(),
+        "",
+        "",
+        "",
+        "",
+        null,
+        null,
+        null,
       )
           .then((value) {
         print(value.success);

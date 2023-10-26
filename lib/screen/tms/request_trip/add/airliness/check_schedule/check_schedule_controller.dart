@@ -30,7 +30,7 @@ class CheckScheduleController extends BaseController {
   String? departureCity;
   String? arrivalCity;
   bool isLoading = true;
-  List airliness = ["2", "4", "5", "6", "11", "22", "48"];
+  List airliness = ["2", "4", "5", "11", "22", "48"];
 
   flight.GetFlightScheduleModel? flightScheduleModel;
   schedule.GetAirportScheduleModel? scheduleModel1;

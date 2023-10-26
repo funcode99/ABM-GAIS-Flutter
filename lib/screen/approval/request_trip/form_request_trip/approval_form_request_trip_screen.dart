@@ -293,466 +293,471 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                     // SliverToBoxAdapter(
                     delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
-                        if (controller.isDetail == true) {
-                          // if(controller.items[index]['isFilled'] == true)
-                          return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            !controller.items[index]['isFilled']
-                                ? Container()
-                                : ListTile(
-                              title: Row(
-                                children: [
-                                  Text(controller.items[index]['title']),
-                                  IconButton(
-                                      onPressed: () {
-                                        controller.items[index]['showList'] = controller.items[index]['showList'] == false ? true : false;
-                                        controller.update();
-                                      },
-                                      icon: controller.items[index]['showList'] == false
-                                          ? const Icon(Icons.keyboard_arrow_down)
-                                          : const Icon(Icons.keyboard_arrow_up))
-                                ],
-                              ),
-                              trailing: controller.isEdit
-                                  ? CustomFilledButton(
-                                color: successColor,
-                                icon: IconlyBold.plus,
-                                title: " Add",
-                                fontSize: 13,
-                                width: Get.width / 5,
-                                onPressed: () {
-                                  index == 1 || index == 4 || index == 5
-                                      ? Get.off(
-                                    controller.items[index]['screen'],
-                                    arguments: {
-                                      'purposeID': controller.purposeID,
-                                      'codeDocument': controller.codeDocument,
-                                      'formEdit': true,
-                                    },
-                                  )
-                                      : Get.to(
-                                    controller.items[index]['screen'],
-                                    arguments: {
-                                      'purposeID': controller.purposeID,
-                                      'codeDocument': controller.codeDocument,
-                                      'formEdit': true,
-                                    },
-                                  )?.then((value) {
-                                    controller.fetchList();
-                                    controller.update();
-                                  });
-                                },
-                              )
-                                  : const SizedBox(),
-                            ),
-                            const Divider(height: 1, thickness: 1),
-                            controller.items[index]['title'] == "Traveller Guest"
-                                ? controller.items[index]['showList']
-                                ? Column(
-                              children: [
-                                CustomTripCard(
-                                  listNumber: 1,
-                                  title: controller.travellerName ?? "",
-                                  subtitle: controller.travellerSN ?? "",
-                                  info: "Traveller",
-                                  content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            if (controller.isDetail == true) {
+                              // if(controller.items[index]['isFilled'] == true)
+                              return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                !controller.items[index]['isFilled']
+                                    ? Container()
+                                    : ListTile(
+                                  title: Row(
                                     children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Gender", style: listTitleTextStyle),
-                                          Text(controller.travellerGender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Hotel Fare", style: listTitleTextStyle),
-                                          Text("${int.parse(controller.travellerHotel ?? "0").toCurrency()}", style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Flight Entitlement", style: listTitleTextStyle),
-                                          Text(controller.travellerFlight ?? "", style: listSubTitleTextStyle),
-                                        ],
-                                      ),
+                                      Text(controller.items[index]['title']),
+                                      IconButton(
+                                          onPressed: () {
+                                            controller.items[index]['showList'] = controller.items[index]['showList'] == false ? true : false;
+                                            controller.update();
+                                          },
+                                          icon: controller.items[index]['showList'] == false
+                                              ? const Icon(Icons.keyboard_arrow_down)
+                                              : const Icon(Icons.keyboard_arrow_up))
                                     ],
                                   ),
+                                  // trailing: controller.isEdit
+                                  //     ? CustomFilledButton(
+                                  //   color: successColor,
+                                  //   icon: IconlyBold.plus,
+                                  //   title: " Add",
+                                  //   fontSize: 13,
+                                  //   width: Get.width / 5,
+                                  //   onPressed: () {
+                                  //     controller.addDetails(index);
+                                  //   },
+                                  // )
+                                  //     : const SizedBox(),
                                 ),
-                                Column(
-                                    children: controller.guestList.isNotEmpty
-                                        ? controller.guestList
-                                        .mapIndexed(
-                                          (i, e) => CustomTripCard(
-                                        listNumber: i + 2,
-                                        title: e.nameGuest.toString(),
-                                        subtitle: e.nik,
-                                        info: "Guest",
-                                        isEdit: controller.isEdit,
-                                        // editAction: () => Get.to(
-                                        //   const AddGuestScreen(),
-                                        //   arguments: {
-                                        //     'purposeID': controller.purposeID,
-                                        //     'guestID': e.id,
-                                        //     'formEdit': true,
-                                        //   },
-                                        // )?.then((_) {
-                                        //   controller.fetchList();
-                                        //   controller.update();
-                                        // }),
-                                        isDelete: controller.isEdit,
-                                        // deleteAction: () {
-                                        //   controller.deleteGuest(int.parse(e.id.toString()));
-                                        //   controller.update();
-                                        //   print(e.id);
-                                        // },
-                                        content: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                const Divider(height: 1, thickness: 1),
+                                controller.items[index]['title'] == "Traveller Guest"
+                                    ? controller.items[index]['showList']
+                                    ? Column(
+                                  children: [
+                                    CustomTripCard(
+                                      listNumber: 1,
+                                      title: controller.travellerName ?? "",
+                                      subtitle: controller.travellerSN ?? "",
+                                      info: "Traveller",
+                                      content: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Gender", style: listTitleTextStyle),
+                                              Text(controller.travellerGender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Hotel Fare", style: listTitleTextStyle),
+                                              Text(int.parse(controller.travellerHotel ?? "0").toCurrency(), style: listSubTitleTextStyle),
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Flight Entitlement", style: listTitleTextStyle),
+                                              Text(controller.travellerFlight ?? "", style: listSubTitleTextStyle),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Column(
+                                        children: controller.guestList.isNotEmpty
+                                            ? controller.guestList
+                                            .mapIndexed(
+                                              (i, e) => CustomTripCard(
+                                            listNumber: i + 2,
+                                            title: e.nameGuest.toString(),
+                                            subtitle: e.nik,
+                                            info: "Guest",
+                                            content: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("Gender", style: listTitleTextStyle),
+                                                    Text(e.gender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("Hotel Fare", style: listTitleTextStyle),
+                                                    Text(e.hotelFare.toString(), style: listSubTitleTextStyle),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("Flight Entitlement", style: listTitleTextStyle),
+                                                    Text(e.flightClass.toString(), style: listSubTitleTextStyle),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                            .toList()
+                                            : [
+                                          const Center(
+                                            child: Padding(
+                                              padding: EdgeInsets.all(10),
+                                              child: Text("no data yet"),
+                                            ),
+                                          )
+                                        ]),
+                                  ],
+                                )
+                                    : Container()
+                                    : controller.items[index]['title'] == "Airliness"
+                                    ? controller.items[index]['showList']
+                                    ? Column(
+                                  children: controller.airlinessList.isNotEmpty
+                                      ? controller.airlinessList
+                                      .mapIndexed((i, e) => CustomTripCard(
+                                    listNumber: i + 1,
+                                    title: e.employeeName.toString(),
+                                    subtitle: controller.dateFormat.format(DateTime.parse(e.createdAt.toString())).toString(),
+                                    // subtitle: e.pnrid.toString(),
+                                    info: e.flightNo,
+                                    content: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text("Gender", style: listTitleTextStyle),
-                                                Text(e.gender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
-                                              ],
-                                            ),
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text("Hotel Fare", style: listTitleTextStyle),
-                                                Text(e.hotelFare.toString(), style: listSubTitleTextStyle),
-                                              ],
-                                            ),
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text("Flight Entitlement", style: listTitleTextStyle),
-                                                Text(e.flightClass.toString(), style: listSubTitleTextStyle),
-                                              ],
-                                            ),
+                                            Text("Departure", style: listTitleTextStyle),
+                                            Text("${e.origin} (${e.departureTime})", style: listSubTitleTextStyle),
                                           ],
                                         ),
-                                      ),
-                                    )
-                                        .toList()
-                                        : [
-                                      const Center(
-                                        child: Padding(
-                                          padding: EdgeInsets.all(10),
-                                          child: Text("no data yet"),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Arrival", style: listTitleTextStyle),
+                                            Text("${e.destination} (${e.arrivalTime})", style: listSubTitleTextStyle),
+                                          ],
                                         ),
-                                      )
-                                    ]),
-                              ],
-                            )
-                                : Container()
-                                : controller.items[index]['title'] == "Airliness"
-                                ? controller.items[index]['showList']
-                                ? Column(
-                              children: controller.airlinessList.isNotEmpty
-                                  ? controller.airlinessList
-                                  .mapIndexed((i, e) => CustomTripCard(
-                                listNumber: i + 1,
-                                title: e.employeeName.toString(),
-                                subtitle: controller.dateFormat.format(DateTime.parse(e.createdAt.toString())).toString(),
-                                info: e.flightNo,
-                                isEdit: controller.isEdit,
-                                // editAction: () {
-                                //   Get.off(CheckScheduleScreen(), arguments: {
-                                //     'id': e.id?.toInt(),
-                                //     'purposeID': controller.purposeID,
-                                //     'codeDocument': controller.codeDocument,
-                                //     'formEdit': true,
-                                //   });
-                                // },
-                                isDelete: controller.isEdit,
-                                // deleteAction: () => controller.deleteAirliness(int.parse(e.id.toString())),
-                                content: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Departure", style: listTitleTextStyle),
-                                        Text("CGK (06.00)", style: listSubTitleTextStyle),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Price", style: listTitleTextStyle),
+                                            Text(e.ticketPrice?.toInt().toCurrency().toString() ?? '-',
+                                                style: listSubTitleTextStyle),
+                                          ],
+                                        )
                                       ],
                                     ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Arrival", style: listTitleTextStyle),
-                                        Text("SUB (09.00)", style: listSubTitleTextStyle),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Price", style: listTitleTextStyle),
-                                        Text(e.ticketPrice.toString(), style: listSubTitleTextStyle),
-                                      ],
+                                  ))
+                                      .toList()
+                                      : [
+                                    const Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: Text("no data yet"),
+                                      ),
                                     )
                                   ],
-                                ),
-                              ))
-                                  .toList()
-                                  : [
-                                const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Text("no data yet"),
-                                  ),
                                 )
-                              ],
-                            )
-                                : Container()
-                                : controller.items[index]['title'] == "Taxi Voucher"
-                                ? controller.items[index]['showList']
-                                ? Column(
-                              children: controller.tvList.isNotEmpty
-                                  ? controller.tvList
-                                  .mapIndexed(
-                                    (i, e) => CustomTripCard(
-                                  listNumber: i + 1,
-                                  title: e.employeeName.toString(),
-                                  subtitle: controller.dateFormat.format(DateTime.parse(e.date!)),
-                                  status: e.status.toString(),
-                                  info: int.parse(e.amount.toString()).toCurrency(),
-                                  isEdit: controller.isEdit,
-                                  // editAction: () => Get.to(const EditTaxiVoucherScreen(),
-                                  //     arguments: {'purposeID': controller.purposeID, 'id': e.id, 'formEdit': true})
-                                  //     ?.then((_) {
-                                  //   controller.fetchList();
-                                  //   controller.update();
-                                  // }),
-                                  isDelete: controller.isEdit,
-                                  // deleteAction: () => controller.deleteTaxiVoucher(int.parse(e.id.toString())),
-                                  content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Text("Departure", style: listTitleTextStyle),
-                                          Text(e.nameDepartureCity.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Text("Arrival", style: listTitleTextStyle),
-                                          Text(e.nameArrivalCity.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                                  .toList()
-                                  : [
-                                const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Text("no data yet"),
-                                  ),
-                                )
-                              ],
-                            )
-                                : Container()
-                                : controller.items[index]['title'] == "Other Transportation"
-                                ? controller.items[index]['showList']
-                                ? Column(
-                              children: controller.otList.isNotEmpty
-                                  ? controller.otList
-                                  .mapIndexed(
-                                    (i, e) => CustomTripCard(
-                                  listNumber: i + 1,
-                                  title: e.employeeName.toString(),
-                                  subtitle: e.typeTransportation.toString(),
-                                  status: e.status.toString(),
-                                  info: e.cityName.toString(),
-                                  isEdit: controller.isEdit,
-                                  // editAction: () => Get.to(EditOtherTransportScreen(), arguments: {
-                                  //   'purposeID': controller.purposeID,
-                                  //   'codeDocument': controller.codeDocument,
-                                  //   'otID': e.id,
-                                  //   'formEdit': true,
-                                  // })?.then((result) {
-                                  //   controller.fetchList();
-                                  //   controller.update();
-                                  //   print(result);
-                                  // }),
-                                  isDelete: controller.isEdit,
-                                  // deleteAction: () => controller.deleteOtherTransport(int.parse(e.id.toString())),
-                                  content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("From Date", style: listTitleTextStyle),
-                                          Text(e.fromDate.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("To Date", style: listTitleTextStyle),
-                                          Text(e.toDate.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Text("Quantity", style: listTitleTextStyle),
-                                          Text(e.qty.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                                  .toList()
-                                  : [
-                                const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Text("no data yet"),
-                                  ),
-                                )
-                              ],
-                            )
-                                : Container()
-                                : controller.items[index]['title'] == "Accommodation"
-                                ? controller.items[index]['showList']
-                                ? Column(
-                              children: controller.accommodationsList.isNotEmpty
-                                  ? controller.accommodationsList
-                                  .mapIndexed(
-                                    (i, e) => CustomTripCard(
-                                  listNumber: i + 1,
-                                  title: e.employeeName.toString(),
-                                  status: e.status.toString(),
-                                  info: e.hotelName,
-                                  isEdit: controller.isEdit,
-                                  // editAction: () => Get.off(const EditAccommodationScreen(), arguments: {
-                                  //   'purposeID': controller.purposeID,
-                                  //   'codeDocument': controller.codeDocument,
-                                  //   'id': e.id,
-                                  //   'formEdit': true,
-                                  // })?.then((result) {
-                                  //   controller.fetchList();
-                                  //   controller.update();
-                                  //   print(result);
-                                  // }),
-                                  isDelete: controller.isEdit,
-                                  // deleteAction: () => controller.deleteAccommodation(e.id!.toInt()),
-                                  content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Check In", style: listTitleTextStyle),
-                                          Text(e.checkInDate.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Check Out", style: listTitleTextStyle),
-                                          Text(e.checkOutDate.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Price", style: listTitleTextStyle),
-                                          Text(e.price.toString(), style: listSubTitleTextStyle),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                                  .toList()
-                                  : [
-                                const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Text("no data yet"),
-                                  ),
-                                )
-                              ],
-                            )
-                                : Container()
-                                : controller.items[index]['title'] == "Cash Advance"
-                                ? controller.items[index]['showList']
-                                ? Column(
-                              children: controller.caList.isNotEmpty
-                                  ? controller.caList
-                                  .mapIndexed((i, e) => CustomTripCard(
-                                listNumber: i + 1,
-                                title: e.noCa ?? "",
-                                subtitle: controller.dateFormat
-                                    .format(DateTime.parse(e.createdAt.toString()))
-                                    .toString(),
-                                status: e.status.toString(),
-                                info:
-                                "${e.currencyCode} ${int.parse(e.grandTotal.toString()).toCurrency()}",
-                                isEdit: controller.isEdit,
-                                // editAction: () {
-                                //   Get.to(
-                                //         () => const AddCashAdvanceTravelScreen(),
-                                //     arguments: {
-                                //       "id": e.id,
-                                //       "formEdit": true,
-                                //       'purposeID': controller.purposeID,
-                                //       'codeDocument': controller.codeDocument,
-                                //     },
-                                //   )?.then((value) => controller.fetchList());
-                                // },
-                                isDelete: controller.isEdit,
-                                content: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                    : Container()
+                                    : controller.items[index]['title'] == "Train"
+                                    ? controller.items[index]['showList']
+                                    ? Column(
+                                  children: controller.trainList.isNotEmpty
+                                      ? controller.trainList
+                                      .mapIndexed((i, e) => CustomTripCard(
+                                    listNumber: i + 1,
+                                    title: e.travelerName.toString(),
+                                    subtitle: controller.dateFormat.format(DateTime.parse(e.departDate!)),
+                                    // status: e.status.toString(),
+                                    // info: int.parse(e.amount.toString()).toCurrency(),
+                                    content: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        Text("Item", style: listTitleTextStyle),
-                                        Text(e.itemCount.toString(), style: listSubTitleTextStyle),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text("Origin", style: listTitleTextStyle),
+                                            Text(e.nameStation.toString(), style: listSubTitleTextStyle),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text("Destination", style: listTitleTextStyle),
+                                            Text(e.nameStationTo.toString(), style: listSubTitleTextStyle),
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                    SizedBox(
-                                      width: Get.width / 3,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                  ))
+                                      .toList()
+                                      : [
+                                    const Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: Text("no data yet"),
+                                      ),
+                                    )
+                                  ],
+                                )
+                                    : Container()
+                                    : controller.items[index]['title'] == "Taxi Voucher"
+                                    ? controller.items[index]['showList']
+                                    ? Column(
+                                  children: controller.tvList.isNotEmpty
+                                      ? controller.tvList
+                                      .mapIndexed(
+                                        (i, e) => CustomTripCard(
+                                      listNumber: i + 1,
+                                      title: e.employeeName.toString(),
+                                      subtitle: controller.dateFormat.format(DateTime.parse(e.date!)),
+                                      status: e.status.toString(),
+                                      // info: int.parse(e.amount.toString()).toCurrency(),
+                                      content: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Text("Reference", style: listTitleTextStyle),
-                                          Text(e.noRequestTrip.toString(),
-                                              style: listSubTitleTextStyle.copyWith(
-                                                  overflow: TextOverflow.ellipsis)),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Text("Departure", style: listTitleTextStyle),
+                                              Text(e.nameDepartureCity.toString(), style: listSubTitleTextStyle),
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Text("Arrival", style: listTitleTextStyle),
+                                              Text(e.nameArrivalCity.toString(), style: listSubTitleTextStyle),
+                                            ],
+                                          ),
                                         ],
                                       ),
                                     ),
+                                  )
+                                      .toList()
+                                      : [
+                                    const Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: Text("no data yet"),
+                                      ),
+                                    )
                                   ],
-                                ),
-                              ))
-                                  .toList()
-                                  : [
-                                const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Text("no data yet"),
-                                  ),
                                 )
-                              ],
-                            )
-                                : Container()
-                                : Container(),
-                          ]);
-                        }
+                                    : Container()
+                                    : controller.items[index]['title'] == "Other Transportation"
+                                    ? controller.items[index]['showList']
+                                    ? Column(
+                                  children: controller.otList.isNotEmpty
+                                      ? controller.otList
+                                      .mapIndexed(
+                                        (i, e) => CustomTripCard(
+                                      listNumber: i + 1,
+                                      title: e.employeeName.toString(),
+                                      subtitle: e.typeTransportation.toString(),
+                                      status: e.status.toString(),
+                                      info: e.cityName.toString(),
+                                      content: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("From Date", style: listTitleTextStyle),
+                                              Text(e.fromDate.toString(), style: listSubTitleTextStyle),
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("To Date", style: listTitleTextStyle),
+                                              Text(e.toDate.toString(), style: listSubTitleTextStyle),
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Text("Quantity", style: listTitleTextStyle),
+                                              Text(e.qty.toString(), style: listSubTitleTextStyle),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                      .toList()
+                                      : [
+                                    const Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: Text("no data yet"),
+                                      ),
+                                    )
+                                  ],
+                                )
+                                    : Container()
+                                    : controller.items[index]['title'] == "Transportation"
+                                    ? controller.items[index]['showList']
+                                    ? Column(
+                                  children: controller.transportList.isNotEmpty
+                                      ? controller.transportList
+                                      .mapIndexed(
+                                        (i, e) => CustomTripCard(
+                                      listNumber: i + 1,
+                                      title: e.employeeName.toString(),
+                                      subtitle: e.typeTransportation.toString(),
+                                      // status: e.status.toString(),
+                                      info: e.cityName.toString(),
+                                      content: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("From Date", style: listTitleTextStyle),
+                                              Text(
+                                                  controller.dateFormat
+                                                      .format(DateTime.parse(e.fromDate.toString())),
+                                                  style: listSubTitleTextStyle),
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("To Date", style: listTitleTextStyle),
+                                              Text(
+                                                  controller.dateFormat.format(DateTime.parse(e.toDate.toString())),
+                                                  style: listSubTitleTextStyle),
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Text("Quantity", style: listTitleTextStyle),
+                                              Text(e.qty.toString(), style: listSubTitleTextStyle),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                      .toList()
+                                      : [
+                                    const Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: Text("no data yet"),
+                                      ),
+                                    )
+                                  ],
+                                )
+                                    : Container()
+                                    : controller.items[index]['title'] == "Accommodation"
+                                    ? controller.items[index]['showList']
+                                    ? Column(
+                                  children: controller.accommodationsList.isNotEmpty
+                                      ? controller.accommodationsList
+                                      .mapIndexed(
+                                        (i, e) => CustomTripCard(
+                                      listNumber: i + 1,
+                                      title: e.travelerName.toString(),
+                                      // status: e.status.toString(),
+                                      info: e.hotelName,
+                                      content: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Check In", style: listTitleTextStyle),
+                                              Text(e.checkInDate.toString(), style: listSubTitleTextStyle),
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Check Out", style: listTitleTextStyle),
+                                              Text(e.checkOutDate.toString(), style: listSubTitleTextStyle),
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Price", style: listTitleTextStyle),
+                                              Text(e.price!.toInt().toCurrency().toString(),
+                                                  style: listSubTitleTextStyle),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                      .toList()
+                                      : [
+                                    const Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: Text("no data yet"),
+                                      ),
+                                    )
+                                  ],
+                                )
+                                    : Container()
+                                    : controller.items[index]['title'] == "Cash Advance"
+                                    ? controller.items[index]['showList']
+                                    ? Column(
+                                  children: controller.caList.isNotEmpty
+                                      ? controller.caList
+                                      .mapIndexed((i, e) => CustomTripCard(
+                                    listNumber: i + 1,
+                                    title: e.noCa ?? "",
+                                    subtitle: controller.dateFormat
+                                        .format(DateTime.parse(e.createdAt.toString()))
+                                        .toString(),
+                                    // status: e.status.toString(),
+                                    info:
+                                    "${e.currencyCode} ${int.parse(e.grandTotal.toString()).toCurrency()}",
+                                    content: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text("Item", style: listTitleTextStyle),
+                                            Text(e.itemCount.toString(), style: listSubTitleTextStyle),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          width: Get.width / 3,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Text("Reference", style: listTitleTextStyle),
+                                              Text(e.noRequestTrip.toString(),
+                                                  style: listSubTitleTextStyle.copyWith(
+                                                      overflow: TextOverflow.ellipsis)),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ))
+                                      .toList()
+                                      : [
+                                    const Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: Text("no data yet"),
+                                      ),
+                                    )
+                                  ],
+                                )
+                                    : Container()
+                                    : Container(),
+                              ]);
+                            }
                         if (controller.isTLK == true) {
                           return Padding(
                             padding: const EdgeInsets.all(20),

@@ -266,6 +266,13 @@ class AddAccommodationController extends BaseController {
         '',
         travellerGender.text == "Male" ? 'L' : 'P',
         hotelFare.text.digitOnly(),
+        "",
+        "",
+        "",
+        "",
+        null,
+        null,
+        null,
       )
           .then((value) {
         // print(jsonEncode(value));

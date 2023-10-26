@@ -327,7 +327,7 @@ class AntavayaImpl implements AntavayaRepository {
       return GetHotelsModel.fromJson(response.data);
     } on DioError catch (e) {
       print("hotels error: ${e.response?.data}");
-      return e.error;
+      return e.response?.data;
     }
   }
 
