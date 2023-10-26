@@ -10,6 +10,7 @@ import 'package:gais/reusable/customsearchbar.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
@@ -59,6 +60,26 @@ class PoolCarListScreen extends StatelessWidget {
                     controller.resetFilter();
                   },
                   children: [
+                    Obx(() {
+                      return CustomDropDownFormField(
+                        items: controller.listStatus
+                            .map((e) => DropdownMenuItem(
+                          value: e.code.toString(),
+                          child: Text("${e.status}"),
+                        ))
+                            .toList(),
+                        onChanged: (item) {
+                          controller.onChangeSelectedStatus(item.toString());
+                        },
+                        label: "Status".tr,
+                        value: controller.selectedStatusTemp.value != null
+                            ? controller.selectedStatusTemp.value?.code.toString()
+                            : "",
+                      );
+                    }),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     CustomTextFormField(
                         readOnly: true,
                         controller: controller.dateRangeController,

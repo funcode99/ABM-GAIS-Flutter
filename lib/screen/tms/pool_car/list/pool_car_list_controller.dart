@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/master/status_doc/status_doc_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/model/pool_car/pool_car_model.dart';
 import 'package:gais/data/repository/pool_car/pool_car_repository.dart';
@@ -16,9 +17,13 @@ class PoolCarListController extends BaseController {
   final endDate = Rxn<DateTime>();
   final startDateTemp = Rxn<DateTime>();
   final endDateTemp = Rxn<DateTime>();
+  final selectedStatus = Rxn<StatusDocModel>();
+  final selectedStatusTemp = Rxn<StatusDocModel>();
 
   final PoolCarRepository _repository = Get.find();
   final listHeader = <PoolCarModel>[].obs;
+
+  final listStatus = <StatusDocModel>[].obs;
 
   late PaginationModel? paginationModel;
   final totalPage = 1.obs;
@@ -36,6 +41,22 @@ class PoolCarListController extends BaseController {
     getHeader();
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+    initData();
+  }
+  void initData()async{
+    listStatus.add(StatusDocModel(code: "", status: "Status"));
+    listStatus.add(StatusDocModel(code: 0, status: "Waiting Car & Driver"));
+    listStatus.add(StatusDocModel(code: 1, status: "Driver Check"));
+    listStatus.add(StatusDocModel(code: 2, status: "Ready"));
+    listStatus.add(StatusDocModel(code: 3, status: "Done"));
+    listStatus.add(StatusDocModel(code: 4, status: "Cancelled"));
+    onChangeSelectedStatus("");
+
+  }
+
   void getHeader({int page = 1}) async {
     isLoading(true);
     final result = await _repository.getPaginationData(
@@ -43,6 +64,7 @@ class PoolCarListController extends BaseController {
           "page" : page,
           "perPage" : limit,
           "search" : keyword.value,
+          "status" : selectedStatus.value?.code ?? "",
           "start_date" : startDate.value != null ? formatFilter.format(startDate.value!) : "",
           "end_date" : endDate.value != null ? formatFilter.format(endDate.value!) : "",
         }
@@ -81,6 +103,8 @@ class PoolCarListController extends BaseController {
     endDateTemp.value = null;
     startDateTemp.value = null;
     dateRangeController.text = "";
+
+    onChangeSelectedStatus("");
   }
 
   void openFilter(){
@@ -96,13 +120,21 @@ class PoolCarListController extends BaseController {
       dateRangeController.text = "";
     }
 
+    selectedStatusTemp.value = selectedStatus.value;
+
   }
 
   void applyFilter(){
     startDate.value = startDateTemp.value;
     endDate.value = endDateTemp.value;
+    selectedStatus.value = selectedStatusTemp.value;
 
     getHeader();
+  }
+
+  void onChangeSelectedStatus(String id) {
+    final selected = listStatus.firstWhere((item) => item.code.toString() == id.toString());
+    selectedStatusTemp(selected);
   }
 
 }
