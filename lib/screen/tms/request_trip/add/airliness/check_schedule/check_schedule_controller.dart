@@ -30,6 +30,7 @@ class CheckScheduleController extends BaseController {
   String? departureCity;
   String? arrivalCity;
   bool isLoading = true;
+  bool isInternational = false;
   List airliness = ["2", "4", "5", "11", "22", "48"];
 
   flight.GetFlightScheduleModel? flightScheduleModel;
@@ -110,6 +111,7 @@ class CheckScheduleController extends BaseController {
         child.toString(),
         airlines,
       );
+      isInternational = scheduleData.data?.schedules?.first.isInternational ?? false;
       // print("length : ${schedules[1].length}");
       isLoading = false;
       update();
@@ -139,6 +141,7 @@ class CheckScheduleController extends BaseController {
       'child': child,
       'infant': infant,
       'airlinessData': airlinessModel,
+      'isInternational' : isInternational,
     });
   }
 }

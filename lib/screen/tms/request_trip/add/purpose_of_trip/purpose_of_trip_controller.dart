@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/employee_info_model.dart';
+import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/data/model/reference/get_coset_center_model.dart' as cc;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as purpose;
@@ -14,6 +17,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class PurposeOfTripController extends BaseController {
+  EmployeeModel? requestorData = Get.arguments['requestorData'];
   int? requestorID;
   int? siteID;
   String? jobID;
@@ -62,6 +66,7 @@ class PurposeOfTripController extends BaseController {
   city.GetCityModel? cityModel;
   List<city.Data> cityList = [];
   List<cc.Data> costCenterList = [];
+  List requestorFlight = [];
 
   getSingleFile() async {
     // Pick an file
@@ -107,6 +112,10 @@ class PurposeOfTripController extends BaseController {
     purposeList = [];
     costCenterList = [];
     isLoading = true;
+    requestorFlight = requestorData?.flightClass;
+    print(requestorFlight.first['id_flight_class']);
+    // print(requestorFlight.first.idFlightClass);
+    print("requestor name : ${requestorData?.employeeName}");
     try {
       requestorID = requestTripVariable.requestTripRequestorID;
       siteID = requestTripVariable.requestTripRequestorSiteID;
@@ -157,6 +166,43 @@ class PurposeOfTripController extends BaseController {
     update();
   }
 
+  Future<void> saveGuest(String purposeID) async {
+    try {
+      await requestTrip
+          .saveTravellerGuest(
+            requestorData?.employeeName ?? '',
+            purposeID,
+            requestorData?.idCompany.toString() ?? '',
+            requestorData?.companyName ?? '',
+            '0',
+            requestorData?.nik ?? '',
+            requestorData?.phoneNumber ?? '',
+            requestorData?.departementName ?? '',
+            requestorData?.hotelFare ?? '',
+            requestorFlight.first['id_flight_class'],
+            '',
+            requestorData?.jenkel ?? '',
+            '0',
+          )
+          .then((value) => print("saveGuest : $value"));
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+      Get.showSnackbar(
+        const GetSnackBar(
+          icon: Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          message: 'Failed to save guest',
+          isDismissible: true,
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   Future<void> postPurposeOfTrip() async {
     if (isFilled == false) {
       try {
@@ -183,32 +229,34 @@ class PurposeOfTripController extends BaseController {
           (value) {
             purposeID = value.data?.id.toString();
             isFilled = value.success;
+            saveGuest(purposeID!).then((guest) {
+              if (value.success == false) {
+                Get.showSnackbar(
+                  GetSnackBar(
+                    icon: const Icon(
+                      Icons.error,
+                      color: Colors.white,
+                    ),
+                    message: value.message,
+                    isDismissible: true,
+                    duration: const Duration(seconds: 3),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              } else {
+                Get.to(
+                  const TravellerScreen(),
+                  arguments: {'purposeID': purposeID, 'codeDocument': int.parse(selectedPurpose.toString())},
+                )?.then((result) {
+                  isFilled = result;
+                  update();
+                  // print("purpose is filled : $result");
+                });
+              }
+            });
             // print("requsetorID: $requestorID");
             // print("purposeID : $purposeID");
             // print("isFilled : $isFilled");
-            if (value.success == false) {
-              Get.showSnackbar(
-                GetSnackBar(
-                  icon: const Icon(
-                    Icons.error,
-                    color: Colors.white,
-                  ),
-                  message: value.message,
-                  isDismissible: true,
-                  duration: const Duration(seconds: 3),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            } else {
-              Get.to(
-                const TravellerScreen(),
-                arguments: {'purposeID': purposeID, 'codeDocument': int.parse(selectedPurpose.toString())},
-              )?.then((result) {
-                isFilled = result;
-                update();
-                // print("purpose is filled : $result");
-              });
-            }
           },
         );
       } catch (e, i) {
