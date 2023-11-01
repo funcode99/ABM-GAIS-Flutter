@@ -125,4 +125,31 @@ class ApprovalRequestTripImpl implements ApprovalRequestTripRepository {
       return e.error;
     }
   }
+
+  @override
+  Future<GetApprovalRequestTripModel> getApprovalHistoryList(int perPage, int page, String? search, String? startDate, String? endDate, String? codeDoc, String? status) async {
+    var token = await storageSecure.read(key: "token");
+    network.dio.options.headers['Authorization'] = 'Bearer $token';
+    search.printInfo(info: "search");
+    startDate.printInfo(info: "star date");
+    endDate.printInfo(info: "end date");
+    try {
+      Response response = await network.dio.get(
+        "/api/approval_request_trip/history",
+        queryParameters: {
+          "perPage": perPage,
+          "page": page,
+          "search": search,
+          "start_date": startDate,
+          "end_date": endDate,
+          "code_doc": codeDoc,
+          "status" : status
+        },
+      );
+      return GetApprovalRequestTripModel.fromJson(response.data);
+    } on DioError catch (e) {
+      e.error.printError();
+      return e.error;
+    }
+  }
 }
