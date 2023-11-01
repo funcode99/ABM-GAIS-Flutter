@@ -6,15 +6,12 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customsearchbar.dart';
-import 'package:gais/reusable/customtripcard.dart';
 import 'package:gais/reusable/cutompagination.dart';
 import 'package:gais/reusable/dataempty.dart';
-import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/dialog/filter_bottom_sheet.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
-import 'package:gais/reusable/loadingdialog.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/fss/document_delivery/add/add_document_delivery_screen.dart';
@@ -22,7 +19,6 @@ import 'package:gais/screen/fss/document_delivery/document_delivery_list/documen
 import 'package:gais/screen/fss/document_delivery/form_document_delivery/form_document_delivery_screen.dart';
 import 'package:gais/screen/home/home_screen.dart';
 import 'package:get/get.dart';
-import 'package:gais/util/ext/string_ext.dart';
 import 'package:iconly/iconly.dart';
 
 class DocumentDeliveryListScreen extends StatelessWidget {
@@ -171,7 +167,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
                           return CommonListItem(
-                            onTap: (){
+                            onTap: () async {
                               Get.to(
                                 const FormDocumentDeliveryScreen(),
                                 arguments: {
@@ -217,24 +213,7 @@ class DocumentDeliveryListScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            action: [
-                              CustomIconButton(
-                                title: "View".tr,
-                                iconData: IconlyBold.show,
-                                backgroundColor: successColor,
-                                onPressed: () async {
-                                  Get.to(
-                                    const FormDocumentDeliveryScreen(),
-                                    arguments: {
-                                      'id': controller.ddList[index].id.toString(),
-                                    },
-                                  )?.then((value) {
-                                    controller.fetchList(controller.currentPage);
-                                    controller.update();
-                                  });
-                                },
-                              )
-                            ],
+                            action: const [],
                             status: controller.ddList[index].status.toString(),
                           );
                         },
