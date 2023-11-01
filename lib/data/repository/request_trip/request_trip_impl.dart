@@ -216,6 +216,7 @@ class RequestTripImpl implements RequestTripRepository {
     String idflightclass,
     String notes,
     String gender,
+    String isGuest,
   ) async {
     try {
       var formData = FormData.fromMap({
@@ -230,6 +231,7 @@ class RequestTripImpl implements RequestTripRepository {
         "id_flight_class": idflightclass,
         "notes": notes,
         "gender": gender,
+        "is_guets": isGuest,
       });
 
       var token = await storageSecure.read(key: "token");
@@ -241,7 +243,7 @@ class RequestTripImpl implements RequestTripRepository {
       );
       return SaveTravellerGuestModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
+      print("response error: ${e.response?.data}");
       return e.error;
     }
   }

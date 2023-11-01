@@ -98,6 +98,7 @@ abstract class RequestTripRepository {
     String idflightclass,
     String notes,
     String gender,
+    String isGuest,
   );
 
   Future<UpdateTravellerGuestModel> updateTravellerGuest(

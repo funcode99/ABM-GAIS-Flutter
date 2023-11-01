@@ -19,6 +19,7 @@ import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart' as tv;
 import 'package:gais/data/model/request_trip/get_train_trip_bytripid_model.dart' as train;
 import 'package:gais/data/model/request_trip/get_transportation_model.dart' as transport;
+import 'package:gais/data/model/approval_request_trip/approval_info_model.dart' as ai;
 import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:gais/reusable/dialog/fail_dialog.dart';
 import 'package:gais/reusable/dialog/reject_dialog.dart';
@@ -154,6 +155,7 @@ class ApprovalFormRequestTripController extends BaseController {
   List<transport.Data> transportList = [];
   train.GetTrainTripBytripidModel? trainModel;
   List<train.Data> trainList = [];
+  List<ai.Data> approvalInfoList = [];
 
 
   GetRequestTripByidModel? rtModel;
@@ -170,7 +172,7 @@ class ApprovalFormRequestTripController extends BaseController {
     tlkZona.text;
     tlkTotal.text;
     tlkTotalMeals.text;
-    Future.wait([fetchRequestTrip(), fetchList()]);
+    Future.wait([fetchRequestTrip(), fetchList(), fetchApprovalInfo()]);
     approvalID.printInfo(info: "approvalID");
     purposeID.printInfo(info: "purposeID");
     Future.delayed(Duration.zero, () {
@@ -310,6 +312,15 @@ class ApprovalFormRequestTripController extends BaseController {
     }
 
     return completer.future;
+  }
+
+  Future<void> fetchApprovalInfo() async {
+    try {
+      var approvalInfoData = await approvalRequestTrip.approval_info(purposeID);
+      approvalInfoList.addAll(approvalInfoData.data?.toSet().toList() ?? []);
+    } catch (e) {
+      e.printError();
+    }
   }
 
   Future<void> fetchRequestTrip() async {

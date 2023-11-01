@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/employee_info_model.dart';
 import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/storage_core.dart';
 import 'package:gais/util/enum/role_enum.dart';
@@ -7,8 +8,7 @@ import 'package:gais/data/model/reference/get_company_model.dart' as comp;
 import 'package:gais/util/mixin/master_data_mixin.dart';
 import 'package:get/get.dart';
 
-
-class RequesterInfoController extends BaseController with MasterDataMixin{
+class RequesterInfoController extends BaseController with MasterDataMixin {
   final formKey = GlobalKey<FormState>();
   final requester = TextEditingController();
   final sn = TextEditingController();
@@ -62,10 +62,15 @@ class RequesterInfoController extends BaseController with MasterDataMixin{
     String codeRole = await storage.readString(StorageCore.codeRole);
     String isCrewing = await storage.readString(StorageCore.isCrewing) ?? "";
 
-    if(codeRole == RoleEnum.secretary.value || (codeRole == RoleEnum.superAdmin.value && isCrewing == "1")){
+    if (codeRole == RoleEnum.secretary.value || (codeRole == RoleEnum.superAdmin.value && isCrewing == "1")) {
       enableSelectRequestor = true;
       fetchList();
-    }else{
+    } else {
+      await storage.readEmployeeFlight().then((value) {
+        requestorFlight = value.first.flightClass.toString();
+        requestorFlightID = value.first.idFlightClass;
+      });
+
       await storage.readEmployeeInfo().then((value) {
         print(value.isNotEmpty);
         requester.text = value.first.employeeName.toString();
@@ -81,17 +86,30 @@ class RequesterInfoController extends BaseController with MasterDataMixin{
         requestorSN = value.first.snEmployee;
         requestorHotel = value.first.hotelFare;
 
+        selectedEmployee = EmployeeModel(
+            id: requestorID,
+            employeeName: requestorName,
+            idCompany: value.first.idCompany,
+            companyName: value.first.companyName,
+            companyCode: value.first.companyCode,
+            idSite: value.first.idSite,
+            siteName: value.first.siteName,
+            siteCode: value.first.siteCode,
+            email: value.first.email,
+            phoneNumber: value.first.phoneNumber,
+            hotelFare: value.first.hotelFare,
+            idDepartment: value.first.idDepartment,
+            departementName: value.first.departementName,
+            flightClass: [
+              {
+                'id_flight_class': requestorFlightID,
+                'flight_class': requestorFlight,
+              }
+            ]);
       });
 
-      await storage.readEmployeeFlight().then(
-              (value) {
-                 requestorFlight = value.first.flightClass.toString();
-                 requestorFlightID = value.first.idFlightClass;
-              })
-      ;
-
+      update();
     }
-
 
     update();
   }
@@ -101,7 +119,7 @@ class RequesterInfoController extends BaseController with MasterDataMixin{
     employeeList = [];
 
     try {
-      await getOtherEmployee().then((value){
+      await getOtherEmployee().then((value) {
         employeeList.addAll(value ?? []);
         onChangeRequestor(employeeList.first.id);
       });
@@ -113,11 +131,9 @@ class RequesterInfoController extends BaseController with MasterDataMixin{
     update();
   }
 
-  void onChangeRequestor(dynamic id){
-    if(employeeList.isNotEmpty){
-      final selected = employeeList.firstWhere(
-              (item) => item.id.toString() == id.toString(),
-          orElse: () => employeeList.first);
+  void onChangeRequestor(dynamic id) {
+    if (employeeList.isNotEmpty) {
+      final selected = employeeList.firstWhere((item) => item.id.toString() == id.toString(), orElse: () => employeeList.first);
 
       selectedEmployee = selected;
 
@@ -134,7 +150,7 @@ class RequesterInfoController extends BaseController with MasterDataMixin{
       requestorHotel = selectedEmployee?.hotelFare;
 
       List<Map<String, dynamic>> tempList = List<Map<String, dynamic>>.from(selectedEmployee?.flightClass);
-      if(tempList.isNotEmpty){
+      if (tempList.isNotEmpty) {
         Map<String, dynamic> flightClass = tempList.first;
         requestorFlightID = flightClass["id_flight_class"] ?? 0;
         requestorFlight = flightClass["flight_class"] ?? "";
@@ -144,7 +160,7 @@ class RequesterInfoController extends BaseController with MasterDataMixin{
     update();
   }
 
-  void onClickNext(){
+  void onClickNext() {
     requestTripVariable.requestTripRequestorID = requestorID;
     requestTripVariable.requestTripRequestorName = requestorName;
     requestTripVariable.requestTripRequestorSiteID = siteID;
@@ -165,5 +181,4 @@ class RequesterInfoController extends BaseController with MasterDataMixin{
     // print("requestTripVariable.requestTripRequestorFlightID ${requestTripVariable.requestTripRequestorFlightID}");
     // print("requestTripVariable.requestTripRequestorFlight ${requestTripVariable.requestTripRequestorFlight}");
   }
-
 }

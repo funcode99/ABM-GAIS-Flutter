@@ -102,9 +102,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                 controller.rtStatus == "Draft" || controller.rtStatus == "Revision"
                                     ? CustomFilledButton(
                                         color: Colors.transparent,
-                                        title: controller.isEdit
-                                                ? "Cancel"
-                                                : "Edit",
+                                        title: controller.isEdit ? "Cancel" : "Edit",
                                         borderColor: controller.rtStatus == "Confirmed" ? Colors.transparent : infoColor,
                                         fontColor: controller.rtStatus == "Confirmed" ? whiteColor : infoColor,
                                         width: controller.rtStatus == "Confirmed" ? Get.width / 3 : Get.width / 4,
@@ -933,7 +931,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                                                   children: [
                                                                                     Text("Price", style: listTitleTextStyle),
-                                                                                    Text(e.price!.toInt().toCurrency().toString(),
+                                                                                    Text(e.price?.toInt().toCurrency().toString() ?? '-',
                                                                                         style: listSubTitleTextStyle),
                                                                                   ],
                                                                                 ),

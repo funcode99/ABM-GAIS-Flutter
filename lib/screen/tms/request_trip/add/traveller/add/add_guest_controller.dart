@@ -134,7 +134,6 @@ class AddGuestController extends BaseController {
       idFlight = requestTripVariable.requestTripRequestorFlightID;
       flightEntitlement.text = requestTripVariable.requestTripRequestorFlight.toString();
       hotelFare.text = requestTripVariable.requestTripRequestorHotelFare.toString();
-
     } catch (e, i) {
       e.printError();
       i.printError();
@@ -159,6 +158,7 @@ class AddGuestController extends BaseController {
         idFlight.toString(),
         notes.text,
         gender.toString(),
+        '1',
       )
           .then(
         (value) {

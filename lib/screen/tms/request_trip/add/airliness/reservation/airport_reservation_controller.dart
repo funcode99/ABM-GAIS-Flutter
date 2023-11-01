@@ -24,6 +24,7 @@ class AirportReservationController extends BaseController {
   String? infant = Get.arguments['infant'];
   String? child = Get.arguments['child'];
   airline.Data? airlinessModel = Get.arguments['airlinessData'];
+  bool? isInternational = Get.arguments['isInternational'];
 
   final formKey = GlobalKey<FormState>();
   final bookTitle = TextEditingController();
@@ -37,7 +38,7 @@ class AirportReservationController extends BaseController {
   final passLastName = TextEditingController();
   final passBirthDate = TextEditingController();
   final passEmail = TextEditingController();
-  bool? isSeniorCitizen;
+  bool isSeniorCitizen = false;
   final passMobilePhone = TextEditingController();
   final passIDNumber = TextEditingController();
   final passNationality = TextEditingController();
@@ -76,7 +77,6 @@ class AirportReservationController extends BaseController {
     gaList = [];
     try{
       await repository.getUserGA().then((value) => gaList.addAll(value.data?.toSet().toList() ?? []));
-
     }catch(e){
       e.printError();
     }

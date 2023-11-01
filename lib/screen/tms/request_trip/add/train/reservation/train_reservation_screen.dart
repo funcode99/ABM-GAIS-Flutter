@@ -214,10 +214,34 @@ class TrainReservationScreen extends StatelessWidget {
                                 children: [
                                   SizedBox(
                                     width: Get.width / 5,
-                                    child: CustomTextFormField(
-                                      controller: controller.passTitle,
+                                    child: CustomDropDownFormField(
                                       label: "Title",
-                                      isRequired: true,
+                                      items: const [
+                                        DropdownMenuItem(
+                                          value: "MR",
+                                          child: Text('MR'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "MSTR",
+                                          child: Text('MSTR'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "MRS",
+                                          child: Text('MRS'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "MISS",
+                                          child: Text('MISS'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "INF",
+                                          child: Text('INF'),
+                                        ),
+                                      ],
+                                      onChanged: (value) {
+                                        controller.passTitle.text = value.toString();
+                                        controller.update();
+                                      },
                                     ),
                                   ),
                                   SizedBox(
