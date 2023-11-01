@@ -13,6 +13,7 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/indicator/custom_indicator.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/screen/approval/cash_advance_travel/detail/approval_cash_advance_travel_detail_screen.dart';
+import 'package:gais/screen/approval/request_trip/form_request_trip/approval_form_request_trip_screen.dart';
 import 'package:gais/screen/approval/request_trip/history/approval_history_request_trip_list_controller.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:gais/util/enum/status_enum.dart';
@@ -171,15 +172,18 @@ class ApprovalHistoryRequestTripListScreen extends StatelessWidget {
                           CommonListItem(
                             onTap: () {
                               Get.to(
-                                      () =>
-                                  const ApprovalCashAdvanceTravelDetailScreen(
-                                    approvalActionEnum:
-                                    ApprovalActionEnum.none,
-                                  ),
-                                  arguments: {
-                                    "item": item
-                                  })?.then(
-                                      (value) => controller.getHeader());
+                                const ApprovalFormRequestTripScreen(
+                                  approvalActionEnum: ApprovalActionEnum.none,
+                                ),
+                                arguments: {
+                                  'id': item.id,
+                                  'idRequestTrip': item.idRequestTrip,
+                                  'approvalEnum': ApprovalActionEnum.none,
+                                  'approvalData': item,
+                                  'idApprovalAuth': item.idApprovalAuth?.toInt(),
+                                  'idCompany': item.idCompany?.toInt(),
+                                },
+                              )?.then((value) => controller.getHeader());
                             },
                             number:
                             "${((controller.currentPage.value - 1) * controller.limit) + (index + 1)}",
