@@ -483,7 +483,7 @@ class FormRequestTripController extends BaseController {
             var reservation = GetReservationTicketModel.fromJson(rsv).data;
             // print("rsv: ${reservation.toString()}");
             // print("rsv: ${reservation['Passengers'][0]['Type'].toString()}");
-            print(reservation?.payments?.last.amount);
+            // print(reservation?.payments?.last.amount);
 
             airlinessList.add(airliness.Data(
               id: e.id,
@@ -499,7 +499,7 @@ class FormRequestTripController extends BaseController {
               departureTime: reservation?.flightDetails?.first.departTime,
               arrivalTime: reservation?.flightDetails?.first.arriveTime,
               flightNo: reservation?.flightDetails?.first.flightNumber,
-              ticketPrice: e.ticketPrice,
+              ticketPrice: reservation?.payments?.last.amount.toString(),
               departureDate: e.departDate,
               arrivalDate: e.returnDate,
               flightClass: e.flightClass,
