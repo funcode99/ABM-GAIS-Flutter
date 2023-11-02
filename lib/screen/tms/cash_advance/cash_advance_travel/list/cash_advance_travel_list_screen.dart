@@ -145,6 +145,12 @@ class _CashAdvanceTravelListScreenState
                         children: [
                           ...controller.listHeader
                               .mapIndexed((index, item) => CommonListItem(
+                                    onTap: (){
+                                      Get.to(
+                                              () =>
+                                          const CashAdvanceTravelDetailScreen(),
+                                          arguments: {"item": item});
+                                    },
                                     number:
                                         "${((controller.currentPage.value - 1) *  controller.limit) + (index + 1)}",
                                     title: item.noCa ?? "-",
@@ -228,18 +234,7 @@ class _CashAdvanceTravelListScreenState
                                         ],
                                       ),
                                     ),
-                                    action: [
-                                      CustomIconButton(
-                                        title: "View".tr,
-                                        iconData: IconlyBold.show,
-                                        onPressed: () {
-                                          Get.to(
-                                              () =>
-                                                  const CashAdvanceTravelDetailScreen(),
-                                              arguments: {"item": item});
-                                        },
-                                      )
-                                    ],
+                                    action: const [],
                                     status: item.status,
                                   ))
                         ],

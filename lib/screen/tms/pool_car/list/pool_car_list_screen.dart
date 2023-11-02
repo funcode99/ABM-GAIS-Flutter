@@ -240,20 +240,15 @@ class PoolCarListScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          action: [
-                            CustomIconButton(
-                              title: "View".tr,
-                              iconData: IconlyBold.show,
-                              onPressed: () {
-                                Get.to(() =>
-                                    const PoolCarDetailScreen(),
-                                    arguments: {"item": item}
-                                )?.then((value) =>
-                                    controller.getHeader());
-                              },
-                            )
-                          ],
+                          action: const [],
                           status: item.status,
+                          onTap: (){
+                            Get.to(() =>
+                            const PoolCarDetailScreen(),
+                                arguments: {"item": item}
+                            )?.then((value) =>
+                                controller.getHeader());
+                          },
                         ))
                       ],
                     );

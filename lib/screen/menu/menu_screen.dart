@@ -4,10 +4,8 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/screen/approval/actualization_trip/approval_actualization_trip_screen.dart';
-import 'package:gais/screen/approval/actualization_trip/list/approval_actualization_trip_list_screen.dart';
-import 'package:gais/screen/approval/cash_advance_travel/list/approval_cash_advance_travel_list_screen.dart';
 import 'package:gais/screen/approval/request_atk/list/approval_request_atk_list_screen.dart';
-import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_list_screen.dart';
+import 'package:gais/screen/approval/request_trip/approval_request_trip_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/list/booking_meeting_room_list_screen.dart';
 import 'package:gais/screen/fss/dashboard_meeting_room/dashboard_meeting_room_screen.dart';
 import 'package:gais/screen/fss/document_delivery/document_delivery_list/document_delivery_list_screen.dart';
@@ -324,7 +322,7 @@ class MenuScreen extends StatelessWidget {
                                       Text("Request Trip\n", style: menuSubTitleTextStyle),
                                     ],
                                   ),
-                                  onTap: () => Get.off(const ApprovalRequestTripListScreen()),
+                                  onTap: () => Get.to(() => const ApprovalRequestTripScreen()),
                                 ),
                                 GestureDetector(
                                   child: Column(

@@ -13,6 +13,16 @@ abstract class ApprovalRequestTripRepository {
     String? codeStatusDoc,
   );
 
+  Future<GetApprovalRequestTripModel> getApprovalHistoryList(
+      int perPage,
+      int page,
+      String? search,
+      String? startDate,
+      String? endDate,
+      String? codeDoc,
+      String? status,
+      );
+
   Future<GetApprovalRequestTripByidModel> getByID(String id);
 
   Future approve(String id, ApprovalModel approval);

@@ -71,6 +71,7 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                                 textAlign: TextAlign.center,
                               ),
                             ),
+                            if(controller.approvalActionEnum != ApprovalActionEnum.none)
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
