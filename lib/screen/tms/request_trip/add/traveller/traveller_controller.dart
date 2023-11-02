@@ -64,7 +64,7 @@ class AirlinesController extends BaseController {
     try {
       var guestData = await requestTrip.getGuestBytripList(purposeID);
       guestModel = guestData;
-      guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+      guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID && e.isGuest == 1).toSet().toList() ?? []);
     } catch (e) {
       guestList = [];
     }

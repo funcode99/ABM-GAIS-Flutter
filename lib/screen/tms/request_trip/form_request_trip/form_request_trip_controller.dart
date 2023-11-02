@@ -479,11 +479,12 @@ class FormRequestTripController extends BaseController {
           print("pnrID: ${e.pnrid}");
           print(e.ticketPrice);
           await antavaya.getRsvTicket(e.pnrid!).then((rsv) {
-            GetReservationTicketModel.fromJson(rsv).data?.passengers?.first.type.printInfo();
+            // GetReservationTicketModel.fromJson(rsv).data?.passengers?.first.type.printInfo();
             var reservation = GetReservationTicketModel.fromJson(rsv).data;
             // print("rsv: ${reservation.toString()}");
             // print("rsv: ${reservation['Passengers'][0]['Type'].toString()}");
-            //
+            print(reservation?.payments?.last.amount);
+
             airlinessList.add(airliness.Data(
               id: e.id,
               idRequestTrip: e.idRequestTrip,
@@ -495,10 +496,10 @@ class FormRequestTripController extends BaseController {
               // departureTime: reservation['FlightDetails'][0]['DepartTime'],
               // arrivalTime: reservation['FlightDetails'][0]['ArriveTime'],
               // flightNo: reservation['FlightDetails'][0]['FlightNumber'],
-              departureTime: reservation?.flightDetails?.first.departDate,
+              departureTime: reservation?.flightDetails?.first.departTime,
               arrivalTime: reservation?.flightDetails?.first.arriveTime,
               flightNo: reservation?.flightDetails?.first.flightNumber,
-              ticketPrice: reservation?.payments?.last.amount.toString(),
+              ticketPrice: e.ticketPrice,
               departureDate: e.departDate,
               arrivalDate: e.returnDate,
               flightClass: e.flightClass,

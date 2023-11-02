@@ -9,8 +9,10 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/check_schedule/check_schedule_controller.dart';
+import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
@@ -46,12 +48,12 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
               ),
               centerTitle: true,
               leading: CustomBackButton(
-                onPressed: () => Get.off(const AirlinessScreen(), arguments: {
-                  'purposeID': controller.purposeID,
-                  'codeDocument': controller.codeDocument,
-                  'formEdit': controller.formEdit,
-                }),
-              ),
+                  // onPressed: () => Get.off(const AddAirlinessScreen(), arguments: {
+                  //   'purposeID': controller.purposeID,
+                  //   'codeDocument': controller.codeDocument,
+                  //   'formEdit': controller.formEdit,
+                  // }),
+                  ),
               flexibleSpace: const TopBar(),
             ),
             body: Container(
@@ -158,97 +160,183 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                                                   children: controller.schedules[i]
                                                       .map<Widget>(
                                                         (flight) => flight.classObjects!.isNotEmpty
-                                                            ? Column(
-                                                                children: flight.classObjects!
-                                                                    .map((classObject) => Card(
-                                                                          elevation: 4,
-                                                                          child: Padding(
-                                                                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                                                                            child: Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children: [
-                                                                                Text(
-                                                                                  flight.airlineName.toString(),
-                                                                                  style: listTitleTextStyle,
+                                                            // ? Column(
+                                                            //     children: flight.classObjects!
+                                                            //         .map((classObject) => Card(
+                                                            //               elevation: 4,
+                                                            //               child: Padding(
+                                                            //                 padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                                                            //                 child: Column(
+                                                            //                   crossAxisAlignment: CrossAxisAlignment.start,
+                                                            //                   children: [
+                                                            //                     Text(
+                                                            //                       flight.airlineName.toString(),
+                                                            //                       style: listTitleTextStyle,
+                                                            //                     ),
+                                                            //                     Row(
+                                                            //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            //                       crossAxisAlignment: CrossAxisAlignment.center,
+                                                            //                       children: [
+                                                            //                         flight.airlineImageUrl != null
+                                                            //                             ? Image.network(
+                                                            //                                 flight.airlineImageUrl.toString(),
+                                                            //                                 height: 40,
+                                                            //                                 width: 40,
+                                                            //                               )
+                                                            //                             : SvgPicture.asset(
+                                                            //                                 ImageConstant.airplane,
+                                                            //                                 height: 40,
+                                                            //                                 color: blueColor,
+                                                            //                               ),
+                                                            //                         Column(
+                                                            //                           crossAxisAlignment: CrossAxisAlignment.start,
+                                                            //                           children: [
+                                                            //                             Text(flight.departTime.toString()),
+                                                            //                             Text(flight.origin.toString()),
+                                                            //                             Text(
+                                                            //                               flight.number.toString(),
+                                                            //                               style: listTitleTextStyle,
+                                                            //                             )
+                                                            //                           ],
+                                                            //                         ),
+                                                            //                         Column(
+                                                            //                           children: [
+                                                            //                             const Icon(
+                                                            //                               Icons.arrow_forward,
+                                                            //                               size: 19,
+                                                            //                             ),
+                                                            //                             Text(flight.duration.toString()),
+                                                            //                             Text(classObject.category.toString()),
+                                                            //                           ],
+                                                            //                         ),
+                                                            //                         Column(
+                                                            //                           crossAxisAlignment: CrossAxisAlignment.start,
+                                                            //                           children: [
+                                                            //                             Text(flight.arriveTime.toString()),
+                                                            //                             Text(flight.destination.toString()),
+                                                            //                             const Text("")
+                                                            //                           ],
+                                                            //                         ),
+                                                            //                         Column(
+                                                            //                           children: [
+                                                            //                             Text(classObject.fare!.toInt().toCurrency().toString(),
+                                                            //                                 style: listTitleTextStyle),
+                                                            //                             GestureDetector(
+                                                            //                               onTap: () => controller.selectAirlines(
+                                                            //                                 flight.id.toString(),
+                                                            //                                 classObject.code.toString(),
+                                                            //                                 flight.number.toString(),
+                                                            //                                 flight.fare.toString(),
+                                                            //                                 flight,
+                                                            //                               ),
+                                                            //                               child: Container(
+                                                            //                                 padding: const EdgeInsets.all(8),
+                                                            //                                 margin: const EdgeInsets.only(top: 5),
+                                                            //                                 decoration: BoxDecoration(
+                                                            //                                     color: infoColor,
+                                                            //                                     borderRadius: BorderRadius.circular(5)),
+                                                            //                                 child: const Text(
+                                                            //                                   "Select",
+                                                            //                                   style: TextStyle(
+                                                            //                                       color: whiteColor, fontWeight: FontWeight.bold),
+                                                            //                                 ),
+                                                            //                               ),
+                                                            //                             )
+                                                            //                           ],
+                                                            //                         )
+                                                            //                       ],
+                                                            //                     ),
+                                                            //                   ],
+                                                            //                 ),
+                                                            //               ),
+                                                            //             ))
+                                                            //         .toList(),
+                                                            //   )
+                                                            ? Card(
+                                                                elevation: 4,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                                                                  child: Column(
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    children: [
+                                                                      Text(
+                                                                        flight.airlineName.toString(),
+                                                                        style: listTitleTextStyle,
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                                        children: [
+                                                                          flight.airlineImageUrl != null
+                                                                              ? Image.network(
+                                                                                  flight.airlineImageUrl.toString(),
+                                                                                  height: 40,
+                                                                                  width: 40,
+                                                                                )
+                                                                              : SvgPicture.asset(
+                                                                                  ImageConstant.airplane,
+                                                                                  height: 40,
+                                                                                  color: blueColor,
                                                                                 ),
-                                                                                Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                  children: [
-                                                                                    flight.airlineImageUrl != null
-                                                                                        ? Image.network(
-                                                                                            flight.airlineImageUrl.toString(),
-                                                                                            height: 40,
-                                                                                            width: 40,
-                                                                                          )
-                                                                                        : SvgPicture.asset(
-                                                                                            ImageConstant.airplane,
-                                                                                            height: 40,
-                                                                                            color: blueColor,
-                                                                                          ),
-                                                                                    Column(
-                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                      children: [
-                                                                                        Text(flight.departTime.toString()),
-                                                                                        Text(flight.origin.toString()),
-                                                                                        Text(
-                                                                                          flight.number.toString(),
-                                                                                          style: listTitleTextStyle,
-                                                                                        )
-                                                                                      ],
-                                                                                    ),
-                                                                                    Column(
-                                                                                      children: [
-                                                                                        const Icon(
-                                                                                          Icons.arrow_forward,
-                                                                                          size: 19,
-                                                                                        ),
-                                                                                        Text(flight.duration.toString()),
-                                                                                        Text(classObject.category.toString()),
-                                                                                      ],
-                                                                                    ),
-                                                                                    Column(
-                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                      children: [
-                                                                                        Text(flight.arriveTime.toString()),
-                                                                                        Text(flight.destination.toString()),
-                                                                                        const Text("")
-                                                                                      ],
-                                                                                    ),
-                                                                                    Column(
-                                                                                      children: [
-                                                                                        Text(classObject.fare!.toInt().toCurrency().toString(),
-                                                                                            style: listTitleTextStyle),
-                                                                                        GestureDetector(
-                                                                                          onTap: () => controller.selectAirlines(
-                                                                                            flight.id.toString(),
-                                                                                            classObject.code.toString(),
-                                                                                            flight.number.toString(),
-                                                                                            flight.fare.toString(),
-                                                                                            flight,
-                                                                                          ),
-                                                                                          child: Container(
-                                                                                            padding: const EdgeInsets.all(8),
-                                                                                            margin: const EdgeInsets.only(top: 5),
-                                                                                            decoration: BoxDecoration(
-                                                                                                color: infoColor,
-                                                                                                borderRadius: BorderRadius.circular(5)),
-                                                                                            child: const Text(
-                                                                                              "Select",
-                                                                                              style: TextStyle(
-                                                                                                  color: whiteColor, fontWeight: FontWeight.bold),
-                                                                                            ),
-                                                                                          ),
-                                                                                        )
-                                                                                      ],
-                                                                                    )
-                                                                                  ],
-                                                                                ),
-                                                                              ],
-                                                                            ),
+                                                                          Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              Text(flight.departTime.toString()),
+                                                                              Text(flight.origin.toString()),
+                                                                              Text(
+                                                                                flight.number.toString(),
+                                                                                style: listTitleTextStyle,
+                                                                              )
+                                                                            ],
                                                                           ),
-                                                                        ))
-                                                                    .toList(),
+                                                                          Column(
+                                                                            children: [
+                                                                              const Icon(
+                                                                                Icons.arrow_forward,
+                                                                                size: 19,
+                                                                              ),
+                                                                              Text(flight.duration.toString()),
+                                                                              Text(flight.classObjects?.first.category.toString() ?? ''),
+                                                                            ],
+                                                                          ),
+                                                                          Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              Text(flight.arriveTime.toString()),
+                                                                              Text(flight.destination.toString()),
+                                                                              const Text("")
+                                                                            ],
+                                                                          ),
+                                                                          Column(
+                                                                            children: [
+                                                                              Text(flight.classObjects?.first.fare!.toInt().toCurrency().toString() ?? '',
+                                                                                  style: listTitleTextStyle),
+                                                                              GestureDetector(
+                                                                                onTap: () => controller.selectAirlines(
+                                                                                  flight.id.toString(),
+                                                                                  flight.classObjects?.first.code.toString() ?? '',
+                                                                                  flight.number.toString(),
+                                                                                  flight.fare.toString(),
+                                                                                  flight,
+                                                                                ),
+                                                                                child: Container(
+                                                                                  padding: const EdgeInsets.all(8),
+                                                                                  margin: const EdgeInsets.only(top: 5),
+                                                                                  decoration: BoxDecoration(
+                                                                                      color: infoColor, borderRadius: BorderRadius.circular(5)),
+                                                                                  child: const Text(
+                                                                                    "Select",
+                                                                                    style: TextStyle(color: whiteColor, fontWeight: FontWeight.bold),
+                                                                                  ),
+                                                                                ),
+                                                                              )
+                                                                            ],
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
                                                               )
                                                             : flight.connectingFlights!.isNotEmpty
                                                                 ? Column(

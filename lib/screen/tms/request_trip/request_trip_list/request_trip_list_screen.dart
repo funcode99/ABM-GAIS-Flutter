@@ -276,23 +276,26 @@ class RequestTripListScreen extends StatelessWidget {
                                                   margin: const EdgeInsets.symmetric(horizontal: 1),
                                                   // padding: EdgeInsets.all(10),
                                                   decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
-                                                  child: const Icon(Icons.account_balance_wallet_rounded, color: whiteColor),
-                                                )
-                                              : Container(),
-                                          controller.requestList[index].documentReady?.taxiVoucher == 1
-                                              ? Container(
-                                                  alignment: Alignment.center,
-                                                  height: 35,
-                                                  width: 35,
-                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
-                                                  // padding: EdgeInsets.all(10),
-                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                                                   child: SvgPicture.asset(
                                                     ImageConstant.car,
                                                     height: 25,
                                                   ),
                                                 )
                                               : Container(),
+                                          // controller.requestList[index].documentReady?.taxiVoucher == 1
+                                          //     ? Container(
+                                          //         alignment: Alignment.center,
+                                          //         height: 35,
+                                          //         width: 35,
+                                          //         margin: const EdgeInsets.symmetric(horizontal: 1),
+                                          //         // padding: EdgeInsets.all(10),
+                                          //         decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                          //         child: SvgPicture.asset(
+                                          //           ImageConstant.car,
+                                          //           height: 25,
+                                          //         ),
+                                          //       )
+                                          //     : Container(),
                                           controller.requestList[index].documentReady?.trainTrip == 1
                                               ? Container(
                                                   alignment: Alignment.center,
@@ -304,20 +307,20 @@ class RequestTripListScreen extends StatelessWidget {
                                                   child: const Icon(Icons.train_rounded, color: whiteColor),
                                                 )
                                               : Container(),
-                                          controller.requestList[index].documentReady?.otherTransportation == 1
-                                              ? Container(
-                                                  alignment: Alignment.center,
-                                                  height: 35,
-                                                  width: 35,
-                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
-                                                  // padding: EdgeInsets.all(10),
-                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
-                                                  child: SvgPicture.asset(
-                                                    ImageConstant.car,
-                                                    height: 25,
-                                                  ),
-                                                )
-                                              : Container(),
+                                          // controller.requestList[index].documentReady?.otherTransportation == 1
+                                          //     ? Container(
+                                          //         alignment: Alignment.center,
+                                          //         height: 35,
+                                          //         width: 35,
+                                          //         margin: const EdgeInsets.symmetric(horizontal: 1),
+                                          //         // padding: EdgeInsets.all(10),
+                                          //         decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                          //         child: SvgPicture.asset(
+                                          //           ImageConstant.car,
+                                          //           height: 25,
+                                          //         ),
+                                          //       )
+                                          //     : Container(),
                                           controller.requestList[index].documentReady?.accomodationTrip == 1
                                               ? Container(
                                                   alignment: Alignment.center,

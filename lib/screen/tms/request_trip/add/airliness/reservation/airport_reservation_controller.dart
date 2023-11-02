@@ -59,8 +59,6 @@ class AirportReservationController extends BaseController {
   ContactModel? bookingContact;
   List<contact.Data> gaList = [];
 
-
-
   @override
   void onInit() {
     super.onInit();
@@ -72,12 +70,12 @@ class AirportReservationController extends BaseController {
     print('airlinessID : $airlinessID');
   }
 
-  Future<void> fetchList() async{
+  Future<void> fetchList() async {
     isLoading = true;
     gaList = [];
-    try{
+    try {
       await repository.getUserGA().then((value) => gaList.addAll(value.data?.toSet().toList() ?? []));
-    }catch(e){
+    } catch (e) {
       e.printError();
     }
     isLoading = false;

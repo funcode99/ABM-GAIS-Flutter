@@ -250,7 +250,7 @@ class AirportReservationScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
-                                    width: Get.width / 5,
+                                    width: Get.width / 4,
                                     child: CustomDropDownFormField(
                                       label: "Title",
                                       items: const [
@@ -282,7 +282,7 @@ class AirportReservationScreen extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: Get.width - (Get.width / 3),
+                                    width: Get.width - (Get.width / 2.8),
                                     child: CustomTextFormField(
                                       controller: controller.passFirstName,
                                       label: "First Name",
@@ -338,7 +338,7 @@ class AirportReservationScreen extends StatelessWidget {
                                   return null;
                                 },
                               ),
-                              // const SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               // const CustomFormLabel(label: "Is Senior Citizen?", showRequired: true),
                               // Row(
                               //   children: [
@@ -365,19 +365,19 @@ class AirportReservationScreen extends StatelessWidget {
                               // controller.isSeniorCitizen == null
                               //     ? const Text('        The field is required', style: TextStyle(color: errorColor, fontSize: 12))
                               //     : Container(),
-                              // CustomTextFormField(
-                              //   controller: controller.passMobilePhone,
-                              //   label: "Mobile Phone",
-                              //   isRequired: true,
-                              //   inputType: TextInputType.number,
-                              //   validator: (value) {
-                              //     // print(value!.length);
-                              //     if (value == null || value.isEmpty || value.length < 5) {
-                              //       return 'Number must be between 5 and 20 characters';
-                              //     }
-                              //     return null;
-                              //   },
-                              // ),
+                              CustomTextFormField(
+                                controller: controller.passMobilePhone,
+                                label: "Mobile Phone",
+                                isRequired: true,
+                                inputType: TextInputType.number,
+                                validator: (value) {
+                                  // print(value!.length);
+                                  if (value == null || value.isEmpty || value.length < 5) {
+                                    return 'Number must be between 5 and 20 characters';
+                                  }
+                                  return null;
+                                },
+                              ),
                               const SizedBox(height: 8),
                               CustomTextFormField(
                                 controller: controller.passIDNumber,

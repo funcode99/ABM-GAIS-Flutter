@@ -390,48 +390,48 @@ class FormRequestTripScreen extends StatelessWidget {
                                 ? controller.items[index]['showList']
                                     ? Column(
                                         children: [
-                                          CustomTripCard(
-                                            listNumber: 1,
-                                            title: controller.travellerName ?? "",
-                                            subtitle: controller.travellerSN ?? "",
-                                            info: "Traveller",
-                                            content: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text("Gender", style: listTitleTextStyle),
-                                                    Text(controller.travellerGender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text("Hotel Fare", style: listTitleTextStyle),
-                                                    Text(int.parse(controller.travellerHotel ?? "0").toCurrency(), style: listSubTitleTextStyle),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text("Flight Entitlement", style: listTitleTextStyle),
-                                                    Text(controller.travellerFlight ?? "", style: listSubTitleTextStyle),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                          // CustomTripCard(
+                                          //   listNumber: 1,
+                                          //   title: controller.travellerName ?? "",
+                                          //   subtitle: controller.travellerSN ?? "",
+                                          //   info: "Traveller",
+                                          //   content: Row(
+                                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          //     children: [
+                                          //       Column(
+                                          //         crossAxisAlignment: CrossAxisAlignment.start,
+                                          //         children: [
+                                          //           Text("Gender", style: listTitleTextStyle),
+                                          //           Text(controller.travellerGender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
+                                          //         ],
+                                          //       ),
+                                          //       Column(
+                                          //         crossAxisAlignment: CrossAxisAlignment.start,
+                                          //         children: [
+                                          //           Text("Hotel Fare", style: listTitleTextStyle),
+                                          //           Text(int.parse(controller.travellerHotel ?? "0").toCurrency(), style: listSubTitleTextStyle),
+                                          //         ],
+                                          //       ),
+                                          //       Column(
+                                          //         crossAxisAlignment: CrossAxisAlignment.start,
+                                          //         children: [
+                                          //           Text("Flight Entitlement", style: listTitleTextStyle),
+                                          //           Text(controller.travellerFlight ?? "", style: listSubTitleTextStyle),
+                                          //         ],
+                                          //       ),
+                                          //     ],
+                                          //   ),
+                                          // ),
                                           Column(
                                               children: controller.guestList.isNotEmpty
                                                   ? controller.guestList
                                                       .mapIndexed(
                                                         (i, e) => CustomTripCard(
-                                                          listNumber: i + 2,
+                                                          listNumber: i + 1,
                                                           title: e.nameGuest.toString(),
                                                           subtitle: e.nik,
-                                                          info: "Guest",
-                                                          isEdit: controller.isEdit,
+                                                          info: e.isGuest == 1 ? "Guest" : "Traveller",
+                                                          isEdit: e.isGuest == 1 ? controller.isEdit : false,
                                                           editAction: () => Get.to(
                                                             const AddGuestScreen(),
                                                             arguments: {
@@ -443,7 +443,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                             controller.fetchList();
                                                             controller.update();
                                                           }),
-                                                          isDelete: controller.isEdit,
+                                                          isDelete: e.isGuest == 1 ? controller.isEdit : false,
                                                           deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                             onDeletePressed: () {
                                                               controller.deleteGuest(e.id.toString());
@@ -465,7 +465,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Text("Hotel Fare", style: listTitleTextStyle),
-                                                                  Text(e.hotelFare.toString(), style: listSubTitleTextStyle),
+                                                                  Text(e.hotelFare?.toInt().toCurrency().toString() ?? '-',
+                                                                      style: listSubTitleTextStyle),
                                                                 ],
                                                               ),
                                                               Column(

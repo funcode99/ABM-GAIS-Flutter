@@ -233,7 +233,7 @@ class AddAirlinessController extends BaseController {
           .then((value) {
         if (formEdit == true) {
           if (isBooking == true) {
-            Get.off(const CheckScheduleScreen(), arguments: {
+            Get.to(const CheckScheduleScreen(), arguments: {
               'purposeID': purposeID,
               'codeDocument': codeDocument,
               'departure': departure.toString(),
