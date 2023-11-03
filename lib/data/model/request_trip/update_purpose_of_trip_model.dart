@@ -120,7 +120,7 @@ class Data {
     _idZona = json['id_zona'];
     _codeStatusDoc = json['code_status_doc'];
     _tlkPerDay = json['tlk_per_day'];
-    _totalTlk = json['total_tlk'];
+    _totalTlk = json['total_tlk'].toString();
     _createdAt = json['created_at'];
     _createdBy = json['created_by'];
     _updatedAt = json['updated_at'];

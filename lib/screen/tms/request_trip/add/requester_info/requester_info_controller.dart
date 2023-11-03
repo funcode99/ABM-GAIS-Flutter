@@ -89,6 +89,7 @@ class RequesterInfoController extends BaseController with MasterDataMixin {
         selectedEmployee = EmployeeModel(
             id: requestorID,
             employeeName: requestorName,
+            nik: value.first.nik,
             idCompany: value.first.idCompany,
             companyName: value.first.companyName,
             companyCode: value.first.companyCode,
@@ -100,6 +101,7 @@ class RequesterInfoController extends BaseController with MasterDataMixin {
             hotelFare: value.first.hotelFare,
             idDepartment: value.first.idDepartment,
             departementName: value.first.departementName,
+            jenkel: value.first.jenkel,
             flightClass: [
               {
                 'id_flight_class': requestorFlightID,

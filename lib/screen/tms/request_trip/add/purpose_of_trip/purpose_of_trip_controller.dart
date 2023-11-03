@@ -116,6 +116,8 @@ class PurposeOfTripController extends BaseController {
     print(requestorFlight.first['id_flight_class']);
     // print(requestorFlight.first.idFlightClass);
     print("requestor name : ${requestorData?.employeeName}");
+    print("jenkel : ${requestorData?.jenkel}");
+
     try {
       requestorID = requestTripVariable.requestTripRequestorID;
       siteID = requestTripVariable.requestTripRequestorSiteID;
@@ -179,7 +181,7 @@ class PurposeOfTripController extends BaseController {
             requestorData?.phoneNumber ?? '',
             requestorData?.departementName ?? '',
             requestorData?.hotelFare ?? '',
-            requestorFlight.first['id_flight_class'],
+            requestorFlight.first['id_flight_class'].toString(),
             '',
             requestorData?.jenkel ?? '',
             '0',
@@ -188,18 +190,18 @@ class PurposeOfTripController extends BaseController {
     } catch (e, i) {
       e.printError();
       i.printError();
-      Get.showSnackbar(
-        const GetSnackBar(
-          icon: Icon(
-            Icons.error,
-            color: Colors.white,
-          ),
-          message: 'Failed to save guest',
-          isDismissible: true,
-          duration: Duration(seconds: 3),
-          backgroundColor: Colors.red,
-        ),
-      );
+      // Get.showSnackbar(
+      //   const GetSnackBar(
+      //     icon: Icon(
+      //       Icons.error,
+      //       color: Colors.white,
+      //     ),
+      //     message: 'Failed to save guest',
+      //     isDismissible: true,
+      //     duration: Duration(seconds: 3),
+      //     backgroundColor: Colors.red,
+      //   ),
+      // );
     }
   }
 
