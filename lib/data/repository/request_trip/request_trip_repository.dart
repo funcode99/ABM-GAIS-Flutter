@@ -98,6 +98,7 @@ abstract class RequestTripRepository {
     String idflightclass,
     String notes,
     String gender,
+    String isGuest,
   );
 
   Future<UpdateTravellerGuestModel> updateTravellerGuest(
@@ -270,6 +271,13 @@ abstract class RequestTripRepository {
     String pnrID,
     String jenkel,
     String hotelFare,
+    String correlationId,
+    String hotelKey,
+    String roomKey,
+    String confirmationID,
+    GuestModel? guests,
+    ContactGuest? contactGuest,
+    BedsModel? beds,
   );
 
   Future<GetAccommodationModel> getAccommodationBytripList(String id);

@@ -67,6 +67,12 @@ class AddTaxiVoucherController extends BaseController {
     var rtData = await requestTrip.getRequestTripByid(purposeID);
     rtModel = rtData;
     lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
+    if(lastDate.isBefore(DateTime.now())){
+      lastDate = DateTime.now().add(Duration(days: 30));
+    }
+    if(lastDate.isBefore(DateTime.now())){
+      lastDate = DateTime.now().add(Duration(days: 30));
+    }
 
     update();
   }

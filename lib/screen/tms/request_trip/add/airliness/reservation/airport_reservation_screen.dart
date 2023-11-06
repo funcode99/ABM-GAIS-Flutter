@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/antavaya/contact_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
-import 'package:gais/reusable/customformlabel.dart';
+
+// import 'package:gais/reusable/customformlabel.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
@@ -134,74 +137,103 @@ class AirportReservationScreen extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    width: Get.width / 5,
-                                    child: CustomTextFormField(
-                                      controller: controller.bookTitle,
-                                      label: "Title",
-                                      isRequired: true,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: Get.width - (Get.width / 3),
-                                    child: CustomTextFormField(
-                                      controller: controller.bookFirstName,
-                                      label: "First Name",
-                                      isRequired: true,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.bookLastName,
-                                label: "Last Name",
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //   children: [
+                              //     SizedBox(
+                              //       width: Get.width / 5,
+                              //       child: CustomTextFormField(
+                              //         controller: controller.bookTitle,
+                              //         label: "Title",
+                              //         isRequired: true,
+                              //       ),
+                              //     ),
+                              //     SizedBox(
+                              //       width: Get.width - (Get.width / 3),
+                              //       child: CustomTextFormField(
+                              //         controller: controller.bookFirstName,
+                              //         label: "First Name",
+                              //         isRequired: true,
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
+                              // const SizedBox(height: 8),
+                              // CustomTextFormField(
+                              //   controller: controller.bookLastName,
+                              //   label: "Last Name",
+                              //   isRequired: true,
+                              // ),
+                              // const SizedBox(height: 8),
+                              // CustomTextFormField(
+                              //   controller: controller.bookHomePhone,
+                              //   label: "Home Phone",
+                              //   isRequired: true,
+                              //   inputType: TextInputType.number,
+                              //   validator: (value) {
+                              //     print(value!.length);
+                              //     if (value == null || value.isEmpty || value.length < 5) {
+                              //       return 'Number must be between 5 and 20 characters';
+                              //     }
+                              //     return null;
+                              //   },
+                              // ),
+                              // const SizedBox(height: 8),
+                              // CustomTextFormField(
+                              //   controller: controller.bookMobilePhone,
+                              //   label: "Mobile Phone",
+                              //   isRequired: true,
+                              //   inputType: TextInputType.number,
+                              //   validator: (value) {
+                              //     print(value!.length);
+                              //     if (value == null || value.isEmpty || value.length < 5) {
+                              //       return 'Number must be between 5 and 20 characters';
+                              //     }
+                              //     return null;
+                              //   },
+                              // ),
+                              // const SizedBox(height: 8),
+                              // CustomTextFormField(
+                              //   controller: controller.bookEmail,
+                              //   label: "Email",
+                              //   isRequired: true,
+                              //   validator: (value) {
+                              //     if (value == null || value.isEmpty) {
+                              //       return 'The field is required';
+                              //     }
+                              //     if (!(EmailValidator.validate(value!))) {
+                              //       return 'Check your email format';
+                              //     }
+                              //     return null;
+                              //   },
+                              // ),
+                              CustomDropDownFormField(
+                                items: controller.gaList
+                                    .map((e) => DropdownMenuItem(
+                                          value: e,
+                                          child: Text('${e.firstName} ${e.lastName}'),
+                                        ))
+                                    .toList(),
+                                label: "Name",
+                                hintText: controller.isLoading ? 'Loading...' : 'Name',
                                 isRequired: true,
-                              ),
-                              const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.bookHomePhone,
-                                label: "Home Phone",
-                                isRequired: true,
-                                inputType: TextInputType.number,
                                 validator: (value) {
-                                  print(value!.length);
-                                  if (value == null || value.isEmpty || value.length < 5) {
-                                    return 'Number must be between 5 and 20 characters';
+                                  if (value == null && controller.bookingContact == null) {
+                                    return "This field is required";
                                   }
                                   return null;
                                 },
-                              ),
-                              const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.bookMobilePhone,
-                                label: "Mobile Phone",
-                                isRequired: true,
-                                inputType: TextInputType.number,
-                                validator: (value) {
-                                  print(value!.length);
-                                  if (value == null || value.isEmpty || value.length < 5) {
-                                    return 'Number must be between 5 and 20 characters';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.bookEmail,
-                                label: "Email",
-                                isRequired: true,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'The field is required';
-                                  }
-                                  if (!(EmailValidator.validate(value!))) {
-                                    return 'Check your email format';
-                                  }
-                                  return null;
+                                onChanged: (value) {
+                                  controller.bookingContact = ContactModel(
+                                    title: value?.title,
+                                    firstName: value?.firstName,
+                                    lastName: value?.lastName,
+                                    email: value?.email,
+                                    mobilePhone: value?.phone,
+                                    homePhone: value?.phone,
+                                  );
+                                  controller.update();
+                                  print(controller.bookingContact?.mobilePhone);
                                 },
                               ),
                               const SizedBox(height: 8),
@@ -218,15 +250,39 @@ class AirportReservationScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
-                                    width: Get.width / 5,
-                                    child: CustomTextFormField(
-                                      controller: controller.passTitle,
+                                    width: Get.width / 4,
+                                    child: CustomDropDownFormField(
                                       label: "Title",
-                                      isRequired: true,
+                                      items: const [
+                                        DropdownMenuItem(
+                                          value: "MR",
+                                          child: Text('MR'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "MSTR",
+                                          child: Text('MSTR'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "MRS",
+                                          child: Text('MRS'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "MISS",
+                                          child: Text('MISS'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "INF",
+                                          child: Text('INF'),
+                                        ),
+                                      ],
+                                      onChanged: (value) {
+                                        controller.passTitle.text = value.toString();
+                                        controller.update();
+                                      },
                                     ),
                                   ),
                                   SizedBox(
-                                    width: Get.width - (Get.width / 3),
+                                    width: Get.width - (Get.width / 2.8),
                                     child: CustomTextFormField(
                                       controller: controller.passFirstName,
                                       label: "First Name",
@@ -283,39 +339,39 @@ class AirportReservationScreen extends StatelessWidget {
                                 },
                               ),
                               const SizedBox(height: 8),
-                              const CustomFormLabel(label: "Is Senior Citizen?", showRequired: true),
-                              Row(
-                                children: [
-                                  Radio(
-                                    value: true,
-                                    groupValue: controller.isSeniorCitizen,
-                                    onChanged: (value) {
-                                      controller.isSeniorCitizen = value;
-                                      controller.update();
-                                    },
-                                  ),
-                                  const Text("Yes"),
-                                  Radio(
-                                    value: false,
-                                    groupValue: controller.isSeniorCitizen,
-                                    onChanged: (value) {
-                                      controller.isSeniorCitizen = value;
-                                      controller.update();
-                                    },
-                                  ),
-                                  const Text("No"),
-                                ],
-                              ),
-                              controller.isSeniorCitizen == null
-                                  ? const Text('        The field is required', style: TextStyle(color: errorColor, fontSize: 12))
-                                  : Container(),
+                              // const CustomFormLabel(label: "Is Senior Citizen?", showRequired: true),
+                              // Row(
+                              //   children: [
+                              //     Radio(
+                              //       value: true,
+                              //       groupValue: controller.isSeniorCitizen,
+                              //       onChanged: (value) {
+                              //         controller.isSeniorCitizen = value;
+                              //         controller.update();
+                              //       },
+                              //     ),
+                              //     const Text("Yes"),
+                              //     Radio(
+                              //       value: false,
+                              //       groupValue: controller.isSeniorCitizen,
+                              //       onChanged: (value) {
+                              //         controller.isSeniorCitizen = value;
+                              //         controller.update();
+                              //       },
+                              //     ),
+                              //     const Text("No"),
+                              //   ],
+                              // ),
+                              // controller.isSeniorCitizen == null
+                              //     ? const Text('        The field is required', style: TextStyle(color: errorColor, fontSize: 12))
+                              //     : Container(),
                               CustomTextFormField(
                                 controller: controller.passMobilePhone,
                                 label: "Mobile Phone",
                                 isRequired: true,
                                 inputType: TextInputType.number,
                                 validator: (value) {
-                                  print(value!.length);
+                                  // print(value!.length);
                                   if (value == null || value.isEmpty || value.length < 5) {
                                     return 'Number must be between 5 and 20 characters';
                                   }
@@ -330,60 +386,73 @@ class AirportReservationScreen extends StatelessWidget {
                                 inputType: TextInputType.number,
                               ),
                               const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.passPassportNumber,
-                                label: "Passport Number",
-                                isRequired: true,
-                                inputType: TextInputType.number,
-                              ),
-                              const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.passPassportOrigin,
-                                label: "Passport Origin",
-                                isRequired: true,
-                              ),
-                              const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.passPassportExpire,
-                                label: "Passport Expire",
-                                isRequired: true,
-                              ),
-                              const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.passEmergencyFullName,
-                                label: "Emergency Full Name",
-                                isRequired: true,
-                              ),
-                              const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.passEmergencyEmail,
-                                label: "Emergency Email",
-                                isRequired: true,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'The field is required';
-                                  }
-                                  if (!(EmailValidator.validate(value!))) {
-                                    return 'Check your email format';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.passEmergencyPhone,
-                                label: "Emergency Phone",
-                                isRequired: true,
-                                inputType: TextInputType.number,
-                                validator: (value) {
-                                  print(value!.length);
-                                  if (value == null || value.isEmpty || value.length < 5) {
-                                    return 'Number must be between 5 and 20 characters';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(height: 8),
+                              controller.isInternational == true
+                                  ? Column(
+                                      children: [
+                                        CustomTextFormField(
+                                          controller: controller.passPassportNumber,
+                                          label: "Passport Number",
+                                          isRequired: true,
+                                          inputType: TextInputType.number,
+                                        ),
+                                        const SizedBox(height: 8),
+                                        CustomTextFormField(
+                                          controller: controller.passPassportOrigin,
+                                          label: "Passport Origin",
+                                          isRequired: true,
+                                        ),
+                                        const SizedBox(height: 8),
+                                        CustomTextFormField(
+                                          controller: controller.passPassportExpire,
+                                          label: "Passport Expire",
+                                          isRequired: true,
+                                        ),
+                                        const SizedBox(height: 8),
+                                      ],
+                                    )
+                                  : const SizedBox(),
+
+                              controller.flight.airline == 5
+                                  ? Column(
+                                      children: [
+                                        CustomTextFormField(
+                                          controller: controller.passEmergencyFullName,
+                                          label: "Emergency Full Name",
+                                          isRequired: true,
+                                        ),
+                                        const SizedBox(height: 8),
+                                        CustomTextFormField(
+                                          controller: controller.passEmergencyEmail,
+                                          label: "Emergency Email",
+                                          isRequired: true,
+                                          validator: (value) {
+                                            if (value == null || value.isEmpty) {
+                                              return 'The field is required';
+                                            }
+                                            if (!(EmailValidator.validate(value!))) {
+                                              return 'Check your email format';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        const SizedBox(height: 8),
+                                        CustomTextFormField(
+                                          controller: controller.passEmergencyPhone,
+                                          label: "Emergency Phone",
+                                          isRequired: true,
+                                          inputType: TextInputType.number,
+                                          validator: (value) {
+                                            // print(value!.length);
+                                            if (value == null || value.isEmpty || value.length < 5) {
+                                              return 'Number must be between 5 and 20 characters';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        const SizedBox(height: 8),
+                                      ],
+                                    )
+                                  : const SizedBox(),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [

@@ -77,6 +77,10 @@ class AddAirlinessController extends BaseController {
         travellerName.text = value.data?.first.employeeName ?? "";
         selectedDate = DateTime.parse(value.data!.first.departureDate.toString());
         departureDate.text = dateFormat.format(selectedDate!) ?? "";
+        if(selectedDate!.isBefore(DateTime.now())){
+          selectedDate = DateTime.now();
+          departureDate.text = dateFormat.format(selectedDate!);
+        }
         travellerflightClass.text = value.data?.first.flightClass ?? "";
         cityList.where((element) => element.code == value.data?.first.origin).first.code.printInfo();
         departureModel = cityList.where((element) => element.code == value.data?.first.origin).first;
@@ -146,6 +150,9 @@ class AddAirlinessController extends BaseController {
     var rtData = await requestTrip.getRequestTripByid(purposeID);
     rtModel = rtData;
     lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
+    if(lastDate.isBefore(DateTime.now())){
+      lastDate = DateTime.now().add(Duration(days: 30));
+    }
 
     isLoading = false;
     getInfo();
@@ -226,7 +233,7 @@ class AddAirlinessController extends BaseController {
           .then((value) {
         if (formEdit == true) {
           if (isBooking == true) {
-            Get.off(const CheckScheduleScreen(), arguments: {
+            Get.to(const CheckScheduleScreen(), arguments: {
               'purposeID': purposeID,
               'codeDocument': codeDocument,
               'departure': departure.toString(),

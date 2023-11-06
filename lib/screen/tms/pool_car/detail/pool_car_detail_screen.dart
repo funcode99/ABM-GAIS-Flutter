@@ -12,9 +12,11 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
 import 'package:gais/reusable/sliverappbardelegate.dart';
 import 'package:gais/reusable/topbar.dart';
+import 'package:gais/screen/tms/pool_car/assign/pool_car_assign_screen.dart';
 import 'package:gais/screen/tms/pool_car/detail/pool_car_detail_controller.dart';
 import 'package:gais/screen/tms/pool_car/p2h/pool_car_p2h_screen.dart';
 import 'package:gais/util/color/color_util.dart';
+import 'package:gais/util/enum/status_enum.dart';
 import 'package:gais/util/enum/tab_enum.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
@@ -28,8 +30,7 @@ class PoolCarDetailScreen extends StatefulWidget {
       _PoolCarDetailScreenState();
 }
 
-class _PoolCarDetailScreenState
-    extends State<PoolCarDetailScreen> {
+class _PoolCarDetailScreenState extends State<PoolCarDetailScreen> {
   @override
   Widget build(BuildContext context) {
     PoolCarModel? selectedItem;
@@ -65,7 +66,8 @@ class _PoolCarDetailScreenState
                       children: [
                         Obx(() {
                           return CustomStatusContainer(
-                            backgroundColor: ColorUtil.getStatusColorByText("${controller.selectedItem.value.status}"),
+                            backgroundColor: ColorUtil.getStatusColorByText(
+                                "${controller.selectedItem.value.status}"),
                             status: "${controller.selectedItem.value.status}",
                           );
                         })
@@ -81,7 +83,8 @@ class _PoolCarDetailScreenState
                             .of(context)
                             .textTheme
                             .bodyText1
-                            ?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
+                            ?.copyWith(
+                            fontSize: 14, fontWeight: FontWeight.w400),
                         textAlign: TextAlign.center,
                       );
                     }),
@@ -90,27 +93,57 @@ class _PoolCarDetailScreenState
                     height: 16,
                   ),
                   Obx(() {
-                    if (controller.showSubmitButton.value) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (controller.showSubmitButton.value)
                           ElevatedButton(
                             onPressed: () {
-                              Get.to(()=>const PoolCarP2HScreen(), arguments: {
-                                "item" : controller.selectedItem.value,
-                                "status" : 2
-                              })?.then((value) => controller.detailHeader());
+                              Get.to(() => const PoolCarP2HScreen(),
+                                  arguments: {
+                                    "item": controller.selectedItem.value,
+                                    "status": 2
+                                  })?.then((value) =>
+                                  controller.detailHeader());
                             },
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(75, 30),
                                 backgroundColor: orangeColor),
                             child: Text("Done".tr),
                           ),
-                        ],
-                      );
-                    }
-
-                    return const SizedBox();
+                        if (controller.showAssignButton.value)
+                          ElevatedButton(
+                            onPressed: () async {
+                              PoolCarModel? result = await Get
+                                  .to(() => const PoolCarAssignScreen(),
+                                  arguments: {
+                                    "item": controller.selectedItem.value
+                                  });
+                              if (result != null) {
+                                controller.assignedCar(result);
+                                controller.updateHeader();
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(75, 30),
+                                backgroundColor: orangeColor),
+                            child: Text("Assign".tr),
+                          ),
+                        SizedBox(
+                          width: controller.showAssignButton.value ? 8 : 0,
+                        ),
+                        if (controller.showAssignButton.value)
+                          ElevatedButton(
+                            onPressed: () {
+                              controller.openCancelDialog();
+                            },
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(75, 30),
+                                backgroundColor: redColor),
+                            child: Text("Cancel".tr),
+                          ),
+                      ],
+                    );
                   }),
                   const Divider(
                     height: 20,
@@ -143,6 +176,20 @@ class _PoolCarDetailScreenState
                             isRequired: false,
                             controller: controller.referenceController,
                             label: "Reference".tr),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Obx(() {
+                          if(controller.selectedItem.value.codeStatusDoc == PoolCarEnum.cancelled.value){
+                            return CustomTextFormField(
+                                readOnly: true,
+                                multiLine: true,
+                                isRequired: false,
+                                controller: controller.noteController,
+                                label: "Reason".tr);
+                          }
+                          return SizedBox();
+                        }),
                         const SizedBox(
                           height: 64,
                         ),
@@ -260,7 +307,8 @@ class _PoolCarDetailScreenState
                         child: Obx(() {
                           return CommonListItem(
                             number: "1",
-                            subtitle: controller.selectedItem.value.requestorName ?? "-",
+                            subtitle: controller.selectedItem.value
+                                .requestorName ?? "-",
                             total: controller.selectedItem.value.plate ?? "-",
                             content: Padding(
                               padding: const EdgeInsets.symmetric(
@@ -278,8 +326,10 @@ class _PoolCarDetailScreenState
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
-                                            controller.selectedItem.value.driverName ?? "-",
-                                            style: listSubTitleTextStyle.copyWith(
+                                            controller.selectedItem.value
+                                                .driverName ?? "-",
+                                            style: listSubTitleTextStyle
+                                                .copyWith(
                                                 overflow: TextOverflow.ellipsis
                                             )
                                         ),
@@ -295,8 +345,12 @@ class _PoolCarDetailScreenState
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
-                                            "${controller.selectedItem.value.fromDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
-                                            style: listSubTitleTextStyle.copyWith(
+                                            "${controller.selectedItem.value
+                                                .fromDate?.toDateFormat(
+                                                originFormat: "yyyy-MM-dd",
+                                                targetFormat: "dd/MM/yyyy")}",
+                                            style: listSubTitleTextStyle
+                                                .copyWith(
                                                 overflow: TextOverflow.ellipsis
                                             )
                                         ),
@@ -312,7 +366,10 @@ class _PoolCarDetailScreenState
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
-                                          "${controller.selectedItem.value.toDate?.toDateFormat(originFormat: "yyyy-MM-dd", targetFormat: "dd/MM/yyyy")}",
+                                          "${controller.selectedItem.value
+                                              .toDate?.toDateFormat(
+                                              originFormat: "yyyy-MM-dd",
+                                              targetFormat: "dd/MM/yyyy")}",
                                           style: listSubTitleTextStyle.copyWith(
                                               overflow: TextOverflow.ellipsis
                                           ),
@@ -329,7 +386,8 @@ class _PoolCarDetailScreenState
                                           style: listTitleTextStyle,
                                         ),
                                         Text(
-                                          "${controller.selectedItem.value.odometer ?? "-"}",
+                                          "${controller.selectedItem.value
+                                              .odometer ?? "-"}",
                                           style: listSubTitleTextStyle.copyWith(
                                               overflow: TextOverflow.ellipsis
                                           ),
@@ -341,18 +399,20 @@ class _PoolCarDetailScreenState
                               ),
                             ),
                             action: [
-                              Obx((){
-                                if(controller.showP2H.value){
+                              Obx(() {
+                                if (controller.showP2H.value) {
                                   return CustomIconButton(
                                     title: "P2H Start",
                                     iconData: IconlyBold.edit,
                                     backgroundColor: orangeColor,
-                                    onPressed: () async{
-                                      Get.to(()=>const PoolCarP2HScreen(), arguments: {
-                                        "item" : controller.selectedItem.value,
-                                        "status" : 1
-                                      })?.then((value) => controller.detailHeader());
-
+                                    onPressed: () async {
+                                      Get.to(() => const PoolCarP2HScreen(),
+                                          arguments: {
+                                            "item": controller.selectedItem
+                                                .value,
+                                            "status": 1
+                                          })?.then((value) =>
+                                          controller.detailHeader());
                                     },
                                   );
                                 }
@@ -361,18 +421,20 @@ class _PoolCarDetailScreenState
                               const SizedBox(
                                 width: 4,
                               ),
-                              Obx((){
-                                if(controller.showP2HEnd.value){
+                              Obx(() {
+                                if (controller.showP2HEnd.value) {
                                   return CustomIconButton(
                                     title: "P2H End",
                                     iconData: IconlyBold.edit,
                                     backgroundColor: orangeColor,
-                                    onPressed: () async{
-                                      Get.to(()=>const PoolCarP2HScreen(), arguments: {
-                                        "item" : controller.selectedItem.value,
-                                        "status" : 2
-                                      })?.then((value) => controller.detailHeader());
-
+                                    onPressed: () async {
+                                      Get.to(() => const PoolCarP2HScreen(),
+                                          arguments: {
+                                            "item": controller.selectedItem
+                                                .value,
+                                            "status": 2
+                                          })?.then((value) =>
+                                          controller.detailHeader());
                                     },
                                   );
                                 }
@@ -381,21 +443,21 @@ class _PoolCarDetailScreenState
                               const SizedBox(
                                 width: 4,
                               ),
-                              Obx((){
-                                if(controller.showChangeCar.value){
+                              Obx(() {
+                                if (controller.showChangeCar.value) {
                                   return CustomIconButton(
                                     title: "Change",
                                     iconData: Icons.refresh,
                                     backgroundColor: infoColor,
-                                    onPressed: () async{
-                                      CarModel? result = await Get.dialog(ChangeCarDialog(
-                                        idSite: controller.idSite.value,
-                                      ));
+                                    onPressed: () async {
+                                      CarModel? result = await Get.dialog(
+                                          ChangeCarDialog(
+                                            idSite: controller.idSite.value,
+                                          ));
 
                                       if (result != null) {
                                         controller.changeCar(result);
                                       }
-
                                     },
                                   );
                                 }
@@ -405,7 +467,8 @@ class _PoolCarDetailScreenState
                           );
                         }),
                       );
-                    } /*else if (controller.selectedTab.value ==
+                    }
+                    /*else if (controller.selectedTab.value ==
                         TabEnum.approval) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),

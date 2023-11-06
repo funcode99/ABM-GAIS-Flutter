@@ -99,23 +99,15 @@ class FormRequestTripScreen extends StatelessWidget {
                                 //         },
                                 //       )
                                 //     : Container(),
-                                controller.rtStatus == "Draft" || controller.rtStatus == "Revision" || controller.rtStatus == "Confirmed"
+                                controller.rtStatus == "Draft" || controller.rtStatus == "Revision"
                                     ? CustomFilledButton(
-                                        color: controller.rtStatus == "Confirmed" ? orangeColor : Colors.transparent,
-                                        title: controller.rtStatus == "Confirmed"
-                                            ? "Actualizations"
-                                            : controller.isEdit
-                                                ? "Cancel"
-                                                : "Edit",
+                                        color: Colors.transparent,
+                                        title: controller.isEdit ? "Cancel" : "Edit",
                                         borderColor: controller.rtStatus == "Confirmed" ? Colors.transparent : infoColor,
                                         fontColor: controller.rtStatus == "Confirmed" ? whiteColor : infoColor,
                                         width: controller.rtStatus == "Confirmed" ? Get.width / 3 : Get.width / 4,
                                         onPressed: () {
-                                          if (controller.rtStatus == "Confirmed") {
-                                            controller.checkActual();
-                                          } else {
-                                            controller.isEdit = controller.isEdit == false ? true : false;
-                                          }
+                                          controller.isEdit = controller.isEdit == false ? true : false;
                                           controller.update();
                                         },
                                       )
@@ -170,40 +162,32 @@ class FormRequestTripScreen extends StatelessWidget {
                                 readOnly: true,
                               ),
                               const SizedBox(height: 8),
-                              controller.isEdit
-                                  ? CustomDropDownFormField(
-                                      label: 'Purpose of Trip',
-                                      isRequired: true,
-                                      value: controller.selectedPurpose,
-                                      hintText: "pick document type",
-                                      items: controller.purposeList
-                                          .map((e) => DropdownMenuItem(
-                                                value: e.id.toString(),
-                                                // value: e.codeDocument.toString(),
-                                                child: Text(e.documentName.toString()),
-                                                onTap: () {
-                                                  controller.codeDocument = e.id?.toInt();
-                                                  controller.update();
-                                                },
-                                              ))
-                                          .toList(),
-                                      onChanged: (value) {
-                                        controller.selectedPurpose = value.toString();
-                                        controller.isAttachment = value == "1" || value == "2" || value == "3" || value == "5" ? true : false;
-                                        value == "3" ? controller.isDAnumber = true : controller.isDAnumber = false;
-                                        print(value);
-                                        controller.update();
-                                        controller.checkItems();
-                                        controller.update();
-                                        // print(controller.selectedPurpose);
-                                      },
-                                    )
-                                  : CustomTextFormField(
-                                      controller: controller.purpose,
-                                      label: "Purpose Of Trip",
-                                      isRequired: true,
-                                      readOnly: true,
-                                    ),
+                              CustomDropDownFormField(
+                                label: 'Purpose of Trip',
+                                isRequired: true,
+                                readOnly: !controller.isEdit,
+                                selectedItem: controller.purpose.text,
+                                value: controller.selectedPurpose,
+                                hintText: "pick document type",
+                                items: controller.purposeList
+                                    .map((e) => DropdownMenuItem(
+                                          value: e.id.toString(),
+                                          // value: e.codeDocument.toString(),
+                                          child: Text(e.documentName.toString()),
+                                          onTap: () {
+                                            controller.codeDocument = e.id?.toInt();
+                                            controller.update();
+                                          },
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  controller.selectedPurpose = value.toString();
+                                  controller.isAttachment = value == "1" || value == "2" || value == "3" || value == "5" ? true : false;
+                                  value == "3" ? controller.isDAnumber = true : controller.isDAnumber = false;
+                                  print("selected item : ${controller.selectedPurpose}");
+                                  controller.checkItems();
+                                },
+                              ),
                               const SizedBox(height: 8),
                               controller.selectedPurpose == "1"
                                   ? Container(
@@ -406,48 +390,48 @@ class FormRequestTripScreen extends StatelessWidget {
                                 ? controller.items[index]['showList']
                                     ? Column(
                                         children: [
-                                          CustomTripCard(
-                                            listNumber: 1,
-                                            title: controller.travellerName ?? "",
-                                            subtitle: controller.travellerSN ?? "",
-                                            info: "Traveller",
-                                            content: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text("Gender", style: listTitleTextStyle),
-                                                    Text(controller.travellerGender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text("Hotel Fare", style: listTitleTextStyle),
-                                                    Text(int.parse(controller.travellerHotel ?? "0").toCurrency(), style: listSubTitleTextStyle),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text("Flight Entitlement", style: listTitleTextStyle),
-                                                    Text(controller.travellerFlight ?? "", style: listSubTitleTextStyle),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                          // CustomTripCard(
+                                          //   listNumber: 1,
+                                          //   title: controller.travellerName ?? "",
+                                          //   subtitle: controller.travellerSN ?? "",
+                                          //   info: "Traveller",
+                                          //   content: Row(
+                                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          //     children: [
+                                          //       Column(
+                                          //         crossAxisAlignment: CrossAxisAlignment.start,
+                                          //         children: [
+                                          //           Text("Gender", style: listTitleTextStyle),
+                                          //           Text(controller.travellerGender == "L" ? "Male" : "Female", style: listSubTitleTextStyle),
+                                          //         ],
+                                          //       ),
+                                          //       Column(
+                                          //         crossAxisAlignment: CrossAxisAlignment.start,
+                                          //         children: [
+                                          //           Text("Hotel Fare", style: listTitleTextStyle),
+                                          //           Text(int.parse(controller.travellerHotel ?? "0").toCurrency(), style: listSubTitleTextStyle),
+                                          //         ],
+                                          //       ),
+                                          //       Column(
+                                          //         crossAxisAlignment: CrossAxisAlignment.start,
+                                          //         children: [
+                                          //           Text("Flight Entitlement", style: listTitleTextStyle),
+                                          //           Text(controller.travellerFlight ?? "", style: listSubTitleTextStyle),
+                                          //         ],
+                                          //       ),
+                                          //     ],
+                                          //   ),
+                                          // ),
                                           Column(
                                               children: controller.guestList.isNotEmpty
                                                   ? controller.guestList
                                                       .mapIndexed(
                                                         (i, e) => CustomTripCard(
-                                                          listNumber: i + 2,
+                                                          listNumber: i + 1,
                                                           title: e.nameGuest.toString(),
                                                           subtitle: e.nik,
-                                                          info: "Guest",
-                                                          isEdit: controller.isEdit,
+                                                          info: e.isGuest == 1 ? "Guest" : "Traveller",
+                                                          isEdit: e.isGuest == 1 ? controller.isEdit : false,
                                                           editAction: () => Get.to(
                                                             const AddGuestScreen(),
                                                             arguments: {
@@ -459,7 +443,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                             controller.fetchList();
                                                             controller.update();
                                                           }),
-                                                          isDelete: controller.isEdit,
+                                                          isDelete: e.isGuest == 1 ? controller.isEdit : false,
                                                           deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                             onDeletePressed: () {
                                                               controller.deleteGuest(e.id.toString());
@@ -481,7 +465,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Text("Hotel Fare", style: listTitleTextStyle),
-                                                                  Text(e.hotelFare.toString(), style: listSubTitleTextStyle),
+                                                                  Text(e.hotelFare?.toInt().toCurrency().toString() ?? '-',
+                                                                      style: listSubTitleTextStyle),
                                                                 ],
                                                               ),
                                                               Column(
@@ -518,7 +503,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                           subtitle: controller.dateFormat.format(DateTime.parse(e.createdAt.toString())).toString(),
                                                           // subtitle: e.pnrid.toString(),
                                                           info: e.flightNo,
-                                                          isEdit: controller.isEdit,
+                                                          isEdit: controller.rtStatus == 'Order Ticket' ? true : controller.isEdit,
                                                           editAction: () {
                                                             Get.off(const AddAirlinessScreen(), arguments: {
                                                               'id': e.id,
@@ -529,24 +514,26 @@ class FormRequestTripScreen extends StatelessWidget {
                                                               'airlinessData': e,
                                                             });
                                                           },
-                                                          editButton: CustomFilledButton(
-                                                            width: 95,
-                                                            height: 40,
-                                                            color: orangeColor,
-                                                            title: "Order Ticket",
-                                                            fontSize: 14,
-                                                            onPressed: () {
-                                                              Get.off(const AddAirlinessScreen(), arguments: {
-                                                                'id': e.id,
-                                                                'purposeID': controller.purposeID,
-                                                                'codeDocument': controller.codeDocument,
-                                                                'formEdit': true,
-                                                                'isEdit': true,
-                                                                'airlinessData': e,
-                                                                'booking': true,
-                                                              });
-                                                            },
-                                                          ),
+                                                          editButton: controller.rtStatus == 'Order Ticket'
+                                                              ? CustomFilledButton(
+                                                                  width: 95,
+                                                                  height: 40,
+                                                                  color: orangeColor,
+                                                                  title: "Order Ticket",
+                                                                  fontSize: 14,
+                                                                  onPressed: () {
+                                                                    Get.off(const AddAirlinessScreen(), arguments: {
+                                                                      'id': e.id,
+                                                                      'purposeID': controller.purposeID,
+                                                                      'codeDocument': controller.codeDocument,
+                                                                      'formEdit': true,
+                                                                      'isEdit': true,
+                                                                      'airlinessData': e,
+                                                                      'booking': true,
+                                                                    });
+                                                                  },
+                                                                )
+                                                              : null,
                                                           isDelete: controller.isEdit,
                                                           deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                             onDeletePressed: () {
@@ -575,7 +562,8 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Text("Price", style: listTitleTextStyle),
-                                                                  Text(e.ticketPrice!.toInt().toCurrency(), style: listSubTitleTextStyle),
+                                                                  Text(e.ticketPrice?.toInt().toCurrency().toString() ?? '-',
+                                                                      style: listSubTitleTextStyle),
                                                                 ],
                                                               )
                                                             ],
@@ -603,7 +591,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                               subtitle: controller.dateFormat.format(DateTime.parse(e.departDate!)),
                                                               // status: e.status.toString(),
                                                               // info: int.parse(e.amount.toString()).toCurrency(),
-                                                              isEdit: controller.isEdit,
+                                                              isEdit: controller.rtStatus == 'Order Ticket' ? true : controller.isEdit,
                                                               editAction: () => Get.off(const AddTrainScreen(), arguments: {
                                                                 'purposeID': controller.purposeID,
                                                                 'codeDocument': controller.codeDocument,
@@ -614,23 +602,25 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                 controller.fetchList();
                                                                 controller.update();
                                                               }),
-                                                              editButton: CustomFilledButton(
-                                                                width: 95,
-                                                                height: 40,
-                                                                color: orangeColor,
-                                                                title: "Order Ticket",
-                                                                fontSize: 14,
-                                                                onPressed: () {
-                                                                  Get.off(const AddTrainScreen(), arguments: {
-                                                                    'id': e.id,
-                                                                    'purposeID': controller.purposeID,
-                                                                    'codeDocument': controller.codeDocument,
-                                                                    'formEdit': true,
-                                                                    'isEdit': true,
-                                                                    'booking': true,
-                                                                  });
-                                                                },
-                                                              ),
+                                                              editButton: controller.rtStatus == 'Order Ticket'
+                                                                  ? CustomFilledButton(
+                                                                      width: 95,
+                                                                      height: 40,
+                                                                      color: orangeColor,
+                                                                      title: "Order Ticket",
+                                                                      fontSize: 14,
+                                                                      onPressed: () {
+                                                                        Get.off(const AddTrainScreen(), arguments: {
+                                                                          'id': e.id,
+                                                                          'purposeID': controller.purposeID,
+                                                                          'codeDocument': controller.codeDocument,
+                                                                          'formEdit': true,
+                                                                          'isEdit': true,
+                                                                          'booking': true,
+                                                                        });
+                                                                      },
+                                                                    )
+                                                                  : null,
                                                               isDelete: controller.isEdit,
                                                               deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                                 onDeletePressed: () {
@@ -806,7 +796,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                         listNumber: i + 1,
                                                                         title: e.employeeName.toString(),
                                                                         subtitle: e.typeTransportation.toString(),
-                                                                        status: e.status.toString(),
+                                                                        // status: e.status.toString(),
                                                                         info: e.cityName.toString(),
                                                                         isEdit: controller.isEdit,
                                                                         editAction: () => Get.to(const AddTransportationScreen(), arguments: {
@@ -881,7 +871,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                             title: e.travelerName.toString(),
                                                                             // status: e.status.toString(),
                                                                             info: e.hotelName,
-                                                                            isEdit: controller.isEdit,
+                                                                            isEdit: controller.rtStatus == 'Order Ticket' ? true : controller.isEdit,
                                                                             editAction: () => Get.off(const AddAccommodationScreen(), arguments: {
                                                                               'purposeID': controller.purposeID,
                                                                               'codeDocument': controller.codeDocument,
@@ -892,26 +882,28 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                               controller.fetchList();
                                                                               controller.update();
                                                                             }),
-                                                                            editButton: CustomFilledButton(
-                                                                              width: 95,
-                                                                              height: 40,
-                                                                              color: orangeColor,
-                                                                              title: "Book Hotel",
-                                                                              fontSize: 14,
-                                                                              onPressed: () {
-                                                                                Get.off(const AddAccommodationScreen(), arguments: {
-                                                                                  'purposeID': controller.purposeID,
-                                                                                  'codeDocument': controller.codeDocument,
-                                                                                  'id': e.id,
-                                                                                  'formEdit': true,
-                                                                                  'isEdit': true,
-                                                                                  'booking': true,
-                                                                                })?.then((result) {
-                                                                                  controller.fetchList();
-                                                                                  controller.update();
-                                                                                });
-                                                                              },
-                                                                            ),
+                                                                            editButton: controller.rtStatus == 'Order Ticket'
+                                                                                ? CustomFilledButton(
+                                                                                    width: 95,
+                                                                                    height: 40,
+                                                                                    color: orangeColor,
+                                                                                    title: "Book Hotel",
+                                                                                    fontSize: 14,
+                                                                                    onPressed: () {
+                                                                                      Get.off(const AddAccommodationScreen(), arguments: {
+                                                                                        'purposeID': controller.purposeID,
+                                                                                        'codeDocument': controller.codeDocument,
+                                                                                        'id': e.id,
+                                                                                        'formEdit': true,
+                                                                                        'isEdit': true,
+                                                                                        'booking': true,
+                                                                                      })?.then((result) {
+                                                                                        controller.fetchList();
+                                                                                        controller.update();
+                                                                                      });
+                                                                                    },
+                                                                                  )
+                                                                                : null,
                                                                             isDelete: controller.isEdit,
                                                                             deleteAction: () => Get.dialog(DeleteConfirmationDialog(
                                                                               onDeletePressed: () {
@@ -940,7 +932,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                                                   children: [
                                                                                     Text("Price", style: listTitleTextStyle),
-                                                                                    Text(e.price!.toInt().toCurrency().toString(),
+                                                                                    Text(e.price?.toInt().toCurrency().toString() ?? '-',
                                                                                         style: listSubTitleTextStyle),
                                                                                   ],
                                                                                 ),
@@ -970,7 +962,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                                   subtitle: controller.dateFormat
                                                                                       .format(DateTime.parse(e.createdAt.toString()))
                                                                                       .toString(),
-                                                                                  status: e.status.toString(),
+                                                                                  // status: e.status.toString(),
                                                                                   info:
                                                                                       "${e.currencyCode} ${int.parse(e.grandTotal.toString()).toCurrency()}",
                                                                                   isEdit: controller.isEdit,

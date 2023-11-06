@@ -1,21 +1,25 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/antavaya/get_reservation_ticket_model.dart';
 import 'package:gais/data/model/approval_model.dart';
 import 'package:gais/data/model/approval_request_trip/get_approval_request_trip_byid_model.dart';
 import 'package:gais/data/model/approval_request_trip/get_approval_request_trip_model.dart' as rt;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as doc;
 import 'package:gais/data/model/reference/get_site_model.dart' as st;
 import 'package:gais/data/model/request_trip/get_accommodation_model.dart' as acc;
+import 'package:gais/data/model/request_trip/get_airliness_bytrip_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airliness;
 import 'package:gais/data/model/request_trip/get_cash_advance_travel_model.dart' as ca;
 import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
 import 'package:gais/data/model/request_trip/get_other_transport_model.dart' as ot;
 import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_taxi_voucher_model.dart' as tv;
+import 'package:gais/data/model/request_trip/get_train_trip_bytripid_model.dart' as train;
+import 'package:gais/data/model/request_trip/get_transportation_model.dart' as transport;
+import 'package:gais/data/model/approval_request_trip/approval_info_model.dart' as ai;
 import 'package:gais/reusable/dialog/approval_confirmation_dialog.dart';
 import 'package:gais/reusable/dialog/fail_dialog.dart';
 import 'package:gais/reusable/dialog/reject_dialog.dart';
@@ -26,6 +30,8 @@ import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_scr
 import 'package:gais/screen/tms/request_trip/add/cash_advance/add/add_cash_advance_travel_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/other_transport/add/add_other_transport_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/taxi_voucher/add/add_taxi_voucher_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/train/add/add_train_screen.dart';
+import 'package:gais/screen/tms/request_trip/add/transportation/add/add_transportation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_screen.dart';
 import 'package:gais/util/enum/approval_action_enum.dart';
 import 'package:get/get.dart';
@@ -100,6 +106,18 @@ class ApprovalFormRequestTripController extends BaseController {
       "showList": false,
     },
     {
+      "title": "Train",
+      "isFilled": false,
+      "screen": const AddTrainScreen(),
+      "showList": false,
+    },
+    {
+      "title": "Transportation",
+      "isFilled": false,
+      "screen": const AddTransportationScreen(),
+      "showList": false,
+    },
+    /*{
       "title": "Taxi Voucher",
       "isFilled": false,
       "screen": const AddTaxiVoucherScreen(),
@@ -110,7 +128,7 @@ class ApprovalFormRequestTripController extends BaseController {
       "isFilled": false,
       "screen": const AddOtherTransportScreen(),
       "showList": false,
-    },
+    },*/
     {
       "title": "Accommodation",
       "isFilled": false,
@@ -127,12 +145,18 @@ class ApprovalFormRequestTripController extends BaseController {
 
   List<guest.Data> guestList = [];
   List<airliness.Data> airlinessList = [];
+  GetAirlinessBytripModel? airlinessModel;
   List<tv.Data> tvList = [];
   List<ot.Data> otList = [];
   List<acc.Data> accommodationsList = [];
   List<ca.Data> caList = [];
   List<doc.Data> purposeList = [];
   List<st.Data> siteList = [];
+  List<transport.Data> transportList = [];
+  train.GetTrainTripBytripidModel? trainModel;
+  List<train.Data> trainList = [];
+  List<ai.Data> approvalInfoList = [];
+
 
   GetRequestTripByidModel? rtModel;
   GetApprovalRequestTripByidModel? getApprovalModel;
@@ -148,7 +172,7 @@ class ApprovalFormRequestTripController extends BaseController {
     tlkZona.text;
     tlkTotal.text;
     tlkTotalMeals.text;
-    Future.wait([fetchRequestTrip(), fetchList()]);
+    Future.wait([fetchRequestTrip(), fetchList(), fetchApprovalInfo()]);
     approvalID.printInfo(info: "approvalID");
     purposeID.printInfo(info: "purposeID");
     Future.delayed(Duration.zero, () {
@@ -179,68 +203,84 @@ class ApprovalFormRequestTripController extends BaseController {
         item['isFilled'] = item['title'] == "Taxi Voucher"
             ? true
             : item['title'] == "Traveller Guest"
-                ? true
-                : false;
+            ? true
+            : item['title'] == "Other Transportation"
+            ? true
+            : item['title'] == "Transportation"
+            ? true
+            : false;
 
         item['showList'] = item['title'] == "Taxi Voucher"
             ? true
             : item['title'] == "Traveller Guest"
-                ? true
-                : false;
+            ? true
+            : item['title'] == "Other Transportation"
+            ? true
+            : item['title'] == "Transportation"
+            ? true
+            : false;
       }
     } else if (selectedPurpose == "2") {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
             : item['title'] == "Airliness"
-                ? true
-                : item['title'] == "Accommodation"
-                    ? true
-                    : false;
+            ? true
+            : item['title'] == "Accommodation"
+            ? true
+            : false;
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
             : item['title'] == "Airliness"
-                ? true
-                : item['title'] == "Accommodation"
-                    ? true
-                    : false;
+            ? true
+            : item['title'] == "Accommodation"
+            ? true
+            : false;
       }
     } else if (selectedPurpose == "2") {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
             : item['title'] == "Airliness"
-                ? true
-                : item['title'] == "Other Transportation"
-                    ? true
-                    : false;
+            ? true
+            : item['title'] == "Other Transportation"
+            ? true
+            : item['title'] == "Transportation"
+            ? true
+            : false;
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
             : item['title'] == "Airliness"
-                ? true
-                : item['title'] == "Other Transportation"
-                    ? true
-                    : false;
+            ? true
+            : item['title'] == "Other Transportation"
+            ? true
+            : item['title'] == "Transportation"
+            ? true
+            : false;
       }
     } else if (selectedPurpose == "5") {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
             : item['title'] == "Airliness"
-                ? true
-                : item['title'] == "Other Transportation"
-                    ? true
-                    : false;
+            ? true
+            : item['title'] == "Other Transportation"
+            ? true
+            : item['title'] == "Transportation"
+            ? true
+            : false;
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
             : item['title'] == "Airliness"
-                ? true
-                : item['title'] == "Other Transportation"
-                    ? true
-                    : false;
+            ? true
+            : item['title'] == "Other Transportation"
+            ? true
+            : item['title'] == "Transportation"
+            ? true
+            : false;
       }
     } else {
       items.where((e) => e['isFilled'] == false).forEach((item) {
@@ -248,6 +288,7 @@ class ApprovalFormRequestTripController extends BaseController {
         item['showList'] = true;
       });
     }
+    print("selected purpose: $selectedPurpose");
     update();
   }
 
@@ -271,6 +312,15 @@ class ApprovalFormRequestTripController extends BaseController {
     }
 
     return completer.future;
+  }
+
+  Future<void> fetchApprovalInfo() async {
+    try {
+      var approvalInfoData = await approvalRequestTrip.approval_info(purposeID);
+      approvalInfoList.addAll(approvalInfoData.data?.toSet().toList() ?? []);
+    } catch (e) {
+      e.printError();
+    }
   }
 
   Future<void> fetchRequestTrip() async {
@@ -334,11 +384,14 @@ class ApprovalFormRequestTripController extends BaseController {
   Future<void> fetchList() async {
     guestList = [];
     airlinessList = [];
+    trainList = [];
+    transportList = [];
     tvList = [];
     otList = [];
     accommodationsList = [];
     caList = [];
     purposeList = [];
+    // approvalInfoList = [];
     try {
       var docData = await repository.getDocumentCodeList();
       purposeList.addAll(docData.data?.toSet().toList() ?? []);
@@ -350,7 +403,63 @@ class ApprovalFormRequestTripController extends BaseController {
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
       var airlinessData = await requestTrip.getAirlinessBytripList(purposeID);
-      airlinessList.addAll((airlinessData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []) as Iterable<airliness.Data>);
+      airlinessModel = airlinessData;
+      // airlinessList.addAll(airlinessData.data?.toSet().toList() ?? []);
+      airlinessData.data?.asMap().forEach((i, e) async {
+        if (e.pnrid != null) {
+          print("pnrID: ${e.pnrid}");
+          print(e.ticketPrice);
+          await antavaya.getRsvTicket(e.pnrid!).then((rsv) {
+            GetReservationTicketModel.fromJson(rsv).data?.passengers?.first.type.printInfo();
+            var reservation = GetReservationTicketModel.fromJson(rsv).data;
+            // print("rsv: ${reservation.toString()}");
+            // print("rsv: ${reservation['Passengers'][0]['Type'].toString()}");
+            //
+            airlinessList.add(airliness.Data(
+              id: e.id,
+              idRequestTrip: e.idRequestTrip,
+              pnrid: e.pnrid,
+              employeeName: e.travelerName,
+              createdAt: e.createdAt,
+              origin: e.origin,
+              destination: e.destination,
+              // departureTime: reservation['FlightDetails'][0]['DepartTime'],
+              // arrivalTime: reservation['FlightDetails'][0]['ArriveTime'],
+              // flightNo: reservation['FlightDetails'][0]['FlightNumber'],
+              departureTime: reservation?.flightDetails?.first.departDate,
+              arrivalTime: reservation?.flightDetails?.first.arriveTime,
+              flightNo: reservation?.flightDetails?.first.flightNumber,
+              ticketPrice: reservation?.payments?.last.amount.toString(),
+              departureDate: e.departDate,
+              arrivalDate: e.returnDate,
+              flightClass: e.flightClass,
+            ));
+            update();
+          });
+        } else {
+          airlinessList.add(airliness.Data(
+            id: e.id,
+            idRequestTrip: e.idRequestTrip,
+            pnrid: e.pnrid,
+            employeeName: e.travelerName,
+            createdAt: e.createdAt,
+            origin: e.origin,
+            destination: e.destination,
+            departureTime: '-',
+            arrivalTime: '-',
+            flightNo: '-',
+            ticketPrice: e.ticketPrice,
+            departureDate: e.departDate,
+            arrivalDate: e.returnDate,
+            flightClass: e.flightClass,
+          ));
+          update();
+        }
+      });
+
+      var trainData = await requestTrip.getTrainTripByTrip(purposeID);
+      trainModel = trainData;
+      trainList.addAll(trainData.data?.toSet().toList() ?? []);
 
       var tvData = await requestTrip.getTaxiVoucherBytripList(purposeID);
       tvList.addAll(tvData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
@@ -358,15 +467,19 @@ class ApprovalFormRequestTripController extends BaseController {
       var otData = await requestTrip.getOtherTransportBytripList(purposeID);
       otList.addAll(otData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var accData = await requestTrip.getAccommodationBytripList(purposeID);
-      accommodationsList.addAll(accData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
-
       var caData = await requestTrip.getCashAdvanceTravelList(purposeID);
       caList.addAll(caData.data?.toSet().toList() ?? []);
+
+      var transportData = await requestTrip.getTransportationBytrip(purposeID);
+      transportList.addAll(transportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+
+      var accData = await requestTrip.getAccommodationBytripList(purposeID);
+      accommodationsList.addAll(accData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
     } catch (e, i) {
       e.printError();
       i.printError();
     }
+
     update();
   }
 

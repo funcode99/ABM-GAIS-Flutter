@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/data/model/employee_info_model.dart';
+import 'package:gais/data/model/master/employee/employee_model.dart';
 import 'package:gais/data/model/reference/get_city_model.dart' as city;
 import 'package:gais/data/model/reference/get_coset_center_model.dart' as cc;
 import 'package:gais/data/model/reference/get_document_code_model.dart' as purpose;
@@ -14,6 +17,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class PurposeOfTripController extends BaseController {
+  EmployeeModel? requestorData = Get.arguments['requestorData'];
   int? requestorID;
   int? siteID;
   String? jobID;
@@ -62,6 +66,7 @@ class PurposeOfTripController extends BaseController {
   city.GetCityModel? cityModel;
   List<city.Data> cityList = [];
   List<cc.Data> costCenterList = [];
+  List requestorFlight = [];
 
   getSingleFile() async {
     // Pick an file
@@ -107,43 +112,51 @@ class PurposeOfTripController extends BaseController {
     purposeList = [];
     costCenterList = [];
     isLoading = true;
-    requestorID = requestTripVariable.requestTripRequestorID;
-    siteID = requestTripVariable.requestTripRequestorSiteID;
-    requestorID.printInfo(info: "requestorID");
-    await storage.readEmployeeInfo().then((value) {
-      // requsetorID = value.first.id?.toInt();
-      // siteID = value.first.idSite?.toInt();
-      jobID = value.first.idJobBand.toString();
-    });
+    requestorFlight = requestorData?.flightClass;
+    print(requestorFlight.first['id_flight_class']);
+    // print(requestorFlight.first.idFlightClass);
+    print("requestor name : ${requestorData?.employeeName}");
+    print("jenkel : ${requestorData?.jenkel}");
 
-    var dataCity = await repository.getCityList();
-    cityModel = dataCity;
-    // cityList.add(city.Data(id: 0, cityName: "City"));
-    cityList.addAll(dataCity.data?.toSet().toList() ?? []);
-    // fromCity = "0";
-    // toCity = "0";
+    try {
+      requestorID = requestTripVariable.requestTripRequestorID;
+      siteID = requestTripVariable.requestTripRequestorSiteID;
+      requestorID.printInfo(info: "requestorID");
+      await storage.readEmployeeInfo().then((value) {
+        // requsetorID = value.first.id?.toInt();
+        // siteID = value.first.idSite?.toInt();
+        jobID = value.first.idJobBand.toString();
+      });
 
-    var dataPurpose = await repository.getDocumentCodeList();
-    purposeModel = dataPurpose;
-    // purposeList.add(purpose.Data(id: 0, documentName: "Purpose of Trip"));
-    purposeList.addAll(dataPurpose.data?.toSet().toList() ?? []);
-    // selectedPurpose = "0";
+      var dataCity = await repository.getCityList();
+      cityModel = dataCity;
+      // cityList.add(city.Data(id: 0, cityName: "City"));
+      cityList.addAll(dataCity.data?.toSet().toList() ?? []);
+      // fromCity = "0";
+      // toCity = "0";
 
-    var dataSite = await repository.getSiteList();
-    siteModel = dataSite;
-    siteList.addAll(dataSite.data?.toSet().toList() ?? []);
+      var dataPurpose = await repository.getDocumentCodeList();
+      purposeModel = dataPurpose;
+      // purposeList.add(purpose.Data(id: 0, documentName: "Purpose of Trip"));
+      purposeList.addAll(dataPurpose.data?.toSet().toList() ?? []);
+      // selectedPurpose = "0";
 
-    // await repository.getTLKJobByIDJob(jobID!).then((value) {
-    //   tlkDay.text = int.parse(value.data?.first.tlkRate ?? "0").toCurrency();
-    // });
+      var dataSite = await repository.getSiteList();
+      siteModel = dataSite;
+      siteList.addAll(dataSite.data?.toSet().toList() ?? []);
 
-    await storage.readString(StorageCore.tlkRate).then((value) => tlkDay.text = int.parse(value).toCurrency());
+      // await repository.getTLKJobByIDJob(jobID!).then((value) {
+      //   tlkDay.text = int.parse(value.data?.first.tlkRate ?? "0").toCurrency();
+      // });
+      await repository.getCostCenterList().then((value) => costCenterList.addAll(value.data?.toSet().toList() ?? []));
+      costCenterID = await storage.readString(StorageCore.costCenterID);
 
-    await repository.getCostCenterList().then((value) => costCenterList.addAll(value.data?.toSet().toList() ?? []));
+      await storage.readString(StorageCore.tlkRate).then((value) => tlkDay.text = int.parse(value).toCurrency().toString());
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+    }
     isLoading = false;
-
-    costCenterID = await storage.readString(StorageCore.costCenterID);
-
     update();
   }
 
@@ -153,6 +166,43 @@ class PurposeOfTripController extends BaseController {
     zonaID = datazona.data?.first.idZona.toString() ?? "";
     // print("Zona : ${datazona.data?.first.idZona}");
     update();
+  }
+
+  Future<void> saveGuest(String purposeID) async {
+    try {
+      await requestTrip
+          .saveTravellerGuest(
+            requestorData?.employeeName ?? '',
+            purposeID,
+            requestorData?.idCompany.toString() ?? '',
+            requestorData?.companyName ?? '',
+            '0',
+            requestorData?.nik ?? '',
+            requestorData?.phoneNumber ?? '',
+            requestorData?.departementName ?? '',
+            requestorData?.hotelFare ?? '',
+            requestorFlight.first['id_flight_class'].toString(),
+            '',
+            requestorData?.jenkel ?? '',
+            '0',
+          )
+          .then((value) => print("saveGuest : $value"));
+    } catch (e, i) {
+      e.printError();
+      i.printError();
+      // Get.showSnackbar(
+      //   const GetSnackBar(
+      //     icon: Icon(
+      //       Icons.error,
+      //       color: Colors.white,
+      //     ),
+      //     message: 'Failed to save guest',
+      //     isDismissible: true,
+      //     duration: Duration(seconds: 3),
+      //     backgroundColor: Colors.red,
+      //   ),
+      // );
+    }
   }
 
   Future<void> postPurposeOfTrip() async {
@@ -181,32 +231,34 @@ class PurposeOfTripController extends BaseController {
           (value) {
             purposeID = value.data?.id.toString();
             isFilled = value.success;
+            saveGuest(purposeID!).then((guest) {
+              if (value.success == false) {
+                Get.showSnackbar(
+                  GetSnackBar(
+                    icon: const Icon(
+                      Icons.error,
+                      color: Colors.white,
+                    ),
+                    message: value.message,
+                    isDismissible: true,
+                    duration: const Duration(seconds: 3),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              } else {
+                Get.to(
+                  const TravellerScreen(),
+                  arguments: {'purposeID': purposeID, 'codeDocument': int.parse(selectedPurpose.toString())},
+                )?.then((result) {
+                  isFilled = result;
+                  update();
+                  // print("purpose is filled : $result");
+                });
+              }
+            });
             // print("requsetorID: $requestorID");
             // print("purposeID : $purposeID");
             // print("isFilled : $isFilled");
-            if (value.success == false) {
-              Get.showSnackbar(
-                GetSnackBar(
-                  icon: const Icon(
-                    Icons.error,
-                    color: Colors.white,
-                  ),
-                  message: value.message,
-                  isDismissible: true,
-                  duration: const Duration(seconds: 3),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            } else {
-              Get.to(
-                const TravellerScreen(),
-                arguments: {'purposeID': purposeID, 'codeDocument': int.parse(selectedPurpose.toString())},
-              )?.then((result) {
-                isFilled = result;
-                update();
-                // print("purpose is filled : $result");
-              });
-            }
           },
         );
       } catch (e, i) {

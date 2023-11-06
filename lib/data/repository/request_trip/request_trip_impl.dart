@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:gais/data/model/antavaya/contact_model.dart';
 import 'package:gais/data/model/cash_advance/item_cash_advance_travel_model.dart';
 import 'package:gais/data/model/reference/get_flight_schedule_model.dart';
 import 'package:gais/data/model/reference/get_type_transportation_model.dart';
@@ -215,6 +216,7 @@ class RequestTripImpl implements RequestTripRepository {
     String idflightclass,
     String notes,
     String gender,
+    String isGuest,
   ) async {
     try {
       var formData = FormData.fromMap({
@@ -229,6 +231,7 @@ class RequestTripImpl implements RequestTripRepository {
         "id_flight_class": idflightclass,
         "notes": notes,
         "gender": gender,
+        "is_guets": isGuest,
       });
 
       var token = await storageSecure.read(key: "token");
@@ -240,7 +243,7 @@ class RequestTripImpl implements RequestTripRepository {
       );
       return SaveTravellerGuestModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
+      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -789,7 +792,7 @@ class RequestTripImpl implements RequestTripRepository {
       );
       return GetAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
+      print("response error: ${e.response?.data}");
       return e.error;
     }
   }
@@ -802,10 +805,11 @@ class RequestTripImpl implements RequestTripRepository {
       Response response = await network.dio.get(
         "/api/accomodation_trip/get_by_travel_id/trip_id/$id",
       );
+      // print("accommodation response : ${response.data}");
       return GetAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
-      //print("response error: ${e.response?.data}");
-      return e.error;
+      // print("accommodation response error: ${e.response?.data}");
+      return e.response?.data;
     }
   }
 
@@ -865,6 +869,7 @@ class RequestTripImpl implements RequestTripRepository {
         "/api/accomodation_trip/store",
         data: formData,
       );
+      print(response.data);
       return SaveAccommodationModel.fromJson(response.data);
     } on DioError catch (e) {
       print("response error: ${e.response?.data}");
@@ -896,6 +901,13 @@ class RequestTripImpl implements RequestTripRepository {
     String pnrID,
     String jenkel,
     String hotelFare,
+    String? correlationId,
+    String? hotelKey,
+    String? roomKey,
+    String? confirmationID,
+    GuestModel? guests,
+    ContactGuest? contactGuest,
+    BedsModel? beds,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -922,6 +934,32 @@ class RequestTripImpl implements RequestTripRepository {
       "pnrid": pnrID,
       "jenkel": jenkel,
       "hotel_fare": hotelFare,
+      "CorrelationId": correlationId,
+      "HotelKey": hotelKey,
+      "RoomKey": roomKey,
+      "ConfirmationID": confirmationID,
+      "Contact[Title]": contactGuest?.title,
+      "Contact[FirstName]": contactGuest?..firstName,
+      "Contact[LastName]": contactGuest?.lastName,
+      "Contact[MobilePhone]": contactGuest?.mobilePhone,
+      // "Contact[HomePhone]":,
+      // "Contact[Email]":,
+      // "Contact[Remark]":,
+      // "Guests[0][Index]":,
+      // "Guests[0][Title]":,
+      // "Guests[0][FirstName]":,
+      // "Guests[0][LastName]":,
+      // "Guests[0][MobilePhone]":,
+      // "Guests[0][HomePhone]":,
+      // "Guests[0][Email]":,
+      // "Guests[0][Age]":,
+      // "Guests[0][Type]":,
+      // "Guests[0][AssignedRoom]":,
+      // "Guests[0][OrderInRoom]":,
+      // "Beds[0][Index]":,
+      // "Beds[0][CountAdult]":,
+      // "Beds[0][RequestChildBed]":,
+      // "Beds[0][Type]":,
     });
 
     try {

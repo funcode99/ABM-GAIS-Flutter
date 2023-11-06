@@ -622,8 +622,8 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                       text: "Facility".tr,
                       style: formlabelTextStyle,
                       children: const <TextSpan>[
-                        TextSpan(
-                            text: "*", style: TextStyle(color: Colors.red)),
+                        /*TextSpan(
+                            text: "*", style: TextStyle(color: Colors.red)),*/
                       ],
                     ),
                   ),
@@ -725,13 +725,13 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                               hideSuggestionsOnKeyboardHide: true,
                               keepSuggestionsOnLoading: false,
                               minCharsForSuggestions: 0,
-                              validator: (value) {
+                              validator: (value) {/*
                                 controller.showFacilityError(controller.listSelectedFacility.isEmpty);
 
                                 if (controller.listSelectedFacility.isEmpty) {
                                   return "";
                                 }
-                                return null;
+                                return null;*/
                               },
                             ),
                           )

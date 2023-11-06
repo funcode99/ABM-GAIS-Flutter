@@ -75,6 +75,7 @@ class Data {
     dynamic updatedBy,
     String? typeTraveller,
     String? flightClass,
+    num? isGuest,
   }) {
     _id = id;
     _idEmployee = idEmployee;
@@ -97,6 +98,7 @@ class Data {
     _updatedBy = updatedBy;
     _typeTraveller = typeTraveller;
     _flightClass = flightClass;
+    _isGuest = isGuest;
   }
 
   Data.fromJson(dynamic json) {
@@ -121,6 +123,7 @@ class Data {
     _updatedBy = json['updated_by'];
     _typeTraveller = json['type_traveller'];
     _flightClass = json['flight_class'];
+    _isGuest = json['is_guest'];
   }
 
   String? _id;
@@ -144,6 +147,7 @@ class Data {
   dynamic _updatedBy;
   String? _typeTraveller;
   String? _flightClass;
+  num? _isGuest;
 
   Data copyWith({
     String? id,
@@ -167,6 +171,7 @@ class Data {
     dynamic updatedBy,
     String? typeTraveller,
     String? flightClass,
+    num? isGuest,
   }) =>
       Data(
         id: id ?? _id,
@@ -190,6 +195,7 @@ class Data {
         updatedBy: updatedBy ?? _updatedBy,
         typeTraveller: typeTraveller ?? _typeTraveller,
         flightClass: flightClass ?? _flightClass,
+        isGuest: isGuest ?? _isGuest,
       );
 
   String? get id => _id;
@@ -234,6 +240,8 @@ class Data {
 
   String? get flightClass => _flightClass;
 
+  num? get isGuest => _isGuest;
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
@@ -257,6 +265,7 @@ class Data {
     map['updated_by'] = _updatedBy;
     map['type_traveller'] = _typeTraveller;
     map['flight_class'] = _flightClass;
+    map['is_guest'] = _isGuest;
     return map;
   }
 }

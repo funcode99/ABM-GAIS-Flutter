@@ -44,7 +44,7 @@ enum RequestATKEnum {
   waitingApproval(1),
   approve(2),
   cancelled(9),
-  done(10),
+  completed(10),
   partialCompleted(11);
 
   const RequestATKEnum(this.value);
@@ -56,7 +56,8 @@ enum PoolCarEnum {
   waitingCarAndDriver(0),
   driverCheck(1),
   ready(2),
-  done(3);
+  done(3),
+  cancelled(4);
 
   const PoolCarEnum(this.value);
 
@@ -70,6 +71,18 @@ enum BookingMeetingRoomEnum {
   cancelled(9);
 
   const BookingMeetingRoomEnum(this.value);
+
+  final int value;
+}
+
+enum ActualizationTripEnum {
+  draft(0),
+  waitingApproval(1),
+  revision(3),
+  reject(4),
+  done(10);
+
+  const ActualizationTripEnum(this.value);
 
   final int value;
 }

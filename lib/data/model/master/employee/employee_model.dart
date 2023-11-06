@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:gais/data/model/employee_info_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'employee_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class EmployeeModel extends Equatable{
+class EmployeeModel extends Equatable {
   int? no;
   dynamic id;
   String? employeeName;
@@ -75,11 +76,9 @@ class EmployeeModel extends Equatable{
     this.flightClass,
   });
 
-  static EmployeeModel fromJsonModel(Object? json) =>
-      EmployeeModel.fromJson(json as Map<String, dynamic>);
+  static EmployeeModel fromJsonModel(Object? json) => EmployeeModel.fromJson(json as Map<String, dynamic>);
 
-  static Map<String, dynamic> toJsonModel(EmployeeModel model) =>
-      model.toJson();
+  static Map<String, dynamic> toJsonModel(EmployeeModel model) => model.toJson();
 
   static List<EmployeeModel> fromJsonModelList(Object? jsonList) {
     if (jsonList == null) return [];
@@ -109,43 +108,42 @@ class EmployeeModel extends Equatable{
     return [];
   }
 
-  factory EmployeeModel.fromJson(Map<String, dynamic> json) =>
-      _$EmployeeModelFromJson(json);
+  factory EmployeeModel.fromJson(Map<String, dynamic> json) => _$EmployeeModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$EmployeeModelToJson(this);
 
   @override
   // TODO: implement props
   List<Object?> get props => [
-    no,
-    id,
-    employeeName,
-    phoneNumber,
-    snEmployee,
-    email,
-    nik,
-    dob,
-    startDate,
-    endDate,
-    jenkel,
-    idDepartment,
-    idCompany,
-    idSite,
-    idJobBand,
-    foto,
-    fotoPath,
-    createdAt,
-    createdBy,
-    updatedAt,
-    updatedBy,
-    deletedAt,
-    snAtasan1,
-    snAtasan2,
-    companyCode,
-    siteName,
-    siteCode,
-    bandJobName,
-    departementName,
-    companyName,
-  ];
+        no,
+        id,
+        employeeName,
+        phoneNumber,
+        snEmployee,
+        email,
+        nik,
+        dob,
+        startDate,
+        endDate,
+        jenkel,
+        idDepartment,
+        idCompany,
+        idSite,
+        idJobBand,
+        foto,
+        fotoPath,
+        createdAt,
+        createdBy,
+        updatedAt,
+        updatedBy,
+        deletedAt,
+        snAtasan1,
+        snAtasan2,
+        companyCode,
+        siteName,
+        siteCode,
+        bandJobName,
+        departementName,
+        companyName,
+      ];
 }

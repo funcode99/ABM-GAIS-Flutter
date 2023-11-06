@@ -32,8 +32,7 @@ class RequesterInfoScreen extends StatelessWidget {
               alignment: Alignment.topCenter,
               padding: const EdgeInsets.all(10),
               margin: const EdgeInsets.all(7),
-              decoration: BoxDecoration(
-                  color: whiteColor, borderRadius: BorderRadius.circular(8)),
+              decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(8)),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -42,9 +41,7 @@ class RequesterInfoScreen extends StatelessWidget {
                       height: 42,
                       width: 42,
                       // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: infoColor,
-                          borderRadius: BorderRadius.circular(50)),
+                      decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
                       child: const Icon(IconlyBold.info_square, color: whiteColor),
                     ),
                     Text("Requestor Info", style: appTitle),
@@ -56,29 +53,29 @@ class RequesterInfoScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            controller.enableSelectRequestor ?
-                            CustomDropDownFormField(
-                              items: controller.employeeList
-                                  .map((e) => DropdownMenuItem(
-                                value: e.id.toString(),
-                                child: Text(e.employeeName.toString()),
-                              ))
-                                  .toList(),
-                              label: "Requestor",
-                              hintText: controller.isLoading ? "Loading" : "Employee",
-                              value: controller.selectedEmployee?.id.toString() ?? "",
-                              isRequired: true,
-                              onChanged: (value) {
-                                controller.onChangeRequestor(value);
-                                controller.update();
-                              },
-                            )
-                            : CustomTextFormField(
-                              controller: controller.requester,
-                              label: "Requestor",
-                              isRequired: true,
-                              readOnly: true,
-                            ),
+                            controller.enableSelectRequestor
+                                ? CustomDropDownFormField(
+                                    items: controller.employeeList
+                                        .map((e) => DropdownMenuItem(
+                                              value: e.id.toString(),
+                                              child: Text(e.employeeName.toString()),
+                                            ))
+                                        .toList(),
+                                    label: "Requestor",
+                                    hintText: controller.isLoading ? "Loading" : "Employee",
+                                    value: controller.selectedEmployee?.id.toString() ?? "",
+                                    isRequired: true,
+                                    onChanged: (value) {
+                                      controller.onChangeRequestor(value);
+                                      controller.update();
+                                    },
+                                  )
+                                : CustomTextFormField(
+                                    controller: controller.requester,
+                                    label: "Requestor",
+                                    isRequired: true,
+                                    readOnly: true,
+                                  ),
                             const SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.sn,
@@ -123,7 +120,8 @@ class RequesterInfoScreen extends StatelessWidget {
                                       arguments: {
                                         "requestorID": controller.requestorID,
                                         "siteID": controller.siteID,
-                                        "requestorName" : controller.requestorName
+                                        "requestorName": controller.requestorName,
+                                        "requestorData": controller.selectedEmployee,
                                       },
                                     );
                                   },

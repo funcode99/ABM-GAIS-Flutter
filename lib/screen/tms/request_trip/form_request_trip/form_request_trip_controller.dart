@@ -293,6 +293,7 @@ class FormRequestTripController extends BaseController {
         item['showList'] = true;
       });
     }
+    print("selected purpose: $selectedPurpose");
     update();
   }
 
@@ -408,7 +409,7 @@ class FormRequestTripController extends BaseController {
       }
       update();
     }
-    selectedPurpose = codeDocument.toString();
+    // selectedPurpose = codeDocument.toString();
     // print("selected purpose : $selectedPurpose");
     // print("file : $fileURL");
     // print("pdfPath : $pdfPath");
@@ -476,12 +477,14 @@ class FormRequestTripController extends BaseController {
       airlinessData.data?.asMap().forEach((i, e) async {
         if (e.pnrid != null) {
           print("pnrID: ${e.pnrid}");
+          print(e.ticketPrice);
           await antavaya.getRsvTicket(e.pnrid!).then((rsv) {
-            GetReservationTicketModel.fromJson(rsv).data?.passengers?.first.type.printInfo();
+            // GetReservationTicketModel.fromJson(rsv).data?.passengers?.first.type.printInfo();
             var reservation = GetReservationTicketModel.fromJson(rsv).data;
             // print("rsv: ${reservation.toString()}");
             // print("rsv: ${reservation['Passengers'][0]['Type'].toString()}");
-            //
+            // print(reservation?.payments?.last.amount);
+
             airlinessList.add(airliness.Data(
               id: e.id,
               idRequestTrip: e.idRequestTrip,
@@ -493,10 +496,10 @@ class FormRequestTripController extends BaseController {
               // departureTime: reservation['FlightDetails'][0]['DepartTime'],
               // arrivalTime: reservation['FlightDetails'][0]['ArriveTime'],
               // flightNo: reservation['FlightDetails'][0]['FlightNumber'],
-              departureTime: reservation?.flightDetails?.first.departDate,
+              departureTime: reservation?.flightDetails?.first.departTime,
               arrivalTime: reservation?.flightDetails?.first.arriveTime,
               flightNo: reservation?.flightDetails?.first.flightNumber,
-              ticketPrice: e.ticketPrice,
+              ticketPrice: reservation?.payments?.last.amount.toString(),
               departureDate: e.departDate,
               arrivalDate: e.returnDate,
               flightClass: e.flightClass,
@@ -534,14 +537,14 @@ class FormRequestTripController extends BaseController {
       var otData = await requestTrip.getOtherTransportBytripList(purposeID);
       otList.addAll(otData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var accData = await requestTrip.getAccommodationBytripList(purposeID);
-      accommodationsList.addAll(accData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
-
       var caData = await requestTrip.getCashAdvanceTravelList(purposeID);
       caList.addAll(caData.data?.toSet().toList() ?? []);
 
       var transportData = await requestTrip.getTransportationBytrip(purposeID);
       transportList.addAll(transportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
+
+      var accData = await requestTrip.getAccommodationBytripList(purposeID);
+      accommodationsList.addAll(accData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
     } catch (e, i) {
       e.printError();
       i.printError();
@@ -879,9 +882,10 @@ class FormRequestTripController extends BaseController {
         gettedFile,
       )
           .then((value) {
-        print(value);
+        // print(value);
         fetchList();
         fetchRequestTrip();
+        checkItems();
         isEdit = false;
         Get.showSnackbar(
           const GetSnackBar(
@@ -912,12 +916,13 @@ class FormRequestTripController extends BaseController {
         ),
       );
     }
+    update();
   }
 
   Future<void> checkActual() async {
     try {
       await actualizationTrip.getActualBytripID(purposeID).then((value) async {
-        print("actual : ${value.data?.isNotEmpty}");
+        // print("actual : ${value.data?.isNotEmpty}");
         if (value.data!.isEmpty) {
           await actualizationTrip
               .saveActualizationTrip(

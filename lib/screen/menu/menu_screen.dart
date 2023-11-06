@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/screen/approval/actualization_trip/approval_actualization_trip_screen.dart';
 import 'package:gais/screen/approval/request_atk/list/approval_request_atk_list_screen.dart';
-import 'package:gais/screen/approval/request_trip/request_trip_list/approval_request_trip_list_screen.dart';
+import 'package:gais/screen/approval/request_trip/approval_request_trip_screen.dart';
 import 'package:gais/screen/fss/booking_meeting_room/list/booking_meeting_room_list_screen.dart';
 import 'package:gais/screen/fss/dashboard_meeting_room/dashboard_meeting_room_screen.dart';
-import 'package:gais/screen/fss/dashboard_meeting_room/dashboard_meeting_room_screen.dart';
+import 'package:gais/screen/fss/document_delivery/document_delivery_list/document_delivery_list_screen.dart';
 import 'package:gais/screen/fss/management_item_atk/list/management_item_atk_list_screen.dart';
 import 'package:gais/screen/fss/management_meeting_room/list/management_meeting_room_screen.dart';
 import 'package:gais/screen/fss/request_atk/list/request_atk_list_screen.dart';
-import 'package:gais/screen/fss/document_delivery/document_delivery_list/document_delivery_list_screen.dart';
 import 'package:gais/screen/fss/stock_in/list/stock_in_list_screen.dart';
 import 'package:gais/screen/menu/menu_controller.dart';
 import 'package:gais/screen/menu/poolcar_menu_screen.dart';
 import 'package:gais/screen/menu/submenu_screen.dart';
-import 'package:gais/screen/receptionist/list/list_document_delivery_screen.dart';
+import 'package:gais/screen/tms/actualization_trip/list/actualization_trip_list_screen.dart';
 import 'package:gais/screen/tms/pool_car/list/pool_car_list_screen.dart';
-import 'package:gais/screen/tms/request_trip/form_request_trip/actualization_trip/get/actual_trip_list_screen.dart';
 import 'package:gais/screen/tms/request_trip/request_trip_list/request_trip_list_screen.dart';
 import 'package:get/get.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -135,15 +134,24 @@ class MenuScreen extends StatelessWidget {
                                         height: 50,
                                         width: 50,
                                         alignment: Alignment.center,
-                                        child: Image.asset(
-                                          ImageConstant.locationRefresh,
-                                          height: 25, width: 25,
+                                        child: Stack(
+                                          children: [
+                                            SvgPicture.asset(
+                                              ImageConstant.airplane,
+                                              height: 30, width: 30,
+                                            ),
+                                            const Positioned(
+                                              right: 0,
+                                              top: 0,
+                                              child: Icon(Icons.attach_money, size: 10, color: Colors.white,),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       Text("Actualization\nTrip", style: menuSubTitleTextStyle, textAlign: TextAlign.center),
                                     ],
                                   ),
-                                  onTap: () => Get.off(const ActualTripListScreen()),
+                                  onTap: () => Get.to(const ActualizationTripListScreen()),
                                 ),
                               ],
                             ),
@@ -314,7 +322,7 @@ class MenuScreen extends StatelessWidget {
                                       Text("Request Trip\n", style: menuSubTitleTextStyle),
                                     ],
                                   ),
-                                  onTap: () => Get.off(const ApprovalRequestTripListScreen()),
+                                  onTap: () => Get.to(() => const ApprovalRequestTripScreen()),
                                 ),
                                 GestureDetector(
                                   child: Column(
@@ -390,6 +398,42 @@ class MenuScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),*/
+                                if(controller.isSuperAdmin || controller.isPayroll)
+                                  GestureDetector(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: infoColor,
+                                            borderRadius: BorderRadius.circular(50),
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                          margin: const EdgeInsets.only(top: 25, bottom: 5),
+                                          height: 50,
+                                          width: 50,
+                                          alignment: Alignment.center,
+                                          child: Stack(
+                                            children: [
+                                              SvgPicture.asset(
+                                                ImageConstant.airplane,
+                                                height: 30, width: 30,
+                                              ),
+                                              const Positioned(
+                                                right: 0,
+                                                top: 0,
+                                                child: Icon(Icons.attach_money, size: 10, color: Colors.white,),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Text("Actualization\nTrip", style: menuSubTitleTextStyle, textAlign: TextAlign.center),
+                                      ],
+                                    ),
+                                    onTap: (){
+                                      Get.to(() => const ApprovalActualizationTripScreen());
+                                    },
+                                  ),
                               ],
                             ),
                           ],

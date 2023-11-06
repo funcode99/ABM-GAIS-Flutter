@@ -84,7 +84,7 @@ class RequestTripListScreen extends StatelessWidget {
                                           controller.endDate = null;
                                         });
                                         controller.update();
-                                        print(controller.purposeValue);
+                                        // print(controller.purposeValue);
                                       },
                                       children: [
                                         Text("Filter", style: appTitle.copyWith(fontSize: 25)),
@@ -94,11 +94,10 @@ class RequestTripListScreen extends StatelessWidget {
                                           child: CustomDropDownField(
                                             label: "Purpose of Trip",
                                             items: controller.documentList
-                                                .map((e) =>
-                                                DropdownMenuItem(
-                                                  value: e.documentName,
-                                                  child: Text(e.documentName.toString()),
-                                                ))
+                                                .map((e) => DropdownMenuItem(
+                                                      value: e.documentName,
+                                                      child: Text(e.documentName.toString()),
+                                                    ))
                                                 .toSet()
                                                 .toList(),
                                             value: controller.purposeValue,
@@ -131,7 +130,7 @@ class RequestTripListScreen extends StatelessWidget {
                                                   controller.startDate = controller.rangeFormat.format(start);
 
                                                   controller.dateRange.text =
-                                                  "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
+                                                      "${controller.dateFormat.format(start)} - ${controller.dateFormat.format(end)}";
                                                   controller.update();
                                                 },
                                                 onCancelClick: () {
@@ -165,8 +164,8 @@ class RequestTripListScreen extends StatelessWidget {
                               controller.isLoading
                                   ? SizedBox(height: Get.height / 2, child: const Center(child: CircularProgressIndicator()))
                                   : controller.dataisnull == true
-                                  ? SizedBox(height: Get.height / 2, child: const DataEmpty())
-                                  : Container()
+                                      ? SizedBox(height: Get.height / 2, child: const DataEmpty())
+                                      : Container()
                             ],
                           ),
                         ),
@@ -174,29 +173,43 @@ class RequestTripListScreen extends StatelessWidget {
                     ),
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
+                        (BuildContext context, int index) {
                           return SizedBox(
                             child: Column(
                               children: [
                                 CustomTripCard(
                                   listNumber: controller.currentPage > 1 ? (controller.rtlModel?.data?.from?.toInt() ?? 0) + index : (index + 1),
                                   title: controller.requestList[index].noRequestTrip.toString(),
+                                  // title: controller.requestList[index].id.toString(),
                                   status: controller.requestList[index].status,
                                   subtitle:
-                                  controller.dateFormat.format(DateTime.parse(controller.requestList[index].createdAt.toString())).toString(),
+                                      controller.dateFormat.format(DateTime.parse(controller.requestList[index].createdAt.toString())).toString(),
                                   info: controller.requestList[index].documentName,
                                   isEdit: true,
-                                  editAction: () =>
-                                      Get.to(
-                                        const FormRequestTripScreen(),
-                                        arguments: {
-                                          'id': controller.requestList[index].id,
-                                          'codeDocument': controller.requestList[index].idDocument,
-                                        },
-                                      )?.then((value) {
-                                        controller.fetchList(controller.currentPage);
-                                        controller.update();
-                                      }),
+                                  editAction: () {
+                                    Get.to(
+                                      const FormRequestTripScreen(),
+                                      arguments: {
+                                        'id': controller.requestList[index].id,
+                                        'codeDocument': controller.requestList[index].idDocument,
+                                      },
+                                    )?.then((value) {
+                                      controller.fetchList(controller.currentPage);
+                                      controller.update();
+                                    });
+                                    // print("id: ${controller.requestList[index].id}");
+                                    // Get.showSnackbar(GetSnackBar(
+                                    //   icon: Icon(
+                                    //     Icons.error,
+                                    //     color: Colors.white,
+                                    //   ),
+                                    //   message: controller.requestList[index].id,
+                                    //   isDismissible: true,
+                                    //   duration: Duration(seconds: 3),
+                                    //   backgroundColor: Colors.red,
+                                    // ));
+                                  },
+
                                   isDelete: true,
                                   deleteAction: () {
                                     Get.dialog(DeleteConfirmationDialog(
@@ -207,6 +220,16 @@ class RequestTripListScreen extends StatelessWidget {
                                         Get.back();
                                       },
                                     ));
+                                    // Get.showSnackbar(GetSnackBar(
+                                    //   icon: Icon(
+                                    //     Icons.error,
+                                    //     color: Colors.white,
+                                    //   ),
+                                    //   message: controller.requestList[index].id,
+                                    //   isDismissible: true,
+                                    //   duration: Duration(seconds: 3),
+                                    //   backgroundColor: Colors.red,
+                                    // ));
                                   },
                                   content: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -222,81 +245,109 @@ class RequestTripListScreen extends StatelessWidget {
                                         children: [
                                           controller.requestList[index].documentReady?.travellerGuestTrip == 1
                                               ? Container(
-                                            alignment: Alignment.center,
-                                            height: 35,
-                                            width: 35,
-                                            margin: const EdgeInsets.symmetric(horizontal: 1),
-                                            // padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
-                                            child: const Icon(Icons.groups, color: whiteColor),
-                                          )
+                                                  alignment: Alignment.center,
+                                                  height: 35,
+                                                  width: 35,
+                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
+                                                  // padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                                  child: const Icon(Icons.groups, color: whiteColor),
+                                                )
                                               : Container(),
                                           controller.requestList[index].documentReady?.flightTrip == 1
                                               ? Container(
-                                            alignment: Alignment.center,
-                                            height: 35,
-                                            width: 35,
-                                            margin: const EdgeInsets.symmetric(horizontal: 1),
-                                            // padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
-                                            child: SvgPicture.asset(
-                                              ImageConstant.airplane,
-                                              height: 25,
-                                            ),
-                                          )
+                                                  alignment: Alignment.center,
+                                                  height: 35,
+                                                  width: 35,
+                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
+                                                  // padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                                  child: SvgPicture.asset(
+                                                    ImageConstant.airplane,
+                                                    height: 25,
+                                                  ),
+                                                )
                                               : Container(),
-                                          controller.requestList[index].documentReady?.taxiVoucher == 1
+                                          controller.requestList[index].documentReady?.transportation == 1
                                               ? Container(
-                                            alignment: Alignment.center,
-                                            height: 35,
-                                            width: 35,
-                                            margin: const EdgeInsets.symmetric(horizontal: 1),
-                                            // padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
-                                            child: const Icon(Icons.account_balance_wallet_rounded, color: whiteColor),
-                                          )
+                                                  alignment: Alignment.center,
+                                                  height: 35,
+                                                  width: 35,
+                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
+                                                  // padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                                  child: SvgPicture.asset(
+                                                    ImageConstant.car,
+                                                    height: 25,
+                                                  ),
+                                                )
                                               : Container(),
-                                          controller.requestList[index].documentReady?.otherTransportation == 1
+                                          // controller.requestList[index].documentReady?.taxiVoucher == 1
+                                          //     ? Container(
+                                          //         alignment: Alignment.center,
+                                          //         height: 35,
+                                          //         width: 35,
+                                          //         margin: const EdgeInsets.symmetric(horizontal: 1),
+                                          //         // padding: EdgeInsets.all(10),
+                                          //         decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                          //         child: SvgPicture.asset(
+                                          //           ImageConstant.car,
+                                          //           height: 25,
+                                          //         ),
+                                          //       )
+                                          //     : Container(),
+                                          controller.requestList[index].documentReady?.trainTrip == 1
                                               ? Container(
-                                            alignment: Alignment.center,
-                                            height: 35,
-                                            width: 35,
-                                            margin: const EdgeInsets.symmetric(horizontal: 1),
-                                            // padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
-                                            child: SvgPicture.asset(
-                                              ImageConstant.car,
-                                              height: 25,
-                                            ),
-                                          )
+                                                  alignment: Alignment.center,
+                                                  height: 35,
+                                                  width: 35,
+                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
+                                                  // padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                                  child: const Icon(Icons.train_rounded, color: whiteColor),
+                                                )
                                               : Container(),
+                                          // controller.requestList[index].documentReady?.otherTransportation == 1
+                                          //     ? Container(
+                                          //         alignment: Alignment.center,
+                                          //         height: 35,
+                                          //         width: 35,
+                                          //         margin: const EdgeInsets.symmetric(horizontal: 1),
+                                          //         // padding: EdgeInsets.all(10),
+                                          //         decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                          //         child: SvgPicture.asset(
+                                          //           ImageConstant.car,
+                                          //           height: 25,
+                                          //         ),
+                                          //       )
+                                          //     : Container(),
                                           controller.requestList[index].documentReady?.accomodationTrip == 1
                                               ? Container(
-                                            alignment: Alignment.center,
-                                            height: 35,
-                                            width: 35,
-                                            margin: const EdgeInsets.symmetric(horizontal: 1),
-                                            // padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
-                                            child: SvgPicture.asset(
-                                              ImageConstant.building,
-                                              height: 25,
-                                            ),
-                                          )
+                                                  alignment: Alignment.center,
+                                                  height: 35,
+                                                  width: 35,
+                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
+                                                  // padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                                  child: SvgPicture.asset(
+                                                    ImageConstant.building,
+                                                    height: 25,
+                                                  ),
+                                                )
                                               : Container(),
                                           controller.requestList[index].documentReady?.cashAdvance == 1
                                               ? Container(
-                                            alignment: Alignment.center,
-                                            height: 35,
-                                            width: 35,
-                                            margin: const EdgeInsets.symmetric(horizontal: 1),
-                                            // padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
-                                            child: SvgPicture.asset(
-                                              ImageConstant.emptyWalletTime,
-                                              height: 25,
-                                            ),
-                                          )
+                                                  alignment: Alignment.center,
+                                                  height: 35,
+                                                  width: 35,
+                                                  margin: const EdgeInsets.symmetric(horizontal: 1),
+                                                  // padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(color: infoColor, borderRadius: BorderRadius.circular(50)),
+                                                  child: SvgPicture.asset(
+                                                    ImageConstant.emptyWalletTime,
+                                                    height: 25,
+                                                  ),
+                                                )
                                               : Container(),
                                         ],
                                       )

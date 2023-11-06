@@ -17,6 +17,7 @@ import 'package:gais/data/model/reference/get_site_model.dart';
 import 'package:gais/data/model/reference/get_status_document_model.dart';
 import 'package:gais/data/model/reference/get_tlk_job_model.dart';
 import 'package:gais/data/model/reference/get_traveller_type_model.dart';
+import 'package:gais/data/model/reference/get_user_ga_model.dart';
 import 'package:gais/data/model/reference/get_zona_byid_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_vendor_model.dart';
 import 'package:gais/data/model/status_document_model.dart';
@@ -77,4 +78,6 @@ abstract class Repository {
   Future<Map<String, dynamic>> getLineApproval();
 
   Future<String?> changePhotoProfile(String? filepath);
+
+  Future<GetUserGaModel> getUserGA();
 }

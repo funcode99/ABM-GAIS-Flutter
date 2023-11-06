@@ -1,14 +1,19 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/antavaya/contact_model.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/train/reservation/train_reservation_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/train/train_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
+import 'package:gais/util/ext/int_ext.dart';
+import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
@@ -63,16 +68,18 @@ class TrainReservationScreen extends StatelessWidget {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('08.15', style: TextStyle(fontWeight: bold)),
-                                        Text('12.15', style: TextStyle(fontWeight: bold)),
+                                        Text(controller.trainModel!.departureTime.toString(), style: TextStyle(fontWeight: bold)),
+                                        Text(controller.trainModel!.arrivalTime.toString(), style: TextStyle(fontWeight: bold)),
                                       ],
                                     ),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('27 Aug', style: TextStyle(fontWeight: bold)),
-                                        const Text('4h'),
-                                        Text('27 Aug', style: TextStyle(fontWeight: bold)),
+                                        Text(controller.dateFormat.format(DateTime.parse(controller.trainModel!.departureDate!)),
+                                            style: TextStyle(fontWeight: bold)),
+                                        Text(controller.trainModel!.duration.toString()),
+                                        Text(controller.dateFormat.format(DateTime.parse(controller.trainModel!.arrivalDate!)),
+                                            style: TextStyle(fontWeight: bold)),
                                       ],
                                     ),
                                     Row(
@@ -107,12 +114,13 @@ class TrainReservationScreen extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text('GMR', style: TextStyle(fontWeight: bold)),
+                                        Text(controller.trainModel!.origin.toString(), style: TextStyle(fontWeight: bold)),
                                         Text(
-                                          'ARGO PARAHYANGAN\nEconomy (subclass 1)',
+                                          '${controller.trainModel!.trainName}\n${controller.trainModel?.segments?.first.className} (subclass ${controller.trainModel?.segments?.first.subClass})',
                                           style: listTitleTextStyle.copyWith(color: blueColor),
+                                          textAlign: TextAlign.center,
                                         ),
-                                        Text('BDG', style: TextStyle(fontWeight: bold)),
+                                        Text(controller.trainModel!.destination.toString(), style: TextStyle(fontWeight: bold)),
                                       ],
                                     ),
                                     const Divider(color: blackColor, thickness: 2),
@@ -129,7 +137,7 @@ class TrainReservationScreen extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          'ARGO PARAHYANGAN\nEconomy (subclass 1)\n\n320.000 IDR',
+                                          '${controller.trainModel!.trainName}\n${controller.trainModel?.segments?.first.className} (subclass ${controller.trainModel?.segments?.first.subClass})\n\n${controller.trainModel?.segments?.first.fare!.toInt().toCurrency()} IDR',
                                           textAlign: TextAlign.center,
                                           style: listTitleTextStyle,
                                         ),
@@ -141,7 +149,8 @@ class TrainReservationScreen extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Text('Total', style: appTitle),
-                                        Text('320.000 IDR', style: appTitle.copyWith(fontWeight: extraBold)),
+                                        Text('${controller.trainModel?.segments?.first.fare!.toInt().toCurrency()} IDR',
+                                            style: appTitle.copyWith(fontWeight: extraBold)),
                                       ],
                                     ),
                                   ],
@@ -160,6 +169,42 @@ class TrainReservationScreen extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     const Icon(IconlyBold.profile, color: blackColor),
+                                    Text("   Booking Contact", style: appTitle, textAlign: TextAlign.start),
+                                  ],
+                                ),
+                              ),
+                              CustomDropDownFormField(
+                                items: controller.gaList
+                                    .map((e) => DropdownMenuItem(
+                                          value: e,
+                                          child: Text('${e.firstName} ${e.lastName}'),
+                                        ))
+                                    .toList(),
+                                label: "Name",
+                                hintText: controller.isLoading ? 'Loading...' : 'Name',
+                                isRequired: true,
+                                validator: (value) {
+                                  if (value == null) {
+                                    return "This field is required";
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  controller.bookingContact = ContactModel(
+                                    title: value?.title,
+                                    firstName: value?.firstName,
+                                    lastName: value?.lastName,
+                                    email: value?.email,
+                                    mobilePhone: value?.phone,
+                                  );
+                                  controller.update();
+                                },
+                              ),
+                              Container(
+                                margin: const EdgeInsets.symmetric(vertical: 10),
+                                child: Row(
+                                  children: [
+                                    const Icon(IconlyBold.profile, color: blackColor),
                                     Text("   Passengers", style: appTitle, textAlign: TextAlign.start),
                                   ],
                                 ),
@@ -169,10 +214,34 @@ class TrainReservationScreen extends StatelessWidget {
                                 children: [
                                   SizedBox(
                                     width: Get.width / 5,
-                                    child: CustomTextFormField(
-                                      controller: controller.passTitle,
+                                    child: CustomDropDownFormField(
                                       label: "Title",
-                                      isRequired: true,
+                                      items: const [
+                                        DropdownMenuItem(
+                                          value: "MR",
+                                          child: Text('MR'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "MSTR",
+                                          child: Text('MSTR'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "MRS",
+                                          child: Text('MRS'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "MISS",
+                                          child: Text('MISS'),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "INF",
+                                          child: Text('INF'),
+                                        ),
+                                      ],
+                                      onChanged: (value) {
+                                        controller.passTitle.text = value.toString();
+                                        controller.update();
+                                      },
                                     ),
                                   ),
                                   SizedBox(
@@ -222,6 +291,12 @@ class TrainReservationScreen extends StatelessWidget {
                                 controller: controller.passIDNumber,
                                 label: "ID Number",
                                 isRequired: true,
+                                validator: (value) {
+                                  if (value!.isEmpty || value.length < 16 || value.length > 16) {
+                                    return 'Number must be 16 digits';
+                                  }
+                                  return null;
+                                },
                                 prefixIcon: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 10),
                                   margin: const EdgeInsets.only(right: 10),
@@ -282,16 +357,38 @@ class TrainReservationScreen extends StatelessWidget {
                                 isRequired: true,
                               ),
                               const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.seatWagonNo,
+                              // CustomTextFormField(
+                              //   controller: controller.seatWagonNo,
+                              //   label: "Wagon No",
+                              //   isRequired: true,
+                              // ),
+                              CustomDropDownFormField(
+                                items: controller.wagonList
+                                    .mapIndexed((i, e) => DropdownMenuItem(
+                                          value: i.toString(),
+                                          child: Text(e.coachName.toString()),
+                                        ))
+                                    .toList(),
                                 label: "Wagon No",
+                                hintText: controller.isLoading ? "Loading..." : "Wagon No",
                                 isRequired: true,
+                                onChanged: (value) {
+                                  controller.fetchSeatsRows(value!.toInt());
+                                },
                               ),
                               const SizedBox(height: 8),
-                              CustomTextFormField(
-                                controller: controller.seatNumber,
+                              // CustomTextFormField(
+                              //   controller: controller.seatNumber,
+                              //   label: "Seat Number",
+                              //   isRequired: true,
+                              // ),
+                              CustomDropDownFormField(
+                                items: controller.seatsList
+                                    .map((e) => DropdownMenuItem(
+                                          child: Text(e.seatNumber.toString()),
+                                        ))
+                                    .toList(),
                                 label: "Seat Number",
-                                isRequired: true,
                               ),
                               const SizedBox(height: 8),
                               Row(

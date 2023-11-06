@@ -51,6 +51,14 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                       key: controller.formKey,
                       child: Column(
                         children: [
+                          !controller.enableSelectCompany ?
+                          CustomTextFormField(
+                            controller:
+                            controller
+                                .companyTextEditingController,
+                            label: "Company",
+                            readOnly: true,
+                          ) :
                           CustomDropDownFormField(
                             items: controller.companyList
                                 .map((e) => DropdownMenuItem(
@@ -77,7 +85,7 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                                     ))
                                 .toList(),
                             label: "Site",
-                            value: controller.isEdit ? controller.selectedSite.text : null,
+                            value: controller.isEdit ? controller.selectedSite.text.isNotEmpty ? controller.selectedSite.text : null : null,
                             hintText: controller.isLoadSite || controller.isLoading ? "Loading" : "Site",
                             isRequired: true,
                             onChanged: (value) {
@@ -279,7 +287,7 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                                     ))
                                 .toList(),
                             label: "Driver",
-                            value: controller.isEdit ? controller.selectedDriver.text : null,
+                            value: controller.isEdit ? controller.selectedDriver.text.isNotEmpty ? controller.selectedDriver.text : null : null,
                             onChanged: (value) {
                               controller.driverID = value!.toInt();
                               controller.update();
@@ -296,9 +304,9 @@ class AddManagementPoolCarScreen extends StatelessWidget {
                                 showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
-                                    firstDate: DateTime.now(),
+                                    firstDate: DateTime.now().subtract(const Duration(days: 365 * 6)),
                                     lastDate: DateTime.now()
-                                        .add(const Duration(days: 365)))
+                                        .add(const Duration(days: 365 * 6)))
                                     .then((date) {
                                   if (date != null) {
                                     controller.vehicleRegistrationDate = date;

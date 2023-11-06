@@ -30,7 +30,8 @@ class CheckScheduleController extends BaseController {
   String? departureCity;
   String? arrivalCity;
   bool isLoading = true;
-  List airliness = ["2", "4", "5", "6", "11", "22", "48"];
+  bool isInternational = false;
+  List airliness = ["2", "4", "5", "11", "22", "48"];
 
   flight.GetFlightScheduleModel? flightScheduleModel;
   schedule.GetAirportScheduleModel? scheduleModel1;
@@ -77,11 +78,23 @@ class CheckScheduleController extends BaseController {
     // scheduleList2 = [];
     // scheduleList3 = [];
     // scheduleList4 = [];
-
+    List<schedule.Flights> tempList = [];
     schedules.forEachIndexed((i, sc) {
       airliness.forEach((e) {
         fetchSchedule(departureDate.add(Duration(days: i)), e).then((value) {
-          schedules[i].addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []);
+          isInternational = value?.data?.schedules?.first.isInternational ?? false;
+          value?.data?.schedules?.first.flights?.forEachIndexed((j, scFlight) {
+            schedules[i].add(scFlight);             
+          });
+
+          // if(schedules[i].isEmpty){
+          //   tempList.add(value?.data?.schedules?.first.flights?.first ?? schedule.Flights());
+          //   schedules[i].add(value?.data?.schedules?.first.flights?.first ?? schedule.Flights());
+          // } else{
+          //
+          // }
+          // print("$i ${value?.data?.schedules?.first.flights?.first.airlineName} ${value?.data?.schedules?.first.flights?.length}");
+          // schedules[i].addAll(value?.data?.schedules?.first.flights?.toSet().toList() ?? []);
           // print(schedules[i]);
         });
         update();
@@ -139,6 +152,7 @@ class CheckScheduleController extends BaseController {
       'child': child,
       'infant': infant,
       'airlinessData': airlinessModel,
+      'isInternational': isInternational,
     });
   }
 }

@@ -138,70 +138,98 @@ class _TrainScheduleScreenState extends State<TrainScheduleScreen> with TickerPr
                               controller: tabController,
                               children: controller.schedules
                                   .mapIndexed(
-                                    (i, schedule) => //controller.schedules[i].isEmpty
-                                        //? DataEmpty()
-                                        //:
-                                        SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () => controller.selectTrain(),
-                                            child: Card(
-                                              elevation: 3,
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text("Senja Utama YK(140)", style: listTitleTextStyle.copyWith(color: infoColor)),
-                                                        Text("Economy", style: TextStyle(color: lightGreyColor, fontSize: 12, fontWeight: bold)),
-                                                        Text('06.00', style: TextStyle(fontWeight: bold)),
-                                                        Text(
-                                                          'Jakarta (PSE)',
-                                                          style: TextStyle(color: Colors.grey, fontWeight: bold),
-                                                        ),
-                                                        Text(
-                                                          '9 Aug 2023',
-                                                          style: TextStyle(fontWeight: extraBold),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        Icon(Icons.arrow_forward_rounded, color: greyColor, size: 30),
-                                                        Text("5h 0m", style: TextStyle(color: greyColor),)
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                                      children: [
-                                                        Text("Rp. 499.000", style: listTitleTextStyle.copyWith(color: infoColor)),
-                                                        Text("Available", style: TextStyle(color: greenColor, fontSize: 12, fontWeight: bold)),
-                                                        Text('11.00', style: TextStyle(fontWeight: bold)),
-                                                        Text(
-                                                          'Yogyakarta (YK)',
-                                                          style: TextStyle(color: Colors.grey, fontWeight: bold),
-                                                        ),
-                                                        Text(
-                                                          '9 Aug 2023',
-                                                          style: TextStyle(fontWeight: extraBold),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
+                                    (i, schedule) => controller.schedules[i].isEmpty
+                                        ? DataEmpty()
+                                        : SingleChildScrollView(
+                                            child: Column(
+                                              children: [
+                                                Column(
+                                                    children: controller.schedules[i]
+                                                        .map((trains) => Column(
+                                                              children: trains.segments!
+                                                                  .map(
+                                                                    (segments) => GestureDetector(
+                                                                      onTap: () => controller.selectTrain(trains, segments),
+                                                                      child: Card(
+                                                                        elevation: 3,
+                                                                        child: Padding(
+                                                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                                                                          child: Column(
+                                                                            children: [
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text(trains.trainName.toString(),
+                                                                                      style: listTitleTextStyle.copyWith(color: infoColor)),
+                                                                                  Text("Rp. ${segments.fare!.toInt().toCurrency()}",
+                                                                                      style: listTitleTextStyle.copyWith(color: infoColor)),
+                                                                                ],
+                                                                              ),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Column(
+                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                    children: [
+                                                                                      Text(segments.className ?? '',
+                                                                                          style: TextStyle(
+                                                                                              color: lightGreyColor, fontSize: 12, fontWeight: bold)),
+                                                                                      Text(trains.departureTime.toString(),
+                                                                                          style: TextStyle(fontWeight: bold)),
+                                                                                      Text(
+                                                                                        '${controller.originModel?.cityName.toString()} (${trains.origin})',
+                                                                                        style: TextStyle(color: Colors.grey, fontWeight: bold),
+                                                                                      ),
+                                                                                      Text(
+                                                                                        controller.dateFormat
+                                                                                            .format(DateTime.parse(trains.departureDate.toString())),
+                                                                                        style: TextStyle(fontWeight: extraBold),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                  Column(
+                                                                                    children: [
+                                                                                      Icon(Icons.arrow_forward_rounded, color: greyColor, size: 30),
+                                                                                      Text(
+                                                                                        trains.duration.toString(),
+                                                                                        style: TextStyle(color: greyColor),
+                                                                                      )
+                                                                                    ],
+                                                                                  ),
+                                                                                  Column(
+                                                                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                                                                    children: [
+                                                                                      Text("Available",
+                                                                                          style: TextStyle(
+                                                                                              color: greenColor, fontSize: 12, fontWeight: bold)),
+                                                                                      Text(trains.arrivalTime.toString(),
+                                                                                          style: TextStyle(fontWeight: bold)),
+                                                                                      Text(
+                                                                                        '${controller.destinationModel?.cityName} (${trains.destination})',
+                                                                                        style: TextStyle(color: Colors.grey, fontWeight: bold),
+                                                                                      ),
+                                                                                      Text(
+                                                                                        controller.dateFormat
+                                                                                            .format(DateTime.parse(trains.arrivalDate.toString())),
+                                                                                        style: TextStyle(fontWeight: extraBold),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                  .toList(),
+                                                            ))
+                                                        .toList()),
+                                                SizedBox(height: 100)
+                                              ],
                                             ),
                                           ),
-                                          SizedBox(
-                                            height: 100,
-                                          )
-                                        ],
-                                      ),
-                                    ),
                                   )
                                   .toList(),
                             ),

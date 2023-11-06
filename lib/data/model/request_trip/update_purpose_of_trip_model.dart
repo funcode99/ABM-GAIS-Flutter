@@ -79,7 +79,7 @@ class Data {
       String? idZona, 
       num? codeStatusDoc, 
       num? tlkPerDay, 
-      num? totalTlk, 
+      String? totalTlk,
       String? createdAt, 
       String? createdBy, 
       String? updatedAt, 
@@ -120,7 +120,7 @@ class Data {
     _idZona = json['id_zona'];
     _codeStatusDoc = json['code_status_doc'];
     _tlkPerDay = json['tlk_per_day'];
-    _totalTlk = json['total_tlk'];
+    _totalTlk = json['total_tlk'].toString();
     _createdAt = json['created_at'];
     _createdBy = json['created_by'];
     _updatedAt = json['updated_at'];
@@ -140,7 +140,7 @@ class Data {
   String? _idZona;
   num? _codeStatusDoc;
   num? _tlkPerDay;
-  num? _totalTlk;
+  String? _totalTlk;
   String? _createdAt;
   String? _createdBy;
   String? _updatedAt;
@@ -159,7 +159,7 @@ Data copyWith({  num? id,
   String? idZona,
   num? codeStatusDoc,
   num? tlkPerDay,
-  num? totalTlk,
+  String? totalTlk,
   String? createdAt,
   String? createdBy,
   String? updatedAt,
@@ -198,7 +198,7 @@ Data copyWith({  num? id,
   String? get idZona => _idZona;
   num? get codeStatusDoc => _codeStatusDoc;
   num? get tlkPerDay => _tlkPerDay;
-  num? get totalTlk => _totalTlk;
+  String? get totalTlk => _totalTlk;
   String? get createdAt => _createdAt;
   String? get createdBy => _createdBy;
   String? get updatedAt => _updatedAt;

@@ -587,6 +587,8 @@ class DocumentReady {
     num? otherTransportation,
     num? accomodationTrip,
     num? cashAdvance,
+    num? trainTrip,
+    num? transportation,
   }) {
     _purposeOfTrip = purposeOfTrip;
     _travellerGuestTrip = travellerGuestTrip;
@@ -595,6 +597,8 @@ class DocumentReady {
     _otherTransportation = otherTransportation;
     _accomodationTrip = accomodationTrip;
     _cashAdvance = cashAdvance;
+    _trainTrip = trainTrip;
+    _transportation = transportation;
   }
 
   DocumentReady.fromJson(dynamic json) {
@@ -605,6 +609,8 @@ class DocumentReady {
     _otherTransportation = json['other_transportation'];
     _accomodationTrip = json['accomodation_trip'];
     _cashAdvance = json['cash_advance'];
+    _trainTrip = json['train_trip'];
+    _transportation = json['transportation'];
   }
 
   num? _purposeOfTrip;
@@ -614,6 +620,8 @@ class DocumentReady {
   num? _otherTransportation;
   num? _accomodationTrip;
   num? _cashAdvance;
+  num? _trainTrip;
+  num? _transportation;
 
   DocumentReady copyWith({
     num? purposeOfTrip,
@@ -623,6 +631,8 @@ class DocumentReady {
     num? otherTransportation,
     num? accomodationTrip,
     num? cashAdvance,
+    num? trainTrip,
+    num? transportation,
   }) =>
       DocumentReady(
         purposeOfTrip: purposeOfTrip ?? _purposeOfTrip,
@@ -632,6 +642,8 @@ class DocumentReady {
         otherTransportation: otherTransportation ?? _otherTransportation,
         accomodationTrip: accomodationTrip ?? _accomodationTrip,
         cashAdvance: cashAdvance ?? _cashAdvance,
+        trainTrip: trainTrip ?? _trainTrip,
+        transportation: transportation ?? _transportation,
       );
 
   num? get purposeOfTrip => _purposeOfTrip;
@@ -648,6 +660,10 @@ class DocumentReady {
 
   num? get cashAdvance => _cashAdvance;
 
+  num? get trainTrip => _trainTrip;
+
+  num? get transportation => _transportation;
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['purpose_of_trip'] = _purposeOfTrip;
@@ -657,6 +673,8 @@ class DocumentReady {
     map['other_transportation'] = _otherTransportation;
     map['accomodation_trip'] = _accomodationTrip;
     map['cash_advance'] = _cashAdvance;
+    map['train_trip'] = _trainTrip;
+    map['transportation'] = _transportation;
     return map;
   }
 }

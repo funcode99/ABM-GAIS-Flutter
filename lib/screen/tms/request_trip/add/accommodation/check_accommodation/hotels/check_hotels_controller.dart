@@ -19,6 +19,7 @@ class CheckHotelsController extends BaseController {
   String checkinDate = Get.arguments['checkinDate'];
   String checkoutDate = Get.arguments['checkoutDate'];
   UpdateAccommodationModel accommodationData = Get.arguments['data'];
+  String accType = Get.arguments['accommodationType'];
 
   List<hotel.Hotels> hotelList = [];
   List<bool> viewRoom = [];
@@ -37,24 +38,27 @@ class CheckHotelsController extends BaseController {
     hotelList = [];
     viewRoom = [];
     isLoading = true;
+    print("accType : ${accType}");
     try {
-      await antavaya
-          .getHotel(
-        selectedCountry!.isoCountryCode.toString(),
-        selectedCity!.cityKey.toString(),
-        checkinDate,
-        checkoutDate,
-        "1",
-        "1",
-      )
-          .then((value) {
-        hotelsModel = value;
-        hotelList.addAll(value.data?.hotels?.toSet().toList() ?? []);
-      });
+      if (accType == '1') {
+        await antavaya
+            .getHotel(
+          selectedCountry!.isoCountryCode.toString(),
+          selectedCity!.cityKey.toString(),
+          checkinDate,
+          checkoutDate,
+          "1",
+          "1",
+        )
+            .then((value) {
+          hotelsModel = value;
+          hotelList.addAll(value.data?.hotels?.toSet().toList() ?? []);
+        });
 
-      hotelList.forEach((element) {
-        viewRoom.add(false);
-      });
+        hotelList.forEach((element) {
+          viewRoom.add(false);
+        });
+      }
     } catch (e, i) {
       e.printError();
       i.printError();
@@ -67,28 +71,35 @@ class CheckHotelsController extends BaseController {
     try {
       await requestTrip
           .updateAccommodation(
-        accommodationData.data!.id.toString(),
+        accommodationData.data!.header!.id.toString(),
         purposeID.toString(),
-        accommodationData.data!.idTypeAccomodation.toString(),
-        accommodationData.data!.checkInDate.toString(),
-        accommodationData.data!.checkInDate.toString(),
+        accommodationData.data!.header!.idTypeAccomodation.toString(),
+        accommodationData.data!.header!.checkInDate.toString(),
+        accommodationData.data!.header!.checkInDate.toString(),
         '1',
-        accommodationData.data!.useGl.toString(),
+        accommodationData.data!.header!.useGl.toString(),
         '',
-        accommodationData.data!.sharingWName.toString(),
-        accommodationData.data!.remarks.toString(),
+        accommodationData.data!.header!.sharingWName.toString(),
+        accommodationData.data!.header!.remarks.toString(),
         price,
         codeHotel,
-        accommodationData.data!.travelerName.toString(),
+        accommodationData.data!.header!.travelerName.toString(),
         selectedCountry!.isoCountryCode.toString(),
         selectedCountry!.countryName.toString(),
         selectedCity!.cityKey.toString(),
         selectedCity!.cityName.toString(),
-        accommodationData.data?.room ?? '',
-        accommodationData.data?.guest ?? '',
+        accommodationData.data?.header!.room ?? '',
+        accommodationData.data?.header!.guest ?? '',
         '',
-        accommodationData.data!.jenkel.toString(),
-        accommodationData.data!.hotelFare.toString(),
+        accommodationData.data!.header!.jenkel.toString(),
+        accommodationData.data!.header!.hotelFare.toString(),
+        "",
+        "",
+        "",
+        "",
+        null,
+        null,
+        null,
       )
           .then((value) {
         print(value.success);

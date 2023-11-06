@@ -39,4 +39,7 @@ abstract class ManagementMeetingRoomRepository {
       List<dynamic> approver,
       List<dynamic> facility
       );
+
+  Future delete(int id);
+
 }
