@@ -231,7 +231,7 @@ class RequestTripImpl implements RequestTripRepository {
         "id_flight_class": idflightclass,
         "notes": notes,
         "gender": gender,
-        "is_guets": isGuest,
+        "is_guest": isGuest,
       });
 
       var token = await storageSecure.read(key: "token");

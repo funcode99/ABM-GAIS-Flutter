@@ -424,7 +424,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                           // ),
                                           Column(
                                               children: controller.guestList.isNotEmpty
-                                                  ? controller.guestList
+                                                  ? controller.guestList.reversed
                                                       .mapIndexed(
                                                         (i, e) => CustomTripCard(
                                                           listNumber: i + 1,
