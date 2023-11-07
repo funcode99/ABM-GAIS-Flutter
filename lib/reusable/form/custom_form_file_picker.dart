@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart' as FilePickerPlugin;
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/device_info/device_info_util.dart';
 import 'package:gais/util/ext/file_ext.dart';
 import 'package:get/get.dart';
@@ -88,7 +89,7 @@ class _CustomFormFilePickerState extends State<CustomFormFilePicker> {
       widget.onFileSelected(file);
     } else {
       // User canceled the picker
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Select file cancelled")));
+      Get.showSnackbar(CustomGetSnackBar(message: "Select file cancelled", backgroundColor: Colors.red));
     }
   }
 
@@ -132,7 +133,7 @@ class _CustomFormFilePickerState extends State<CustomFormFilePicker> {
                     onPressed:  () {
                       Navigator.of(context).pop();
                       if(mounted){
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Select file failed because permissions were not granted")));
+                        Get.showSnackbar(CustomGetSnackBar(message: "Select file failed because permissions were not granted", backgroundColor: Colors.red));
                       }
                     },
                   ),
@@ -147,7 +148,7 @@ class _CustomFormFilePickerState extends State<CustomFormFilePicker> {
           );
         }else{
           if(mounted){
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Select file failed because permissions were not granted")));
+            Get.showSnackbar(CustomGetSnackBar(message: "Select file failed because permissions were not granted", backgroundColor: Colors.red));
           }
         }
       }
