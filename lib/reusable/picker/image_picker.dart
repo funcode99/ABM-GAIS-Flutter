@@ -4,7 +4,6 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/device_info/device_info_util.dart';
 import 'package:get/get.dart';
-import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart' as ImagePickerPlugin;
 
 import 'package:flutter/material.dart';
