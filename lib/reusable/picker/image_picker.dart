@@ -52,7 +52,7 @@ class _ImagePickerState extends State<ImagePicker> {
   _checkStoragePermission() async {
     int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
     PermissionStatus status;
-    if (androidOS < 13) {
+    if (androidOS < 33) {
       status = await Permission.storage.status;
     } else {
       status = await Permission.photos.status;
@@ -61,7 +61,7 @@ class _ImagePickerState extends State<ImagePicker> {
       _selectFromGallery();
     } else {
       PermissionStatus request;
-      if (androidOS < 13) {
+      if (androidOS < 33) {
         request = await Permission.storage.request();
       } else {
         request = await Permission.photos.request();
@@ -116,7 +116,7 @@ class _ImagePickerState extends State<ImagePicker> {
     if (status.isGranted) {
       _selectFromCamera();
     } else {
-      var request = await Permission.storage.request();
+      var request = await Permission.camera.request();
       if (request.isGranted) {
         _selectFromCamera();
       } else {
