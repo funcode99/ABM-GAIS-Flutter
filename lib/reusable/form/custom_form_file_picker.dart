@@ -4,8 +4,10 @@ import 'package:file_picker/file_picker.dart' as FilePickerPlugin;
 import 'package:flutter/material.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/device_info/device_info_util.dart';
 import 'package:gais/util/ext/file_ext.dart';
+import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CustomFormFilePicker extends StatefulWidget{
@@ -27,11 +29,57 @@ class _CustomFormFilePickerState extends State<CustomFormFilePicker> {
   File? _selectedFile;
 
   _selectFile()async{
-    FilePickerPlugin.FilePickerResult? result = await FilePickerPlugin.FilePicker.platform.pickFiles(
-      allowedExtensions: ['pdf', 'doc', 'docx', 'png', 'jpg', 'jpeg'],
-      type: FilePickerPlugin.FileType.custom,
-    );
+    FilePickerPlugin.FilePickerResult? result;
+    if(Platform.isIOS){
+      await showDialog(
+          context: context,
+          builder: (context) => Dialog(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  title: const Text(
+                    'Choose Image',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  ),
+                  leading: const Icon(Icons.image),
+                  onTap: () async {
+                    Get.back();
+                    result = await FilePickerPlugin.FilePicker.platform.pickFiles(
+                      type: FilePickerPlugin.FileType.image,
+                    );
 
+                    _processFile(result);
+                  },
+                ),
+                ListTile(
+                  title: const Text(
+                    'Choose File',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  ),
+                  leading: const Icon(Icons.file_copy),
+                  onTap: () async {
+                    Get.back();
+                    result = await FilePickerPlugin.FilePicker.platform.pickFiles(
+                      allowedExtensions: ['pdf', 'doc', 'docx'],
+                      type: FilePickerPlugin.FileType.custom,
+                    );
+                    _processFile(result);
+                  },
+                )
+              ],
+            ),
+          ));
+    }else{
+      result = await FilePickerPlugin.FilePicker.platform.pickFiles(
+        allowedExtensions: ['pdf', 'doc', 'docx', 'png', 'jpg', 'jpeg'],
+        type: FilePickerPlugin.FileType.custom,
+      );
+      _processFile(result);
+    }
+  }
+
+  _processFile(FilePickerPlugin.FilePickerResult? result){
     if (result != null) {
       File file = File(result.files.single.path!);
       setState((){
@@ -41,60 +89,69 @@ class _CustomFormFilePickerState extends State<CustomFormFilePicker> {
       widget.onFileSelected(file);
     } else {
       // User canceled the picker
+      Get.showSnackbar(CustomGetSnackBar(message: "Select file cancelled", backgroundColor: Colors.red));
     }
   }
 
   _checkPermission()async{
-    int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
-    if(androidOS < 13){
-      var status = await Permission.storage.status;
-      if (status.isGranted) {
+    PermissionStatus status;
+    status = await Permission.storage.status;
+
+    if (status.isGranted) {
+      _selectFile();
+    }else{
+      PermissionStatus request;
+      request = await Permission.storage.request();
+
+      if(Platform.isAndroid){
+
+        int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
+
+        if (androidOS >= 33) {
+          request = await Permission.manageExternalStorage.request();
+        }
+      }
+
+      if(request.isGranted){
         _selectFile();
       }else{
-        var request = await Permission.storage.request();
-        if(request.isGranted){
-          _selectFile();
-        }else{
-          if(request.isPermanentlyDenied){
-            showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) => AlertDialog(
-                  title: const Text("Permission error!"),
-                  content: const Text(
-                    "Permission Read External Storage dibutuhkan untuk memilih file.",
-                    style: TextStyle(
-                        color: Colors.black
-                    ),
+        if(request.isPermanentlyDenied){
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => AlertDialog(
+                title: const Text("Permission error!"),
+                content: const Text(
+                  "Read External Storage permission is required to select files.",
+                  style: TextStyle(
+                      color: Colors.black
                   ),
-                  actions: [
-                    TextButton(
-                      child: const Text("Batal"),
-                      onPressed:  () {
-                        Navigator.of(context).pop();
-                        if(mounted){
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Pilih file gagal karena permission tidak dipenuhi")));
-                        }
-                      },
-                    ),
-                    TextButton(
-                      child: const Text("Buka Pengaturan"),
-                      onPressed:  (){
-                        openAppSettings();
-                      },
-                    ),
-                  ],
-                )
-            );
-          }else{
-            if(mounted){
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Pilih file gagal karena permission tidak dipenuhi")));
-            }
+                ),
+                actions: [
+                  TextButton(
+                    child: const Text("Cancel"),
+                    onPressed:  () {
+                      Navigator.of(context).pop();
+                      if(mounted){
+                        Get.showSnackbar(CustomGetSnackBar(message: "Select file failed because permissions were not granted", backgroundColor: Colors.red));
+                      }
+                    },
+                  ),
+                  TextButton(
+                    child: const Text("Open Settings"),
+                    onPressed:  (){
+                      openAppSettings();
+                    },
+                  ),
+                ],
+              )
+          );
+        }else{
+          if(mounted){
+            Get.showSnackbar(CustomGetSnackBar(message: "Select file failed because permissions were not granted", backgroundColor: Colors.red));
           }
         }
       }
-    }else{
-      _selectFile();
     }
   }
 
@@ -152,36 +209,6 @@ class _CustomFormFilePickerState extends State<CustomFormFilePicker> {
           ),
         ),
       ],
-    );
-
-    return Material(
-      child: InkWell(
-        onTap: (){
-          _checkPermission();
-        },
-        child: Ink(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(const Radius.circular(10)),
-              color: greyColor
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const Icon(Icons.file_upload, color: greyColor,),
-              const SizedBox(
-                width: 4,
-              ),
-              Expanded(
-                child: Text(
-                  _selectedFile == null ? 'Pilih File' : _selectedFile!.filename(),
-                  style: const TextStyle(color: Colors.black),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

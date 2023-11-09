@@ -7,7 +7,7 @@ import 'package:gais/gais.dart';
 
 void main() async{
   FlavorConfig(
-      name: "PROD",
+      name: "DEV",
       location: BannerLocation.topEnd,
       variables: prodEnvironment
   );
