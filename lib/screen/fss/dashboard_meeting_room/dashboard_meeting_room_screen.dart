@@ -29,7 +29,7 @@ class DashboardMeetingRoomScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: baseColor,
       appBar: TopBar(
-        title: Text("Meeting Room\nDashboard", style: appTitle,
+        title: Text("Dashboard\nMeeting Room", style: appTitle,
             textAlign: TextAlign.center),
         leading: const CustomBackButton(),
       ),
