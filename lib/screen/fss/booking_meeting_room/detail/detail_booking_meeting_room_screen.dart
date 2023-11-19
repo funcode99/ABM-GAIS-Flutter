@@ -416,7 +416,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                                           topRight: Radius.circular(8),
                                           topLeft: Radius.circular(8)),
                                       gradient: LinearGradient(stops: const [
-                                        0.1,
+                                        0.06,
                                         0
                                       ], colors: [
                                         controller.selectedTab.value ==
