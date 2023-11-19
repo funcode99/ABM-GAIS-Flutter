@@ -185,6 +185,16 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
           '/api/cash_advance/non_travel/',
           queryParameters: data
       );
+      Map<String, dynamic> result = Map<String, dynamic>.from(response.data);
+      dynamic resultData = result['data'];
+      if(resultData is List){
+        List<dynamic> list = List<dynamic>.from(result['data']);
+
+        if(list.isEmpty){
+          PaginationModel paginationModel = PaginationModel.fromJson(PaginationModel.fallbackData);
+          return right(paginationModel);
+        }
+      }
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
       return right(apiResponseModel.data);
     } on DioError catch (e) {
@@ -285,6 +295,16 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
           '/api/approval_non_travel/get_data',
           queryParameters: data
       );
+      Map<String, dynamic> result = Map<String, dynamic>.from(response.data);
+      dynamic resultData = result['data'];
+      if(resultData is List){
+        List<dynamic> list = List<dynamic>.from(result['data']);
+
+        if(list.isEmpty){
+          PaginationModel paginationModel = PaginationModel.fromJson(PaginationModel.fallbackData);
+          return right(paginationModel);
+        }
+      }
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
       return right(apiResponseModel.data);
     } on DioError catch (e) {
@@ -379,6 +399,16 @@ class CashAdvanceNonTravelRepository implements BaseRepository<CashAdvanceModel,
           '/api/approval_non_travel/history',
           queryParameters: data
       );
+      Map<String, dynamic> result = Map<String, dynamic>.from(response.data);
+      dynamic resultData = result['data'];
+      if(resultData is List){
+        List<dynamic> list = List<dynamic>.from(result['data']);
+
+        if(list.isEmpty){
+          PaginationModel paginationModel = PaginationModel.fromJson(PaginationModel.fallbackData);
+          return right(paginationModel);
+        }
+      }
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
       return right(apiResponseModel.data);
     } on DioError catch (e) {

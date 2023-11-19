@@ -121,8 +121,21 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
           '/api/actual_trip/get_data',
           queryParameters: data
       );
+
+      Map<String, dynamic> result = Map<String, dynamic>.from(response.data);
+      dynamic resultData = result['data'];
+      if(resultData is List){
+        List<dynamic> list = List<dynamic>.from(result['data']);
+
+        if(list.isEmpty){
+          PaginationModel paginationModel = PaginationModel.fromJson(PaginationModel.fallbackData);
+          return right(paginationModel);
+        }
+      }
+
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
       return right(apiResponseModel.data);
+
     } on DioError catch (e) {
       print("DioError $e");
       return left(BaseError(message: e.response!.data['message'] ?? e.message));
@@ -185,6 +198,18 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
           '/api/approval_actual/get_data',
           queryParameters: data
       );
+
+      Map<String, dynamic> result = Map<String, dynamic>.from(response.data);
+      dynamic resultData = result['data'];
+      if(resultData is List){
+        List<dynamic> list = List<dynamic>.from(result['data']);
+
+        if(list.isEmpty){
+          PaginationModel paginationModel = PaginationModel.fromJson(PaginationModel.fallbackData);
+          return right(paginationModel);
+        }
+      }
+
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
       return right(apiResponseModel.data);
     } on DioError catch (e) {
@@ -279,6 +304,16 @@ class NewActualizationTripRepository implements BaseRepository<ActualizationTrip
           '/api/approval_actual/history',
           queryParameters: data
       );
+      Map<String, dynamic> result = Map<String, dynamic>.from(response.data);
+      dynamic resultData = result['data'];
+      if(resultData is List){
+        List<dynamic> list = List<dynamic>.from(result['data']);
+
+        if(list.isEmpty){
+          PaginationModel paginationModel = PaginationModel.fromJson(PaginationModel.fallbackData);
+          return right(paginationModel);
+        }
+      }
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
       return right(apiResponseModel.data);
     } on DioError catch (e) {

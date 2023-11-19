@@ -33,5 +33,14 @@ class PaginationModel {
       _$PaginationModelFromJson(json);
   Map<String, dynamic> toJson() => _$PaginationModelToJson(this);
 
+  static Map<String, dynamic> fallbackData = {
+    "current_page": 1,
+    "data": [],
+    "from": null,
+    "last_page": 1,
+    "per_page": "10",
+    "to": null,
+    "total": 0
+  };
 
 }
