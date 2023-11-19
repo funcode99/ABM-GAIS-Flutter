@@ -22,7 +22,7 @@ class PurposeOfTripController extends BaseController {
   int? siteID;
   String? jobID;
 
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy/MM/dd");
 
   final formKey = GlobalKey<FormState>();

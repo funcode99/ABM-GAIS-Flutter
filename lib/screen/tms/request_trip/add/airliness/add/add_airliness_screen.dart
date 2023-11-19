@@ -210,86 +210,104 @@ class AddAirlinessScreen extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    height: 50,
-                                    width: Get.width / 4.5,
-                                    padding: EdgeInsets.symmetric(horizontal: 10),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(color: controller.borderColor),
-                                    ),
-                                    child: DropdownButton(
-                                      value: controller.passengerAdult.text.isEmpty ? null : controller.passengerAdult.text,
-                                      items: List.generate(
-                                          9,
-                                          (index) => DropdownMenuItem(
-                                                child: Text((index + 1).toString()),
-                                                value: (index + 1).toString(),
-                                              )),
-                                      icon: Icon(Icons.keyboard_arrow_down),
-                                      hint: Text("Adult", style: hintTextStyle),
-                                      isExpanded: true,
-                                      underline: SizedBox(),
-                                      onChanged: (value) {
-                                        controller.passengerAdult.text = value.toString();
-                                        controller.borderColor = greyColor;
-                                        controller.update();
-                                      },
-                                    ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomFormLabel(label: "Adult", showRequired: true),
+                                      Container(
+                                        height: 50,
+                                        width: Get.width / 4.5,
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(color: controller.borderColor),
+                                        ),
+                                        child: DropdownButton(
+                                          value: controller.passengerAdult.text.isEmpty ? null : controller.passengerAdult.text,
+                                          items: List.generate(
+                                              9,
+                                              (index) => DropdownMenuItem(
+                                                    child: Text((index + 1).toString()),
+                                                    value: (index + 1).toString(),
+                                                  )),
+                                          icon: Icon(Icons.keyboard_arrow_down),
+                                          hint: Text("Adult", style: hintTextStyle),
+                                          isExpanded: true,
+                                          underline: SizedBox(),
+                                          onChanged: (value) {
+                                            controller.passengerAdult.text = value.toString();
+                                            controller.borderColor = greyColor;
+                                            controller.update();
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Container(
-                                    height: 50,
-                                    width: Get.width / 4.5,
-                                    padding: EdgeInsets.symmetric(horizontal: 10),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(color: controller.borderColor),
-                                    ),
-                                    child: DropdownButton(
-                                      value: controller.passengerInfant.text.isEmpty ? null : controller.passengerInfant.text,
-                                      items: List.generate(
-                                          10,
-                                          (index) => DropdownMenuItem(
-                                                child: Text((index).toString()),
-                                                value: (index).toString(),
-                                              )),
-                                      icon: Icon(Icons.keyboard_arrow_down),
-                                      hint: Text("Infant", style: hintTextStyle),
-                                      isExpanded: true,
-                                      underline: SizedBox(),
-                                      onChanged: (value) {
-                                        controller.passengerInfant.text = value.toString();
-                                        controller.borderColor = greyColor;
-                                        controller.update();
-                                      },
-                                    ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomFormLabel(label: "Infant", showRequired: true),
+                                      Container(
+                                        height: 50,
+                                        width: Get.width / 4.5,
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(color: controller.borderColor),
+                                        ),
+                                        child: DropdownButton(
+                                          value: controller.passengerInfant.text.isEmpty ? null : controller.passengerInfant.text,
+                                          items: List.generate(
+                                              10,
+                                              (index) => DropdownMenuItem(
+                                                    child: Text((index).toString()),
+                                                    value: (index).toString(),
+                                                  )),
+                                          icon: Icon(Icons.keyboard_arrow_down),
+                                          hint: Text("Infant", style: hintTextStyle),
+                                          isExpanded: true,
+                                          underline: SizedBox(),
+                                          onChanged: (value) {
+                                            controller.passengerInfant.text = value.toString();
+                                            controller.borderColor = greyColor;
+                                            controller.update();
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Container(
-                                    height: 50,
-                                    width: Get.width / 4.5,
-                                    padding: EdgeInsets.symmetric(horizontal: 10),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(color: controller.borderColor),
-                                    ),
-                                    child: DropdownButton(
-                                      value: controller.passengerChild.text.isEmpty ? null : controller.passengerChild.text,
-                                      items: List.generate(
-                                          10,
-                                          (index) => DropdownMenuItem(
-                                                child: Text((index).toString()),
-                                                value: (index).toString(),
-                                              )),
-                                      icon: Icon(Icons.keyboard_arrow_down),
-                                      hint: Text("Child", style: hintTextStyle),
-                                      isExpanded: true,
-                                      underline: SizedBox(),
-                                      onChanged: (value) {
-                                        controller.passengerChild.text = value.toString();
-                                        controller.borderColor = greyColor;
-                                        controller.update();
-                                      },
-                                    ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomFormLabel(label: "Adult", showRequired: true),
+                                      Container(
+                                        height: 50,
+                                        width: Get.width / 4.5,
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(color: controller.borderColor),
+                                        ),
+                                        child: DropdownButton(
+                                          value: controller.passengerChild.text.isEmpty ? null : controller.passengerChild.text,
+                                          items: List.generate(
+                                              10,
+                                              (index) => DropdownMenuItem(
+                                                    child: Text((index).toString()),
+                                                    value: (index).toString(),
+                                                  )),
+                                          icon: Icon(Icons.keyboard_arrow_down),
+                                          hint: Text("Child", style: hintTextStyle),
+                                          isExpanded: true,
+                                          underline: SizedBox(),
+                                          onChanged: (value) {
+                                            controller.passengerChild.text = value.toString();
+                                            controller.borderColor = greyColor;
+                                            controller.update();
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),

@@ -14,7 +14,7 @@ class AccommodationController extends BaseController {
 
   List<acc.Data> accommodationsList = [];
   acc.GetAccommodationModel? accommodationsModel;
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
 
   @override

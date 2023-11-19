@@ -88,14 +88,14 @@ class AccommodationScreen extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Check In", style: listTitleTextStyle),
-                                      Text(e.checkInDate.toString(), style: listSubTitleTextStyle),
+                                      Text(controller.dateFormat.format(DateTime.parse(e.checkInDate.toString())), style: listSubTitleTextStyle),
                                     ],
                                   ),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("Check Out", style: listTitleTextStyle),
-                                      Text(e.checkOutDate.toString(), style: listSubTitleTextStyle),
+                                      Text(controller.dateFormat.format(DateTime.parse(e.checkOutDate.toString()))  , style: listSubTitleTextStyle),
                                     ],
                                   ),
                                   Column(
@@ -153,7 +153,7 @@ class AccommodationScreen extends StatelessWidget {
                               ),
                               CustomFilledButton(
                                 width: 100,
-                                color: infoColor,
+                                color: successColor,
                                 title: "Submit",
                                 onPressed: () => controller.submit(),
                               ),

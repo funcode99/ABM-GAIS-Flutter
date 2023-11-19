@@ -19,7 +19,7 @@ class ActTripInfoController extends BaseController {
 
   DateTime departure = DateTime.now();
   DateTime arrival = DateTime.now();
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy/MM/dd");
 
   bool isLoading = false;

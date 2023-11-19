@@ -13,7 +13,7 @@ class EditTaxiVoucherController extends BaseController {
   String tvID = Get.arguments['id'];
   bool? formEdit = Get.arguments['formEdit'];
 
-  DateFormat dateFormat = DateFormat("dd-MM-yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy/MM/dd");
   DateTime lastDate = DateTime.now().add(const Duration(days: 30));
 

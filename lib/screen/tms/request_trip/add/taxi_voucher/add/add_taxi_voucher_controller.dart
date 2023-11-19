@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 
 class AddTaxiVoucherController extends BaseController {
   String purposeID = Get.arguments['purposeID'];
-  DateFormat dateFormat = DateFormat("dd-MM-yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy/MM/dd");
   DateTime lastDate = DateTime.now().add(const Duration(days: 30));
 

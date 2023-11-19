@@ -30,7 +30,7 @@ class FormDocumentDeliveryController extends BaseController {
   final attachment = TextEditingController();
   final remarks = TextEditingController();
 
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   String? userSiteID;
   String? userCompanyID;
   String? senderID;

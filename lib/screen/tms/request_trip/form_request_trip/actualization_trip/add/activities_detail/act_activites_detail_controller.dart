@@ -11,7 +11,7 @@ class ActActivitiesDetailController extends BaseController {
   final bool isEdit = Get.arguments['isEdit'];
   final String? idActivity = Get.arguments['id'];
 
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy-MM-dd");
 
   @override

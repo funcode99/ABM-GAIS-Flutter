@@ -145,7 +145,7 @@ class OtherTransportScreen extends StatelessWidget {
                               ),
                               CustomFilledButton(
                                 width: 100,
-                                color: infoColor,
+                                color: successColor,
                                 title: "Submit",
                                 onPressed: () => controller.submit(),
                               ),

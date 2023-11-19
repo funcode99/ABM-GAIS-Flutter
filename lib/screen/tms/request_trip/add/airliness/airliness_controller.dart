@@ -23,7 +23,7 @@ class AirlinessController extends BaseController {
   GetStatusDocumentModel? statusModel;
   List<airliness.Data> airlinessList = [];
   GetAirlinessBytripModel? airlinessModel;
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
   @override
   void onInit() {

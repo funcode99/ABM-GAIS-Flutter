@@ -32,7 +32,7 @@ class AddTransportationController extends BaseController {
   final companyID = TextEditingController();
   final siteID = TextEditingController();
 
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat saveFormat = DateFormat("yyyy-MM-dd");
   DateTime lastDate = DateTime.now().add(const Duration(days: 30));
 

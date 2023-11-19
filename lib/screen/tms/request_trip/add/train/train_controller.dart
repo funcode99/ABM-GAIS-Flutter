@@ -11,7 +11,7 @@ class TrainController extends BaseController {
   int? codeDocument = Get.arguments['codeDocument'];
   bool? formEdit = Get.arguments['formEdit'];
 
-  DateFormat dateFormat = DateFormat("dd-MM-yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   List<train.Data> trainList = [];
   train.GetTrainTripBytripidModel? trainModel;
 

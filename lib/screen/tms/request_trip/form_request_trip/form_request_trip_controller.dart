@@ -58,7 +58,7 @@ class FormRequestTripController extends BaseController {
   final tlkTotal = TextEditingController();
   final tlkTotalMeals = TextEditingController();
 
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   String? tabName;
   bool isDetail = true;
   bool isTLK = false;

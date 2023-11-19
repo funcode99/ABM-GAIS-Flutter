@@ -102,6 +102,7 @@ class AddCashAdvanceTravelScreen extends StatelessWidget {
                               onChanged: (value) {
                                 controller.selectedCurrency = value?.toInt();
                                 controller.update();
+                                print(value);
                               },
                             ),
                             const SizedBox(height: 8),
