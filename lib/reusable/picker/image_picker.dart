@@ -4,7 +4,6 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:gais/util/device_info/device_info_util.dart';
 import 'package:get/get.dart';
-import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart' as ImagePickerPlugin;
 
 import 'package:flutter/material.dart';
@@ -51,22 +50,28 @@ class _ImagePickerState extends State<ImagePicker> {
   }
 
   _checkStoragePermission() async {
-    int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
     PermissionStatus status;
-    if (androidOS < 13) {
-      status = await Permission.storage.status;
-    } else {
-      status = await Permission.photos.status;
+    status = await Permission.photos.status;
+
+    if(Platform.isAndroid){
+      int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
+      if (androidOS < 33) {
+        status = await Permission.storage.status;
+      }
     }
+
     if (status.isGranted) {
       _selectFromGallery();
     } else {
       PermissionStatus request;
-      if (androidOS < 13) {
-        request = await Permission.storage.request();
-      } else {
-        request = await Permission.photos.request();
+      request = await Permission.photos.request();
+      if(Platform.isAndroid){
+        int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
+        if (androidOS < 33) {
+          request = await Permission.storage.request();
+        }
       }
+
       if (request.isGranted) {
         _selectFromGallery();
       } else {
@@ -117,7 +122,7 @@ class _ImagePickerState extends State<ImagePicker> {
     if (status.isGranted) {
       _selectFromCamera();
     } else {
-      var request = await Permission.storage.request();
+      var request = await Permission.camera.request();
       if (request.isGranted) {
         _selectFromCamera();
       } else {

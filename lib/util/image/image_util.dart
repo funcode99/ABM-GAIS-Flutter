@@ -18,7 +18,7 @@ class ImageUtil{
 
     if(Platform.isAndroid){
       int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
-      if (androidOS < 13) {
+      if (androidOS < 33) {
         status = await Permission.storage.status;
       }
     }
@@ -30,7 +30,7 @@ class ImageUtil{
       request = await Permission.photos.request();
       if(Platform.isAndroid){
         int? androidOS = await DeviceInfoUtil.androidOS() ?? 0;
-        if (androidOS < 13) {
+        if (androidOS < 33) {
           request = await Permission.storage.request();
         }
       }
@@ -93,7 +93,7 @@ class ImageUtil{
     if (status.isGranted) {
       return _selectFromCamera();
     } else {
-      var request = await Permission.storage.request();
+      var request = await Permission.camera.request();
       if (request.isGranted) {
         return _selectFromCamera();
       } else {
@@ -102,7 +102,7 @@ class ImageUtil{
               AlertDialog(
                 title: const Text("Permission error!"),
                 content: const Text(
-                  "Permission Camera needed for choosing File",
+                  "Permission Camera needed for choosing Image",
                   style: TextStyle(color: Colors.black),
                 ),
                 actions: [
@@ -112,7 +112,7 @@ class ImageUtil{
                       Get.back();
                       Get.showSnackbar(CustomGetSnackBar(
                           message:
-                          "Permission not granted, failed to choose file",
+                          "Permission not granted, failed to choose Image",
                           backgroundColor: Colors.red));
                     },
                   ),
