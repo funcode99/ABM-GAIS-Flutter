@@ -272,7 +272,7 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                                   : null,
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: infoColor),
-                              child: Text("Book".tr),
+                              child: Text("Request".tr),
                             ),
                           ],
                         ),
