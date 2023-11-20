@@ -131,7 +131,7 @@ class FormDocumentDeliveryController extends BaseController {
         location.text = value.data?.first.nameSiteReceiver ?? "";
         company.text = value.data?.first.nameCompanyReceiver ?? "";
         subjectDocument.text = value.data?.first.subject ?? "";
-        attachment.text = (value.data?.first.attachment != "{}"
+        attachment.text = (value.data?.first.attachment != "{}" && value.data?.first.attachment.toString() != "null"
             ? value.data?.first.attachment
             : "no attachment")
             .toString();
@@ -584,5 +584,15 @@ class FormDocumentDeliveryController extends BaseController {
       approvalModel =result;
       cancelDocument();
     }
+  }
+
+  bool isValidAttachmentPath(){
+    bool result = false;
+
+    if(attachmentPath.toString() != "{}" && attachmentPath.toString() != "null" && attachmentPath.toString().isNotEmpty){
+      result = true;
+    }
+
+    return result;
   }
 }
