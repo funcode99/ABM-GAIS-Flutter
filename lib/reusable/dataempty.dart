@@ -3,7 +3,8 @@ import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 
 class DataEmpty extends StatelessWidget {
-  const DataEmpty({Key? key}) : super(key: key);
+  final String? message;
+  const DataEmpty({Key? key, this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class DataEmpty extends StatelessWidget {
           children: [
             Image.asset("assets/img/data_notfound.png",),
             const SizedBox(height: 20),
-            Text("Data not Found" , style: appTitle)
+            Text(message ?? "Data not Found" , textAlign: TextAlign.center,style: appTitle)
           ],
         ),
       ),
