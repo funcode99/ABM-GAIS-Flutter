@@ -26,16 +26,13 @@ class ApprovalLogList extends StatelessWidget {
       itemBuilder: (context, index) {
         return ConstrainedBox(
           constraints: const BoxConstraints(maxHeight: 250, minHeight: 160),
-          child: SizedBox(
-            height: double.infinity,
-            child: ApprovalLogItem(
-              item: list[index],
-              showBottomLine: list.length <= 1 || index == list.length - 1,
-              showTopLine: index == 0,
-              iconColor: list[index].codeStatus == waitingApprovalValue
-                  ? const Color(0xFF8fb0c7)
-                  : infoColor,
-            ),
+          child: ApprovalLogItem(
+            item: list[index],
+            showBottomLine: list.length <= 1 || index == list.length - 1,
+            showTopLine: index == 0,
+            iconColor: list[index].codeStatus == waitingApprovalValue
+                ? const Color(0xFF8fb0c7)
+                : infoColor,
           ),
         );
       },
