@@ -29,7 +29,7 @@ class AddTrainController extends BaseController {
   bool roundTrip = false;
   bool isLoading = false;
 
-  DateFormat dateFormat = DateFormat("dd-MM-yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy-MM-dd");
   DateTime lastDate = DateTime.now().add(const Duration(days: 30));
   DateTime? dateDeparture;
@@ -59,10 +59,10 @@ class AddTrainController extends BaseController {
         lastDate = DateTime.now().add(Duration(days: 30));
       }
 
-      travellerList.add(guest.Data(
-        idEmployee: rtModel?.data?.first.idEmployee,
-        nameGuest: rtModel?.data?.first.employeeName,
-      ));
+      // travellerList.add(guest.Data(
+      //   idEmployee: rtModel?.data?.first.idEmployee,
+      //   nameGuest: rtModel?.data?.first.employeeName,
+      // ));
       await requestTrip.getGuestBytripList(purposeID).then((value) => travellerList.addAll(value.data?.toSet().toList() ?? []));
 
       await antavaya.getTrainStation().then((value) => stationList.addAll(value.data?.toSet().toList() ?? []));

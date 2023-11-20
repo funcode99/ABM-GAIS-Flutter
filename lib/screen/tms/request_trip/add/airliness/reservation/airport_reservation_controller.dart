@@ -54,7 +54,7 @@ class AirportReservationController extends BaseController {
   bool isLoading = false;
   String? pnrID;
   DateTime? birthDate;
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat saveDateFormat = DateFormat("yyyy-MM-dd");
   ContactModel? bookingContact;
   List<contact.Data> gaList = [];

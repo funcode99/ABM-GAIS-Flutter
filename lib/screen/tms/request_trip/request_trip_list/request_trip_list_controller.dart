@@ -15,7 +15,7 @@ class RequestTripListController extends BaseController {
   final TextEditingController dateRange = TextEditingController();
   final keyword = "".obs;
 
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat rangeFormat = DateFormat("yyyy-MM-dd");
   String purposeValue = "All";
   String? searchValue;

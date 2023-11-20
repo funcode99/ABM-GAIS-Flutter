@@ -21,7 +21,7 @@ class DocumentDeliveryListController extends BaseController {
   final TextEditingController seacrch = TextEditingController();
   final keyword = "".obs;
 
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat rangeFormat = DateFormat("yyyy-MM-dd");
   String filterStatus = "-1";
   String? searchValue;

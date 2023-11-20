@@ -20,7 +20,7 @@ class TransportationController extends BaseController {
   List<tv.Data> tvList = [];
   List<ot.Data> otList = [];
   List<transport.Data> transportList = [];
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
   @override
   void onInit() {

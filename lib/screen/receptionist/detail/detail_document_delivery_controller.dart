@@ -21,7 +21,7 @@ class DetailDocumentDeliveryController extends BaseController {
   final attachment = TextEditingController();
   final remarks = TextEditingController();
 
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   String? senderID;
   String? receiverSiteID;
   String? receiverCompanyID;

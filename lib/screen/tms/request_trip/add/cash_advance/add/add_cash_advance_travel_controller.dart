@@ -25,7 +25,7 @@ class AddCashAdvanceTravelController extends BaseController {
   final TextEditingController travellerName = TextEditingController();
   final TextEditingController totalController = TextEditingController();
 
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   bool isButtonEnabled = false;
   String currencyCode = "";
   int? selectedCurrency;
@@ -52,6 +52,7 @@ class AddCashAdvanceTravelController extends BaseController {
 
   Future<void> fetchList() async {
     itemCA = [];
+    currentCurrency = "27";
     try {
       await requestTrip.getItemCATravel().then((value) {
         itemCA.addAll(value.data?.toSet().toList() ?? []);

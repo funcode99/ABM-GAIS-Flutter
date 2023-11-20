@@ -424,7 +424,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                           // ),
                                           Column(
                                               children: controller.guestList.isNotEmpty
-                                                  ? controller.guestList
+                                                  ? controller.guestList.reversed
                                                       .mapIndexed(
                                                         (i, e) => CustomTripCard(
                                                           listNumber: i + 1,
@@ -918,14 +918,14 @@ class FormRequestTripScreen extends StatelessWidget {
                                                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                                                   children: [
                                                                                     Text("Check In", style: listTitleTextStyle),
-                                                                                    Text(e.checkInDate.toString(), style: listSubTitleTextStyle),
+                                                                                    Text(controller.dateFormat.format(DateTime.parse(e.checkInDate.toString())), style: listSubTitleTextStyle),
                                                                                   ],
                                                                                 ),
                                                                                 Column(
                                                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                                                   children: [
                                                                                     Text("Check Out", style: listTitleTextStyle),
-                                                                                    Text(e.checkOutDate.toString(), style: listSubTitleTextStyle),
+                                                                                    Text(controller.dateFormat.format(DateTime.parse(e.checkOutDate.toString())), style: listSubTitleTextStyle),
                                                                                   ],
                                                                                 ),
                                                                                 Column(

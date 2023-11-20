@@ -106,7 +106,7 @@ class TravellerScreen extends StatelessWidget {
                                               listNumber: i + 1,
                                               title: e.nameGuest.toString(),
                                               subtitle: e.nik,
-                                              info: "Guest",
+                                              info: e.isGuest == 1 ? "Guest" : "Traveller",
                                               isEdit: true,
                                               editAction: () => Get.to(const AddGuestScreen(), arguments: {
                                                 'purposeID': controller.purposeID,

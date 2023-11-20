@@ -15,7 +15,7 @@ class ActualTripListController extends BaseController {
   String? searchValue = "";
   String? filterValue = "1";
   int currentPage = 1;
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
   actual.GetAllActualizationTripModel? actualModel;
   List<actual.Data2> actualList = [];

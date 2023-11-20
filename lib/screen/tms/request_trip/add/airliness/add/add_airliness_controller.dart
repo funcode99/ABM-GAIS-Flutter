@@ -30,7 +30,7 @@ class AddAirlinessController extends BaseController {
   final passengerInfant = TextEditingController();
   final passengerChild = TextEditingController();
 
-  DateFormat dateFormat = DateFormat("dd-MM-yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   DateFormat saveFormat = DateFormat("yyyy-MM-dd");
   DateTime lastDate = DateTime.now().add(const Duration(days: 30));
 
@@ -123,10 +123,10 @@ class AddAirlinessController extends BaseController {
       travellerName.text = requestTripVariable.requestTripRequestorName ?? "";
       travellerflightClass.text = requestTripVariable.requestTripRequestorFlight ?? "";
 
-      travellerList.add(guest.Data(
-        idEmployee: travellerID,
-        nameGuest: requestTripVariable.requestTripRequestorName ?? "",
-      ));
+      // travellerList.add(guest.Data(
+      //   idEmployee: travellerID,
+      //   nameGuest: requestTripVariable.requestTripRequestorName ?? "",
+      // ));
     }
 
     update();
@@ -136,6 +136,9 @@ class AddAirlinessController extends BaseController {
     cityList = [];
     flightList = [];
     isLoading = true;
+    passengerAdult.text = "1";
+    passengerInfant.text = "0";
+    passengerChild.text = "0";
     // var dataCity = await repository.getCityList();
     // cityModel = dataCity;
     // cityList.addAll(dataCity.data?.toSet().toList() ?? []);

@@ -21,7 +21,7 @@ class EditAccommodationController extends BaseController {
   final remarks = TextEditingController();
   final sharingName = TextEditingController();
 
-  DateFormat dateFormat = DateFormat("MM/dd/yyyy");
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
   int? travellerID;
   int? jobBandID;
