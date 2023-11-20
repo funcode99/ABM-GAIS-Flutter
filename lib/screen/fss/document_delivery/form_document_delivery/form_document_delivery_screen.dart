@@ -79,7 +79,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                if(controller.showButtonCancel)
+                                if(!controller.isEdit && controller.showButtonCancel)
                                   ElevatedButton(
                                     onPressed: () {
                                       controller.openCancelDialog();
@@ -112,7 +112,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                         backgroundColor: orangeColor),
                                     child: Text("Save".tr),
                                   ),
-                                if(controller.showButtonReceived)
+                                if(!controller.isEdit && controller.showButtonReceived)
                                   ElevatedButton(
                                     onPressed: () {
                                       controller.receivedDocument();
@@ -122,7 +122,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                         backgroundColor: successColor),
                                     child: Text("Received".tr),
                                   ),
-                                if(controller.showButtonDelivering)
+                                if(!controller.isEdit && controller.showButtonDelivering)
                                   ElevatedButton(
                                     onPressed: () {
                                       controller.deliveringDocument();
@@ -132,7 +132,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                         backgroundColor: successColor),
                                     child: Text("Delivering".tr),
                                   ),
-                                if(controller.showButtonDelivered)
+                                if(!controller.isEdit && controller.showButtonDelivered)
                                   ElevatedButton(
                                     onPressed: () {
                                       controller.deliveredDocument();
@@ -384,7 +384,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                   backgroundColor: neutralColor,
                                   controller: controller.attachment,
                                   label: "Attachment (Optional)".tr,
-                                  onTap: () async {
+                                  onTap: controller.isValidAttachmentPath() ? () async {
                                     String path = controller.attachmentPath ?? "";
                                     if (path.toString()
                                         .isImageFileName) {
@@ -405,7 +405,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                                             'Could not launch ${path.toString()}');
                                       }
                                     }
-                                  },
+                                  } : null,
                                 ),
                                 if(controller.isEdit)
                                   CustomTextFormField(

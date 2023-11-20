@@ -118,8 +118,8 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                         ...controller.listDetail
                             .mapIndexed((index, element) => CommonAddItem(
                                   number: "${index + 1}",
-                                  title: "${element.codeItem} -  ${element.itemName}",
-                                  subtitle: "",
+                                  title: "${element.codeItem}",
+                                  subtitle: "${element.itemName}",
                                   // subtitle: "${element.brandName}",
                                   content: Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -272,7 +272,7 @@ class _AddRequestATKScreenState extends State<AddRequestATKScreen> {
                                   : null,
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: infoColor),
-                              child: Text("Book".tr),
+                              child: Text("Request".tr),
                             ),
                           ],
                         ),

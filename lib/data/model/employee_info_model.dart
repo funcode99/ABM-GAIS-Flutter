@@ -84,7 +84,7 @@ class Data {
     dynamic positionLevel,
     dynamic positionTittle,
     dynamic positionTitle,
-    int? idJobBand,
+    dynamic idJobBand,
     String? bandJobName,
     int? idUsers,
     String? siteName,
@@ -256,7 +256,7 @@ class Data {
   dynamic _positionLevel;
   dynamic _positionTittle;
   dynamic _positionTitle;
-  int? _idJobBand;
+  dynamic _idJobBand;
   String? _bandJobName;
   int? _idUsers;
   String? _siteName;
@@ -308,7 +308,7 @@ class Data {
     dynamic positionCode,
     dynamic positionLevel,
     dynamic positionTittle,
-    int? idJobBand,
+    dynamic idJobBand,
     String? bandJobName,
     int? idUsers,
     String? siteName,
@@ -444,7 +444,7 @@ class Data {
 
   dynamic get positionTitle => _positionTitle;
 
-  int? get idJobBand => _idJobBand;
+  dynamic get idJobBand => _idJobBand;
 
   String? get bandJobName => _bandJobName;
 

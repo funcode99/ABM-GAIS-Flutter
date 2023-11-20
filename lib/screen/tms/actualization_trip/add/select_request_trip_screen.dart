@@ -5,6 +5,7 @@ import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list/approval_log_list.dart';
 import 'package:gais/reusable/list_item/common_list_item.dart';
@@ -76,6 +77,7 @@ class SelectRequestTripScreen extends StatelessWidget {
                         const SizedBox(
                           height: 16,
                         ),
+                        controller.listRequestTrip.isEmpty ? const DataEmpty(message:"Request Trip Data Not Available") : const SizedBox(),
                         ...controller.listRequestTrip
                             .mapIndexed((index, item) => SelectRequestTripItem(
                                   isSelected: controller

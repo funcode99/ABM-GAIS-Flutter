@@ -238,6 +238,7 @@ class AddBookingMeetingRoomScreen extends StatelessWidget {
                       onChanged: (item) {
                         controller.onChangeSelectedRoom(item.toString());
                       },
+                      hintText: "Choose A Meeting Room",
                       label: "Meeting Room".tr,
                       value: controller.selectedRoom.value != null
                           ? controller.selectedRoom.value?.id.toString()

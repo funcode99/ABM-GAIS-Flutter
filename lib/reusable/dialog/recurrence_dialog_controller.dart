@@ -116,7 +116,18 @@ class RecurrenceDialogController extends BaseController with MasterDataMixin{
       enableButton.value = true;
     }
 
+  }
 
+  bool isRecurrenceDayValid(){
+    bool result = true;
+    if(selectedRecurrence.value?.value == "daily" || selectedRecurrence.value?.value == "weekly"){
+      final selectedDays = recurrenceDays.where((item) => item.isSelected);
+      if(selectedDays.isEmpty){
+        result = false;
+      }
+    }
+
+    return result;
   }
 
   void onChangeSelectedRecurrence(String value) {

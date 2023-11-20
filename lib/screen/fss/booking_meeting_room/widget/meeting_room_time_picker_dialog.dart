@@ -31,6 +31,7 @@ class _MeetingRoomTimePickerDialogState
   DateTime? endTimeTemp;
 
   List<DateTime> list = [
+    DateTime.now().copyDateWith(hour: 0, minute: 00, second: 0),
     DateTime.now().copyDateWith(hour: 0, minute: 30, second: 0),
     DateTime.now().copyDateWith(hour: 1, minute: 00, second: 0),
     DateTime.now().copyDateWith(hour: 1, minute: 30, second: 0),

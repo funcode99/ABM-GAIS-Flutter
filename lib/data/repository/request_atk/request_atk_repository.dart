@@ -25,6 +25,16 @@ class RequestATKRepository
     try {
       Dio.Response response =
           await network.dio.get('/api/request_atk/get/', queryParameters: data);
+      Map<String, dynamic> result = Map<String, dynamic>.from(response.data);
+      dynamic resultData = result['data'];
+      if(resultData is List){
+        List<dynamic> list = List<dynamic>.from(result['data']);
+
+        if(list.isEmpty){
+          PaginationModel paginationModel = PaginationModel.fromJson(PaginationModel.fallbackData);
+          return right(paginationModel);
+        }
+      }
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(
           response.data, PaginationModel.fromJsonModel);
       return right(apiResponseModel.data);
@@ -272,6 +282,16 @@ class RequestATKRepository
           '/api/approval_request_atk/get_data',
           queryParameters: data
       );
+      Map<String, dynamic> result = Map<String, dynamic>.from(response.data);
+      dynamic resultData = result['data'];
+      if(resultData is List){
+        List<dynamic> list = List<dynamic>.from(result['data']);
+
+        if(list.isEmpty){
+          PaginationModel paginationModel = PaginationModel.fromJson(PaginationModel.fallbackData);
+          return right(paginationModel);
+        }
+      }
       ApiResponseModel apiResponseModel = ApiResponseModel.fromJson(response.data, PaginationModel.fromJsonModel);
       return right(apiResponseModel.data);
     } on DioError catch (e) {

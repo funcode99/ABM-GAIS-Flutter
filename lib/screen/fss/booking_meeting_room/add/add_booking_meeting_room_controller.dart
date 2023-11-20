@@ -123,7 +123,7 @@ class AddBookingMeetingRoomController extends BaseController
       startDate.value = itemFromDashboard.value?.startDate?.toDate(originFormat: "yyyy-MM-dd");
     }
 
-    listRoom.add(RoomModel(id: "", nameMeetingRoom: "Meeting Room"));
+    listRoom.add(RoomModel(id: "", nameMeetingRoom: "Choose A Meeting Room"));
     final rooms = await getListRoomBySite(idSite.toInt());
     listRoom.addAll(rooms);
     if(rooms!=null){

@@ -136,6 +136,16 @@ class RecurrenceDialog extends StatelessWidget {
                   }
               ),
 
+              Obx(() => controller.isRecurrenceDayValid() ? const SizedBox() : const Padding(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                child: Text(
+                  "Please select day(s)",
+                  textAlign: TextAlign.start,
+                  style:
+                  TextStyle(color: Colors.redAccent, fontSize: 12),
+                ),
+              )),
+
               const SizedBox(
                 height: 8,
               ),
@@ -198,7 +208,7 @@ class RecurrenceDialog extends StatelessWidget {
                   Expanded(
                     child: Obx(() {
                       return ElevatedButton(
-                        onPressed: controller.enableButton.value ? () {
+                        onPressed: controller.enableButton.value && controller.isRecurrenceDayValid() ? () {
                           Get.back(result: controller.select());
                         } : null,
                         style: ElevatedButton.styleFrom(

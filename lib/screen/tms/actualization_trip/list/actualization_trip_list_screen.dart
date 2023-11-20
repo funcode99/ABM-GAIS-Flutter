@@ -24,16 +24,9 @@ import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 
-class ActualizationTripListScreen extends StatefulWidget {
+class ActualizationTripListScreen extends StatelessWidget {
   const ActualizationTripListScreen({Key? key}) : super(key: key);
 
-  @override
-  State<ActualizationTripListScreen> createState() =>
-      _ActualizationTripListScreenState();
-}
-
-class _ActualizationTripListScreenState
-    extends State<ActualizationTripListScreen> {
   @override
   Widget build(BuildContext context) {
     final ActualizationTripListController controller =
