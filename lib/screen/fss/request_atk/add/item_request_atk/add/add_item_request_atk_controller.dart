@@ -75,7 +75,7 @@ class AddItemRequestATKController extends BaseController with MasterDataMixin{
             onChangeSelectedItemId("${requestATKDetailModel.value?.idItem}");
           }
           quantityController.text = "${requestATKDetailModel.value?.qty}";
-          remarksController.text = requestATKDetailModel.value?.remarks ?? "";
+          remarksController.text = requestATKDetailModel.value?.remarksDetail ?? requestATKDetailModel.value?.remarks ?? "";
         }
         initEdit = false;
       }else{
