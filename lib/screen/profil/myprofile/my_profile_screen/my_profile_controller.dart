@@ -31,7 +31,7 @@ class MyProfileController extends BaseController{
       snController.text = profile?.data?[0].snEmployee ?? "";
       phoneController.text = profile?.data?[0].phoneNumber ?? "";
       dobController.text = profile?.data?[0].dob?.toDateFormat(targetFormat: "dd/MM/yyyy", originFormat: "yyyy-MM-dd HH:mm:ss" ) ?? "";
-      genderController.text = profile?.data?[0].jenkel == "L" ? "Male" : profile?.data?[0].jenkel == "P" ? "Female"  : "";
+      genderController.text = profile?.data?[0].jenkel?.toLowerCase() == "l" || profile?.data?[0].jenkel?.toLowerCase() == "male" ? "Male" : profile?.data?[0].jenkel?.toLowerCase() == "p" || profile?.data?[0].jenkel?.toLowerCase() == "female" ? "Female"  : "";
       emailController.text = profile?.data?[0].email ?? "";
       positionController.text = profile?.data?[0].positionTittle ?? "";
       companyController.text = profile?.data?[0].companyName ?? "";
