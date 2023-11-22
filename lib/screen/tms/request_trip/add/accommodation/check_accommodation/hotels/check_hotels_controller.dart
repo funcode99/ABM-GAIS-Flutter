@@ -43,17 +43,17 @@ class CheckHotelsController extends BaseController {
       if (accType == '1') {
         await antavaya
             .getHotel(
-                selectedCountry!.isoCountryCode.toString(),
-                selectedCity!.cityKey.toString(),
-                // checkinDate,
-                // checkoutDate,
-                accommodationData.data!.header!.checkInDate! ,
-                accommodationData.data!.header!.checkOutDate!,
-                "1",
-                "1",
-                "1500000"
-                // accommodationData.data.guest.first.
-                )
+          selectedCountry!.isoCountryCode.toString(),
+          selectedCity!.cityKey.toString(),
+          // checkinDate,
+          // checkoutDate,
+          accommodationData.data!.header!.checkInDate!,
+          accommodationData.data!.header!.checkOutDate!,
+          "1",
+          "1",
+          // "1500000"
+          accommodationData.data!.header!.hotelFare!,
+        )
             .then((value) {
           hotelsModel = value;
           print(value.data?.hotel?.first);
@@ -63,7 +63,6 @@ class CheckHotelsController extends BaseController {
         hotelList.forEach((element) {
           viewRoom.add(false);
         });
-
       }
     } catch (e, i) {
       e.printError();
