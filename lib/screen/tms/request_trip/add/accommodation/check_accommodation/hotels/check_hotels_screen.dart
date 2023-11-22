@@ -122,6 +122,7 @@ class CheckHotelsScreen extends StatelessWidget {
                                                               direction: Axis.horizontal,
                                                             ),
                                                             Row(
+                                                              crossAxisAlignment: CrossAxisAlignment.end,
                                                               children: [
                                                                 SizedBox(
                                                                   width: 150,

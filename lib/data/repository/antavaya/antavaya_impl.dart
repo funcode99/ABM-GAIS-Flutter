@@ -306,6 +306,7 @@ class AntavayaImpl implements AntavayaRepository {
     String checkoutDate,
     String room,
     String guest,
+    String hotelFare,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -317,16 +318,17 @@ class AntavayaImpl implements AntavayaRepository {
       "check_out": checkoutDate,
       "room": room,
       "guest": guest,
+      "hotel_fare": hotelFare,
     });
     try {
       Response response = await network.dio.post(
         "/api/antavaya/hotel/get_hotel",
         data: formData,
       );
-      print("hotels response: ${response.data}");
+      // print("hotels response: ${response.data}");
       return GetHotelsModel.fromJson(response.data);
     } on DioError catch (e) {
-      print("hotels error: ${e.response?.data}");
+      // print("hotels error: ${e.response?.data}");
       return e.response?.data;
     }
   }

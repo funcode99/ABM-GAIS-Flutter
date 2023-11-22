@@ -49,11 +49,11 @@ class GetHotelsModel {
 
 class Data {
   Data({
-    num? count,
-    num? maxPage,
+    int? count,
+    int? maxPage,
     List<Stars>? stars,
     List<Areas>? areas,
-    List<Hotels>? hotels,
+    List<Hotel>? hotel,
     bool? allowIssued,
     bool? isShowSupplier,
     String? correlationId,
@@ -66,7 +66,7 @@ class Data {
     _maxPage = maxPage;
     _stars = stars;
     _areas = areas;
-    _hotels = hotels;
+    _hotel = hotel;
     _allowIssued = allowIssued;
     _isShowSupplier = isShowSupplier;
     _correlationId = correlationId;
@@ -91,10 +91,10 @@ class Data {
         _areas?.add(Areas.fromJson(v));
       });
     }
-    if (json['Hotels'] != null) {
-      _hotels = [];
-      json['Hotels'].forEach((v) {
-        _hotels?.add(Hotels.fromJson(v));
+    if (json['Hotel'] != null) {
+      _hotel = [];
+      json['Hotel'].forEach((v) {
+        _hotel?.add(Hotel.fromJson(v));
       });
     }
     _allowIssued = json['AllowIssued'];
@@ -106,11 +106,11 @@ class Data {
     _warning = json['Warning'];
   }
 
-  num? _count;
-  num? _maxPage;
+  int? _count;
+  int? _maxPage;
   List<Stars>? _stars;
   List<Areas>? _areas;
-  List<Hotels>? _hotels;
+  List<Hotel>? _hotel;
   bool? _allowIssued;
   bool? _isShowSupplier;
   String? _correlationId;
@@ -120,11 +120,11 @@ class Data {
   dynamic _warning;
 
   Data copyWith({
-    num? count,
-    num? maxPage,
+    int? count,
+    int? maxPage,
     List<Stars>? stars,
     List<Areas>? areas,
-    List<Hotels>? hotels,
+    List<Hotel>? hotel,
     bool? allowIssued,
     bool? isShowSupplier,
     String? correlationId,
@@ -138,7 +138,7 @@ class Data {
         maxPage: maxPage ?? _maxPage,
         stars: stars ?? _stars,
         areas: areas ?? _areas,
-        hotels: hotels ?? _hotels,
+        hotel: hotel ?? _hotel,
         allowIssued: allowIssued ?? _allowIssued,
         isShowSupplier: isShowSupplier ?? _isShowSupplier,
         correlationId: correlationId ?? _correlationId,
@@ -148,15 +148,15 @@ class Data {
         warning: warning ?? _warning,
       );
 
-  num? get count => _count;
+  int? get count => _count;
 
-  num? get maxPage => _maxPage;
+  int? get maxPage => _maxPage;
 
   List<Stars>? get stars => _stars;
 
   List<Areas>? get areas => _areas;
 
-  List<Hotels>? get hotels => _hotels;
+  List<Hotel>? get hotel => _hotel;
 
   bool? get allowIssued => _allowIssued;
 
@@ -182,8 +182,8 @@ class Data {
     if (_areas != null) {
       map['Areas'] = _areas?.map((v) => v.toJson()).toList();
     }
-    if (_hotels != null) {
-      map['Hotels'] = _hotels?.map((v) => v.toJson()).toList();
+    if (_hotel != null) {
+      map['Hotel'] = _hotel?.map((v) => v.toJson()).toList();
     }
     map['AllowIssued'] = _allowIssued;
     map['IsShowSupplier'] = _isShowSupplier;
@@ -196,39 +196,39 @@ class Data {
   }
 }
 
-class Hotels {
-  Hotels({
+class Hotel {
+  Hotel({
     String? hotelKey,
     String? hotelName,
     dynamic chainCode,
     dynamic chainName,
     String? providerCode,
     String? providerHotelCode,
-    num? starRating,
+    int? starRating,
     String? isoCountryCode,
     String? countryName,
     String? cityKey,
     String? cityName,
     String? area,
-    num? latitude,
-    num? longitude,
+    double? latitude,
+    double? longitude,
     String? address,
     String? mapImageUri,
     String? phone,
-    String? facsimile,
+    dynamic facsimile,
     String? email,
     String? website,
     String? imageUri,
     String? thumbUri,
-    num? status,
+    int? status,
     String? currency,
-    num? currencyRate,
-    num? lowestRoomPrice,
-    num? pricePerRoomNight,
+    int? currencyRate,
+    int? lowestRoomPrice,
+    int? pricePerRoomNight,
     List<String>? facilities,
-    List<Rooms>? rooms,
-    num? averagePrice,
+    int? averagePrice,
     bool? havePromoFare,
+    List<Rooms>? rooms,
   }) {
     _hotelKey = hotelKey;
     _hotelName = hotelName;
@@ -258,12 +258,12 @@ class Hotels {
     _lowestRoomPrice = lowestRoomPrice;
     _pricePerRoomNight = pricePerRoomNight;
     _facilities = facilities;
-    _rooms = rooms;
     _averagePrice = averagePrice;
     _havePromoFare = havePromoFare;
+    _rooms = rooms;
   }
 
-  Hotels.fromJson(dynamic json) {
+  Hotel.fromJson(dynamic json) {
     _hotelKey = json['HotelKey'];
     _hotelName = json['HotelName'];
     _chainCode = json['ChainCode'];
@@ -292,14 +292,14 @@ class Hotels {
     _lowestRoomPrice = json['LowestRoomPrice'];
     _pricePerRoomNight = json['PricePerRoomNight'];
     _facilities = json['Facilities'] != null ? json['Facilities'].cast<String>() : [];
+    _averagePrice = json['AveragePrice'];
+    _havePromoFare = json['HavePromoFare'];
     if (json['Rooms'] != null) {
       _rooms = [];
       json['Rooms'].forEach((v) {
         _rooms?.add(Rooms.fromJson(v));
       });
     }
-    _averagePrice = json['AveragePrice'];
-    _havePromoFare = json['HavePromoFare'];
   }
 
   String? _hotelKey;
@@ -308,66 +308,66 @@ class Hotels {
   dynamic _chainName;
   String? _providerCode;
   String? _providerHotelCode;
-  num? _starRating;
+  int? _starRating;
   String? _isoCountryCode;
   String? _countryName;
   String? _cityKey;
   String? _cityName;
   String? _area;
-  num? _latitude;
-  num? _longitude;
+  double? _latitude;
+  double? _longitude;
   String? _address;
   String? _mapImageUri;
   String? _phone;
-  String? _facsimile;
+  dynamic _facsimile;
   String? _email;
   String? _website;
   String? _imageUri;
   String? _thumbUri;
-  num? _status;
+  int? _status;
   String? _currency;
-  num? _currencyRate;
-  num? _lowestRoomPrice;
-  num? _pricePerRoomNight;
+  int? _currencyRate;
+  int? _lowestRoomPrice;
+  int? _pricePerRoomNight;
   List<String>? _facilities;
-  List<Rooms>? _rooms;
-  num? _averagePrice;
+  int? _averagePrice;
   bool? _havePromoFare;
+  List<Rooms>? _rooms;
 
-  Hotels copyWith({
+  Hotel copyWith({
     String? hotelKey,
     String? hotelName,
     dynamic chainCode,
     dynamic chainName,
     String? providerCode,
     String? providerHotelCode,
-    num? starRating,
+    int? starRating,
     String? isoCountryCode,
     String? countryName,
     String? cityKey,
     String? cityName,
     String? area,
-    num? latitude,
-    num? longitude,
+    double? latitude,
+    double? longitude,
     String? address,
     String? mapImageUri,
     String? phone,
-    String? facsimile,
+    dynamic facsimile,
     String? email,
     String? website,
     String? imageUri,
     String? thumbUri,
-    num? status,
+    int? status,
     String? currency,
-    num? currencyRate,
-    num? lowestRoomPrice,
-    num? pricePerRoomNight,
+    int? currencyRate,
+    int? lowestRoomPrice,
+    int? pricePerRoomNight,
     List<String>? facilities,
-    List<Rooms>? rooms,
-    num? averagePrice,
+    int? averagePrice,
     bool? havePromoFare,
+    List<Rooms>? rooms,
   }) =>
-      Hotels(
+      Hotel(
         hotelKey: hotelKey ?? _hotelKey,
         hotelName: hotelName ?? _hotelName,
         chainCode: chainCode ?? _chainCode,
@@ -396,9 +396,9 @@ class Hotels {
         lowestRoomPrice: lowestRoomPrice ?? _lowestRoomPrice,
         pricePerRoomNight: pricePerRoomNight ?? _pricePerRoomNight,
         facilities: facilities ?? _facilities,
-        rooms: rooms ?? _rooms,
         averagePrice: averagePrice ?? _averagePrice,
         havePromoFare: havePromoFare ?? _havePromoFare,
+        rooms: rooms ?? _rooms,
       );
 
   String? get hotelKey => _hotelKey;
@@ -413,7 +413,7 @@ class Hotels {
 
   String? get providerHotelCode => _providerHotelCode;
 
-  num? get starRating => _starRating;
+  int? get starRating => _starRating;
 
   String? get isoCountryCode => _isoCountryCode;
 
@@ -425,9 +425,9 @@ class Hotels {
 
   String? get area => _area;
 
-  num? get latitude => _latitude;
+  double? get latitude => _latitude;
 
-  num? get longitude => _longitude;
+  double? get longitude => _longitude;
 
   String? get address => _address;
 
@@ -435,7 +435,7 @@ class Hotels {
 
   String? get phone => _phone;
 
-  String? get facsimile => _facsimile;
+  dynamic get facsimile => _facsimile;
 
   String? get email => _email;
 
@@ -445,23 +445,23 @@ class Hotels {
 
   String? get thumbUri => _thumbUri;
 
-  num? get status => _status;
+  int? get status => _status;
 
   String? get currency => _currency;
 
-  num? get currencyRate => _currencyRate;
+  int? get currencyRate => _currencyRate;
 
-  num? get lowestRoomPrice => _lowestRoomPrice;
+  int? get lowestRoomPrice => _lowestRoomPrice;
 
-  num? get pricePerRoomNight => _pricePerRoomNight;
+  int? get pricePerRoomNight => _pricePerRoomNight;
 
   List<String>? get facilities => _facilities;
 
-  List<Rooms>? get rooms => _rooms;
-
-  num? get averagePrice => _averagePrice;
+  int? get averagePrice => _averagePrice;
 
   bool? get havePromoFare => _havePromoFare;
+
+  List<Rooms>? get rooms => _rooms;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -493,11 +493,11 @@ class Hotels {
     map['LowestRoomPrice'] = _lowestRoomPrice;
     map['PricePerRoomNight'] = _pricePerRoomNight;
     map['Facilities'] = _facilities;
+    map['AveragePrice'] = _averagePrice;
+    map['HavePromoFare'] = _havePromoFare;
     if (_rooms != null) {
       map['Rooms'] = _rooms?.map((v) => v.toJson()).toList();
     }
-    map['AveragePrice'] = _averagePrice;
-    map['HavePromoFare'] = _havePromoFare;
     return map;
   }
 }
@@ -515,15 +515,15 @@ class Rooms {
     String? mealTypeName,
     bool? includeBreakfast,
     String? currency,
-    num? totalPrice,
-    num? orderPriority,
-    num? status,
+    int? totalPrice,
+    int? orderPriority,
+    int? status,
     bool? isPromoFare,
     dynamic promoFareFor,
     dynamic subProviderCode,
     List<PriceDetails>? priceDetails,
-    dynamic additionalPrice,
-    num? averagePrice,
+    List<dynamic>? additionalPrice,
+    int? averagePrice,
   }) {
     _providerCode = providerCode;
     _roomKey = roomKey;
@@ -571,7 +571,13 @@ class Rooms {
         _priceDetails?.add(PriceDetails.fromJson(v));
       });
     }
-    _additionalPrice = json['AdditionalPrice'];
+    if (json['AdditionalPrice'] != null) {
+      _additionalPrice = [];
+      // json['AdditionalPrice'].forEach((v) {
+      //   _additionalPrice?.add(Dynamic.fromJson(v));
+      // });
+      _additionalPrice = json['AdditionalPrice'];
+    }
     _averagePrice = json['AveragePrice'];
   }
 
@@ -586,15 +592,15 @@ class Rooms {
   String? _mealTypeName;
   bool? _includeBreakfast;
   String? _currency;
-  num? _totalPrice;
-  num? _orderPriority;
-  num? _status;
+  int? _totalPrice;
+  int? _orderPriority;
+  int? _status;
   bool? _isPromoFare;
   dynamic _promoFareFor;
   dynamic _subProviderCode;
   List<PriceDetails>? _priceDetails;
-  dynamic _additionalPrice;
-  num? _averagePrice;
+  List<dynamic>? _additionalPrice;
+  int? _averagePrice;
 
   Rooms copyWith({
     String? providerCode,
@@ -608,15 +614,15 @@ class Rooms {
     String? mealTypeName,
     bool? includeBreakfast,
     String? currency,
-    num? totalPrice,
-    num? orderPriority,
-    num? status,
+    int? totalPrice,
+    int? orderPriority,
+    int? status,
     bool? isPromoFare,
     dynamic promoFareFor,
     dynamic subProviderCode,
     List<PriceDetails>? priceDetails,
-    dynamic additionalPrice,
-    num? averagePrice,
+    List<dynamic>? additionalPrice,
+    int? averagePrice,
   }) =>
       Rooms(
         providerCode: providerCode ?? _providerCode,
@@ -663,11 +669,11 @@ class Rooms {
 
   String? get currency => _currency;
 
-  num? get totalPrice => _totalPrice;
+  int? get totalPrice => _totalPrice;
 
-  num? get orderPriority => _orderPriority;
+  int? get orderPriority => _orderPriority;
 
-  num? get status => _status;
+  int? get status => _status;
 
   bool? get isPromoFare => _isPromoFare;
 
@@ -677,9 +683,9 @@ class Rooms {
 
   List<PriceDetails>? get priceDetails => _priceDetails;
 
-  dynamic get additionalPrice => _additionalPrice;
+  List<dynamic>? get additionalPrice => _additionalPrice;
 
-  num? get averagePrice => _averagePrice;
+  int? get averagePrice => _averagePrice;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -703,7 +709,9 @@ class Rooms {
     if (_priceDetails != null) {
       map['PriceDetails'] = _priceDetails?.map((v) => v.toJson()).toList();
     }
-    map['AdditionalPrice'] = _additionalPrice;
+    if (_additionalPrice != null) {
+      map['AdditionalPrice'] = _additionalPrice?.map((v) => v.toJson()).toList();
+    }
     map['AveragePrice'] = _averagePrice;
     return map;
   }
@@ -711,12 +719,12 @@ class Rooms {
 
 class PriceDetails {
   PriceDetails({
-    num? nightIndex,
-    num? countAdult,
-    num? countChild,
-    num? countInfant,
-    num? totalRoom,
-    num? totalPrice,
+    int? nightIndex,
+    int? countAdult,
+    int? countChild,
+    int? countInfant,
+    int? totalRoom,
+    int? totalPrice,
     RoomTypePrice? roomTypePrice,
   }) {
     _nightIndex = nightIndex;
@@ -738,21 +746,21 @@ class PriceDetails {
     _roomTypePrice = json['RoomTypePrice'] != null ? RoomTypePrice.fromJson(json['RoomTypePrice']) : null;
   }
 
-  num? _nightIndex;
-  num? _countAdult;
-  num? _countChild;
-  num? _countInfant;
-  num? _totalRoom;
-  num? _totalPrice;
+  int? _nightIndex;
+  int? _countAdult;
+  int? _countChild;
+  int? _countInfant;
+  int? _totalRoom;
+  int? _totalPrice;
   RoomTypePrice? _roomTypePrice;
 
   PriceDetails copyWith({
-    num? nightIndex,
-    num? countAdult,
-    num? countChild,
-    num? countInfant,
-    num? totalRoom,
-    num? totalPrice,
+    int? nightIndex,
+    int? countAdult,
+    int? countChild,
+    int? countInfant,
+    int? totalRoom,
+    int? totalPrice,
     RoomTypePrice? roomTypePrice,
   }) =>
       PriceDetails(
@@ -765,17 +773,17 @@ class PriceDetails {
         roomTypePrice: roomTypePrice ?? _roomTypePrice,
       );
 
-  num? get nightIndex => _nightIndex;
+  int? get nightIndex => _nightIndex;
 
-  num? get countAdult => _countAdult;
+  int? get countAdult => _countAdult;
 
-  num? get countChild => _countChild;
+  int? get countChild => _countChild;
 
-  num? get countInfant => _countInfant;
+  int? get countInfant => _countInfant;
 
-  num? get totalRoom => _totalRoom;
+  int? get totalRoom => _totalRoom;
 
-  num? get totalPrice => _totalPrice;
+  int? get totalPrice => _totalPrice;
 
   RoomTypePrice? get roomTypePrice => _roomTypePrice;
 
@@ -796,41 +804,40 @@ class PriceDetails {
 
 class RoomTypePrice {
   RoomTypePrice({
-    Doubleroom? doubleroom,
+    DoubleRoomType? doubleRoomType,
   }) {
-    _doubleroom = doubleroom;
+    _doubleRoomType = doubleRoomType;
   }
 
   RoomTypePrice.fromJson(dynamic json) {
-    _doubleroom = json['double'] != null ? Doubleroom.fromJson(json['double']) : null;
+    // _doubleRoomType = json['double'];
+    DoubleRoomType;
   }
 
-  Doubleroom? _doubleroom;
+  DoubleRoomType? _doubleRoomType;
 
   RoomTypePrice copyWith({
-    Doubleroom? doubleroom,
+    DoubleRoomType? doubleRoomType,
   }) =>
       RoomTypePrice(
-        doubleroom: doubleroom ?? _doubleroom,
+        doubleRoomType: doubleRoomType ?? _doubleRoomType,
       );
 
-  Doubleroom? get doubleroom => _doubleroom;
+  DoubleRoomType? get doubleRoomType => _doubleRoomType;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    if (_doubleroom != null) {
-      map['double'] = _doubleroom?.toJson();
-    }
+    map['double'] = _doubleRoomType;
     return map;
   }
 }
 
-class Doubleroom {
-  Doubleroom({
+class DoubleRoomType {
+  DoubleRoomType({
     String? typeCode,
     String? typeName,
-    num? countRoom,
-    num? pricePerRoom,
+    int? countRoom,
+    int? pricePerRoom,
   }) {
     _typeCode = typeCode;
     _typeName = typeName;
@@ -838,7 +845,7 @@ class Doubleroom {
     _pricePerRoom = pricePerRoom;
   }
 
-  Doubleroom.fromJson(dynamic json) {
+  DoubleRoomType.fromJson(dynamic json) {
     _typeCode = json['TypeCode'];
     _typeName = json['TypeName'];
     _countRoom = json['CountRoom'];
@@ -847,16 +854,16 @@ class Doubleroom {
 
   String? _typeCode;
   String? _typeName;
-  num? _countRoom;
-  num? _pricePerRoom;
+  int? _countRoom;
+  int? _pricePerRoom;
 
-  Doubleroom copyWith({
+  DoubleRoomType copyWith({
     String? typeCode,
     String? typeName,
-    num? countRoom,
-    num? pricePerRoom,
+    int? countRoom,
+    int? pricePerRoom,
   }) =>
-      Doubleroom(
+      DoubleRoomType(
         typeCode: typeCode ?? _typeCode,
         typeName: typeName ?? _typeName,
         countRoom: countRoom ?? _countRoom,
@@ -867,9 +874,9 @@ class Doubleroom {
 
   String? get typeName => _typeName;
 
-  num? get countRoom => _countRoom;
+  int? get countRoom => _countRoom;
 
-  num? get pricePerRoom => _pricePerRoom;
+  int? get pricePerRoom => _pricePerRoom;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -884,7 +891,7 @@ class Doubleroom {
 class Areas {
   Areas({
     String? area,
-    num? count,
+    int? count,
   }) {
     _area = area;
     _count = count;
@@ -896,11 +903,11 @@ class Areas {
   }
 
   String? _area;
-  num? _count;
+  int? _count;
 
   Areas copyWith({
     String? area,
-    num? count,
+    int? count,
   }) =>
       Areas(
         area: area ?? _area,
@@ -909,7 +916,7 @@ class Areas {
 
   String? get area => _area;
 
-  num? get count => _count;
+  int? get count => _count;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -921,8 +928,8 @@ class Areas {
 
 class Stars {
   Stars({
-    num? rating,
-    num? count,
+    int? rating,
+    int? count,
   }) {
     _rating = rating;
     _count = count;
@@ -933,21 +940,21 @@ class Stars {
     _count = json['Count'];
   }
 
-  num? _rating;
-  num? _count;
+  int? _rating;
+  int? _count;
 
   Stars copyWith({
-    num? rating,
-    num? count,
+    int? rating,
+    int? count,
   }) =>
       Stars(
         rating: rating ?? _rating,
         count: count ?? _count,
       );
 
-  num? get rating => _rating;
+  int? get rating => _rating;
 
-  num? get count => _count;
+  int? get count => _count;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

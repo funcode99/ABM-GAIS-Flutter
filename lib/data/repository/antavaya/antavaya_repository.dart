@@ -60,6 +60,7 @@ abstract class AntavayaRepository {
     String CheckoutDate,
     String room,
     String guest,
+    String hotelFare,
   );
 
   Future<GetTrainScheduleModel> getTrainSchedule(

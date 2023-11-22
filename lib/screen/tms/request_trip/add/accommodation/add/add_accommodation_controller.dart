@@ -13,6 +13,7 @@ import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_scr
 import 'package:gais/screen/tms/request_trip/add/accommodation/check_accommodation/check_accommodation_screen.dart';
 import 'package:gais/screen/tms/request_trip/add/accommodation/check_accommodation/hotels/check_hotels_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
+import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -96,8 +97,8 @@ class AddAccommodationController extends BaseController {
         print(value.data?.first.nameCity.toString());
         selectedCountry = countryList.where((e) => e.countryName == value.data?.first.nameCountry.toString()).first;
         selectedCity = cityList.where((e) => e.cityName == value.data?.first.nameCity.toString()).first;
-        checkinDate.text = value.data?.first.checkInDate ?? "";
-        checkoutDate.text = value.data?.first.checkOutDate ?? "";
+        checkinDate.text = dateFormat.format(DateTime.parse(value.data?.first.checkInDate ?? DateTime.now().toString())) ?? "";
+        checkoutDate.text =  dateFormat.format(DateTime.parse(value.data?.first.checkOutDate ?? DateTime.now().toString())) ?? "";
         dateCheckin = DateTime.parse(value.data!.first.checkInDate.toString());
         dateCheckout = DateTime.parse(value.data!.first.checkOutDate.toString());
         if (dateCheckin!.isBefore(DateTime.now())) {
@@ -125,7 +126,7 @@ class AddAccommodationController extends BaseController {
       await storage.readEmployeeInfo().then((value) {
         travellerID = int.parse(value.first.id.toString());
         travellerName.text = value.first.employeeName.toString();
-        hotelFare.text = value.first.hotelFare.toString();
+        hotelFare.text = value.first.hotelFare?.toInt().toCurrency().toString() ?? "";
         travellerGender.text = value.first.jenkel.toString() == "L" ? "Male" : "Female";
         jobBandID = int.parse(value.first.idJobBand.toString());
       });

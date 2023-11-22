@@ -69,6 +69,7 @@ class AddGuestScreen extends StatelessWidget {
                               onChanged: (value) {
                                 controller.selectedType = value;
                                 controller.update();
+                                print(value);
                               },
                             ),
                             const SizedBox(height: 8),

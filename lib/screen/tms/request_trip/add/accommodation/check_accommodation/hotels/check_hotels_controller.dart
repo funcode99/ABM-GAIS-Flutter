@@ -21,7 +21,7 @@ class CheckHotelsController extends BaseController {
   UpdateAccommodationModel accommodationData = Get.arguments['data'];
   String accType = Get.arguments['accommodationType'];
 
-  List<hotel.Hotels> hotelList = [];
+  List<hotel.Hotel> hotelList = [];
   List<bool> viewRoom = [];
   hotel.GetHotelsModel? hotelsModel;
   bool isLoading = false;
@@ -43,21 +43,27 @@ class CheckHotelsController extends BaseController {
       if (accType == '1') {
         await antavaya
             .getHotel(
-          selectedCountry!.isoCountryCode.toString(),
-          selectedCity!.cityKey.toString(),
-          checkinDate,
-          checkoutDate,
-          "1",
-          "1",
-        )
+                selectedCountry!.isoCountryCode.toString(),
+                selectedCity!.cityKey.toString(),
+                // checkinDate,
+                // checkoutDate,
+                accommodationData.data!.header!.checkInDate! ,
+                accommodationData.data!.header!.checkOutDate!,
+                "1",
+                "1",
+                "1500000"
+                // accommodationData.data.guest.first.
+                )
             .then((value) {
           hotelsModel = value;
-          hotelList.addAll(value.data?.hotels?.toSet().toList() ?? []);
+          print(value.data?.hotel?.first);
+          hotelList.addAll(value.data?.hotel?.toSet().toList() ?? []);
         });
 
         hotelList.forEach((element) {
           viewRoom.add(false);
         });
+
       }
     } catch (e, i) {
       e.printError();
