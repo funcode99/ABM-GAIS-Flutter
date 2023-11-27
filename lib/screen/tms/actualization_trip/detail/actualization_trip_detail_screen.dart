@@ -11,6 +11,7 @@ import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/deleteconfirmationdialog.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list/approval_log_list.dart';
@@ -628,7 +629,7 @@ class ActualizationTripDetailScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: Obx(() {
                             return controller.listLogApproval.isEmpty
-                                ? const SizedBox()
+                                ? const DataEmpty()
                                 : ApprovalLogList(
                               list: controller.listLogApproval,
                               waitingApprovalValue: ActualizationTripEnum

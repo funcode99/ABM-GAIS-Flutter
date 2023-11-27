@@ -474,7 +474,7 @@ class _PoolCarDetailScreenState extends State<PoolCarDetailScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Obx(() {
                           return controller.listLogApproval.isEmpty
-                              ? const SizedBox()
+                              ? const DataEmpty()
                               : ApprovalLogList(list: controller.listLogApproval, waitingApprovalValue: RequestTripEnum.waitingApproval.value,);
                         }),
                       );
