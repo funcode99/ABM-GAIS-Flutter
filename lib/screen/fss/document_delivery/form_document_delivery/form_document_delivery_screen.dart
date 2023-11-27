@@ -6,6 +6,7 @@ import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/list/approval_log_list.dart';
@@ -430,7 +431,7 @@ class FormDocumentDeliveryScreen extends StatelessWidget {
                         ),
                       if(controller.selectedTab == TabEnum.approval)
                         controller.listLogApproval.isEmpty
-                            ? const SizedBox()
+                            ? const DataEmpty()
                             : ApprovalLogList(list: controller.listLogApproval, waitingApprovalValue: 0,)
 
                     ]),

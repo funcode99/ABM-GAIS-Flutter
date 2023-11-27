@@ -15,6 +15,7 @@ import 'package:gais/reusable/calendar/custom_calendar_picker.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customiconbutton.dart';
 import 'package:gais/reusable/customstatuscontainer.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/dialog/cancel_dialog.dart';
 import 'package:gais/reusable/dialog/recurrence_dialog.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
@@ -1820,7 +1821,7 @@ class DetailBookingMeetingRoomScreen extends StatelessWidget {
                           margin: const EdgeInsets.symmetric(
                               vertical: 16, horizontal: 8),
                           child: controller.listLogApproval.isEmpty
-                            ? const SizedBox()
+                            ? const DataEmpty()
                           : Card(
                             child: ApprovalLogList(
                               list: controller.listLogApproval,
