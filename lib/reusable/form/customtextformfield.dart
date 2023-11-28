@@ -53,14 +53,14 @@ class CustomTextFormField extends StatelessWidget {
             text: label,
             style: formlabelTextStyle,
             children: <TextSpan>[
-              TextSpan(text: isRequired ? "*" : "", style: TextStyle(color: Colors.red)),
+              TextSpan(text: isRequired ? "*" : "", style: const TextStyle(color: Colors.red)),
             ],
           ),
         ),
         SizedBox(
           height: helperText != null ? 16 : 8,
         ),
-        helperText != null ? Text(helperText ?? "") : SizedBox(),
+        helperText != null ? Text(helperText ?? "") : const SizedBox(),
         SizedBox(
           height: helperText != null ? 16 : 0,
         ),
@@ -90,6 +90,14 @@ class CustomTextFormField extends StatelessWidget {
                 prefixIcon: prefixIcon,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 hintText: hintText ?? label,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: readOnly ? Colors.black54 : Theme.of(context).primaryColor,
+                    width: readOnly ? 1 : 2,
+                    style: BorderStyle.solid
+                  )
+                ),
                 hintStyle: hintTextStyle),
           ),
         ),

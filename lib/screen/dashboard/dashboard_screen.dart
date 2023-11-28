@@ -7,6 +7,7 @@ import 'package:gais/data/model/meeting_room_used.dart';
 import 'package:gais/data/model/supplies_out_model.dart';
 import 'package:gais/data/model/trip_purpose_model.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/dataempty.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/dashboard/dashboard_controller.dart';
 import 'package:gais/screen/home/home_controller.dart';
@@ -104,15 +105,24 @@ class DashboardScreen extends StatelessWidget {
                   title: "Reset",
                   width: Get.width >= 1201 ? 100 : 70,
                   icon: Icons.restart_alt,
-                  onPressed: (){
-                    controller.selectedYear.value = "0";
-                    controller.selectedMonth.value = "";
-                    controller.getData();
+                  onPressed: () {
+                    controller.resetFilter();
                   },
                 )
               ],
             ),
-            Text("My Trip Status", style: listTitleTextStyle),
+            Obx((){
+              if(controller.showError.value){
+                return const DataEmpty();
+              }
+              return const SizedBox()
+;            }),
+            Obx(() {
+              if (controller.dashboardData.value.statusTrip == null) {
+                return const SizedBox();
+              }
+              return Text("My Trip Status", style: listTitleTextStyle);
+            }),
             Obx(() {
               if (controller.dashboardData.value.statusTrip == null) {
                 return const SizedBox();

@@ -30,6 +30,8 @@ class DashboardController extends BaseController with MasterDataMixin {
 
   final dashboardData = DashboardModel().obs;
 
+  final showError = false.obs;
+
   List listMonths = [
     {"id": "", "value": "Month"},
     {"id": 1, "value": "January"},
@@ -92,12 +94,20 @@ class DashboardController extends BaseController with MasterDataMixin {
     });
 
     result.fold((l) {
+      showError(true);
       Get.showSnackbar(
           CustomGetSnackBar(message: l.message, backgroundColor: Colors.red));
     }, (r) {
+      showError(false);
       dashboardData.value = r;
       setValue();
     });
+  }
+
+  void resetFilter(){
+    selectedYear.value = listyears.first.toString();
+    selectedMonth.value = "";
+    getData();
   }
 
   setValue(){

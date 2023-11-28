@@ -350,7 +350,7 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
 
       //prepare data for empty schedule
       List<BookingMeetingRoomModel> tempAvailableBookingList = [];
-      listHours.forEach((element) {
+      for (var element in listHours) {
         BookingMeetingRoomModel newEmptySchedule = BookingMeetingRoomModel(
           minute: element.minute,
           hour: element.hour,
@@ -367,7 +367,7 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
           startDate: requestDateFormat.format(selectedDate.value!)
         );
         tempAvailableBookingList.add(newEmptySchedule);
-      });
+      }
 
 
       tempMap[key]["listMappedBooking"] = tempBookingMeetingRoomList;
@@ -598,12 +598,69 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
 
     }
 
-    listSelectedBooking.add(item);
+    //this block check for block select
+    if(listSelectedBooking.isNotEmpty){
+      BookingMeetingRoomModel benchmark = listSelectedBooking.first;
+      DateTime benchmarkStartTime = benchmark.startTime!.toDate(originFormat: "HH:mm:ss")!;
+      DateTime newItemStartTime = item.startTime!.toDate(originFormat: "HH:mm:ss")!;
+
+      if(benchmarkStartTime.isTimeAfter(newItemStartTime, isInclusive: false)){
+        //block time after selected item
+
+        final list = _listHours.where((element) => element.isTimeAfter(newItemStartTime, isInclusive: true) && element.isTimeBefore(benchmarkStartTime, isInclusive: false));
+
+        for (var element in list) {
+          listSelectedBooking.add(
+            item.copyWith(
+              startTime: hourMinuteSecondFormat.format(element),
+              endTime: hourMinuteSecondFormat.format(element.add(const Duration(minutes: 30))),
+              hour: element.hour,
+              minute: element.minute
+            )
+          );
+        }
+
+      }else{
+        //block time before selected item
+        benchmark = listSelectedBooking.last;
+        benchmarkStartTime = benchmark.startTime!.toDate(originFormat: "HH:mm:ss")!;
+
+        final list = _listHours.where((element) => element.isTimeAfter(benchmarkStartTime, isInclusive: false) && element.isTimeBefore(newItemStartTime, isInclusive: true));
+
+        for (var element in list) {
+          listSelectedBooking.add(
+              item.copyWith(
+                  startTime: hourMinuteSecondFormat.format(element),
+                  endTime: hourMinuteSecondFormat.format(element.add(const Duration(minutes: 30))),
+                  hour: element.hour,
+                  minute: element.minute
+              )
+          );
+        }
+      }
+
+    }else{
+      //first item
+      listSelectedBooking.add(item);
+    }
+
     listSelectedBooking.sort((a,b) => a.startTime!.toDate(originFormat: "HH:mm:ss")!.isAfter(b.startTime!.toDate(originFormat: "HH:mm:ss")!) ? 1 : -1);
   }
 
   void removeFromSelectedBooking(BookingMeetingRoomModel item){
-    listSelectedBooking.removeWhere((element) => item == element);
+    if(item == listSelectedBooking.first){
+      listSelectedBooking.removeWhere((element) => item == element);
+    }else{
+      DateTime selectedItemStartTime = item.startTime!.toDate(originFormat: "HH:mm:ss")!;
+
+      listSelectedBooking.removeWhere((element){
+        DateTime dateTime = element.startTime!.toDate(originFormat: "HH:mm:ss")!;
+
+        return dateTime.isTimeAfter(selectedItemStartTime, isInclusive: true);
+      });
+    }
+    listSelectedBooking.sort((a,b) => a.startTime!.toDate(originFormat: "HH:mm:ss")!.isAfter(b.startTime!.toDate(originFormat: "HH:mm:ss")!) ? 1 : -1);
+
   }
 
   BookingMeetingRoomModel getItem(){
