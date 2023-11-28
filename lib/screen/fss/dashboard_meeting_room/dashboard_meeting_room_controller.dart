@@ -613,6 +613,7 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
           listSelectedBooking.add(
             item.copyWith(
               startTime: hourMinuteSecondFormat.format(element),
+              endTime: hourMinuteSecondFormat.format(element.add(const Duration(minutes: 30))),
               hour: element.hour,
               minute: element.minute
             )
@@ -630,6 +631,7 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
           listSelectedBooking.add(
               item.copyWith(
                   startTime: hourMinuteSecondFormat.format(element),
+                  endTime: hourMinuteSecondFormat.format(element.add(const Duration(minutes: 30))),
                   hour: element.hour,
                   minute: element.minute
               )
@@ -646,7 +648,19 @@ class DashboardMeetingRoomController extends BaseController with MasterDataMixin
   }
 
   void removeFromSelectedBooking(BookingMeetingRoomModel item){
-    listSelectedBooking.removeWhere((element) => item == element);
+    if(item == listSelectedBooking.first){
+      listSelectedBooking.removeWhere((element) => item == element);
+    }else{
+      DateTime selectedItemStartTime = item.startTime!.toDate(originFormat: "HH:mm:ss")!;
+
+      listSelectedBooking.removeWhere((element){
+        DateTime dateTime = element.startTime!.toDate(originFormat: "HH:mm:ss")!;
+
+        return dateTime.isTimeAfter(selectedItemStartTime, isInclusive: true);
+      });
+    }
+    listSelectedBooking.sort((a,b) => a.startTime!.toDate(originFormat: "HH:mm:ss")!.isAfter(b.startTime!.toDate(originFormat: "HH:mm:ss")!) ? 1 : -1);
+
   }
 
   BookingMeetingRoomModel getItem(){
