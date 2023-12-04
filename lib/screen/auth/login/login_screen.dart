@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: TopBar(
-              title: Image.asset("assets/img/abm.png"),
+              title: Image.asset("assets/img/abm_new.jpeg", height: 50,),
             ),
             body: Stack(
               children: [
@@ -38,7 +38,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Image.asset("assets/img/login.png"),
+                        const SizedBox(
+                          height: 32,
+                        ),
+                        Image.asset("assets/img/logo_pigeon.png", width: double.infinity, fit: BoxFit.contain,),
+                        const SizedBox(
+                          height: 32,
+                        ),
                         Form(
                           key: controller.formKey,
                           child: Padding(
