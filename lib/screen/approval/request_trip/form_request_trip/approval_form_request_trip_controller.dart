@@ -40,11 +40,8 @@ import 'package:path_provider/path_provider.dart';
 
 class ApprovalFormRequestTripController extends BaseController {
   ApprovalActionEnum? approvalActionEnum = Get.arguments['approvalEnum'];
-  rt.Data2 approvalData = Get.arguments['approvalData'];
   String purposeID = Get.arguments['idRequestTrip'];
   String approvalID = Get.arguments['id'];
-  int approvalAuthID = Get.arguments['idApprovalAuth'];
-  int companyID = Get.arguments['idCompany'];
   int? requsetorID;
   int? siteID;
   int? jobID;
@@ -175,13 +172,6 @@ class ApprovalFormRequestTripController extends BaseController {
     Future.wait([fetchRequestTrip(), fetchList(), fetchApprovalInfo()]);
     approvalID.printInfo(info: "approvalID");
     purposeID.printInfo(info: "purposeID");
-    Future.delayed(Duration.zero, () {
-      if (approvalActionEnum == ApprovalActionEnum.approve) {
-        openApproveDialog();
-      } else if (approvalActionEnum == ApprovalActionEnum.reject) {
-        openRejectDialog();
-      }
-    });
   }
 
   @override
@@ -324,12 +314,20 @@ class ApprovalFormRequestTripController extends BaseController {
   }
 
   Future<void> fetchRequestTrip() async {
+    approvalRequestTrip.getByID(approvalID).then((rtApproval){
+      getApprovalModel = rtApproval;
+
+      if (approvalActionEnum == ApprovalActionEnum.approve) {
+        openApproveDialog();
+      } else if (approvalActionEnum == ApprovalActionEnum.reject) {
+        openRejectDialog();
+      }
+
+    });
     var rtData = await requestTrip.getRequestTripByid(purposeID);
-    var rtApproval = await approvalRequestTrip.getByID(approvalID);
-    // print(rtApproval.data?.first.idApprovalAuth);
+
     DateTime? tempDate;
     rtModel = rtData;
-    getApprovalModel = rtApproval;
     rtStatus = rtModel?.data?.first.status ?? "";
     rtNumber = rtModel?.data?.first.noRequestTrip ?? "";
     tempDate = DateTime.parse(rtModel?.data?.first.createdAt ?? "");
@@ -488,8 +486,8 @@ class ApprovalFormRequestTripController extends BaseController {
     ApprovalModel? result = await Get.dialog(ApprovalConfirmationDialog(
       // idEmployee: requsetorID,
       // idSite: siteID,
-      idCompany: companyID,
-      idApprovalAuth: approvalAuthID,
+      idCompany: getApprovalModel?.data?.first.idCompany?.toInt(),
+      idApprovalAuth: getApprovalModel?.data?.first.idApprovalAuth?.toInt(),
     ));
 
     if (result != null) {

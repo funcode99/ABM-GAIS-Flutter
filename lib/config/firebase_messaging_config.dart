@@ -132,14 +132,15 @@ class FirebaseMessagingConfig {
       if (data["is_approval"].toString() == "0") {
         NotificationNavigation.navigateToPage(
           codeDocument: data["code_document"],
-          id: data["id_document"],
+          idDocument: data["id_document"],
           typeDocument: data["type_document"],
         );
       } else {
         NotificationNavigation.navigateToPageApproval(
           codeDocument: data["code_document"],
-          id: data["id_document"],
+          idDocument: data["id_document"],
           typeDocument: data["type_document"],
+          idApproval: data["id"]
         );
       }
     }
