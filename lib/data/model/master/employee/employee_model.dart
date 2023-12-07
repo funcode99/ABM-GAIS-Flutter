@@ -38,6 +38,7 @@ class EmployeeModel extends Equatable {
   String? companyName;
   String? hotelFare;
   String? mealsRate;
+  String? groupCompanyCode;
   dynamic flightClass;
 
   EmployeeModel({
@@ -74,6 +75,7 @@ class EmployeeModel extends Equatable {
     this.mealsRate,
     this.hotelFare,
     this.flightClass,
+    this.groupCompanyCode,
   });
 
   static EmployeeModel fromJsonModel(Object? json) => EmployeeModel.fromJson(json as Map<String, dynamic>);
@@ -145,5 +147,6 @@ class EmployeeModel extends Equatable {
         bandJobName,
         departementName,
         companyName,
+        groupCompanyCode,
       ];
 }
