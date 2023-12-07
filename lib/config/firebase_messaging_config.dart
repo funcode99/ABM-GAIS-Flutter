@@ -139,8 +139,7 @@ class FirebaseMessagingConfig {
         NotificationNavigation.navigateToPageApproval(
           codeDocument: data["code_document"],
           idDocument: data["id_document"],
-          typeDocument: data["type_document"],
-          idApproval: data["id"]
+          typeDocument: data["type_document"]
         );
       }
     }
