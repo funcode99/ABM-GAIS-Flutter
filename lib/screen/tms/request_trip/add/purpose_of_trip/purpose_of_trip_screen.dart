@@ -236,7 +236,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            controller.isDANumber
+                            controller.isDANumber && controller.isCKB
                                 ? CustomTextFormField(
                                     controller: controller.nomorDA,
                                     label: "DA Number",

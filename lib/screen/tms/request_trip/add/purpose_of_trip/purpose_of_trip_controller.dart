@@ -58,6 +58,7 @@ class PurposeOfTripController extends BaseController {
   bool attachFile = true;
   bool isLoading = false;
   bool isDANumber = false;
+  bool isCKB = false;
 
   purpose.GetDocumentCodeModel? purposeModel;
   List<purpose.Data> purposeList = [];
@@ -94,6 +95,8 @@ class PurposeOfTripController extends BaseController {
     Future.wait([
       fetchList(),
     ]);
+
+    initData();
   }
 
   @override
@@ -105,6 +108,14 @@ class PurposeOfTripController extends BaseController {
     zona.dispose();
     tlkDay.dispose();
     totalTLK.dispose();
+  }
+
+  void initData()async{
+    if(requestTripVariable.requestTripRequestorGroupCompanyCode?.toUpperCase() == "CKB"){
+      isCKB = true;
+      update();
+    }
+
   }
 
   Future<void> fetchList() async {

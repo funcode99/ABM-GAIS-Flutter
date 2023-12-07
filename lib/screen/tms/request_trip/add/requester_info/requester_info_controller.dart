@@ -23,6 +23,7 @@ class RequesterInfoController extends BaseController with MasterDataMixin {
   String? requestorSN;
   String? requestorHotel;
   String? requestorFlight;
+  String? groupCompanyCode;
   int? siteID;
 
   int? requestID;
@@ -47,6 +48,7 @@ class RequesterInfoController extends BaseController with MasterDataMixin {
     requestTripVariable.requestTripRequestorID = null;
     requestTripVariable.requestTripRequestorName = null;
     requestTripVariable.requestTripRequestorSiteID = null;
+    requestTripVariable.requestTripRequestorGroupCompanyCode = null;
   }
 
   @override
@@ -151,6 +153,8 @@ class RequesterInfoController extends BaseController with MasterDataMixin {
       requestorSN = selectedEmployee?.snEmployee;
       requestorHotel = selectedEmployee?.hotelFare;
 
+      groupCompanyCode = selectedEmployee?.groupCompanyCode;
+
       List<Map<String, dynamic>> tempList = List<Map<String, dynamic>>.from(selectedEmployee?.flightClass);
       if (tempList.isNotEmpty) {
         Map<String, dynamic> flightClass = tempList.first;
@@ -172,6 +176,8 @@ class RequesterInfoController extends BaseController with MasterDataMixin {
     requestTripVariable.requestTripRequestorJobBandID = requestorJobBandID;
     requestTripVariable.requestTripRequestorFlight = requestorFlight;
     requestTripVariable.requestTripRequestorFlightID = requestorFlightID;
+    requestTripVariable.requestTripRequestorGroupCompanyCode = groupCompanyCode;
+
 
     // print("requestTripVariable.requestTripRequestorID ${requestTripVariable.requestTripRequestorID}");
     // print("requestTripVariable.requestTripRequestorName ${requestTripVariable.requestTripRequestorName}");
