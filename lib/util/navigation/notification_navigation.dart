@@ -56,7 +56,7 @@ class NotificationNavigation {
   }
 
   static void navigateToPageApproval(
-      {String? codeDocument, String? idDocument, String? typeDocument, String? idApproval}) {
+      {String? codeDocument, String? idDocument, String? typeDocument}) {
     if (typeDocument == TypeDocumentEnum.cashAdvanceTravel.value) {
       ApprovalCashAdvanceModel item = ApprovalCashAdvanceModel(idCa: idDocument);
       Get.to(
@@ -73,8 +73,7 @@ class NotificationNavigation {
           arguments: {"item": item});
     } else if (typeDocument == TypeDocumentEnum.requestTrip.value) {
       Get.to(() => const ApprovalFormRequestTripScreen(), arguments: {
-        'id': idApproval, //id approval request trip
-        'idRequestTrip': idDocument, // id request trip (id document)
+        'id': idDocument, //id approval request trip
         'approvalEnum': ApprovalActionEnum.none
       });
     } else if (typeDocument == TypeDocumentEnum.requestATK.value) {

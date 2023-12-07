@@ -173,7 +173,7 @@ class NotificationScreen extends StatelessWidget {
                                                   if(item.isViewed == 1){
                                                     controller.updateNotificationStatus(item.id);
                                                   }
-                                                  NotificationNavigation.navigateToPageApproval(codeDocument: item.codeDocument, idDocument: item.idDocument, typeDocument: item.typeDocument, idApproval: item.id);
+                                                  NotificationNavigation.navigateToPageApproval(codeDocument: item.codeDocument, idDocument: item.idDocument, typeDocument: item.typeDocument);
                                                 },
                                               )
                                           )

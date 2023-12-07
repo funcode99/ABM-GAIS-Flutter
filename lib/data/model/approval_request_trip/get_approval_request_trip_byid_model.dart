@@ -116,7 +116,7 @@ class Data {
       dynamic updatedBy, 
       dynamic deletedAt, 
       num? currentLevel, 
-      num? idRequestTrip, 
+      dynamic idRequestTrip,
       String? noRequestTrip, 
       String? notesRtrip, 
       dynamic file, 
@@ -288,7 +288,7 @@ Data copyWith({  num? id,
   dynamic updatedBy,
   dynamic deletedAt,
   num? currentLevel,
-  num? idRequestTrip,
+  dynamic idRequestTrip,
   String? noRequestTrip,
   String? notesRtrip,
   dynamic file,
@@ -373,7 +373,7 @@ Data copyWith({  num? id,
   dynamic get updatedBy => _updatedBy;
   dynamic get deletedAt => _deletedAt;
   num? get currentLevel => _currentLevel;
-  num? get idRequestTrip => _idRequestTrip;
+  dynamic get idRequestTrip => _idRequestTrip;
   String? get noRequestTrip => _noRequestTrip;
   String? get notesRtrip => _notesRtrip;
   dynamic get file => _file;
