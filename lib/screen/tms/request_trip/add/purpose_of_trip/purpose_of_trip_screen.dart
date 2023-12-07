@@ -136,7 +136,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                             const SizedBox(height: 10),
                             Text("Itinerary", style: formlabelTextStyle),
                             const SizedBox(height: 10),
-                            CustomDropDownFormField(
+                            /*CustomDropDownFormField(
                               label: "From",
                               isRequired: true,
                               hintText: controller.isLoading ? "Loading..." : "City",
@@ -175,7 +175,7 @@ class PurposeOfTripScreen extends StatelessWidget {
                               },
                               // value: controller.toCity != null ? controller.toCity : "",
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 8),*/
                             CustomTextFormField(
                               controller: controller.departureDate,
                               label: "Departure Date",
@@ -209,13 +209,13 @@ class PurposeOfTripScreen extends StatelessWidget {
                             CustomTextFormField(
                               controller: controller.arrivalDate,
                               label: "Return Date",
-                              isRequired: true,
-                              validator: (value) {
+                              isRequired: false,
+                              /*validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return "This field is required";
                                 }
                                 return null;
-                              },
+                              },*/
                               readOnly: true,
                               suffixIcon: const Icon(Icons.calendar_month),
                               onTap: () => showDatePicker(
