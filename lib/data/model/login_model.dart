@@ -160,6 +160,7 @@ class Users {
       String? snEmployee, 
       String? fileName,
       String? filePath,
+      String? groupCompanyCode,
       dynamic roleName,
       dynamic codeRole,}){
     _id = id;
@@ -178,6 +179,7 @@ class Users {
     _employeeName = employeeName;
     _snEmployee = snEmployee;
     _filePath = filePath;
+    _groupCompanyCode = groupCompanyCode;
     _fileName = fileName;
     _roleName = roleName;
     _codeRole = codeRole;
@@ -201,6 +203,7 @@ class Users {
     _snEmployee = json['sn_employee'];
     _fileName = json['file_name'];
     _filePath = json['file_path'];
+    _groupCompanyCode = json['group_company_code'];
     _roleName = json['role_name'];
     _codeRole = json['code_role'];
   }
@@ -221,6 +224,7 @@ class Users {
   String? _snEmployee;
   String? _fileName;
   String? _filePath;
+  String? _groupCompanyCode;
   dynamic _roleName;
   dynamic _codeRole;
 Users copyWith({  num? id,
@@ -240,6 +244,7 @@ Users copyWith({  num? id,
   String? snEmployee,
   String? fileName,
   String? filePath,
+  String? groupCompanyCode,
   dynamic roleName,
   dynamic codeRole,
 }) => Users(  id: id ?? _id,
@@ -259,6 +264,7 @@ Users copyWith({  num? id,
   snEmployee: snEmployee ?? _snEmployee,
   fileName: fileName ?? _fileName,
   filePath: filePath ?? _filePath,
+  groupCompanyCode: groupCompanyCode ?? _groupCompanyCode,
   roleName: roleName ?? _roleName,
   codeRole: codeRole ?? _codeRole,
 );
@@ -279,6 +285,7 @@ Users copyWith({  num? id,
   String? get snEmployee => _snEmployee;
   String? get fileName => _fileName;
   String? get filePath => _filePath;
+  String? get groupCompanyCode => _groupCompanyCode;
   dynamic get roleName => _roleName;
   dynamic get codeRole => _codeRole;
 
@@ -301,6 +308,7 @@ Users copyWith({  num? id,
     map['sn_employee'] = _snEmployee;
     map['file_name'] = _fileName;
     map['file_path'] = _filePath;
+    map['group_company_code'] = _groupCompanyCode;
     map['role_name'] = _roleName;
     map['code_role'] = _codeRole;
     return map;

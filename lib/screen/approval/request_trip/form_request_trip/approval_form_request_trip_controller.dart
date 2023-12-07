@@ -40,11 +40,8 @@ import 'package:path_provider/path_provider.dart';
 
 class ApprovalFormRequestTripController extends BaseController {
   ApprovalActionEnum? approvalActionEnum = Get.arguments['approvalEnum'];
-  rt.Data2 approvalData = Get.arguments['approvalData'];
-  String purposeID = Get.arguments['idRequestTrip'];
+  String? purposeID;
   String approvalID = Get.arguments['id'];
-  int approvalAuthID = Get.arguments['idApprovalAuth'];
-  int companyID = Get.arguments['idCompany'];
   int? requsetorID;
   int? siteID;
   int? jobID;
@@ -172,16 +169,9 @@ class ApprovalFormRequestTripController extends BaseController {
     tlkZona.text;
     tlkTotal.text;
     tlkTotalMeals.text;
-    Future.wait([fetchRequestTrip(), fetchList(), fetchApprovalInfo()]);
+    Future.wait([fetchRequestTrip()]);
     approvalID.printInfo(info: "approvalID");
     purposeID.printInfo(info: "purposeID");
-    Future.delayed(Duration.zero, () {
-      if (approvalActionEnum == ApprovalActionEnum.approve) {
-        openApproveDialog();
-      } else if (approvalActionEnum == ApprovalActionEnum.reject) {
-        openRejectDialog();
-      }
-    });
   }
 
   @override
@@ -316,7 +306,7 @@ class ApprovalFormRequestTripController extends BaseController {
 
   Future<void> fetchApprovalInfo() async {
     try {
-      var approvalInfoData = await approvalRequestTrip.approval_info(purposeID);
+      var approvalInfoData = await approvalRequestTrip.approval_info(purposeID!);
       approvalInfoList.addAll(approvalInfoData.data?.toSet().toList() ?? []);
     } catch (e) {
       e.printError();
@@ -324,37 +314,51 @@ class ApprovalFormRequestTripController extends BaseController {
   }
 
   Future<void> fetchRequestTrip() async {
-    var rtData = await requestTrip.getRequestTripByid(purposeID);
-    var rtApproval = await approvalRequestTrip.getByID(approvalID);
-    // print(rtApproval.data?.first.idApprovalAuth);
-    DateTime? tempDate;
-    rtModel = rtData;
-    getApprovalModel = rtApproval;
-    rtStatus = rtModel?.data?.first.status ?? "";
-    rtNumber = rtModel?.data?.first.noRequestTrip ?? "";
-    tempDate = DateTime.parse(rtModel?.data?.first.createdAt ?? "");
-    createdDate.text = dateFormat.format(tempDate);
-    requestor.text = rtModel?.data?.first.employeeName ?? "";
-    purpose.text = rtModel?.data?.first.documentName ?? "";
-    // codeDocument = int.parse(rtModel?.data?.first.idDocument ?? "");
-    siteID = rtModel?.data?.first.idSite?.toInt();
-    site.text = rtModel?.data?.first.siteName ?? "";
-    notes.text = rtModel?.data?.first.notes ?? "";
-    attachment.text = rtModel?.data?.first.file.toString() ?? "";
-    selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
-    isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
-    tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";
-    // tlkJobBand.text = rtModel?.data?.first.
-    tlkZona.text = rtModel?.data?.first.zonaName ?? "";
-    tlkTotal.text = rtModel?.data?.first.totalTlk ?? "";
-    // tlkTotalMeals.text = rtModel?.data?.first. ?? "";
-    fromCity = rtModel?.data?.first.idCityFrom.toString();
-    toCity = rtModel?.data?.first.idCityTo.toString();
-    departureDate = rtModel?.data?.first.dateDeparture;
-    arrivalDate = rtModel?.data?.first.dateArrival;
-    zonaID = rtModel?.data?.first.idZona.toString();
-    tlkDay = rtModel?.data?.first.tlkPerDay.toString();
-    tlk = rtModel?.data?.first.totalTlk;
+    approvalRequestTrip.getByID(approvalID).then((rtApproval)async{
+      getApprovalModel = rtApproval;
+
+      if (approvalActionEnum == ApprovalActionEnum.approve) {
+        openApproveDialog();
+      } else if (approvalActionEnum == ApprovalActionEnum.reject) {
+        openRejectDialog();
+      }
+
+      purposeID = getApprovalModel?.data?.first.idRequestTrip.toString() ?? "";
+
+      fetchApprovalInfo();
+      fetchList();
+
+      var rtData = await requestTrip.getRequestTripByid(purposeID!);
+
+      DateTime? tempDate;
+      rtModel = rtData;
+      rtStatus = rtModel?.data?.first.status ?? "";
+      rtNumber = rtModel?.data?.first.noRequestTrip ?? "";
+      tempDate = DateTime.parse(rtModel?.data?.first.createdAt ?? "");
+      createdDate.text = dateFormat.format(tempDate);
+      requestor.text = rtModel?.data?.first.employeeName ?? "";
+      purpose.text = rtModel?.data?.first.documentName ?? "";
+      // codeDocument = int.parse(rtModel?.data?.first.idDocument ?? "");
+      siteID = rtModel?.data?.first.idSite?.toInt();
+      site.text = rtModel?.data?.first.siteName ?? "";
+      notes.text = rtModel?.data?.first.notes ?? "";
+      attachment.text = rtModel?.data?.first.file.toString() ?? "";
+      selectedPurpose = rtModel?.data?.first.idDocument.toString() ?? "";
+      isAttachment = selectedPurpose == "1" || selectedPurpose == "2" ? true : false;
+      tlkRequestor.text = rtModel?.data?.first.employeeName ?? "";
+      // tlkJobBand.text = rtModel?.data?.first.
+      tlkZona.text = rtModel?.data?.first.zonaName ?? "";
+      tlkTotal.text = rtModel?.data?.first.totalTlk ?? "";
+      // tlkTotalMeals.text = rtModel?.data?.first. ?? "";
+      fromCity = rtModel?.data?.first.idCityFrom.toString();
+      toCity = rtModel?.data?.first.idCityTo.toString();
+      departureDate = rtModel?.data?.first.dateDeparture;
+      arrivalDate = rtModel?.data?.first.dateArrival;
+      zonaID = rtModel?.data?.first.idZona.toString();
+      tlkDay = rtModel?.data?.first.tlkPerDay.toString();
+      tlk = rtModel?.data?.first.totalTlk;
+
+    });
 
     checkItems();
 
@@ -399,10 +403,10 @@ class ApprovalFormRequestTripController extends BaseController {
       var stData = await repository.getSiteList();
       siteList.addAll(stData.data?.toSet().toList() ?? []);
 
-      var guestData = await requestTrip.getGuestBytripList(purposeID);
+      var guestData = await requestTrip.getGuestBytripList(purposeID!);
       guestList.addAll(guestData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var airlinessData = await requestTrip.getAirlinessBytripList(purposeID);
+      var airlinessData = await requestTrip.getAirlinessBytripList(purposeID!);
       airlinessModel = airlinessData;
       // airlinessList.addAll(airlinessData.data?.toSet().toList() ?? []);
       airlinessData.data?.asMap().forEach((i, e) async {
@@ -457,23 +461,23 @@ class ApprovalFormRequestTripController extends BaseController {
         }
       });
 
-      var trainData = await requestTrip.getTrainTripByTrip(purposeID);
+      var trainData = await requestTrip.getTrainTripByTrip(purposeID!);
       trainModel = trainData;
       trainList.addAll(trainData.data?.toSet().toList() ?? []);
 
-      var tvData = await requestTrip.getTaxiVoucherBytripList(purposeID);
+      var tvData = await requestTrip.getTaxiVoucherBytripList(purposeID!);
       tvList.addAll(tvData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var otData = await requestTrip.getOtherTransportBytripList(purposeID);
+      var otData = await requestTrip.getOtherTransportBytripList(purposeID!);
       otList.addAll(otData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var caData = await requestTrip.getCashAdvanceTravelList(purposeID);
+      var caData = await requestTrip.getCashAdvanceTravelList(purposeID!);
       caList.addAll(caData.data?.toSet().toList() ?? []);
 
-      var transportData = await requestTrip.getTransportationBytrip(purposeID);
+      var transportData = await requestTrip.getTransportationBytrip(purposeID!);
       transportList.addAll(transportData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
 
-      var accData = await requestTrip.getAccommodationBytripList(purposeID);
+      var accData = await requestTrip.getAccommodationBytripList(purposeID!);
       accommodationsList.addAll(accData.data?.where((e) => e.idRequestTrip == purposeID).toSet().toList() ?? []);
     } catch (e, i) {
       e.printError();
@@ -488,8 +492,8 @@ class ApprovalFormRequestTripController extends BaseController {
     ApprovalModel? result = await Get.dialog(ApprovalConfirmationDialog(
       // idEmployee: requsetorID,
       // idSite: siteID,
-      idCompany: companyID,
-      idApprovalAuth: approvalAuthID,
+      idCompany: getApprovalModel?.data?.first.idCompany?.toInt(),
+      idApprovalAuth: getApprovalModel?.data?.first.idApprovalAuth?.toInt(),
     ));
 
     if (result != null) {

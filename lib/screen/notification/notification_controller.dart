@@ -4,7 +4,6 @@ import 'package:gais/data/model/notification/notification_model.dart';
 import 'package:gais/data/model/pagination_model.dart';
 import 'package:gais/data/repository/notification/notification_repository.dart';
 import 'package:gais/data/storage_core.dart';
-import 'package:gais/reusable/snackbar/custom_get_snackbar.dart';
 import 'package:get/get.dart';
 
 enum NotificationTabEnum{
