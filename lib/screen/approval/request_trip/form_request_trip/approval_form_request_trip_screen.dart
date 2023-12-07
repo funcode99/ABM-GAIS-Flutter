@@ -620,6 +620,7 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                                               children: [
                                                                                 Text("From Date", style: listTitleTextStyle),
+                                                                                if(e.fromDate!=null && e.fromDate != "")
                                                                                 Text(
                                                                                     controller.dateFormat
                                                                                         .format(DateTime.parse(e.fromDate.toString())),
@@ -630,6 +631,7 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                                               children: [
                                                                                 Text("To Date", style: listTitleTextStyle),
+                                                                                if(e.toDate!=null && e.toDate != "")
                                                                                 Text(
                                                                                     controller.dateFormat.format(DateTime.parse(e.toDate.toString())),
                                                                                     style: listSubTitleTextStyle),
@@ -689,7 +691,8 @@ class ApprovalFormRequestTripScreen extends StatelessWidget {
                                                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                                                   children: [
                                                                                     Text("Price", style: listTitleTextStyle),
-                                                                                    Text(e.price!.toInt().toCurrency().toString(),
+                                                                                      if(e.price!=null && e.price != "")
+                                                                                      Text(e.price!.toInt().toCurrency().toString(),
                                                                                         style: listSubTitleTextStyle),
                                                                                   ],
                                                                                 ),
