@@ -196,6 +196,9 @@ class PurposeOfTripController extends BaseController {
             '',
             requestorData?.jenkel ?? '',
             '0',
+            requestorData?.email ?? "",
+            null,
+            null
           )
           .then((value) => print("saveGuest : $value"));
     } catch (e, i) {
