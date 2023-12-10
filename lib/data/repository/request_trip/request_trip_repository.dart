@@ -99,6 +99,9 @@ abstract class RequestTripRepository {
     String notes,
     String gender,
     String isGuest,
+    String? email,
+    String? title,
+    String? birthdate,
   );
 
   Future<UpdateTravellerGuestModel> updateTravellerGuest(
@@ -115,6 +118,9 @@ abstract class RequestTripRepository {
     int idflightclass,
     String notes,
     String gender,
+    String? email,
+    String? title,
+    String? birthdate,
   );
 
   Future<GetGuestBytripModel> getGuestBytripList(String id);

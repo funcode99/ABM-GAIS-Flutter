@@ -217,6 +217,9 @@ class RequestTripImpl implements RequestTripRepository {
     String notes,
     String gender,
     String isGuest,
+    String? email,
+    String? title,
+    String? birthdate,
   ) async {
     try {
       var formData = FormData.fromMap({
@@ -232,6 +235,9 @@ class RequestTripImpl implements RequestTripRepository {
         "notes": notes,
         "gender": gender,
         "is_guest": isGuest,
+        "email" : email,
+        "title" : title,
+        "birth_date" : birthdate
       });
 
       var token = await storageSecure.read(key: "token");
@@ -263,6 +269,9 @@ class RequestTripImpl implements RequestTripRepository {
     int idflightclass,
     String notes,
     String gender,
+    String? email,
+    String? title,
+    String? birthdate,
   ) async {
     try {
       var formData = FormData.fromMap({
@@ -277,6 +286,9 @@ class RequestTripImpl implements RequestTripRepository {
         "id_flight_class": idflightclass,
         "notes": notes,
         "gender": gender,
+        "email" : email,
+        "title" : title,
+        "birth_date" : birthdate
       });
 
       var token = await storageSecure.read(key: "token");
