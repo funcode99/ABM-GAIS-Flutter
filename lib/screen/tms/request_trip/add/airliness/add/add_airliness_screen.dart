@@ -87,16 +87,7 @@ class AddAirlinessScreen extends StatelessWidget {
                             //     return null;
                             //   },
                             // ),
-                            RichText(
-                              text: TextSpan(
-                                text: "Traveller".tr,
-                                style: formlabelTextStyle,
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                      text: "*", style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
+                            const CustomFormLabel(label: "Traveller", showRequired: true),
                             const SizedBox(
                               height: 8,
                             ),
@@ -387,7 +378,7 @@ class AddAirlinessScreen extends StatelessWidget {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      CustomFormLabel(label: "Adult", showRequired: true),
+                                      CustomFormLabel(label: "Child", showRequired: true),
                                       Container(
                                         height: 50,
                                         width: Get.width / 4.5,
