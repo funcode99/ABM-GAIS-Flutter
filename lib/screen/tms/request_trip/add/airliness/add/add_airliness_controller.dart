@@ -96,7 +96,16 @@ class AddAirlinessController extends BaseController {
         passengerAdult.text = value.data?.first.adult.toString() ?? '1';
         passengerChild.text = value.data?.first.childs.toString() ?? '0';
         passengerInfant.text = value.data?.first.infant.toString() ?? '0';
+
+        String? travellersObjectString = value.data?.first.travelersObject;
+        if(travellersObjectString != null){
+          final mapTravellers = jsonDecode(travellersObjectString);
+          List<Map<String, dynamic>> templist = List<Map<String, dynamic>>.from(mapTravellers);
+          selectedTravellerList.addAll(templist.map((element) => guest.Data.fromJson(element)).toList());
+        }
+
       });
+
       // travellerList.add(guest.Data(
       //   // idEmployee: value.first.id.toString(),
       //   nameGuest: travellerName.text,
@@ -242,6 +251,7 @@ class AddAirlinessController extends BaseController {
         passengerInfant.text,
         travellerName.text,
         travellerflightClass.text,
+        selectedTravellerList.map((e) => jsonEncode(e.toJson())).toList()
       )
           .then((value) {
         if (formEdit == true) {

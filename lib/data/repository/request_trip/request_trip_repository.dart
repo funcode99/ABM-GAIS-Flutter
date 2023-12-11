@@ -192,6 +192,7 @@ abstract class RequestTripRepository {
     String infant,
     String travellerName,
     String flightClass,
+    dynamic travellersObject
   );
 
   Future deleteAirliness(String id);

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -521,7 +522,7 @@ class RequestTripImpl implements RequestTripRepository {
       "is_round_trip": "",
       "traveler_name": travellerName,
       "flight_class": flightClass,
-      "travelers_object" : travellersObject
+      "travelers_object": "$travellersObject",
     });
 
     try {
@@ -554,6 +555,7 @@ class RequestTripImpl implements RequestTripRepository {
     String infant,
     String travellerName,
     String flightClass,
+    dynamic travellersObject
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -575,6 +577,7 @@ class RequestTripImpl implements RequestTripRepository {
       "is_round_trip": "",
       "traveler_name": travellerName,
       "flight_class": flightClass,
+      "travelers_object": "$travellersObject",
     });
 
     try {
