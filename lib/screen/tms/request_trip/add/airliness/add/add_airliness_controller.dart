@@ -199,6 +199,7 @@ class AddAirlinessController extends BaseController {
             passengerInfant.text,
             travellerName.text,
             travellerflightClass.text,
+            selectedTravellerList.map((e) => jsonEncode(e.toJson())).toList()
           )
           .then(
             (value) => formEdit == true

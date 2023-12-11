@@ -499,6 +499,7 @@ class RequestTripImpl implements RequestTripRepository {
     String infant,
     String travellerName,
     String flightClass,
+    dynamic travellersObject,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -520,6 +521,7 @@ class RequestTripImpl implements RequestTripRepository {
       "is_round_trip": "",
       "traveler_name": travellerName,
       "flight_class": flightClass,
+      "travelers_object" : travellersObject
     });
 
     try {
