@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/const/color.dart';
@@ -53,6 +54,12 @@ class AddAirlinessController extends BaseController {
   List<guest.Data> travellerList = [];
   flight.GetFlightClassModel? flightModel;
 
+  bool showTravellerError = false;
+  late TextEditingController autocompleteController = TextEditingController();
+  List<guest.Data> travellerListFiltered = [];
+  List<guest.Data> selectedTravellerList = [];
+
+
   @override
   void onInit() {
     super.onInit();
@@ -90,10 +97,10 @@ class AddAirlinessController extends BaseController {
         passengerChild.text = value.data?.first.childs.toString() ?? '0';
         passengerInfant.text = value.data?.first.infant.toString() ?? '0';
       });
-      travellerList.add(guest.Data(
-        // idEmployee: value.first.id.toString(),
-        nameGuest: travellerName.text,
-      ));
+      // travellerList.add(guest.Data(
+      //   // idEmployee: value.first.id.toString(),
+      //   nameGuest: travellerName.text,
+      // ));
 
       // await antavaya.getRsvTicket(airlinessModel!.pnrid.toString()).then((value) {
       //   var rsv = jsonDecode(value);
@@ -152,9 +159,11 @@ class AddAirlinessController extends BaseController {
 
     var rtData = await requestTrip.getRequestTripByid(purposeID);
     rtModel = rtData;
-    lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
-    if(lastDate.isBefore(DateTime.now())){
-      lastDate = DateTime.now().add(Duration(days: 30));
+    if(rtModel?.data?.first.dateArrival != null){
+      lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
+      if(lastDate.isBefore(DateTime.now())){
+        lastDate = DateTime.now().add(Duration(days: 30));
+      }
     }
 
     isLoading = false;
@@ -277,4 +286,22 @@ class AddAirlinessController extends BaseController {
       );
     }
   }
+
+  Future<List<guest.Data>> getGuestByKeyword(String keyword)async{
+
+    List<guest.Data> list = [];
+    final tempTravellers = travellerList.where((element) => element.nameGuest!.contains(keyword));
+
+    final temp = selectedTravellerList.map((e) => e.id).toList();
+    final travelers = tempTravellers.where((element) => !temp.contains(element.id));
+    list.addAll(travelers);
+
+    return list;
+  }
+
+  void deleteTravellerItem(guest.Data item) {
+    selectedTravellerList.removeWhere((element) => item.id == element.id);
+    update();
+  }
+
 }
