@@ -64,8 +64,9 @@ class Data {
       String? nameStationTo, 
       dynamic idVendor, 
       dynamic price, 
-      dynamic trainName, 
-      String? noRequestTrip, 
+      dynamic trainName,
+      dynamic travelersObject,
+      String? noRequestTrip,
       String? employeeName,}){
     _id = id;
     _idRequestTrip = idRequestTrip;
@@ -86,6 +87,7 @@ class Data {
     _idVendor = idVendor;
     _price = price;
     _trainName = trainName;
+    _travelersObject = travelersObject;
     _noRequestTrip = noRequestTrip;
     _employeeName = employeeName;
 }
@@ -110,6 +112,7 @@ class Data {
     _idVendor = json['id_vendor'];
     _price = json['price'];
     _trainName = json['train_name'];
+    _travelersObject = json['travelers_object'];
     _noRequestTrip = json['no_request_trip'];
     _employeeName = json['employee_name'];
   }
@@ -132,6 +135,7 @@ class Data {
   dynamic _idVendor;
   dynamic _price;
   dynamic _trainName;
+  dynamic _travelersObject;
   String? _noRequestTrip;
   String? _employeeName;
 Data copyWith({  String? id,
@@ -153,6 +157,7 @@ Data copyWith({  String? id,
   dynamic idVendor,
   dynamic price,
   dynamic trainName,
+  dynamic travelersObject,
   String? noRequestTrip,
   String? employeeName,
 }) => Data(  id: id ?? _id,
@@ -174,6 +179,7 @@ Data copyWith({  String? id,
   idVendor: idVendor ?? _idVendor,
   price: price ?? _price,
   trainName: trainName ?? _trainName,
+  travelersObject: travelersObject ?? _travelersObject,
   noRequestTrip: noRequestTrip ?? _noRequestTrip,
   employeeName: employeeName ?? _employeeName,
 );
@@ -196,6 +202,7 @@ Data copyWith({  String? id,
   dynamic get idVendor => _idVendor;
   dynamic get price => _price;
   dynamic get trainName => _trainName;
+  dynamic get travelersObject => _travelersObject;
   String? get noRequestTrip => _noRequestTrip;
   String? get employeeName => _employeeName;
 
@@ -220,6 +227,7 @@ Data copyWith({  String? id,
     map['id_vendor'] = _idVendor;
     map['price'] = _price;
     map['train_name'] = _trainName;
+    map['travelers_object'] = _travelersObject;
     map['no_request_trip'] = _noRequestTrip;
     map['employee_name'] = _employeeName;
     return map;

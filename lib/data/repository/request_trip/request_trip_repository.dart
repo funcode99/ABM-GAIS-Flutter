@@ -329,6 +329,7 @@ abstract class RequestTripRepository {
     String adult,
     String childs,
     String trainName,
+    dynamic travelersObject,
   );
 
   Future<UpdateTrainTripModel> updateTrainTrip(
@@ -345,6 +346,7 @@ abstract class RequestTripRepository {
     String adult,
     String childs,
     String trainName,
+    dynamic travelersObject,
   );
 
   Future deleteTrainTrip(String id);
