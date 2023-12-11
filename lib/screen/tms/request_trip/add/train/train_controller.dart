@@ -36,7 +36,9 @@ class TrainController extends BaseController {
 
   Future<void> delete(String id) async {
     try {
-      await requestTrip.deleteTrainTrip(id).then((value) => Get.showSnackbar(
+      await requestTrip.deleteTrainTrip(id).then((value) {
+        getList();
+        Get.showSnackbar(
             const GetSnackBar(
               icon: Icon(
                 Icons.error,
@@ -47,7 +49,8 @@ class TrainController extends BaseController {
               duration: Duration(seconds: 3),
               backgroundColor: Colors.green,
             ),
-          ));
+          );
+      });
     } catch (e) {
       e.printError();
       Get.showSnackbar(
