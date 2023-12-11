@@ -187,6 +187,7 @@ class LoginController extends BaseController {
           value.data?.first.mealsRate.toString() ?? "",
           value.data?.first.idCostCenter.toString() ?? "",
           value.data?.first.tlkRate?.first.tlk.toString() ?? "",
+          value.data?.first.antavayaCustCode ?? "",
         );
       });
     } catch (e,i) {

@@ -81,6 +81,7 @@ class AntavayaImpl implements AntavayaRepository {
     PassengersModel passengers,
     Segments segments,
     String flightType,
+    String companyCode,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -134,7 +135,8 @@ class AntavayaImpl implements AntavayaRepository {
       "Segments[0][ClassCode]": segments.classCode,
       "Segments[0][FlightId]": segments.flightId,
       "Segments[0][Num]": 0,
-      "Segments[0][Seq]": 1
+      "Segments[0][Seq]": 1,
+      "CompanyCode" : companyCode
     });
 
     // passengers.mapIndexed((i, pass) {

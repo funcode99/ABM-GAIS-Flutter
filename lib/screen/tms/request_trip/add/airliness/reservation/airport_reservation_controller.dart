@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
 import 'package:gais/data/model/antavaya/contact_model.dart';
 import 'package:gais/data/model/antavaya/get_airport_schedule_model.dart' as schedule;
+import 'package:gais/data/model/antavaya/get_reservation_ticket_model.dart' as rsvModel;
+import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/passengers_model.dart';
 import 'package:gais/data/model/request_trip/get_airliness_model.dart' as airline;
 import 'package:gais/data/model/reference/get_user_ga_model.dart' as contact;
-import 'package:gais/data/model/antavaya/get_rsv_ticket_model.dart';
 import 'package:gais/data/model/antavaya/get_ssr_model.dart';
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
@@ -59,6 +61,8 @@ class AirportReservationController extends BaseController {
   ContactModel? bookingContact;
   List<contact.Data> gaList = [];
 
+  dynamic travelerObject;
+
   @override
   void onInit() {
     super.onInit();
@@ -85,26 +89,33 @@ class AirportReservationController extends BaseController {
   Future<void> fetchEdit() async {
     if (airlinessID != null) {
       await antavaya.getRsvTicket(airlinessModel!.pnrid.toString()).then((value) {
-        var rsv = jsonDecode(value);
-        bookTitle.text = rsv['Contact']['Title'];
-        bookFirstName.text = rsv['Contact']['FirstName'];
-        bookLastName.text = rsv['Contact']['LastName'];
-        bookHomePhone.text = rsv['Contact']['HomePhone'];
-        bookMobilePhone.text = rsv['Contact']['MobilePhone'];
-        bookEmail.text = rsv['Contact']['Email'];
-        passTitle.text = rsv['Passengers'][0]['Title'];
-        passFirstName.text = rsv['Passengers'][0]['FirstName'];
-        passLastName.text = rsv['Passengers'][0]['LastName'];
-        birthDate = DateTime.parse(rsv['Passengers'][0]['BirthDate']);
+        var reservation = rsvModel.GetReservationTicketModel.fromJson(value).data;
+
+        bookTitle.text = reservation?.contact?.title ?? "";
+        bookFirstName.text = reservation?.contact?.firstName ?? "";
+        bookLastName.text = reservation?.contact?.lastName ?? "";
+        bookHomePhone.text = reservation?.contact?.homePhone ?? "";
+        bookMobilePhone.text = reservation?.contact?.mobilePhone ?? "";
+        bookEmail.text = reservation?.contact?.email ?? "";
+        passTitle.text = reservation?.passengers?[0].title ?? "";
+        passFirstName.text = reservation?.passengers?[0].firstName ?? "";
+        passLastName.text = reservation?.passengers?[0].lastName ?? "";
+        birthDate = DateTime.parse(reservation?.passengers?[0].birthDate ?? "");
         passBirthDate.text = dateFormat.format(birthDate!);
-        passEmail.text = rsv['Passengers'][0]['Email'];
-        passMobilePhone.text = rsv['Passengers'][0]['MobilePhone'];
-        passIDNumber.text = rsv['Passengers'][0]['IdNumber'];
-        passNationality.text = rsv['Passengers'][0]['Nationality'];
-        passPassportNumber.text = rsv['Passengers'][0]['Passport']['Number'];
-        passPassportOrigin.text = rsv['Passengers'][0]['Passport']['OriginCountry'];
-        passPassportExpire.text = rsv['Passengers'][0]['Passport']['Expire'];
+        passEmail.text = reservation?.passengers?[0].email ?? "";
+        passMobilePhone.text = reservation?.passengers?[0].mobilePhone ?? "";
+        passIDNumber.text = reservation?.passengers?[0].idNumber ?? "";
+        passNationality.text = reservation?.passengers?[0].nationality ?? "";
+        passPassportNumber.text = reservation?.passengers?[0].passport?.number ?? "";
+        passPassportOrigin.text = reservation?.passengers?[0].passport?.originCountry ?? "";
+        passPassportExpire.text = reservation?.passengers?[0].passport?.expire ?? "";
       });
+
+      requestTrip.getAirlinessBytripList(purposeID).then((value){
+        travelerObject = value.data?.first.travelersObject ?? "";
+      });
+
+
     }
   }
 
@@ -226,6 +237,7 @@ class AirportReservationController extends BaseController {
 
   Future<void> saveReservation(PassengersModel passenger) async {
     isLoading = true;
+    String antavayaCustCode = await storage.readString(StorageCore.antavayaCustCode);
     print(bookingContact?.mobilePhone);
     try {
       await antavaya
@@ -254,6 +266,7 @@ class AirportReservationController extends BaseController {
           seq: 0,
         ),
         flight.flightType.toString(),
+        antavayaCustCode
       )
           .then((value) {
         print(value.data?.pnrid.toString());
@@ -303,6 +316,7 @@ class AirportReservationController extends BaseController {
               flight.classObjects!.isNotEmpty
                   ? flight.classObjects?.first.category.toString() ?? ''
                   : flight.connectingFlights?.first.classObjects?.first.category.toString() ?? '',
+              travelerObject
             )
             .then(
               (value) => formEdit == true
@@ -345,6 +359,7 @@ class AirportReservationController extends BaseController {
               flight.classObjects!.isNotEmpty
                   ? flight.classObjects?.first.category.toString() ?? ''
                   : flight.connectingFlights?.first.classObjects?.first.category.toString() ?? '',
+              travelerObject
             )
             .then(
               (value) => formEdit == true

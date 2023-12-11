@@ -36,6 +36,7 @@ abstract class AntavayaRepository {
     PassengersModel passengers,
     Segments segments,
     String flightType,
+    String companyCode
   );
 
   Future getRsvTicket(String pnrID);
