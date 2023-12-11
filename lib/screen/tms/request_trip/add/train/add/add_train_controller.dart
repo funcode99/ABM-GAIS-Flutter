@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/const/color.dart';
 import 'package:gais/data/model/antavaya/get_train_station_model.dart' as station;
 import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
 import 'package:gais/data/model/request_trip/get_request_trip_byid_model.dart';
@@ -39,6 +42,13 @@ class AddTrainController extends BaseController {
   List<station.Data> stationList = [];
   List<guest.Data> travellerList = [];
 
+  bool showTravellerError = false;
+  late TextEditingController autocompleteController = TextEditingController();
+  List<guest.Data> travellerListFiltered = [];
+  List<guest.Data> selectedTravellerList = [];
+
+  Color borderColor = greyColor;
+
   @override
   void onInit() {
     super.onInit();
@@ -54,9 +64,11 @@ class AddTrainController extends BaseController {
     try {
       var rtData = await requestTrip.getRequestTripByid(purposeID);
       rtModel = rtData;
-      lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
-      if(lastDate.isBefore(DateTime.now())){
-        lastDate = DateTime.now().add(Duration(days: 30));
+      if(rtModel?.data?.first.dateArrival != null){
+        lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
+        if(lastDate.isBefore(DateTime.now())){
+          lastDate = DateTime.now().add(Duration(days: 30));
+        }
       }
 
       // travellerList.add(guest.Data(
@@ -78,7 +90,21 @@ class AddTrainController extends BaseController {
         destinationStation = stationList.where((element) => element.stationName == value.data?.first.nameStationTo).first;
         dateDeparture = DateTime.parse(value.data!.first.departDate.toString());
         departureDate.text = dateFormat.format(DateTime.parse(value.data!.first.departDate.toString()));
+
+
+        passengerAdult.text = value.data?.first.adult.toString() ?? '1';
+        passengerChild.text = value.data?.first.child.toString() ?? '0';
+
+        String? travellersObjectString = value.data?.first.travelersObject;
+        if(travellersObjectString != null){
+          final mapTravellers = jsonDecode(travellersObjectString);
+          List<Map<String, dynamic>> templist = List<Map<String, dynamic>>.from(mapTravellers);
+          selectedTravellerList.addAll(templist.map((element) => guest.Data.fromJson(element)).toList());
+        }
+
       });
+    }else{
+      traveller.text = requestTripVariable.requestTripRequestorName ?? "";
     }
     isLoading = false;
     update();
@@ -110,15 +136,16 @@ class AddTrainController extends BaseController {
             purposeID,
             traveller.text,
             "",
-            "1",
+            "",
             originStation!.stationCode.toString(),
             originStation!.stationName.toString(),
             destinationStation!.stationCode.toString(),
             destinationStation!.stationName.toString(),
             saveDateFormat.format(dateDeparture!),
-            '1',
-            '1',
+            passengerAdult.text,
+            passengerChild.text,
             "",
+            selectedTravellerList.map((e) => jsonEncode(e.toJson())).toList()
           )
           .then(
             (value) => formEdit == true
@@ -156,9 +183,10 @@ class AddTrainController extends BaseController {
         destinationStation!.stationCode.toString(),
         destinationStation!.stationName.toString(),
         saveDateFormat.format(dateDeparture!),
-        '1',
-        '1',
+        passengerAdult.text,
+        passengerChild.text,
         "",
+        selectedTravellerList.map((e) => jsonEncode(e.toJson())).toList()
       )
           .then((value) {
         if (formEdit == true) {
@@ -212,5 +240,22 @@ class AddTrainController extends BaseController {
             'purposeID': purposeID,
             'codeDocument': codeDocument,
           });
+  }
+
+  Future<List<guest.Data>> getGuestByKeyword(String keyword)async{
+
+    List<guest.Data> list = [];
+    final tempTravellers = travellerList.where((element) => element.nameGuest!.contains(keyword));
+
+    final temp = selectedTravellerList.map((e) => e.id).toList();
+    final travelers = tempTravellers.where((element) => !temp.contains(element.id));
+    list.addAll(travelers);
+
+    return list;
+  }
+
+  void deleteTravellerItem(guest.Data item) {
+    selectedTravellerList.removeWhere((element) => item.id == element.id);
+    update();
   }
 }
