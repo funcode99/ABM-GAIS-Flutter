@@ -75,6 +75,13 @@ class Data {
     dynamic updatedBy,
     String? typeTraveller,
     String? flightClass,
+    String? birthDate,
+    String? email,
+    String? firstName,
+    String? lastName,
+    String? snEmployee,
+    String? title,
+    String? genderCode,
     num? isGuest,
   }) {
     _id = id;
@@ -98,6 +105,13 @@ class Data {
     _updatedBy = updatedBy;
     _typeTraveller = typeTraveller;
     _flightClass = flightClass;
+    _birthDate = birthDate;
+    _email = email;
+    _firstName = firstName;
+    _lastName = lastName;
+    _snEmployee = snEmployee;
+    _title = title;
+    _genderCode = genderCode;
     _isGuest = isGuest;
   }
 
@@ -123,6 +137,13 @@ class Data {
     _updatedBy = json['updated_by'];
     _typeTraveller = json['type_traveller'];
     _flightClass = json['flight_class'];
+    _birthDate = json['birth_date'];
+    _email = json['email'];
+    _firstName = json['first_name'];
+    _lastName = json['last_name'];
+    _snEmployee = json['sn_employee'];
+    _title = json['title'];
+    _genderCode = json['gender_code'];
     _isGuest = json['is_guest'];
   }
 
@@ -147,6 +168,13 @@ class Data {
   dynamic _updatedBy;
   String? _typeTraveller;
   String? _flightClass;
+  String? _birthDate;
+  String? _email;
+  String? _firstName;
+  String? _lastName;
+  String? _snEmployee;
+  String? _title;
+  String? _genderCode;
   num? _isGuest;
 
   Data copyWith({
@@ -171,6 +199,13 @@ class Data {
     dynamic updatedBy,
     String? typeTraveller,
     String? flightClass,
+    String? birthDate,
+    String? email,
+    String? firstName,
+    String? lastName,
+    String? snEmployee,
+    String? title,
+    String? genderCode,
     num? isGuest,
   }) =>
       Data(
@@ -195,6 +230,13 @@ class Data {
         updatedBy: updatedBy ?? _updatedBy,
         typeTraveller: typeTraveller ?? _typeTraveller,
         flightClass: flightClass ?? _flightClass,
+        birthDate: birthDate ?? _birthDate,
+        email: email ?? _email,
+        firstName: firstName ?? _firstName,
+        lastName: lastName ?? _lastName,
+        snEmployee: snEmployee ?? _snEmployee,
+        title: title ?? _title,
+        genderCode: genderCode ?? _genderCode,
         isGuest: isGuest ?? _isGuest,
       );
 
@@ -240,6 +282,14 @@ class Data {
 
   String? get flightClass => _flightClass;
 
+  String? get birthDate => _birthDate;
+  String? get email => _email;
+  String? get firstName => _firstName;
+  String? get lastName => _lastName;
+  String? get snEmployee => _snEmployee;
+  String? get title => _title;
+  String? get genderCode => _genderCode;
+
   num? get isGuest => _isGuest;
 
   Map<String, dynamic> toJson() {
@@ -265,6 +315,13 @@ class Data {
     map['updated_by'] = _updatedBy;
     map['type_traveller'] = _typeTraveller;
     map['flight_class'] = _flightClass;
+    map['birth_date'] = _birthDate;
+    map['email'] = _email;
+    map['first_name'] = _firstName;
+    map['last_name'] = _lastName;
+    map['sn_employee'] = _snEmployee;
+    map['title'] = _title;
+    map['gender_code'] = _genderCode;
     map['is_guest'] = _isGuest;
     return map;
   }
