@@ -77,6 +77,7 @@ abstract class AntavayaRepository {
     PassengersModel passengers,
     Journeys train,
     String identityType,
+    String companyCode
   );
 
   Future<GetTrainSeatsModel> getTrainSeats(

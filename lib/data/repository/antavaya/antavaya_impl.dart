@@ -373,6 +373,7 @@ class AntavayaImpl implements AntavayaRepository {
     PassengersModel passengers,
     Journeys train,
     String identityType,
+    String companyCode,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -413,6 +414,7 @@ class AntavayaImpl implements AntavayaRepository {
       "Journey[Segments][0][SubClass]": train.segments?.first.subClass,
       "Journey[Segments][0][Class]": train.segments?.first.classTrain,
       "Journey[Segments][0][Provider]": train.provider,
+      "CompanyCode" : companyCode
     });
     try {
       Response response = await network.dio.post(
