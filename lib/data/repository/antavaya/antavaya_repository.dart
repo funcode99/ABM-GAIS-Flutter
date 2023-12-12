@@ -36,6 +36,7 @@ abstract class AntavayaRepository {
     PassengersModel passengers,
     Segments segments,
     String flightType,
+    String companyCode
   );
 
   Future getRsvTicket(String pnrID);
@@ -76,6 +77,7 @@ abstract class AntavayaRepository {
     PassengersModel passengers,
     Journeys train,
     String identityType,
+    String companyCode
   );
 
   Future<GetTrainSeatsModel> getTrainSeats(

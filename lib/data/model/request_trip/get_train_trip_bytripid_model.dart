@@ -73,6 +73,7 @@ class Data {
     int? idVendor,
     dynamic price,
     dynamic trainName,
+    dynamic travelersObject,
   }) {
     _id = id;
     _idRequestTrip = idRequestTrip;
@@ -93,6 +94,7 @@ class Data {
     _idVendor = idVendor;
     _price = price;
     _trainName = trainName;
+    _travelersObject = travelersObject;
   }
 
   Data.fromJson(dynamic json) {
@@ -115,6 +117,7 @@ class Data {
     _idVendor = json['id_vendor'];
     _price = json['price'];
     _trainName = json['train_name'];
+    _travelersObject = json['travelers_object'];
   }
 
   String? _id;
@@ -136,6 +139,7 @@ class Data {
   int? _idVendor;
   dynamic _price;
   dynamic _trainName;
+  dynamic _travelersObject;
 
   Data copyWith({
     String? id,
@@ -157,6 +161,7 @@ class Data {
     int? idVendor,
     dynamic price,
     dynamic trainName,
+    dynamic travelersObject
   }) =>
       Data(
         id: id ?? _id,
@@ -178,6 +183,7 @@ class Data {
         idVendor: idVendor ?? _idVendor,
         price: price ?? _price,
         trainName: trainName ?? _trainName,
+        travelersObject: travelersObject ?? _travelersObject,
       );
 
   String? get id => _id;
@@ -218,6 +224,8 @@ class Data {
 
   dynamic get trainName => _trainName;
 
+  dynamic get travelersObject => _travelersObject;
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
@@ -239,6 +247,7 @@ class Data {
     map['id_vendor'] = _idVendor;
     map['price'] = _price;
     map['train_name'] = _trainName;
+    map['travelers_object'] = _travelersObject;
     return map;
   }
 }

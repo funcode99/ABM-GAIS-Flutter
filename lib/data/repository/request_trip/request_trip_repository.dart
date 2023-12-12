@@ -99,6 +99,9 @@ abstract class RequestTripRepository {
     String notes,
     String gender,
     String isGuest,
+    String? email,
+    String? title,
+    String? birthdate,
   );
 
   Future<UpdateTravellerGuestModel> updateTravellerGuest(
@@ -115,6 +118,9 @@ abstract class RequestTripRepository {
     int idflightclass,
     String notes,
     String gender,
+    String? email,
+    String? title,
+    String? birthdate,
   );
 
   Future<GetGuestBytripModel> getGuestBytripList(String id);
@@ -167,6 +173,7 @@ abstract class RequestTripRepository {
     String infant,
     String travellerName,
     String flightClass,
+    dynamic travellersObject
   );
 
   Future<UpdateAirlinessModel> updateAirlines(
@@ -185,6 +192,7 @@ abstract class RequestTripRepository {
     String infant,
     String travellerName,
     String flightClass,
+    dynamic travellersObject
   );
 
   Future deleteAirliness(String id);
@@ -246,6 +254,7 @@ abstract class RequestTripRepository {
     String pnrID,
     String jenkel,
     String hotelFare,
+    dynamic travelersObject,
   );
 
   Future<UpdateAccommodationModel> updateAccommodation(
@@ -278,6 +287,7 @@ abstract class RequestTripRepository {
     GuestModel? guests,
     ContactGuest? contactGuest,
     BedsModel? beds,
+    dynamic travelersObject,
   );
 
   Future<GetAccommodationModel> getAccommodationBytripList(String id);
@@ -321,6 +331,7 @@ abstract class RequestTripRepository {
     String adult,
     String childs,
     String trainName,
+    dynamic travelersObject,
   );
 
   Future<UpdateTrainTripModel> updateTrainTrip(
@@ -337,6 +348,7 @@ abstract class RequestTripRepository {
     String adult,
     String childs,
     String trainName,
+    dynamic travelersObject,
   );
 
   Future deleteTrainTrip(String id);

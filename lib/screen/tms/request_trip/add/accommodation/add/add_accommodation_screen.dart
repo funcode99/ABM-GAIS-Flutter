@@ -1,11 +1,14 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
+import 'package:gais/reusable/customformlabel.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
 import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
@@ -13,6 +16,7 @@ import 'package:gais/screen/tms/request_trip/add/accommodation/accommodation_scr
 import 'package:gais/screen/tms/request_trip/add/accommodation/add/add_accommodation_controller.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
+import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
 
 class AddAccommodationScreen extends StatelessWidget {
   const AddAccommodationScreen({Key? key}) : super(key: key);
@@ -68,19 +72,125 @@ class AddAccommodationScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomTextFormField(
-                              controller: controller.travellerName,
-                              label: "Traveller",
-                              hintText: "Name",
-                              isRequired: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
-                              readOnly: true,
+                            const CustomFormLabel(label: "Traveller", showRequired: true),
+                            const SizedBox(
+                              height: 8,
                             ),
+                            Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 8),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: controller.showTravellerError
+                                      ? Colors.redAccent
+                                      : Colors.black,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Wrap(
+                                runSpacing: 8,
+                                runAlignment: WrapAlignment.center,
+                                children: [
+                                  ...controller.selectedTravellerList
+                                      .mapIndexed((index, item) => Container(
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(4.0),
+                                      ),
+                                      color: Color(0xFFe4e4e4),
+                                    ),
+                                    margin: const EdgeInsets.only(
+                                        right: 5.0, left: 5),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0, vertical: 4.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        InkWell(
+                                          child: Text(
+                                            item.nameGuest ?? "",
+                                            style: listSubTitleTextStyle,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 4.0),
+                                        InkWell(
+                                          child: const Icon(
+                                            Icons.cancel,
+                                            size: 14.0,
+                                            color: greyColor,
+                                          ),
+                                          onTap: () {
+                                            controller.deleteTravellerItem(item);
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                  ))
+                                      .toList(),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: TypeAheadFormField<guest.Data>(
+                                      textFieldConfiguration: TextFieldConfiguration(
+                                        controller: controller.autocompleteController,
+                                        autofocus: false,
+                                        style: Theme.of(context).textTheme.titleMedium,
+                                        decoration: InputDecoration(
+                                            isDense: true,
+                                            hintText: "Participant".tr,
+                                            border: InputBorder.none,
+                                            contentPadding: const EdgeInsets.symmetric(
+                                                horizontal: 4.0, vertical: 4.0),
+                                            errorText: null,
+                                            errorBorder: const OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                              gapPadding: 0,
+                                            ),
+                                            errorStyle: const TextStyle(height: 0)),
+                                      ),
+                                      suggestionsCallback: (pattern) async {
+                                        final list = await controller.getGuestByKeyword(pattern);
+                                        return list;
+                                      },
+                                      itemBuilder: (context, suggestion) {
+                                        return ListTile(
+                                          title: Text("${suggestion.nameGuest}"),
+                                        );
+                                      },
+                                      onSuggestionSelected: (suggestion) {
+                                        controller.selectedTravellerList.add(suggestion);
+                                        controller.autocompleteController.text = "";
+                                        controller.update();
+                                      },
+                                      debounceDuration: const Duration(milliseconds: 1500),
+                                      hideOnLoading: true,
+                                      hideSuggestionsOnKeyboardHide: true,
+                                      keepSuggestionsOnLoading: false,
+                                      minCharsForSuggestions: 0,
+                                      validator: (value) {
+                                        controller.showTravellerError = controller.selectedTravellerList.isEmpty;
+
+                                        if (controller.selectedTravellerList.isEmpty) {
+                                          return "";
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            if (controller.showTravellerError)
+                              const Padding(
+                                padding: EdgeInsets.only(left: 10, top: 8),
+                                child: Text(
+                                  "This field is required",
+                                  style:
+                                  TextStyle(color: Colors.redAccent, fontSize: 12),
+                                ),
+                              ),
+
                             const SizedBox(height: 8),
                             CustomTextFormField(
                               controller: controller.hotelFare,
@@ -208,6 +318,89 @@ class AddAccommodationScreen extends StatelessWidget {
                                 controller.update();
                               }),
                             ),
+
+                            const SizedBox(height: 8),
+                            Container(
+                              child: Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomFormLabel(label: "Room", showRequired: true),
+                                      Container(
+                                        height: 50,
+                                        width: Get.width / 4.5,
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(color: controller.borderColor),
+                                        ),
+                                        child: DropdownButton(
+                                          value: controller.roomController.text.isEmpty ? null : controller.roomController.text,
+                                          items: List.generate(
+                                              5,
+                                                  (index) => DropdownMenuItem(
+                                                child: Text((index + 1).toString()),
+                                                value: (index + 1).toString(),
+                                              )),
+                                          icon: Icon(Icons.keyboard_arrow_down),
+                                          hint: Text("Room", style: hintTextStyle),
+                                          isExpanded: true,
+                                          underline: SizedBox(),
+                                          onChanged: (value) {
+                                            controller.roomController.text = value.toString();
+                                            controller.borderColor = greyColor;
+                                            controller.update();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomFormLabel(label: "Guest", showRequired: true),
+                                      Container(
+                                        height: 50,
+                                        width: Get.width / 4.5,
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(color: controller.borderColor),
+                                        ),
+                                        child: DropdownButton(
+                                          value: controller.guestController.text.isEmpty ? null : controller.guestController.text,
+                                          items: List.generate(
+                                              10,
+                                                  (index) => DropdownMenuItem(
+                                                child: Text((index).toString()),
+                                                value: (index).toString(),
+                                              )),
+                                          icon: Icon(Icons.keyboard_arrow_down),
+                                          hint: Text("Guest", style: hintTextStyle),
+                                          isExpanded: true,
+                                          underline: SizedBox(),
+                                          onChanged: (value) {
+                                            controller.guestController.text = value.toString();
+                                            controller.borderColor = greyColor;
+                                            controller.update();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            controller.borderColor == errorColor
+                                ? Text("     This field is required", style: TextStyle(color: redColor, fontSize: 12))
+                                : Container(),
+
+
                             const SizedBox(height: 8),
                             CustomDropDownFormField(
                               label: "Accommodation Type",
@@ -238,7 +431,7 @@ class AddAccommodationScreen extends StatelessWidget {
                               hintText: "Remarks",
                               multiLine: true,
                             ),
-                            controller.hasGuest
+                            /*controller.hasGuest
                                 ? SizedBox(
                                     // height: 50,
                                     child: Row(
@@ -262,7 +455,7 @@ class AddAccommodationScreen extends StatelessWidget {
                                     // label: "",
                                     // hintText: "Name",
                                   )
-                                : Container(),
+                                : Container(),*/
                             const SizedBox(height: 8),
                             // Text("Create GL?", style: listTitleTextStyle),
                             // Row(

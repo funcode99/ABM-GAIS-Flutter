@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -217,6 +218,9 @@ class RequestTripImpl implements RequestTripRepository {
     String notes,
     String gender,
     String isGuest,
+    String? email,
+    String? title,
+    String? birthdate,
   ) async {
     try {
       var formData = FormData.fromMap({
@@ -232,6 +236,9 @@ class RequestTripImpl implements RequestTripRepository {
         "notes": notes,
         "gender": gender,
         "is_guest": isGuest,
+        "email" : email,
+        "title" : title,
+        "birth_date" : birthdate
       });
 
       var token = await storageSecure.read(key: "token");
@@ -263,6 +270,9 @@ class RequestTripImpl implements RequestTripRepository {
     int idflightclass,
     String notes,
     String gender,
+    String? email,
+    String? title,
+    String? birthdate,
   ) async {
     try {
       var formData = FormData.fromMap({
@@ -277,6 +287,9 @@ class RequestTripImpl implements RequestTripRepository {
         "id_flight_class": idflightclass,
         "notes": notes,
         "gender": gender,
+        "email" : email,
+        "title" : title,
+        "birth_date" : birthdate
       });
 
       var token = await storageSecure.read(key: "token");
@@ -487,6 +500,7 @@ class RequestTripImpl implements RequestTripRepository {
     String infant,
     String travellerName,
     String flightClass,
+    dynamic travellersObject,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -508,6 +522,7 @@ class RequestTripImpl implements RequestTripRepository {
       "is_round_trip": "",
       "traveler_name": travellerName,
       "flight_class": flightClass,
+      "travelers_object": "$travellersObject",
     });
 
     try {
@@ -540,6 +555,7 @@ class RequestTripImpl implements RequestTripRepository {
     String infant,
     String travellerName,
     String flightClass,
+    dynamic travellersObject
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -561,6 +577,7 @@ class RequestTripImpl implements RequestTripRepository {
       "is_round_trip": "",
       "traveler_name": travellerName,
       "flight_class": flightClass,
+      "travelers_object": "$travellersObject",
     });
 
     try {
@@ -836,6 +853,7 @@ class RequestTripImpl implements RequestTripRepository {
     String pnrID,
     String jenkel,
     String hotelFare,
+    dynamic travelersObject,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -862,6 +880,7 @@ class RequestTripImpl implements RequestTripRepository {
       "pnrid": pnrID,
       "jenkel": jenkel,
       "hotel_fare": hotelFare,
+      "travelers_object" : "$travelersObject"
     });
 
     try {
@@ -908,6 +927,8 @@ class RequestTripImpl implements RequestTripRepository {
     GuestModel? guests,
     ContactGuest? contactGuest,
     BedsModel? beds,
+    dynamic travelersObject,
+
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -942,6 +963,7 @@ class RequestTripImpl implements RequestTripRepository {
       "Contact[FirstName]": contactGuest?..firstName,
       "Contact[LastName]": contactGuest?.lastName,
       "Contact[MobilePhone]": contactGuest?.mobilePhone,
+      "travelers_object" : "$travelersObject"
       // "Contact[HomePhone]":,
       // "Contact[Email]":,
       // "Contact[Remark]":,
@@ -1160,6 +1182,7 @@ class RequestTripImpl implements RequestTripRepository {
     String adult,
     String childs,
     String trainName,
+    dynamic travelersObject,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -1176,6 +1199,7 @@ class RequestTripImpl implements RequestTripRepository {
       "depart_date": departureDate,
       "adult": adult,
       "child": childs,
+      "travelers_object" : "$travelersObject"
     });
 
     try {
@@ -1205,7 +1229,8 @@ class RequestTripImpl implements RequestTripRepository {
     String adult,
     String childs,
     String trainName,
-  ) async {
+    dynamic travelersObject,
+    ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
 
@@ -1221,6 +1246,7 @@ class RequestTripImpl implements RequestTripRepository {
       "depart_date": departureDate,
       "adult": adult,
       "child": childs,
+      "travelers_object" : "$travelersObject"
     });
 
     try {

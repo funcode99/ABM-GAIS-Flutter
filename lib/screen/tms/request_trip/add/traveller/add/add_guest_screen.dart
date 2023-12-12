@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/bottombar.dart';
+import 'package:gais/reusable/calendar/custom_calendar_picker.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
 import 'package:gais/reusable/form/custom_dropdown_form_field.dart';
@@ -12,6 +13,7 @@ import 'package:gais/screen/tms/request_trip/add/traveller/add/add_guest_control
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:gais/util/input_formatter/thousand_separator_input_formatter.dart';
 import 'package:get/get.dart';
+import 'package:iconly/iconly.dart';
 
 class AddGuestScreen extends StatelessWidget {
   const AddGuestScreen({Key? key}) : super(key: key);
@@ -109,6 +111,78 @@ class AddGuestScreen extends StatelessWidget {
                             CustomDropDownFormField(
                               items: const [
                                 DropdownMenuItem(
+                                  value: "MR",
+                                  child: Text("MR"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "MRS",
+                                  child: Text("MRS"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "MS",
+                                  child: Text("MS"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "MSTR",
+                                  child: Text("MSTR"),
+                                ),
+                              ],
+                              label: "Title",
+                              hintText: "Title",
+                              value: controller.title,
+                              isRequired: true,
+                              onChanged: (value) {
+                                controller.title = value;
+                                controller.update();
+                              },
+                            ),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.dateController,
+                              label: "Birthdate",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
+                              suffixIcon: const Icon(Icons.calendar_month),
+                              readOnly: true,
+                              onTap: () => showDatePicker(
+                                  context: context,
+                                  initialDate: controller.birthdate,
+                                  lastDate: DateTime.now(),
+                                  firstDate: DateTime.now().subtract(const Duration(days: 365 * 100)))
+                                  .then(
+                                    (date) {
+                                      controller.birthdate = date!;
+                                      controller.dateController.text = controller.dateFormat.format(date);
+                                      controller.update();
+                                },
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            CustomTextFormField(
+                              controller: controller.guestContact,
+                              label: "Contact No",
+                              isRequired: true,
+                              inputType: TextInputType.number,
+                            ),
+                            const SizedBox(height: 8),
+                            CustomTextFormField(
+                              controller: controller.guestCompany,
+                              label: "Company",
+                              hintText: "Company",
+                              isRequired: true,
+                            ),
+                            const SizedBox(height: 8),
+
+                            CustomDropDownFormField(
+                              items: const [
+                                DropdownMenuItem(
                                   value: "L",
                                   child: Text("Male"),
                                 ),
@@ -128,33 +202,6 @@ class AddGuestScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             CustomTextFormField(
-                              controller: controller.guestNIK,
-                              label: "NIK",
-                              isRequired: false,
-                              inputType: TextInputType.number,
-                            ),
-                            const SizedBox(height: 8),
-                            CustomTextFormField(
-                              controller: controller.guestContact,
-                              label: "Contact No",
-                              isRequired: true,
-                              inputType: TextInputType.number,
-                            ),
-                            const SizedBox(height: 8),
-                            CustomTextFormField(
-                              controller: controller.guestCompany,
-                              label: "Company",
-                              hintText: "Company",
-                              isRequired: true,
-                            ),
-                            const SizedBox(height: 8),
-                            CustomTextFormField(
-                              controller: controller.guestDepartment,
-                              label: "Department",
-                              isRequired: true,
-                            ),
-                            const SizedBox(height: 8),
-                            CustomTextFormField(
                               controller: controller.hotelFare,
                               label: "Hotel Fare",
                               isRequired: true,
@@ -166,6 +213,39 @@ class AddGuestScreen extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 8),
+
+                            CustomTextFormField(
+                              controller: controller.emailController,
+                              label: "Email",
+                              hintText: "Email",
+                              isRequired: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "This field is required";
+                                }
+                                if (!value.isEmail) {
+                                  return "This field is not a valid email";
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 8),
+
+                            CustomTextFormField(
+                              controller: controller.guestNIK,
+                              label: "NIK",
+                              isRequired: true,
+                              inputType: TextInputType.number,
+                            ),
+                            const SizedBox(height: 8),
+
+                           /* CustomTextFormField(
+                              controller: controller.guestDepartment,
+                              label: "Department",
+                              isRequired: true,
+                            ),
+                            const SizedBox(height: 8),*/
+
                             CustomDropDownFormField(
                               items: controller.flightList
                                   .map((e) => DropdownMenuItem(
@@ -173,8 +253,8 @@ class AddGuestScreen extends StatelessWidget {
                                         child: Text(e.flightClass.toString()),
                                       ))
                                   .toList(),
-                              label: "Flight Entitlement",
-                              hintText: controller.isLoading ? "Loading..." : "Flight Entitlement",
+                              label: "Flight Class",
+                              hintText: controller.isLoading ? "Loading..." : "Flight Class",
                               value: controller.idFlight?.toString(),
                               isRequired: true,
                               onChanged: (val) {

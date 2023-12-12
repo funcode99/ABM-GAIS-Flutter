@@ -76,7 +76,6 @@ class TrainScreen extends StatelessWidget {
                                       onDeletePressed: () {
                                         controller.delete(e.id.toString());
                                         Get.back();
-                                        controller.getList();
                                       },
                                     )),
                                     content: Row(

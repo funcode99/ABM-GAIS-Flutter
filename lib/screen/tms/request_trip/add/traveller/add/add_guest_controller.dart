@@ -5,6 +5,7 @@ import 'package:gais/data/model/reference/get_traveller_type_model.dart' as type
 import 'package:gais/util/ext/int_ext.dart';
 import 'package:gais/util/ext/string_ext.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AddGuestController extends BaseController {
   String purposeID = Get.arguments['purposeID'];
@@ -12,19 +13,25 @@ class AddGuestController extends BaseController {
   String? guestID = Get.arguments['guestID'];
   bool? formEdit = Get.arguments['formEdit'];
 
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+  DateFormat saveDateFormat = DateFormat("yyyy/MM/dd");
+
   final formKey = GlobalKey<FormState>();
   final guestName = TextEditingController();
   final guestNIK = TextEditingController();
   final guestContact = TextEditingController();
   final notes = TextEditingController();
   final guestCompany = TextEditingController();
+  final emailController = TextEditingController();
   final guestDepartment = TextEditingController();
   final hotelFare = TextEditingController();
   final flightEntitlement = TextEditingController();
+  final dateController = TextEditingController();
 
   String? selectedType;
   String? selectedGuest;
   String? gender;
+  String? title;
   String? selectedDepartment;
   String? selectedCompany;
   int? jobBandID;
@@ -34,6 +41,8 @@ class AddGuestController extends BaseController {
   List<type.Data> typeList = [];
   List<flight.Data> flightList = [];
   type.GetTravellerTypeModel? typeModel;
+
+  DateTime birthdate = DateTime.now();
 
   @override
   void onInit() {
@@ -84,6 +93,10 @@ class AddGuestController extends BaseController {
         notes.text = value.data?.first.notes ?? "";
         travellerID = value.data?.first.idTypeTraveller?.toInt();
         gender = value.data?.first.gender.toString();
+        title = value.data?.first.gender.toString();
+        birthdate = value.data?.first.birthDate.toString().toDate(originFormat: "yyyy-MM-dd") ?? DateTime.now();
+        dateController.text = dateFormat.format(birthdate);
+        emailController.text = value.data?.first.email.toString() ?? "";
       });
       update();
     } catch (e, i) {
@@ -114,7 +127,10 @@ class AddGuestController extends BaseController {
         typeList.addAll(value.data?.toSet().toList() ?? []);
       });
 
-      await repository.getFlightClassList().then((value) => flightList.addAll(value.data?.toSet().toList() ?? []));
+      await repository.getFlightClassList().then((value){
+        flightList.addAll(value.data?.toSet().toList() ?? []);
+        update();
+      });
 
       /*storage.readEmployeeInfo().then((value) {
         jobBandID = int.parse(value.first.idJobBand.toString());
@@ -159,6 +175,9 @@ class AddGuestController extends BaseController {
         notes.text,
         gender.toString(),
         '1',
+        emailController.text,
+        title.toString(),
+        saveDateFormat.format(birthdate)
       )
           .then(
         (value) {
@@ -202,6 +221,9 @@ class AddGuestController extends BaseController {
         idFlight ?? 1,
         notes.text,
         gender.toString(),
+        emailController.text,
+        title.toString(),
+        saveDateFormat.format(birthdate)
       )
           .then(
         (value) {

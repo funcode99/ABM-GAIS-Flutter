@@ -43,7 +43,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
             backgroundColor: baseColor,
             appBar: AppBar(
               title: Text(
-                "Airliness",
+                "Airlines",
                 style: appTitle,
               ),
               centerTitle: true,
@@ -78,7 +78,7 @@ class _CheckScheduleScreenState extends State<CheckScheduleScreen> with TickerPr
                         height: 25,
                       ),
                     ),
-                    Text("Airliness Schedule", style: appTitle),
+                    Text("Airlines Schedule", style: appTitle),
                     const SizedBox(height: 14),
                     Container(
                       alignment: Alignment.center,

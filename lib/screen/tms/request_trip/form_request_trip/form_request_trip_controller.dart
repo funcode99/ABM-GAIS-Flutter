@@ -99,7 +99,7 @@ class FormRequestTripController extends BaseController {
       "showList": true,
     },
     {
-      "title": "Airliness",
+      "title": "Airlines",
       "isFilled": false,
       "screen": const AddAirlinessScreen(),
       "showList": false,
@@ -229,7 +229,7 @@ class FormRequestTripController extends BaseController {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
-            : item['title'] == "Airliness"
+            : item['title'] == "Airlines"
                 ? true
                 : item['title'] == "Accommodation"
                     ? true
@@ -237,7 +237,7 @@ class FormRequestTripController extends BaseController {
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
-            : item['title'] == "Airliness"
+            : item['title'] == "Airlines"
                 ? true
                 : item['title'] == "Accommodation"
                     ? true
@@ -247,7 +247,7 @@ class FormRequestTripController extends BaseController {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
-            : item['title'] == "Airliness"
+            : item['title'] == "Airlines"
                 ? true
                 : item['title'] == "Other Transportation"
                     ? true
@@ -257,7 +257,7 @@ class FormRequestTripController extends BaseController {
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
-            : item['title'] == "Airliness"
+            : item['title'] == "Airlines"
                 ? true
                 : item['title'] == "Other Transportation"
                     ? true
@@ -269,7 +269,7 @@ class FormRequestTripController extends BaseController {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
-            : item['title'] == "Airliness"
+            : item['title'] == "Airlines"
                 ? true
                 : item['title'] == "Other Transportation"
                     ? true
@@ -279,7 +279,7 @@ class FormRequestTripController extends BaseController {
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
-            : item['title'] == "Airliness"
+            : item['title'] == "Airlines"
                 ? true
                 : item['title'] == "Other Transportation"
                     ? true
@@ -511,7 +511,7 @@ class FormRequestTripController extends BaseController {
             id: e.id,
             idRequestTrip: e.idRequestTrip,
             pnrid: e.pnrid,
-            employeeName: e.travelerName,
+            employeeName: e.employeeName,
             createdAt: e.createdAt,
             origin: e.origin,
             destination: e.destination,

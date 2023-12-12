@@ -104,6 +104,7 @@ class Data {
     String? groupCompanyLogoPath,
     String? hotelFare,
     String? mealsRate,
+    String? antavayaCustCode,
     List<TlkRate>? tlkRate,
     List<FlightClass>? flightClass,
   }) {
@@ -157,6 +158,7 @@ class Data {
     _groupCompanyLogoPath = groupCompanyLogoPath;
     _hotelFare = hotelFare;
     _mealsRate = mealsRate;
+    _antavayaCustCode = antavayaCustCode;
     _tlkRate = tlkRate;
     _flightClass = flightClass;
   }
@@ -212,6 +214,7 @@ class Data {
     _groupCompanyLogoPath = json['group_company_logo_path'];
     _hotelFare = json['hotel_fare'];
     _mealsRate = json['meals_rate'];
+    _antavayaCustCode = json['antavaya_cust_code'];
     if (json['tlk_rate'] != null) {
       _tlkRate = [];
       json['tlk_rate'].forEach((v) {
@@ -276,6 +279,7 @@ class Data {
   String? _groupCompanyLogoPath;
   String? _hotelFare;
   String? _mealsRate;
+  String? _antavayaCustCode;
   List<TlkRate>? _tlkRate;
   List<FlightClass>? _flightClass;
 
@@ -326,6 +330,7 @@ class Data {
     String? groupCompanyLogoPath,
     String? hotelFare,
     String? mealsRate,
+    String? antavayaCustCode,
     List<TlkRate>? tlkRate,
     List<FlightClass>? flightClass,
   }) =>
@@ -380,6 +385,7 @@ class Data {
         groupCompanyLogoPath: groupCompanyLogoPath ?? _groupCompanyLogoPath,
         hotelFare: hotelFare ?? _hotelFare,
         mealsRate: mealsRate ?? _mealsRate,
+        antavayaCustCode: antavayaCustCode ?? _antavayaCustCode,
         tlkRate: tlkRate ?? _tlkRate,
         flightClass: flightClass ?? _flightClass,
       );
@@ -484,6 +490,8 @@ class Data {
 
   String? get mealsRate => _mealsRate;
 
+  String? get antavayaCustCode => _antavayaCustCode;
+
   List<TlkRate>? get tlkRate => _tlkRate;
 
   List<FlightClass>? get flightClass => _flightClass;
@@ -540,6 +548,7 @@ class Data {
     map['group_company_logo_path'] = _groupCompanyLogoPath;
     map['hotel_fare'] = _hotelFare;
     map['meals_rate'] = _mealsRate;
+    map['antavaya_cust_code'] = _antavayaCustCode;
     if (_tlkRate != null) {
       map['tlk_rate'] = _tlkRate?.map((v) => v.toJson()).toList();
     }

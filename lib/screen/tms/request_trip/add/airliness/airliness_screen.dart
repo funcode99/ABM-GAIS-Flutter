@@ -58,7 +58,7 @@ class AirlinessScreen extends StatelessWidget {
                           height: 25,
                         ),
                       ),
-                      Text("Airliness", style: appTitle),
+                      Text("Airlines", style: appTitle),
                       SizedBox(height: 14),
                       Column(
                         children: controller.airlinessList
@@ -120,7 +120,7 @@ class AirlinessScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 50),
                         child: CustomFilledButton(
                           color: infoColor,
-                          title: "Add Airliness",
+                          title: "Add Airlines",
                           icon: Icons.add,
                           onPressed: () => Get.off(AddAirlinessScreen(), arguments: {
                             'purposeID': controller.purposeID,

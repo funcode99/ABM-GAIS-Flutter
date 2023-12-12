@@ -76,6 +76,7 @@ class Data {
     String? departureDate,
     String? arrivalDate,
     String? flightClass,
+    dynamic travelersObject,
     dynamic adult,
     dynamic childs,
     dynamic infant,
@@ -102,6 +103,7 @@ class Data {
     _departureDate = departureDate;
     _arrivalDate = arrivalDate;
     _flightClass = flightClass;
+    _travelersObject = travelersObject;
     _adult = adult;
     _child = childs;
     _infant = infant;
@@ -130,6 +132,7 @@ class Data {
     _departureDate = json['depart_date'];
     _arrivalDate = json['arrival_date'];
     _flightClass = json['flight_class'];
+    _travelersObject = json['travelers_object'];
     _adult = json['Adult'];
     _child = json['Child'];
     _infant = json['Infant'];
@@ -157,6 +160,7 @@ class Data {
   String? _departureDate;
   String? _arrivalDate;
   String? _flightClass;
+  dynamic _travelersObject;
   dynamic _adult;
   dynamic _child;
   dynamic _infant;
@@ -184,6 +188,7 @@ class Data {
     String? departureDate,
     String? arrivalDate,
     String? flightClass,
+    dynamic travelersObject,
     dynamic adult,
     dynamic childs,
     dynamic infant,
@@ -211,6 +216,7 @@ class Data {
         departureDate: departureDate ?? _departureDate,
         arrivalDate: arrivalDate ?? _arrivalDate,
         flightClass: flightClass ?? _flightClass,
+        travelersObject: travelersObject ?? _travelersObject,
         adult: adult ?? _adult,
         childs: childs ?? _child,
         infant: infant ?? _infant,
@@ -260,6 +266,8 @@ class Data {
 
   String? get flightClass => _flightClass;
 
+  dynamic get travelersObject => _travelersObject;
+
   dynamic get adult => _adult;
 
   dynamic get childs => _child;
@@ -290,6 +298,7 @@ class Data {
     map['depart_date'] = _departureDate;
     map['arrival_date'] = _arrivalDate;
     map['flight_class'] = _flightClass;
+    map['travelers_object'] = _travelersObject;
     map['Adult'] = _adult;
     map['Child'] = _child;
     map['Infant'] = _infant;

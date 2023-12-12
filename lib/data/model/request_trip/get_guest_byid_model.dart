@@ -83,10 +83,13 @@ class Data {
       num? idTypeTraveller, 
       String? nik, 
       String? gender, 
-      String? contactNo, 
+      String? title,
+      String? contactNo,
       String? departement, 
       String? hotelFare, 
-      num? idFlightClass, 
+      String? birthDate,
+      String? email,
+      num? idFlightClass,
       String? notes, 
       String? createdAt, 
       String? createdBy, 
@@ -106,9 +109,12 @@ class Data {
     _idTypeTraveller = idTypeTraveller;
     _nik = nik;
     _gender = gender;
+    _title = title;
     _contactNo = contactNo;
     _departement = departement;
     _hotelFare = hotelFare;
+    _email = email;
+    _birthDate = birthDate;
     _idFlightClass = idFlightClass;
     _notes = notes;
     _createdAt = createdAt;
@@ -132,9 +138,12 @@ class Data {
     _idTypeTraveller = json['id_type_traveller'];
     _nik = json['nik'];
     _gender = json['gender'];
+    _title = json['title'];
     _contactNo = json['contact_no'];
     _departement = json['departement'];
     _hotelFare = json['hotel_fare'];
+    _birthDate = json['birth_date'];
+    _email = json['email'];
     _idFlightClass = json['id_flight_class'];
     _notes = json['notes'];
     _createdAt = json['created_at'];
@@ -156,9 +165,12 @@ class Data {
   num? _idTypeTraveller;
   String? _nik;
   String? _gender;
+  String? _title;
   String? _contactNo;
   String? _departement;
   String? _hotelFare;
+  String? _email;
+  String? _birthDate;
   num? _idFlightClass;
   String? _notes;
   String? _createdAt;
@@ -179,9 +191,12 @@ Data copyWith({  num? id,
   num? idTypeTraveller,
   String? nik,
   String? gender,
+  String? title,
   String? contactNo,
   String? departement,
   String? hotelFare,
+  String? birthDate,
+  String? email,
   num? idFlightClass,
   String? notes,
   String? createdAt,
@@ -202,9 +217,12 @@ Data copyWith({  num? id,
   idTypeTraveller: idTypeTraveller ?? _idTypeTraveller,
   nik: nik ?? _nik,
   gender: gender ?? _gender,
+  title: title ?? _title,
   contactNo: contactNo ?? _contactNo,
   departement: departement ?? _departement,
   hotelFare: hotelFare ?? _hotelFare,
+  email: email ?? _email,
+  birthDate: birthDate ?? _birthDate,
   idFlightClass: idFlightClass ?? _idFlightClass,
   notes: notes ?? _notes,
   createdAt: createdAt ?? _createdAt,
@@ -226,9 +244,12 @@ Data copyWith({  num? id,
   num? get idTypeTraveller => _idTypeTraveller;
   String? get nik => _nik;
   String? get gender => _gender;
+  String? get title => _title;
   String? get contactNo => _contactNo;
   String? get departement => _departement;
   String? get hotelFare => _hotelFare;
+  String? get email => _email;
+  String? get birthDate => _birthDate;
   num? get idFlightClass => _idFlightClass;
   String? get notes => _notes;
   String? get createdAt => _createdAt;
@@ -252,9 +273,12 @@ Data copyWith({  num? id,
     map['id_type_traveller'] = _idTypeTraveller;
     map['nik'] = _nik;
     map['gender'] = _gender;
+    map['title'] = _title;
     map['contact_no'] = _contactNo;
     map['departement'] = _departement;
     map['hotel_fare'] = _hotelFare;
+    map['email'] = _email;
+    map['birth_date'] = _birthDate;
     map['id_flight_class'] = _idFlightClass;
     map['notes'] = _notes;
     map['created_at'] = _createdAt;

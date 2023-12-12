@@ -492,14 +492,14 @@ class FormRequestTripScreen extends StatelessWidget {
                                         ],
                                       )
                                     : Container()
-                                : controller.items[index]['title'] == "Airliness"
+                                : controller.items[index]['title'] == "Airlines"
                                     ? controller.items[index]['showList']
                                         ? Column(
                                             children: controller.airlinessList.isNotEmpty
                                                 ? controller.airlinessList
                                                     .mapIndexed((i, e) => CustomTripCard(
                                                           listNumber: i + 1,
-                                                          title: e.employeeName?.capitalize ?? "-",
+                                                          title: e.employeeName ?? "-",
                                                           subtitle: controller.dateFormat.format(DateTime.parse(e.createdAt.toString())).toString(),
                                                           // subtitle: e.pnrid.toString(),
                                                           info: e.flightNo,

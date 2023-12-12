@@ -8,6 +8,7 @@ import 'package:gais/data/model/antavaya/get_train_schedule_model.dart' as train
 import 'package:gais/data/model/antavaya/get_train_seats_model.dart' as ts;
 import 'package:gais/data/model/antavaya/passengers_model.dart';
 import 'package:gais/data/model/reference/get_user_ga_model.dart' as contact;
+import 'package:gais/data/storage_core.dart';
 import 'package:gais/screen/tms/request_trip/add/train/train_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
@@ -48,10 +49,18 @@ class TrainReservationController extends BaseController {
   List<ts.SeatRows> seatsList = [];
   ContactModel? bookingContact;
 
+  dynamic travelerObject;
+
   @override
   void onInit() {
     super.onInit();
-    Future.wait([fetchList()]);
+    Future.wait([fetchList(), initData()]);
+  }
+
+  Future<void> initData()async{
+    requestTrip.getTrainTripByTrip(purposeID).then((value){
+      travelerObject = value.data?.first.travelersObject ?? "";
+    });
   }
 
   Future<void> fetchList() async {
@@ -101,6 +110,8 @@ class TrainReservationController extends BaseController {
   }
 
   Future<void> saveData() async {
+    String antavayaCustCode = await storage.readString(StorageCore.antavayaCustCode);
+
     try {
       await antavaya
           .saveTrainReservation(
@@ -115,6 +126,7 @@ class TrainReservationController extends BaseController {
         ),
         trainModel!,
         selectedPassID,
+        antavayaCustCode
       )
           .then((value) async {
         print("res : ${jsonEncode(value)}");
@@ -134,6 +146,7 @@ class TrainReservationController extends BaseController {
             adult.toString(),
             child.toString(),
             trainModel!.trainName.toString(),
+            travelerObject
           );
         });
       }).then(

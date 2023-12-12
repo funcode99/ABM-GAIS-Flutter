@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gais/base/base_controller.dart';
+import 'package:gais/const/color.dart';
 import 'package:gais/data/model/antavaya/get_country_hotel_model.dart' as country;
 import 'package:gais/data/model/antavaya/get_city_hotel_model.dart' as city;
 
@@ -65,6 +66,17 @@ class AddAccommodationController extends BaseController {
   List<type.Data> hotelTypeList = [];
   List<guest.Data> shareList = [];
 
+  List<guest.Data> travellerList = [];
+
+  bool showTravellerError = false;
+  late TextEditingController autocompleteController = TextEditingController();
+  List<guest.Data> travellerListFiltered = [];
+  List<guest.Data> selectedTravellerList = [];
+
+  Color borderColor = greyColor;
+  final roomController = TextEditingController();
+  final guestController = TextEditingController();
+
   @override
   void onInit() {
     super.onInit();
@@ -103,7 +115,7 @@ class AddAccommodationController extends BaseController {
         dateCheckout = DateTime.parse(value.data!.first.checkOutDate.toString());
         if (dateCheckin!.isBefore(DateTime.now())) {
           dateCheckin = DateTime.now();
-          dateCheckout = DateTime.now().add(Duration(days: 1));
+          dateCheckout = DateTime.now().add(const Duration(days: 1));
           checkinDate.text = dateFormat.format(dateCheckin!);
           checkoutDate.text = dateFormat.format(dateCheckout!);
         }
@@ -112,6 +124,19 @@ class AddAccommodationController extends BaseController {
         sharingName.text = value.data?.first.sharingWName ?? "";
         value.data?.first.sharingWName != null ? isSharing = true : false;
         value.data?.first.useGl == 1 ? createGL = true : false;
+
+        roomController.text = "${value.data?.first.room ?? 1}";
+        guestController.text = "${value.data?.first.guest ?? 0}";
+
+
+
+        String? travellersObjectString = value.data?.first.travelersObject;
+        if(travellersObjectString != null){
+          final mapTravellers = jsonDecode(travellersObjectString);
+          List<Map<String, dynamic>> templist = List<Map<String, dynamic>>.from(mapTravellers);
+          selectedTravellerList.addAll(templist.map((element) => guest.Data.fromJson(element)).toList());
+        }
+
       });
     } catch (e, i) {
       e.printError();
@@ -160,14 +185,18 @@ class AddAccommodationController extends BaseController {
 
       var rtData = await requestTrip.getRequestTripByid(purposeID);
       rtModel = rtData;
-      lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
-      if (lastDate.isBefore(DateTime.now())) {
-        lastDate = DateTime.now().add(Duration(days: 30));
+      if(rtModel?.data?.first.dateArrival != null){
+        lastDate = DateTime.parse(rtModel?.data?.first.dateArrival.toString() ?? "");
+        if(lastDate.isBefore(DateTime.now())){
+          lastDate = DateTime.now().add(const Duration(days: 30));
+        }
       }
     } catch (e, i) {
       e.printError();
       i.printError();
     }
+
+    await requestTrip.getGuestBytripList(purposeID).then((value) => travellerList.addAll(value.data?.toSet().toList() ?? []));
 
     isLoading = false;
 
@@ -207,12 +236,14 @@ class AddAccommodationController extends BaseController {
             selectedCountry!.countryName.toString(),
             selectedCity!.cityKey.toString(),
             selectedCity!.cityName.toString(),
-            '',
-            isSharing ? '2' : '1',
+            roomController.text,
+            guestController.text,
             '',
             travellerGender.text == "Male" ? 'L' : 'P',
             hotelFare.text.digitOnly(),
-          )
+            selectedTravellerList.map((e) => jsonEncode(e.toJson())).toList()
+
+      )
           .then((value) => formEdit == true
               ? Get.off(const FormRequestTripScreen(), arguments: {'id': purposeID, 'codeDocument': codeDocument})
               : Get.off(
@@ -262,8 +293,8 @@ class AddAccommodationController extends BaseController {
         selectedCountry!.countryName.toString(),
         selectedCity!.cityKey.toString(),
         selectedCity!.cityName.toString(),
-        '',
-        isSharing ? '2' : '1',
+        roomController.text,
+        guestController.text,
         '',
         travellerGender.text == "Male" ? 'L' : 'P',
         hotelFare.text.digitOnly(),
@@ -274,6 +305,7 @@ class AddAccommodationController extends BaseController {
         null,
         null,
         null,
+        selectedTravellerList.map((e) => jsonEncode(e.toJson())).toList()
       )
           .then((value) {
         // print(jsonEncode(value));
@@ -344,5 +376,22 @@ class AddAccommodationController extends BaseController {
         ),
       );
     }
+  }
+
+  Future<List<guest.Data>> getGuestByKeyword(String keyword)async{
+
+    List<guest.Data> list = [];
+    final tempTravellers = travellerList.where((element) => element.nameGuest!.contains(keyword));
+
+    final temp = selectedTravellerList.map((e) => e.id).toList();
+    final travelers = tempTravellers.where((element) => !temp.contains(element.id));
+    list.addAll(travelers);
+
+    return list;
+  }
+
+  void deleteTravellerItem(guest.Data item) {
+    selectedTravellerList.removeWhere((element) => item.id == element.id);
+    update();
   }
 }

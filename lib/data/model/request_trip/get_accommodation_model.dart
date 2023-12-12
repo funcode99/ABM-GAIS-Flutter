@@ -90,6 +90,7 @@ class Data {
     dynamic address,
     String? employeeName,
     dynamic vendor,
+    dynamic travelersObject,
   }) {
     _id = id;
     _idRequestTrip = idRequestTrip;
@@ -127,6 +128,7 @@ class Data {
     _address = address;
     _employeeName = employeeName;
     _vendor = vendor;
+    _travelersObject = travelersObject;
   }
 
   Data.fromJson(dynamic json) {
@@ -166,6 +168,7 @@ class Data {
     _address = json['address'];
     _employeeName = json['employee_name'];
     _vendor = json['vendor'];
+    _travelersObject = json['travelers_object'];
   }
 
   String? _id;
@@ -204,6 +207,8 @@ class Data {
   dynamic _address;
   String? _employeeName;
   dynamic _vendor;
+  dynamic _travelersObject;
+
 
   Data copyWith({
     String? id,
@@ -242,6 +247,7 @@ class Data {
     dynamic address,
     String? employeeName,
     dynamic vendor,
+    dynamic travelersObject,
   }) =>
       Data(
         id: id ?? _id,
@@ -280,6 +286,7 @@ class Data {
         address: address ?? _address,
         employeeName: employeeName ?? _employeeName,
         vendor: vendor ?? _vendor,
+        travelersObject: travelersObject ?? _travelersObject,
       );
 
   String? get id => _id;
@@ -354,6 +361,8 @@ class Data {
 
   dynamic get vendor => _vendor;
 
+  dynamic get travelersObject => _travelersObject;
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
@@ -392,6 +401,7 @@ class Data {
     map['address'] = _address;
     map['employee_name'] = _employeeName;
     map['vendor'] = _vendor;
+    map['travelersObject'] = _travelersObject;
     return map;
   }
 }
