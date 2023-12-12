@@ -27,11 +27,18 @@ class CheckHotelsController extends BaseController {
   bool isLoading = false;
 
   DateFormat saveFormat = DateFormat("yyyy-MM-dd");
+  dynamic travelerObject;
 
   @override
   void onInit() {
     super.onInit();
-    Future.wait([fetchList()]);
+    Future.wait([fetchList(), initData()]);
+  }
+
+  Future<void> initData()async{
+    requestTrip.getAccommodationBytripList(purposeID).then((value){
+      travelerObject = value.data?.first.travelersObject ?? "";
+    });
   }
 
   Future<void> fetchList() async {
@@ -105,6 +112,7 @@ class CheckHotelsController extends BaseController {
         null,
         null,
         null,
+        travelerObject
       )
           .then((value) {
         print(value.success);
