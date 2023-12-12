@@ -65,7 +65,7 @@ class AddAirlinessScreen extends StatelessWidget {
                         height: 25,
                       ),
                     ),
-                    Text("Airliness", style: appTitle),
+                    Text("Airlines", style: appTitle),
                     const SizedBox(height: 14),
                     Form(
                       key: controller.formKey,

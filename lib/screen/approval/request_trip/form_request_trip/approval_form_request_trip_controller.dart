@@ -97,7 +97,7 @@ class ApprovalFormRequestTripController extends BaseController {
       "showList": true,
     },
     {
-      "title": "Airliness",
+      "title": "Airlines",
       "isFilled": false,
       "screen": const AddAirlinessScreen(),
       "showList": false,
@@ -214,7 +214,7 @@ class ApprovalFormRequestTripController extends BaseController {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
-            : item['title'] == "Airliness"
+            : item['title'] == "Airlines"
             ? true
             : item['title'] == "Accommodation"
             ? true
@@ -222,7 +222,7 @@ class ApprovalFormRequestTripController extends BaseController {
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
-            : item['title'] == "Airliness"
+            : item['title'] == "Airlines"
             ? true
             : item['title'] == "Accommodation"
             ? true
@@ -232,7 +232,7 @@ class ApprovalFormRequestTripController extends BaseController {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
-            : item['title'] == "Airliness"
+            : item['title'] == "Airlines"
             ? true
             : item['title'] == "Other Transportation"
             ? true
@@ -242,7 +242,7 @@ class ApprovalFormRequestTripController extends BaseController {
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
-            : item['title'] == "Airliness"
+            : item['title'] == "Airlines"
             ? true
             : item['title'] == "Other Transportation"
             ? true
@@ -254,7 +254,7 @@ class ApprovalFormRequestTripController extends BaseController {
       for (var item in items) {
         item['isFilled'] = item['title'] == "Traveller Guest"
             ? true
-            : item['title'] == "Airliness"
+            : item['title'] == "Airlines"
             ? true
             : item['title'] == "Other Transportation"
             ? true
@@ -264,7 +264,7 @@ class ApprovalFormRequestTripController extends BaseController {
 
         item['showList'] = item['title'] == "Traveller Guest"
             ? true
-            : item['title'] == "Airliness"
+            : item['title'] == "Airlines"
             ? true
             : item['title'] == "Other Transportation"
             ? true

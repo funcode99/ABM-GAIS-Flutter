@@ -492,7 +492,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                         ],
                                       )
                                     : Container()
-                                : controller.items[index]['title'] == "Airliness"
+                                : controller.items[index]['title'] == "Airlines"
                                     ? controller.items[index]['showList']
                                         ? Column(
                                             children: controller.airlinessList.isNotEmpty

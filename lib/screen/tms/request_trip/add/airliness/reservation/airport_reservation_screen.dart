@@ -30,7 +30,7 @@ class AirportReservationScreen extends StatelessWidget {
             backgroundColor: baseColor,
             appBar: TopBar(
               title: Text(
-                "Airliness",
+                "Airlines",
                 style: appTitle,
               ),
               leading: const CustomBackButton(),
