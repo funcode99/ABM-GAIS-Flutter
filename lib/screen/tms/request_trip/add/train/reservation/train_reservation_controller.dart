@@ -48,10 +48,18 @@ class TrainReservationController extends BaseController {
   List<ts.SeatRows> seatsList = [];
   ContactModel? bookingContact;
 
+  dynamic travelerObject;
+
   @override
   void onInit() {
     super.onInit();
-    Future.wait([fetchList()]);
+    Future.wait([fetchList(), initData()]);
+  }
+
+  Future<void> initData()async{
+    requestTrip.getTrainTripByTrip(purposeID).then((value){
+      travelerObject = value.data?.first.travelersObject ?? "";
+    });
   }
 
   Future<void> fetchList() async {
@@ -134,6 +142,7 @@ class TrainReservationController extends BaseController {
             adult.toString(),
             child.toString(),
             trainModel!.trainName.toString(),
+            travelerObject
           );
         });
       }).then(
