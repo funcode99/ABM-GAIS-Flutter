@@ -511,7 +511,7 @@ class FormRequestTripController extends BaseController {
             id: e.id,
             idRequestTrip: e.idRequestTrip,
             pnrid: e.pnrid,
-            employeeName: e.travelerName,
+            employeeName: e.employeeName,
             createdAt: e.createdAt,
             origin: e.origin,
             destination: e.destination,

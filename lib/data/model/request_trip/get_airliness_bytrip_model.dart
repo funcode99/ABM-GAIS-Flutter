@@ -62,6 +62,7 @@ class Data {
       String? destination, 
       String? departDate, 
       String? travelerName, 
+      String? employeeName,
       dynamic travelersObject,
       int? isRoundTrip,
       int? adult, 
@@ -87,6 +88,7 @@ class Data {
     _destination = destination;
     _departDate = departDate;
     _travelerName = travelerName;
+    _employeeName = employeeName;
     _travelersObject = travelersObject;
     _isRoundTrip = isRoundTrip;
     _adult = adult;
@@ -115,6 +117,7 @@ class Data {
     _destination = json['destination'];
     _departDate = json['depart_date'];
     _travelerName = json['traveler_name'];
+    _employeeName = json['employee_name'];
     _travelersObject = json['travelers_object'];
     _isRoundTrip = json['is_round_trip'];
     _adult = json['Adult'];
@@ -141,6 +144,7 @@ class Data {
   String? _destination;
   String? _departDate;
   String? _travelerName;
+  String? _employeeName;
   dynamic _travelersObject;
   int? _isRoundTrip;
   int? _adult;
@@ -166,6 +170,7 @@ Data copyWith({  String? id,
   String? destination,
   String? departDate,
   String? travelerName,
+  String? employeeName,
   dynamic travelersObject,
   int? isRoundTrip,
   int? adult,
@@ -191,6 +196,7 @@ Data copyWith({  String? id,
   destination: destination ?? _destination,
   departDate: departDate ?? _departDate,
   travelerName: travelerName ?? _travelerName,
+  employeeName: employeeName ?? _employeeName,
   travelersObject: travelersObject ?? _travelersObject,
   isRoundTrip: isRoundTrip ?? _isRoundTrip,
   adult: adult ?? _adult,
@@ -217,6 +223,7 @@ Data copyWith({  String? id,
   String? get destination => _destination;
   String? get departDate => _departDate;
   String? get travelerName => _travelerName;
+  String? get employeeName => _employeeName;
   dynamic get travelersObject => _travelersObject;
   int? get isRoundTrip => _isRoundTrip;
   int? get adult => _adult;
@@ -245,6 +252,7 @@ Data copyWith({  String? id,
     map['destination'] = _destination;
     map['depart_date'] = _departDate;
     map['traveler_name'] = _travelerName;
+    map['employee_name'] = _employeeName;
     map['travelers_object'] = _travelersObject;
     map['is_round_trip'] = _isRoundTrip;
     map['Adult'] = _adult;

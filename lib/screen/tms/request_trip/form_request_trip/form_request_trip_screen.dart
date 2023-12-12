@@ -499,7 +499,7 @@ class FormRequestTripScreen extends StatelessWidget {
                                                 ? controller.airlinessList
                                                     .mapIndexed((i, e) => CustomTripCard(
                                                           listNumber: i + 1,
-                                                          title: e.employeeName?.capitalize ?? "-",
+                                                          title: e.employeeName ?? "-",
                                                           subtitle: controller.dateFormat.format(DateTime.parse(e.createdAt.toString())).toString(),
                                                           // subtitle: e.pnrid.toString(),
                                                           info: e.flightNo,
