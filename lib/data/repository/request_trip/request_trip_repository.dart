@@ -254,6 +254,7 @@ abstract class RequestTripRepository {
     String pnrID,
     String jenkel,
     String hotelFare,
+    dynamic travelersObject,
   );
 
   Future<UpdateAccommodationModel> updateAccommodation(
@@ -286,6 +287,7 @@ abstract class RequestTripRepository {
     GuestModel? guests,
     ContactGuest? contactGuest,
     BedsModel? beds,
+    dynamic travelersObject,
   );
 
   Future<GetAccommodationModel> getAccommodationBytripList(String id);

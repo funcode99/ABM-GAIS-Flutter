@@ -5,6 +5,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/image_constant.dart';
 import 'package:gais/const/textstyle.dart';
+import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
 import 'package:gais/reusable/bottombar.dart';
 import 'package:gais/reusable/custombackbutton.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
@@ -14,10 +15,8 @@ import 'package:gais/reusable/form/customtextformfield.dart';
 import 'package:gais/reusable/topbar.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/add/add_airliness_controller.dart';
 import 'package:gais/screen/tms/request_trip/add/airliness/airliness_screen.dart';
-import 'package:gais/screen/tms/request_trip/add/airliness/check_schedule/check_schedule_screen.dart';
 import 'package:gais/screen/tms/request_trip/form_request_trip/form_request_trip_screen.dart';
 import 'package:get/get.dart';
-import 'package:gais/data/model/request_trip/get_guest_bytrip_model.dart' as guest;
 
 class AddAirlinessScreen extends StatelessWidget {
   const AddAirlinessScreen({Key? key}) : super(key: key);

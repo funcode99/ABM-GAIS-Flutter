@@ -853,6 +853,7 @@ class RequestTripImpl implements RequestTripRepository {
     String pnrID,
     String jenkel,
     String hotelFare,
+    dynamic travelersObject,
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -879,6 +880,7 @@ class RequestTripImpl implements RequestTripRepository {
       "pnrid": pnrID,
       "jenkel": jenkel,
       "hotel_fare": hotelFare,
+      "travelers_object" : "$travelersObject"
     });
 
     try {
@@ -925,6 +927,8 @@ class RequestTripImpl implements RequestTripRepository {
     GuestModel? guests,
     ContactGuest? contactGuest,
     BedsModel? beds,
+    dynamic travelersObject,
+
   ) async {
     var token = await storageSecure.read(key: "token");
     network.dio.options.headers['Authorization'] = 'Bearer $token';
@@ -959,6 +963,7 @@ class RequestTripImpl implements RequestTripRepository {
       "Contact[FirstName]": contactGuest?..firstName,
       "Contact[LastName]": contactGuest?.lastName,
       "Contact[MobilePhone]": contactGuest?.mobilePhone,
+      "travelers_object" : "$travelersObject"
       // "Contact[HomePhone]":,
       // "Contact[Email]":,
       // "Contact[Remark]":,
