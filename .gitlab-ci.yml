@@ -5,9 +5,9 @@ stages:          # List of stages for jobs, and their order of execution
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
-    - echo "$PWD"
-    - cd android && bundle install
-    - bundle exec fastlane build_dev
+    - flutter build apk --release --build-number --flavor dev -t lib/main_dev.dart --no-tree-shake-icons ${CI_JOB_ID:0:8}
+    - sudo bundle install
+    - cd android && bundle exec fastlane move_files
   artifacts:
     paths:
       - build/artifacts/
