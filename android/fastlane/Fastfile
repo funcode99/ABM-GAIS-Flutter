@@ -29,11 +29,16 @@ platform :android do
 
   desc "Deploy a new version for development environment to the Firebase App Distribution"
   lane :deploy_dev_firebase do
-    output_path = "../build/app/outputs/apk/dev/release/"
-    output_json_path = output_path + "output-metadata.json"
-    build_output = load_json(json_path: output_json_path)
-    elements = build_output["elements"][0]
-    apk_path = output_path + elements["outputFile"]
+#     output_path = "../build/app/outputs/apk/dev/release/"
+#     output_json_path = output_path + "output-metadata.json"
+#     build_output = load_json(json_path: output_json_path)
+#     elements = build_output["elements"][0]
+#     apk_path = output_path + elements["outputFile"]
+    comps =     File.read("../../build/artifacts/metadata.dat").split("\n").first.split(",")
+    version = comps[0]
+    build = comps[1]
+    job = comps[2]
+    aabPath = comps[3]
 
     firebase_app_distribution(
          app: ENV["FIREBASE_APP_ID"],
