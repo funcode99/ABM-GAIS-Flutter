@@ -1,0 +1,47 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  before_all do
+    ENV["FIREBASE_LOGIN_CREDENTIALS"] = "fastlane/firebase-login-credentials.json"
+    ENV["FIREBASE_APP_ID"] = "1:872917266434:android:9cecc6107bb9c5b4dc771b"
+  end
+
+  desc "Build app for development environment"
+    lane :build_dev do
+      gradle(task: "clean assemble", flavor: "dev", build_type: "release" flag:"-t lib/main_dev.dart")
+    end
+
+  desc "Deploy a new version for development environment to the Firebase App Distribution"
+  lane :deploy_dev_firebase do
+    output_path = "../build/app/outputs/apk/dev/release/"
+    output_json_path = output_path + "output-metadata.json"
+    build_output = load_json(json_path: output_json_path)
+    elements = build_output["elements"][0]
+    apk_path = output_path + elements["outputFile"]
+
+    firebase_app_distribution(
+         app: ENV["FIREBASE_APP_ID"],
+         android_artifact_type: "APK",
+         android_artifact_path: apk_path,
+         release_notes_file: "../release_notes.txt",
+         groups_file: "fastlane/tester-groups.txt",
+         service_credentials_file: ENV["FIREBASE_LOGIN_CREDENTIALS"]
+    )
+  end
+end
