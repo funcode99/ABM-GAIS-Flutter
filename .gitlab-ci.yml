@@ -6,6 +6,7 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - cd android
+    - bundler -v
     - bundle update --bundler
     - bundler -v
     - bundle install
