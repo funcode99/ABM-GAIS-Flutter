@@ -29,16 +29,11 @@ platform :android do
 
   desc "Deploy a new version for development environment to the Firebase App Distribution"
   lane :deploy_dev_firebase do
-#     output_path = "../build/app/outputs/apk/dev/release/"
-#     output_json_path = output_path + "output-metadata.json"
-#     build_output = load_json(json_path: output_json_path)
-#     elements = build_output["elements"][0]
-#     apk_path = output_path + elements["outputFile"]
-    comps =     File.read("../../build/artifacts/metadata.dat").split("\n").first.split(",")
-    version = comps[0]
-    build = comps[1]
-    job = comps[2]
-    aabPath = comps[3]
+    output_path = "../build/app/outputs/apk/dev/release/"
+    output_json_path = output_path + "output-metadata.json"
+    build_output = load_json(json_path: output_json_path)
+    elements = build_output["elements"][0]
+    apk_path = output_path + elements["outputFile"]
 
     firebase_app_distribution(
          app: ENV["FIREBASE_APP_ID"],
@@ -49,36 +44,4 @@ platform :android do
          service_credentials_file: ENV["FIREBASE_LOGIN_CREDENTIALS"]
     )
   end
-
-  desc "move all the files to separate folder to upload them as artifacts"
-
-    lane :move_files do
-
-      version = File.read(File.join(File.dirname(__FILE__), '..', '..', 'pubspec.yaml')).match(/version: (.+)/)[1]
-      buildCode = version.split('+')[0]
-
-      buildNumber = ENV['CI_JOB_ID']
-
-      if buildNumber == nil
-          buildNumber = version.split('+')[1]
-      end
-
-      job = ENV['CI_JOB_ID']
-      if job == nil
-          job = '-1000'
-      end
-
-
-      buildNumber = buildNumber.slice(0, 8)
-
-      file_prefix ="Academicmaster-#{git_branch}-#{buildCode}+#{buildNumber}".split("\n").first
-      sh("cd .. && cd .. && mkdir -p build/artifacts")
-      sh("mv ../../build/app/outputs/flutter-apk/app-release.apk ../../build/artifacts/#{file_prefix}.apk")
-      sh("mv ../../build/app/outputs/flutter-apk/app-release.apk.sha1 ../../build/artifacts/#{file_prefix}.apk.sha1")
-      sh("mv ../../build/app/outputs/apk/release/output-metadata.json ../../build/artifacts/output-metadata.json")
-      sh("mv ../../build/app/outputs/bundle/release/app-release.aab ../../build/artifacts/#{file_prefix}.aab")
-
-      dataToWrite = buildCode.split("\n").first + ',' + buildNumber.split("\n").first + ',' + job + ',' + sh("cd .. && cd .. && pwd | tr -d '\n'") + '/build/artifacts/' + file_prefix.split("\n").first + ".aab"
-      sh("echo #{dataWrite} > ../../build/artifacts/metadata.dat")
-    end
 end
