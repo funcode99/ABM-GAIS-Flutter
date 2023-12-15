@@ -5,6 +5,9 @@ stages:          # List of stages for jobs, and their order of execution
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
+    - echo "$PWD"
+    - cd android
+    - echo "$PWD"
     - flutter build apk --release --flavor dev -t lib/main_dev.dart --no-tree-shake-icons
     - echo "$PWD"
     - cd android
