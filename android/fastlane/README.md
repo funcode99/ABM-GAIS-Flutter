@@ -15,26 +15,18 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
-### android test
+### android build_dev
 
 ```sh
-[bundle exec] fastlane android test
+[bundle exec] fastlane android build_dev
 ```
 
-Runs all the tests
+Build app for development environment
 
-### android beta
-
-```sh
-[bundle exec] fastlane android beta
-```
-
-Submit a new Beta Build to Crashlytics Beta
-
-### android deploy_dev
+### android deploy_dev_firebase
 
 ```sh
-[bundle exec] fastlane android deploy_dev
+[bundle exec] fastlane android deploy_dev_firebase
 ```
 
 Deploy a new version for development environment to the Firebase App Distribution

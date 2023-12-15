@@ -24,7 +24,7 @@ platform :android do
 
   desc "Build app for development environment"
     lane :build_dev do
-      gradle(task: "clean assemble", flavor: "dev", build_type: "release", flags:"-t lib/main_dev.dart")
+      gradle(flavor: "Dev", task: "assemble",  build_type: "Release", flags: "-Ptarget=lib/main_dev.dart")
     end
 
   desc "Deploy a new version for development environment to the Firebase App Distribution"
