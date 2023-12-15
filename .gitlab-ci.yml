@@ -6,7 +6,7 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - flutter build apk --release --flavor dev -t lib/main_dev.dart --no-tree-shake-icons
-    - cd android && bundle install
+    - cd android
     - bundle exec fastlane move_files
   artifacts:
     paths:
