@@ -29,6 +29,6 @@ deploy-job:      # This job runs in the deploy stage.
     - cd android
     - bundle update --bundler
     - bundle install
-    - bundle exec fastlane deploy_dev_firebase
+    - bundle exec fastlane deploy_dev_firebase --verbose troubleshoot
   tags:
     - flutter
