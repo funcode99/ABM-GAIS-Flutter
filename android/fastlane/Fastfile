@@ -25,7 +25,7 @@ platform :android do
   #this block of code is not used, cause we use build from gitlab-runner
   desc "Build app for development environment"
     lane :build_dev do
-      gradle(flavor: "Dev", task: "assemble",  build_type: "Release", flags: "-Ptarget=lib/main_dev.dart", project_dir:"./android", gradle_path:"testxxxx")
+      gradle(flavor: "Dev", task: "assemble",  build_type: "Release", flags: "-Ptarget=lib/main_dev.dart")
     end
 
   desc "move files from development build to artifacts"
@@ -58,6 +58,10 @@ platform :android do
     build = comps[1]
     apk_path = comps[3]
 
+    sh("echo $PWD")
+    sh("echo #{version}")
+    sh("echo #{build}")
+    sh("echo #{apk_path}")
     firebase_app_distribution(
          app: ENV["FIREBASE_APP_ID"],
          android_artifact_type: "APK",
