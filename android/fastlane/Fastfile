@@ -63,7 +63,7 @@ platform :android do
          android_artifact_type: "APK",
          android_artifact_path: apk_path,
          release_notes_file: "../release_notes.txt",
-         groups: "developer only, Developer, SA Android",
+         groups: "developer-only, developer, sa-android",
          service_credentials_file: ENV["FIREBASE_LOGIN_CREDENTIALS"]
     )
 
