@@ -1,0 +1,72 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  before_all do
+    ENV["FIREBASE_LOGIN_CREDENTIALS"] = "fastlane/firebase-login-credentials.json"
+    ENV["FIREBASE_APP_ID"] = "1:872917266434:android:9cecc6107bb9c5b4dc771b"
+  end
+
+  #this block of code is not used, cause we use build from gitlab-runner
+  desc "Build app for development environment"
+    lane :build_dev do
+      gradle(flavor: "Dev", task: "assemble",  build_type: "Release", flags: "-Ptarget=lib/main_dev.dart")
+    end
+
+  desc "move files from development build to artifacts"
+  lane :move_dev_files do
+    version = File.read(File.join(File.dirname(__FILE__), '..', '..', 'pubspec.yaml')).match(/version: (.+)/)[1]
+    buildName = version.split('+')[0]
+
+    buildNumber = version.split('+')[1]
+
+    file_prefix ="pigeon-dev-#{buildName}+#{buildNumber}".split("\n").first
+    sh("cd .. && cd .. && mkdir -p build/artifacts")
+    sh("mv ../../build/app/outputs/flutter-apk/app-dev-release.apk ../../build/artifacts/#{file_prefix}.apk")
+
+    apk_path = sh("cd .. && cd .. && pwd | tr -d '\n'") + '/build/artifacts/' + file_prefix.split("\n").first + ".apk"
+
+    dataToWrite = buildName.split("\n").first + ',' + buildNumber.split("\n").first + ',' + apk_path
+    sh("echo #{dataToWrite} > ../../build/artifacts/metadata_dev.dat")
+  end
+
+  desc "Deploy a new version for development environment to the Firebase App Distribution"
+  lane :deploy_dev_firebase do
+    sh("echo $PWD")
+    comps =     File.read("../../build/artifacts/metadata_dev.dat").split("\n").first.split(",")
+    version = comps[0]
+    build = comps[1]
+    apk_path = comps[2]
+
+    sh("echo $PWD")
+    sh("echo test")
+    sh("echo #{version}")
+    sh("echo #{build}")
+    sh("echo #{apk_path}")
+    firebase_app_distribution(
+         app: ENV["FIREBASE_APP_ID"],
+         android_artifact_type: "APK",
+         android_artifact_path: apk_path,
+         release_notes_file: "../release_notes.txt",
+         groups: "developer-only, developer, sa-android",
+         service_credentials_file: ENV["FIREBASE_LOGIN_CREDENTIALS"]
+    )
+
+  end
+
+end
