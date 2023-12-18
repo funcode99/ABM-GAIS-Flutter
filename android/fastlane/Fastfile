@@ -31,17 +31,17 @@ platform :android do
   desc "move files from development build to artifacts"
   lane :move_dev_files do
     version = File.read(File.join(File.dirname(__FILE__), '..', '..', 'pubspec.yaml')).match(/version: (.+)/)[1]
-    buildCode = version.split('+')[0]
+    buildName = version.split('+')[0]
 
     buildNumber = version.split('+')[1]
 
-    file_prefix ="pigeon-dev-#{buildCode}+#{buildNumber}".split("\n").first
+    file_prefix ="pigeon-dev-#{buildName}+#{buildNumber}".split("\n").first
     sh("cd .. && cd .. && mkdir -p build/artifacts")
     sh("mv ../../build/app/outputs/flutter-apk/app-dev-release.apk ../../build/artifacts/#{file_prefix}.apk")
 
     apk_path = sh("cd .. && cd .. && pwd | tr -d '\n'") + '/build/artifacts/' + file_prefix.split("\n").first + ".apk"
 
-    dataToWrite = buildCode.split("\n").first + ',' + buildNumber.split("\n").first + ',' + job + ',' + apk_path
+    dataToWrite = buildName.split("\n").first + ',' + buildNumber.split("\n").first + ',' + apk_path
     sh("echo #{dataToWrite} > ../../build/artifacts/metadata_dev.dat")
   end
 
