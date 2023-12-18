@@ -26,6 +26,9 @@ deploy-job:      # This job runs in the deploy stage.
   dependencies:
     - build-job
   script:
-    - cd android && bundle exec fastlane deploy_dev_firebase
+    - cd android
+    - bundle update --bundler
+    - bundle install
+    - bundle exec fastlane deploy_dev_firebase
   tags:
     - flutter
