@@ -56,7 +56,7 @@ platform :android do
     comps =     File.read("../../build/artifacts/metadata_dev.dat").split("\n").first.split(",")
     version = comps[0]
     build = comps[1]
-    apk_path = comps[3]
+    apk_path = comps[2]
 
     sh("echo $PWD")
     sh("echo #{version}")
