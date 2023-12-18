@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Build app for development environment
 
+### android move_dev_files
+
+```sh
+[bundle exec] fastlane android move_dev_files
+```
+
+move files from development build to artifacts
+
 ### android deploy_dev_firebase
 
 ```sh
