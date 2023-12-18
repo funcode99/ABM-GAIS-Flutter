@@ -47,18 +47,14 @@ platform :android do
 
   desc "Deploy a new version for development environment to the Firebase App Distribution"
   lane :deploy_dev_firebase do
-#     output_path = "../build/app/outputs/apk/dev/release/"
-#     output_json_path = output_path + "output-metadata.json"
-#     build_output = load_json(json_path: output_json_path)
-#     elements = build_output["elements"][0]
-#     apk_path = output_path + elements["outputFile"]
-
+    sh("echo $PWD")
     comps =     File.read("../../build/artifacts/metadata_dev.dat").split("\n").first.split(",")
     version = comps[0]
     build = comps[1]
     apk_path = comps[2]
 
     sh("echo $PWD")
+    sh("echo test")
     sh("echo #{version}")
     sh("echo #{build}")
     sh("echo #{apk_path}")
@@ -67,9 +63,9 @@ platform :android do
          android_artifact_type: "APK",
          android_artifact_path: apk_path,
          release_notes_file: "../release_notes.txt",
-         groups: "developer only,Developer,SA Android",
          service_credentials_file: ENV["FIREBASE_LOGIN_CREDENTIALS"]
     )
+
   end
 
 end
