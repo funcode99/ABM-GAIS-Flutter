@@ -28,27 +28,29 @@ platform :android do
       gradle(flavor: "Dev", task: "assemble",  build_type: "Release", flags: "-Ptarget=lib/main_dev.dart")
     end
 
-  desc "move files from development build to artifacts"
-  lane :move_dev_files do
+  desc "move files from default build directory to artifacts directory"
+  lane :move_files do |options|
     version = File.read(File.join(File.dirname(__FILE__), '..', '..', 'pubspec.yaml')).match(/version: (.+)/)[1]
     buildName = version.split('+')[0]
 
     buildNumber = version.split('+')[1]
 
-    file_prefix ="pigeon-dev-#{buildName}+#{buildNumber}".split("\n").first
+    sh("echo #{options[:flavor]}")
+
+    file_prefix ="pigeon-#{options[:flavor]}-#{buildName}+#{buildNumber}".split("\n").first
     sh("cd .. && cd .. && mkdir -p build/artifacts")
-    sh("mv ../../build/app/outputs/flutter-apk/app-dev-release.apk ../../build/artifacts/#{file_prefix}.apk")
+    sh("mv ../../build/app/outputs/flutter-apk/app-#{options[:flavor]}-release.apk ../../build/artifacts/#{file_prefix}.apk")
 
     apk_path = sh("cd .. && cd .. && pwd | tr -d '\n'") + '/build/artifacts/' + file_prefix.split("\n").first + ".apk"
 
     dataToWrite = buildName.split("\n").first + ',' + buildNumber.split("\n").first + ',' + apk_path
-    sh("echo #{dataToWrite} > ../../build/artifacts/metadata_dev.dat")
+    sh("echo #{dataToWrite} > ../../build/artifacts/metadata_#{options[:flavor]}.dat")
   end
 
-  desc "Deploy a new version for development environment to the Firebase App Distribution"
-  lane :deploy_dev_firebase do
+  desc "Deploy a build to the Firebase App Distribution"
+  lane :deploy_to_firebase do |options|
     sh("echo $PWD")
-    comps =     File.read("../../build/artifacts/metadata_dev.dat").split("\n").first.split(",")
+    comps =     File.read("../../build/artifacts/metadata_#{options[:flavor]}.dat").split("\n").first.split(",")
     version = comps[0]
     build = comps[1]
     apk_path = comps[2]

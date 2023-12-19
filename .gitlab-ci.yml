@@ -38,7 +38,7 @@ build-job:       # This job runs in the build stage
     - cd android
     - bundle update --bundler
     - bundle install
-    - bundle exec fastlane move_dev_files
+    - bundle exec fastlane move_files flavor:BUILD_FLAVOR
   dependencies:
     - clean-job
   artifacts:
@@ -59,7 +59,7 @@ deploy-job:      # This job runs in the deploy stage.
     - cd android
     - bundle update --bundler
     - bundle install
-    - bundle exec fastlane deploy_dev_firebase --verbose
+    - bundle exec fastlane deploy_to_firebase flavor:BUILD_FLAVOR --verbose
   tags:
     - flutter
     - abm
