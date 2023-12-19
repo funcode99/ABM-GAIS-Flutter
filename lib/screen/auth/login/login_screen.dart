@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:gais/const/color.dart';
 import 'package:gais/const/textstyle.dart';
 import 'package:gais/reusable/customfilledbutton.dart';
@@ -38,6 +39,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        if(FlavorConfig.instance.name != "PROD")
+                        Text(
+                          "${FlavorConfig.instance.variables["base_url"]}"
+                        ),
                         const SizedBox(
                           height: 32,
                         ),
