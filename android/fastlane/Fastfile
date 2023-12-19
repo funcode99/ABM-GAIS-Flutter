@@ -19,7 +19,9 @@ platform :android do
 
   before_all do
     ENV["FIREBASE_LOGIN_CREDENTIALS"] = "fastlane/firebase-login-credentials.json"
-    ENV["FIREBASE_APP_ID"] = "1:872917266434:android:9cecc6107bb9c5b4dc771b"
+    ENV["FIREBASE_APP_ID_PROD"] = "1:872917266434:android:3da879f537e087d1dc771b"
+    ENV["FIREBASE_APP_ID_DEV"] = "1:872917266434:android:9cecc6107bb9c5b4dc771b"
+    ENV["FIREBASE_APP_ID_STG"] = "1:872917266434:android:5e052ba4fc11d954dc771b"
   end
 
   #this block of code is not used, cause we use build from gitlab-runner
@@ -55,13 +57,21 @@ platform :android do
     build = comps[1]
     apk_path = comps[2]
 
+
+    appId = ENV["FIREBASE_APP_ID_PROD"]
+    if options[:flavor] == "dev"
+        appId = ENV["FIREBASE_APP_ID_DEV"]
+    elsif options[:flavor] == "stg"
+        appId = ENV["FIREBASE_APP_ID_STG"]
+    end
+
     sh("echo $PWD")
     sh("echo test")
     sh("echo #{version}")
     sh("echo #{build}")
     sh("echo #{apk_path}")
     firebase_app_distribution(
-         app: ENV["FIREBASE_APP_ID"],
+         app: appId,
          android_artifact_type: "APK",
          android_artifact_path: apk_path,
          release_notes_file: "../release_notes.txt",
