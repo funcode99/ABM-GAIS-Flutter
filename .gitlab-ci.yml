@@ -23,21 +23,16 @@ build-job:       # This job runs in the build stage
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   script:
     - if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "$CI_DEFAULT_BRANCH" ]; then
-      export BUILD_FLAVOR="prod";ENTRY_POINT="main.dart";
-      else if[ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "qa"]; then
-      export BUILD_FLAVOR="stg";ENTRY_POINT="main_stg.dart";
-      else
-      echo "Condition not met, keeping MY_VARIABLE as is";
+      export BUILD_FLAVOR="prod"
+      export ENTRY_POINT="main.dart";
+      elif [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "qa" ]; then
+      export BUILD_FLAVOR="stg"
+      export ENTRY_POINT="main_stg.dart";
       fi
     - echo $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
     - echo $BUILD_FLAVOR
     - echo $ENTRY_POINT
     - echo $CI_DEFAULT_BRANCH
-    - flutter build apk --release --flavor $BUILD_FLAVOR -t lib/$ENTRY_POINT --no-tree-shake-icons
-    - cd android
-    - bundle update --bundler
-    - bundle install
-    - bundle exec fastlane move_files flavor:$BUILD_FLAVOR
   dependencies:
     - clean-job
   artifacts:
@@ -58,11 +53,11 @@ deploy-job:      # This job runs in the deploy stage.
     - build-job
   script:
     - if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "$CI_DEFAULT_BRANCH" ]; then
-      export BUILD_FLAVOR="prod";ENTRY_POINT="main.dart";
-      else if[ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "qa"]; then
-      export BUILD_FLAVOR="stg";ENTRY_POINT="main_stg.dart";
-      else
-      echo "Condition not met, keeping MY_VARIABLE as is";
+      export BUILD_FLAVOR="prod"
+      export ENTRY_POINT="main.dart";
+      elif [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "qa" ]; then
+      export BUILD_FLAVOR="stg"
+      export ENTRY_POINT="main_stg.dart";
       fi
     - echo $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
     - echo $BUILD_FLAVOR
