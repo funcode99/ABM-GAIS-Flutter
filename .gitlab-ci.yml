@@ -7,25 +7,16 @@ stages:          # List of stages for jobs, and their order of execution
   - build
   - deploy
 
-clean-job:   # This job runs in the pre-build stage, which runs first.
+clean-job:
   stage: pre-build
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
-      variables:
-        BUILD_FLAVOR: "prod"
-        ENTRY_POINT: "main.dart"
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"'
+    - if: '$TEST == "a"'
       variables:
         BUILD_FLAVOR: "stg"
         ENTRY_POINT: "main_stg.dart"
   script:
     - flutter clean
     - flutter pub get
-    - echo $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
-    - echo $BUILD_FLAVOR
-    - echo $ENTRY_POINT
-    - echo $CI_DEFAULT_BRANCH
   tags:
     - flutter
     - abm
@@ -35,17 +26,14 @@ build-job:       # This job runs in the build stage
   stage: build
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
-      variables:
-        BUILD_FLAVOR: "prod"
-        ENTRY_POINT: "main.dart"
-      when: always
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"'
-      variables:
-        BUILD_FLAVOR: "stg"
-        ENTRY_POINT: "main_stg.dart"
-      when: always
   script:
+    - if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "$CI_DEFAULT_BRANCH" ]; then
+      export BUILD_FLAVOR="prod";ENTRY_POINT="main.dart";
+      else if[ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "qa"]; then
+      export BUILD_FLAVOR="stg";ENTRY_POINT="main_stg.dart";
+      else
+      echo "Condition not met, keeping MY_VARIABLE as is";
+      fi
     - echo $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
     - echo $BUILD_FLAVOR
     - echo $ENTRY_POINT
@@ -71,23 +59,21 @@ deploy-job:      # This job runs in the deploy stage.
   stage: deploy
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
-      variables:
-        BUILD_FLAVOR: "prod"
-        ENTRY_POINT: "main.dart"
-      when: always
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"'
-      variables:
-        BUILD_FLAVOR: "stg"
-        ENTRY_POINT: "main_stg.dart"
-      when: always
   dependencies:
     - build-job
   script:
+    - if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "$CI_DEFAULT_BRANCH" ]; then
+      export BUILD_FLAVOR="prod";ENTRY_POINT="main.dart";
+      else if[ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" == "qa"]; then
+      export BUILD_FLAVOR="stg";ENTRY_POINT="main_stg.dart";
+      else
+      echo "Condition not met, keeping MY_VARIABLE as is";
+      fi
     - echo $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
     - echo $BUILD_FLAVOR
     - echo $ENTRY_POINT
     - echo $CI_DEFAULT_BRANCH
+    - echo printenv
     - cd android
     - bundle update --bundler
     - bundle install
