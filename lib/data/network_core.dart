@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:gais/const/app_const.dart';
@@ -24,5 +26,16 @@ class NetworkCore {
     }
     dio.interceptors.add(TokenHeaderInterceptor());
     dio.interceptors.add(ResponseErrorInterceptor());
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = ((X509Certificate cert, String host, int port) {
+        final isValidHost = ["38.47.76.138"].contains(host);
+        return isValidHost;
+      });
   }
 }
