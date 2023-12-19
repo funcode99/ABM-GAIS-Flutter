@@ -1,1 +1,1 @@
-developer only,Developer,SA Android
+developer-only, developer, sa-android
