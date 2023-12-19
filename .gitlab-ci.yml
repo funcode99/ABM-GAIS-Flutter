@@ -1,0 +1,66 @@
+variables:
+  BUILD_FLAVOR: "dev"
+  ENTRY_POINT: "main_dev.dart"
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+      variables:
+        BUILD_FLAVOR: "prod"
+        ENTRY_POINT: "main.dart"
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'qa'
+      variables:
+        BUILD_FLAVOR: "stg"
+        ENTRY_POINT: "main_stg.dart"
+
+stages:          # List of stages for jobs, and their order of execution
+  - pre-build
+  - build
+  - deploy
+
+clean-job:   # This job runs in the pre-build stage, which runs first.
+  stage: pre-build
+  script:
+    - flutter clean
+    - flutter pub get
+  tags:
+    - flutter
+    - abm
+    - gais
+  only:
+    - merge_requests
+
+build-job:       # This job runs in the build stage
+  stage: build
+  script:
+    - flutter build apk --release --flavor $BUILD_FLAVOR -t lib/$ENTRY_POINT --no-tree-shake-icons
+    - cd android
+    - bundle update --bundler
+    - bundle install
+    - bundle exec fastlane move_files flavor:$BUILD_FLAVOR
+  dependencies:
+    - clean-job
+  artifacts:
+    paths:
+      - build/artifacts/
+  tags:
+    - flutter
+    - abm
+    - gais
+  variables:
+    CI_DEBUG_TRACE: "true"
+
+deploy-job:      # This job runs in the deploy stage.
+  stage: deploy
+  dependencies:
+    - build-job
+  script:
+    - cd android
+    - bundle update --bundler
+    - bundle install
+    - bundle exec fastlane deploy_to_firebase flavor:$BUILD_FLAVOR --verbose
+  tags:
+    - flutter
+    - abm
+    - gais
