@@ -1,3 +1,7 @@
+variables:
+  BUILD_FLAVOR: "dev"
+  ENTRY_POINT: "main_dev.dart"
+
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
