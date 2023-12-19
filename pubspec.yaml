@@ -1,0 +1,75 @@
+name: gais
+description: general affair information system
+
+publish_to: 'none'
+version: 1.0.157+157
+
+environment:
+  sdk: '>=2.18.6 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  cupertino_icons: ^1.0.2
+  datepicker_dropdown: ^0.0.7+4
+  get: ^4.6.5
+  dio: ^4.0.6
+  flutter_secure_storage: ^8.0.0
+  intl: ^0.17.0
+  iconly: ^1.0.1
+  syncfusion_flutter_charts: ^21.1.41
+  flutter_svg: ^1.1.6
+  custom_date_range_picker: ^1.0.6
+  file_picker: ^5.2.11
+  image_picker: ^0.8.6
+  buttons_tabbar: ^1.3.6
+  form_validator: ^2.1.1
+  flutter_rating_bar: ^4.0.1
+  flutter_flavor: ^3.1.1
+  collection: ^1.16.0
+  json_annotation: ^4.8.0
+  dartz: ^0.10.1
+  equatable: ^2.0.5
+  easy_stepper: ^0.5.2+1
+  textfield_tags: ^2.0.2
+  dropdown_search: ^5.0.6
+  open_file: ^3.3.2
+  flutter_native_splash: ^2.3.2
+  flutter_pdfview: ^1.3.1
+  path_provider: ^2.0.15
+  permission_handler: ^10.4.1
+  flutter_typeahead: ^4.6.2
+  syncfusion_flutter_calendar: ^21.2.3
+  calendar_view: ^1.0.3
+  firebase_core: ^2.15.0
+  firebase_messaging: ^14.6.5
+  flutter_local_notifications: ^15.1.0+1
+  device_info_plus: ^9.0.3
+  android_id: ^0.3.3
+  url_launcher: ^6.1.12
+  aad_oauth: ^0.4.4
+  email_validator: ^2.1.17
+  time_planner:
+    git:
+      url: https://github.com/fajarainul/time_planner.git
+  image_cropper: ^4.0.1
+  measured_size: ^1.0.0
+      #    path: ../time_planner
+
+
+dev_dependencies:
+  build_runner: ^2.3.3
+  flutter_test:
+    sdk: flutter
+  json_serializable: ^6.6.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/img/
+    - assets/icons/
+  fonts:
+    - family: plus jakarta sans
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans.ttf

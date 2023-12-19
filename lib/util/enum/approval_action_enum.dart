@@ -1,0 +1,1 @@
+enum ApprovalActionEnum {approve, reject, none}
