@@ -2,18 +2,6 @@ variables:
   BUILD_FLAVOR: "dev"
   ENTRY_POINT: "main_dev.dart"
 
-workflow:
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
-      variables:
-        BUILD_FLAVOR: "prod"
-        ENTRY_POINT: "main.dart"
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'qa'
-      variables:
-        BUILD_FLAVOR: "stg"
-        ENTRY_POINT: "main_stg.dart"
-
 stages:          # List of stages for jobs, and their order of execution
   - pre-build
   - build
@@ -21,20 +9,47 @@ stages:          # List of stages for jobs, and their order of execution
 
 clean-job:   # This job runs in the pre-build stage, which runs first.
   stage: pre-build
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
+      variables:
+        BUILD_FLAVOR: "prod"
+        ENTRY_POINT: "main.dart"
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"'
+      variables:
+        BUILD_FLAVOR: "stg"
+        ENTRY_POINT: "main_stg.dart"
   script:
     - flutter clean
     - flutter pub get
     - echo $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    - echo $BUILD_FLAVOR
+    - echo $ENTRY_POINT
+    - echo $CI_DEFAULT_BRANCH
   tags:
     - flutter
     - abm
     - gais
-  only:
-    - merge_requests
 
 build-job:       # This job runs in the build stage
   stage: build
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
+      variables:
+        BUILD_FLAVOR: "prod"
+        ENTRY_POINT: "main.dart"
+      when: always
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"'
+      variables:
+        BUILD_FLAVOR: "stg"
+        ENTRY_POINT: "main_stg.dart"
+      when: always
   script:
+    - echo $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    - echo $BUILD_FLAVOR
+    - echo $ENTRY_POINT
+    - echo $CI_DEFAULT_BRANCH
     - flutter build apk --release --flavor $BUILD_FLAVOR -t lib/$ENTRY_POINT --no-tree-shake-icons
     - cd android
     - bundle update --bundler
@@ -54,9 +69,25 @@ build-job:       # This job runs in the build stage
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
+      variables:
+        BUILD_FLAVOR: "prod"
+        ENTRY_POINT: "main.dart"
+      when: always
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"'
+      variables:
+        BUILD_FLAVOR: "stg"
+        ENTRY_POINT: "main_stg.dart"
+      when: always
   dependencies:
     - build-job
   script:
+    - echo $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    - echo $BUILD_FLAVOR
+    - echo $ENTRY_POINT
+    - echo $CI_DEFAULT_BRANCH
     - cd android
     - bundle update --bundler
     - bundle install
