@@ -24,6 +24,7 @@ clean-job:   # This job runs in the pre-build stage, which runs first.
   script:
     - flutter clean
     - flutter pub get
+    - echo $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
   tags:
     - flutter
     - abm
