@@ -1,15 +1,11 @@
-variables:
-  BUILD_FLAVOR: "dev"
-  ENTRY_POINT: "main_dev.dart"
-
 workflow:
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
       variables:
         BUILD_FLAVOR: "prod"
         ENTRY_POINT: "main.dart"
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == 'qa'
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"'
       variables:
         BUILD_FLAVOR: "stg"
         ENTRY_POINT: "main_stg.dart"
