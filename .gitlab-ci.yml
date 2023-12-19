@@ -11,11 +11,6 @@ clean-job:   # This job runs in the pre-build stage, which runs first.
   stage: pre-build
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
-      variables:
-        BUILD_FLAVOR: "prod"
-        ENTRY_POINT: "main.dart"
-      when: always
     - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"'
       variables:
         BUILD_FLAVOR: "stg"
