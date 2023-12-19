@@ -9,11 +9,6 @@ stages:          # List of stages for jobs, and their order of execution
 
 clean-job:
   stage: pre-build
-  rules:
-    - if: '$TEST == "a"'
-      variables:
-        BUILD_FLAVOR: "stg"
-        ENTRY_POINT: "main_stg.dart"
   script:
     - flutter clean
     - flutter pub get
